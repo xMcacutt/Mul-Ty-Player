@@ -63,9 +63,9 @@ public class TyPosRot
     public void GetCurrentLevel()
     {
         int bytesRead = 0;
-        byte[] currentLevel = new byte[2];
-        Program.ReadProcessMemory((int)tyexeHandle, LEVEL_ID_AD, currentLevel, 2, ref bytesRead);
-        currentLevelID = BitConverter.ToInt16(currentLevel, 0);
+        byte[] currentLevel = new byte[4];
+        Program.ReadProcessMemory((int)tyexeHandle, LEVEL_ID_AD, currentLevel, 4, ref bytesRead);
+        currentLevelID = BitConverter.ToInt32(currentLevel, 0);
     }
 
     public Process FindTyexe()

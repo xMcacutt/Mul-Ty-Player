@@ -35,11 +35,9 @@ namespace TyMultiplayerCLI
 
             Console.ReadLine();
 
-            
             isRunning = false;
-           
         }
-
+        
         private static void Loop()
         {
             client = new RiptideNetworking.Client(5000);
@@ -50,13 +48,12 @@ namespace TyMultiplayerCLI
             while (isRunning)
             {
                 client.Tick();
-                if (isRunning) { SendCoordinates(); }
+                SendCoordinates();
                 Thread.Sleep(10);
             }
 
             client.Disconnect();
             Disconnected();
-
         }
 
         private static void Connected()
@@ -85,9 +82,9 @@ namespace TyMultiplayerCLI
         [MessageHandler((ushort)MessageID.koalacoordinates)]
         private static void HandleGettingCoordinates(Message message)
         {
-            string name = message.GetString();
             int[] intData = message.GetInts();
             float[] coordinates = message.GetFloats();
+            string name = message.GetString();
             //intData[0] = Koala ID
             //intData[1] = Current Level For Given Player (Koala ID)
 
@@ -97,11 +94,13 @@ namespace TyMultiplayerCLI
                 return;
                 //koalaPos.MagicTheKoalaAway(intData[0]); 
             }
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                koalaPos.WriteFloatToMemory(coordinates[i], koalaPos.koalaAddrs[intData[0]][i]);
+                IntPtr tyexeHandle = Program.OpenProcess(0x1F0FFF, false, tyPosRot.tyProcess.Id);
+                int bytesWritten = 0;
+                byte[] buffer = BitConverter.GetBytes(coordinates[i]);
+                Program.WriteProcessMemory((int)tyexeHandle, koalaPos.koalaAddrs[intData[0]][i], buffer, buffer.Length, ref bytesWritten);
             }
-
         }
     }
 }

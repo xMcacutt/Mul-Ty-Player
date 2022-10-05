@@ -66,14 +66,14 @@ namespace TyMultiplayerCLI
             }
 
             tyPosRot.SetMemoryAddresses();
-            tyexeHandle = OpenProcess(0x0010, false, tyPosRot.tyProcess.Id);
+            tyexeHandle = OpenProcess(0x1F0FFF, false, tyPosRot.tyProcess.Id);
             koalaPos.CreateKoalas();
             getPosThread = new Thread(new ThreadStart(GetTyPos));
             getPosThread.Start();
 
             Console.WriteLine("Ty.exe Found! Please enter your player name.");
             playerName = Console.ReadLine();
-            while (playerName == "" || playerName == "null" || playerName == null || playerName.Length < 3)
+            while (string.IsNullOrWhiteSpace(playerName) || playerName.Length < 3)
             {
                 Console.WriteLine("Please enter a valid name");
                 playerName = Console.ReadLine();
@@ -84,7 +84,6 @@ namespace TyMultiplayerCLI
                 string ip = Console.ReadLine();
                 Client.StartClient(ip);
             }
-            Console.WriteLine("works up to here i guess?");
         }
 
         static void GetTyPos()
@@ -103,7 +102,6 @@ namespace TyMultiplayerCLI
                         getPosThread.Abort();
                     }
                 }
-                if (!Client.isRunning) { getPosThread.Abort(); }
                 i--;
             }
         }

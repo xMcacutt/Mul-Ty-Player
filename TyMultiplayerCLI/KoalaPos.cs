@@ -46,24 +46,31 @@ namespace TyMultiplayerCLI
         {
             foreach (int koalaID in koalaAddrs.Keys)
             {
-                for (int i = 0; i < 4; i++)
-                {
-                    koalaAddrs[koalaID][i] = ptrCalc.GetPointerAddress
-                    (
-                        tyPosRot.AddOffset(baseAddressOfKoalaStuff),
-                        koalaOffsets[koalaID],
-                        //FUNCTION MAPPING CORRECT OFFSETS 0.3x^3-x^2+4.6x (0 -> 0, 1 -> 4, 2 -> 8, 3 -> 14)
-                        (int)Math.Round(1 / 3 * Math.Pow(i, 3) - Math.Pow(i, 2) + (14 / 3 * i), 0)
-                    );
-                }
+                koalaAddrs[koalaID][0] = ptrCalc.GetPointerAddress
+                (
+                    tyPosRot.AddOffset(baseAddressOfKoalaStuff),
+                    koalaOffsets[koalaID],
+                    0
+                );
+                koalaAddrs[koalaID][1] = ptrCalc.GetPointerAddress
+                (
+                    tyPosRot.AddOffset(baseAddressOfKoalaStuff),
+                    koalaOffsets[koalaID],
+                    4
+                );
+                koalaAddrs[koalaID][2] = ptrCalc.GetPointerAddress
+                (
+                    tyPosRot.AddOffset(baseAddressOfKoalaStuff),
+                    koalaOffsets[koalaID],
+                    8
+                );
+                koalaAddrs[koalaID][3] = ptrCalc.GetPointerAddress
+                (
+                    tyPosRot.AddOffset(baseAddressOfKoalaStuff),
+                    koalaOffsets[koalaID],
+                    10
+                );
             }
-        }
-
-        public void WriteFloatToMemory(float value, int address)
-        {
-            int bytesWritten = 0;
-            byte[] buffer = BitConverter.GetBytes(value);
-            Program.WriteProcessMemory((int)tyPosRot.tyexeHandle, address, buffer, buffer.Length, ref bytesWritten);
         }
     }
 }
