@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TyMultiplayerCLI
 {
-    internal class KoalaPos
+    internal class KoalaHandler
     {
-        TyPosRot tyPosRot => Program.tyPosRot;
-        PointerCalculations ptrCalc = new PointerCalculations();
+        PointerCalculations ptrCalc => Program.ptrCalc;
+        IntPtr hProcess => ProcessHandler.hProcess;
+
         public Dictionary<int, int[]> koalaAddrs;
+
         const int baseAddressOfKoalaStuff = 0x00323BA4;
         int[] boonieOffsets = { 0x10, 0xC, 0x8, 0x30, 0x30, 0x30, 0x2A4 };
         int[] mimOffsets = { 0x10, 0xC, 0x8, 0x30, 0x30, 0x2A0, 0x2A4 };
@@ -20,11 +23,12 @@ namespace TyMultiplayerCLI
         int[] dubboOffsets = { 0x10, 0xC, 0x8, 0x34, 0x34, 0x2A0, 0x2A4 };
         int[] gummyOffsets = { 0x10, 0xC, 0x8, 0x34, 0x34, 0x34, 0x2A4 };
         int[] elizabethOffsets = { 0x10, 0xC, 0x8, 0x34, 0x270, 0x0, 0x1FC };
+
         int[][] koalaOffsets;
 
-        public KoalaPos()
+        public KoalaHandler()
         {
-            koalaOffsets = new int[][] 
+            koalaOffsets = new [] 
             { 
                 boonieOffsets, mimOffsets, 
                 kikiOffsets, katieOffsets, 
@@ -42,34 +46,59 @@ namespace TyMultiplayerCLI
             }
         }
 
+        public void RemoveCollision()
+        {
+            int bytesWritten = 0;
+            byte[] buffer = BitConverter.GetBytes(0);
+            foreach (int koala in koalaAddrs.Keys)
+            {
+                ProcessHandler.WriteProcessMemory((int)hProcess, koalaAddrs[koala][4], buffer, buffer.Length, ref bytesWritten);
+                Console.WriteLine("addr: {0:X}", koalaAddrs[koala][4]);
+            }
+            Console.WriteLine("removed collision");
+        }
+
         public void SetCoordAddrs()
         {
+            /*
+             * 0 -> X
+             * 1 -> Y
+             * 2 -> Z
+             * 3 -> Yaw
+             * 4 -> Collision
+             */
             foreach (int koalaID in koalaAddrs.Keys)
             {
                 koalaAddrs[koalaID][0] = ptrCalc.GetPointerAddress
                 (
-                    tyPosRot.AddOffset(baseAddressOfKoalaStuff),
+                    ptrCalc.AddOffset(baseAddressOfKoalaStuff),
                     koalaOffsets[koalaID],
-                    0
+                    0x0
                 );
                 koalaAddrs[koalaID][1] = ptrCalc.GetPointerAddress
                 (
-                    tyPosRot.AddOffset(baseAddressOfKoalaStuff),
+                    ptrCalc.AddOffset(baseAddressOfKoalaStuff),
                     koalaOffsets[koalaID],
-                    4
+                    0x4
                 );
                 koalaAddrs[koalaID][2] = ptrCalc.GetPointerAddress
                 (
-                    tyPosRot.AddOffset(baseAddressOfKoalaStuff),
+                    ptrCalc.AddOffset(baseAddressOfKoalaStuff),
                     koalaOffsets[koalaID],
-                    8
+                    0x8
                 );
                 koalaAddrs[koalaID][3] = ptrCalc.GetPointerAddress
                 (
-                    tyPosRot.AddOffset(baseAddressOfKoalaStuff),
+                    ptrCalc.AddOffset(baseAddressOfKoalaStuff),
                     koalaOffsets[koalaID],
-                    10
+                    0x14
                 );
+                /*koalaAddrs[koalaID][4] = ptrCalc.GetPointerAddressNegative
+                (
+                    ptrCalc.AddOffset(baseAddressOfKoalaStuff),
+                    koalaOffsets[koalaID],
+                    0xC
+                );*/
             }
         }
     }

@@ -9,27 +9,26 @@ namespace TyMultiplayerCLI
 {
     internal class PointerCalculations
     { 
-        IntPtr tyexeHandle => Program.tyexeHandle;
+        IntPtr hProcess => ProcessHandler.hProcess;
 
         public PointerCalculations()
         {
 
         }
 
-
         public int GetPointerAddress(int baseAddress, int[] offsets, int extraOffset)
         {
             int bytesRead = 0;
             byte[] buffer = new byte[4];
             IntPtr addr = (IntPtr)baseAddress;
-            Program.ReadProcessMemory((int)tyexeHandle, (int)addr, buffer, 4, ref bytesRead);
+            ProcessHandler.ReadProcessMemory((int)hProcess, (int)addr, buffer, 4, ref bytesRead);
             addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
             foreach (int i in offsets)
             {
                 if (i != offsets[offsets.Length - 1])
                 {
                     addr += i;
-                    Program.ReadProcessMemory((int)tyexeHandle, (int)addr, buffer, 4, ref bytesRead);
+                    ProcessHandler.ReadProcessMemory((int)hProcess, (int)addr, buffer, 4, ref bytesRead);
                     addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
                 }
             }
@@ -38,47 +37,50 @@ namespace TyMultiplayerCLI
             return (int)addr;
         }
 
-        /*public int GetPointerAddress(int baseAddress, int[] offsets, int extraOffset)
-        {
-            int bytesRead = 0;
-            IntPtr addr = (IntPtr)baseAddress;
-            byte[] buffer = new byte[4];
-            Program.ReadProcessMemory((int)tyexeHandle, (int)addr, buffer, 4, ref bytesRead);
-            addr += BitConverter.ToInt32(buffer, 0);
-            foreach (int i in offsets)
-            {
-                if (i != offsets[offsets.Length - 1]) 
-                {
-                    addr += i;
-                    Program.ReadProcessMemory((int)tyexeHandle, (int)addr, buffer, 4, ref bytesRead);
-                    Console.WriteLine()
-                }
-            }
-            addr += offsets[offsets.Length - 1];
-            addr += extraOffset;
-            addr -= baseAddress;
-            return (int)addr;
-        }*/
-
-        public int GetPointerAddress(int baseAddress, int[] offsets)
+        public int GetPointerAddressNegative(int baseAddress, int[] offsets, int extraOffset)
         {
             int bytesRead = 0;
             byte[] buffer = new byte[4];
             IntPtr addr = (IntPtr)baseAddress;
-            Program.ReadProcessMemory((int)tyexeHandle, (int)addr, buffer, 4, ref bytesRead);
+            ProcessHandler.ReadProcessMemory((int)hProcess, (int)addr, buffer, 4, ref bytesRead);
             addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
             foreach (int i in offsets)
             {
                 if (i != offsets[offsets.Length - 1])
                 {
                     addr += i;
-                    Program.ReadProcessMemory((int)tyexeHandle, (int)addr, buffer, 4, ref bytesRead);
+                    ProcessHandler.ReadProcessMemory((int)hProcess, (int)addr, buffer, 4, ref bytesRead);
                     addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
                 }
             }
             addr += offsets[offsets.Length - 1];
-            addr -= baseAddress;
+            addr -= extraOffset;
             return (int)addr;
+        }
+
+        public int GetPointerAddress(int baseAddress, int[] offsets)
+        {
+            int bytesRead = 0;
+            byte[] buffer = new byte[4];
+            IntPtr addr = (IntPtr)baseAddress;
+            ProcessHandler.ReadProcessMemory((int)hProcess, (int)addr, buffer, 4, ref bytesRead);
+            addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
+            foreach (int i in offsets)
+            {
+                if (i != offsets[offsets.Length - 1])
+                {
+                    addr += i;
+                    ProcessHandler.ReadProcessMemory((int)hProcess, (int)addr, buffer, 4, ref bytesRead);
+                    addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
+                }
+            }
+            addr += offsets[offsets.Length - 1];
+            return (int)addr;
+        }
+
+        public int AddOffset(int i)
+        {
+            return (int)IntPtr.Add(ProcessHandler.tyProcess.MainModule.BaseAddress, i);
         }
     }
 }

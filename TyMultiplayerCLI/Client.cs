@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using RiptideNetworking.Utils;
 using System.Threading;
 using RiptideNetworking;
@@ -10,24 +11,26 @@ namespace TyMultiplayerCLI
     {
         connected,
         playerinfo,
-        koalacoordinates
+        koalacoordinates,
+        consolesend
     }
 
     internal class Client
     {
-        static TyPosRot tyPosRot => Program.tyPosRot;
-        static KoalaPos koalaPos => Program.koalaPos;
+        static HeroHandler heroHandler => Program.heroHandler;
+        static KoalaHandler koalaHandler => Program.koalaHandler;
 
         public static bool isRunning;
         private static RiptideNetworking.Client client;
         private static string ip;
         static Thread loop;
+        public static bool didRun;
 
         public static void StartClient(string ipinput)
         {
             RiptideLogger.Initialize(Console.WriteLine, true);
- 
             ip = ipinput;
+            didRun = false;
 
             loop = new Thread(new ThreadStart(Loop));
             loop.Start();
@@ -35,9 +38,22 @@ namespace TyMultiplayerCLI
 
             Console.ReadLine();
 
-            isRunning = false;
+            if (!didRun)
+            {
+                Console.WriteLine("Could not connect to server. Press return.");
+                Disconnected();
+                return;
+            }
+            if (isRunning)
+            {
+                isRunning = false;
+                client.Disconnect();
+                Console.WriteLine("\nYou have been disconnected from the server. Press return.");
+                Disconnected();
+            }
+
         }
-        
+
         private static void Loop()
         {
             client = new RiptideNetworking.Client(5000);
@@ -52,13 +68,12 @@ namespace TyMultiplayerCLI
                 Thread.Sleep(10);
             }
 
-            client.Disconnect();
-            Disconnected();
         }
 
         private static void Connected()
         {
-            Console.WriteLine("\nConnected to server sucessfully!\nPress enter to disconnect at any time.");
+            didRun = true;
+            Console.WriteLine("\nConnected to server successfully!\nPress enter to disconnect at any time.");
             Message message = Message.Create(MessageSendMode.reliable, MessageID.connected);
             message.AddString(Program.playerName);
             client.Send(message);
@@ -66,18 +81,25 @@ namespace TyMultiplayerCLI
 
         private static void Disconnected()
         {
-            Console.WriteLine("\nYou have been disconnected from the server.");
-            Program.getPosThread.Abort();
+            Program.tyDataThread.Abort();
             loop.Abort();
         }
 
-        private static void SendCoordinates()
+        static void SendCoordinates()
         {
             Message message = Message.Create(MessageSendMode.unreliable, MessageID.playerinfo);
-            message.AddInt(tyPosRot.currentLevelID);
-            message.AddFloats(tyPosRot.currentPosRot);
+            message.AddBool(heroHandler.CheckLoading());
+            message.AddInt(heroHandler.currentLevelID);
+            message.AddFloats(heroHandler.currentPosRot);
             client.Send(message);
         }
+
+        [MessageHandler((ushort)MessageID.consolesend)]
+        public static void ConsoleSend(Message message)
+        {
+            Console.WriteLine(message.GetString());
+        }
+
 
         [MessageHandler((ushort)MessageID.koalacoordinates)]
         private static void HandleGettingCoordinates(Message message)
@@ -85,21 +107,23 @@ namespace TyMultiplayerCLI
             int[] intData = message.GetInts();
             float[] coordinates = message.GetFloats();
             string name = message.GetString();
+
             //intData[0] = Koala ID
             //intData[1] = Current Level For Given Player (Koala ID)
 
-            if (name == Program.playerName) { return; }
-            if (intData[1] != tyPosRot.currentLevelID)
+            if (name == Program.playerName || heroHandler.CheckLoading()) { return; }
+
+            if (intData[1] != heroHandler.currentLevelID)
             {
                 return;
-                //koalaPos.MagicTheKoalaAway(intData[0]); 
             }
             for (int i = 0; i < 4; i++)
             {
-                IntPtr tyexeHandle = Program.OpenProcess(0x1F0FFF, false, tyPosRot.tyProcess.Id);
+                IntPtr hProcess = ProcessHandler.OpenProcess(0x1F0FFF, false, ProcessHandler.tyProcess.Id);
                 int bytesWritten = 0;
                 byte[] buffer = BitConverter.GetBytes(coordinates[i]);
-                Program.WriteProcessMemory((int)tyexeHandle, koalaPos.koalaAddrs[intData[0]][i], buffer, buffer.Length, ref bytesWritten);
+                ProcessHandler.WriteProcessMemory((int)hProcess, koalaHandler.koalaAddrs[intData[0]][i], buffer, buffer.Length, ref bytesWritten);
+                Console.WriteLine("addr: {0:X} value: {1:F}", koalaHandler.koalaAddrs[intData[0]][i], coordinates[i]);
             }
         }
     }

@@ -4,59 +4,48 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Runtime.InteropServices;
+using Steamworks;
 
 namespace TyMultiplayerCLI
 {
 
-/*
-    CURRENT ISSUES
-    - CODE FLOW (DON'T KNOW WHY APP WONT RESTART)
-    - KOALAS DON'T GO BACK IF ANOTHER PLAYER DISCONNECTS OR CHANGED LEVEL
-    - ENTER INCORRECT IP AND CODE KILLS ITSELF
-    - NEEDS COMMENTS
-*/
-
     internal class Program
     {
-        public static TyPosRot tyPosRot;
-        public static IntPtr tyexeHandle;
-        public static KoalaPos koalaPos;
-        public static Thread getPosThread;
-        static private string inputStr;
-
+        public static HeroHandler heroHandler;
+        public static KoalaHandler koalaHandler;
+        public static PointerCalculations ptrCalc;
+        public static ProcessHandler processHandler;
+        public static Thread tyDataThread;
         public static string playerName;
-
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
-
-        [DllImport("kernel32.dll")]
-        public static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool WriteProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
-
+        private static string _inputStr;
 
         static void Main(string[] args)
         {
             do
             {
+                Console.Clear();
+                _inputStr = "n";
                 RunProgram();
-
+                Console.ReadLine();
                 Console.WriteLine("Would you like to restart Mul-Ty-Player? [y/n]");
-                inputStr = Console.ReadLine();
+                _inputStr = Console.ReadLine();
 
-            } while (inputStr == "y");
+            } while (_inputStr == "y");
         }
 
-        static void RunProgram()
+        private static void RunProgram()
         {
-            tyPosRot = new TyPosRot();
-            koalaPos = new KoalaPos();
+
+            ptrCalc = new PointerCalculations();
+            heroHandler = new HeroHandler();
+            koalaHandler = new KoalaHandler();
+            processHandler = new ProcessHandler();
+
 
             Console.WriteLine("Welcome to Mul-Ty-player");
 
-            bool messageShown = false;
-            while (tyPosRot.FindTyexe() == null)
+            var messageShown = false;
+            while (processHandler.FindTyexe() == null)
             {
                 if (!messageShown)
                 {
@@ -65,41 +54,61 @@ namespace TyMultiplayerCLI
                 }
             }
 
-            tyPosRot.SetMemoryAddresses();
-            tyexeHandle = OpenProcess(0x1F0FFF, false, tyPosRot.tyProcess.Id);
-            koalaPos.CreateKoalas();
-            getPosThread = new Thread(new ThreadStart(GetTyPos));
-            getPosThread.Start();
+            Console.WriteLine("Ty.exe Found!");
 
-            Console.WriteLine("Ty.exe Found! Please enter your player name.");
-            playerName = Console.ReadLine();
+            string nameMessage = playerName == null
+                ? "Attempting to get player name..."
+                : "Player name already found. Setting up client...";
+
+            Console.WriteLine(nameMessage);
+
+            ProcessHandler.OpenTyProcess();
+
+            heroHandler.SetMemoryAddresses();
+
+            koalaHandler.CreateKoalas();
+
+            tyDataThread = new Thread(new ThreadStart(GetTyData));
+            tyDataThread.Start();
+
+            
+            if (SteamAPI.Init())
+            {
+                playerName = SteamFriends.GetPersonaName();
+            }
+
+            if (playerName == null)
+            {
+                Console.WriteLine("Steamworks API could not be initialized, please enter your name manually:");
+                playerName = Console.ReadLine();
+            }
+
             while (string.IsNullOrWhiteSpace(playerName) || playerName.Length < 3)
             {
                 Console.WriteLine("Please enter a valid name");
                 playerName = Console.ReadLine();
             }
-            Console.WriteLine("\nThank you! \nNow please enter the IP address of the server you wish to join");
-            while (!Client.isRunning)
-            {
-                string ip = Console.ReadLine();
-                Client.StartClient(ip);
-            }
+
+            Console.WriteLine("\nNow please enter the IP address of the server you wish to join");
+            var ip = Console.ReadLine();
+            Client.StartClient(ip);
+
         }
 
-        static void GetTyPos()
+        static void GetTyData()
         {
             for (int i = 0; i < 2; i++)
             {
                 if (Client.isRunning)
                 {
-                    tyPosRot.GetTyPos();
-                    tyPosRot.GetCurrentLevel();
-                    koalaPos.SetCoordAddrs();
-                    if(tyPosRot.FindTyexe() == null)
+                    heroHandler.GetTyPos();
+                    heroHandler.GetCurrentLevel();
+                    koalaHandler.SetCoordAddrs();
+                    if (processHandler.FindTyexe() == null)
                     {
                         Client.isRunning = false;
                         Console.WriteLine("Ty.exe was closed.");
-                        getPosThread.Abort();
+                        tyDataThread.Abort();
                     }
                 }
                 i--;
