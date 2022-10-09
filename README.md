@@ -65,6 +65,7 @@ With your port forwarding rule set up, people can now join your server using you
 - Koalas are affected by draw distance
 - Black Stump time attack thunderegg becomes bricked and unobtainable if collected with client connected
 - Black Stump 'Catch Boonie' thunderegg does not get collected if client is connected
+- Black Stump 'Catch Boonie' thunderegg teleports you to wrong place on collection if client is connected
 - Fluffy's Fjord sometimes inaccessible with client connected ? 
 
 
