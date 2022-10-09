@@ -57,7 +57,7 @@ With your port forwarding rule set up, people can now join your server using you
 - Dedicated servers
 - Name Tags
 
-### Known Issues
+#### Known Issues
 - Boonie turns pink in Black Stump
 - Splash screen displays 100% GS
 - Speaking to Ken to start cable car mission in Black Stump crashes the game
