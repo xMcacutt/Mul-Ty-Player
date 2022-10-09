@@ -42,6 +42,7 @@ To run the server you'll need to open port 8750 on UDP.
 7. Go to https://www.whatismypublicip.com/ this is your public IP address.
 
 With your port forwarding rule set up, people can now join your server using your public IP address.
+
 ## Features
 
 #### Current Version Changes
@@ -55,6 +56,18 @@ With your port forwarding rule set up, people can now join your server using you
 - Proximity chat
 - Dedicated servers
 - Name Tags
+
+### Known Issues
+- Boonie turns pink in Black Stump
+- Splash screen displays 100% GS
+- Speaking to Ken to start cable car mission in Black Stump crashes the game
+- Collision active upon re-entry into the same level or on loading into Rainbow Cliffs from startup
+- Koalas are affected by draw distance
+- Black Stump time attack thunderegg becomes bricked and unobtainable if collected with client connected
+- Black Stump 'Catch Boonie' thunderegg does not get collected if client is connected
+- Fluffy's Fjord sometimes inaccessible with client connected ? 
+
+
 ## Support
 
 Join the Ty [Speedrunning Discord](https://discord.gg/YvGMBMM36V) for help and support.
