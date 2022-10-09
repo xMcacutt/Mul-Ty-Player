@@ -14,7 +14,6 @@ namespace TyMultiplayerCLI
         public static HeroHandler heroHandler;
         public static KoalaHandler koalaHandler;
         public static PointerCalculations ptrCalc;
-        public static ProcessHandler processHandler;
         public static Thread tyDataThread;
         public static string playerName;
         private static string _inputStr;
@@ -39,13 +38,11 @@ namespace TyMultiplayerCLI
             ptrCalc = new PointerCalculations();
             heroHandler = new HeroHandler();
             koalaHandler = new KoalaHandler();
-            processHandler = new ProcessHandler();
-
 
             Console.WriteLine("Welcome to Mul-Ty-player");
 
             var messageShown = false;
-            while (processHandler.FindTyexe() == null)
+            while (ProcessHandler.FindTyexe() == null)
             {
                 if (!messageShown)
                 {
@@ -68,7 +65,7 @@ namespace TyMultiplayerCLI
 
             koalaHandler.CreateKoalas();
 
-            tyDataThread = new Thread(new ThreadStart(GetTyData));
+            tyDataThread = new Thread(new ThreadStart(ProcessHandler.GetTyData));
             tyDataThread.Start();
 
             
@@ -101,10 +98,12 @@ namespace TyMultiplayerCLI
             {
                 if (Client.isRunning)
                 {
+                    Console.WriteLine("gettingdata");
                     heroHandler.GetTyPos();
                     heroHandler.GetCurrentLevel();
-                    koalaHandler.SetCoordAddrs();
-                    if (processHandler.FindTyexe() == null)
+            //        koalaHandler.SetCoordAddrs();
+                    
+                    if (ProcessHandler.FindTyexe() == null)
                     {
                         Client.isRunning = false;
                         Console.WriteLine("Ty.exe was closed.");

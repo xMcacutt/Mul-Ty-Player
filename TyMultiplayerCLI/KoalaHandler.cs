@@ -42,7 +42,7 @@ namespace TyMultiplayerCLI
             koalaAddrs = new Dictionary<int, int[]>();
             for(int i = 0; i < 8; i++)
             {
-                koalaAddrs.Add(i, new int[4]);
+                koalaAddrs.Add(i, new int[5]);
             }
         }
 
@@ -53,9 +53,9 @@ namespace TyMultiplayerCLI
             foreach (int koala in koalaAddrs.Keys)
             {
                 ProcessHandler.WriteProcessMemory((int)hProcess, koalaAddrs[koala][4], buffer, buffer.Length, ref bytesWritten);
-                Console.WriteLine("addr: {0:X}", koalaAddrs[koala][4]);
+               // Console.WriteLine("addr: {0:X}", koalaAddrs[koala][4]);
             }
-            Console.WriteLine("removed collision");
+           // Console.WriteLine("removed collision");
         }
 
         public void SetCoordAddrs()
@@ -93,12 +93,12 @@ namespace TyMultiplayerCLI
                     koalaOffsets[koalaID],
                     0x14
                 );
-                /*koalaAddrs[koalaID][4] = ptrCalc.GetPointerAddressNegative
+                koalaAddrs[koalaID][4] = ptrCalc.GetPointerAddressNegative
                 (
                     ptrCalc.AddOffset(baseAddressOfKoalaStuff),
                     koalaOffsets[koalaID],
-                    0xC
-                );*/
+                    12
+                );
             }
         }
     }

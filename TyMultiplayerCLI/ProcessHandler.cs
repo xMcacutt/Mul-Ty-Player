@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Threading;
 
 namespace TyMultiplayerCLI
 {
@@ -27,7 +28,7 @@ namespace TyMultiplayerCLI
             hProcess = OpenProcess(0x1F0FFF, false, tyProcess.Id);
         }
 
-        public Process FindTyexe()
+        public static Process FindTyexe()
         {
             foreach (Process p in Process.GetProcesses("."))
             {
@@ -39,6 +40,24 @@ namespace TyMultiplayerCLI
             }
             tyProcess = null;
             return null;
+        }
+
+        public static void GetTyData()
+        {
+            while (!Client.isRunning)
+            {
+
+            }
+            while (Client.isRunning)
+            {
+                if (!heroHandler.CheckMenu() && !heroHandler.CheckLoading())
+                {
+                    heroHandler.GetCurrentLevel();
+                    heroHandler.GetTyPos();
+                    koalaHandler.SetCoordAddrs();
+                }
+                Thread.Sleep(10);
+            }
         }
     }
 }

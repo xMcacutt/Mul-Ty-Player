@@ -64,7 +64,10 @@ namespace TyMultiplayerCLI
             while (isRunning)
             {
                 client.Tick();
-                SendCoordinates();
+                if (!heroHandler.CheckMenu() && !heroHandler.CheckLoading())
+                {
+                    SendCoordinates();
+                }
                 Thread.Sleep(10);
             }
 
@@ -123,7 +126,6 @@ namespace TyMultiplayerCLI
                 int bytesWritten = 0;
                 byte[] buffer = BitConverter.GetBytes(coordinates[i]);
                 ProcessHandler.WriteProcessMemory((int)hProcess, koalaHandler.koalaAddrs[intData[0]][i], buffer, buffer.Length, ref bytesWritten);
-                Console.WriteLine("addr: {0:X} value: {1:F}", koalaHandler.koalaAddrs[intData[0]][i], coordinates[i]);
             }
         }
     }
