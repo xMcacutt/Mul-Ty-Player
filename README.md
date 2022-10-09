@@ -53,9 +53,13 @@ With your port forwarding rule set up, people can now join your server using you
 
 #### Future Plans
 - Collectible synchronisation
-- Proximity chat
+- Entry glow markers
 - Dedicated servers
+- Minimap
 - Name Tags
+- Proximity chat
+- Pvp
+
 
 #### Known Issues
 - Boonie turns pink in Black Stump
