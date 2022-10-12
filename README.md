@@ -1,9 +1,5 @@
 
-# Mul-Ty-Player
-
-A Multiplayer Mod for Ty the Tasmanian Tiger
-
-
+![Mul-Ty-Player](/Multyplayer%20logo.png)
 
 ## Installation
 
@@ -85,4 +81,5 @@ You can also leave feedback for future updates in my DMs on Discord Mcacutt#5671
  - [Riptide Networking](https://github.com/RiptideNetworking/Riptide)
  - [Steamworks.NET](https://github.com/rlabrecque/Steamworks.NET)
  - [Modding Team From Speedrunning Discord](https://discord.gg/YvGMBMM36V)
+ - [Kanesthename for Artwork](https://www.deviantart.com/kanesthename/art/Ty-The-Tasmanian-Tiger-Logo-Recreation-Render-271468546)
  
