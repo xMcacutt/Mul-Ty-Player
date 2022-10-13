@@ -93,16 +93,6 @@ public class HeroHandler
 
         while (CheckLoading()) { }
 
-        if(previousLevelID != currentLevelID)
-        {
-            while (koalaHandler.koalaAddrs[0][4] == null);
-            {
-                koalaHandler.SetCoordAddrs();
-            }
-            koalaHandler.RemoveCollision();
-            previousLevelID = currentLevelID;
-        }
-
         int[] objectiveCountOffsets = null;
 
         switch (currentLevelID)

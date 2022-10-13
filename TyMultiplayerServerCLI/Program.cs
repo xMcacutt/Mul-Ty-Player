@@ -8,29 +8,32 @@ namespace TyMultiplayerServerCLI
 {
     public enum MessageID : ushort
     {
-        connected,
-        playerinfo,
-        koalacoordinates,
-        consolesend
+        Connected,
+        PlayerInfo,
+        KoalaCoordinates,
+        ConsoleSend
     }
 
     internal class Program
     {
-        private static Server server;
-        private static bool isRunning;
-        public static Dictionary<ushort, Player> playerList;
-        public static KoalaHandler koalaHandler;
+        private static Server _server;
+        private static bool _isRunning;
+        public static Dictionary<ushort, Player> PlayerList;
+        public static KoalaHandler KoalaHandler;
 
         private static void Main()
         {
             Console.Title = "Mul-Ty-Player Server";
+
+            SettingsHandler.Setup();
+
             RiptideLogger.Initialize(Console.WriteLine, true);
-            isRunning = true;
+            _isRunning = true;
 
             new Thread(new ThreadStart(Loop)).Start();
 
-            playerList = new Dictionary<ushort, Player>();
-            koalaHandler = new KoalaHandler();
+            PlayerList = new Dictionary<ushort, Player>();
+            KoalaHandler = new KoalaHandler();
             
 
             Console.WriteLine("Welcome to Mul-Ty-Player.\nThis is the server application. \nPort forward on port 8750 to allow connections.\n");
@@ -40,31 +43,31 @@ namespace TyMultiplayerServerCLI
 
         private static void Loop()
         {
-            server = new Server(5000);
-            server.Start(8750, 8);
+            _server = new Server(5000);
+            _server.Start(8750, 8);
 
-            server.ClientConnected += (s, e) => ClientConnected();
-            server.ClientDisconnected += (s, e) => ClientDisconnected(s, e);
+            _server.ClientConnected += (s, e) => ClientConnected();
+            _server.ClientDisconnected += (s, e) => ClientDisconnected(s, e);
 
-            while (isRunning)
+            while (_isRunning)
             {
-                server.Tick();
-                if (playerList.Count != 0)
+                _server.Tick();
+                if (PlayerList.Count != 0)
                 {
-                    foreach (Player player in playerList.Values)
+                    foreach (Player player in PlayerList.Values)
                     {
-                        if (player.currentLevel != player.previousLevel)
+                        if (player.CurrentLevel != player.PreviousLevel)
                         {
-                            koalaHandler.ReturnKoala(player);
-                            player.previousLevel = player.currentLevel;
+                            KoalaHandler.ReturnKoala(player);
+                            player.PreviousLevel = player.CurrentLevel;
                         }
-                        SendCoordinates(player.assignedKoala.koalaID, player.currentLevel, player.assignedKoala.coordinates, player.name);
+                        SendCoordinates(player.AssignedKoala.KoalaId, player.CurrentLevel, player.AssignedKoala.Coordinates, player.Name);
                     }
                 }
                 Thread.Sleep(10);
             }
 
-            server.Stop();
+            _server.Stop();
         }
 
         private static void ClientConnected()
@@ -74,25 +77,25 @@ namespace TyMultiplayerServerCLI
 
         private static void ClientDisconnected(object sender, ClientDisconnectedEventArgs e)
         {
-            SendMessageToClients($"{playerList[e.Id].name} has disconnected from the server.", true);
-            SendMessageToClients($"{playerList[e.Id].assignedKoala.name} was returned to the koala pool", true);
-            KoalaHandler.availableKoalas.Push(playerList[e.Id].assignedKoala);
-            koalaHandler.ReturnKoala(playerList[e.Id]);
-            playerList.Remove(e.Id);
+            SendMessageToClients($"{PlayerList[e.Id].Name} has disconnected from the server.", true);
+            SendMessageToClients($"{PlayerList[e.Id].AssignedKoala.Name} was returned to the koala pool", true);
+            KoalaHandler.availableKoalas.Push(PlayerList[e.Id].AssignedKoala);
+            KoalaHandler.ReturnKoala(PlayerList[e.Id]);
+            PlayerList.Remove(e.Id);
         }
 
         public static void SendCoordinates(int koalaID, int level, float[] coordinates, string name)
         {
-            foreach(Player player in playerList.Values)
+            foreach(Player player in PlayerList.Values)
             {
-                Message message = Message.Create(MessageSendMode.unreliable, MessageID.koalacoordinates);
+                Message message = Message.Create(MessageSendMode.unreliable, MessageID.KoalaCoordinates);
                 int[] intData = { koalaID, level };
                 message.AddInts(intData);
                 message.AddFloats(coordinates);
                 message.AddString(name);
-                if(intData.Length == 2 && player.assignedKoala.coordinates != null && player.name != null)
+                if(intData.Length == 2 && player.AssignedKoala.Coordinates != null && player.Name != null)
                 { 
-                    server.SendToAll(message);
+                    _server.SendToAll(message);
                 }
             }
         }
@@ -100,9 +103,9 @@ namespace TyMultiplayerServerCLI
 
         public static void SendMessageToClients(string str, bool printToServer)
         {
-            Message message = Message.Create(MessageSendMode.reliable, MessageID.consolesend);
+            Message message = Message.Create(MessageSendMode.reliable, MessageID.ConsoleSend);
             message.AddString($"[{DateTime.Now}] (SERVER) {str}");
-            server.SendToAll(message);
+            _server.SendToAll(message);
             if (printToServer) { Console.WriteLine(str); }
         }
 

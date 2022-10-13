@@ -1,0 +1,17 @@
+﻿-------------------------------
+ Mul-Ty-Player Server Settings
+-------------------------------
+
+Password = XXXXX
+
+KoalaOrder = boonie, mim, katie, kiki, dubbo, gummy, elizabeth, snugs
+
+DoSyncTEs = false
+
+DoSyncCogs = false
+
+DoSyncBilbies = false
+
+DoSyncRangs = false
+
+-------------------------------

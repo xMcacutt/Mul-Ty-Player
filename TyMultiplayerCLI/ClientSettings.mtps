@@ -1,0 +1,19 @@
+﻿-------------------------------
+ Mul-Ty-Player Client Settings
+-------------------------------
+
+Password = XXXXX
+
+DoGetSteamName = true
+
+DefaultName = 
+
+DefaultIPAddress = 
+
+DoKoalaCollision = false
+
+DoPositionLogging = false
+
+PositionLoggingOutputDir = ./
+ 
+-------------------------------

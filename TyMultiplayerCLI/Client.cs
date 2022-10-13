@@ -66,6 +66,11 @@ namespace TyMultiplayerCLI
                 client.Tick();
                 if (!heroHandler.CheckMenu() && !heroHandler.CheckLoading())
                 {
+                    koalaHandler.SetCoordAddrs();
+                    if (koalaHandler.koalaAddrs[0][4] != null && !SettingsHandler._DoKoalaCollision) ;
+                    {
+                        koalaHandler.RemoveCollision();
+                    }
                     SendCoordinates();
                 }
                 Thread.Sleep(10);

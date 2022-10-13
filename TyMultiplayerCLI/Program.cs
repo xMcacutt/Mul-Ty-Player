@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading;
 using System.Runtime.InteropServices;
 using Steamworks;
+using System.Text.RegularExpressions;
+using System.Net;
+using System.IO;
 
 namespace TyMultiplayerCLI
 {
@@ -17,9 +20,11 @@ namespace TyMultiplayerCLI
         public static Thread tyDataThread;
         public static string playerName;
         private static string _inputStr;
+        public static string posLogPath;
 
         static void Main(string[] args)
         {
+            //RESTARTS THE APP WHEN IT REACHES END (DISCONNECT)
             do
             {
                 Console.Clear();
@@ -34,13 +39,14 @@ namespace TyMultiplayerCLI
 
         private static void RunProgram()
         {
-
+            SettingsHandler.Setup();
             ptrCalc = new PointerCalculations();
             heroHandler = new HeroHandler();
             koalaHandler = new KoalaHandler();
 
             Console.WriteLine("Welcome to Mul-Ty-player");
 
+            //TRIES TO FIND TY AND GIVES WARNING MESSAGE TO OPEN TY ON FAILURE
             var messageShown = false;
             while (ProcessHandler.FindTyexe() == null)
             {
@@ -50,68 +56,69 @@ namespace TyMultiplayerCLI
                     messageShown = true;
                 }
             }
-
             Console.WriteLine("Ty.exe Found!");
-
-            string nameMessage = playerName == null
-                ? "Attempting to get player name..."
-                : "Player name already found. Setting up client...";
-
-            Console.WriteLine(nameMessage);
-
+            
+            //OPEN HANDLE TO PROCESS
             ProcessHandler.OpenTyProcess();
 
             heroHandler.SetMemoryAddresses();
-
             koalaHandler.CreateKoalas();
 
+            //STARTS THE THREAD THAT CONTINUOUSLY READS DATA FROM THE GAME
             tyDataThread = new Thread(new ThreadStart(ProcessHandler.GetTyData));
             tyDataThread.Start();
 
-            
-            if (SteamAPI.Init())
-            {
-                playerName = SteamFriends.GetPersonaName();
-            }
 
+            //MAKES FILE FOR POSITION LOGGING
+            /*if (SettingsHandler._DoPositionLogging)
+            {
+                posLogPath = SettingsHandler._PositionLoggingOutputDir + DateTime.Now;
+                File.Create(posLogPath);
+                Console.WriteLine("File created for position logging");
+            }*/
+
+            //ATTEMPTS TO GET STEAM NAME OR DEFAULT NAME FROM SETTINGS FILE
+            if (SettingsHandler._DoGetSteamName)
+            {
+                Console.WriteLine("Attempting to get player name from steam...");
+                if (SteamAPI.Init())
+                {
+                    playerName = SteamFriends.GetPersonaName();
+                }
+            }
+            else if(!string.IsNullOrWhiteSpace(SettingsHandler._DefaultName))
+            {
+                Console.WriteLine("Player name already found. Setting up client...");
+                playerName = SettingsHandler._DefaultName;
+            }
             if (playerName == null)
             {
-                Console.WriteLine("Steamworks API could not be initialized, please enter your name manually:");
+                Console.WriteLine("Steamworks was unable to get your name and no name is defined in the settings file. \nPlease enter your name manually:");
                 playerName = Console.ReadLine();
             }
-
             while (string.IsNullOrWhiteSpace(playerName) || playerName.Length < 3)
             {
                 Console.WriteLine("Please enter a valid name");
                 playerName = Console.ReadLine();
             }
 
-            Console.WriteLine("\nNow please enter the IP address of the server you wish to join");
-            var ip = Console.ReadLine();
-            Client.StartClient(ip);
-
-        }
-
-        static void GetTyData()
-        {
-            for (int i = 0; i < 2; i++)
+            //
+            string ipStr = "";
+            if (string.IsNullOrWhiteSpace(SettingsHandler._DefaultAddress))
             {
-                if (Client.isRunning)
-                {
-                    Console.WriteLine("gettingdata");
-                    heroHandler.GetTyPos();
-                    heroHandler.GetCurrentLevel();
-            //        koalaHandler.SetCoordAddrs();
-                    
-                    if (ProcessHandler.FindTyexe() == null)
-                    {
-                        Client.isRunning = false;
-                        Console.WriteLine("Ty.exe was closed.");
-                        tyDataThread.Abort();
-                    }
-                }
-                i--;
+                Console.WriteLine("\nNo default address specified in settings file");
             }
+            else
+            {
+                ipStr = SettingsHandler._DefaultAddress;
+            }
+            while (!IPAddress.TryParse(ipStr, out IPAddress ip))
+            {
+                Console.WriteLine("Please enter a VALID IP address to connect to...");
+                ipStr = Console.ReadLine();
+            }
+            Client.StartClient(ipStr);
+
         }
     }
 }

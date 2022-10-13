@@ -8,16 +8,15 @@ namespace TyMultiplayerServerCLI
 {
     internal class Koala
     { 
-        public Player assignedPlayer;
-        public float[] coordinates;
-        public int koalaID;
-        public string name;
+        public float[] Coordinates;
+        public int KoalaId;
+        public string Name;
 
         public Koala(int koalaID, string name)
         {
-            this.koalaID = koalaID;
-            this.name = name;
-            coordinates = new float[4];
+            KoalaId = koalaID;
+            Name = name;
+            Coordinates = new float[4];
         }
     }
 }
