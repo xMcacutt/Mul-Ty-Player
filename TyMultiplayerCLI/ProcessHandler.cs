@@ -8,8 +8,8 @@ namespace MulTyPlayerClient
     internal static class ProcessHandler
     {
         public static IntPtr HProcess;
-        static HeroHandler HeroHandler => Program.heroHandler;
-        static KoalaHandler KoalaHandler => Program.koalaHandler;
+        static HeroHandler HeroHandler => Program.HeroHandler;
+        static KoalaHandler KoalaHandler => Program.KoalaHandler;
 
         public static Process TyProcess;
 

@@ -14,11 +14,10 @@ namespace MulTyPlayerClient
 
     internal static class Program
     {
-        public static HeroHandler heroHandler;
-        public static KoalaHandler koalaHandler;
-        public static PointerCalculations ptrCalc;
-        public static Thread tyDataThread;
-        public static string playerName;
+        public static HeroHandler HeroHandler;
+        public static KoalaHandler KoalaHandler;
+        public static Thread TyDataThread;
+        public static string PlayerName;
         private static string _inputStr;
         public static string PosLogPath;
 
@@ -40,9 +39,8 @@ namespace MulTyPlayerClient
         private static void RunProgram()
         {
             SettingsHandler.Setup();
-            ptrCalc = new PointerCalculations();
-            heroHandler = new HeroHandler();
-            koalaHandler = new KoalaHandler();
+            HeroHandler = new HeroHandler();
+            KoalaHandler = new KoalaHandler();
 
             Console.WriteLine("Welcome to Mul-Ty-player");
 
@@ -61,12 +59,12 @@ namespace MulTyPlayerClient
             //OPEN HANDLE TO PROCESS
             ProcessHandler.OpenTyProcess();
 
-            heroHandler.SetMemoryAddresses();
-            koalaHandler.CreateKoalas();
+            HeroHandler.SetMemoryAddresses();
+            KoalaHandler.CreateKoalas();
 
             //STARTS THE THREAD THAT CONTINUOUSLY READS DATA FROM THE GAME
-            tyDataThread = new Thread(new ThreadStart(ProcessHandler.GetTyData));
-            tyDataThread.Start();
+            TyDataThread = new Thread(new ThreadStart(ProcessHandler.GetTyData));
+            TyDataThread.Start();
 
 
             //MAKES FILE FOR POSITION LOGGING
@@ -83,23 +81,23 @@ namespace MulTyPlayerClient
                 Console.WriteLine("Attempting to get player name from steam...");
                 if (SteamAPI.Init())
                 {
-                    playerName = SteamFriends.GetPersonaName();
+                    PlayerName = SteamFriends.GetPersonaName();
                 }
             }
             else if(!string.IsNullOrWhiteSpace(SettingsHandler.DefaultName))
             {
                 Console.WriteLine("Player name already found. Setting up client...");
-                playerName = SettingsHandler.DefaultName;
+                PlayerName = SettingsHandler.DefaultName;
             }
-            if (playerName == null)
+            if (PlayerName == null)
             {
                 Console.WriteLine("Steamworks was unable to get your name and no name is defined in the settings file. \nPlease enter your name manually:");
-                playerName = Console.ReadLine();
+                PlayerName = Console.ReadLine();
             }
-            while (string.IsNullOrWhiteSpace(playerName) || playerName.Length < 3)
+            while (string.IsNullOrWhiteSpace(PlayerName) || PlayerName.Length < 3)
             {
                 Console.WriteLine("Please enter a valid name");
-                playerName = Console.ReadLine();
+                PlayerName = Console.ReadLine();
             }
 
             //

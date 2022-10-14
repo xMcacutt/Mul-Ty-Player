@@ -19,8 +19,8 @@ namespace MulTyPlayerClient
 
     internal static class Client
     {
-        static HeroHandler HeroHandler => Program.heroHandler;
-        static KoalaHandler KoalaHandler => Program.koalaHandler;
+        static HeroHandler HeroHandler => Program.HeroHandler;
+        static KoalaHandler KoalaHandler => Program.KoalaHandler;
 
         public static bool IsRunning;
         public static bool DidRun;
@@ -85,13 +85,13 @@ namespace MulTyPlayerClient
             DidRun = true;
             Console.WriteLine("\nConnected to server successfully!\nPress enter to disconnect at any time.");
             Message message = Message.Create(MessageSendMode.reliable, MessageID.Connected);
-            message.AddString(Program.playerName);
+            message.AddString(Program.PlayerName);
             _client.Send(message);
         }
 
         private static void Disconnected()
         {
-            Program.tyDataThread.Abort();
+            Program.TyDataThread.Abort();
             _loop.Abort();
         }
 
@@ -111,29 +111,6 @@ namespace MulTyPlayerClient
         }
 
 
-        [MessageHandler((ushort)MessageID.KoalaCoordinates)]
-        private static void HandleGettingCoordinates(Message message)
-        {
-            int[] intData = message.GetInts();
-            float[] coordinates = message.GetFloats();
-            string name = message.GetString();
 
-            //intData[0] = Koala ID
-            //intData[1] = Current Level For Given Player (Koala ID)
-
-            if (name == Program.playerName || HeroHandler.CheckLoading()) { return; }
-
-            if (intData[1] != HeroHandler.CurrentLevelId)
-            {
-                return;
-            }
-            for (int i = 0; i < 4; i++)
-            {
-                IntPtr hProcess = ProcessHandler.OpenProcess(0x1F0FFF, false, ProcessHandler.TyProcess.Id);
-                int bytesWritten = 0;
-                byte[] buffer = BitConverter.GetBytes(coordinates[i]);
-                ProcessHandler.WriteProcessMemory((int)hProcess, KoalaHandler.koalaAddrs[intData[0]][i], buffer, buffer.Length, ref bytesWritten);
-            }
-        }
     }
 }

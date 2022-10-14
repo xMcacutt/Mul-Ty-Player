@@ -4,8 +4,7 @@ using System.Diagnostics;
 namespace MulTyPlayerClient
 {
     public class HeroHandler
-    {
-
+    { 
         readonly int[] TY_POS_ROT_OFFSETS = { 0x270B78, 0x270B7C, 0x270B80, 0x271C20 };
         int[] TY_POS_ROT_ADS;
         readonly int[] BP_POS_ROT_OFFSETS = { 0x254268, 0x25426C, 0x254270, 0x2545F4, };
@@ -23,7 +22,6 @@ namespace MulTyPlayerClient
         public int CurrentLevelId { get; set; }
         public int PreviousLevelID { get; set; }
         IntPtr HProcess => ProcessHandler.HProcess;
-        PointerCalculations PtrCalc => Program.ptrCalc;
 
         public HeroHandler()
         {
@@ -36,21 +34,21 @@ namespace MulTyPlayerClient
             //SET MEMORY ADDRESSES USING BASE ADDRESS OF TY APP AND ADDING OFFSETS
             TY_POS_ROT_ADS = new[]
             {
-                PtrCalc.AddOffset(TY_POS_ROT_OFFSETS[0]),
-                PtrCalc.AddOffset(TY_POS_ROT_OFFSETS[1]),
-                PtrCalc.AddOffset(TY_POS_ROT_OFFSETS[2]),
-                PtrCalc.AddOffset(TY_POS_ROT_OFFSETS[3])
+                PointerCalculations.AddOffset(TY_POS_ROT_OFFSETS[0]),
+                PointerCalculations.AddOffset(TY_POS_ROT_OFFSETS[1]),
+                PointerCalculations.AddOffset(TY_POS_ROT_OFFSETS[2]),
+                PointerCalculations.AddOffset(TY_POS_ROT_OFFSETS[3])
             };
             BP_POS_ROT_ADS = new[]
             {
-                PtrCalc.AddOffset(BP_POS_ROT_OFFSETS[0]),
-                PtrCalc.AddOffset(BP_POS_ROT_OFFSETS[1]),
-                PtrCalc.AddOffset(BP_POS_ROT_OFFSETS[2]),
-                PtrCalc.AddOffset(BP_POS_ROT_OFFSETS[3])
+                PointerCalculations.AddOffset(BP_POS_ROT_OFFSETS[0]),
+                PointerCalculations.AddOffset(BP_POS_ROT_OFFSETS[1]),
+                PointerCalculations.AddOffset(BP_POS_ROT_OFFSETS[2]),
+                PointerCalculations.AddOffset(BP_POS_ROT_OFFSETS[3])
             };
-            LEVEL_ID_AD = PtrCalc.AddOffset(LEVEL_ID_OFFSET);
-            LOADING_AD = PtrCalc.AddOffset(LOADING_OFFSET);
-            MAIN_MENU_AD = PtrCalc.AddOffset(MAIN_MENU_OFFSET);
+            LEVEL_ID_AD = PointerCalculations.AddOffset(LEVEL_ID_OFFSET);
+            LOADING_AD = PointerCalculations.AddOffset(LOADING_OFFSET);
+            MAIN_MENU_AD = PointerCalculations.AddOffset(MAIN_MENU_OFFSET);
         }
 
         public void GetTyPos()
@@ -105,7 +103,7 @@ namespace MulTyPlayerClient
             if (objectiveCountOffsets == null) { return; }
 
             byte[] objectiveCountBytes = new byte[2];
-            int objectiveCounterAddr = PtrCalc.GetPointerAddress(PtrCalc.AddOffset(OBJECTIVE_COUNT_BASE_OFFSET), objectiveCountOffsets, 2);
+            int objectiveCounterAddr = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(OBJECTIVE_COUNT_BASE_OFFSET), objectiveCountOffsets, 2);
             ProcessHandler.ReadProcessMemory((int)HProcess, objectiveCounterAddr, objectiveCountBytes, 2, ref bytesRead);
             if (BitConverter.ToInt16(objectiveCountBytes, 0) != 8 && !CheckLoading())
             {

@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="CollectiblesHandler.cs" />
     <Compile Include="KoalaHandler.cs" />
     <Compile Include="PointerCalculations.cs" />
     <Compile Include="ProcessHandler.cs" />
