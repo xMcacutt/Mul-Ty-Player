@@ -5,35 +5,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TyMultiplayerCLI
+namespace MulTyPlayerClient
 {
     internal class KoalaHandler
     {
         PointerCalculations ptrCalc => Program.ptrCalc;
-        IntPtr hProcess => ProcessHandler.hProcess;
+        IntPtr hProcess => ProcessHandler.HProcess;
 
         public Dictionary<int, int[]> koalaAddrs;
 
         const int baseAddressOfKoalaStuff = 0x00323BA4;
-        int[] boonieOffsets = { 0x10, 0xC, 0x8, 0x30, 0x30, 0x30, 0x2A4 };
-        int[] mimOffsets = { 0x10, 0xC, 0x8, 0x30, 0x30, 0x2A0, 0x2A4 };
-        int[] kikiOffsets = { 0x10, 0xC, 0x8, 0x34, 0x30, 0x30, 0x2A4 };
-        int[] katieOffsets = { 0x10, 0xC, 0x8, 0x34, 0x30, 0x2F4, 0x1FC };
-        int[] snugsOffsets = { 0x10, 0xC, 0x8, 0x30, 0x34, 0x34, 0x2A4 };
-        int[] dubboOffsets = { 0x10, 0xC, 0x8, 0x34, 0x34, 0x2A0, 0x2A4 };
-        int[] gummyOffsets = { 0x10, 0xC, 0x8, 0x34, 0x34, 0x34, 0x2A4 };
-        int[] elizabethOffsets = { 0x10, 0xC, 0x8, 0x34, 0x270, 0x0, 0x1FC };
+        readonly int[] boonieOffsets = { 0x10, 0xC, 0x8, 0x30, 0x30, 0x30, 0x2A4 };
+        readonly int[] mimOffsets = { 0x10, 0xC, 0x8, 0x30, 0x30, 0x2A0, 0x2A4 };
+        readonly int[] kikiOffsets = { 0x10, 0xC, 0x8, 0x34, 0x30, 0x30, 0x2A4 };
+        readonly int[] katieOffsets = { 0x10, 0xC, 0x8, 0x34, 0x30, 0x2F4, 0x1FC };
+        readonly int[] snugsOffsets = { 0x10, 0xC, 0x8, 0x30, 0x34, 0x34, 0x2A4 };
+        readonly int[] dubboOffsets = { 0x10, 0xC, 0x8, 0x34, 0x34, 0x2A0, 0x2A4 };
+        readonly int[] gummyOffsets = { 0x10, 0xC, 0x8, 0x34, 0x34, 0x34, 0x2A4 };
+        readonly int[] elizabethOffsets = { 0x10, 0xC, 0x8, 0x34, 0x270, 0x0, 0x1FC };
 
-        int[][] koalaOffsets;
+        readonly int[][] koalaOffsets;
 
         public KoalaHandler()
         {
-            koalaOffsets = new [] 
+            koalaOffsets = new []
             { 
-                boonieOffsets, mimOffsets, 
-                kikiOffsets, katieOffsets, 
-                snugsOffsets, dubboOffsets, 
-                gummyOffsets, elizabethOffsets 
+                boonieOffsets, mimOffsets,
+                kikiOffsets, katieOffsets,
+                snugsOffsets, dubboOffsets,
+                gummyOffsets, elizabethOffsets
             };
         }
 

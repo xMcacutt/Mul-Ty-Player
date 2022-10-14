@@ -9,10 +9,10 @@ using System.Text.RegularExpressions;
 using System.Net;
 using System.IO;
 
-namespace TyMultiplayerCLI
+namespace MulTyPlayerClient
 {
 
-    internal class Program
+    internal static class Program
     {
         public static HeroHandler heroHandler;
         public static KoalaHandler koalaHandler;
@@ -20,7 +20,7 @@ namespace TyMultiplayerCLI
         public static Thread tyDataThread;
         public static string playerName;
         private static string _inputStr;
-        public static string posLogPath;
+        public static string PosLogPath;
 
         static void Main(string[] args)
         {
@@ -70,15 +70,15 @@ namespace TyMultiplayerCLI
 
 
             //MAKES FILE FOR POSITION LOGGING
-            /*if (SettingsHandler._DoPositionLogging)
+            if (SettingsHandler.DoPositionLogging)
             {
-                posLogPath = SettingsHandler._PositionLoggingOutputDir + DateTime.Now;
-                File.Create(posLogPath);
-                Console.WriteLine("File created for position logging");
-            }*/
+                PosLogPath = SettingsHandler.PositionLoggingOutputDir + DateTime.Now;
+              //  File.Create(posLogPath);
+             //   Console.WriteLine("File created for position logging");
+            }
 
             //ATTEMPTS TO GET STEAM NAME OR DEFAULT NAME FROM SETTINGS FILE
-            if (SettingsHandler._DoGetSteamName)
+            if (SettingsHandler.DoGetSteamName)
             {
                 Console.WriteLine("Attempting to get player name from steam...");
                 if (SteamAPI.Init())
@@ -86,10 +86,10 @@ namespace TyMultiplayerCLI
                     playerName = SteamFriends.GetPersonaName();
                 }
             }
-            else if(!string.IsNullOrWhiteSpace(SettingsHandler._DefaultName))
+            else if(!string.IsNullOrWhiteSpace(SettingsHandler.DefaultName))
             {
                 Console.WriteLine("Player name already found. Setting up client...");
-                playerName = SettingsHandler._DefaultName;
+                playerName = SettingsHandler.DefaultName;
             }
             if (playerName == null)
             {
@@ -104,13 +104,13 @@ namespace TyMultiplayerCLI
 
             //
             string ipStr = "";
-            if (string.IsNullOrWhiteSpace(SettingsHandler._DefaultAddress))
+            if (string.IsNullOrWhiteSpace(SettingsHandler.DefaultAddress))
             {
                 Console.WriteLine("\nNo default address specified in settings file");
             }
             else
             {
-                ipStr = SettingsHandler._DefaultAddress;
+                ipStr = SettingsHandler.DefaultAddress;
             }
             while (!IPAddress.TryParse(ipStr, out IPAddress ip))
             {

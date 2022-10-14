@@ -25,10 +25,10 @@ namespace TyMultiplayerServerCLI
         /*MESSAGE HANDLING*/
 
         [MessageHandler((ushort)MessageID.Connected)]
-        private static void HandleConnectedInitialization(ushort fromClientdId, Message message)
+        private static void HandleConnectedInitialization(ushort fromClientId, Message message)
         {
             string name = message.GetString();
-            ushort id = fromClientdId;
+            ushort id = fromClientId;
             Program.SendMessageToClients($"{name} joined the server.", true);
             Player player = new Player(id, name);
             Program.PlayerList.Add(id, player);
@@ -37,13 +37,13 @@ namespace TyMultiplayerServerCLI
         }
 
         [MessageHandler((ushort)MessageID.PlayerInfo)]
-        private static void HandleGettingCoordinates(ushort fromClientdId, Message message)
+        private static void HandleGettingCoordinates(ushort fromClientId, Message message)
         {
-            if (Program.PlayerList.ContainsKey(fromClientdId))
+            if (Program.PlayerList.ContainsKey(fromClientId))
             {
                 if (message.GetBool()) { return; }
-                Program.PlayerList[fromClientdId].CurrentLevel = message.GetInt();
-                Program.PlayerList[fromClientdId].AssignedKoala.Coordinates = message.GetFloats();
+                Program.PlayerList[fromClientId].CurrentLevel = message.GetInt();
+                Program.PlayerList[fromClientId].AssignedKoala.Coordinates = message.GetFloats();
             }
         }
     }

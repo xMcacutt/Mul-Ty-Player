@@ -37,7 +37,7 @@ namespace TyMultiplayerServerCLI
         public void AssignKoala(Player player)
         {
             player.AssignedKoala = availableKoalas.Pop();
-            player.AssignedKoala.AssignedPlayer = player;
+  //          player.AssignedKoala.AssignedPlayer = player;
         }
 
         public void ReturnKoala(Player player)
