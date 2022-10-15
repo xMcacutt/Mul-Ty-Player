@@ -16,6 +16,7 @@ namespace MulTyPlayerClient
     {
         public static HeroHandler HeroHandler;
         public static KoalaHandler KoalaHandler;
+        public static CollectiblesHandler CollectiblesHandler;
         public static Thread TyDataThread;
         public static string PlayerName;
         private static string _inputStr;
@@ -41,6 +42,7 @@ namespace MulTyPlayerClient
             SettingsHandler.Setup();
             HeroHandler = new HeroHandler();
             KoalaHandler = new KoalaHandler();
+            CollectiblesHandler = new CollectiblesHandler();
 
             Console.WriteLine("Welcome to Mul-Ty-player");
 

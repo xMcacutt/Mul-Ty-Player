@@ -21,6 +21,7 @@ namespace MulTyPlayerClient
     {
         static HeroHandler HeroHandler => Program.HeroHandler;
         static KoalaHandler KoalaHandler => Program.KoalaHandler;
+        static CollectiblesHandler CollectiblesHandler => Program.CollectiblesHandler;
         public static bool IsRunning;
         public static bool DidRun;
         public static RiptideNetworking.Client _client;
@@ -67,6 +68,7 @@ namespace MulTyPlayerClient
                 _client.Tick();
                 if (!HeroHandler.CheckMenu() && !HeroHandler.CheckLoading())
                 {
+                    CollectiblesHandler.CheckCounts();
                     KoalaHandler.SetCoordAddrs();
                     if (!SettingsHandler.DoKoalaCollision)
                     {

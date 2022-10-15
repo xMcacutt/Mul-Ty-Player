@@ -23,6 +23,7 @@ namespace MulTyPlayerClient
 
         public static Dictionary<int, byte[]> LevelData;
         public static byte[] AttributeData;
+        public byte[] PreviousAttributeData;
 
         static IntPtr HProcess => ProcessHandler.HProcess;
 
@@ -41,9 +42,10 @@ namespace MulTyPlayerClient
             LevelData.Add(14, ReadLevelData(10));
 
             AttributeData = ReadAttributeData();
+            AttributeData = new byte[26];
         }
 
-        //COUNTERS
+        //POSSIBLY UNNECESSARY
         public void ReadCounts()
         {
             int bytesRead = 0;
@@ -57,13 +59,25 @@ namespace MulTyPlayerClient
 
         public void CheckCounts()
         {
+            byte[] levelData = ReadLevelData(HeroHandler.CurrentLevelId - 4);
+            byte[] attributeData = ReadAttributeData();
             if(PreviousCollectibleCounts != CollectibleCounts)
             {
                 PreviousCollectibleCounts = CollectibleCounts;
-                UpdateServerData(HeroHandler.CurrentLevelId, ReadLevelData(HeroHandler.CurrentLevelId - 4), "Collectible");
+                UpdateServerData(HeroHandler.CurrentLevelId, levelData, "Collectible");
+            }
+            if(PreviousAttributeData != AttributeData)
+            {
+                PreviousAttributeData = AttributeData;
+                UpdateServerData(0, attributeData, "Attribute");
             }
         }
         //
+        public static void WriteData(int address, byte[] bytes)
+        {
+            int bytesWritten = 0;
+            ProcessHandler.WriteProcessMemory((int)HProcess, address, bytes, bytes.Length, ref bytesWritten);
+        }
 
 
         public byte[] ReadAttributeData()
@@ -72,12 +86,6 @@ namespace MulTyPlayerClient
             byte[] buffer = new byte[23];
             ProcessHandler.ReadProcessMemory((int)HProcess, ATTRIBUTE_DATA_START_ADDRESS, buffer, 26, ref bytesRead);
             return buffer;
-        }
-
-        public static void WriteData(int address, byte[] bytes)
-        {
-            int bytesWritten = 0;
-            ProcessHandler.WriteProcessMemory((int)HProcess, address, bytes, bytes.Length, ref bytesWritten);
         }
 
         public byte[] ReadLevelData(int levelDataIndex)
