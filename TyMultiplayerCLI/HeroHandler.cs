@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RiptideNetworking;
+using System;
 using System.Diagnostics;
 
 namespace MulTyPlayerClient
@@ -22,6 +23,7 @@ namespace MulTyPlayerClient
         public int CurrentLevelId { get; set; }
         public int PreviousLevelID { get; set; }
         IntPtr HProcess => ProcessHandler.HProcess;
+        static HeroHandler rHeroHandler => Program.HeroHandler;
 
         public HeroHandler()
         {
@@ -113,7 +115,14 @@ namespace MulTyPlayerClient
             }
         }
 
-
+        public static void SendCoordinates()
+        {
+            Message message = Message.Create(MessageSendMode.unreliable, MessageID.PlayerInfo);
+            message.AddBool(rHeroHandler.CheckLoading());
+            message.AddInt(rHeroHandler.CurrentLevelId);
+            message.AddFloats(rHeroHandler.CurrentPosRot);
+            Client._client.Send(message);
+        }
 
     }
 }

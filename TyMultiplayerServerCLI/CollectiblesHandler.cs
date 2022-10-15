@@ -9,13 +9,12 @@ namespace TyMultiplayerServerCLI
 {
     internal class CollectiblesHandler
     {
-        public static Dictionary<int, byte[]> GlobalLevelData;
+        public static Dictionary<int, byte[]> GlobalLevelData = new Dictionary<int, byte[]>();
+        public Dictionary<int, int> CollectibleLevelMultipliers;
         public static byte[] GlobalAttributeData;
 
         public CollectiblesHandler()
         {
-            GlobalLevelData = new Dictionary<int, byte[]>();
-
             GlobalAttributeData = new byte[26];
             
             GlobalLevelData.Add(4, new byte[23]);
@@ -29,6 +28,7 @@ namespace TyMultiplayerServerCLI
             GlobalLevelData.Add(12, new byte[23]);
             GlobalLevelData.Add(13, new byte[23]);
             GlobalLevelData.Add(14, new byte[23]);
+
         }
 
         public static void CompDataArrays(byte[] localPlayerArray, ref byte[] globalDataArray)
@@ -48,7 +48,7 @@ namespace TyMultiplayerServerCLI
         private static void HandleServerDataUpdate(ushort fromClientId, Message message)
         {
             byte[] playerDataArray = message.GetBytes();
-            int currentLevel = message.GetInt();
+            int levelId = message.GetInt();
             string dataType = message.GetString();
             if (dataType == "Attribute")
             {
@@ -57,16 +57,17 @@ namespace TyMultiplayerServerCLI
             }
             if (dataType == "Collectible")
             {
-                byte[] tempArray = GlobalLevelData[currentLevel];
+                byte[] tempArray = GlobalLevelData[levelId];
                 CompDataArrays(playerDataArray, ref tempArray);
-                GlobalLevelData[currentLevel] = tempArray;
-                SendUpdatedLevelData(currentLevel, fromClientId);
+                GlobalLevelData[levelId] = tempArray;
+                SendUpdatedLevelData(levelId, fromClientId);
             }
         } 
 
         public static void SendUpdatedLevelData(int levelId, ushort originalSender)
         {
             Message message = Message.Create(MessageSendMode.reliable, MessageID.ClientLevelDataUpdate);
+            message.AddInt(levelId);
             message.AddBytes(GlobalLevelData[levelId]);
             Program.Server.SendToAll(message, originalSender);
         }

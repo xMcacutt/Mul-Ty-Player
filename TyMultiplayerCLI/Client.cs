@@ -21,10 +21,9 @@ namespace MulTyPlayerClient
     {
         static HeroHandler HeroHandler => Program.HeroHandler;
         static KoalaHandler KoalaHandler => Program.KoalaHandler;
-
         public static bool IsRunning;
         public static bool DidRun;
-        private static RiptideNetworking.Client _client;
+        public static RiptideNetworking.Client _client;
         private static string _ip;
         static Thread _loop;
 
@@ -73,7 +72,7 @@ namespace MulTyPlayerClient
                     {
                         KoalaHandler.RemoveCollision();
                     }
-                    SendCoordinates();
+                    HeroHandler.SendCoordinates();
                 }
                 Thread.Sleep(10);
             }
@@ -93,15 +92,6 @@ namespace MulTyPlayerClient
         {
             Program.TyDataThread.Abort();
             _loop.Abort();
-        }
-
-        static void SendCoordinates()
-        {
-            Message message = Message.Create(MessageSendMode.unreliable, MessageID.PlayerInfo);
-            message.AddBool(HeroHandler.CheckLoading());
-            message.AddInt(HeroHandler.CurrentLevelId);
-            message.AddFloats(HeroHandler.CurrentPosRot);
-            _client.Send(message);
         }
 
         [MessageHandler((ushort)MessageID.ConsoleSend)]
