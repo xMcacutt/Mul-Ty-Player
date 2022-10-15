@@ -126,6 +126,7 @@ namespace MulTyPlayerClient
                 int bytesWritten = 0;
                 byte[] buffer = BitConverter.GetBytes(coordinates[i]);
                 ProcessHandler.WriteProcessMemory((int)hProcess, rKoalaHandler.KoalaAddrs[intData[0]][i], buffer, buffer.Length, ref bytesWritten);
+               // Console.WriteLine("Writing {0:F} to {1:X}", coordinates[i], rKoalaHandler.KoalaAddrs[intData[0]][i]);
             }
         }
     }

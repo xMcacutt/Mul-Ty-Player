@@ -42,7 +42,7 @@ namespace MulTyPlayerClient
             SettingsHandler.Setup();
             HeroHandler = new HeroHandler();
             KoalaHandler = new KoalaHandler();
-            CollectiblesHandler = new CollectiblesHandler();
+            
 
             Console.WriteLine("Welcome to Mul-Ty-player");
 
@@ -63,11 +63,13 @@ namespace MulTyPlayerClient
 
             HeroHandler.SetMemoryAddresses();
             KoalaHandler.CreateKoalas();
+            
 
             //STARTS THE THREAD THAT CONTINUOUSLY READS DATA FROM THE GAME
             TyDataThread = new Thread(new ThreadStart(ProcessHandler.GetTyData));
             TyDataThread.Start();
 
+            CollectiblesHandler = new CollectiblesHandler();
 
             //MAKES FILE FOR POSITION LOGGING
             if (SettingsHandler.DoPositionLogging)

@@ -30,6 +30,7 @@ namespace MulTyPlayerClient
         public CollectiblesHandler()
         {
             _counterAddresses = new int[] { TE_COUNTER_ADDRESS, COG_COUNTER_ADDRESS, BILBY_COUNTER_ADDRESS };
+            LevelData = new Dictionary<int, byte[]>();
 
             LevelData.Add(4, ReadLevelData(0));
             LevelData.Add(5, ReadLevelData(1));

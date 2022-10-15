@@ -44,10 +44,10 @@ namespace MulTyPlayerClient
 
         public static void GetTyData()
         {
-            /*while (!Client.isRunning)
+            while (!Client.IsRunning)
             {
                 
-            }*/
+            }
             while (Client.IsRunning)
             {
                 if (!HeroHandler.CheckMenu() && !HeroHandler.CheckLoading())

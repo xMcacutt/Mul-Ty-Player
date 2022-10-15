@@ -98,7 +98,7 @@ namespace TyMultiplayerServerCLI
                 message.AddString(name);
                 if(intData.Length == 2 && player.AssignedKoala.Coordinates != null && player.Name != null)
                 { 
-                    Server.SendToAll(message, player.Id);
+                    Server.SendToAll(message);
                 }
             }
         }
