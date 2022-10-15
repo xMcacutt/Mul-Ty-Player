@@ -29,7 +29,10 @@ namespace MulTyPlayerClient
 
         public CollectiblesHandler()
         {
-            _counterAddresses = new int[] { TE_COUNTER_ADDRESS, COG_COUNTER_ADDRESS, BILBY_COUNTER_ADDRESS };
+            _counterAddresses = new int[3];
+            _counterAddresses[0] = TE_COUNTER_ADDRESS;
+            _counterAddresses[1] = COG_COUNTER_ADDRESS; 
+            _counterAddresses[2] = BILBY_COUNTER_ADDRESS;
             LevelData = new Dictionary<int, byte[]>();
 
             LevelData.Add(4, ReadLevelData(0));
@@ -44,6 +47,8 @@ namespace MulTyPlayerClient
 
             AttributeData = new byte[26];
             PreviousAttributeData = new byte[26];
+            CollectibleCounts = new int[3];
+            PreviousCollectibleCounts = new int[3];
             AttributeData = ReadAttributeData();
         }
 
@@ -55,18 +60,21 @@ namespace MulTyPlayerClient
             {
                 byte[] buffer = new byte[1];
                 ProcessHandler.ReadProcessMemory((int)HProcess, _counterAddresses[i], buffer, 1, ref bytesRead);
-                CollectibleCounts[i] = BitConverter.ToInt16(buffer, 0);
+                CollectibleCounts[i] = buffer[0];
             }
         }
 
         public void CheckCounts()
         {
-            byte[] levelData = ReadLevelData(HeroHandler.CurrentLevelId - 4);
+            ReadCounts();
+            LevelData[HeroHandler.CurrentLevelId] = ReadLevelData(HeroHandler.CurrentLevelId - 4);
             AttributeData = ReadAttributeData();
-            if(PreviousCollectibleCounts != CollectibleCounts)
+      //      Console.WriteLine($"Current TE Count = {CollectibleCounts[0]}\nPrevious TE Count = {PreviousCollectibleCounts[0]}");
+            if (PreviousCollectibleCounts[0] != CollectibleCounts[0] || PreviousCollectibleCounts[1] != CollectibleCounts[1] || PreviousCollectibleCounts[2] != CollectibleCounts[2])
             {
+                Console.WriteLine("Goodbye");
                 PreviousCollectibleCounts = CollectibleCounts;
-                UpdateServerData(HeroHandler.CurrentLevelId, levelData, "Collectible");
+                UpdateServerData(HeroHandler.CurrentLevelId, LevelData[HeroHandler.CurrentLevelId], "Collectible");
             }
             if(!Enumerable.SequenceEqual(PreviousAttributeData, AttributeData))
             {
@@ -119,7 +127,11 @@ namespace MulTyPlayerClient
         {
             int level = message.GetInt();
             LevelData[level] = message.GetBytes();
-            WriteData(LEVEL_DATA_START_ADDRESS + (0x70 * (level - 4)), LevelData[level]);
+            bool[] doSync = message.GetBools();
+            Console.WriteLine("hello");
+            if (doSync[0]) { WriteData(LEVEL_DATA_START_ADDRESS + (0x70 * (level - 4)), LevelData[level].Take(8).ToArray()); }
+            if (doSync[1]) { WriteData(LEVEL_DATA_START_ADDRESS + (0x70 * (level - 4)) + 0x8, LevelData[level].Skip(8).Take(10).ToArray()); }
+            if (doSync[2]) { WriteData(LEVEL_DATA_START_ADDRESS + (0x70 * (level - 4)) + 0x18, LevelData[level].Skip(18).Take(5).ToArray()); }
         }
     }
 }

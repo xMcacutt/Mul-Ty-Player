@@ -50,7 +50,7 @@ namespace TyMultiplayerServerCLI
             byte[] playerDataArray = message.GetBytes();
             int levelId = message.GetInt();
             string dataType = message.GetString();
-            if (dataType == "Attribute")
+            if (dataType == "Attribute" && SettingsHandler.DoSyncRangs)
             {
                 CompDataArrays(playerDataArray, ref GlobalAttributeData);
                 SendUpdatedAttributeData(fromClientId);
@@ -60,15 +60,16 @@ namespace TyMultiplayerServerCLI
                 byte[] tempArray = GlobalLevelData[levelId];
                 CompDataArrays(playerDataArray, ref tempArray);
                 GlobalLevelData[levelId] = tempArray;
-                SendUpdatedLevelData(levelId, fromClientId);
+                SendUpdatedLevelData(levelId, fromClientId, SettingsHandler.DoSyncTEs, SettingsHandler.DoSyncCogs, SettingsHandler.DoSyncBilbies);
             }
-        } 
+        }
 
-        public static void SendUpdatedLevelData(int levelId, ushort originalSender)
+        public static void SendUpdatedLevelData(int levelId, ushort originalSender, bool doSyncTEs, bool doSyncCogs, bool doSyncBilbies)
         {
             Message message = Message.Create(MessageSendMode.reliable, MessageID.ClientLevelDataUpdate);
             message.AddInt(levelId);
             message.AddBytes(GlobalLevelData[levelId]);
+            message.AddBools(new bool[] { doSyncTEs, doSyncCogs, doSyncBilbies });
             Program.Server.SendToAll(message, originalSender);
         }
 
