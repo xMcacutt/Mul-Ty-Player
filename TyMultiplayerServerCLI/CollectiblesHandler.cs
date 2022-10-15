@@ -74,6 +74,7 @@ namespace TyMultiplayerServerCLI
 
         public static void SendUpdatedAttributeData(ushort originalSender)
         {
+            Console.WriteLine($"Sending to all except client {originalSender}");
             Message message = Message.Create(MessageSendMode.reliable, MessageID.ClientAttributeDataUpdate);
             message.AddBytes(GlobalAttributeData);
             Program.Server.SendToAll(message, originalSender);

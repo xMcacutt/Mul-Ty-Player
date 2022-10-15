@@ -42,8 +42,9 @@ namespace MulTyPlayerClient
             LevelData.Add(13, ReadLevelData(9));
             LevelData.Add(14, ReadLevelData(10));
 
-            AttributeData = ReadAttributeData();
             AttributeData = new byte[26];
+            PreviousAttributeData = new byte[26];
+            AttributeData = ReadAttributeData();
         }
 
         //POSSIBLY UNNECESSARY
@@ -61,16 +62,16 @@ namespace MulTyPlayerClient
         public void CheckCounts()
         {
             byte[] levelData = ReadLevelData(HeroHandler.CurrentLevelId - 4);
-            byte[] attributeData = ReadAttributeData();
+            AttributeData = ReadAttributeData();
             if(PreviousCollectibleCounts != CollectibleCounts)
             {
                 PreviousCollectibleCounts = CollectibleCounts;
                 UpdateServerData(HeroHandler.CurrentLevelId, levelData, "Collectible");
             }
-            if(PreviousAttributeData != AttributeData)
+            if(!Enumerable.SequenceEqual(PreviousAttributeData, AttributeData))
             {
                 PreviousAttributeData = AttributeData;
-                UpdateServerData(0, attributeData, "Attribute");
+                UpdateServerData(0, AttributeData, "Attribute");
             }
         }
         //
@@ -109,7 +110,7 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ClientAttributeDataUpdate)]
         public static void UpdateClientWithAttr(Message message)
         {
-            AttributeData =  message.GetBytes();
+            AttributeData = message.GetBytes();
             WriteData(ATTRIBUTE_DATA_START_ADDRESS, AttributeData);
         }
 
