@@ -40,8 +40,17 @@ namespace TyMultiplayerServerCLI
             KoalaHandler = new KoalaHandler();
             CollectiblesHandler = new CollectiblesHandler();
             Console.WriteLine("Welcome to Mul-Ty-Player.\nThis is the server application. \nPort forward on port 8750 to allow connections.\n");
-            Console.WriteLine("Press return to stop the server at any time.");
 
+            string command = Console.ReadLine();
+            while(command != "/stop")
+            {
+                switch (command)
+                {
+                    
+                }
+                command = Console.ReadLine();
+            }
+            _isRunning = false;
         }
 
         private static void Loop()
