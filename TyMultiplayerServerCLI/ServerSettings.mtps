@@ -6,12 +6,12 @@ Password = XXXXX
 
 KoalaOrder = boonie, mim, katie, kiki, dubbo, gummy, elizabeth, snugs
 
-DoSyncTEs = false
+DoSyncTEs = true
 
-DoSyncCogs = false
+DoSyncCogs = true
 
-DoSyncBilbies = false
+DoSyncBilbies = true
 
-DoSyncRangs = false
+DoSyncRangs = true
 
 -------------------------------

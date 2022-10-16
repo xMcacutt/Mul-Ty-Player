@@ -11,6 +11,8 @@ namespace MulTyPlayerClient
         static HeroHandler HeroHandler => Program.HeroHandler;
         static KoalaHandler KoalaHandler => Program.KoalaHandler;
 
+        static CollectiblesHandler CollectiblesHandler => Program.CollectiblesHandler;
+
         public static Process TyProcess;
 
 
@@ -52,6 +54,7 @@ namespace MulTyPlayerClient
             {
                 if (!HeroHandler.CheckMenu() && !HeroHandler.CheckLoading())
                 {
+                    CollectiblesHandler.CheckCounts();
                     HeroHandler.GetCurrentLevel();
                     HeroHandler.GetTyPos();
                     KoalaHandler.SetCoordAddrs();

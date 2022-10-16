@@ -33,17 +33,18 @@ namespace MulTyPlayerClient
             _counterAddresses[0] = TE_COUNTER_ADDRESS;
             _counterAddresses[1] = COG_COUNTER_ADDRESS; 
             _counterAddresses[2] = BILBY_COUNTER_ADDRESS;
-            LevelData = new Dictionary<int, byte[]>();
-
-            LevelData.Add(4, ReadLevelData(0));
-            LevelData.Add(5, ReadLevelData(1));
-            LevelData.Add(6, ReadLevelData(2));
-            LevelData.Add(8, ReadLevelData(4));
-            LevelData.Add(9, ReadLevelData(5));
-            LevelData.Add(10, ReadLevelData(6));
-            LevelData.Add(12, ReadLevelData(8));
-            LevelData.Add(13, ReadLevelData(9));
-            LevelData.Add(14, ReadLevelData(10));
+            LevelData = new Dictionary<int, byte[]>
+            {
+                { 4, ReadLevelData(0) },
+                { 5, ReadLevelData(1) },
+                { 6, ReadLevelData(2) },
+                { 8, ReadLevelData(4) },
+                { 9, ReadLevelData(5) },
+                { 10, ReadLevelData(6) },
+                { 12, ReadLevelData(8) },
+                { 13, ReadLevelData(9) },
+                { 14, ReadLevelData(10) }
+            };
 
             AttributeData = new byte[26];
             PreviousAttributeData = new byte[26];
@@ -52,7 +53,6 @@ namespace MulTyPlayerClient
             AttributeData = ReadAttributeData();
         }
 
-        //POSSIBLY UNNECESSARY
         public void ReadCounts()
         {
             int bytesRead = 0;
@@ -66,22 +66,27 @@ namespace MulTyPlayerClient
 
         public void CheckCounts()
         {
+            //Console.WriteLine($"Current TE Count = {CollectibleCounts[0]}\nPrevious TE Count = {PreviousCollectibleCounts[0]}");
             ReadCounts();
-            LevelData[HeroHandler.CurrentLevelId] = ReadLevelData(HeroHandler.CurrentLevelId - 4);
             AttributeData = ReadAttributeData();
-      //      Console.WriteLine($"Current TE Count = {CollectibleCounts[0]}\nPrevious TE Count = {PreviousCollectibleCounts[0]}");
-            if (PreviousCollectibleCounts[0] != CollectibleCounts[0] || PreviousCollectibleCounts[1] != CollectibleCounts[1] || PreviousCollectibleCounts[2] != CollectibleCounts[2])
+            if (!Enumerable.SequenceEqual(PreviousCollectibleCounts, CollectibleCounts))
             {
-                Console.WriteLine("Goodbye");
-                PreviousCollectibleCounts = CollectibleCounts;
-                UpdateServerData(HeroHandler.CurrentLevelId, LevelData[HeroHandler.CurrentLevelId], "Collectible");
+                if (LevelData.ContainsKey(HeroHandler.CurrentLevelId))
+                {
+                    LevelData[HeroHandler.CurrentLevelId] = ReadLevelData(HeroHandler.CurrentLevelId - 4);
+                    UpdateServerData(HeroHandler.CurrentLevelId, LevelData[HeroHandler.CurrentLevelId], "Collectible");
+                }
+                PreviousCollectibleCounts[0] = CollectibleCounts[0];
+                PreviousCollectibleCounts[1] = CollectibleCounts[1];
+                PreviousCollectibleCounts[2] = CollectibleCounts[2];
             }
             if(!Enumerable.SequenceEqual(PreviousAttributeData, AttributeData))
             {
-                PreviousAttributeData = AttributeData;
                 UpdateServerData(0, AttributeData, "Attribute");
+                PreviousAttributeData = AttributeData;
             }
         }
+
         //
         public static void WriteData(int address, byte[] bytes)
         {
@@ -128,10 +133,9 @@ namespace MulTyPlayerClient
             int level = message.GetInt();
             LevelData[level] = message.GetBytes();
             bool[] doSync = message.GetBools();
-            Console.WriteLine("hello");
             if (doSync[0]) { WriteData(LEVEL_DATA_START_ADDRESS + (0x70 * (level - 4)), LevelData[level].Take(8).ToArray()); }
             if (doSync[1]) { WriteData(LEVEL_DATA_START_ADDRESS + (0x70 * (level - 4)) + 0x8, LevelData[level].Skip(8).Take(10).ToArray()); }
-            if (doSync[2]) { WriteData(LEVEL_DATA_START_ADDRESS + (0x70 * (level - 4)) + 0x18, LevelData[level].Skip(18).Take(5).ToArray()); }
+            if (doSync[2]) { WriteData(LEVEL_DATA_START_ADDRESS + (0x70 * (level - 4)) + 0x12, LevelData[level].Skip(18).Take(5).ToArray()); }
         }
     }
 }
