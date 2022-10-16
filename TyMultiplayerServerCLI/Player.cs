@@ -10,40 +10,40 @@ namespace TyMultiplayerServerCLI
 {
     internal class Player
     {
-        public ushort id { get; private set; }
-        public string name { get; private set; }
-        public Koala assignedKoala;
-        public int currentLevel;
-        public int previousLevel = 99;
+        public ushort Id { get; private set; }
+        public string Name { get; private set; }
+        public Koala AssignedKoala;
+        public int CurrentLevel;
+        public int PreviousLevel = 99;
 
         public Player(ushort id, string name)
         {
-            this.id = id;
-            this.name = name;
+            this.Id = id;
+            this.Name = name;
         }
 
         /*MESSAGE HANDLING*/
 
-        [MessageHandler((ushort)MessageID.connected)]
-        private static void HandleConnectedInitialization(ushort fromClientdId, Message message)
+        [MessageHandler((ushort)MessageID.Connected)]
+        private static void HandleConnectedInitialization(ushort fromClientId, Message message)
         {
             string name = message.GetString();
-            ushort id = fromClientdId;
+            ushort id = fromClientId;
             Program.SendMessageToClients($"{name} joined the server.", true);
             Player player = new Player(id, name);
-            Program.playerList.Add(id, player);
-            Program.koalaHandler.AssignKoala(player);
-            Program.SendMessageToClients($"{name} was assgined {player.assignedKoala.name}", true);
+            Program.PlayerList.Add(id, player);
+            Program.KoalaHandler.AssignKoala(player);
+            Program.SendMessageToClients($"{name} was assgined {player.AssignedKoala.Name}", true);
         }
 
-        [MessageHandler((ushort)MessageID.playerinfo)]
-        private static void HandleGettingCoordinates(ushort fromClientdId, Message message)
+        [MessageHandler((ushort)MessageID.PlayerInfo)]
+        private static void HandleGettingCoordinates(ushort fromClientId, Message message)
         {
-            if (Program.playerList.ContainsKey(fromClientdId))
+            if (Program.PlayerList.ContainsKey(fromClientId))
             {
                 if (message.GetBool()) { return; }
-                Program.playerList[fromClientdId].currentLevel = message.GetInt();
-                Program.playerList[fromClientdId].assignedKoala.coordinates = message.GetFloats();
+                Program.PlayerList[fromClientId].CurrentLevel = message.GetInt();
+                Program.PlayerList[fromClientId].AssignedKoala.Coordinates = message.GetFloats();
             }
         }
     }

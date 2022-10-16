@@ -3,15 +3,17 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Threading;
 
-namespace TyMultiplayerCLI
+namespace MulTyPlayerClient
 {
-    internal class ProcessHandler
+    internal static class ProcessHandler
     {
-        public static IntPtr hProcess;
-        static HeroHandler heroHandler => Program.heroHandler;
-        static KoalaHandler koalaHandler => Program.koalaHandler;
+        public static IntPtr HProcess;
+        static HeroHandler HeroHandler => Program.HeroHandler;
+        static KoalaHandler KoalaHandler => Program.KoalaHandler;
 
-        public static Process tyProcess;
+        static CollectiblesHandler CollectiblesHandler => Program.CollectiblesHandler;
+
+        public static Process TyProcess;
 
 
         [DllImport("kernel32.dll")]
@@ -25,7 +27,7 @@ namespace TyMultiplayerCLI
 
         public static void OpenTyProcess()
         {
-            hProcess = OpenProcess(0x1F0FFF, false, tyProcess.Id);
+            HProcess = OpenProcess(0x1F0FFF, false, TyProcess.Id);
         }
 
         public static Process FindTyexe()
@@ -34,27 +36,28 @@ namespace TyMultiplayerCLI
             {
                 if (p.MainWindowTitle == "TY the Tasmanian Tiger")
                 {
-                    tyProcess = p;
+                    TyProcess = p;
                     return p;
                 }
             }
-            tyProcess = null;
+            TyProcess = null;
             return null;
         }
 
         public static void GetTyData()
         {
-            while (!Client.isRunning)
+            while (!Client.IsRunning)
             {
-
+                
             }
-            while (Client.isRunning)
+            while (Client.IsRunning)
             {
-                if (!heroHandler.CheckMenu() && !heroHandler.CheckLoading())
+                if (!HeroHandler.CheckMenu() && !HeroHandler.CheckLoading())
                 {
-                    heroHandler.GetCurrentLevel();
-                    heroHandler.GetTyPos();
-                    koalaHandler.SetCoordAddrs();
+                    CollectiblesHandler.CheckCounts();
+                    HeroHandler.GetCurrentLevel();
+                    HeroHandler.GetTyPos();
+                    KoalaHandler.SetCoordAddrs();
                 }
                 Thread.Sleep(10);
             }

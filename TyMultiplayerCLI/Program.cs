@@ -5,21 +5,26 @@ using System.Text;
 using System.Threading;
 using System.Runtime.InteropServices;
 using Steamworks;
+using System.Text.RegularExpressions;
+using System.Net;
+using System.IO;
 
-namespace TyMultiplayerCLI
+namespace MulTyPlayerClient
 {
 
-    internal class Program
+    internal static class Program
     {
-        public static HeroHandler heroHandler;
-        public static KoalaHandler koalaHandler;
-        public static PointerCalculations ptrCalc;
-        public static Thread tyDataThread;
-        public static string playerName;
+        public static HeroHandler HeroHandler;
+        public static KoalaHandler KoalaHandler;
+        public static CollectiblesHandler CollectiblesHandler;
+        public static Thread TyDataThread;
+        public static string PlayerName;
         private static string _inputStr;
+        public static string PosLogPath;
 
         static void Main(string[] args)
         {
+            //RESTARTS THE APP WHEN IT REACHES END (DISCONNECT)
             do
             {
                 Console.Clear();
@@ -34,13 +39,14 @@ namespace TyMultiplayerCLI
 
         private static void RunProgram()
         {
-
-            ptrCalc = new PointerCalculations();
-            heroHandler = new HeroHandler();
-            koalaHandler = new KoalaHandler();
+            SettingsHandler.Setup();
+            HeroHandler = new HeroHandler();
+            KoalaHandler = new KoalaHandler();
+            
 
             Console.WriteLine("Welcome to Mul-Ty-player");
 
+            //TRIES TO FIND TY AND GIVES WARNING MESSAGE TO OPEN TY ON FAILURE
             var messageShown = false;
             while (ProcessHandler.FindTyexe() == null)
             {
@@ -50,68 +56,71 @@ namespace TyMultiplayerCLI
                     messageShown = true;
                 }
             }
-
             Console.WriteLine("Ty.exe Found!");
-
-            string nameMessage = playerName == null
-                ? "Attempting to get player name..."
-                : "Player name already found. Setting up client...";
-
-            Console.WriteLine(nameMessage);
-
+            
+            //OPEN HANDLE TO PROCESS
             ProcessHandler.OpenTyProcess();
 
-            heroHandler.SetMemoryAddresses();
-
-            koalaHandler.CreateKoalas();
-
-            tyDataThread = new Thread(new ThreadStart(ProcessHandler.GetTyData));
-            tyDataThread.Start();
-
+            HeroHandler.SetMemoryAddresses();
+            KoalaHandler.CreateKoalas();
             
-            if (SteamAPI.Init())
+
+            //STARTS THE THREAD THAT CONTINUOUSLY READS DATA FROM THE GAME
+            TyDataThread = new Thread(new ThreadStart(ProcessHandler.GetTyData));
+            TyDataThread.Start();
+
+            CollectiblesHandler = new CollectiblesHandler();
+
+            //MAKES FILE FOR POSITION LOGGING
+            if (SettingsHandler.DoPositionLogging)
             {
-                playerName = SteamFriends.GetPersonaName();
+                PosLogPath = SettingsHandler.PositionLoggingOutputDir + DateTime.Now;
+              //  File.Create(posLogPath);
+             //   Console.WriteLine("File created for position logging");
             }
 
-            if (playerName == null)
+            //ATTEMPTS TO GET STEAM NAME OR DEFAULT NAME FROM SETTINGS FILE
+            if (SettingsHandler.DoGetSteamName)
             {
-                Console.WriteLine("Steamworks API could not be initialized, please enter your name manually:");
-                playerName = Console.ReadLine();
+                Console.WriteLine("Attempting to get player name from steam...");
+                if (SteamAPI.Init())
+                {
+                    PlayerName = SteamFriends.GetPersonaName();
+                }
             }
-
-            while (string.IsNullOrWhiteSpace(playerName) || playerName.Length < 3)
+            else if(!string.IsNullOrWhiteSpace(SettingsHandler.DefaultName))
+            {
+                Console.WriteLine("Player name already found. Setting up client...");
+                PlayerName = SettingsHandler.DefaultName;
+            }
+            if (PlayerName == null)
+            {
+                Console.WriteLine("Steamworks was unable to get your name and no name is defined in the settings file. \nPlease enter your name manually:");
+                PlayerName = Console.ReadLine();
+            }
+            while (string.IsNullOrWhiteSpace(PlayerName) || PlayerName.Length < 3)
             {
                 Console.WriteLine("Please enter a valid name");
-                playerName = Console.ReadLine();
+                PlayerName = Console.ReadLine();
             }
 
-            Console.WriteLine("\nNow please enter the IP address of the server you wish to join");
-            var ip = Console.ReadLine();
-            Client.StartClient(ip);
-
-        }
-
-        static void GetTyData()
-        {
-            for (int i = 0; i < 2; i++)
+            //
+            string ipStr = "";
+            if (string.IsNullOrWhiteSpace(SettingsHandler.DefaultAddress))
             {
-                if (Client.isRunning)
-                {
-                    Console.WriteLine("gettingdata");
-                    heroHandler.GetTyPos();
-                    heroHandler.GetCurrentLevel();
-            //        koalaHandler.SetCoordAddrs();
-                    
-                    if (ProcessHandler.FindTyexe() == null)
-                    {
-                        Client.isRunning = false;
-                        Console.WriteLine("Ty.exe was closed.");
-                        tyDataThread.Abort();
-                    }
-                }
-                i--;
+                Console.WriteLine("\nNo default address specified in settings file");
             }
+            else
+            {
+                ipStr = SettingsHandler.DefaultAddress;
+            }
+            while (!IPAddress.TryParse(ipStr, out IPAddress ip))
+            {
+                Console.WriteLine("Please enter a VALID IP address to connect to...");
+                ipStr = Console.ReadLine();
+            }
+            Client.StartClient(ipStr);
+
         }
     }
 }
