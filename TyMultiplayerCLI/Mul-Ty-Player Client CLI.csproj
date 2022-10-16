@@ -33,8 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>fe_999_icon_koalakid.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="RiptideNetworking, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -74,6 +73,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="fe_999_icon_koalakid.ico" />
     <Content Include="Resources\fe_999_icon_koalakid.ico" />
     <Content Include="Resources\RiptideNetworking.dll" />
     <Content Include="Resources\RiptideNetworking.xml" />
