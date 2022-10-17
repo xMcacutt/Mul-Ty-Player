@@ -3,6 +3,7 @@ using System.Threading;
 using RiptideNetworking.Utils;
 using RiptideNetworking;
 using System.Collections.Generic;
+using RiptideNetworking.Transports;
 
 namespace TyMultiplayerServerCLI
 {
@@ -44,9 +45,34 @@ namespace TyMultiplayerServerCLI
             string command = Console.ReadLine();
             while(command != "/stop")
             {
-                switch (command)
+                switch (command.Split(' ')[0])
                 {
-                    
+                    case "/resetsync":
+                        break;
+                    case "/kick":
+                        if (string.IsNullOrWhiteSpace(command.Split(' ')[1]) || command.Split(' ')[1] == "help")
+                        {
+                            Console.WriteLine("Usage: /kick [client id]\n   To find client id, use /list");
+                            break;
+                        }
+                        foreach(IConnectionInfo client in Server.Clients)
+                        {
+                            if(command.Split(' ')[1] == client.Id.ToString())
+                            {
+                                client.
+                            }
+                        }
+                        break;
+                    case "/list":
+                        Console.WriteLine("--- Connected Clients ---");
+                        foreach(IConnectionInfo client in Server.Clients)
+                        {
+                            if (client.IsConnected)
+                            {
+                                Console.WriteLine("Client " + client.Id + " Name: " + PlayerList[client.Id].Name);
+                            }
+                        }
+                        break;
                 }
                 command = Console.ReadLine();
             }
