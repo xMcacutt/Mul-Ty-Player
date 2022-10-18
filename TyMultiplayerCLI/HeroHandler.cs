@@ -24,6 +24,9 @@ namespace MulTyPlayerClient
         public int PreviousLevelID { get; set; }
         IntPtr HProcess => ProcessHandler.HProcess;
         static HeroHandler rHeroHandler => Program.HeroHandler;
+        static KoalaHandler KoalaHandler => Program.KoalaHandler;
+
+        public bool LoadedIntoNewLevelStuffDone;
 
         public HeroHandler()
         {
@@ -87,6 +90,12 @@ namespace MulTyPlayerClient
             byte[] currentLevelBytes = new byte[4];
             ProcessHandler.ReadProcessMemory((int)HProcess, LEVEL_ID_AD, currentLevelBytes, 4, ref bytesRead);
             CurrentLevelId = BitConverter.ToInt32(currentLevelBytes, 0);
+
+            if(CurrentLevelId != PreviousLevelID)
+            {
+                LoadedIntoNewLevelStuffDone = false;
+                PreviousLevelID = CurrentLevelId;
+            }
 
             while (CheckLoading()) { };
 

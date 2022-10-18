@@ -15,7 +15,8 @@ namespace TyMultiplayerServerCLI
         ConsoleSend,
         ServerDataUpdate,
         ClientLevelDataUpdate,
-        ClientAttributeDataUpdate
+        ClientAttributeDataUpdate,
+        Disconnect
     }
 
     internal class Program
@@ -40,40 +41,13 @@ namespace TyMultiplayerServerCLI
             PlayerList = new Dictionary<ushort, Player>();
             KoalaHandler = new KoalaHandler();
             CollectiblesHandler = new CollectiblesHandler();
+            CommandHandler commandHandler = new CommandHandler();
             Console.WriteLine("Welcome to Mul-Ty-Player.\nThis is the server application. \nPort forward on port 8750 to allow connections.\n");
 
             string command = Console.ReadLine();
             while(command != "/stop")
             {
-                switch (command.Split(' ')[0])
-                {
-                    case "/resetsync":
-                        break;
-                    case "/kick":
-                        if (string.IsNullOrWhiteSpace(command.Split(' ')[1]) || command.Split(' ')[1] == "help")
-                        {
-                            Console.WriteLine("Usage: /kick [client id]\n   To find client id, use /list");
-                            break;
-                        }
-                        foreach(IConnectionInfo client in Server.Clients)
-                        {
-                            if(command.Split(' ')[1] == client.Id.ToString())
-                            {
-                                client.
-                            }
-                        }
-                        break;
-                    case "/list":
-                        Console.WriteLine("--- Connected Clients ---");
-                        foreach(IConnectionInfo client in Server.Clients)
-                        {
-                            if (client.IsConnected)
-                            {
-                                Console.WriteLine("Client " + client.Id + " Name: " + PlayerList[client.Id].Name);
-                            }
-                        }
-                        break;
-                }
+                commandHandler.ParseCommand(command);  
                 command = Console.ReadLine();
             }
             _isRunning = false;

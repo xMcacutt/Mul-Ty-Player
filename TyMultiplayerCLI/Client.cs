@@ -14,7 +14,8 @@ namespace MulTyPlayerClient
         ConsoleSend,
         ServerDataUpdate,
         ClientLevelDataUpdate,
-        ClientAttributeDataUpdate
+        ClientAttributeDataUpdate,
+        Disconnect
     }
 
     internal static class Client
@@ -42,6 +43,7 @@ namespace MulTyPlayerClient
             if (!DidRun)
             {
                 Console.WriteLine("Could not connect to server. Press return.");
+                IsRunning = false;
                 Disconnected();
                 return;
             }
@@ -65,18 +67,30 @@ namespace MulTyPlayerClient
             while (IsRunning)
             {
                 _client.Tick();
+                //CHECK IF ON MENU OR LOADING
                 if (!HeroHandler.CheckMenu() && !HeroHandler.CheckLoading())
                 {
-                    KoalaHandler.SetCoordAddrs();
-                    if (!SettingsHandler.DoKoalaCollision)
+                    //IF NOT SET UP LOAD INTO LEVEL STUFF
+                    if (!HeroHandler.LoadedIntoNewLevelStuffDone || HeroHandler.CurrentLevelId == 0)
                     {
-                        KoalaHandler.RemoveCollision();
+                        DoLevelSetup();
                     }
                     HeroHandler.SendCoordinates();
                 }
+
                 Thread.Sleep(10);
             }
 
+        }
+
+        private static void DoLevelSetup()
+        {
+            KoalaHandler.SetCoordAddrs();
+            if (!SettingsHandler.DoKoalaCollision)
+            {
+                KoalaHandler.RemoveCollision();
+            }
+            HeroHandler.LoadedIntoNewLevelStuffDone = true;
         }
 
         private static void Connected()
@@ -101,6 +115,10 @@ namespace MulTyPlayerClient
         }
 
 
-
+        [MessageHandler((ushort)MessageID.Disconnect)]
+        public static void GetDisconnectedScrub(Message message)
+        {
+            Disconnected();
+        }
     }
 }

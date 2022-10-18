@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CollectiblesHandler.cs" />
+    <Compile Include="CommandHandler.cs" />
     <Compile Include="Koala.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
@@ -60,6 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="help.mtps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="ServerSettings.mtps">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
