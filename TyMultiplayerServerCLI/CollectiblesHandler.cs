@@ -9,25 +9,28 @@ namespace TyMultiplayerServerCLI
 {
     internal class CollectiblesHandler
     {
-        public static Dictionary<int, byte[]> GlobalLevelData = new Dictionary<int, byte[]>();
+        public static Dictionary<int, byte[]> GlobalLevelData;
         public Dictionary<int, int> CollectibleLevelMultipliers;
         public static byte[] GlobalAttributeData;
 
         public CollectiblesHandler()
         {
             GlobalAttributeData = new byte[26];
-            
-            GlobalLevelData.Add(4, new byte[23]);
-            GlobalLevelData.Add(5, new byte[23]);
-            GlobalLevelData.Add(6, new byte[23]);
-            
-            GlobalLevelData.Add(8, new byte[23]);
-            GlobalLevelData.Add(9, new byte[23]);
-            GlobalLevelData.Add(10, new byte[23]);
 
-            GlobalLevelData.Add(12, new byte[23]);
-            GlobalLevelData.Add(13, new byte[23]);
-            GlobalLevelData.Add(14, new byte[23]);
+            GlobalLevelData = new Dictionary<int, byte[]>
+            {
+                { 4, new byte[23] },
+                { 5, new byte[23] },
+                { 6, new byte[23] },
+
+                { 8, new byte[23] },
+                { 9, new byte[23] },
+                { 10, new byte[23] },
+
+                { 12, new byte[23] },
+                { 13, new byte[23] },
+                { 14, new byte[23] }
+            };
 
         }
 
@@ -64,6 +67,12 @@ namespace TyMultiplayerServerCLI
             }
         }
 
+        public static void SendResetSyncMessage()
+        {
+            Message message = Message.Create(MessageSendMode.reliable, MessageID.ResetSync);
+            Program.Server.SendToAll(message);
+        }
+
         public static void SendUpdatedLevelData(int levelId, ushort originalSender, bool doSyncTEs, bool doSyncCogs, bool doSyncBilbies)
         {
             Message message = Message.Create(MessageSendMode.reliable, MessageID.ClientLevelDataUpdate);
@@ -80,5 +89,6 @@ namespace TyMultiplayerServerCLI
             message.AddBytes(GlobalAttributeData);
             Program.Server.SendToAll(message, originalSender);
         }
+
     }
 }

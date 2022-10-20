@@ -19,14 +19,14 @@ namespace TyMultiplayerServerCLI
             Dictionary<string, Koala> koalas = new Dictionary<string, Koala>();
             availableKoalas = new Stack<Koala>();
 
-            koalas.Add("boonie", new Koala(0, "boonie"));
-            koalas.Add("mim", new Koala(1, "mim"));
-            koalas.Add("kiki", new Koala(2, "kiki"));
-            koalas.Add("katie", new Koala(3, "katie"));
-            koalas.Add("snugs", new Koala(4, "snugs"));
-            koalas.Add("dubbo", new Koala(5, "dubbo"));
-            koalas.Add("gummy", new Koala(6, "gummy"));
-            koalas.Add("elizabeth", new Koala(7, "elizabeth"));
+            koalas.Add("Boonie", new Koala(0, "Boonie"));
+            koalas.Add("Mim", new Koala(1, "Mim"));
+            koalas.Add("Kiki", new Koala(2, "Kiki"));
+            koalas.Add("Katie", new Koala(3, "Katie"));
+            koalas.Add("Snugs", new Koala(4, "Snugs"));
+            koalas.Add("Dubbo", new Koala(5, "Dubbo"));
+            koalas.Add("Gummy", new Koala(6, "Gummy"));
+            koalas.Add("Elizabeth", new Koala(7, "Elizabeth"));
 
             foreach(string koala in SettingsHandler.KoalaOrder.Reverse())
             {
@@ -37,7 +37,6 @@ namespace TyMultiplayerServerCLI
         public void AssignKoala(Player player)
         {
             player.AssignedKoala = availableKoalas.Pop();
-  //          player.AssignedKoala.AssignedPlayer = player;
         }
 
         public void ReturnKoala(Player player)
@@ -51,10 +50,11 @@ namespace TyMultiplayerServerCLI
                         _defaultKoalaPosX[player.PreviousLevel],
                         _defaultKoalaPosY[player.PreviousLevel],
                         _defaultKoalaPosZ[player.PreviousLevel],
+                        0,
+                        0,
                         0
                     };
                     Program.SendCoordinates(player.AssignedKoala.KoalaId, player.PreviousLevel, defaultCoords, player.Name);
-                    Program.SendMessageToClients($"Removed {player.Name} from {otherPlayer.Name}'s level", true);
                 }
 
             }

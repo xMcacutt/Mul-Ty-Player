@@ -16,7 +16,7 @@ namespace TyMultiplayerServerCLI
         {
             KoalaId = koalaID;
             Name = name;
-            Coordinates = new float[4];
+            Coordinates = new float[6];
         }
     }
 }

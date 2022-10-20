@@ -44,7 +44,7 @@ namespace MulTyPlayerClient
             KoalaAddrs = new Dictionary<int, int[]>();
             for(int i = 0; i < 8; i++)
             {
-                KoalaAddrs.Add(i, new int[5]);
+                KoalaAddrs.Add(i, new int[7]);
             }
         }
 
@@ -54,7 +54,7 @@ namespace MulTyPlayerClient
             byte[] buffer = BitConverter.GetBytes(0);
             foreach (int koala in KoalaAddrs.Keys)
             {
-                ProcessHandler.WriteProcessMemory((int)HProcess, KoalaAddrs[koala][4], buffer, buffer.Length, ref bytesWritten);
+                ProcessHandler.WriteProcessMemory((int)HProcess, KoalaAddrs[koala][6], buffer, buffer.Length, ref bytesWritten);
                // Console.WriteLine("addr: {0:X}", koalaAddrs[koala][4]);
             }
            // Console.WriteLine("removed collision");
@@ -66,8 +66,10 @@ namespace MulTyPlayerClient
              * 0 -> X
              * 1 -> Y
              * 2 -> Z
-             * 3 -> Yaw
-             * 4 -> Collision
+             * 3 -> Pitch
+             * 4 -> Yaw
+             * 5 -> Roll
+             * 6 -> Collision
              */
             foreach (int koalaID in KoalaAddrs.Keys)
             {
@@ -92,10 +94,22 @@ namespace MulTyPlayerClient
                 KoalaAddrs[koalaID][3] = PointerCalculations.GetPointerAddress
                 (
                     PointerCalculations.AddOffset(KOALA_BASE_ADDRESS),
+                   koalaOffsets[koalaID],
+                   0x10
+                );
+                KoalaAddrs[koalaID][4] = PointerCalculations.GetPointerAddress
+                (
+                    PointerCalculations.AddOffset(KOALA_BASE_ADDRESS),
                     koalaOffsets[koalaID],
                     0x14
                 );
-                KoalaAddrs[koalaID][4] = PointerCalculations.GetPointerAddressNegative
+                KoalaAddrs[koalaID][5] = PointerCalculations.GetPointerAddress
+                (
+                    PointerCalculations.AddOffset(KOALA_BASE_ADDRESS),
+                    koalaOffsets[koalaID],
+                    0x18
+                );
+                KoalaAddrs[koalaID][6] = PointerCalculations.GetPointerAddressNegative
                 (
                     PointerCalculations.AddOffset(KOALA_BASE_ADDRESS),
                     koalaOffsets[koalaID],
@@ -120,7 +134,7 @@ namespace MulTyPlayerClient
             {
                 return;
             }
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < coordinates.Length; i++)
             {
                 IntPtr hProcess = ProcessHandler.OpenProcess(0x1F0FFF, false, ProcessHandler.TyProcess.Id);
                 int bytesWritten = 0;

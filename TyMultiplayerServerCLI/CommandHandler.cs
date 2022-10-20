@@ -13,6 +13,8 @@ namespace TyMultiplayerServerCLI
 {
     internal class CommandHandler
     {
+        public static ushort host;
+
         public void ParseCommand(string userInput)
         {
             if (userInput == null) { return; }
@@ -31,15 +33,18 @@ namespace TyMultiplayerServerCLI
                     }
                 case "kick":
                     {
-                        if(args.Length == 0)
+                        if (args.Length == 0)
                         {
                             Console.WriteLine("Usage: /kick [client id]\nFor a list of client ids, use /clist");
+                            break;
                         }
                         ushort res;
-                        if (!ushort.TryParse(args[0], out res))
+                        if (!ushort.TryParse(args[0], out res) || !Program.PlayerList.ContainsKey(ushort.Parse(args[0])))
                         {
-                            Console.WriteLine(res + "is not a valid client ID");
+                            Console.WriteLine(args[0] + " is not a valid client ID");
+                            break;
                         }
+                        Console.WriteLine($"Successfully Kicked {Program.PlayerList[ushort.Parse(args[0])].Name}");
                         KickPlayer(ushort.Parse(args[0]));
                         break;
                     }
@@ -50,7 +55,7 @@ namespace TyMultiplayerServerCLI
                     }
                 case "password":
                     {
-                        if(args.Length == 0)
+                        if (args.Length == 0)
                         {
                             Console.WriteLine($"The current password is {SettingsHandler.Password}");
                             Console.WriteLine("To set a new password use /password [password]");
@@ -61,7 +66,7 @@ namespace TyMultiplayerServerCLI
                     }
                 case "help":
                     {
-                        foreach(string line in File.ReadLines("./help.mtps"))
+                        foreach (string line in File.ReadLines("./help.mtps"))
                         {
                             Console.WriteLine(line);
                         }
@@ -75,7 +80,7 @@ namespace TyMultiplayerServerCLI
                             return;
                         }
                         string message = "";
-                        foreach(string s in args)
+                        foreach (string s in args)
                         {
                             message += s;
                             message += " ";
@@ -94,7 +99,8 @@ namespace TyMultiplayerServerCLI
 
         private void ResetSync()
         {
-
+            Program.CollectiblesHandler = new CollectiblesHandler();
+            CollectiblesHandler.SendResetSyncMessage();
         }
 
         private void KickPlayer(ushort clientId)
@@ -106,7 +112,7 @@ namespace TyMultiplayerServerCLI
         private void ListClients()
         {
             Console.WriteLine("\n--------------- Connected Clients ---------------");
-            if(Program.PlayerList.Count == 0)
+            if (Program.PlayerList.Count == 0)
             {
                 Console.WriteLine("There are no clients connected");
                 return;
@@ -129,6 +135,35 @@ namespace TyMultiplayerServerCLI
             }
             SettingsHandler.Password = password.ToUpper();
             Console.WriteLine($"{password.ToUpper()} set as new password");
+        }
+
+        [MessageHandler((ushort)MessageID.ReqHost)]
+        public static void RequestHost(ushort fromClientId, Message message)
+        {
+            bool acceptRequest = false;
+            if (!Program.Server.Clients[host].IsConnected)
+            {
+                acceptRequest = true;
+                SetNewHost(fromClientId);
+            }
+            Message hRequest = Message.Create(MessageSendMode.reliable, MessageID.ReqHost);
+            hRequest.AddBool(acceptRequest);
+            Program.Server.Send(hRequest, fromClientId);
+        }
+
+        public static void SetNewHost(ushort newHost)
+        {
+            host = newHost;
+            Message notifyHostChange = Message.Create(MessageSendMode.reliable, MessageID.HostChange);
+            notifyHostChange.AddUShort(newHost);
+            Program.Server.SendToAll(notifyHostChange, newHost);
+            Program.SendMessageToClients($"{Program.PlayerList[newHost]} has been made host", true);
+        }
+
+        [MessageHandler((ushort)MessageID.HostCommand)]
+        public static void HostCommand(Message message)
+        {
+            Program.CommandHandler.ParseCommand(message.GetString());
         }
     }
 }

@@ -19,7 +19,7 @@ namespace MulTyPlayerClient
         public int[] CollectibleCounts;
         public int[] PreviousCollectibleCounts;
         readonly static int LEVEL_DATA_START_ADDRESS = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x00288730), 0x1F8);
-        readonly static int ATTRIBUTE_DATA_START_ADDRESS = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x00288730), 0xAB4);
+        public readonly static int ATTRIBUTE_DATA_START_ADDRESS = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x00288730), 0xAB4);
 
         public static Dictionary<int, byte[]> LevelData;
         public static byte[] AttributeData;
@@ -136,6 +136,19 @@ namespace MulTyPlayerClient
             if (doSync[0]) { WriteData(LEVEL_DATA_START_ADDRESS + (0x70 * (level - 4)), LevelData[level].Take(8).ToArray()); }
             if (doSync[1]) { WriteData(LEVEL_DATA_START_ADDRESS + (0x70 * (level - 4)) + 0x8, LevelData[level].Skip(8).Take(10).ToArray()); }
             if (doSync[2]) { WriteData(LEVEL_DATA_START_ADDRESS + (0x70 * (level - 4)) + 0x12, LevelData[level].Skip(18).Take(5).ToArray()); }
+        }
+
+        [MessageHandler((ushort)MessageID.ResetSync)]
+        public static void ConsoleSend(Message message)
+        {
+            foreach(int i in LevelData.Keys)
+            {
+                LevelData[i] = new byte[23];
+            }
+            AttributeData = new byte[26];
+            Program.CollectiblesHandler.PreviousAttributeData = new byte[26];
+            Program.CollectiblesHandler.CollectibleCounts = new int[3];
+            Program.CollectiblesHandler.PreviousCollectibleCounts = new int[3];
         }
     }
 }

@@ -7,14 +7,19 @@
                            |___/                     |___/          
 -----------------------------------------------------------------------
 
-This is the server command line interface.
-This must be running from someone's computer for anyone to connect.
-The person running this server application also needs to port forward
-on port 8750 using UDP. Guides on doing this can be found online.
+This is the client command line interface.
 
-The commands that can be run from the server are as follows:
+The commands that can be run from any client are as follows:
 
     /help    shows this message.
+
+    /requesthost    gives player host privileges if no host connected
+
+    /resetsync    resets all synced data to default (nothing collected)
+
+    /stop    stops the client and closes the application
+
+The commands that can be run by the host only are as follows
 
     /kick [client id]    disconnects a player from the server
 
@@ -25,8 +30,6 @@ The commands that can be run from the server are as follows:
     /resetsync    resets all synced data to default (nothing collected)
 
     /msg [message]    sends a message to all clients
-
-    /stop    stops the server and closes the application
 
 -----------------------------------------------------------------------
 

@@ -15,7 +15,11 @@ namespace MulTyPlayerClient
         ServerDataUpdate,
         ClientLevelDataUpdate,
         ClientAttributeDataUpdate,
-        Disconnect
+        Disconnect,
+        ResetSync,
+        ReqHost,
+        HostChange,
+        HostCommand
     }
 
     internal static class Client
@@ -71,7 +75,7 @@ namespace MulTyPlayerClient
                 if (!HeroHandler.CheckMenu() && !HeroHandler.CheckLoading())
                 {
                     //IF NOT SET UP LOAD INTO LEVEL STUFF
-                    if (!HeroHandler.LoadedIntoNewLevelStuffDone || HeroHandler.CurrentLevelId == 0)
+                    if (!HeroHandler.LoadedIntoNewLevelStuffDone)
                     {
                         DoLevelSetup();
                     }
@@ -85,6 +89,7 @@ namespace MulTyPlayerClient
 
         private static void DoLevelSetup()
         {
+            HeroHandler.ProtectLeaderboard();
             KoalaHandler.SetCoordAddrs();
             if (!SettingsHandler.DoKoalaCollision)
             {
@@ -118,6 +123,7 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.Disconnect)]
         public static void GetDisconnectedScrub(Message message)
         {
+            _client.Disconnect();
             Disconnected();
         }
     }

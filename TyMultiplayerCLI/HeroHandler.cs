@@ -6,9 +6,9 @@ namespace MulTyPlayerClient
 {
     public class HeroHandler
     { 
-        readonly int[] TY_POS_ROT_OFFSETS = { 0x270B78, 0x270B7C, 0x270B80, 0x271C20 };
+        readonly int[] TY_POS_ROT_OFFSETS = { 0x270B78, 0x270B7C, 0x270B80, 0x271C1C, 0x271C20, 0x271C24 };
         int[] TY_POS_ROT_ADS;
-        readonly int[] BP_POS_ROT_OFFSETS = { 0x254268, 0x25426C, 0x254270, 0x2545F4, };
+        readonly int[] BP_POS_ROT_OFFSETS = { 0x254268, 0x25426C, 0x254270, 0x2545F0, 0x2545F4, 0x2545F8 };
         int[] BP_POS_ROT_ADS;
         const int LEVEL_ID_OFFSET = 0x280594;
         const int LOADING_OFFSET = 0x286555;
@@ -21,7 +21,8 @@ namespace MulTyPlayerClient
         int MAIN_MENU_AD;
         public float[] CurrentPosRot { get; set; }
         public int CurrentLevelId { get; set; }
-        public int PreviousLevelID { get; set; }
+        public bool LoadingState { get; set; }
+        public bool PreviousLoadingState { get; set; }
         IntPtr HProcess => ProcessHandler.HProcess;
         static HeroHandler rHeroHandler => Program.HeroHandler;
         static KoalaHandler KoalaHandler => Program.KoalaHandler;
@@ -30,7 +31,6 @@ namespace MulTyPlayerClient
 
         public HeroHandler()
         {
-            PreviousLevelID = 99;
             CurrentPosRot = new float[4];
         }
 
@@ -42,14 +42,18 @@ namespace MulTyPlayerClient
                 PointerCalculations.AddOffset(TY_POS_ROT_OFFSETS[0]),
                 PointerCalculations.AddOffset(TY_POS_ROT_OFFSETS[1]),
                 PointerCalculations.AddOffset(TY_POS_ROT_OFFSETS[2]),
-                PointerCalculations.AddOffset(TY_POS_ROT_OFFSETS[3])
+                PointerCalculations.AddOffset(TY_POS_ROT_OFFSETS[3]),
+                PointerCalculations.AddOffset(TY_POS_ROT_OFFSETS[4]),
+                PointerCalculations.AddOffset(TY_POS_ROT_OFFSETS[5])
             };
             BP_POS_ROT_ADS = new[]
             {
                 PointerCalculations.AddOffset(BP_POS_ROT_OFFSETS[0]),
                 PointerCalculations.AddOffset(BP_POS_ROT_OFFSETS[1]),
                 PointerCalculations.AddOffset(BP_POS_ROT_OFFSETS[2]),
-                PointerCalculations.AddOffset(BP_POS_ROT_OFFSETS[3])
+                PointerCalculations.AddOffset(BP_POS_ROT_OFFSETS[3]),
+                PointerCalculations.AddOffset(BP_POS_ROT_OFFSETS[4]),
+                PointerCalculations.AddOffset(BP_POS_ROT_OFFSETS[5])
             };
             LEVEL_ID_AD = PointerCalculations.AddOffset(LEVEL_ID_OFFSET);
             LOADING_AD = PointerCalculations.AddOffset(LOADING_OFFSET);
@@ -60,7 +64,7 @@ namespace MulTyPlayerClient
         {
             int[] tempInts = CurrentLevelId == 10 ? BP_POS_ROT_ADS : TY_POS_ROT_ADS;
             int bytesRead = 0;
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < tempInts.Length; i++)
             {
                 byte[] buffer = new byte[4];
                 ProcessHandler.ReadProcessMemory((int)HProcess, tempInts[i], buffer, 4, ref bytesRead);
@@ -84,20 +88,31 @@ namespace MulTyPlayerClient
             return menu[0] == 0;
         }
 
+        public void CheckLoaded()
+        {
+            PreviousLoadingState = LoadingState;
+            LoadingState = CheckLoading();
+            if(PreviousLoadingState != LoadingState)
+            {
+                PreviousLoadingState = LoadingState;
+                if (!LoadingState) LoadedIntoNewLevelStuffDone = false;
+            }
+        }
+
+        public void ProtectLeaderboard()
+        {
+            int address = CollectiblesHandler.ATTRIBUTE_DATA_START_ADDRESS + 0x5F;
+            int bytesWritten = 0;
+            byte[] bytes = BitConverter.GetBytes(100000000);
+            ProcessHandler.WriteProcessMemory((int)HProcess, address, bytes, bytes.Length, ref bytesWritten);
+        }
+
         public void GetCurrentLevel()
         {
             int bytesRead = 0;
             byte[] currentLevelBytes = new byte[4];
             ProcessHandler.ReadProcessMemory((int)HProcess, LEVEL_ID_AD, currentLevelBytes, 4, ref bytesRead);
             CurrentLevelId = BitConverter.ToInt32(currentLevelBytes, 0);
-
-            if(CurrentLevelId != PreviousLevelID)
-            {
-                LoadedIntoNewLevelStuffDone = false;
-                PreviousLevelID = CurrentLevelId;
-            }
-
-            while (CheckLoading()) { };
 
             int[] objectiveCountOffsets = null;
 

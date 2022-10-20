@@ -52,7 +52,8 @@ namespace MulTyPlayerClient
             }
             while (Client.IsRunning)
             {
-                if (!HeroHandler.CheckMenu() && !HeroHandler.CheckLoading())
+                HeroHandler.CheckLoaded();
+                if (!HeroHandler.CheckMenu() && !HeroHandler.LoadingState)
                 {
                     CollectiblesHandler.CheckCounts();
                     HeroHandler.GetCurrentLevel();

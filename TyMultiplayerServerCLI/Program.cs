@@ -16,7 +16,11 @@ namespace TyMultiplayerServerCLI
         ServerDataUpdate,
         ClientLevelDataUpdate,
         ClientAttributeDataUpdate,
-        Disconnect
+        Disconnect,
+        ResetSync,
+        ReqHost,
+        HostChange,
+        HostCommand
     }
 
     internal class Program
@@ -26,6 +30,7 @@ namespace TyMultiplayerServerCLI
         public static Dictionary<ushort, Player> PlayerList;
         public static KoalaHandler KoalaHandler;
         public static CollectiblesHandler CollectiblesHandler;
+        public static CommandHandler CommandHandler;
 
         private static void Main()
         {
@@ -41,13 +46,13 @@ namespace TyMultiplayerServerCLI
             PlayerList = new Dictionary<ushort, Player>();
             KoalaHandler = new KoalaHandler();
             CollectiblesHandler = new CollectiblesHandler();
-            CommandHandler commandHandler = new CommandHandler();
+            CommandHandler = new CommandHandler();
             Console.WriteLine("Welcome to Mul-Ty-Player.\nThis is the server application. \nPort forward on port 8750 to allow connections.\n");
 
             string command = Console.ReadLine();
             while(command != "/stop")
             {
-                commandHandler.ParseCommand(command);  
+                CommandHandler.ParseCommand(command);  
                 command = Console.ReadLine();
             }
             _isRunning = false;
@@ -58,7 +63,7 @@ namespace TyMultiplayerServerCLI
             Server = new Server(5000);
             Server.Start(8750, 8);
 
-            Server.ClientConnected += (s, e) => ClientConnected();
+            Server.ClientConnected += (s, e) => ClientConnected(s, e);
             Server.ClientDisconnected += (s, e) => ClientDisconnected(s, e);
 
             while (_isRunning)
@@ -82,9 +87,12 @@ namespace TyMultiplayerServerCLI
             Server.Stop();
         }
 
-        private static void ClientConnected()
+        private static void ClientConnected(object sender, ClientConnectedEventArgs e)
         {
-
+            if(Server.Clients.Length == 0)
+            {
+                CommandHandler.SetNewHost(e.Id);
+            }
         }
 
         private static void ClientDisconnected(object sender, ClientDisconnectedEventArgs e)

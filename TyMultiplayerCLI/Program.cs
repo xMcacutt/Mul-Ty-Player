@@ -121,6 +121,14 @@ namespace MulTyPlayerClient
             }
             Client.StartClient(ipStr);
 
+            CommandHandler commandHandler = new CommandHandler();
+
+            string command = Console.ReadLine();
+            while (command != "/stop")
+            {
+                commandHandler.ParseCommand(command);
+                command = Console.ReadLine();
+            }
         }
     }
 }
