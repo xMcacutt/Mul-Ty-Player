@@ -9,49 +9,45 @@ namespace MulTyPlayerClient
     internal class Client
     {
         static HeroHandler HHero => Program.HHero;
-        static KoalaHandler HKoala => Program.HKoala;
         static LevelHandler HLevel => Program.HLevel;
         static SyncHandler HSync => Program.HSync;
         static GameStateHandler HGameState => Program.HGameState;
 
         public static bool IsRunning;
-        public static bool DidRun;
         public static RiptideNetworking.Client _client;
         private static string _ip;
+        private static string _command;
         static Thread _loop;
 
         public static void StartClient(string ipinput)
         {
             RiptideLogger.Initialize(Console.WriteLine, true);
             _ip = ipinput;
-            DidRun = false;
+
 
             _loop = new Thread(new ThreadStart(Loop));
             _loop.Start();
+
             IsRunning = true;
 
             CommandHandler commandHandler = new CommandHandler();
 
-            if (!DidRun)
+            _command = "/doNothing";
+            while (_command != "/stop")
             {
-                Console.WriteLine("Could not connect to server...");
-                IsRunning = false;
-                Disconnected();
-                return;
-            }
-
-            string command = Console.ReadLine();
-            while (command != "/stop")
-            {
-                commandHandler.ParseCommand(command);
-                command = Console.ReadLine();
+                //Console.WriteLine(CommandHandler.host);
+                if(CommandHandler.host != 0)
+                {
+                    commandHandler.ParseCommand(_command);
+                    _command = Console.ReadLine();
+                }
             }
 
             if (IsRunning)
             {
                 IsRunning = false;
                 _client.Disconnect();
-                Console.WriteLine("\nYou have been disconnected from the server. Press return.");
+                Console.WriteLine("\nYou have been disconnected from the server.");
                 Disconnected();
             }
 
@@ -62,6 +58,7 @@ namespace MulTyPlayerClient
             _client = new RiptideNetworking.Client(5000);
             _client.Connected += (s, e) => Connected();
             _client.Disconnected += (s, e) => Disconnected();
+            _client.ConnectionFailed += (s, e) => ConnectionFailed();
             _client.Connect(_ip + ":8750");
 
             while (IsRunning)
@@ -84,9 +81,7 @@ namespace MulTyPlayerClient
 
         private static void Connected()
         {
-            DidRun = true;
-            HSync.RequestSync();
-            Console.WriteLine("\nConnected to server successfully!\nPress enter to disconnect at any time.");
+            Console.WriteLine("\nConnected to server successfully!\nType /stop to disconnect at any time.");
             Message message = Message.Create(MessageSendMode.reliable, MessageID.Connected);
             message.AddString(Program.PlayerName);
             _client.Send(message);
@@ -96,6 +91,15 @@ namespace MulTyPlayerClient
         {
             Program.TyDataThread.Abort();
             _loop.Abort();
+        }
+
+        private static void ConnectionFailed()
+        {
+            Console.WriteLine("Could not connect to server...");
+            _command = "/stop";
+            IsRunning = false;
+            Disconnected();
+            return;
         }
 
         [MessageHandler((ushort)MessageID.ConsoleSend)]

@@ -9,7 +9,6 @@ namespace MulTyPlayerClient
     internal class CollectiblesHandler
     {
         static IntPtr HProcess => ProcessHandler.HProcess;
-        static HeroHandler HHero => Program.HHero;
         static LevelHandler HLevel => Program.HLevel;
         static SyncHandler HSync => Program.HSync;
 
@@ -25,7 +24,6 @@ namespace MulTyPlayerClient
         public int[] PreviousCollectibleCounts;
 
         public Dictionary<int, byte[]> LevelData;
-
 
         public CollectiblesHandler()
         {

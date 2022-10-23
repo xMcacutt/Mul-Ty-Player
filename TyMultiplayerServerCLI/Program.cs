@@ -112,7 +112,7 @@ namespace TyMultiplayerServerCLI
 
         private static void ClientConnected(object sender, ServerClientConnectedEventArgs e)
         {
-            if(Server.Clients.Length == 0)
+            if(Server.Clients.Length == 1)
             {
                 CommandHandler.SetNewHost(e.Client.Id);
             }

@@ -161,12 +161,16 @@ namespace TyMultiplayerServerCLI
             host = newHost;
             Message notifyHostChange = Message.Create(MessageSendMode.reliable, MessageID.HostChange);
             notifyHostChange.AddUShort(newHost);
-            Program.Server.SendToAll(notifyHostChange, newHost);
-            Program.SendMessageToClients($"{Program.PlayerList[newHost]} has been made host", true);
+            Program.Server.SendToAll(notifyHostChange);
+            if(Program.PlayerList.Count == 0)
+            {
+                return;
+            }
+            Program.SendMessageToClients($"{Program.PlayerList[newHost].Name} has been made host", true);
         }
 
         [MessageHandler((ushort)MessageID.HostCommand)]
-        public static void HostCommand(Message message)
+        public static void HostCommand(ushort fromClientId, Message message)
         {
             Program.CommandHandler.ParseCommand(message.GetString());
         }

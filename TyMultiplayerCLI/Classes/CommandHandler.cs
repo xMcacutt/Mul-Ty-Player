@@ -8,7 +8,7 @@ namespace MulTyPlayerClient
 {
     internal class CommandHandler
     {
-        public static ushort host;
+        public static ushort host = 0;
         public List<string> hostCommands;
 
         public CommandHandler()
@@ -33,8 +33,6 @@ namespace MulTyPlayerClient
             string command = userInput.Split(' ')[0].Trim('/');
             string[] args = userInput.Split(' ').Skip(1).ToArray();
 
-
-
             if (host == Client._client.Id && hostCommands.Contains(command))
             {
                 Message message = Message.Create(MessageSendMode.reliable, MessageID.HostCommand);
@@ -51,10 +49,14 @@ namespace MulTyPlayerClient
                     }
                 case "help":
                     {
-                        foreach (string line in File.ReadLines("../help.mtps"))
+                        foreach (string line in File.ReadLines("./help.mtps"))
                         {
                             Console.WriteLine(line);
                         }
+                        break;
+                    }
+                case "doNothing":
+                    {
                         break;
                     }
                 default:
@@ -87,6 +89,7 @@ namespace MulTyPlayerClient
         public static void HostChange(Message message)
         {
             host = message.GetUShort();
+            Console.WriteLine(host);
         }
     }
 }

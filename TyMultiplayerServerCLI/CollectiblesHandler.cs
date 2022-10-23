@@ -31,7 +31,6 @@ namespace TyMultiplayerServerCLI
                 { 13, new byte[23] },
                 { 14, new byte[23] }
             };
-
         }
 
         public static void CompDataArrays(byte[] localPlayerArray, ref byte[] globalDataArray)

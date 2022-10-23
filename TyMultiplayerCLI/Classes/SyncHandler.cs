@@ -33,11 +33,14 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ReqSync)]
         public static void HandleSyncRequestResponse(Message message)
         {
-            foreach (int i in HCollectibles.LevelData.Keys)
+            int[] tempints = HCollectibles.LevelData.Keys.ToArray();
+            foreach (int i in tempints)
             {
                 HCollectibles.LevelData[i] = message.GetBytes();
+                ProcessHandler.WriteData(HCollectibles.LevelDataStartAddress + (0x70 * (i - 4)), HCollectibles.LevelData[i]);
             }
             HAttribute.AttributeData = message.GetBytes();
+            ProcessHandler.WriteData(HAttribute.AttributeDataBaseAddress, HAttribute.AttributeData);
         }
 
         [MessageHandler((ushort)MessageID.ClientAttributeDataUpdate)]
@@ -61,11 +64,13 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ResetSync)]
         public static void ResetSync(Message message)
         {
-            foreach (int i in HCollectibles.LevelData.Keys)
+            int[] tempints = HCollectibles.LevelData.Keys.ToArray();
+            foreach (int i in tempints)
             {
                 HCollectibles.LevelData[i] = new byte[23];
             }
             HAttribute.AttributeData = new byte[26];
+            HAttribute.AttributeData[4] = 1;
             HAttribute.PreviousAttributeData = new byte[26];
             HCollectibles.CollectibleCounts = new int[3];
             HCollectibles.PreviousCollectibleCounts = new int[3];

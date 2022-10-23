@@ -96,7 +96,7 @@ namespace MulTyPlayerClient
                 (
                     PointerCalculations.AddOffset(KOALA_BASE_ADDRESS),
                     koalaOffsets[koalaID],
-                    12
+                    0xC
                 );
             }
         }
@@ -138,7 +138,7 @@ namespace MulTyPlayerClient
                 int bytesWritten = 0;
                 byte[] buffer = BitConverter.GetBytes(coordinates[i]);
                 ProcessHandler.WriteProcessMemory((int)hProcess, Program.HKoala.KoalaAddrs[intData[0]][i], buffer, buffer.Length, ref bytesWritten);
-                // Console.WriteLine("Writing {0:F} to {1:X}", coordinates[i], rKoalaHandler.KoalaAddrs[intData[0]][i]);
+                //Console.WriteLine("Writing {0:F} to {1:X}", coordinates[i], Program.HKoala.KoalaAddrs[intData[0]][i]);
             }
         }
     }

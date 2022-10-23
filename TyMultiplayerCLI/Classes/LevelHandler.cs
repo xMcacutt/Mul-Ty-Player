@@ -36,7 +36,7 @@ namespace MulTyPlayerClient
         {
             int bytesRead = 0;
             byte[] currentLevelBytes = new byte[4];
-            ProcessHandler.ReadProcessMemory((int)HProcess, 0x280594, currentLevelBytes, 4, ref bytesRead);
+            ProcessHandler.ReadProcessMemory((int)HProcess, PointerCalculations.AddOffset(0x280594), currentLevelBytes, 4, ref bytesRead);
             CurrentLevelId = BitConverter.ToInt32(currentLevelBytes, 0);
         }
 

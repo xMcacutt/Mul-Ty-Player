@@ -29,10 +29,8 @@ namespace MulTyPlayerClient
                 Console.Clear();
                 _inputStr = "n";
                 RunProgram();
-                Console.ReadLine();
                 Console.WriteLine("Would you like to restart Mul-Ty-Player? [y/n]");
                 _inputStr = Console.ReadLine();
-
             } while (_inputStr == "y");
         }
 

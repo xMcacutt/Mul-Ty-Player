@@ -86,7 +86,9 @@
     <Content Include="Resources\RiptideNetworking.dll" />
     <Content Include="Resources\RiptideNetworking.xml" />
     <Content Include="Resources\Steamworks.NET.dll" />
-    <Content Include="Resources\steam_api.dll" />
+    <Content Include="Resources\steam_api.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Steamworks.NET.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
