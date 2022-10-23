@@ -90,5 +90,18 @@ namespace TyMultiplayerServerCLI
             Program.Server.SendToAll(message, originalSender);
         }
 
+        [MessageHandler((ushort)MessageID.ReqSync)]
+        public static void SyncRequest(ushort fromClientId, Message message)
+        {
+            Message sync = Message.Create(MessageSendMode.reliable, MessageID.ReqSync);
+            //ADD LEVEL COLLECTIBLE DATA FOR EACH LEVEL
+            foreach(byte[] bytes in GlobalLevelData.Values)
+            {
+                sync.AddBytes(bytes);
+            }
+            sync.AddBytes(GlobalAttributeData);
+            Program.Server.Send(sync, fromClientId);
+        }
+
     }
 }

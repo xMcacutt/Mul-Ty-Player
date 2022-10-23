@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace MulTyPlayerClient
@@ -8,10 +8,13 @@ namespace MulTyPlayerClient
     internal static class ProcessHandler
     {
         public static IntPtr HProcess;
-        static HeroHandler HeroHandler => Program.HeroHandler;
-        static KoalaHandler KoalaHandler => Program.KoalaHandler;
-
-        static CollectiblesHandler CollectiblesHandler => Program.CollectiblesHandler;
+        static HeroHandler HHero => Program.HHero;
+        static KoalaHandler HKoala => Program.HKoala;
+        static LevelHandler HLevel => Program.HLevel;
+        static SyncHandler HSync => Program.HSync;
+        static AttributeHandler HAttribute => Program.HAttribute;
+        static CollectiblesHandler HCollectibles => Program.HCollectibles;
+        static GameStateHandler HGameState => Program.HGameState;
 
         public static Process TyProcess;
 
@@ -44,21 +47,28 @@ namespace MulTyPlayerClient
             return null;
         }
 
+        public static void WriteData(int address, byte[] bytes)
+        {
+            int bytesWritten = 0;
+            WriteProcessMemory((int)HProcess, address, bytes, bytes.Length, ref bytesWritten);
+        }
+
         public static void GetTyData()
         {
             while (!Client.IsRunning)
             {
-                
+
             }
             while (Client.IsRunning)
             {
-                HeroHandler.CheckLoaded();
-                if (!HeroHandler.CheckMenu() && !HeroHandler.LoadingState)
+                HGameState.CheckLoaded();
+                if (!HGameState.CheckMenu() && !HGameState.LoadingState)
                 {
-                    CollectiblesHandler.CheckCounts();
-                    HeroHandler.GetCurrentLevel();
-                    HeroHandler.GetTyPos();
-                    KoalaHandler.SetCoordAddrs();
+                    HCollectibles.CheckCountsChanged();
+                    HAttribute.CheckAttributeChange();
+                    HLevel.GetCurrentLevel();
+                    HHero.GetTyPosRot();
+                    HKoala.SetCoordAddrs();
                 }
                 Thread.Sleep(10);
             }

@@ -1,13 +1,8 @@
-﻿using Microsoft.SqlServer.Server;
-using RiptideNetworking.Transports;
-using RiptideNetworking;
+﻿using RiptideNetworking;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.Design;
 using System.IO;
+using System.Linq;
 
 namespace MulTyPlayerClient
 {
@@ -24,7 +19,8 @@ namespace MulTyPlayerClient
                 "msg",
                 "kick",
                 "password",
-                "clist"
+                "clist",
+                "restart"
             };
         }
 
@@ -39,7 +35,7 @@ namespace MulTyPlayerClient
 
 
 
-            if(host == Client._client.Id && hostCommands.Contains(command))
+            if (host == Client._client.Id && hostCommands.Contains(command))
             {
                 Message message = Message.Create(MessageSendMode.reliable, MessageID.HostCommand);
                 message.AddString(userInput);
@@ -55,7 +51,7 @@ namespace MulTyPlayerClient
                     }
                 case "help":
                     {
-                        foreach (string line in File.ReadLines("./help.mtps"))
+                        foreach (string line in File.ReadLines("../help.mtps"))
                         {
                             Console.WriteLine(line);
                         }
@@ -79,7 +75,7 @@ namespace MulTyPlayerClient
         public static void RequestHostResponse(Message message)
         {
             if (message.GetBool())
-            { 
+            {
                 Console.WriteLine("You have been made host. You now have access to host only commands.");
                 host = Client._client.Id;
                 return;

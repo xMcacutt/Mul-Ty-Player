@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Xml;
 
 namespace TyMultiplayerServerCLI
 {
@@ -89,6 +90,11 @@ namespace TyMultiplayerServerCLI
                         Console.WriteLine("Sent message to all connected clients");
                         break;
                     }
+                case "restart":
+                    {
+                        Program.RestartServer();
+                        break;
+                    }
                 default:
                     {
                         Console.WriteLine($"/{command} is not a command. Try /help for a list of commands");
@@ -125,7 +131,6 @@ namespace TyMultiplayerServerCLI
                 }
             }
         }
-
         private void SetPassword(string password)
         {
             if (!password.All(Char.IsLetter) || password.Length != 5)

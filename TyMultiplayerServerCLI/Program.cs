@@ -20,7 +20,8 @@ namespace TyMultiplayerServerCLI
         ResetSync,
         ReqHost,
         HostChange,
-        HostCommand
+        HostCommand,
+        ReqSync
     }
 
     internal class Program
@@ -31,8 +32,24 @@ namespace TyMultiplayerServerCLI
         public static KoalaHandler KoalaHandler;
         public static CollectiblesHandler CollectiblesHandler;
         public static CommandHandler CommandHandler;
+        static string _inputStr;
 
         private static void Main()
+        {
+            //RESTARTS THE APP WHEN IT REACHES END (DISCONNECT)
+            do
+            {
+                Console.Clear();
+                _inputStr = "n";
+                RunProgram();
+                Console.ReadLine();
+                Console.WriteLine("Would you like to restart Mul-Ty-Player? [y/n]");
+                _inputStr = Console.ReadLine();
+
+            } while (_inputStr == "y");
+        }
+
+        private static void RunProgram()
         {
             Console.Title = "Mul-Ty-Player Server";
 
@@ -50,9 +67,9 @@ namespace TyMultiplayerServerCLI
             Console.WriteLine("Welcome to Mul-Ty-Player.\nThis is the server application. \nPort forward on port 8750 to allow connections.\n");
 
             string command = Console.ReadLine();
-            while(command != "/stop")
+            while (command != "/stop")
             {
-                CommandHandler.ParseCommand(command);  
+                CommandHandler.ParseCommand(command);
                 command = Console.ReadLine();
             }
             _isRunning = false;
@@ -87,11 +104,17 @@ namespace TyMultiplayerServerCLI
             Server.Stop();
         }
 
-        private static void ClientConnected(object sender, ClientConnectedEventArgs e)
+        public static void RestartServer()
+        {
+            _isRunning = false;
+            _inputStr = "y";
+        }
+
+        private static void ClientConnected(object sender, ServerClientConnectedEventArgs e)
         {
             if(Server.Clients.Length == 0)
             {
-                CommandHandler.SetNewHost(e.Id);
+                CommandHandler.SetNewHost(e.Client.Id);
             }
         }
 

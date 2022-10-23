@@ -1,35 +1,39 @@
-﻿-----------------------------------------------------------------------
-   __  __       _     _____            ____  _                       
-  |  \/  |_   _| |   |_   _|   _      |  _ \| | __ _ _   _  ___ _ __ 
-  | |\/| | | | | |_____| || | | |_____| |_) | |/ _` | | | |/ _ \ '__|
-  | |  | | |_| | |_____| || |_| |_____|  __/| | (_| | |_| |  __/ |   
-  |_|  |_|\__,_|_|     |_| \__, |     |_|   |_|\__,_|\__, |\___|_|   
-                           |___/                     |___/          
------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------
+     __  __       _     _____            ____  _                       
+    |  \/  |_   _| |   |_   _|   _      |  _ \| | __ _ _   _  ___ _ __ 
+    | |\/| | | | | |_____| || | | |_____| |_) | |/ _` | | | |/ _ \ '__|
+    | |  | | |_| | |_____| || |_| |_____|  __/| | (_| | |_| |  __/ |   
+    |_|  |_|\__,_|_|     |_| \__, |     |_|   |_|\__,_|\__, |\___|_|   
+                              |___/                     |___/          
+---------------------------------------------------------------------------
 
 This is the client command line interface.
 
-The commands that can be run from any client are as follows:
+        The commands that can be run from any client are as follows:
 
-    /help    shows this message.
+/help               shows this message.
 
-    /requesthost    gives player host privileges if no host connected
+/requesthost        gives player host privileges if no host connected
 
-    /resetsync    resets all synced data to default (nothing collected)
+/resetsync          resets all synced data to default (nothing collected)
 
-    /stop    stops the client and closes the application
+/stop               stops the client and closes the application#
 
-The commands that can be run by the host only are as follows
+---------------------------------------------------------------------------
 
-    /kick [client id]    disconnects a player from the server
+        The commands that can be run by the host only are as follows
 
-    /password [password]    displays current password or sets a new one
+/kick [client id]   disconnects a player from the server.
 
-    /clist   lists all currently connected clients and their names 
+/password [pword]   displays current password or sets a new one.
 
-    /resetsync    resets all synced data to default (nothing collected)
+/clist              lists all currently connected clients and their names. 
 
-    /msg [message]    sends a message to all clients
+/resetsync          resets all synced data to default (nothing collected).
 
------------------------------------------------------------------------
+/msg [message]      sends a message to all clients.
+
+/restart            stops and restarts the server.
+
+---------------------------------------------------------------------------
 

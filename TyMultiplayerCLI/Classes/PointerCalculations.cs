@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MulTyPlayerClient
 {
     internal static class PointerCalculations
-    { 
+    {
         static IntPtr HProcess => ProcessHandler.HProcess;
 
         public static int GetPointerAddress(int baseAddress, int[] offsets, int extraOffset)
@@ -83,7 +79,7 @@ namespace MulTyPlayerClient
             addr -= extraOffset;
             return (int)addr;
         }
-        
+
 
         public static int AddOffset(int i)
         {

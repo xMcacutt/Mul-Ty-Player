@@ -1,31 +1,19 @@
-﻿using System;
-using System.Net;
+﻿using RiptideNetworking;
 using RiptideNetworking.Utils;
+using System;
+using System.Net.Cache;
 using System.Threading;
-using RiptideNetworking;
 
 namespace MulTyPlayerClient
 {
-    public enum MessageID : ushort
+    internal class Client
     {
-        Connected,
-        PlayerInfo,
-        KoalaCoordinates,
-        ConsoleSend,
-        ServerDataUpdate,
-        ClientLevelDataUpdate,
-        ClientAttributeDataUpdate,
-        Disconnect,
-        ResetSync,
-        ReqHost,
-        HostChange,
-        HostCommand
-    }
+        static HeroHandler HHero => Program.HHero;
+        static KoalaHandler HKoala => Program.HKoala;
+        static LevelHandler HLevel => Program.HLevel;
+        static SyncHandler HSync => Program.HSync;
+        static GameStateHandler HGameState => Program.HGameState;
 
-    internal static class Client
-    {
-        static HeroHandler HeroHandler => Program.HeroHandler;
-        static KoalaHandler KoalaHandler => Program.KoalaHandler;
         public static bool IsRunning;
         public static bool DidRun;
         public static RiptideNetworking.Client _client;
@@ -42,15 +30,23 @@ namespace MulTyPlayerClient
             _loop.Start();
             IsRunning = true;
 
-            Console.ReadLine();
+            CommandHandler commandHandler = new CommandHandler();
 
             if (!DidRun)
             {
-                Console.WriteLine("Could not connect to server. Press return.");
+                Console.WriteLine("Could not connect to server...");
                 IsRunning = false;
                 Disconnected();
                 return;
             }
+
+            string command = Console.ReadLine();
+            while (command != "/stop")
+            {
+                commandHandler.ParseCommand(command);
+                command = Console.ReadLine();
+            }
+
             if (IsRunning)
             {
                 IsRunning = false;
@@ -72,35 +68,24 @@ namespace MulTyPlayerClient
             {
                 _client.Tick();
                 //CHECK IF ON MENU OR LOADING
-                if (!HeroHandler.CheckMenu() && !HeroHandler.CheckLoading())
+                if (!HGameState.CheckMenu() && !HGameState.CheckLoading())
                 {
                     //IF NOT SET UP LOAD INTO LEVEL STUFF
-                    if (!HeroHandler.LoadedIntoNewLevelStuffDone)
+                    if (!HLevel.LoadedIntoNewLevelStuffDone)
                     {
-                        DoLevelSetup();
+                        HLevel.DoLevelSetup();
                     }
-                    HeroHandler.SendCoordinates();
+                    HHero.SendCoordinates();
                 }
 
                 Thread.Sleep(10);
             }
-
-        }
-
-        private static void DoLevelSetup()
-        {
-            HeroHandler.ProtectLeaderboard();
-            KoalaHandler.SetCoordAddrs();
-            if (!SettingsHandler.DoKoalaCollision)
-            {
-                KoalaHandler.RemoveCollision();
-            }
-            HeroHandler.LoadedIntoNewLevelStuffDone = true;
         }
 
         private static void Connected()
         {
             DidRun = true;
+            HSync.RequestSync();
             Console.WriteLine("\nConnected to server successfully!\nPress enter to disconnect at any time.");
             Message message = Message.Create(MessageSendMode.reliable, MessageID.Connected);
             message.AddString(Program.PlayerName);

@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Steamworks;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Runtime.InteropServices;
-using Steamworks;
-using System.Text.RegularExpressions;
 using System.Net;
-using System.IO;
+using System.Threading;
 
 namespace MulTyPlayerClient
 {
-
     internal static class Program
     {
-        public static HeroHandler HeroHandler;
-        public static KoalaHandler KoalaHandler;
-        public static CollectiblesHandler CollectiblesHandler;
+        public static HeroHandler HHero;
+        public static KoalaHandler HKoala;
+        public static CollectiblesHandler HCollectibles;
+        public static AttributeHandler HAttribute;
+        public static LevelHandler HLevel;
+        public static SyncHandler HSync;
+        public static GameStateHandler HGameState;
+
         public static Thread TyDataThread;
         public static string PlayerName;
         private static string _inputStr;
@@ -40,9 +39,10 @@ namespace MulTyPlayerClient
         private static void RunProgram()
         {
             SettingsHandler.Setup();
-            HeroHandler = new HeroHandler();
-            KoalaHandler = new KoalaHandler();
-            
+            HGameState = new GameStateHandler();
+            HHero = new HeroHandler();
+            HKoala = new KoalaHandler();
+            HLevel = new LevelHandler();
 
             Console.WriteLine("Welcome to Mul-Ty-player");
 
@@ -57,26 +57,27 @@ namespace MulTyPlayerClient
                 }
             }
             Console.WriteLine("Ty.exe Found!");
-            
+
             //OPEN HANDLE TO PROCESS
             ProcessHandler.OpenTyProcess();
 
-            HeroHandler.SetMemoryAddresses();
-            KoalaHandler.CreateKoalas();
-            
+            HHero.SetCoordAddrs();
+            HKoala.CreateKoalas();
 
             //STARTS THE THREAD THAT CONTINUOUSLY READS DATA FROM THE GAME
             TyDataThread = new Thread(new ThreadStart(ProcessHandler.GetTyData));
             TyDataThread.Start();
 
-            CollectiblesHandler = new CollectiblesHandler();
+            HSync = new SyncHandler();
+            HCollectibles = new CollectiblesHandler();
+            HAttribute = new AttributeHandler();
 
             //MAKES FILE FOR POSITION LOGGING
             if (SettingsHandler.DoPositionLogging)
             {
                 PosLogPath = SettingsHandler.PositionLoggingOutputDir + DateTime.Now;
-              //  File.Create(posLogPath);
-             //   Console.WriteLine("File created for position logging");
+                //  File.Create(posLogPath);
+                //   Console.WriteLine("File created for position logging");
             }
 
             //ATTEMPTS TO GET STEAM NAME OR DEFAULT NAME FROM SETTINGS FILE
@@ -88,7 +89,7 @@ namespace MulTyPlayerClient
                     PlayerName = SteamFriends.GetPersonaName();
                 }
             }
-            else if(!string.IsNullOrWhiteSpace(SettingsHandler.DefaultName))
+            else if (!string.IsNullOrWhiteSpace(SettingsHandler.DefaultName))
             {
                 Console.WriteLine("Player name already found. Setting up client...");
                 PlayerName = SettingsHandler.DefaultName;
@@ -105,7 +106,7 @@ namespace MulTyPlayerClient
             }
 
             //
-            string ipStr = "";
+            string ipStr = string.Empty;
             if (string.IsNullOrWhiteSpace(SettingsHandler.DefaultAddress))
             {
                 Console.WriteLine("\nNo default address specified in settings file");
@@ -120,15 +121,6 @@ namespace MulTyPlayerClient
                 ipStr = Console.ReadLine();
             }
             Client.StartClient(ipStr);
-
-            CommandHandler commandHandler = new CommandHandler();
-
-            string command = Console.ReadLine();
-            while (command != "/stop")
-            {
-                commandHandler.ParseCommand(command);
-                command = Console.ReadLine();
-            }
         }
     }
 }
