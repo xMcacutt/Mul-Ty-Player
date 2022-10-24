@@ -38,6 +38,7 @@ namespace MulTyPlayerClient
                 Message message = Message.Create(MessageSendMode.reliable, MessageID.HostCommand);
                 message.AddString(userInput);
                 Client._client.Send(message);
+                return;
             }
 
             switch (command)
@@ -90,6 +91,12 @@ namespace MulTyPlayerClient
         {
             host = message.GetUShort();
             Console.WriteLine(host);
+        }
+
+        [MessageHandler((ushort)MessageID.HostCommand)]
+        public static void HostCommandResponse(Message message)
+        {
+            Console.WriteLine(message.GetString());
         }
     }
 }

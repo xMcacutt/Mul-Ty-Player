@@ -16,11 +16,11 @@ namespace MulTyPlayerServer
     {
         public static ushort host;
 
-        public void ParseCommand(string userInput)
+        public string ParseCommand(string userInput)
         {
-            if (userInput == null) { return; }
+            if (userInput == null) { return null; }
 
-            if (!userInput.StartsWith("/")) { return; }
+            if (!userInput.StartsWith("/")) { return null; }
 
             string command = userInput.Split(' ')[0].Trim('/');
             string[] args = userInput.Split(' ').Skip(1).ToArray();
@@ -30,55 +30,50 @@ namespace MulTyPlayerServer
                 case "resetsync":
                     {
                         ResetSync();
-                        break;
+                        return "Synchronizations have been reset.";
                     }
                 case "kick":
                     {
                         if (args.Length == 0)
                         {
-                            Console.WriteLine("Usage: /kick [client id]\nFor a list of client ids, use /clist");
-                            break;
+                            return "Usage: /kick [client id]\nFor a list of client ids, use /clist";
                         }
                         ushort res;
                         if (!ushort.TryParse(args[0], out res) || !Server.PlayerList.ContainsKey(ushort.Parse(args[0])))
                         {
-                            Console.WriteLine(args[0] + " is not a valid client ID");
-                            break;
+                            return args[0] + " is not a valid client ID";
                         }
-                        Console.WriteLine($"Successfully Kicked {Server.PlayerList[ushort.Parse(args[0])].Name}");
+                        string kickSuccess = $"Successfully Kicked {Server.PlayerList[ushort.Parse(args[0])].Name}";
                         KickPlayer(ushort.Parse(args[0]));
-                        break;
+                        return kickSuccess;
                     }
                 case "clist":
                     {
-                        ListClients();
-                        break;
+                        return ListClients();
                     }
                 case "password":
                     {
                         if (args.Length == 0)
                         {
-                            Console.WriteLine($"The current password is {SettingsHandler.Password}");
-                            Console.WriteLine("To set a new password use /password [password]");
-                            break;
+                            return $"The current password is {SettingsHandler.Password}\nTo set a new password use /password [password]";
                         }
-                        SetPassword(args[0]);
-                        break;
+                        return SetPassword(args[0]);
                     }
                 case "help":
                     {
+                        string help = null;
                         foreach (string line in File.ReadLines("./help.mtps"))
                         {
-                            Console.WriteLine(line);
+                            help += line;
+                            help += "\n";
                         }
-                        break;
+                        return help;
                     }
                 case "msg":
                     {
                         if (args.Length == 0)
                         {
-                            Console.WriteLine("Usage: /msg [message]");
-                            return;
+                            return "Usage: /msg [message]";
                         }
                         string message = "";
                         foreach (string s in args)
@@ -87,18 +82,16 @@ namespace MulTyPlayerServer
                             message += " ";
                         }
                         Server.SendMessageToClients(message, false);
-                        Console.WriteLine("Sent message to all connected clients");
-                        break;
+                        return "Sent message to all connected clients.";
                     }
                 case "restart":
                     {
                         Server.RestartServer();
-                        break;
+                        return null;
                     }
                 default:
                     {
-                        Console.WriteLine($"/{command} is not a command. Try /help for a list of commands");
-                        break;
+                        return $"/{command} is not a command. Try /help for a list of commands";
                     }
             }
         }
@@ -115,31 +108,32 @@ namespace MulTyPlayerServer
             Server._Server.Send(message, clientId);
         }
 
-        private void ListClients()
+        private string ListClients()
         {
-            Console.WriteLine("\n--------------- Connected Clients ---------------");
+            string listRes = null;
+            listRes += "\n--------------- Connected Clients ---------------";
             if (Server.PlayerList.Count == 0)
             {
-                Console.WriteLine("There are no clients connected");
-                return;
+                return listRes += "\nThere are no clients currently connected.";
             }
             foreach (IConnectionInfo client in Server._Server.Clients)
             {
                 if (client.IsConnected)
                 {
-                    Console.WriteLine("Client " + client.Id + " Name: " + Server.PlayerList[client.Id].Name);
+                    return listRes += "Client " + client.Id + " Name: " + Server.PlayerList[client.Id].Name;
                 }
             }
+            return listRes;
         }
-        private void SetPassword(string password)
+
+        private string SetPassword(string password)
         {
             if (!password.All(Char.IsLetter) || password.Length != 5)
             {
-                Console.WriteLine($"{password} is not a valid password. A password must be exactly 5 LETTERS.");
-                return;
+                return $"{password} is not a valid password. A password must be exactly 5 LETTERS.";
             }
             SettingsHandler.Password = password.ToUpper();
-            Console.WriteLine($"{password.ToUpper()} set as new password");
+            return $"{SettingsHandler.Password} set as new password.";
         }
 
         [MessageHandler((ushort)MessageID.ReqHost)]
@@ -172,7 +166,9 @@ namespace MulTyPlayerServer
         [MessageHandler((ushort)MessageID.HostCommand)]
         public static void HostCommand(ushort fromClientId, Message message)
         {
-            Program.CommandHandler.ParseCommand(message.GetString());
+            Message response = Message.Create(MessageSendMode.reliable, MessageID.HostCommand);
+            response.AddString(Program.CommandHandler.ParseCommand(message.GetString()));
+            Server._Server.Send(message, fromClientId);
         }
     }
 }

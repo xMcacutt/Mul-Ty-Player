@@ -1,5 +1,6 @@
 ﻿using RiptideNetworking;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,7 +33,7 @@ namespace MulTyPlayerServer
             };
         }
 
-        public static void CompDataArrays(byte[] localPlayerArray, ref byte[] globalDataArray)
+        public static void CompDataByteArrays(byte[] localPlayerArray, ref byte[] globalDataArray)
         {
             for (int i = 0; i < localPlayerArray.Length; i++)
             {
@@ -42,7 +43,7 @@ namespace MulTyPlayerServer
                 }
             }
         }
-
+        
         /*MESSAGE HANDLING*/
 
         [MessageHandler((ushort)MessageID.ServerDataUpdate)]
@@ -53,13 +54,13 @@ namespace MulTyPlayerServer
             string dataType = message.GetString();
             if (dataType == "Attribute" && SettingsHandler.DoSyncRangs)
             {
-                CompDataArrays(playerDataArray, ref GlobalAttributeData);
+                CompDataByteArrays(playerDataArray, ref GlobalAttributeData);
                 SendUpdatedAttributeData(fromClientId);
             }
             if (dataType == "Collectible")
             {
                 byte[] tempArray = GlobalLevelData[levelId];
-                CompDataArrays(playerDataArray, ref tempArray);
+                CompDataByteArrays(playerDataArray, ref tempArray);
                 GlobalLevelData[levelId] = tempArray;
                 SendUpdatedLevelData(levelId, fromClientId, SettingsHandler.DoSyncTEs, SettingsHandler.DoSyncCogs, SettingsHandler.DoSyncBilbies);
             }
