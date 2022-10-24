@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TyMultiplayerServerCLI
+namespace MulTyPlayerServer
 {
     internal class KoalaHandler
     {
@@ -41,7 +41,7 @@ namespace TyMultiplayerServerCLI
 
         public void ReturnKoala(Player player)
         {
-            foreach (Player otherPlayer in Program.PlayerList.Values)
+            foreach (Player otherPlayer in Server.PlayerList.Values)
             {
                 if (otherPlayer.CurrentLevel == player.PreviousLevel && otherPlayer.Name != player.Name)
                 {
@@ -54,7 +54,7 @@ namespace TyMultiplayerServerCLI
                         0,
                         0
                     };
-                    Program.SendCoordinates(player.AssignedKoala.KoalaId, player.PreviousLevel, defaultCoords, player.Name);
+                    Server.SendCoordinates(player.AssignedKoala.KoalaId, player.PreviousLevel, defaultCoords, player.Name);
                 }
 
             }

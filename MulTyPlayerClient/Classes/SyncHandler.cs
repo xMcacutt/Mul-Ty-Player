@@ -15,8 +15,11 @@ namespace MulTyPlayerClient
         static AttributeHandler HAttribute => Program.HAttribute;
         static CollectiblesHandler HCollectibles => Program.HCollectibles;
 
+        static byte[] _lastReceivedServerData;
+
         public void UpdateServerData(int level, byte[] data, string type)
         {
+            if(Enumerable.SequenceEqual(data, _lastReceivedServerData)) { return; }
             Message message = Message.Create(MessageSendMode.reliable, MessageID.ServerDataUpdate);
             message.AddBytes(data);
             message.AddInt(level);
@@ -46,7 +49,9 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ClientAttributeDataUpdate)]
         public static void UpdateClientWithAttr(Message message)
         {
-            HAttribute.AttributeData = message.GetBytes();
+            byte[] bytes = message.GetBytes();
+            HAttribute.AttributeData = bytes;
+            _lastReceivedServerData = bytes;
             ProcessHandler.WriteData(HAttribute.AttributeDataBaseAddress, HAttribute.AttributeData);
         }
 
@@ -54,7 +59,9 @@ namespace MulTyPlayerClient
         public static void UpdateClientWithLevelData(Message message)
         {
             int level = message.GetInt();
-            HCollectibles.LevelData[level] = message.GetBytes();
+            byte[] bytes = message.GetBytes();
+            HCollectibles.LevelData[level] = bytes;
+            _lastReceivedServerData = bytes;
             bool[] doSync = message.GetBools();
             if (doSync[0]) { ProcessHandler.WriteData(HCollectibles.LevelDataStartAddress + (0x70 * (level - 4)), HCollectibles.LevelData[level].Take(8).ToArray()); }
             if (doSync[1]) { ProcessHandler.WriteData(HCollectibles.LevelDataStartAddress + (0x70 * (level - 4)) + 0x8, HCollectibles.LevelData[level].Skip(8).Take(10).ToArray()); }

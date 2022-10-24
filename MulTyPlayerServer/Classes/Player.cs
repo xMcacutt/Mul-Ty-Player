@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using RiptideNetworking;
 using RiptideNetworking.Utils;
 
-namespace TyMultiplayerServerCLI
+namespace MulTyPlayerServer
 {
     internal class Player
     {
@@ -29,21 +29,21 @@ namespace TyMultiplayerServerCLI
         {
             string name = message.GetString();
             ushort id = fromClientId;
-            Program.SendMessageToClients($"{name} joined the server.", true);
+            Server.SendMessageToClients($"{name} joined the server.", true);
             Player player = new Player(id, name);
-            Program.PlayerList.Add(id, player);
-            Program.KoalaHandler.AssignKoala(player);
-            Program.SendMessageToClients($"{name} was assgined {player.AssignedKoala.Name}", true);
+            Server.PlayerList.Add(id, player);
+            Program.HKoala.AssignKoala(player);
+            Server.SendMessageToClients($"{name} was assgined {player.AssignedKoala.Name}", true);
         }
 
         [MessageHandler((ushort)MessageID.PlayerInfo)]
         private static void HandleGettingCoordinates(ushort fromClientId, Message message)
         {
-            if (Program.PlayerList.ContainsKey(fromClientId))
+            if (Server.PlayerList.ContainsKey(fromClientId))
             {
                 if (message.GetBool()) { return; }
-                Program.PlayerList[fromClientId].CurrentLevel = message.GetInt();
-                Program.PlayerList[fromClientId].AssignedKoala.Coordinates = message.GetFloats();
+                Server.PlayerList[fromClientId].CurrentLevel = message.GetInt();
+                Server.PlayerList[fromClientId].AssignedKoala.Coordinates = message.GetFloats();
             }
         }
     }

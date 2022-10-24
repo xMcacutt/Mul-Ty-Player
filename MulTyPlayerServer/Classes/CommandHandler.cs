@@ -10,7 +10,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Xml;
 
-namespace TyMultiplayerServerCLI
+namespace MulTyPlayerServer
 {
     internal class CommandHandler
     {
@@ -40,12 +40,12 @@ namespace TyMultiplayerServerCLI
                             break;
                         }
                         ushort res;
-                        if (!ushort.TryParse(args[0], out res) || !Program.PlayerList.ContainsKey(ushort.Parse(args[0])))
+                        if (!ushort.TryParse(args[0], out res) || !Server.PlayerList.ContainsKey(ushort.Parse(args[0])))
                         {
                             Console.WriteLine(args[0] + " is not a valid client ID");
                             break;
                         }
-                        Console.WriteLine($"Successfully Kicked {Program.PlayerList[ushort.Parse(args[0])].Name}");
+                        Console.WriteLine($"Successfully Kicked {Server.PlayerList[ushort.Parse(args[0])].Name}");
                         KickPlayer(ushort.Parse(args[0]));
                         break;
                     }
@@ -86,13 +86,13 @@ namespace TyMultiplayerServerCLI
                             message += s;
                             message += " ";
                         }
-                        Program.SendMessageToClients(message, false);
+                        Server.SendMessageToClients(message, false);
                         Console.WriteLine("Sent message to all connected clients");
                         break;
                     }
                 case "restart":
                     {
-                        Program.RestartServer();
+                        Server.RestartServer();
                         break;
                     }
                 default:
@@ -112,22 +112,22 @@ namespace TyMultiplayerServerCLI
         private void KickPlayer(ushort clientId)
         {
             Message message = Message.Create(MessageSendMode.reliable, MessageID.Disconnect);
-            Program.Server.Send(message, clientId);
+            Server._Server.Send(message, clientId);
         }
 
         private void ListClients()
         {
             Console.WriteLine("\n--------------- Connected Clients ---------------");
-            if (Program.PlayerList.Count == 0)
+            if (Server.PlayerList.Count == 0)
             {
                 Console.WriteLine("There are no clients connected");
                 return;
             }
-            foreach (IConnectionInfo client in Program.Server.Clients)
+            foreach (IConnectionInfo client in Server._Server.Clients)
             {
                 if (client.IsConnected)
                 {
-                    Console.WriteLine("Client " + client.Id + " Name: " + Program.PlayerList[client.Id].Name);
+                    Console.WriteLine("Client " + client.Id + " Name: " + Server.PlayerList[client.Id].Name);
                 }
             }
         }
@@ -146,14 +146,14 @@ namespace TyMultiplayerServerCLI
         public static void RequestHost(ushort fromClientId, Message message)
         {
             bool acceptRequest = false;
-            if (!Program.Server.Clients[host].IsConnected)
+            if (!Server._Server.Clients[host].IsConnected)
             {
                 acceptRequest = true;
                 SetNewHost(fromClientId);
             }
             Message hRequest = Message.Create(MessageSendMode.reliable, MessageID.ReqHost);
             hRequest.AddBool(acceptRequest);
-            Program.Server.Send(hRequest, fromClientId);
+            Server._Server.Send(hRequest, fromClientId);
         }
 
         public static void SetNewHost(ushort newHost)
@@ -161,12 +161,12 @@ namespace TyMultiplayerServerCLI
             host = newHost;
             Message notifyHostChange = Message.Create(MessageSendMode.reliable, MessageID.HostChange);
             notifyHostChange.AddUShort(newHost);
-            Program.Server.SendToAll(notifyHostChange);
-            if(Program.PlayerList.Count == 0)
+            Server._Server.SendToAll(notifyHostChange);
+            if(Server.PlayerList.Count == 0)
             {
                 return;
             }
-            Program.SendMessageToClients($"{Program.PlayerList[newHost].Name} has been made host", true);
+            Server.SendMessageToClients($"{Server.PlayerList[newHost].Name} has been made host", true);
         }
 
         [MessageHandler((ushort)MessageID.HostCommand)]

@@ -5,12 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TyMultiplayerServerCLI
+namespace MulTyPlayerServer
 {
     internal class CollectiblesHandler
     {
         public static Dictionary<int, byte[]> GlobalLevelData;
-        public Dictionary<int, int> CollectibleLevelMultipliers;
         public static byte[] GlobalAttributeData;
 
         public CollectiblesHandler()
@@ -69,7 +68,7 @@ namespace TyMultiplayerServerCLI
         public static void SendResetSyncMessage()
         {
             Message message = Message.Create(MessageSendMode.reliable, MessageID.ResetSync);
-            Program.Server.SendToAll(message);
+            Server._Server.SendToAll(message);
         }
 
         public static void SendUpdatedLevelData(int levelId, ushort originalSender, bool doSyncTEs, bool doSyncCogs, bool doSyncBilbies)
@@ -78,7 +77,7 @@ namespace TyMultiplayerServerCLI
             message.AddInt(levelId);
             message.AddBytes(GlobalLevelData[levelId]);
             message.AddBools(new bool[] { doSyncTEs, doSyncCogs, doSyncBilbies });
-            Program.Server.SendToAll(message, originalSender);
+            Server._Server.SendToAll(message, originalSender);
         }
 
         public static void SendUpdatedAttributeData(ushort originalSender)
@@ -86,7 +85,7 @@ namespace TyMultiplayerServerCLI
             Console.WriteLine($"Sending to all except client {originalSender}");
             Message message = Message.Create(MessageSendMode.reliable, MessageID.ClientAttributeDataUpdate);
             message.AddBytes(GlobalAttributeData);
-            Program.Server.SendToAll(message, originalSender);
+            Server._Server.SendToAll(message, originalSender);
         }
 
         [MessageHandler((ushort)MessageID.ReqSync)]
@@ -99,7 +98,7 @@ namespace TyMultiplayerServerCLI
                 sync.AddBytes(bytes);
             }
             sync.AddBytes(GlobalAttributeData);
-            Program.Server.Send(sync, fromClientId);
+            Server._Server.Send(sync, fromClientId);
         }
 
     }
