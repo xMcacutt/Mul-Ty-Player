@@ -98,8 +98,8 @@ namespace MulTyPlayerServer
 
         private void ResetSync()
         {
-            Program.CollectiblesHandler = new CollectiblesHandler();
-            CollectiblesHandler.SendResetSyncMessage();
+            Program.HSync = new SyncHandler();
+            SyncHandler.SendResetSyncMessage();
         }
 
         private void KickPlayer(ushort clientId)
@@ -167,7 +167,7 @@ namespace MulTyPlayerServer
         public static void HostCommand(ushort fromClientId, Message message)
         {
             Message response = Message.Create(MessageSendMode.reliable, MessageID.HostCommand);
-            response.AddString(Program.CommandHandler.ParseCommand(message.GetString()));
+            response.AddString(Program.HCommand.ParseCommand(message.GetString()));
             Server._Server.Send(message, fromClientId);
         }
     }

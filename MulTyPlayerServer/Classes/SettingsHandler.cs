@@ -25,7 +25,6 @@ namespace MulTyPlayerServer
         public static bool DoSyncBilbies;
         public static bool DoSyncRangs;
 
-
         public static void Setup()
         {
             _settingsFileLines = File.ReadAllLines("./ServerSettings.mtps");

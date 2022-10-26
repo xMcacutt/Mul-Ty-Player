@@ -11,12 +11,9 @@ namespace MulTyPlayerServer
     internal class CollectiblesHandler
     {
         public static Dictionary<int, byte[]> GlobalLevelData;
-        public static byte[] GlobalAttributeData;
 
         public CollectiblesHandler()
         {
-            GlobalAttributeData = new byte[26];
-
             GlobalLevelData = new Dictionary<int, byte[]>
             {
                 { 4, new byte[23] },
@@ -33,45 +30,6 @@ namespace MulTyPlayerServer
             };
         }
 
-        public static void CompDataByteArrays(byte[] localPlayerArray, ref byte[] globalDataArray)
-        {
-            for (int i = 0; i < localPlayerArray.Length; i++)
-            {
-                if (localPlayerArray[i] == 1 && globalDataArray[i] == 0)
-                {
-                    globalDataArray[i] = 1;
-                }
-            }
-        }
-        
-        /*MESSAGE HANDLING*/
-
-        [MessageHandler((ushort)MessageID.ServerDataUpdate)]
-        private static void HandleServerDataUpdate(ushort fromClientId, Message message)
-        {
-            byte[] playerDataArray = message.GetBytes();
-            int levelId = message.GetInt();
-            string dataType = message.GetString();
-            if (dataType == "Attribute" && SettingsHandler.DoSyncRangs)
-            {
-                CompDataByteArrays(playerDataArray, ref GlobalAttributeData);
-                SendUpdatedAttributeData(fromClientId);
-            }
-            if (dataType == "Collectible")
-            {
-                byte[] tempArray = GlobalLevelData[levelId];
-                CompDataByteArrays(playerDataArray, ref tempArray);
-                GlobalLevelData[levelId] = tempArray;
-                SendUpdatedLevelData(levelId, fromClientId, SettingsHandler.DoSyncTEs, SettingsHandler.DoSyncCogs, SettingsHandler.DoSyncBilbies);
-            }
-        }
-
-        public static void SendResetSyncMessage()
-        {
-            Message message = Message.Create(MessageSendMode.reliable, MessageID.ResetSync);
-            Server._Server.SendToAll(message);
-        }
-
         public static void SendUpdatedLevelData(int levelId, ushort originalSender, bool doSyncTEs, bool doSyncCogs, bool doSyncBilbies)
         {
             Message message = Message.Create(MessageSendMode.reliable, MessageID.ClientLevelDataUpdate);
@@ -80,27 +38,13 @@ namespace MulTyPlayerServer
             message.AddBools(new bool[] { doSyncTEs, doSyncCogs, doSyncBilbies });
             Server._Server.SendToAll(message, originalSender);
         }
-
-        public static void SendUpdatedAttributeData(ushort originalSender)
+        
+        public static void HandleServerUpdate(byte[] bytes, int levelId, ushort returnClientId)
         {
-            Console.WriteLine($"Sending to all except client {originalSender}");
-            Message message = Message.Create(MessageSendMode.reliable, MessageID.ClientAttributeDataUpdate);
-            message.AddBytes(GlobalAttributeData);
-            Server._Server.SendToAll(message, originalSender);
+            byte[] temp = GlobalLevelData[levelId];
+            SyncHandler.CompDataByteArrays(bytes, ref temp);
+            GlobalLevelData[levelId] = temp;
+            SendUpdatedLevelData(levelId, returnClientId, SettingsHandler.DoSyncTEs, SettingsHandler.DoSyncCogs, SettingsHandler.DoSyncBilbies);
         }
-
-        [MessageHandler((ushort)MessageID.ReqSync)]
-        public static void SyncRequest(ushort fromClientId, Message message)
-        {
-            Message sync = Message.Create(MessageSendMode.reliable, MessageID.ReqSync);
-            //ADD LEVEL COLLECTIBLE DATA FOR EACH LEVEL
-            foreach(byte[] bytes in GlobalLevelData.Values)
-            {
-                sync.AddBytes(bytes);
-            }
-            sync.AddBytes(GlobalAttributeData);
-            Server._Server.Send(sync, fromClientId);
-        }
-
     }
 }
