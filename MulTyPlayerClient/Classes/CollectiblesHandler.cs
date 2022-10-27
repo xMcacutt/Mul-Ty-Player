@@ -79,13 +79,25 @@ namespace MulTyPlayerClient
                 PreviousCollectibleCounts[2] = CollectibleCounts[2];
             }
         }
-
         public byte[] ReadLevelData(int levelDataIndex)
         {
             int bytesRead = 0;
             byte[] buffer = new byte[23];
             ProcessHandler.ReadProcessMemory((int)HProcess, LevelDataStartAddress + (0x70 * levelDataIndex), buffer, 23, ref bytesRead);
             return buffer;
+        }
+
+        [MessageHandler((ushort)MessageID.ClientLevelDataUpdate)]
+        public static void UpdateClientWithLevelData(Message message)
+        {
+            int level = message.GetInt();
+            byte[] bytes = message.GetBytes();
+            Program.HCollectibles.LevelData[level] = bytes;
+            SyncHandler._lastReceivedServerData = bytes;
+            bool[] doSync = message.GetBools();
+            if (doSync[0]) { ProcessHandler.WriteData(Program.HCollectibles.LevelDataStartAddress + (0x70 * (level - 4)), Program.HCollectibles.LevelData[level].Take(8).ToArray()); }
+            if (doSync[1]) { ProcessHandler.WriteData(Program.HCollectibles.LevelDataStartAddress + (0x70 * (level - 4)) + 0x8, Program.HCollectibles.LevelData[level].Skip(8).Take(10).ToArray()); }
+            if (doSync[2]) { ProcessHandler.WriteData(Program.HCollectibles.LevelDataStartAddress + (0x70 * (level - 4)) + 0x12, Program.HCollectibles.LevelData[level].Skip(18).Take(5).ToArray()); }
         }
     }
 }

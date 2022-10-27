@@ -55,6 +55,7 @@
     <Compile Include="Classes\CommandHandler.cs" />
     <Compile Include="Classes\Koala.cs" />
     <Compile Include="Classes\MessageID.cs" />
+    <Compile Include="Classes\OpalHandler.cs" />
     <Compile Include="Classes\Player.cs" />
     <Compile Include="Classes\Program.cs" />
     <Compile Include="Classes\Server.cs" />

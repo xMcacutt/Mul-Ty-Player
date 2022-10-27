@@ -1,4 +1,5 @@
-﻿using Steamworks;
+﻿using MulTyPlayerClient.Classes;
+using Steamworks;
 using System;
 using System.Linq;
 using System.Net;
@@ -12,6 +13,7 @@ namespace MulTyPlayerClient
         public static KoalaHandler HKoala;
         public static CollectiblesHandler HCollectibles;
         public static AttributeHandler HAttribute;
+        public static OpalHandler HOpal;
         public static LevelHandler HLevel;
         public static SyncHandler HSync;
         public static GameStateHandler HGameState;
@@ -69,6 +71,7 @@ namespace MulTyPlayerClient
             HSync = new SyncHandler();
             HCollectibles = new CollectiblesHandler();
             HAttribute = new AttributeHandler();
+            HOpal = new OpalHandler();
 
             //MAKES FILE FOR POSITION LOGGING
             if (SettingsHandler.DoPositionLogging)

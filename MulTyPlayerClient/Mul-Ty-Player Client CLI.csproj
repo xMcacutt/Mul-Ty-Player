@@ -64,6 +64,7 @@
     <Compile Include="Classes\KoalaHandler.cs" />
     <Compile Include="Classes\LevelHandler.cs" />
     <Compile Include="Classes\MessageID.cs" />
+    <Compile Include="Classes\OpalHandler.cs" />
     <Compile Include="Classes\PointerCalculations.cs" />
     <Compile Include="Classes\ProcessHandler.cs" />
     <Compile Include="Classes\Program.cs" />

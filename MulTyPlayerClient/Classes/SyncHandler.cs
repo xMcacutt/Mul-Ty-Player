@@ -1,4 +1,5 @@
 ﻿using MulTyPlayerClient;
+using MulTyPlayerClient.Classes;
 using RiptideNetworking;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,9 @@ namespace MulTyPlayerClient
         IntPtr HProcess = ProcessHandler.HProcess;
         static AttributeHandler HAttribute => Program.HAttribute;
         static CollectiblesHandler HCollectibles => Program.HCollectibles;
+        static OpalHandler HOpal => Program.HOpal;
 
-        static byte[] _lastReceivedServerData;
+        public static byte[] _lastReceivedServerData;
 
         public void UpdateServerData(int level, byte[] data, string type)
         {
@@ -30,6 +32,7 @@ namespace MulTyPlayerClient
         public void RequestSync()
         {
             Message message = Message.Create(MessageSendMode.reliable, MessageID.ReqSync);
+            message.AddInt(Program.HLevel.CurrentLevelId);
             Client._client.Send(message);
         }
 
@@ -42,30 +45,18 @@ namespace MulTyPlayerClient
                 HCollectibles.LevelData[i] = message.GetBytes();
                 ProcessHandler.WriteData(HCollectibles.LevelDataStartAddress + (0x70 * (i - 4)), HCollectibles.LevelData[i]);
             }
+
+            HOpal.CurrentOpalData = message.GetBytes();
+            HOpal.WriteCurrentOpalsSync();
+
+            foreach (int i in tempints)
+            {
+                HOpal.LevelOpalData[i] = message.GetBytes();
+                ProcessHandler.WriteData(HOpal.levelOpalDataAddress + (0x70 * (i - 4)), HOpal.LevelOpalData[i]);
+            }
+
             HAttribute.AttributeData = message.GetBytes();
             ProcessHandler.WriteData(HAttribute.AttributeDataBaseAddress, HAttribute.AttributeData);
-        }
-
-        [MessageHandler((ushort)MessageID.ClientAttributeDataUpdate)]
-        public static void UpdateClientWithAttr(Message message)
-        {
-            byte[] bytes = message.GetBytes();
-            HAttribute.AttributeData = bytes;
-            _lastReceivedServerData = bytes;
-            ProcessHandler.WriteData(HAttribute.AttributeDataBaseAddress, HAttribute.AttributeData);
-        }
-
-        [MessageHandler((ushort)MessageID.ClientLevelDataUpdate)]
-        public static void UpdateClientWithLevelData(Message message)
-        {
-            int level = message.GetInt();
-            byte[] bytes = message.GetBytes();
-            HCollectibles.LevelData[level] = bytes;
-            _lastReceivedServerData = bytes;
-            bool[] doSync = message.GetBools();
-            if (doSync[0]) { ProcessHandler.WriteData(HCollectibles.LevelDataStartAddress + (0x70 * (level - 4)), HCollectibles.LevelData[level].Take(8).ToArray()); }
-            if (doSync[1]) { ProcessHandler.WriteData(HCollectibles.LevelDataStartAddress + (0x70 * (level - 4)) + 0x8, HCollectibles.LevelData[level].Skip(8).Take(10).ToArray()); }
-            if (doSync[2]) { ProcessHandler.WriteData(HCollectibles.LevelDataStartAddress + (0x70 * (level - 4)) + 0x12, HCollectibles.LevelData[level].Skip(18).Take(5).ToArray()); }
         }
 
         [MessageHandler((ushort)MessageID.ResetSync)]

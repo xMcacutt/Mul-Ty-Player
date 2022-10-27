@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RiptideNetworking;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -12,10 +13,8 @@ namespace MulTyPlayerClient
         IntPtr HProcess => ProcessHandler.HProcess;
         SyncHandler HSync => Program.HSync;
 
-
         public byte[] AttributeData;
         public byte[] PreviousAttributeData;
-
         public int AttributeDataBaseAddress;
 
         public AttributeHandler()
@@ -37,6 +36,15 @@ namespace MulTyPlayerClient
                 HSync.UpdateServerData(0, AttributeData, "Attribute");
                 PreviousAttributeData = AttributeData;
             }
+        }
+
+        [MessageHandler((ushort)MessageID.ClientAttributeDataUpdate)]
+        public static void UpdateClientWithAttr(Message message)
+        {
+            byte[] bytes = message.GetBytes();
+            Program.HAttribute.AttributeData = bytes;
+            SyncHandler._lastReceivedServerData = bytes;
+            ProcessHandler.WriteData(Program.HAttribute.AttributeDataBaseAddress, Program.HAttribute.AttributeData);
         }
 
         public byte[] ReadAttributeData()

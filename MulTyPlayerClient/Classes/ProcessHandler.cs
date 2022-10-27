@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MulTyPlayerClient.Classes;
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -14,6 +15,7 @@ namespace MulTyPlayerClient
         static SyncHandler HSync => Program.HSync;
         static AttributeHandler HAttribute => Program.HAttribute;
         static CollectiblesHandler HCollectibles => Program.HCollectibles;
+        static OpalHandler HOpal => Program.HOpal;
         static GameStateHandler HGameState => Program.HGameState;
 
         public static Process TyProcess;
@@ -66,6 +68,7 @@ namespace MulTyPlayerClient
                 {
                     HCollectibles.CheckCountsChanged();
                     HAttribute.CheckAttributeChange();
+                    HOpal.CheckCount();
                     HLevel.GetCurrentLevel();
                     HHero.GetTyPosRot();
                     HKoala.SetCoordAddrs();

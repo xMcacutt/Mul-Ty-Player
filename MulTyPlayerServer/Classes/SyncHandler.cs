@@ -1,4 +1,5 @@
-﻿using RiptideNetworking;
+﻿using MulTyPlayerServer.Classes;
+using RiptideNetworking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace MulTyPlayerServer
         {
             CollectiblesHandler collectiblesHandler = new CollectiblesHandler();
             AttributeHandler attributeHandler = new AttributeHandler();
+            OpalHandler opalHandler = new OpalHandler();
         }
 
         public static void CompDataByteArrays(byte[] localPlayerArray, ref byte[] globalDataArray)
@@ -57,12 +59,21 @@ namespace MulTyPlayerServer
         [MessageHandler((ushort)MessageID.ReqSync)]
         public static void SyncRequest(ushort fromClientId, Message message)
         {
+            int level = message.GetInt();
             Message sync = Message.Create(MessageSendMode.reliable, MessageID.ReqSync);
             //ADD LEVEL COLLECTIBLE DATA FOR EACH LEVEL
             foreach (byte[] bytes in CollectiblesHandler.GlobalLevelData.Values)
             {
                 sync.AddBytes(bytes);
             }
+            //ADD CURRENT LEVEL OPAL DATA
+            sync.AddBytes(OpalHandler.GlobalLevelOpalData[level]);
+            //ADD ALL LEVELS OPAL SAVE DATA
+            foreach (byte[] bytes in OpalHandler.GlobalSaveOpalData.Values)
+            {
+                sync.AddBytes(bytes);
+            }
+            //ADD ATTRIBUTE DATA
             sync.AddBytes(AttributeHandler.GlobalAttributeData);
             Server._Server.Send(sync, fromClientId);
         }

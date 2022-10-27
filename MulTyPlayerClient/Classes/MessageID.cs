@@ -20,6 +20,7 @@ namespace MulTyPlayerClient
         ReqHost,
         HostChange,
         HostCommand,
-        ReqSync
+        ReqSync,
+        OpalCollected
     }
 }
