@@ -60,7 +60,7 @@ namespace MulTyPlayerClient
             foreach (int i in tempints)
             {
                 HOpal.LevelOpalData[i] = message.GetBytes();
-                ProcessHandler.WriteData(OpalHandler.levelOpalDataAddress + (0x70 * (i - 4)), HOpal.LevelOpalData[i]);
+                ProcessHandler.WriteData(OpalHandler.OpalSaveDataAddress + (0x70 * (i - 4)), HOpal.LevelOpalData[i]);
             }
 
             HAttribute.AttributeData = message.GetBytes();

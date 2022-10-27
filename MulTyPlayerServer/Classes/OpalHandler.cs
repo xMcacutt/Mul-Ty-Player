@@ -54,22 +54,18 @@ namespace MulTyPlayerServer.Classes
             };
         }
 
-
-        [MessageHandler((ushort)MessageID.OpalCollected)]
-        static void HandleOpalCollected(ushort fromClientId, Message message)
+        public static void HandleServerUpdate(int opal, int level, ushort fromClientId)
         {
-            int level = message.GetInt();
-            int opal = message.GetInt();
             GlobalLevelOpalData[level][opal] = 1;
             GlobalSaveOpalData[level] = ConvertOpals(level);
             GlobalOpalCounts[level]++;
 
-            Message response = Message.Create(MessageSendMode.reliable, MessageID.OpalCollected);
+            Message message = Message.Create(MessageSendMode.reliable, MessageID.OpalCollected);
             message.AddInt(level);
             message.AddInt(opal);
             message.AddBytes(GlobalSaveOpalData[level]);
             message.AddInt(GlobalOpalCounts[level]);
-            Server._Server.SendToAll(response, fromClientId);
+            Server._Server.SendToAll(message, fromClientId);
         }
 
         static byte[] ConvertOpals(int level)

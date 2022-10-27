@@ -40,8 +40,8 @@ namespace MulTyPlayerServer
             switch (dataType)
             {
                 case "Attribute": if(SettingsHandler.DoSyncRangs) { AttributeHandler.HandleServerUpdate(playerDataArray, fromClientId); } break;
-                case "Collectible": { CollectiblesHandler.HandleServerUpdate(playerDataArray, levelId, fromClientId); } break;
-                case "Opal": { break; }
+                case "Collectible": CollectiblesHandler.HandleServerUpdate(playerDataArray, levelId, fromClientId); break;
+                case "Opal": OpalHandler.HandleServerUpdate(BitConverter.ToInt16(playerDataArray, 0), levelId, fromClientId); break;
                 case "Portal": { break; }
                 case "Julius": { break; }
                 case "Scale": { break; }
