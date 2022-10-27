@@ -56,6 +56,7 @@ namespace MulTyPlayerServer.Classes
 
         public static void HandleServerUpdate(int opal, int level, ushort fromClientId)
         {
+            if (!GlobalSaveOpalData.Keys.Contains(level)) { return; }
             GlobalLevelOpalData[level][opal] = 1;
             GlobalSaveOpalData[level] = ConvertOpals(level);
             GlobalOpalCounts[level]++;

@@ -34,7 +34,7 @@ namespace MulTyPlayerClient.Classes
             CurrentOpalsDataAddress = PointerCalculations.GetPointerAddressNegative(
                 PointerCalculations.AddOffset(_currentOpalDataBaseAddr), 
                 _currentOpalDataOffsets, 
-                0x6B58);
+                0x6C9C);
             OpalSaveDataAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(_levelOpalDataBaseAddr), _levelOpalDataOffset);
 
             LevelOpalData = new Dictionary<int, byte[]>
@@ -52,22 +52,26 @@ namespace MulTyPlayerClient.Classes
 
             PreviousOpalData = new byte[300];
             CurrentOpalData = new byte[300];
+            PreviousOpalCount = -1;
+            _serverOpalCount = -1;
         }
 
         public void CheckCount()
         {
             ReadOpalCount();
-            if (PreviousOpalCount == OpalCount) return;  
+            if (PreviousOpalCount == OpalCount) return;
+            Console.WriteLine("1");
             PreviousOpalCount = OpalCount;
             if (OpalCount == _serverOpalCount) return;
+            Console.WriteLine("2");
             CurrentOpalData = ReadCurrentOpals();
             for (int i = 0; i < 300; i++)
             {
-                if (PreviousOpalData[i] != CurrentOpalData[i])
+                if ((PreviousOpalData[i] == 0 || PreviousOpalData[i] == 2)  && CurrentOpalData[i] == 5)
                 {
-                    HSync.UpdateServerData(HLevel.CurrentLevelId, BitConverter.GetBytes(i), "Opal");
+                    Console.WriteLine("3");
                     PreviousOpalData[i] = CurrentOpalData[i];
-                    i = 300;
+                    HSync.UpdateServerData(HLevel.CurrentLevelId, BitConverter.GetBytes(i), "Opal");
                 }
             }
         }
@@ -77,7 +81,7 @@ namespace MulTyPlayerClient.Classes
             byte[] collected = new byte[1] { 3 };
             for (int i = 0; i < 300; i++)
             {
-                if (CurrentOpalData[i] == 1)
+                if (CurrentOpalData[i] == 5)
                 {
                     ProcessHandler.WriteData(CurrentOpalsDataAddress + 0x114 * (i - 4), collected);
                 }
@@ -92,6 +96,7 @@ namespace MulTyPlayerClient.Classes
             byte[] saveDataBytes = message.GetBytes();
             int opalCountForLevel = message.GetInt();
 
+            Console.WriteLine("hi");
             if (level == HLevel.CurrentLevelId)
             {
                 _serverOpalCount = opalCountForLevel;
@@ -123,8 +128,10 @@ namespace MulTyPlayerClient.Classes
             byte[] buffer = new byte[1];
             for(int i = 0; i < 300; i++)
             {
-                ProcessHandler.ReadProcessMemory((int)HProcess, CurrentOpalsDataAddress, buffer, 1, ref bytesRead);
+                //Console.WriteLine("{0:X}", CurrentOpalsDataAddress + (0x114 * i));
+                ProcessHandler.ReadProcessMemory((int)HProcess, CurrentOpalsDataAddress + (0x114 * i), buffer, 1, ref bytesRead);
                 currentOpals[i] = buffer[0];
+               // Console.WriteLine(buffer[0]);
             }
             return currentOpals;
         }

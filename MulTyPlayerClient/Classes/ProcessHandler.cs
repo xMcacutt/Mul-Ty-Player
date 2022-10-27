@@ -68,8 +68,8 @@ namespace MulTyPlayerClient
                 {
                     HCollectibles.CheckCountsChanged();
                     HAttribute.CheckAttributeChange();
-                    HOpal.CheckCount();
                     HLevel.GetCurrentLevel();
+                    HOpal.CheckCount();
                     HHero.GetTyPosRot();
                     HKoala.SetCoordAddrs();
                 }
