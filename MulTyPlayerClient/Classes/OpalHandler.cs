@@ -19,15 +19,15 @@ namespace MulTyPlayerClient.Classes
         int levelOpalDataBaseAddr = 0x00288730;
         int levelOpalDataOffset = 0x1D1;
 
-        public int currentOpalDataAddress;
-        public int levelOpalDataAddress;
+        static public int currentOpalDataAddress;
+        static public int levelOpalDataAddress;
 
         public byte[] CurrentOpalData;
         public byte[] PreviousOpalData;
         public Dictionary<int, byte[]> LevelOpalData;
         public int OpalCount;
         public int PreviousOpalCount;
-        int serverOpalCount;
+        static int serverOpalCount;
 
         //GET ALL 300 OPALS FROM CURRENT OPAL DATA AND STORE IN BYTE ARRAY
         //GET OPAL COUNT FROM GAME
@@ -59,6 +59,9 @@ namespace MulTyPlayerClient.Classes
                 { 13, ReadLevelData(9) },
                 { 14, ReadLevelData(10) }
             };
+
+            PreviousOpalData = new byte[300];
+            CurrentOpalData = new byte[300];
         }
 
         public void CheckCount()
@@ -67,7 +70,7 @@ namespace MulTyPlayerClient.Classes
             if (PreviousOpalCount == OpalCount) return;  
             PreviousOpalCount = OpalCount;
             if (OpalCount == serverOpalCount) return;
-            ReadCurrentOpals();
+            CurrentOpalData = ReadCurrentOpals();
             for (int i = 0; i < 300; i++)
             {
                 if (PreviousOpalData[i] != CurrentOpalData[i])
@@ -92,7 +95,7 @@ namespace MulTyPlayerClient.Classes
         }
 
         [MessageHandler((ushort)MessageID.OpalCollected)]
-        void HandleOpalCollected(Message message)
+        static void HandleOpalCollected(Message message)
         {
             int level = message.GetInt();
             int opal = message.GetInt();

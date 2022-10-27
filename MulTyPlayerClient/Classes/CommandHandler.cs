@@ -90,7 +90,6 @@ namespace MulTyPlayerClient
         public static void HostChange(Message message)
         {
             host = message.GetUShort();
-            Console.WriteLine(host);
         }
 
         [MessageHandler((ushort)MessageID.HostCommand)]

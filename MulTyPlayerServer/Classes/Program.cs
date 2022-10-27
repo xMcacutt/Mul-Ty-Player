@@ -34,8 +34,8 @@ namespace MulTyPlayerServer
 
             Server.StartServer();
 
-            HKoala = new KoalaHandler();
             HSync = new SyncHandler();
+            HKoala = new KoalaHandler();
             HCommand = new CommandHandler();
             Console.WriteLine("Welcome to Mul-Ty-Player.\nThis is the server application. \nPort forward on port 8750 to allow connections.\n");
 

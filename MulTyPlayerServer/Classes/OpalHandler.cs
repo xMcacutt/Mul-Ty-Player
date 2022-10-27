@@ -39,7 +39,7 @@ namespace MulTyPlayerServer.Classes
                 { 12, new byte[38] },
                 { 13, new byte[38] },
                 { 14, new byte[38] }
-            }
+            };
             GlobalOpalCounts = new Dictionary<int, int>()
             {
                 { 4, 0 },

@@ -19,6 +19,11 @@ namespace MulTyPlayerClient
 
         public static byte[] _lastReceivedServerData;
 
+        public SyncHandler()
+        {
+            _lastReceivedServerData = new byte[1];
+        }
+
         public void UpdateServerData(int level, byte[] data, string type)
         {
             if(Enumerable.SequenceEqual(data, _lastReceivedServerData)) { return; }
@@ -46,13 +51,16 @@ namespace MulTyPlayerClient
                 ProcessHandler.WriteData(HCollectibles.LevelDataStartAddress + (0x70 * (i - 4)), HCollectibles.LevelData[i]);
             }
 
-            HOpal.CurrentOpalData = message.GetBytes();
-            HOpal.WriteCurrentOpalsSync();
+            if (HOpal.LevelOpalData.Keys.Contains(Program.HLevel.CurrentLevelId))
+            {
+                HOpal.CurrentOpalData = message.GetBytes(true);
+                HOpal.WriteCurrentOpalsSync();
+            }
 
             foreach (int i in tempints)
             {
                 HOpal.LevelOpalData[i] = message.GetBytes();
-                ProcessHandler.WriteData(HOpal.levelOpalDataAddress + (0x70 * (i - 4)), HOpal.LevelOpalData[i]);
+                ProcessHandler.WriteData(OpalHandler.levelOpalDataAddress + (0x70 * (i - 4)), HOpal.LevelOpalData[i]);
             }
 
             HAttribute.AttributeData = message.GetBytes();

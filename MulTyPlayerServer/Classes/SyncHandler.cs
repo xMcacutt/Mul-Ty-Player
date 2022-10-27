@@ -67,7 +67,10 @@ namespace MulTyPlayerServer
                 sync.AddBytes(bytes);
             }
             //ADD CURRENT LEVEL OPAL DATA
-            sync.AddBytes(OpalHandler.GlobalLevelOpalData[level]);
+            if (OpalHandler.GlobalLevelOpalData.Keys.Contains(level))
+            {
+                sync.AddBytes(OpalHandler.GlobalLevelOpalData[level], true, true);
+            }
             //ADD ALL LEVELS OPAL SAVE DATA
             foreach (byte[] bytes in OpalHandler.GlobalSaveOpalData.Values)
             {
