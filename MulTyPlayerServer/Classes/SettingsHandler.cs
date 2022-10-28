@@ -43,8 +43,9 @@ namespace MulTyPlayerServer
         static void HandleSettingsRequest(ushort fromClientId, Message message)
         {
             bool[] b = { DoSyncTEs, DoSyncCogs, DoSyncBilbies, DoSyncRangs, DoSyncOpals };
-            message.AddBools(b);
-            Server._Server.Send(message, fromClientId);
+            Message response = Message.Create(MessageSendMode.reliable, MessageID.ReqSettings);
+            response.AddBools(b);
+            Server._Server.Send(response, fromClientId);
         }
     }
 }

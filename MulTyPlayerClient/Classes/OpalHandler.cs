@@ -80,6 +80,7 @@ namespace MulTyPlayerClient.Classes
             {
                 ProcessHandler.ReadProcessMemory((int)HProcess, CurrentOpalsDataAddress + (0x114 * i), buffer, 1, ref bytesRead);
                 currentOpals[i] = buffer[0];
+                Console.WriteLine((int)buffer[0]);
             }
             return currentOpals;
         }
