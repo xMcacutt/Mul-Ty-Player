@@ -18,8 +18,10 @@ namespace MulTyPlayerServer
 
         public static void SendUpdatedData(ushort originalSender)
         {
-            Message message = Message.Create(MessageSendMode.reliable, MessageID.ClientAttributeDataUpdate);
+            Message message = Message.Create(MessageSendMode.reliable, MessageID.ClientDataUpdate);
             message.AddBytes(GlobalAttributeData);
+            message.AddInt(0);
+            message.AddString("Attribute");
             Server._Server.SendToAll(message, originalSender);
         }
 

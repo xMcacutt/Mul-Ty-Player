@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,35 +11,22 @@ namespace MulTyPlayerServer.Classes
 {
     internal class OpalHandler
     {
-        public static Dictionary<int, byte[]> GlobalLevelOpalData;
-        public static Dictionary<int, byte[]> GlobalSaveOpalData;
+        public static Dictionary<int, byte[]> GlobalOpalData;
         public static Dictionary<int, int> GlobalOpalCounts;
 
         public OpalHandler()
         {
-            GlobalLevelOpalData = new Dictionary<int, byte[]>()
+            GlobalOpalData = new Dictionary<int, byte[]>()
             {
-                { 4, new byte[300] },
-                { 5, new byte[300] },
-                { 6, new byte[300] },
-                { 8, new byte[300] },
-                { 9, new byte[300] },
-                { 10, new byte[300] },
-                { 12, new byte[300] },
-                { 13, new byte[300] },
-                { 14, new byte[300] }
-            };
-            GlobalSaveOpalData = new Dictionary<int, byte[]>()
-            {
-                { 4, new byte[38] },
-                { 5, new byte[38] },
-                { 6, new byte[38] },
-                { 8, new byte[38] },
-                { 9, new byte[38] },
-                { 10, new byte[38] },
-                { 12, new byte[38] },
-                { 13, new byte[38] },
-                { 14, new byte[38] }
+                { 4, Enumerable.Repeat((byte)2, 300).ToArray() },
+                { 5, Enumerable.Repeat((byte)2, 300).ToArray() },
+                { 6, Enumerable.Repeat((byte)2, 300).ToArray() },
+                { 8, Enumerable.Repeat((byte)2, 300).ToArray() },
+                { 9, Enumerable.Repeat((byte)2, 300).ToArray() },
+                { 10, Enumerable.Repeat((byte)2, 300).ToArray() },
+                { 12, Enumerable.Repeat((byte)2, 300).ToArray() },
+                { 13, Enumerable.Repeat((byte)2, 300).ToArray() },
+                { 14, Enumerable.Repeat((byte)2, 300).ToArray() }
             };
             GlobalOpalCounts = new Dictionary<int, int>()
             {
@@ -56,22 +44,26 @@ namespace MulTyPlayerServer.Classes
 
         public static void HandleServerUpdate(int opal, int level, ushort fromClientId)
         {
-            if (!GlobalSaveOpalData.Keys.Contains(level)) { return; }
-            GlobalLevelOpalData[level][opal] = 1;
-            GlobalSaveOpalData[level] = ConvertOpals(level);
+            if (!GlobalOpalData.Keys.Contains(level)) { return; }
+            GlobalOpalData[level][opal] = (byte)5;
             GlobalOpalCounts[level]++;
 
-            Message message = Message.Create(MessageSendMode.reliable, MessageID.OpalCollected);
-            message.AddInt(level);
+            SendUpdatedData(opal, level, fromClientId);
+        }
+
+        public static void SendUpdatedData(int opal, int level, ushort fromClientId)
+        {
+            Message message = Message.Create(MessageSendMode.reliable, MessageID.ClientDataUpdate);
+            message.AddBytes(new byte[1] { (byte)level });
             message.AddInt(opal);
-            message.AddBytes(GlobalSaveOpalData[level]);
+            message.AddString("Opal");
             message.AddInt(GlobalOpalCounts[level]);
             Server._Server.SendToAll(message, fromClientId);
         }
 
         static byte[] ConvertOpals(int level)
         {
-            byte[] inputBytes = GlobalLevelOpalData[level];
+            byte[] inputBytes = GlobalOpalData[level];
             byte[] outputBytes = new byte[(int)Math.Ceiling((double)inputBytes.Length / 8)];
             for (int i = 0; i < Math.Ceiling((double)inputBytes.Length / 8); i++)
             {

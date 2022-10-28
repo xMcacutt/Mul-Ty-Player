@@ -13,14 +13,13 @@ namespace MulTyPlayerClient
         KoalaCoordinates,
         ConsoleSend,
         ServerDataUpdate,
-        ClientLevelDataUpdate,
-        ClientAttributeDataUpdate,
+        ClientDataUpdate,
         Disconnect,
         ResetSync,
+        ReqSync,
+        ReqSettings,
         ReqHost,
         HostChange,
-        HostCommand,
-        ReqSync,
-        OpalCollected
+        HostCommand
     }
 }

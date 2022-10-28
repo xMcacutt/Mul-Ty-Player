@@ -82,6 +82,7 @@ namespace MulTyPlayerClient
         private static void Connected()
         {
             Console.WriteLine("\nConnected to server successfully!\nType /stop to disconnect at any time.");
+            SettingsHandler.RequestServerSettings();
             Message message = Message.Create(MessageSendMode.reliable, MessageID.Connected);
             message.AddString(Program.PlayerName);
             _client.Send(message);

@@ -14,4 +14,6 @@ DoSyncBilbies = true
 
 DoSyncRangs = true
 
+DoSyncOpals = true
+
 -------------------------------

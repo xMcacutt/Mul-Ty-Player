@@ -19,6 +19,8 @@ namespace MulTyPlayerClient
         readonly int[] _objectiveCountOffsetsSnow = { 0x30, 0x54, 0x54, 0x6C };
         readonly int[] _objectiveCountOffsetsStump = { 0x30, 0x34, 0x54, 0x6C };
 
+        public int[] MainStages = { 4, 5, 6, 8, 9, 10, 12, 13, 14 };
+
         public void DoLevelSetup()
         {
             HSync.ProtectLeaderboard();

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using RiptideNetworking;
 
 namespace MulTyPlayerServer
 {
@@ -24,6 +25,7 @@ namespace MulTyPlayerServer
         public static bool DoSyncCogs;
         public static bool DoSyncBilbies;
         public static bool DoSyncRangs;
+        public static bool DoSyncOpals;
 
         public static void Setup()
         {
@@ -34,6 +36,15 @@ namespace MulTyPlayerServer
             DoSyncCogs = _settingsFileLines[10].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
             DoSyncBilbies = _settingsFileLines[12].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
             DoSyncRangs = _settingsFileLines[14].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
+            DoSyncOpals = _settingsFileLines[16].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
+        }
+
+        [MessageHandler((ushort)MessageID.ReqSettings)]
+        static void HandleSettingsRequest(ushort fromClientId, Message message)
+        {
+            bool[] b = { DoSyncTEs, DoSyncCogs, DoSyncBilbies, DoSyncRangs, DoSyncOpals };
+            message.AddBools(b);
+            Server._Server.Send(message, fromClientId);
         }
     }
 }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Cache;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,6 +35,26 @@ namespace MulTyPlayerClient
             Client._client.Send(message);
         }
 
+        [MessageHandler((ushort)MessageID.ClientDataUpdate)]
+        private static void HandleServerDataUpdate(ushort fromClientId, Message message)
+        {
+            byte[] data = message.GetBytes();
+            _lastReceivedServerData = message.GetBytes();
+            int level = message.GetInt();
+            string dataType = message.GetString();
+            switch (dataType)
+            {
+                case "Attribute": HAttribute.HandleClientUpdate(data); break;
+                case "Collectible": HCollectibles.HandleClientUpdate(data, level); break;
+                case "Opal": HOpal.HandleClientUpdate(data[0], level, message.GetInt()); break;
+                case "Portal": { break; }
+                case "Julius": { break; }
+                case "Scale": { break; }
+                case "Cliffs": { break; }
+                default: { break; }
+            }
+        }
+
         public void RequestSync()
         {
             Message message = Message.Create(MessageSendMode.reliable, MessageID.ReqSync);
@@ -44,27 +65,37 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ReqSync)]
         public static void HandleSyncRequestResponse(Message message)
         {
-            int[] tempints = HCollectibles.LevelData.Keys.ToArray();
-            foreach (int i in tempints)
+
+            foreach (int i in Program.HLevel.MainStages)
             {
                 HCollectibles.LevelData[i] = message.GetBytes();
-                ProcessHandler.WriteData(HCollectibles.LevelDataStartAddress + (0x70 * (i - 4)), HCollectibles.LevelData[i]);
+                if (SettingsHandler.DoTESyncing)
+                {
+                    ProcessHandler.WriteData(HCollectibles.LevelDataStartAddress + (0x70 * (i - 4)), HCollectibles.LevelData[i].Take(8).ToArray());
+                }
+                if (SettingsHandler.DoTESyncing)
+                {
+                    ProcessHandler.WriteData(HCollectibles.LevelDataStartAddress + (0x70 * (i - 4)) + 8, HCollectibles.LevelData[i].Skip(8).Take(10).ToArray());
+                }
+                if (SettingsHandler.DoTESyncing)
+                {
+                    ProcessHandler.WriteData(HCollectibles.LevelDataStartAddress + (0x70 * (i - 4)) + 18, HCollectibles.LevelData[i].Skip(18).Take(5).ToArray());
+                }
             }
 
-            if (HOpal.LevelOpalData.Keys.Contains(Program.HLevel.CurrentLevelId))
+            if (SettingsHandler.DoOpalSyncing && Program.HLevel.MainStages.Contains(Program.HLevel.CurrentLevelId)) 
             {
-                HOpal.CurrentOpalData = message.GetBytes(true);
-                HOpal.WriteCurrentOpalsSync();
+                byte[] bytes = message.GetBytes(true);
+                HOpal.CurrentOpalData = bytes;
+                HOpal.PreviousOpalData = bytes;
+                HOpal.WriteCurrentOpalsSync(bytes);
             }
 
-            foreach (int i in tempints)
+            if (SettingsHandler.DoRangSyncing)
             {
-                HOpal.LevelOpalData[i] = message.GetBytes();
-                ProcessHandler.WriteData(OpalHandler.OpalSaveDataAddress + (0x70 * (i - 4)), HOpal.LevelOpalData[i]);
+                HAttribute.AttributeData = message.GetBytes();
+                ProcessHandler.WriteData(HAttribute.AttributeDataBaseAddress, HAttribute.AttributeData);
             }
-
-            HAttribute.AttributeData = message.GetBytes();
-            ProcessHandler.WriteData(HAttribute.AttributeDataBaseAddress, HAttribute.AttributeData);
         }
 
         [MessageHandler((ushort)MessageID.ResetSync)]
@@ -80,6 +111,8 @@ namespace MulTyPlayerClient
             HAttribute.PreviousAttributeData = new byte[26];
             HCollectibles.CollectibleCounts = new int[3];
             HCollectibles.PreviousCollectibleCounts = new int[3];
+            HOpal.CurrentOpalData = new byte[300];
+            HOpal.PreviousOpalData = new byte[300];
         }
 
         public void ProtectLeaderboard()

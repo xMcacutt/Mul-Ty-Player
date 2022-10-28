@@ -30,12 +30,12 @@ namespace MulTyPlayerServer
             };
         }
 
-        public static void SendUpdatedLevelData(int levelId, ushort originalSender, bool doSyncTEs, bool doSyncCogs, bool doSyncBilbies)
+        public static void SendUpdatedData(int levelId, ushort originalSender)
         {
-            Message message = Message.Create(MessageSendMode.reliable, MessageID.ClientLevelDataUpdate);
-            message.AddInt(levelId);
+            Message message = Message.Create(MessageSendMode.reliable, MessageID.ClientDataUpdate);
             message.AddBytes(GlobalLevelData[levelId]);
-            message.AddBools(new bool[] { doSyncTEs, doSyncCogs, doSyncBilbies });
+            message.AddInt(levelId);
+            message.AddString("Collectible");
             Server._Server.SendToAll(message, originalSender);
         }
         
@@ -44,7 +44,7 @@ namespace MulTyPlayerServer
             byte[] temp = GlobalLevelData[levelId];
             SyncHandler.CompDataByteArrays(bytes, ref temp);
             GlobalLevelData[levelId] = temp;
-            SendUpdatedLevelData(levelId, returnClientId, SettingsHandler.DoSyncTEs, SettingsHandler.DoSyncCogs, SettingsHandler.DoSyncBilbies);
+            SendUpdatedData(levelId, returnClientId);
         }
     }
 }

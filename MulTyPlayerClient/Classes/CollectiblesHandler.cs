@@ -87,17 +87,12 @@ namespace MulTyPlayerClient
             return buffer;
         }
 
-        [MessageHandler((ushort)MessageID.ClientLevelDataUpdate)]
-        public static void UpdateClientWithLevelData(Message message)
+        public void HandleClientUpdate(byte[] data, int level)
         {
-            int level = message.GetInt();
-            byte[] bytes = message.GetBytes();
-            Program.HCollectibles.LevelData[level] = bytes;
-            SyncHandler._lastReceivedServerData = bytes;
-            bool[] doSync = message.GetBools();
-            if (doSync[0]) { ProcessHandler.WriteData(Program.HCollectibles.LevelDataStartAddress + (0x70 * (level - 4)), Program.HCollectibles.LevelData[level].Take(8).ToArray()); }
-            if (doSync[1]) { ProcessHandler.WriteData(Program.HCollectibles.LevelDataStartAddress + (0x70 * (level - 4)) + 0x8, Program.HCollectibles.LevelData[level].Skip(8).Take(10).ToArray()); }
-            if (doSync[2]) { ProcessHandler.WriteData(Program.HCollectibles.LevelDataStartAddress + (0x70 * (level - 4)) + 0x12, Program.HCollectibles.LevelData[level].Skip(18).Take(5).ToArray()); }
+            LevelData[level] = data;
+            if (SettingsHandler.DoTESyncing) { ProcessHandler.WriteData(LevelDataStartAddress + (0x70 * (level - 4)), LevelData[level].Take(8).ToArray()); }
+            if (SettingsHandler.DoCogSyncing) { ProcessHandler.WriteData(LevelDataStartAddress + (0x70 * (level - 4)) + 0x8, LevelData[level].Skip(8).Take(10).ToArray()); }
+            if (SettingsHandler.DoBilbySyncing) { ProcessHandler.WriteData(LevelDataStartAddress + (0x70 * (level - 4)) + 0x12, LevelData[level].Skip(18).Take(5).ToArray()); }
         }
     }
 }

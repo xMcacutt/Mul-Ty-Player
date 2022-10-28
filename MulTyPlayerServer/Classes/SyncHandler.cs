@@ -10,7 +10,7 @@ namespace MulTyPlayerServer
 {
     internal class SyncHandler
     {
-        
+        public static int[] MainStages = { 4, 5, 6, 8, 9, 10, 12, 13, 14 };
         public SyncHandler()
         {
             CollectiblesHandler collectiblesHandler = new CollectiblesHandler();
@@ -29,8 +29,6 @@ namespace MulTyPlayerServer
             }
         }
 
-        /*MESSAGE HANDLING*/
-
         [MessageHandler((ushort)MessageID.ServerDataUpdate)]
         private static void HandleServerDataUpdate(ushort fromClientId, Message message)
         {
@@ -39,14 +37,14 @@ namespace MulTyPlayerServer
             string dataType = message.GetString();
             switch (dataType)
             {
-                case "Attribute": if(SettingsHandler.DoSyncRangs) { AttributeHandler.HandleServerUpdate(playerDataArray, fromClientId); } break;
+                case "Attribute": AttributeHandler.HandleServerUpdate(playerDataArray, fromClientId); break;
                 case "Collectible": CollectiblesHandler.HandleServerUpdate(playerDataArray, levelId, fromClientId); break;
                 case "Opal": OpalHandler.HandleServerUpdate(BitConverter.ToInt16(playerDataArray, 0), levelId, fromClientId); break;
-                case "Portal": { break; }
-                case "Julius": { break; }
-                case "Scale": { break; }
-                case "Cliffs": { break; }
-                default: { break; }
+                case "Portal": break;
+                case "Julius": break;
+                case "Scale": break;
+                case "Cliffs": break;
+                default: break;
             }
         }
 
@@ -61,23 +59,22 @@ namespace MulTyPlayerServer
         {
             int level = message.GetInt();
             Message sync = Message.Create(MessageSendMode.reliable, MessageID.ReqSync);
-            //ADD LEVEL COLLECTIBLE DATA FOR EACH LEVEL
+            
             foreach (byte[] bytes in CollectiblesHandler.GlobalLevelData.Values)
             {
                 sync.AddBytes(bytes);
             }
-            //ADD CURRENT LEVEL OPAL DATA
-            if (OpalHandler.GlobalLevelOpalData.Keys.Contains(level))
+
+            if (SettingsHandler.DoSyncOpals && MainStages.Contains(level))
             {
-                sync.AddBytes(OpalHandler.GlobalLevelOpalData[level], true, true);
+                sync.AddBytes(OpalHandler.GlobalOpalData[level], true, true);
             }
-            //ADD ALL LEVELS OPAL SAVE DATA
-            foreach (byte[] bytes in OpalHandler.GlobalSaveOpalData.Values)
+
+            if (SettingsHandler.DoSyncRangs)
             {
-                sync.AddBytes(bytes);
+                sync.AddBytes(AttributeHandler.GlobalAttributeData);
             }
-            //ADD ATTRIBUTE DATA
-            sync.AddBytes(AttributeHandler.GlobalAttributeData);
+
             Server._Server.Send(sync, fromClientId);
         }
 

@@ -66,10 +66,10 @@ namespace MulTyPlayerClient
                 HGameState.CheckLoaded();
                 if (!HGameState.CheckMenu() && !HGameState.LoadingState)
                 {
-                    HCollectibles.CheckCountsChanged();
-                    HAttribute.CheckAttributeChange();
                     HLevel.GetCurrentLevel();
-                    HOpal.CheckCount();
+                    if (SettingsHandler.DoTESyncing || SettingsHandler.DoCogSyncing || SettingsHandler.DoBilbySyncing) HCollectibles.CheckCountsChanged();
+                    if (SettingsHandler.DoRangSyncing) HAttribute.CheckAttributeChange();
+                    if (SettingsHandler.DoOpalSyncing) HOpal.CheckCount();
                     HHero.GetTyPosRot();
                     HKoala.SetCoordAddrs();
                 }
