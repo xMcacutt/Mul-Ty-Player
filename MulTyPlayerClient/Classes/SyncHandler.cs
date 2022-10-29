@@ -36,7 +36,7 @@ namespace MulTyPlayerClient
         }
 
         [MessageHandler((ushort)MessageID.ClientDataUpdate)]
-        private static void HandleServerDataUpdate(Message message)
+        private static void HandleClientDataUpdate(Message message)
         {
             byte[] data = message.GetBytes();
             _lastReceivedServerData = data;
