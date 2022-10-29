@@ -65,6 +65,7 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ReqSync)]
         public static void HandleSyncRequestResponse(Message message)
         {
+            OpalHandler.SetMemAddrs();
 
             foreach (int i in Program.HLevel.MainStages)
             {
