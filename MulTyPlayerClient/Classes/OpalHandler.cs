@@ -71,7 +71,7 @@ namespace MulTyPlayerClient.Classes
             CurrentOpalData = ReadCurrentOpals();
             for (int i = 0; i < 300; i++)
             {
-                if ((PreviousOpalData[i] == 0 || PreviousOpalData[i] == 2) && CurrentOpalData[i] == 5)
+                if (PreviousOpalData[i] <= 2 && CurrentOpalData[i] > 2)
                 {
                     PreviousOpalData[i] = CurrentOpalData[i];
                     Console.WriteLine("sending: " + (int)BitConverter.GetBytes(i)[0] + " to server");
