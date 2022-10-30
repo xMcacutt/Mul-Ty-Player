@@ -56,7 +56,7 @@ namespace MulTyPlayerClient.Classes
         {
             if (level == HLevel.CurrentLevelId)
             {
-                _serverOpalCount = opalCountForLevel;
+                HLevel.CurrentLevelServerOpalCount = opalCountForLevel;
                 if (CurrentOpalData[opal] >= 3) return;
                 WriteOpal(opal);
             }
@@ -68,7 +68,8 @@ namespace MulTyPlayerClient.Classes
             ReadOpalCount();
             if (PreviousOpalCount == OpalCount || OpalCount == 0) return;
             PreviousOpalCount = OpalCount;
-            if (OpalCount == _serverOpalCount) return;
+            if (OpalCount == HLevel.CurrentLevelServerOpalCount) return;
+            Console.WriteLine(HLevel.CurrentLevelServerOpalCount);
             CurrentOpalData = ReadCurrentOpals();
             for (int i = 0; i < 300; i++)
             {

@@ -49,6 +49,7 @@ namespace MulTyPlayerServer
                         }
                         SendCoordinates(player.AssignedKoala.KoalaId, player.CurrentLevel, player.AssignedKoala.Coordinates, player.Name);
                     }
+                    Program.HSync.SendOpalCount();
                 }
                 Thread.Sleep(10);
             }

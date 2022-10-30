@@ -54,6 +54,13 @@ namespace MulTyPlayerServer
             Server._Server.SendToAll(message);
         }
 
+        public void SendOpalCount()
+        {
+            Message message = Message.Create(MessageSendMode.unreliable, MessageID.OpalCount);
+            message.AddInts(OpalHandler.GlobalOpalCounts.Values.ToArray());
+            Server._Server.SendToAll(message);
+        }
+
         [MessageHandler((ushort)MessageID.ReqSync)]
         public static void SyncRequest(ushort fromClientId, Message message)
         {

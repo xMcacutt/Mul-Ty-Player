@@ -1,4 +1,5 @@
 ﻿using MulTyPlayerClient;
+using RiptideNetworking;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,6 +16,7 @@ namespace MulTyPlayerClient
         static SyncHandler HSync => Program.HSync;
 
         public int CurrentLevelId { get; set; }
+        public int CurrentLevelServerOpalCount { get; set; }
         public bool LoadedIntoNewLevelStuffDone;
         readonly int[] _objectiveCountOffsetsSnow = { 0x30, 0x54, 0x54, 0x6C };
         readonly int[] _objectiveCountOffsetsStump = { 0x30, 0x34, 0x54, 0x6C };
@@ -68,6 +70,12 @@ namespace MulTyPlayerClient
                 byte[] buffer = BitConverter.GetBytes((Int16)8);
                 ProcessHandler.WriteProcessMemory((int)HProcess, objectiveCounterAddr, buffer, buffer.Length, ref bytesWritten);
             }
+        }
+
+        [MessageHandler((ushort)MessageID.OpalCount)]
+        static void GetCurrentOpalCount(Message message)
+        {
+            Program.HLevel.CurrentLevelServerOpalCount = message.GetInts()[Array.IndexOf(Program.HLevel.MainStages, Program.HLevel.CurrentLevelId)];
         }
     }
 }
