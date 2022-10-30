@@ -28,7 +28,7 @@ namespace MulTyPlayerClient
             int bytesRead = 0;
             byte[] menu = new byte[1];
             ProcessHandler.ReadProcessMemory((int)HProcess, PointerCalculations.AddOffset(0x286640), menu, 1, ref bytesRead);
-            return menu[0] == 0;
+            return menu[0] != 255;
             // 1 is on menu
         }
 

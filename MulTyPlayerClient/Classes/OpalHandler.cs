@@ -128,7 +128,7 @@ namespace MulTyPlayerClient.Classes
 
         public void WriteOpal(int opalIndex)
         {
-            if (!Program.HGameState.CheckMenu()) { return; }
+            if (Program.HGameState.CheckMenu()) { return; }
             if (HLevel.CurrentLevelId == 10)
             {
                 ProcessHandler.WriteData(B3OpalsAddress + (0x114 * opalIndex), BitConverter.GetBytes(3));
