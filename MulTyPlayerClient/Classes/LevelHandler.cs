@@ -24,7 +24,10 @@ namespace MulTyPlayerClient
         public void DoLevelSetup()
         {
             HSync.ProtectLeaderboard();
-            HSync.RequestSync();
+            if (!Program.HGameState.CheckMenu())
+            {
+                HSync.RequestSync();
+            }
             HKoala.SetCoordAddrs();
             if (!SettingsHandler.DoKoalaCollision)
             {

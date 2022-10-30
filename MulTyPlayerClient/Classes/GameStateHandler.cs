@@ -29,6 +29,7 @@ namespace MulTyPlayerClient
             byte[] menu = new byte[1];
             ProcessHandler.ReadProcessMemory((int)HProcess, PointerCalculations.AddOffset(0x286640), menu, 1, ref bytesRead);
             return menu[0] == 0;
+            // 1 is on menu
         }
 
         public void CheckLoaded()
