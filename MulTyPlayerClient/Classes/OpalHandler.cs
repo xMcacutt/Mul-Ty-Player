@@ -67,7 +67,7 @@ namespace MulTyPlayerClient.Classes
             ReadOpalCount();
             if (PreviousOpalCount == OpalCount || OpalCount == 0) return;
             PreviousOpalCount = OpalCount;
-            if (OpalCount == _serverOpalCount) return;
+            if (OpalCount != _serverOpalCount + 1) return;
             CurrentOpalData = ReadCurrentOpals();
             for (int i = 0; i < 300; i++)
             {
@@ -131,20 +131,19 @@ namespace MulTyPlayerClient.Classes
             if (Program.HGameState.CheckMenu()) { return; }
             if (HLevel.CurrentLevelId == 10)
             {
-                ProcessHandler.WriteData(B3OpalsAddress + (0x114 * opalIndex), BitConverter.GetBytes(3));
-                //ProcessHandler.WriteData(PointerCalculations.AddOffset(0x2888B0), BitConverter.GetBytes(_serverOpalCount));
+                ProcessHandler.WriteData(B3OpalsAddress + (0x114 * opalIndex), BitConverter.GetBytes(5));
+                ProcessHandler.WriteData(PointerCalculations.AddOffset(0x2888B0), BitConverter.GetBytes(_serverOpalCount));
                 return;
             }
             int crateOpalsInLevel = _crateOpalsPerLevel[HLevel.CurrentLevelId - 4];
             if (opalIndex < (300 - crateOpalsInLevel))
             {
-                ProcessHandler.WriteData(NonCrateOpalsAddress + (0x114 * opalIndex), BitConverter.GetBytes(3));
-                //ProcessHandler.WriteData(PointerCalculations.AddOffset(0x2888B0), BitConverter.GetBytes(_serverOpalCount));
+                ProcessHandler.WriteData(NonCrateOpalsAddress + (0x114 * opalIndex), BitConverter.GetBytes(5));
+                ProcessHandler.WriteData(PointerCalculations.AddOffset(0x2888B0), BitConverter.GetBytes(_serverOpalCount));
                 return;
             }
-            ProcessHandler.WriteData(CrateOpalsAddress + (0x114 * (opalIndex - (300 - crateOpalsInLevel))), BitConverter.GetBytes(3));
-
-            // ProcessHandler.WriteData(PointerCalculations.AddOffset(0x2888B0), BitConverter.GetBytes(_serverOpalCount));
+            ProcessHandler.WriteData(CrateOpalsAddress + (0x114 * (opalIndex - (300 - crateOpalsInLevel))), BitConverter.GetBytes(5));
+            ProcessHandler.WriteData(PointerCalculations.AddOffset(0x2888B0), BitConverter.GetBytes(_serverOpalCount));
         }
     }
 }
