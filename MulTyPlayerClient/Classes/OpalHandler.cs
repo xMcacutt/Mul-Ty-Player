@@ -65,13 +65,13 @@ namespace MulTyPlayerClient.Classes
         {
             if (!HLevel.MainStages.Contains(HLevel.CurrentLevelId)) { return; }
             ReadOpalCount();
-            if (PreviousOpalCount == OpalCount) return;
+            if (PreviousOpalCount == OpalCount || OpalCount == 0) return;
             PreviousOpalCount = OpalCount;
             if (OpalCount == _serverOpalCount) return;
             CurrentOpalData = ReadCurrentOpals();
             for (int i = 0; i < 300; i++)
             {
-                if (PreviousOpalData[i] <= 2 && CurrentOpalData[i] > 2)
+                if (PreviousOpalData[i] < 4 && CurrentOpalData[i] > 3)
                 {
                     PreviousOpalData[i] = CurrentOpalData[i];
                     HSync.UpdateServerData(HLevel.CurrentLevelId, BitConverter.GetBytes(i), "Opal");
@@ -119,7 +119,7 @@ namespace MulTyPlayerClient.Classes
         {
             for (int i = 0; i < 300; i++)
             {
-                if (bytes[i] > 2)
+                if (bytes[i] > 3)
                 {
                     WriteOpal(i);
                 }
