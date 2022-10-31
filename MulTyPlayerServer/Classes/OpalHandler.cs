@@ -58,7 +58,7 @@ namespace MulTyPlayerServer
             message.AddInt(level);
             message.AddString("Opal");
             message.AddInt(GlobalOpalCounts[level]);
-            Server._Server.SendToAll(message, fromClientId);
+            Server._Server.SendToAll(message);
         }
 
         static byte[] ConvertOpals(int level)

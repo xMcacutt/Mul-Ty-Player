@@ -20,7 +20,6 @@ namespace MulTyPlayerServer
         ReqSettings,
         ReqHost,
         HostChange,
-        HostCommand,
-        OpalCount
+        HostCommand
     }
 }

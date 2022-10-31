@@ -46,7 +46,7 @@ namespace MulTyPlayerClient
             {
                 case "Attribute": HAttribute.HandleClientUpdate(data); break;
                 case "Collectible": HCollectibles.HandleClientUpdate(data, level); break;
-                case "Opal": HOpal.HandleClientUpdate(data[0], level, message.GetInt()); break;
+                case "Opal": HOpal.HandleClientUpdate(BitConverter.ToInt16(data,0), level, message.GetInt()); break;
                 case "Portal": { break; }
                 case "Julius": { break; }
                 case "Scale": { break; }

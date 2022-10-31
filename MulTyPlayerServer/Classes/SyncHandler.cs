@@ -1,5 +1,4 @@
-﻿using MulTyPlayerServer.Classes;
-using RiptideNetworking;
+﻿using RiptideNetworking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +38,7 @@ namespace MulTyPlayerServer
             {
                 case "Attribute": AttributeHandler.HandleServerUpdate(playerDataArray, fromClientId); break;
                 case "Collectible": CollectiblesHandler.HandleServerUpdate(playerDataArray, levelId, fromClientId); break;
-                case "Opal": OpalHandler.HandleServerUpdate(playerDataArray[0], levelId, fromClientId); break;
+                case "Opal": OpalHandler.HandleServerUpdate(BitConverter.ToInt16(playerDataArray, 0), levelId, fromClientId); break;
                 case "Portal": break;
                 case "Julius": break;
                 case "Scale": break;
@@ -51,13 +50,6 @@ namespace MulTyPlayerServer
         public static void SendResetSyncMessage()
         {
             Message message = Message.Create(MessageSendMode.reliable, MessageID.ResetSync);
-            Server._Server.SendToAll(message);
-        }
-
-        public void SendOpalCount()
-        {
-            Message message = Message.Create(MessageSendMode.unreliable, MessageID.OpalCount);
-            message.AddInts(OpalHandler.GlobalOpalCounts.Values.ToArray());
             Server._Server.SendToAll(message);
         }
 
