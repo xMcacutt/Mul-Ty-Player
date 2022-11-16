@@ -25,6 +25,8 @@ namespace MulTyPlayerClient
             WriteState = 3;
             CheckState = 5;
             ObjectAmount = 300;
+            PreviousObjectData = new byte[300];
+            CurrentObjectData = new byte[300];
             LiveSync = new LiveOpalSyncer(this);
             SaveSync = new SaveOpalSyncer(this);
             SetSyncClasses(LiveSync, SaveSync);
