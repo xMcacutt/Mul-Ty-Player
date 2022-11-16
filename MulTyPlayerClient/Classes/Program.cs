@@ -1,4 +1,4 @@
-﻿using MulTyPlayerClient.Classes;
+﻿using MulTyPlayerClient;
 using Steamworks;
 using System;
 using System.Linq;
@@ -11,14 +11,11 @@ namespace MulTyPlayerClient
     {
         public static HeroHandler HHero;
         public static KoalaHandler HKoala;
-        public static CollectiblesHandler HCollectibles;
-        public static AttributeHandler HAttribute;
-        public static OpalHandler HOpal;
         public static LevelHandler HLevel;
-        public static SyncHandler HSync;
         public static GameStateHandler HGameState;
+        public static SyncHandler HSync;
 
-        public static Thread TyDataThread;
+        public static CancellationTokenSource _cts;
         public static string PlayerName;
         private static string _inputStr;
         public static string PosLogPath;
@@ -39,16 +36,12 @@ namespace MulTyPlayerClient
         private static void RunProgram()
         {
             SettingsHandler.Setup();
-            HGameState = new GameStateHandler();
-            HHero = new HeroHandler();
-            HKoala = new KoalaHandler();
-            HLevel = new LevelHandler();
 
             Console.WriteLine("Welcome to Mul-Ty-player");
 
             //TRIES TO FIND TY AND GIVES WARNING MESSAGE TO OPEN TY ON FAILURE
             var messageShown = false;
-            while (ProcessHandler.FindTyexe() == null)
+            while (ProcessHandler.FindTyProcess() == null)
             {
                 if (!messageShown)
                 {
@@ -61,17 +54,19 @@ namespace MulTyPlayerClient
             //OPEN HANDLE TO PROCESS
             ProcessHandler.OpenTyProcess();
 
+            HSync = new SyncHandler();
+            HGameState = new GameStateHandler();
+            HHero = new HeroHandler();
+            HKoala = new KoalaHandler();
+            HLevel = new LevelHandler();
+
             HHero.SetCoordAddrs();
             HKoala.CreateKoalas();
 
             //STARTS THE THREAD THAT CONTINUOUSLY READS DATA FROM THE GAME
-            TyDataThread = new Thread(new ThreadStart(ProcessHandler.GetTyData));
-            TyDataThread.Start();
-
-            HSync = new SyncHandler();
-            HCollectibles = new CollectiblesHandler();
-            HAttribute = new AttributeHandler();
-            HOpal = new OpalHandler();
+            _cts = new CancellationTokenSource();
+            Thread TyDataThread = new Thread(new ParameterizedThreadStart(HGameState.GetTyData));
+            TyDataThread.Start(_cts.Token);
 
             //MAKES FILE FOR POSITION LOGGING
             if (SettingsHandler.DoPositionLogging)
@@ -89,15 +84,20 @@ namespace MulTyPlayerClient
                 {
                     PlayerName = SteamFriends.GetPersonaName();
                 }
+                if (string.IsNullOrWhiteSpace(PlayerName) && !string.IsNullOrWhiteSpace(SettingsHandler.DefaultName))
+                {
+                    PlayerName = SettingsHandler.DefaultName;
+                }
             }
             else if (!string.IsNullOrWhiteSpace(SettingsHandler.DefaultName))
             {
                 Console.WriteLine("Player name already found. Setting up client...");
                 PlayerName = SettingsHandler.DefaultName;
             }
-            if (PlayerName == null)
+
+            if (string.IsNullOrWhiteSpace(PlayerName))
             {
-                Console.WriteLine("Steamworks was unable to get your name and no name is defined in the settings file. \nPlease enter your name manually:");
+                Console.WriteLine("SteamWorks was unable to get your name and no name is defined in the settings file. \nPlease enter your name manually:");
                 PlayerName = Console.ReadLine();
             }
             while (string.IsNullOrWhiteSpace(PlayerName) || PlayerName.Length < 3)
@@ -106,7 +106,7 @@ namespace MulTyPlayerClient
                 PlayerName = Console.ReadLine();
             }
 
-            //
+            //GET DEFAULTL IP ADDRESS
             string ipStr = string.Empty;
             if (string.IsNullOrWhiteSpace(SettingsHandler.DefaultAddress))
             {

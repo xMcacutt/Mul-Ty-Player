@@ -1,4 +1,4 @@
-﻿using RiptideNetworking;
+﻿using Riptide;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ namespace MulTyPlayerServer
 
         public static void SendUpdatedData(int levelId, ushort originalSender)
         {
-            Message message = Message.Create(MessageSendMode.reliable, MessageID.ClientDataUpdate);
+            Message message = Message.Create(MessageSendMode.Reliable, MessageID.ClientDataUpdate);
             message.AddBytes(GlobalLevelData[levelId]);
             message.AddInt(levelId);
             message.AddString("Collectible");

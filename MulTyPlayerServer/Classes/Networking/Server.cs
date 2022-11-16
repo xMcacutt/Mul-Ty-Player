@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using RiptideNetworking;
-using RiptideNetworking.Utils;
+using Riptide;
+using Riptide.Utils;
 
 namespace MulTyPlayerServer
 {
     internal class Server
     {
-        public static RiptideNetworking.Server _Server;
+        public static Riptide.Server _Server;
         public static Dictionary<ushort, Player> PlayerList;
         public static bool _isRunning;
 
@@ -29,7 +29,7 @@ namespace MulTyPlayerServer
 
         private static void Loop()
         {
-            _Server = new RiptideNetworking.Server(5000);
+            _Server = new Riptide.Server();
             _Server.Start(8750, 8);
 
             _Server.ClientConnected += (s, e) => ClientConnected(s, e);
@@ -37,7 +37,7 @@ namespace MulTyPlayerServer
             
             while (_isRunning)
             {
-                _Server.Tick();
+                _Server.Update();
                 if (PlayerList.Count != 0)
                 {
                     foreach (Player player in PlayerList.Values)
@@ -65,7 +65,7 @@ namespace MulTyPlayerServer
             _isRunning = false;
         }
 
-        private static void ClientConnected(object sender, ServerClientConnectedEventArgs e)
+        private static void ClientConnected(object sender, ServerConnectedEventArgs e)
         {
             if (_Server.Clients.Length == 1)
             {
@@ -73,20 +73,20 @@ namespace MulTyPlayerServer
             }
         }
 
-        private static void ClientDisconnected(object sender, ClientDisconnectedEventArgs e)
+        private static void ClientDisconnected(object sender, ServerDisconnectedEventArgs e)
         {
-            SendMessageToClients($"{PlayerList[e.Id].Name} has disconnected from the server.", true);
-            SendMessageToClients($"{PlayerList[e.Id].AssignedKoala.Name} was returned to the koala pool", true);
-            KoalaHandler.availableKoalas.Push(PlayerList[e.Id].AssignedKoala);
-            HKoala.ReturnKoala(PlayerList[e.Id]);
-            PlayerList.Remove(e.Id);
+            SendMessageToClients($"{PlayerList[e.Client.Id].Name} has disconnected from the server.", true);
+            SendMessageToClients($"{PlayerList[e.Client.Id].AssignedKoala.Name} was returned to the koala pool", true);
+            KoalaHandler.availableKoalas.Push(PlayerList[e.Client.Id].AssignedKoala);
+            HKoala.ReturnKoala(PlayerList[e.Client.Id]);
+            PlayerList.Remove(e.Client.Id);
         }
 
         public static void SendCoordinates(int koalaID, int level, float[] coordinates, string name)
         {
             foreach (Player player in PlayerList.Values)
             {
-                Message message = Message.Create(MessageSendMode.unreliable, MessageID.KoalaCoordinates);
+                Message message = Message.Create(MessageSendMode.Unreliable, MessageID.KoalaCoordinates);
                 int[] intData = { koalaID, level };
                 message.AddInts(intData);
                 message.AddFloats(coordinates);
@@ -100,7 +100,7 @@ namespace MulTyPlayerServer
 
         public static void SendMessageToClients(string str, bool printToServer)
         {
-            Message message = Message.Create(MessageSendMode.reliable, MessageID.ConsoleSend);
+            Message message = Message.Create(MessageSendMode.Reliable, MessageID.ConsoleSend);
             message.AddString($"[{DateTime.Now}] (SERVER) {str}");
             _Server.SendToAll(message);
             if (printToServer) { Console.WriteLine(str); }

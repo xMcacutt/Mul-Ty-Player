@@ -1,5 +1,5 @@
-﻿using RiptideNetworking;
-using RiptideNetworking.Utils;
+﻿using Riptide;
+using Riptide.Utils;
 using System;
 using System.Net.Cache;
 using System.Threading;
@@ -14,19 +14,17 @@ namespace MulTyPlayerClient
         static GameStateHandler HGameState => Program.HGameState;
 
         public static bool IsRunning;
-        public static RiptideNetworking.Client _client;
+        public static Riptide.Client _client;
         private static string _ip;
         private static string _command;
-        static Thread _loop;
 
         public static void StartClient(string ipinput)
         {
             RiptideLogger.Initialize(Console.WriteLine, true);
             _ip = ipinput;
-
-
-            _loop = new Thread(new ThreadStart(Loop));
-            _loop.Start();
+   
+            Thread loop = new Thread(new ParameterizedThreadStart(Loop));
+            loop.Start(Program._cts.Token);
 
             IsRunning = true;
 
@@ -53,9 +51,9 @@ namespace MulTyPlayerClient
 
         }
 
-        private static void Loop()
+        private static void Loop(Object token)
         {
-            _client = new RiptideNetworking.Client(5000);
+            _client = new Riptide.Client();
             _client.Connected += (s, e) => Connected();
             _client.Disconnected += (s, e) => Disconnected();
             _client.ConnectionFailed += (s, e) => ConnectionFailed();
@@ -63,9 +61,9 @@ namespace MulTyPlayerClient
 
             while (IsRunning)
             {
-                _client.Tick();
+                _client.Update();
                 //CHECK IF ON MENU OR LOADING
-                if (!HGameState.CheckMenu() && !HGameState.CheckLoading())
+                if (!HGameState.CheckMenuOrLoading())
                 {
                     //IF NOT SET UP LOAD INTO LEVEL STUFF
                     if (!HLevel.LoadedIntoNewLevelStuffDone)
@@ -83,15 +81,15 @@ namespace MulTyPlayerClient
         {
             Console.WriteLine("\nConnected to server successfully!\nType /stop to disconnect at any time.");
             SettingsHandler.RequestServerSettings();
-            Message message = Message.Create(MessageSendMode.reliable, MessageID.Connected);
+            Message message = Message.Create(MessageSendMode.Reliable, MessageID.Connected);
             message.AddString(Program.PlayerName);
             _client.Send(message);
         }
 
         private static void Disconnected()
         {
-            Program.TyDataThread.Abort();
-            _loop.Abort();
+            Program._cts.Cancel();
+            Program._cts.Dispose();
         }
 
         private static void ConnectionFailed()

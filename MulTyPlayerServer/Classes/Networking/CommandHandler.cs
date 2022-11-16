@@ -1,14 +1,6 @@
-﻿using Microsoft.SqlServer.Server;
-using RiptideNetworking.Transports;
-using RiptideNetworking;
-using System;
-using System.Collections.Generic;
+﻿using Riptide;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.Design;
 using System.IO;
-using System.Xml;
 
 namespace MulTyPlayerServer
 {
@@ -29,7 +21,7 @@ namespace MulTyPlayerServer
             {
                 case "resetsync":
                     {
-                        ResetSync();
+                        //ResetSync();
                         return "Synchronizations have been reset.";
                     }
                 case "kick":
@@ -95,16 +87,16 @@ namespace MulTyPlayerServer
                     }
             }
         }
-
+        /*
         private void ResetSync()
         {
             Program.HSync = new SyncHandler();
             SyncHandler.SendResetSyncMessage();
-        }
+        }*/
 
         private void KickPlayer(ushort clientId)
         {
-            Message message = Message.Create(MessageSendMode.reliable, MessageID.Disconnect);
+            Message message = Message.Create(MessageSendMode.Reliable, MessageID.Disconnect);
             Server._Server.Send(message, clientId);
         }
 
@@ -116,7 +108,7 @@ namespace MulTyPlayerServer
             {
                 return listRes += "\nThere are no clients currently connected.";
             }
-            foreach (IConnectionInfo client in Server._Server.Clients)
+            foreach (Connection client in Server._Server.Clients)
             {
                 if (client.IsConnected)
                 {
@@ -128,7 +120,7 @@ namespace MulTyPlayerServer
 
         private string SetPassword(string password)
         {
-            if (!password.All(Char.IsLetter) || password.Length != 5)
+            if (!password.All(char.IsLetter) || password.Length != 5)
             {
                 return $"{password} is not a valid password. A password must be exactly 5 LETTERS.";
             }
@@ -145,7 +137,7 @@ namespace MulTyPlayerServer
                 acceptRequest = true;
                 SetNewHost(fromClientId);
             }
-            Message hRequest = Message.Create(MessageSendMode.reliable, MessageID.ReqHost);
+            Message hRequest = Message.Create(MessageSendMode.Reliable, MessageID.ReqHost);
             hRequest.AddBool(acceptRequest);
             Server._Server.Send(hRequest, fromClientId);
         }
@@ -153,7 +145,7 @@ namespace MulTyPlayerServer
         public static void SetNewHost(ushort newHost)
         {
             host = newHost;
-            Message notifyHostChange = Message.Create(MessageSendMode.reliable, MessageID.HostChange);
+            Message notifyHostChange = Message.Create(MessageSendMode.Reliable, MessageID.HostChange);
             notifyHostChange.AddUShort(newHost);
             Server._Server.SendToAll(notifyHostChange);
             if(Server.PlayerList.Count == 0)
@@ -166,7 +158,7 @@ namespace MulTyPlayerServer
         [MessageHandler((ushort)MessageID.HostCommand)]
         public static void HostCommand(ushort fromClientId, Message message)
         {
-            Message response = Message.Create(MessageSendMode.reliable, MessageID.HostCommand);
+            Message response = Message.Create(MessageSendMode.Reliable, MessageID.HostCommand);
             response.AddString(Program.HCommand.ParseCommand(message.GetString()));
             Server._Server.Send(message, fromClientId);
         }

@@ -1,4 +1,4 @@
-﻿using RiptideNetworking;
+﻿using Riptide;
 using System;
 using System.IO;
 using System.Linq;
@@ -36,7 +36,7 @@ namespace MulTyPlayerClient
         
         public static void RequestServerSettings()
         {
-            Message message = Message.Create(MessageSendMode.reliable, MessageID.ReqSettings);
+            Message message = Message.Create(MessageSendMode.Reliable, MessageID.ReqSettings);
             Client._client.Send(message);
         }
 

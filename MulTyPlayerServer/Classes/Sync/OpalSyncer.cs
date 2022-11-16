@@ -1,4 +1,4 @@
-﻿using RiptideNetworking;
+﻿using Riptide;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 
 namespace MulTyPlayerServer
 {
-    internal class OpalHandler
+    internal class OpalSyncer
     {
-        public static Dictionary<int, byte[]> GlobalOpalData;
-        public static Dictionary<int, int> GlobalOpalCounts;
+        public Dictionary<int, byte[]> GlobalOpalData;
+        public Dictionary<int, int> GlobalOpalCounts;
 
-        public OpalHandler()
+        public OpalSyncer()
         {
             GlobalOpalData = new Dictionary<int, byte[]>()
             {
+                { 0, Enumerable.Repeat((byte)2, 25).ToArray() },
                 { 4, Enumerable.Repeat((byte)2, 300).ToArray() },
                 { 5, Enumerable.Repeat((byte)2, 300).ToArray() },
                 { 6, Enumerable.Repeat((byte)2, 300).ToArray() },
@@ -30,6 +31,7 @@ namespace MulTyPlayerServer
             };
             GlobalOpalCounts = new Dictionary<int, int>()
             {
+                { 0, 0 },
                 { 4, 0 },
                 { 5, 0 },
                 { 6, 0 },
@@ -42,7 +44,7 @@ namespace MulTyPlayerServer
             };
         }
 
-        public static void HandleServerUpdate(int opal, int level, ushort fromClientId)
+        public void HandleServerUpdate(int opal, int level, ushort fromClientId)
         {
             if (!GlobalOpalData.Keys.Contains(level)) { return; }
             GlobalOpalData[level][opal] = 5;
@@ -51,17 +53,18 @@ namespace MulTyPlayerServer
             SendUpdatedData(opal, level, fromClientId);
         }
 
-        public static void SendUpdatedData(int opal, int level, ushort fromClientId)
+        public void SendUpdatedData(int level, int index, ushort fromClientId)
         {
-            Message message = Message.Create(MessageSendMode.reliable, MessageID.ClientDataUpdate);
-            message.AddBytes(BitConverter.GetBytes(opal));
+            Message message = Message.Create(MessageSendMode.Reliable, MessageID.ClientDataUpdate);
+            message.AddUShort(fromClientId);
             message.AddInt(level);
+            message.AddInt(index);
             message.AddString("Opal");
             message.AddInt(GlobalOpalCounts[level]);
             Server._Server.SendToAll(message);
         }
 
-        static byte[] ConvertOpals(int level)
+        byte[] ConvertOpals(int level)
         {
             byte[] inputBytes = GlobalOpalData[level];
             byte[] outputBytes = new byte[(int)Math.Ceiling((double)inputBytes.Length / 8)];

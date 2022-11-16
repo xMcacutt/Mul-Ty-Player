@@ -1,4 +1,4 @@
-﻿using RiptideNetworking;
+﻿using Riptide;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,6 @@ namespace MulTyPlayerClient
 {
     internal class KoalaHandler
     {
-        IntPtr HProcess => ProcessHandler.HProcess;
         static GameStateHandler HGameState => Program.HGameState;
         static LevelHandler HLevel => Program.HLevel;
 
@@ -104,11 +103,9 @@ namespace MulTyPlayerClient
         public void RemoveCollision()
         {
             //WRITES 0 TO COLLISION BYTE
-            int bytesWritten = 0;
-            byte[] buffer = BitConverter.GetBytes(0);
             foreach (int koala in KoalaAddrs.Keys)
             {
-                ProcessHandler.WriteProcessMemory((int)HProcess, KoalaAddrs[koala][6], buffer, buffer.Length, ref bytesWritten);
+                ProcessHandler.WriteData(KoalaAddrs[koala][6], BitConverter.GetBytes(0));
             }
         }
 
@@ -125,8 +122,7 @@ namespace MulTyPlayerClient
             //SANITY CHECK THAT WE HAVEN'T BEEN SENT OUR OWN COORDINATES AND WE AREN'T LOADING, ON THE MENU, OR IN A DIFFERENT LEVEL 
             if (
                 name == Program.PlayerName 
-                || HGameState.CheckLoading() 
-                || HGameState.CheckMenu() 
+                || HGameState.CheckMenuOrLoading() 
                 || intData[1] != HLevel.CurrentLevelId
                 ) 
             { return; }
@@ -134,10 +130,7 @@ namespace MulTyPlayerClient
             //WRITE COORDINATES TO KOALA COORDINATE ADDRESSES
             for (int i = 0; i < coordinates.Length; i++)
             {
-                IntPtr hProcess = ProcessHandler.OpenProcess(0x1F0FFF, false, ProcessHandler.TyProcess.Id);
-                int bytesWritten = 0;
-                byte[] buffer = BitConverter.GetBytes(coordinates[i]);
-                ProcessHandler.WriteProcessMemory((int)hProcess, Program.HKoala.KoalaAddrs[intData[0]][i], buffer, buffer.Length, ref bytesWritten);
+                ProcessHandler.WriteData(Program.HKoala.KoalaAddrs[intData[0]][i], BitConverter.GetBytes(coordinates[i]));
                 //Console.WriteLine("Writing {0:F} to {1:X}", coordinates[i], Program.HKoala.KoalaAddrs[intData[0]][i]);
             }
         }

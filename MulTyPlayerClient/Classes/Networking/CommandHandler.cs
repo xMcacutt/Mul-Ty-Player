@@ -1,4 +1,4 @@
-﻿using RiptideNetworking;
+﻿using Riptide;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,7 +35,7 @@ namespace MulTyPlayerClient
 
             if (host == Client._client.Id && hostCommands.Contains(command))
             {
-                Message message = Message.Create(MessageSendMode.reliable, MessageID.HostCommand);
+                Message message = Message.Create(MessageSendMode.Reliable, MessageID.HostCommand);
                 message.AddString(userInput);
                 Client._client.Send(message);
                 return;
@@ -70,7 +70,7 @@ namespace MulTyPlayerClient
 
         private static void RequestHost()
         {
-            Message message = Message.Create(MessageSendMode.reliable, MessageID.ReqHost);
+            Message message = Message.Create(MessageSendMode.Reliable, MessageID.ReqHost);
             Client._client.Send(message);
         }
 

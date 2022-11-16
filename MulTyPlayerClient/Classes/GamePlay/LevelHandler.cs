@@ -1,5 +1,5 @@
 ﻿using MulTyPlayerClient;
-using RiptideNetworking;
+using Riptide;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,32 +24,23 @@ namespace MulTyPlayerClient
 
         public void DoLevelSetup()
         {
-            HSync.ProtectLeaderboard();
-            if (!Program.HGameState.CheckMenu())
-            {
-                HSync.RequestSync();
-            }
+            //HSync.ProtectLeaderboard();
+            //HSync.RequestSync();
             HKoala.SetCoordAddrs();
-            if (!SettingsHandler.DoKoalaCollision)
-            {
-                HKoala.RemoveCollision();
-            }
-            if (CurrentLevelId == 9 || CurrentLevelId == 13) { ObjectiveCountSet(); }
+            if (!SettingsHandler.DoKoalaCollision) HKoala.RemoveCollision();
+            if (CurrentLevelId == 9 || CurrentLevelId == 13) ObjectiveCountSet();
             LoadedIntoNewLevelStuffDone = true;
         }
 
         public void GetCurrentLevel()
         {
-            int bytesRead = 0;
-            byte[] currentLevelBytes = new byte[4];
-            ProcessHandler.ReadProcessMemory((int)HProcess, PointerCalculations.AddOffset(0x280594), currentLevelBytes, 4, ref bytesRead);
-            CurrentLevelId = BitConverter.ToInt32(currentLevelBytes, 0);
+            byte[] buffer = ProcessHandler.ReadData("current level", PointerCalculations.AddOffset(0x280594), 4);
+            CurrentLevelId = BitConverter.ToInt32(buffer, 0);
         }
 
         public void ObjectiveCountSet() 
         {
             int[] objectiveCountOffsets = null;
-            int bytesRead = 0;
             switch (CurrentLevelId)
             {
                 case 9:
@@ -59,16 +50,9 @@ namespace MulTyPlayerClient
                     objectiveCountOffsets = _objectiveCountOffsetsStump;
                     break;
             }
-            byte[] objectiveCountBytes = new byte[2];
-            //POTENTIALLY UNECESSARY READ
             int objectiveCounterAddr = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x0028C318), objectiveCountOffsets, 2);
-            ProcessHandler.ReadProcessMemory((int)HProcess, objectiveCounterAddr, objectiveCountBytes, 2, ref bytesRead);
-            if (BitConverter.ToInt16(objectiveCountBytes, 0) != 8)
-            {
-                int bytesWritten = 0;
-                byte[] buffer = BitConverter.GetBytes((Int16)8);
-                ProcessHandler.WriteProcessMemory((int)HProcess, objectiveCounterAddr, buffer, buffer.Length, ref bytesWritten);
-            }
+            byte[] buffer = ProcessHandler.ReadData("objective count", objectiveCounterAddr, 2);
+            if (BitConverter.ToInt16(buffer, 0) != 8) ProcessHandler.WriteData(objectiveCounterAddr, BitConverter.GetBytes(8));
         }
     }
 }

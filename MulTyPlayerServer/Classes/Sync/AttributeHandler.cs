@@ -1,4 +1,4 @@
-﻿using RiptideNetworking;
+﻿using Riptide;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,7 @@ namespace MulTyPlayerServer
 
         public static void SendUpdatedData(ushort originalSender)
         {
-            Message message = Message.Create(MessageSendMode.reliable, MessageID.ClientDataUpdate);
+            Message message = Message.Create(MessageSendMode.Reliable, MessageID.ClientDataUpdate);
             message.AddBytes(GlobalAttributeData);
             message.AddInt(0);
             message.AddString("Attribute");

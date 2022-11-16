@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using RiptideNetworking;
+using Riptide;
 
 namespace MulTyPlayerServer
 {
@@ -43,7 +43,7 @@ namespace MulTyPlayerServer
         static void HandleSettingsRequest(ushort fromClientId, Message message)
         {
             bool[] b = { DoSyncTEs, DoSyncCogs, DoSyncBilbies, DoSyncRangs, DoSyncOpals };
-            Message response = Message.Create(MessageSendMode.reliable, MessageID.ReqSettings);
+            Message response = Message.Create(MessageSendMode.Reliable, MessageID.ReqSettings);
             response.AddBools(b);
             Server._Server.Send(response, fromClientId);
         }
