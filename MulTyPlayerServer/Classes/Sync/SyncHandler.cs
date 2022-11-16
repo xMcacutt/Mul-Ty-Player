@@ -33,12 +33,12 @@ namespace MulTyPlayerServer
         [MessageHandler((ushort)MessageID.ServerDataUpdate)]
         private static void HandleServerDataUpdate(ushort fromClientId, Message message)
         {
-            int level = message.GetInt();
             int index = message.GetInt();
+            int level = message.GetInt();
             string dataType = message.GetString();
             switch (dataType)
             {
-                case "Opal": SOpal.HandleServerUpdate(level, index, fromClientId); break;
+                case "Opal": SOpal.HandleServerUpdate(index, level, fromClientId); break;
                 default: break;
             }
         }
