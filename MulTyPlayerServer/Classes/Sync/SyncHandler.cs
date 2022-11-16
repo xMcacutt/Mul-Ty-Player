@@ -33,6 +33,7 @@ namespace MulTyPlayerServer
         [MessageHandler((ushort)MessageID.ServerDataUpdate)]
         private static void HandleServerDataUpdate(ushort fromClientId, Message message)
         {
+            Console.WriteLine("Handling data from client");
             int index = message.GetInt();
             int level = message.GetInt();
             string dataType = message.GetString();

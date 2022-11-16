@@ -24,6 +24,7 @@ namespace MulTyPlayerClient
 
         public void SendDataToServer(int index, int level, string type)
         {
+            Console.WriteLine("sending to server");
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.ServerDataUpdate);
             message.AddInt(index);
             message.AddInt(level);
@@ -39,6 +40,7 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ClientDataUpdate)]
         private static void HandleClientDataUpdate(Message message)
         {
+            Console.WriteLine("handling data from server");
             int index = message.GetInt();
             int level = message.GetInt();
             string dataType = message.GetString();

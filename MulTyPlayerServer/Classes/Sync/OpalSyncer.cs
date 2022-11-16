@@ -54,6 +54,7 @@ namespace MulTyPlayerServer
 
         public void SendUpdatedData(int index, int level, ushort fromClientId)
         {
+            Console.WriteLine("sending to clients");
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.ClientDataUpdate);
             message.AddInt(index);
             message.AddInt(level);
