@@ -29,9 +29,7 @@ namespace MulTyPlayerClient
         public virtual void HandleClientUpdate(int index, int level)
         {
             SaveSync.Save(index);
-            Console.WriteLine("123");
             if (level != Program.HLevel.CurrentLevelId) return;
-            Console.WriteLine("1234");
             LiveSync.Collect(index);
         }
 
@@ -52,7 +50,7 @@ namespace MulTyPlayerClient
                 if (CheckObserverCondition(PreviousObjectData[i], CurrentObjectData[i]))
                 {
                     PreviousObjectData[i] = CurrentObjectData[i] = WriteState;
-                    Program.HSync.UpdateServerData(Program.HLevel.CurrentLevelId, i, Name);
+                    Program.HSync.SendDataToServer(i, Program.HLevel.CurrentLevelId, Name);
                 }
             }
         }
