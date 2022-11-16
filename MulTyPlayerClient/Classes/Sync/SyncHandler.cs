@@ -22,11 +22,11 @@ namespace MulTyPlayerClient
             HOpal = new OpalHandler();
         }
 
-        public void UpdateServerData(int level, int index, string type)
+        public void UpdateServerData(int index, int level, string type)
         {
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.ServerDataUpdate);
-            message.AddInt(level);
             message.AddInt(index);
+            message.AddInt(level);
             message.AddString(type);
             Client._client.Send(message);
         }

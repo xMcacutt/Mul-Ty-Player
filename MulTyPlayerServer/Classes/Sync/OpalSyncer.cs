@@ -49,7 +49,6 @@ namespace MulTyPlayerServer
             if (!GlobalOpalData.Keys.Contains(level)) { return; }
             GlobalOpalData[level][opal] = 5;
             GlobalOpalCounts[level] = GlobalOpalData[level].Count(i => i == 5);
-
             SendUpdatedData(opal, level, fromClientId);
         }
 
