@@ -29,7 +29,9 @@ namespace MulTyPlayerClient
         public virtual void HandleClientUpdate(int index, int level)
         {
             SaveSync.Save(index);
+            Console.WriteLine("123");
             if (level != Program.HLevel.CurrentLevelId) return;
+            Console.WriteLine("1234");
             LiveSync.Collect(index);
         }
 
