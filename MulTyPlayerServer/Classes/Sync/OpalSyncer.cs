@@ -3,9 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MulTyPlayerServer
 {
@@ -44,22 +41,23 @@ namespace MulTyPlayerServer
             };
         }
 
-        public void HandleServerUpdate(int opal, int level, ushort fromClientId)
+        public void HandleServerUpdate(int opal, int level, ushort originalSender)
         {
             if (!GlobalOpalData.Keys.Contains(level)) { return; }
             GlobalOpalData[level][opal] = 5;
             GlobalOpalCounts[level] = GlobalOpalData[level].Count(i => i == 5);
-            SendUpdatedData(opal, level, fromClientId);
+            SendUpdatedData(opal, level, originalSender);
         }
 
-        public void SendUpdatedData(int index, int level, ushort fromClientId)
+        public void SendUpdatedData(int index, int level, ushort originalSender)
         {
             Console.WriteLine("sending to clients");
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.ClientDataUpdate);
+            message.AddUShort(originalSender);
             message.AddInt(index);
             message.AddInt(level);
             message.AddString("Opal");
-            Server._Server.SendToAll(message, fromClientId);
+            Server._Server.SendToAll(message, originalSender);
         }
 
         byte[] ConvertOpals(int level)

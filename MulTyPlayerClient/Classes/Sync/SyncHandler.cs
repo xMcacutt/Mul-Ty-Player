@@ -40,6 +40,7 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ClientDataUpdate)]
         private static void HandleClientDataUpdate(Message message)
         {
+            if(message.GetUShort() == Client._client.Id)  return;
             Console.WriteLine("handling data from server");
             int index = message.GetInt();
             int level = message.GetInt();
