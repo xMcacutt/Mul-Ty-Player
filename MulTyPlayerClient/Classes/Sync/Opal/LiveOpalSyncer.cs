@@ -33,14 +33,14 @@ namespace MulTyPlayerClient
             byte[] currentOpals = new byte[size];
             for(int i = 0; i < size - crateOpalsInLevel; i++)
             {
-                currentOpals[i] = ProcessHandler.ReadData("opal read", address + 78 + (0x114 * i), 1)[0];
+                currentOpals[i] = ProcessHandler.ReadData("opal read", address + 0x78 + (0x114 * i), 1)[0];
             }
             if(crateOpalsInLevel != 0)
             {
                 address = HOpal.CrateOpalsAddress;
                 for(int i = 0; i < crateOpalsInLevel; i++)
                 {
-                    currentOpals[300 - crateOpalsInLevel + i] = ProcessHandler.ReadData("opal read", address + 78 + (0x114 * i), 1)[0];
+                    currentOpals[300 - crateOpalsInLevel + i] = ProcessHandler.ReadData("opal read", address + 0x78 + (0x114 * i), 1)[0];
                 }
             }
             return currentOpals;
@@ -55,7 +55,7 @@ namespace MulTyPlayerClient
             else if (HLevel.CurrentLevelId == 10) baseAddress = HOpal.B3OpalsAddress;
             else if (index < (300 - HOpal._crateOpalsPerLevel[HLevel.CurrentLevelId])) baseAddress = HOpal.NonCrateOpalsAddress;
             else baseAddress = HOpal.CrateOpalsAddress;
-            ProcessHandler.WriteData(baseAddress + 78 + (114 * index), BitConverter.GetBytes(3));
+            ProcessHandler.WriteData(baseAddress + 0x78 + (114 * index), BitConverter.GetBytes(3));
         }
 
     }

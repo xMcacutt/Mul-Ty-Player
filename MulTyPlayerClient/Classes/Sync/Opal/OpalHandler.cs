@@ -34,10 +34,10 @@ namespace MulTyPlayerClient
         public override void SetMemAddrs()
         {
             int gemPtrListAddress = PointerCalculations.AddOffset(GEM_PTR_LIST_BASE_ADDRESS);
-            NonCrateOpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[2]);
-            RainbowScaleAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] { 0x20, 0 });
-            B3OpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] { 0xB20, 0 });
-            CrateOpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] { 0x4AC, 0 });
+            NonCrateOpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x0, 0x0});
+            RainbowScaleAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x20, 0x0});
+            B3OpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0xB20, 0x0});
+            CrateOpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x4AC, 0x0});
         }
 
         public override bool CheckObserverCondition(byte previousState, byte currentState)

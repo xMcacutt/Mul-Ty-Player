@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Riptide;
-using Riptide.Utils;
+﻿using Riptide;
 
 namespace MulTyPlayerServer
 {
@@ -18,8 +12,8 @@ namespace MulTyPlayerServer
 
         public Player(ushort id, string name)
         {
-            this.Id = id;
-            this.Name = name;
+            Id = id;
+            Name = name;
         }
 
         /*MESSAGE HANDLING*/
@@ -29,11 +23,12 @@ namespace MulTyPlayerServer
         {
             string name = message.GetString();
             ushort id = fromClientId;
-            Server.SendMessageToClients($"{name} joined the server.", true);
+            Server.SendMessageToClients($"{name} joined the server.", true, fromClientId);
             Player player = new Player(id, name);
             Server.PlayerList.Add(id, player);
             Program.HKoala.AssignKoala(player);
-            Server.SendMessageToClients($"{name} was assgined {player.AssignedKoala.Name}", true);
+            Server.SendMessageToClients($"{name} was assgined {player.AssignedKoala.Name}", true, fromClientId);
+            Server.SendMessageToClient($"You were assigned {player.AssignedKoala.Name}", false, fromClientId);
         }
 
         [MessageHandler((ushort)MessageID.PlayerInfo)]

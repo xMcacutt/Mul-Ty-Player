@@ -98,6 +98,22 @@ namespace MulTyPlayerServer
             }
         }
 
+        public static void SendMessageToClient(string str, bool printToServer, ushort to)
+        {
+            Message message = Message.Create(MessageSendMode.Reliable, MessageID.ConsoleSend);
+            message.AddString($"[{DateTime.Now}] (SERVER) {str}");
+            _Server.Send(message, to);
+            if (printToServer) { Console.WriteLine(str); }
+        }
+
+        public static void SendMessageToClients(string str, bool printToServer, ushort except)
+        {
+            Message message = Message.Create(MessageSendMode.Reliable, MessageID.ConsoleSend);
+            message.AddString($"[{DateTime.Now}] (SERVER) {str}");
+            _Server.SendToAll(message, except);
+            if (printToServer) { Console.WriteLine(str); }
+        }
+
         public static void SendMessageToClients(string str, bool printToServer)
         {
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.ConsoleSend);

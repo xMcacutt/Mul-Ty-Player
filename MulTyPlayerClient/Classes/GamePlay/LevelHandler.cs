@@ -27,6 +27,7 @@ namespace MulTyPlayerClient
             //HSync.ProtectLeaderboard();
             //HSync.RequestSync();
             HKoala.SetCoordAddrs();
+            HSync.SetMemAddrs();
             if (!SettingsHandler.DoKoalaCollision) HKoala.RemoveCollision();
             if (CurrentLevelId == 9 || CurrentLevelId == 13) ObjectiveCountSet();
             LoadedIntoNewLevelStuffDone = true;

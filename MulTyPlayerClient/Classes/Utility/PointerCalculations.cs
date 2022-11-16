@@ -14,14 +14,11 @@ namespace MulTyPlayerClient
             IntPtr addr = (IntPtr)baseAddress;
             ProcessHandler.ReadProcessMemory((int)HProcess, (int)addr, buffer, 4, ref bytesRead);
             addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
-            foreach (int i in offsets)
+            for (int i = 0; i < offsets.Length - 1; i++)
             {
-                if (i != offsets[offsets.Length - 1])
-                {
-                    addr += i;
-                    ProcessHandler.ReadProcessMemory((int)HProcess, (int)addr, buffer, 4, ref bytesRead);
-                    addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
-                }
+                addr += offsets[i];
+                ProcessHandler.ReadProcessMemory((int)HProcess, (int)addr, buffer, 4, ref bytesRead);
+                addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
             }
             addr += offsets[offsets.Length - 1];
             addr += extraOffset;
@@ -35,14 +32,11 @@ namespace MulTyPlayerClient
             IntPtr addr = (IntPtr)baseAddress;
             ProcessHandler.ReadProcessMemory((int)HProcess, (int)addr, buffer, 4, ref bytesRead);
             addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
-            foreach (int i in offsets)
-            {
-                if (i != offsets[offsets.Length - 1])
-                {
-                    addr += i;
-                    ProcessHandler.ReadProcessMemory((int)HProcess, (int)addr, buffer, 4, ref bytesRead);
-                    addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
-                }
+            for(int i = 0; i < offsets.Length - 1; i++)
+            { 
+                addr += offsets[i];
+                ProcessHandler.ReadProcessMemory((int)HProcess, (int)addr, buffer, 4, ref bytesRead);
+                addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
             }
             addr += offsets[offsets.Length - 1];
             return (int)addr;
@@ -66,14 +60,11 @@ namespace MulTyPlayerClient
             IntPtr addr = (IntPtr)baseAddress;
             ProcessHandler.ReadProcessMemory((int)HProcess, (int)addr, buffer, 4, ref bytesRead);
             addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
-            foreach (int i in offsets)
+            for (int i = 0; i < offsets.Length - 1; i++)
             {
-                if (i != offsets[offsets.Length - 1])
-                {
-                    addr += i;
-                    ProcessHandler.ReadProcessMemory((int)HProcess, (int)addr, buffer, 4, ref bytesRead);
-                    addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
-                }
+                addr += offsets[i];
+                ProcessHandler.ReadProcessMemory((int)HProcess, (int)addr, buffer, 4, ref bytesRead);
+                addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
             }
             addr += offsets[offsets.Length - 1];
             addr -= extraOffset;

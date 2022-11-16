@@ -38,10 +38,10 @@ namespace MulTyPlayerClient
             return BitConverter.ToInt32(ProcessHandler.ReadData("collectible count", PointerCalculations.AddOffset(address), 4), 0);
         }
 
-        public virtual void CheckObserverChanged()
+        public virtual void CheckObserverChanged(int address)
         {
             if (!Program.HLevel.MainStages.Contains(Program.HLevel.CurrentLevelId)) return;
-            ObserverState = ReadObserver(0x26547C);
+            ObserverState = ReadObserver(address);
             if (PreviousObserverState == ObserverState || ObserverState == 0) return;
             PreviousObserverState = ObserverState;
             CurrentObjectData = LiveSync.ReadData();
@@ -54,6 +54,7 @@ namespace MulTyPlayerClient
                 }
             }
         }
+
         public abstract bool CheckObserverCondition(byte previousState, byte currentState);
 
         public virtual void SyncAll(byte[] data)

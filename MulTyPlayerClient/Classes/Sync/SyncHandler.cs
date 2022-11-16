@@ -31,6 +31,11 @@ namespace MulTyPlayerClient
             Client._client.Send(message);
         }
 
+        public void SetMemAddrs()
+        {
+            HOpal.SetMemAddrs();
+        }
+
         [MessageHandler((ushort)MessageID.ClientDataUpdate)]
         private static void HandleClientDataUpdate(Message message)
         {

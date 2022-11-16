@@ -12,6 +12,7 @@ namespace MulTyPlayerServer
         public static int[] MainStages = { 4, 5, 6, 8, 9, 10, 12, 13, 14 };
 
         public static OpalSyncer SOpal;
+        public static int i = 0;
 
         public SyncHandler()
         {
