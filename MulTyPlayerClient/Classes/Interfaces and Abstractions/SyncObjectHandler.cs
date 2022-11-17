@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 
@@ -14,6 +15,8 @@ namespace MulTyPlayerClient
         public int PreviousObserverState { get; set; }
         public byte WriteState { get; set; }
         public string Name { get; set; }
+
+        public Dictionary<int, byte[]> GlobalObjectData;
 
         public LiveDataSyncer LiveSync;
         public SaveDataSyncer SaveSync;
@@ -40,7 +43,6 @@ namespace MulTyPlayerClient
 
         public virtual void CheckObserverChanged(int address)
         {
-            if (!Program.HLevel.MainStages.Contains(Program.HLevel.CurrentLevelId)) return;
             ObserverState = ReadObserver(address);
             if (PreviousObserverState == ObserverState || ObserverState == 0) return;
             PreviousObserverState = ObserverState;
@@ -50,6 +52,8 @@ namespace MulTyPlayerClient
                 if (CheckObserverCondition(PreviousObjectData[i], CurrentObjectData[i]))
                 {
                     PreviousObjectData[i] = CurrentObjectData[i] = WriteState;
+                    if (GlobalObjectData[Program.HLevel.CurrentLevelId][i] == CheckState) return;
+                    GlobalObjectData[Program.HLevel.CurrentLevelId][i] = BitConverter.GetBytes(CheckState)[0];
                     Program.HSync.SendDataToServer(i, Program.HLevel.CurrentLevelId, Name);
                 }
             }

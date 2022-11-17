@@ -10,9 +10,11 @@ namespace MulTyPlayerClient
     {
         readonly OpalHandler HOpal;
 
+
         public SaveOpalSyncer(OpalHandler HOpal)
         {
             this.HOpal = HOpal;
+
         }
     }
 }

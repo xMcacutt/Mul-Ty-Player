@@ -9,11 +9,9 @@ namespace MulTyPlayerClient
         static LevelHandler HLevel => Program.HLevel;
 
         public static OpalHandler HOpal;
-        public RingBuffer<SyncMessage> syncMessages;
 
         public SyncHandler()
         {
-            syncMessages = new RingBuffer<SyncMessage>();
             HOpal = new OpalHandler();
         }
 
@@ -21,9 +19,7 @@ namespace MulTyPlayerClient
         {
             Console.WriteLine("sending to server");
             SyncMessage syncMessage = SyncMessage.Create(index, level, type);
-            if (syncMessages.Contains(syncMessage)) return;
             Client._client.Send(SyncMessage.Encode(syncMessage));
-            syncMessages.Put(syncMessage);
         }
 
         public void SetMemAddrs()

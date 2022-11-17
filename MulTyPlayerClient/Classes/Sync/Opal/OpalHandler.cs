@@ -29,6 +29,9 @@ namespace MulTyPlayerClient
             LiveSync = new LiveOpalSyncer(this);
             SaveSync = new SaveOpalSyncer(this);
             SetSyncClasses(LiveSync, SaveSync);
+            GlobalObjectData = new Dictionary<int, byte[]>();
+            GlobalObjectData.Add(0, new byte[25]);
+            foreach (int i in Program.HLevel.MainStages) GlobalObjectData.Add(i, new byte[300]);
         }
 
         public override void SetMemAddrs()
