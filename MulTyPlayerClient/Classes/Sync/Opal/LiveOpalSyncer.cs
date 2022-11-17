@@ -63,10 +63,16 @@ namespace MulTyPlayerClient
             if (HOpal.CurrentObjectData[index] >= 3) return;
             if (Program.HGameState.CheckMenuOrLoading()) return;
             int baseAddress;
+            int crateOpalsInCurrentLevel = HOpal._crateOpalsPerLevel[HLevel.CurrentLevelId];
             if (HLevel.CurrentLevelId == 0) baseAddress = HOpal.RainbowScaleAddress;
             else if (HLevel.CurrentLevelId == 10) baseAddress = HOpal.B3OpalsAddress;
             else if (index < (300 - HOpal._crateOpalsPerLevel[HLevel.CurrentLevelId])) baseAddress = HOpal.NonCrateOpalsAddress;
-            else baseAddress = HOpal.CrateOpalsAddress;
+            else
+            {
+                int nonCrateOpalsInCurrentLevel = 300 - crateOpalsInCurrentLevel;
+                ProcessHandler.WriteData(HOpal.CrateOpalsAddress + 0x78 + (0x114 * (index - nonCrateOpalsInCurrentLevel)), BitConverter.GetBytes(3));
+                return;
+            }
             ProcessHandler.WriteData(baseAddress + 0x78 + (0x114 * index), BitConverter.GetBytes(3));
         }
 

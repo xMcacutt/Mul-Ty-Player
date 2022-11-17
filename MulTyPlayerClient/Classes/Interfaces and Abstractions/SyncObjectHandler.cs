@@ -31,6 +31,7 @@ namespace MulTyPlayerClient
 
         public virtual void HandleClientUpdate(int index, int level)
         {
+            GlobalObjectData[level][index] = BitConverter.GetBytes(CheckState)[0];
             SaveSync.Save(index);
             if (level != Program.HLevel.CurrentLevelId) return;
             LiveSync.Collect(index);
