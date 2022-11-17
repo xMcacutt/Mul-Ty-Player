@@ -43,7 +43,8 @@ namespace MulTyPlayerServer
 
         public void HandleServerUpdate(int opal, int level, ushort originalSender)
         {
-            if (!GlobalOpalData.Keys.Contains(level)) { return; }
+            if (!GlobalOpalData.Keys.Contains(level)) return;
+            if (GlobalOpalData[level][opal] == 5) return;
             GlobalOpalData[level][opal] = 5;
             GlobalOpalCounts[level] = GlobalOpalData[level].Count(i => i == 5);
             SendUpdatedData(opal, level, originalSender);
@@ -52,12 +53,8 @@ namespace MulTyPlayerServer
         public void SendUpdatedData(int index, int level, ushort originalSender)
         {
             Console.WriteLine("sending to clients");
-            Message message = Message.Create(MessageSendMode.Reliable, MessageID.ClientDataUpdate);
-            message.AddUShort(originalSender);
-            message.AddInt(index);
-            message.AddInt(level);
-            message.AddString("Opal");
-            Server._Server.SendToAll(message, originalSender);
+            SyncMessage syncMessage = SyncMessage.Create(index, level, "Opal");
+            Server._Server.SendToAll(SyncMessage.Encode(syncMessage), originalSender);
         }
 
         byte[] ConvertOpals(int level)

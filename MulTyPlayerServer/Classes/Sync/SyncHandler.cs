@@ -12,7 +12,6 @@ namespace MulTyPlayerServer
         public static int[] MainStages = { 4, 5, 6, 8, 9, 10, 12, 13, 14 };
 
         public static OpalSyncer SOpal;
-        public static int i = 0;
 
         public SyncHandler()
         {
@@ -34,32 +33,12 @@ namespace MulTyPlayerServer
         private static void HandleServerDataUpdate(ushort fromClientId, Message message)
         {
             Console.WriteLine("Handling data from client");
-            int index = message.GetInt();
-            int level = message.GetInt();
-            string dataType = message.GetString();
-            switch (dataType)
+            SyncMessage syncMessage = SyncMessage.Decode(message);
+            switch (syncMessage.type)
             {
-                case "Opal": SOpal.HandleServerUpdate(index, level, fromClientId); break;
+                case "Opal": SOpal.HandleServerUpdate(syncMessage.index, syncMessage.level, fromClientId); break;
                 default: break;
             }
         }
-
-        /*
-        public static void SendResetSyncMessage()
-        {
-            Message message = Message.Create(MessageSendMode.Reliable, MessageID.ResetSync);
-            Server._Server.SendToAll(message);
-        }
-
-        [MessageHandler((ushort)MessageID.ReqSync)]
-        public static void SyncRequest(ushort fromClientId, Message message)
-        {
-            int level = message.GetInt();
-            Message sync = Message.Create(MessageSendMode.Reliable, MessageID.ReqSync);
-
-            sync.AddBytes(SOpal.GlobalOpalData[level]);
-            Server._Server.Send(sync, fromClientId);
-        }
-        */
     }
 }

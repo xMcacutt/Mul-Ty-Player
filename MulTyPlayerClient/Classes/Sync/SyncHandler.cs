@@ -1,12 +1,5 @@
-﻿using MulTyPlayerClient;
-using Riptide;
+﻿using Riptide;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Cache;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MulTyPlayerClient
 {
@@ -16,20 +9,21 @@ namespace MulTyPlayerClient
         static LevelHandler HLevel => Program.HLevel;
 
         public static OpalHandler HOpal;
+        public RingBuffer<SyncMessage> syncMessages;
 
         public SyncHandler()
         {
+            syncMessages = new RingBuffer<SyncMessage>();
             HOpal = new OpalHandler();
         }
 
         public void SendDataToServer(int index, int level, string type)
         {
             Console.WriteLine("sending to server");
-            Message message = Message.Create(MessageSendMode.Reliable, MessageID.ServerDataUpdate);
-            message.AddInt(index);
-            message.AddInt(level);
-            message.AddString(type);
-            Client._client.Send(message);
+            SyncMessage syncMessage = SyncMessage.Create(index, level, type);
+            if (syncMessages.Contains(syncMessage)) return;
+            Client._client.Send(SyncMessage.Encode(syncMessage));
+            syncMessages.Put(syncMessage);
         }
 
         public void SetMemAddrs()
@@ -40,14 +34,12 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ClientDataUpdate)]
         private static void HandleClientDataUpdate(Message message)
         {
-            if(message.GetUShort() == Client._client.Id)  return;
             Console.WriteLine("handling data from server");
-            int index = message.GetInt();
-            int level = message.GetInt();
-            string dataType = message.GetString();
-            switch (dataType)
+            SyncMessage syncMessage = SyncMessage.Decode(message);
+            Console.WriteLine($"opal number: {syncMessage.index} collected");
+            switch (syncMessage.type)
             {
-                case "Opal": HOpal.HandleClientUpdate(index, level); break;
+                case "Opal": HOpal.HandleClientUpdate(syncMessage.index, syncMessage.level); break;
                 default: { break; }
             }
         }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Net;
 
 namespace MulTyPlayerClient
 {
@@ -12,36 +14,46 @@ namespace MulTyPlayerClient
             this.HOpal = HOpal;
         }
 
-        public override byte[] ReadData()
+        private int[] SelectOpalType()
         {
-            int address;
             int size = 300;
-            int crateOpalsInLevel = HOpal._crateOpalsPerLevel[HLevel.CurrentLevelId];
+            int address;
             switch (HLevel.CurrentLevelId)
             {
-                case 0: 
-                        address = HOpal.RainbowScaleAddress; 
-                        size = 25; 
-                        break;
-                case 10: 
-                        address = HOpal.B3OpalsAddress; 
-                        break;
-                default: 
-                        address = HOpal.NonCrateOpalsAddress; 
-                        break;
+                case 0:
+                    address = HOpal.RainbowScaleAddress;
+                    size = 25;
+                    break;
+                case 10:
+                    address = HOpal.B3OpalsAddress;
+                    break;
+                default:
+                    address = HOpal.NonCrateOpalsAddress;
+                    break;
             }
+            int[] result = { address, size };
+            return result;
+        }
+
+        public override byte[] ReadData()
+        {
+            int crateOpalsInLevel = HOpal._crateOpalsPerLevel[HLevel.CurrentLevelId];
+
+            int[] opalTypeData = SelectOpalType();
+            int address = opalTypeData[0];
+            int size = opalTypeData[1];
+
             byte[] currentOpals = new byte[size];
-            for(int i = 0; i < size - crateOpalsInLevel; i++)
+            for (int i = 0; i < size - crateOpalsInLevel; i++)
             {
                 currentOpals[i] = ProcessHandler.ReadData("opal read", address + 0x78 + (0x114 * i), 1)[0];
             }
-            if(crateOpalsInLevel != 0)
+            if (crateOpalsInLevel == 0) return currentOpals;
+
+            address = HOpal.CrateOpalsAddress;
+            for (int i = 0; i < crateOpalsInLevel; i++)
             {
-                address = HOpal.CrateOpalsAddress;
-                for(int i = 0; i < crateOpalsInLevel; i++)
-                {
-                    currentOpals[300 - crateOpalsInLevel + i] = ProcessHandler.ReadData("opal read", address + 0x78 + (0x114 * i), 1)[0];
-                }
+                currentOpals[300 - crateOpalsInLevel + i] = ProcessHandler.ReadData("opal read", address + 0x78 + (0x114 * i), 1)[0];
             }
             return currentOpals;
         }
