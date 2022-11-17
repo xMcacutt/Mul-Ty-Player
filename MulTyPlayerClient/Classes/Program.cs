@@ -54,11 +54,11 @@ namespace MulTyPlayerClient
             //OPEN HANDLE TO PROCESS
             ProcessHandler.OpenTyProcess();
 
+            HLevel = new LevelHandler();
             HSync = new SyncHandler();
             HGameState = new GameStateHandler();
             HHero = new HeroHandler();
             HKoala = new KoalaHandler();
-            HLevel = new LevelHandler();
 
             HHero.SetCoordAddrs();
             HKoala.CreateKoalas();
