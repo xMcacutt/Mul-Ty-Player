@@ -56,10 +56,6 @@ namespace MulTyPlayerClient
                         }
                         break;
                     }
-                case "doNothing":
-                    {
-                        break;
-                    }
                 default:
                     {
                         Console.WriteLine($"/{command} is not a command. Try /help for a list of commands");
@@ -96,6 +92,12 @@ namespace MulTyPlayerClient
         public static void HostCommandResponse(Message message)
         {
             Console.WriteLine(message.GetString());
+        }
+
+        [MessageHandler((ushort)MessageID.ResetSync)]
+        private void HandleSyncReset(Message message)
+        {
+            Program.HSync = new SyncHandler();
         }
     }
 }

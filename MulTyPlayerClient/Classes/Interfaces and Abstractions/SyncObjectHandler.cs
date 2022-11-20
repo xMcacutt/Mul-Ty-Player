@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Net.Sockets;
 
 namespace MulTyPlayerClient
 {
@@ -14,6 +15,8 @@ namespace MulTyPlayerClient
         public int ObserverState { get; set; }
         public int PreviousObserverState { get; set; }
         public byte WriteState { get; set; }
+        public int CounterAddress { get; set; }
+        public int LiveObjectAddress { get; set; }
         public string Name { get; set; }
 
         public Dictionary<int, byte[]> GlobalObjectData;
@@ -32,19 +35,19 @@ namespace MulTyPlayerClient
         public virtual void HandleClientUpdate(int index, int level)
         {
             GlobalObjectData[level][index] = BitConverter.GetBytes(CheckState)[0];
-            SaveSync.Save(index);
+            SaveSync.Save(index, level);
             if (level != Program.HLevel.CurrentLevelId) return;
             LiveSync.Collect(index);
         }
 
         public virtual int ReadObserver(int address)
         {
-            return BitConverter.ToInt32(ProcessHandler.ReadData("collectible count", PointerCalculations.AddOffset(address), 4), 0);
+            return BitConverter.ToInt32(ProcessHandler.ReadData("observer read", PointerCalculations.AddOffset(address), 4), 0);
         }
 
-        public virtual void CheckObserverChanged(int address)
+        public virtual void CheckObserverChanged()
         {
-            ObserverState = ReadObserver(address);
+            ObserverState = ReadObserver(CounterAddress);
             if (PreviousObserverState == ObserverState || ObserverState == 0) return;
             PreviousObserverState = ObserverState;
             CurrentObjectData = LiveSync.ReadData();
@@ -62,18 +65,15 @@ namespace MulTyPlayerClient
 
         public abstract bool CheckObserverCondition(byte previousState, byte currentState);
 
-        public virtual void SyncAll(byte[] data)
+        public virtual void Sync(int level, byte[] data)
         {
-            CurrentObjectData = data;
-            PreviousObjectData = data;
-            LiveSync.SyncAll(data, ObjectAmount, CheckState);
-            SaveSync.SyncAll(data);
-        }
-
-        public virtual void ResetSync() 
-        {
-            CurrentObjectData = new byte[ObjectAmount];
-            PreviousObjectData = new byte[ObjectAmount];
+            if(Program.HLevel.CurrentLevelId == level)
+            {
+                CurrentObjectData = data;
+                PreviousObjectData = data;
+                LiveSync.Sync(data, ObjectAmount, CheckState);
+            }
+            SaveSync.Sync(level, data);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace MulTyPlayerServer
             {
                 case "resetsync":
                     {
-                        //ResetSync();
+                        ResetSync();
                         return "Synchronizations have been reset.";
                     }
                 case "kick":
@@ -87,12 +87,11 @@ namespace MulTyPlayerServer
                     }
             }
         }
-        /*
         private void ResetSync()
         {
             Program.HSync = new SyncHandler();
             SyncHandler.SendResetSyncMessage();
-        }*/
+        }
 
         private void KickPlayer(ushort clientId)
         {

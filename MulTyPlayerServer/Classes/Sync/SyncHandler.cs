@@ -1,4 +1,5 @@
-﻿using Riptide;
+﻿using MulTyPlayerServer.Classes.Sync;
+using Riptide;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,36 +10,40 @@ namespace MulTyPlayerServer
 {
     internal class SyncHandler
     {
+
         public static int[] MainStages = { 4, 5, 6, 8, 9, 10, 12, 13, 14 };
+        public static Dictionary<string, Syncer> Syncers;
 
         public static OpalSyncer SOpal;
+        public static TESyncer SThEg;
+        public static CogSyncer SCog;
 
         public SyncHandler()
         {
-            SOpal = new OpalSyncer();
+            Syncers = new Dictionary<string, Syncer>();
+            Syncers.Add("Opal", SOpal = new OpalSyncer());
+            Syncers.Add("TE", SThEg = new TESyncer());
+            Syncers.Add("Cog", SCog = new CogSyncer());
         }
 
-        public static void CompDataByteArrays(byte[] localPlayerArray, ref byte[] globalDataArray)
+        public static void SendResetSyncMessage()
         {
-            for (int i = 0; i < localPlayerArray.Length; i++)
-            {
-                if (localPlayerArray[i] == 1 && globalDataArray[i] == 0)
-                {
-                    globalDataArray[i] = 1;
-                }
-            }
+            Message message = Message.Create(MessageSendMode.Reliable, MessageID.ResetSync);
+            Server._Server.SendToAll(message);
+        }
+
+        [MessageHandler((ushort)MessageID.ReqSync)]
+        private static void HandleSyncRequest(ushort fromClientId, Message message)
+        {
+            SOpal.Sync(fromClientId);
+            SThEg.Sync(fromClientId);
         }
 
         [MessageHandler((ushort)MessageID.ServerDataUpdate)]
         private static void HandleServerDataUpdate(ushort fromClientId, Message message)
         {
-            Console.WriteLine("Handling data from client");
             SyncMessage syncMessage = SyncMessage.Decode(message);
-            switch (syncMessage.type)
-            {
-                case "Opal": SOpal.HandleServerUpdate(syncMessage.index, syncMessage.level, fromClientId); break;
-                default: break;
-            }
+            Syncers[syncMessage.type].HandleServerUpdate(syncMessage.index, syncMessage.level, fromClientId);
         }
     }
 }

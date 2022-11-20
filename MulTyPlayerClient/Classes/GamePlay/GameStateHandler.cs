@@ -45,7 +45,9 @@ namespace MulTyPlayerClient
                 if (!CheckMenuOrLoading() && !LoadingState)
                 {
                     Program.HLevel.GetCurrentLevel();
-                    if (SettingsHandler.DoOpalSyncing) SyncHandler.HOpal.CheckObserverChanged(0x26547C);
+                    if (SettingsHandler.DoOpalSyncing) SyncHandler.HOpal.CheckObserverChanged();
+                    if (SettingsHandler.DoTESyncing) SyncHandler.HThEg.CheckObserverChanged();
+                    if (SettingsHandler.DoCogSyncing) SyncHandler.HCog.CheckObserverChanged();
                     Program.HHero.GetTyPosRot();
                     Program.HKoala.SetCoordAddrs();
                 }

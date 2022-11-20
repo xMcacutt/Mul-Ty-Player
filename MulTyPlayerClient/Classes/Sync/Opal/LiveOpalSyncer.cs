@@ -14,37 +14,12 @@ namespace MulTyPlayerClient
             this.HOpal = HOpal;
         }
 
-        private int[] SelectOpalType()
-        {
-            int size = 300;
-            int address;
-            switch (HLevel.CurrentLevelId)
-            {
-                case 0:
-                    address = HOpal.RainbowScaleAddress;
-                    size = 25;
-                    break;
-                case 10:
-                    address = HOpal.B3OpalsAddress;
-                    break;
-                default:
-                    address = HOpal.NonCrateOpalsAddress;
-                    break;
-            }
-            int[] result = { address, size };
-            return result;
-        }
-
         public override byte[] ReadData()
         {
             int crateOpalsInLevel = HOpal._crateOpalsPerLevel[HLevel.CurrentLevelId];
-
-            int[] opalTypeData = SelectOpalType();
-            int address = opalTypeData[0];
-            int size = opalTypeData[1];
-
-            byte[] currentOpals = new byte[size];
-            for (int i = 0; i < size - crateOpalsInLevel; i++)
+            byte[] currentOpals = new byte[300];
+            int address = HLevel.CurrentLevelId == 10 ? HOpal.B3OpalsAddress : HOpal.NonCrateOpalsAddress;
+            for (int i = 0; i < 300 - crateOpalsInLevel; i++)
             {
                 currentOpals[i] = ProcessHandler.ReadData("opal read", address + 0x78 + (0x114 * i), 1)[0];
             }
@@ -64,8 +39,8 @@ namespace MulTyPlayerClient
             if (Program.HGameState.CheckMenuOrLoading()) return;
             int baseAddress;
             int crateOpalsInCurrentLevel = HOpal._crateOpalsPerLevel[HLevel.CurrentLevelId];
-            if (HLevel.CurrentLevelId == 0) baseAddress = HOpal.RainbowScaleAddress;
-            else if (HLevel.CurrentLevelId == 10) baseAddress = HOpal.B3OpalsAddress;
+
+            if (HLevel.CurrentLevelId == 10) baseAddress = HOpal.B3OpalsAddress;
             else if (index < (300 - HOpal._crateOpalsPerLevel[HLevel.CurrentLevelId])) baseAddress = HOpal.NonCrateOpalsAddress;
             else
             {

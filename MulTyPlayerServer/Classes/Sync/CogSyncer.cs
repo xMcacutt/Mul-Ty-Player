@@ -1,22 +1,22 @@
-﻿using Riptide;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MulTyPlayerServer
 {
-    internal class OpalSyncer : Syncer
+    internal class CogSyncer : Syncer
     {
-        public OpalSyncer()
+        public CogSyncer()
         {
-            Name = "Opal";
+            Name = "Cog";
             CheckState = 5;
             GlobalObjectData = new Dictionary<int, byte[]>();
             GlobalObjectCounts = new Dictionary<int, int>();
-            foreach(int i in SyncHandler.MainStages)
+            foreach (int i in SyncHandler.MainStages)
             {
-                GlobalObjectData.Add(i, Enumerable.Repeat((byte)2, 300).ToArray());
+                GlobalObjectData.Add(i, Enumerable.Repeat((byte)1, 10).ToArray());
                 GlobalObjectCounts.Add(i, 0);
             }
         }

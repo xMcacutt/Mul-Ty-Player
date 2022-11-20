@@ -1,5 +1,6 @@
 ﻿using Riptide;
 using System;
+using System.Collections.Generic;
 
 namespace MulTyPlayerClient
 {
@@ -8,36 +9,51 @@ namespace MulTyPlayerClient
         IntPtr HProcess = ProcessHandler.HProcess;
         static LevelHandler HLevel => Program.HLevel;
 
+        public static Dictionary<string, SyncObjectHandler> SyncObjects;
+
         public static OpalHandler HOpal;
+        public static TEHandler HThEg;
+        public static CogHandler HCog;
+
+        public static int SaveDataBaseAddress => PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x288730), 0x0);
 
         public SyncHandler()
         {
-            HOpal = new OpalHandler();
-        }
-
-        public void SendDataToServer(int index, int level, string type)
-        {
-            Console.WriteLine("sending to server");
-            SyncMessage syncMessage = SyncMessage.Create(index, level, type);
-            Client._client.Send(SyncMessage.Encode(syncMessage));
+            SyncObjects = new Dictionary<string, SyncObjectHandler>();
+            SyncObjects.Add("Opal", HOpal = new OpalHandler());
+            SyncObjects.Add("TE", HThEg = new TEHandler());
+            SyncObjects.Add("Cog", HCog = new CogHandler());
         }
 
         public void SetMemAddrs()
         {
-            HOpal.SetMemAddrs();
+            foreach(SyncObjectHandler syncObject in SyncObjects.Values)
+            {
+                syncObject.SetMemAddrs();
+            }
+        }
+
+        public void RequestSync()
+        {
+            Message message = Message.Create(MessageSendMode.Reliable, MessageID.ReqSync);
+            Client._client.Send(message);
+        }
+        [MessageHandler((ushort)MessageID.ReqSync)]
+        private static void HandleSyncReqResponse(Message message)
+        {
+            SyncObjects[message.GetString()].Sync(message.GetInt(), message.GetBytes());
         }
 
         [MessageHandler((ushort)MessageID.ClientDataUpdate)]
         private static void HandleClientDataUpdate(Message message)
         {
-            Console.WriteLine("handling data from server");
             SyncMessage syncMessage = SyncMessage.Decode(message);
-            Console.WriteLine($"opal number: {syncMessage.index} collected");
-            switch (syncMessage.type)
-            {
-                case "Opal": HOpal.HandleClientUpdate(syncMessage.index, syncMessage.level); break;
-                default: { break; }
-            }
+            SyncObjects[syncMessage.type].HandleClientUpdate(syncMessage.index, syncMessage.level);
+        }
+        public void SendDataToServer(int index, int level, string type)
+        {
+            SyncMessage syncMessage = SyncMessage.Create(index, level, type);
+            Client._client.Send(SyncMessage.Encode(syncMessage));
         }
     }
 }

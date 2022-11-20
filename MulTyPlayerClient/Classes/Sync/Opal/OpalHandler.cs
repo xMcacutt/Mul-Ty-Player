@@ -8,13 +8,10 @@ namespace MulTyPlayerClient
 {
     internal class OpalHandler : SyncObjectHandler
     {
-        static LevelHandler HLevel => Program.HLevel;
-
         public int[] _crateOpalsPerLevel = { 0, 0, 0, 0, 170, 102, 119, 0, 120, 60, 0, 0, 30, 170, 215 };
         
         const int GEM_PTR_LIST_BASE_ADDRESS = 0x28AB7C;
         public int NonCrateOpalsAddress;
-        public int RainbowScaleAddress;
         public int CrateOpalsAddress;
         public int B3OpalsAddress;
 
@@ -24,21 +21,20 @@ namespace MulTyPlayerClient
             WriteState = 3;
             CheckState = 5;
             ObjectAmount = 300;
-            PreviousObjectData = new byte[300];
-            CurrentObjectData = new byte[300];
+            CounterAddress = PointerCalculations.AddOffset(0x26547C);
+            PreviousObjectData = new byte[ObjectAmount];
+            CurrentObjectData = new byte[ObjectAmount];
             LiveSync = new LiveOpalSyncer(this);
-            SaveSync = new SaveOpalSyncer(this);
+            SaveSync = new SaveOpalSyncer();
             SetSyncClasses(LiveSync, SaveSync);
             GlobalObjectData = new Dictionary<int, byte[]>();
-            GlobalObjectData.Add(0, new byte[25]);
-            foreach (int i in Program.HLevel.MainStages) GlobalObjectData.Add(i, new byte[300]);
+            foreach (int i in Program.HLevel.MainStages) GlobalObjectData.Add(i, new byte[ObjectAmount]);
         }
 
         public override void SetMemAddrs()
         {
             int gemPtrListAddress = PointerCalculations.AddOffset(GEM_PTR_LIST_BASE_ADDRESS);
             NonCrateOpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x0, 0x0});
-            RainbowScaleAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x20, 0x0});
             B3OpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0xB20, 0x0});
             CrateOpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x4AC, 0x0});
         }
