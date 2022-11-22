@@ -14,6 +14,7 @@ namespace MulTyPlayerClient
         public static OpalHandler HOpal;
         public static TEHandler HThEg;
         public static CogHandler HCog;
+        public static BilbyHandler HBilby;
 
         public static int SaveDataBaseAddress => PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x288730), 0x0);
 
@@ -23,6 +24,7 @@ namespace MulTyPlayerClient
             SyncObjects.Add("Opal", HOpal = new OpalHandler());
             SyncObjects.Add("TE", HThEg = new TEHandler());
             SyncObjects.Add("Cog", HCog = new CogHandler());
+            SyncObjects.Add("Bilby", HBilby = new BilbyHandler());
         }
 
         public void SetMemAddrs()

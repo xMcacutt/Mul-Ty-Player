@@ -30,6 +30,16 @@ namespace MulTyPlayerClient
             this.SaveSync = SaveSync;
         }
 
+        public virtual void SetSyncClasses(LiveDataSyncer LiveSync)
+        {
+            this.LiveSync = LiveSync;
+        }
+
+        public virtual void SetSyncClasses(SaveDataSyncer SaveSync)
+        {
+            this.SaveSync = SaveSync;
+        }
+
         public abstract void SetMemAddrs();
 
         public virtual void HandleClientUpdate(int index, int level)

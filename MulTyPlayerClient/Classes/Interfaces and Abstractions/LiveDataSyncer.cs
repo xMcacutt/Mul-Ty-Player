@@ -10,6 +10,8 @@ namespace MulTyPlayerClient
     {
         public SyncObjectHandler HSyncObject { get; set; }
         public int StateOffset { get; set;}
+        public bool SeparateCollisionByte { get; set; }
+        public int CollisionOffset { get; set; }
         public int ObjectLength { get; set; }
 
         public virtual void Collect(int index)
@@ -17,6 +19,8 @@ namespace MulTyPlayerClient
             if (HSyncObject.CurrentObjectData[index] >= 3) return;
             if (Program.HGameState.CheckMenuOrLoading()) return;
             ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * index), BitConverter.GetBytes(HSyncObject.WriteState));
+            if (!SeparateCollisionByte) return;
+            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + CollisionOffset + (ObjectLength * index), BitConverter.GetBytes(0));
         }
 
         public virtual void Sync(byte[] bytes, int amount, int checkState)

@@ -17,6 +17,7 @@ namespace MulTyPlayerServer
         public static OpalSyncer SOpal;
         public static TESyncer SThEg;
         public static CogSyncer SCog;
+        public static BilbySyncer SBilby;
 
         public SyncHandler()
         {
@@ -24,6 +25,7 @@ namespace MulTyPlayerServer
             Syncers.Add("Opal", SOpal = new OpalSyncer());
             Syncers.Add("TE", SThEg = new TESyncer());
             Syncers.Add("Cog", SCog = new CogSyncer());
+            Syncers.Add("Bilby", SBilby = new BilbySyncer());
         }
 
         public static void SendResetSyncMessage()
@@ -35,8 +37,10 @@ namespace MulTyPlayerServer
         [MessageHandler((ushort)MessageID.ReqSync)]
         private static void HandleSyncRequest(ushort fromClientId, Message message)
         {
-            SOpal.Sync(fromClientId);
-            SThEg.Sync(fromClientId);
+            foreach(Syncer s in Syncers.Values)
+            {
+                s.Sync(fromClientId);
+            }
         }
 
         [MessageHandler((ushort)MessageID.ServerDataUpdate)]

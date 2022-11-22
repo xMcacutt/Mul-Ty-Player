@@ -11,9 +11,8 @@ namespace MulTyPlayerClient
         public LiveTESyncer()
         {
             StateOffset = 0xC4;
+            SeparateCollisionByte = false;
             ObjectLength = 0x144;
         }
-
-
     }
 }
