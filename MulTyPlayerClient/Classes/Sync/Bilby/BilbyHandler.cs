@@ -13,25 +13,29 @@ namespace MulTyPlayerClient
             Name = "Bilby";
             WriteState = 0;
             CheckState = 0;
+            SaveState = 1;
             ObjectAmount = 5;
+            SeparateID = true;
+            IDOffset = 0x0;
             CounterAddress = PointerCalculations.AddOffset(0x2651AC);
+            CounterByteLength = 1;
             PreviousObjectData = new byte[ObjectAmount];
             CurrentObjectData = new byte[ObjectAmount];
-            LiveSync = new LiveTESyncer();
-            SaveSync = new SaveTESyncer();
+            LiveSync = new LiveBilbySyncer(this);
+            SaveSync = new SaveBilbySyncer();
             SetSyncClasses(LiveSync, SaveSync);
             GlobalObjectData = new Dictionary<int, byte[]>();
-            foreach (int i in Program.HLevel.MainStages) GlobalObjectData.Add(i, new byte[ObjectAmount]);
+            foreach (int i in Program.HLevel.MainStages) GlobalObjectData.Add(i, Enumerable.Repeat((byte)1, ObjectAmount).ToArray());
         }
 
         public override bool CheckObserverCondition(byte previousState, byte currentState)
         {
-            return (previousState == 1 && currentState != 1);
+            return (previousState != 2 && currentState == 2);
         }
 
         public override void SetMemAddrs()
         {
-            LiveObjectAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x2CEB8378), new int[] { 0x0, 0x0 });
+            LiveObjectAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x27D608), new int[] { 0x0, 0x0 });
         }
     }
 }

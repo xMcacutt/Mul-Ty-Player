@@ -23,16 +23,5 @@ namespace MulTyPlayerClient
             int address = SyncHandler.SaveDataBaseAddress + SaveDataOffset + (0x70 * level);
             ProcessHandler.WriteData(address, bytes);
         }
-
-        //public static void CompDataByteArrays(byte[] localPlayerArray, ref byte[] globalDataArray)
-        //{
-        //    for (int i = 0; i < localPlayerArray.Length; i++)
-        //    {
-        //        if (localPlayerArray[i] == 1 && globalDataArray[i] == 0)
-        //        {
-        //            globalDataArray[i] = 1;
-        //        }
-        //    }
-        //}
     }
 }

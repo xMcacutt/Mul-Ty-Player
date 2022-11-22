@@ -8,7 +8,7 @@ namespace MulTyPlayerServer
     {
         public static ushort host;
 
-        public string ParseCommand(string userInput)
+        public static string ParseCommand(string userInput)
         {
             if (userInput == null) { return null; }
 
@@ -30,8 +30,8 @@ namespace MulTyPlayerServer
                         {
                             return "Usage: /kick [client id]\nFor a list of client ids, use /clist";
                         }
-                        ushort res;
-                        if (!ushort.TryParse(args[0], out res) || !Server.PlayerList.ContainsKey(ushort.Parse(args[0])))
+
+                        if (!ushort.TryParse(args[0], out _) || !Server.PlayerList.ContainsKey(ushort.Parse(args[0])))
                         {
                             return args[0] + " is not a valid client ID";
                         }
@@ -87,19 +87,19 @@ namespace MulTyPlayerServer
                     }
             }
         }
-        private void ResetSync()
+        private static void ResetSync()
         {
             Program.HSync = new SyncHandler();
             SyncHandler.SendResetSyncMessage();
         }
 
-        private void KickPlayer(ushort clientId)
+        private static void KickPlayer(ushort clientId)
         {
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.Disconnect);
             Server._Server.Send(message, clientId);
         }
 
-        private string ListClients()
+        private static string ListClients()
         {
             string listRes = null;
             listRes += "\n--------------- Connected Clients ---------------";
@@ -117,7 +117,7 @@ namespace MulTyPlayerServer
             return listRes;
         }
 
-        private string SetPassword(string password)
+        private static string SetPassword(string password)
         {
             if (!password.All(char.IsLetter) || password.Length != 5)
             {
@@ -158,7 +158,7 @@ namespace MulTyPlayerServer
         public static void HostCommand(ushort fromClientId, Message message)
         {
             Message response = Message.Create(MessageSendMode.Reliable, MessageID.HostCommand);
-            response.AddString(Program.HCommand.ParseCommand(message.GetString()));
+            response.AddString(ParseCommand(message.GetString()));
             Server._Server.Send(message, fromClientId);
         }
     }

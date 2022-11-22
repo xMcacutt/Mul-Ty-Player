@@ -22,6 +22,7 @@ namespace MulTyPlayerClient
             CheckState = 5;
             ObjectAmount = 300;
             CounterAddress = PointerCalculations.AddOffset(0x26547C);
+            CounterByteLength = 4;
             PreviousObjectData = new byte[ObjectAmount];
             CurrentObjectData = new byte[ObjectAmount];
             PreviousObserverState = 0;

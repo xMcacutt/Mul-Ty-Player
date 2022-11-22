@@ -10,7 +10,6 @@ namespace MulTyPlayerClient
     {
         static HeroHandler HHero => Program.HHero;
         static LevelHandler HLevel => Program.HLevel;
-        static SyncHandler HSync => Program.HSync;
         static GameStateHandler HGameState => Program.HGameState;
 
         public static bool IsRunning;
@@ -23,12 +22,12 @@ namespace MulTyPlayerClient
             RiptideLogger.Initialize(Console.WriteLine, true);
             _ip = ipinput;
    
-            Thread loop = new Thread(new ParameterizedThreadStart(Loop));
+            Thread loop = new(new ParameterizedThreadStart(Loop));
             loop.Start(Program._cts.Token);
 
             IsRunning = true;
 
-            CommandHandler commandHandler = new CommandHandler();
+            CommandHandler commandHandler = new();
 
             _command = "/doNothing";
             while (_command != "/stop")

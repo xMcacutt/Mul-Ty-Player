@@ -16,7 +16,7 @@ namespace MulTyPlayerClient
             CounterAddress = PointerCalculations.AddOffset(0x11877F20);
             PreviousObjectData = new byte[ObjectAmount];
             CurrentObjectData = new byte[ObjectAmount];
-            LiveSync = new LiveTESyncer();
+            //LiveSync = new LiveCrateSyncer(this);
             SetSyncClasses(LiveSync);
             GlobalObjectData = new Dictionary<int, byte[]>();
             foreach (int i in Program.HLevel.MainStages) GlobalObjectData.Add(i, new byte[ObjectAmount]);

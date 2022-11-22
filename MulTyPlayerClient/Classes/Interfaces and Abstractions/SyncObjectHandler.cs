@@ -10,6 +10,10 @@ namespace MulTyPlayerClient
     {
         public int ObjectAmount { get; set; }
         public int CheckState { get; set; }
+        public int SaveState { get; set; }
+        public int CounterByteLength { get; set; }
+        public bool SeparateID { get; set; }
+        public int IDOffset { get; set; }
         public byte[] CurrentObjectData { get; set; }
         public byte[] PreviousObjectData { get; set; }
         public int ObserverState { get; set; }
@@ -50,21 +54,17 @@ namespace MulTyPlayerClient
             LiveSync.Collect(index);
         }
 
-        public virtual int ReadObserver(int address)
+        public virtual int ReadObserver(int address, int size)
         {
             int bytesRead = 0;
-            byte[] buffer = new byte[4];
-            ProcessHandler.ReadProcessMemory((int)ProcessHandler.HProcess, address, buffer, 4, ref bytesRead);
-            return BitConverter.ToInt32(buffer, 0);
-            int i = BitConverter.ToInt32(ProcessHandler.ReadData("observer read", PointerCalculations.AddOffset(address), 4), 0);
-            if (Name == "Opal") Console.WriteLine(i);
-            return i;
+            byte[] buffer = new byte[size];
+            ProcessHandler.ReadProcessMemory((int)ProcessHandler.HProcess, address, buffer, size, ref bytesRead);
+            return size == 4 ? BitConverter.ToInt32(buffer, 0) : buffer[0];
         }
 
         public virtual void CheckObserverChanged()
         {
-            ObserverState = ReadObserver(CounterAddress);
-            //if(Name="Opal")Console.WriteLine(Name + ObserverState);
+            ObserverState = ReadObserver(CounterAddress, CounterByteLength);
             if (PreviousObserverState == ObserverState || ObserverState == 0) return;
          
             PreviousObserverState = ObserverState;
@@ -74,8 +74,16 @@ namespace MulTyPlayerClient
                 if (CheckObserverCondition(PreviousObjectData[i], CurrentObjectData[i]))
                 {
                     PreviousObjectData[i] = CurrentObjectData[i] = WriteState;
+                    if (SeparateID) 
+                    {
+                        int address = LiveObjectAddress + (i * LiveSync.ObjectLength) + IDOffset;
+                        int bytesRead = 0;
+                        byte[] buffer = new byte[4];
+                        ProcessHandler.ReadProcessMemory((int)ProcessHandler.HProcess, address, buffer, 4, ref bytesRead);
+                        i = BitConverter.ToInt32(buffer, 0);
+                    }
                     if (GlobalObjectData[Program.HLevel.CurrentLevelId][i] == CheckState) return;
-                    //Console.WriteLine(Name + " number " + i + " collected.");
+                    Console.WriteLine(Name + " number " + i + " collected.");
                     GlobalObjectData[Program.HLevel.CurrentLevelId][i] = BitConverter.GetBytes(CheckState)[0];
                     Program.HSync.SendDataToServer(i, Program.HLevel.CurrentLevelId, Name);
                 }
@@ -92,7 +100,20 @@ namespace MulTyPlayerClient
                 PreviousObjectData = data;
                 LiveSync.Sync(data, ObjectAmount, CheckState);
             }
-            SaveSync.Sync(level, data);
+            SaveSync.Sync(level, ConvertLiveToSave(level, data));
+        }
+
+        public virtual byte[] ConvertLiveToSave(int level, byte[] liveData)
+        {
+            byte[] saveData = new byte[liveData.Length];
+            for (int i = 0; i < liveData.Length; i++)
+            {
+                if (liveData[i] == CheckState)
+                {
+                    saveData[i] = (byte)SaveState;
+                }
+            }
+            return saveData;
         }
     }
 }

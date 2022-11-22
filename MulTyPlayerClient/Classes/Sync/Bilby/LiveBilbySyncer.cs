@@ -8,8 +8,9 @@ namespace MulTyPlayerClient
 {
     internal class LiveBilbySyncer : LiveDataSyncer
     {
-        public LiveBilbySyncer()
+        public LiveBilbySyncer(BilbyHandler hBilby)
         {
+            HSyncObject = hBilby; 
             StateOffset = 0x34;
             SeparateCollisionByte = true;
             CollisionOffset = 0x58;

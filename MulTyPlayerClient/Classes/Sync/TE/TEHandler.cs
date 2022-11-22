@@ -13,11 +13,15 @@ namespace MulTyPlayerClient
             Name = "TE";
             WriteState = 5;
             CheckState = 5;
+            SaveState = 1;
             ObjectAmount = 8;
+            SeparateID = true;
+            IDOffset = 0x6C;
             CounterAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x00288730), 0xD);
+            CounterByteLength = 1;
             PreviousObjectData = new byte[ObjectAmount];
             CurrentObjectData = new byte[ObjectAmount];
-            LiveSync = new LiveTESyncer();
+            LiveSync = new LiveTESyncer(this);
             SaveSync = new SaveTESyncer();
             SetSyncClasses(LiveSync, SaveSync);
             GlobalObjectData = new Dictionary<int, byte[]>();

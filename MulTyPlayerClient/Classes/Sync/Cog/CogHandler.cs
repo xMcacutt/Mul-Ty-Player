@@ -13,12 +13,16 @@ namespace MulTyPlayerClient
             Name = "Cog";
             WriteState = 5;
             CheckState = 5;
+            SaveState = 1;
             ObjectAmount = 10;
+            SeparateID = true;
+            IDOffset = 0x6C;
             CounterAddress = PointerCalculations.AddOffset(0x265260);
+            CounterByteLength = 1;
             PreviousObjectData = new byte[ObjectAmount];
             CurrentObjectData = new byte[ObjectAmount];
-            LiveSync = new LiveTESyncer();
-            SaveSync = new SaveTESyncer();
+            LiveSync = new LiveCogSyncer(this);
+            SaveSync = new SaveCogSyncer();
             SetSyncClasses(LiveSync, SaveSync);
             GlobalObjectData = new Dictionary<int, byte[]>();
             foreach (int i in Program.HLevel.MainStages) GlobalObjectData.Add(i, new byte[ObjectAmount]);
