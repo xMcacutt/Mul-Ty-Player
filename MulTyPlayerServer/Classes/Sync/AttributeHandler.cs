@@ -25,10 +25,10 @@ namespace MulTyPlayerServer
             Server._Server.SendToAll(message, originalSender);
         }
 
-        public static void HandleServerUpdate(byte[] bytes, ushort returnClientId)
+        /*public static void HandleServerUpdate(byte[] bytes, ushort returnClientId)
         {
             SyncHandler.CompDataByteArrays(bytes, ref GlobalAttributeData);
             SendUpdatedData(returnClientId);
-        }
+        }*/
     }
 }
