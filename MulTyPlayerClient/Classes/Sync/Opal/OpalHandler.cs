@@ -24,6 +24,8 @@ namespace MulTyPlayerClient
             CounterAddress = PointerCalculations.AddOffset(0x26547C);
             PreviousObjectData = new byte[ObjectAmount];
             CurrentObjectData = new byte[ObjectAmount];
+            PreviousObserverState = 0;
+            ObserverState = 0;
             LiveSync = new LiveOpalSyncer(this);
             SaveSync = new SaveOpalSyncer();
             SetSyncClasses(LiveSync, SaveSync);

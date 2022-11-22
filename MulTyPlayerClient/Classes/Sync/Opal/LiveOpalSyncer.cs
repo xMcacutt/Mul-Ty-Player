@@ -12,6 +12,7 @@ namespace MulTyPlayerClient
         public LiveOpalSyncer(OpalHandler HOpal)
         {
             this.HOpal = HOpal;
+            HSyncObject = HOpal;
         }
 
         public override byte[] ReadData()
