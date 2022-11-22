@@ -42,7 +42,7 @@ namespace MulTyPlayerServer
             string command = Console.ReadLine();
             while (command != "/stop")
             {
-                Console.WriteLine(HCommand.ParseCommand(command));
+                Console.WriteLine(CommandHandler.ParseCommand(command));
                 if (command != "/restart") { command = Console.ReadLine(); }
                 else { command = "/stop"; }
             }
