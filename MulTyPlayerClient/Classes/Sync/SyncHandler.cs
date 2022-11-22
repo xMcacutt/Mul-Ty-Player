@@ -43,18 +43,18 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ReqSync)]
         private static void HandleSyncReqResponse(Message message)
         {
-            SyncObjects[message.GetString()].Sync(message.GetInt(), message.GetBytes());
+            SyncObjects[message.GetString()].Sync(message.GetInt(), message.GetBytes(), message.GetBytes());
         }
 
         [MessageHandler((ushort)MessageID.ClientDataUpdate)]
         private static void HandleClientDataUpdate(Message message)
         {
             SyncMessage syncMessage = SyncMessage.Decode(message);
-            SyncObjects[syncMessage.type].HandleClientUpdate(syncMessage.index, syncMessage.level);
+            SyncObjects[syncMessage.type].HandleClientUpdate(syncMessage.iLive, syncMessage.iSave, syncMessage.level);
         }
-        public void SendDataToServer(int index, int level, string type)
+        public void SendDataToServer(int iLive, int iSave, int level, string type)
         {
-            SyncMessage syncMessage = SyncMessage.Create(index, level, type);
+            SyncMessage syncMessage = SyncMessage.Create(iLive, iSave, level, type);
             Client._client.Send(SyncMessage.Encode(syncMessage));
         }
     }

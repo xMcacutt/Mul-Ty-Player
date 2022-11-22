@@ -11,32 +11,36 @@ namespace MulTyPlayerServer
     {
         public string Name { get; set; }
         public int CheckState { get; set; }
+
         public Dictionary<int, byte[]> GlobalObjectData;
+        public Dictionary<int, byte[]> GlobalObjectSaveData;
         public Dictionary<int, int> GlobalObjectCounts;
 
-        public virtual void HandleServerUpdate(int index, int level, ushort originalSender)
+        public virtual void HandleServerUpdate(int iLive, int iSave, int level, ushort originalSender)
         {
             if (!GlobalObjectData.Keys.Contains(level)) return;
-            if (GlobalObjectData[level][index] == CheckState) return;
-            GlobalObjectData[level][index] = (byte)CheckState;
+            if (GlobalObjectData[level][iLive] == CheckState) return;
+            GlobalObjectData[level][iLive] = (byte)CheckState;
+            GlobalObjectSaveData[level][iSave] = (byte)CheckState;
             GlobalObjectCounts[level] = GlobalObjectData[level].Count(i => i == CheckState);
-            SendUpdatedData(index, level, originalSender);
+            SendUpdatedData(iLive, iSave, level, originalSender);
         }
 
-        public virtual void SendUpdatedData(int index, int level, ushort originalSender)
+        public virtual void SendUpdatedData(int iLive, int iSave, int level, ushort originalSender)
         {
-            SyncMessage syncMessage = SyncMessage.Create(index, level, Name);
+            SyncMessage syncMessage = SyncMessage.Create(iLive, iSave, level, Name);
             Server._Server.SendToAll(SyncMessage.Encode(syncMessage), originalSender);
         }
 
         public virtual void Sync(ushort player)
         {
-            foreach (int i in GlobalObjectData.Keys)
+            foreach (int level in GlobalObjectData.Keys)
             {
                 Message message = Message.Create(MessageSendMode.Reliable, MessageID.ReqSync);
                 message.AddString(Name);
-                message.AddInt(i);
-                message.AddBytes(GlobalObjectData[i]);
+                message.AddInt(level);
+                message.AddBytes(GlobalObjectData[level]);
+                message.AddBytes(GlobalObjectSaveData[level]);
                 Server._Server.Send(message, player);
             }
         }

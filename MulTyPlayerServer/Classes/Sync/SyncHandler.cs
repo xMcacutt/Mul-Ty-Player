@@ -47,7 +47,7 @@ namespace MulTyPlayerServer
         private static void HandleServerDataUpdate(ushort fromClientId, Message message)
         {
             SyncMessage syncMessage = SyncMessage.Decode(message);
-            Syncers[syncMessage.type].HandleServerUpdate(syncMessage.index, syncMessage.level, fromClientId);
+            Syncers[syncMessage.type].HandleServerUpdate(syncMessage.iLive, syncMessage.iSave, syncMessage.level, fromClientId);
         }
     }
 }

@@ -46,12 +46,12 @@ namespace MulTyPlayerClient
 
         public abstract void SetMemAddrs();
 
-        public virtual void HandleClientUpdate(int index, int level)
+        public virtual void HandleClientUpdate(int iLive, int iSave, int level)
         {
-            GlobalObjectData[level][index] = BitConverter.GetBytes(CheckState)[0];
-            SaveSync.Save(index, level);
+            GlobalObjectData[level][iLive] = BitConverter.GetBytes(CheckState)[0];
+            SaveSync.Save(iSave, level);
             if (level != Program.HLevel.CurrentLevelId) return;
-            LiveSync.Collect(index);
+            LiveSync.Collect(iLive);
         }
 
         public virtual int ReadObserver(int address, int size)
@@ -69,51 +69,53 @@ namespace MulTyPlayerClient
          
             PreviousObserverState = ObserverState;
             CurrentObjectData = LiveSync.ReadData();
-            for (int i = 0; i < CurrentObjectData.Length; i++)
+            int iSave;
+            for (int iLive = 0; iLive < CurrentObjectData.Length; iLive++)
             {
-                if (CheckObserverCondition(PreviousObjectData[i], CurrentObjectData[i]))
+                if (CheckObserverCondition(PreviousObjectData[iLive], CurrentObjectData[iLive]))
                 {
-                    PreviousObjectData[i] = CurrentObjectData[i] = WriteState;
+                    iSave = iLive;
+                    PreviousObjectData[iLive] = CurrentObjectData[iLive] = WriteState;
                     if (SeparateID) 
                     {
-                        int address = LiveObjectAddress + (i * LiveSync.ObjectLength) + IDOffset;
+                        int address = LiveObjectAddress + (iLive * LiveSync.ObjectLength) + IDOffset;
                         int bytesRead = 0;
                         byte[] buffer = new byte[4];
                         ProcessHandler.ReadProcessMemory((int)ProcessHandler.HProcess, address, buffer, 4, ref bytesRead);
-                        i = BitConverter.ToInt32(buffer, 0);
+                        iSave = BitConverter.ToInt32(buffer, 0);
                     }
-                    if (GlobalObjectData[Program.HLevel.CurrentLevelId][i] == CheckState) return;
-                    Console.WriteLine(Name + " number " + i + " collected.");
-                    GlobalObjectData[Program.HLevel.CurrentLevelId][i] = BitConverter.GetBytes(CheckState)[0];
-                    Program.HSync.SendDataToServer(i, Program.HLevel.CurrentLevelId, Name);
+                    if (GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] == CheckState) return;
+                    Console.WriteLine(Name + " number " + iLive + " collected.");
+                    GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] = BitConverter.GetBytes(CheckState)[0];
+                    Program.HSync.SendDataToServer(iLive, iSave, Program.HLevel.CurrentLevelId, Name);
                 }
             }
         }
 
         public abstract bool CheckObserverCondition(byte previousState, byte currentState);
 
-        public virtual void Sync(int level, byte[] data)
+        public virtual void Sync(int level, byte[] liveData, byte[] saveData)
         {
             if(Program.HLevel.CurrentLevelId == level)
             {
-                CurrentObjectData = data;
-                PreviousObjectData = data;
-                LiveSync.Sync(data, ObjectAmount, CheckState);
+                CurrentObjectData = liveData;
+                PreviousObjectData = liveData;
+                LiveSync.Sync(liveData, ObjectAmount, CheckState);
             }
-            SaveSync.Sync(level, ConvertLiveToSave(level, data));
+            SaveSync.Sync(level, ConvertSave(level, saveData));
         }
 
-        public virtual byte[] ConvertLiveToSave(int level, byte[] liveData)
+        public virtual byte[] ConvertSave(int level, byte[] data)
         {
-            byte[] saveData = new byte[liveData.Length];
-            for (int i = 0; i < liveData.Length; i++)
+            byte[] output = new byte[data.Length];
+            for (int i = 0; i < data.Length; i++)
             {
-                if (liveData[i] == CheckState)
+                if (data[i] == CheckState)
                 {
-                    saveData[i] = (byte)SaveState;
+                    output[i] = (byte)SaveState;
                 }
             }
-            return saveData;
+            return output;
         }
     }
 }
