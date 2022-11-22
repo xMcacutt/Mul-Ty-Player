@@ -11,6 +11,7 @@ namespace MulTyPlayerClient
         public SaveCogSyncer()
         {
             SaveDataOffset = 0x30;
+            SaveWriteValue = 1;
         }
     }
 }

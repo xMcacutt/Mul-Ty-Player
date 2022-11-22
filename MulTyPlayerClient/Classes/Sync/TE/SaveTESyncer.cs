@@ -11,6 +11,7 @@ namespace MulTyPlayerClient
         public SaveTESyncer()
         {
             SaveDataOffset = 0x28;
+            SaveWriteValue = 1;
         }
     }
 }

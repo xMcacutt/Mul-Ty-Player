@@ -16,7 +16,7 @@ namespace MulTyPlayerClient
         public static CogHandler HCog;
         public static BilbyHandler HBilby;
 
-        public static int SaveDataBaseAddress => PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x288730), 0x0);
+        public static int SaveDataBaseAddress => PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x288730), 0x10);
 
         public SyncHandler()
         {
