@@ -16,7 +16,7 @@ namespace MulTyPlayerClient
             Name = "Attribute";
             CheckState = 1;
             SaveState = 1;
-            CounterAddress = SyncHandler.SaveDataBaseAddress + 0xAB4;
+            CounterAddress = SyncHandler.SaveDataBaseAddress + 0xAA4;
             SaveSync = new SaveAttributeSyncer();
             SetSyncClasses(SaveSync);
             GlobalObjectData = new Dictionary<int, byte>();
@@ -30,7 +30,7 @@ namespace MulTyPlayerClient
             byte[] observerData = new byte[attributeAmount];
             for (int i = 0; i < attributeAmount; i++)
             {
-                if (ProcessHandler.ReadData("attribute", SyncHandler.SaveDataBaseAddress + 0xAB4 + i, 1)[0] == 1 && GlobalObjectData[i] == 0)
+                if (ProcessHandler.ReadData("attribute", SyncHandler.SaveDataBaseAddress + 0xAA4 + i, 1)[0] == 1 && GlobalObjectData[i] == 0)
                 {
                     GlobalObjectData[i] = 1;
                     Console.WriteLine("You have now " + Enum.GetValues(typeof(Attributes)).GetValue(i));

@@ -16,7 +16,7 @@ namespace MulTyPlayerClient
             SaveDataOffset = 0x11;
         }
 
-        public override void Save(int index, int level)
+        public override void Save(int index, int? level)
         {
             int rem;
             int byteIndex;
@@ -28,7 +28,7 @@ namespace MulTyPlayerClient
             if (rem == 0) bitValue = 128;
             else bitValue = (int)Math.Pow(2, rem - 1);
 
-            int address = SyncHandler.SaveDataBaseAddress + (SaveDataOffset - 1) + (0x70 * level) + byteIndex;
+            int address = (int)(SyncHandler.SaveDataBaseAddress + (SaveDataOffset - 1) + (0x70 * level) + byteIndex);
             byte b = ProcessHandler.ReadData("opal save read", address, 1)[0];
             b += (byte)bitValue;
             ProcessHandler.WriteData(address, BitConverter.GetBytes(b));
