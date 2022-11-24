@@ -10,7 +10,7 @@ namespace MulTyPlayerClient
     internal abstract class SaveDataSyncer
     {
         public int SaveDataOffset { get; set; }
-        public int SaveWriteValue { get; set; }
+        public byte SaveWriteValue { get; set; }
 
         public virtual void Save(int iSave, int? level) 
         {

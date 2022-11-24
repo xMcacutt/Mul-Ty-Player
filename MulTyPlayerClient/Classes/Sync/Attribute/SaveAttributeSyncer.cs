@@ -8,11 +8,16 @@ namespace MulTyPlayerClient
 {
     internal class SaveAttributeSyncer : SaveDataSyncer
     {
+        public SaveAttributeSyncer()
+        {
+            SaveWriteValue = 1;
+        }
 
         public override void Save(int iAttribute, int? nullableInt)
         {
             int address = SyncHandler.SaveDataBaseAddress + 0xAA4 + iAttribute;
-            ProcessHandler.WriteData(address, BitConverter.GetBytes(1));
+            ProcessHandler.WriteData(address, BitConverter.GetBytes(SaveWriteValue));
+            Console.WriteLine("writing to " + Enum.GetValues(typeof(Attributes)).GetValue(iAttribute));
         }
 
         public override void Sync(int null1, byte[] bytes)
