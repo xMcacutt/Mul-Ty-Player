@@ -15,7 +15,7 @@ namespace MulTyPlayerClient
         public virtual void Save(int iSave, int? level) 
         {
             int address = (int)(SyncHandler.SaveDataBaseAddress + (SaveDataOffset) + (0x70 * level) + iSave);
-            ProcessHandler.WriteData(address, BitConverter.GetBytes(SaveWriteValue));
+            ProcessHandler.WriteData(address, new byte[] { SaveWriteValue });
         }
 
         public virtual void Sync(int level, byte[] bytes) 

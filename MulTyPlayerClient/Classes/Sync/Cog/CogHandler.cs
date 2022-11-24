@@ -30,7 +30,7 @@ namespace MulTyPlayerClient
 
         public override bool CheckObserverCondition(byte previousState, byte currentState)
         {
-            return (previousState < 3 && currentState > 3);
+            return previousState < 3 && currentState > 3;
         }
 
         public override void SetMemAddrs()

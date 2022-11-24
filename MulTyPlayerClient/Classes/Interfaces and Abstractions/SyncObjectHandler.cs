@@ -48,7 +48,7 @@ namespace MulTyPlayerClient
 
         public virtual void HandleClientUpdate(int iLive, int iSave, int level)
         {
-            GlobalObjectData[level][iLive] = BitConverter.GetBytes(CheckState)[0];
+            GlobalObjectData[level][iLive] = (byte)CheckState;
             SaveSync.Save(iSave, level);
             if (level != Program.HLevel.CurrentLevelId) return;
             LiveSync.Collect(iLive);
@@ -66,7 +66,7 @@ namespace MulTyPlayerClient
         {
             ObserverState = ReadObserver(CounterAddress, CounterByteLength);
             if (PreviousObserverState == ObserverState || ObserverState == 0) return;
-         
+
             PreviousObserverState = ObserverState;
             CurrentObjectData = LiveSync.ReadData();
             int iSave;
@@ -84,10 +84,12 @@ namespace MulTyPlayerClient
                         ProcessHandler.ReadProcessMemory((int)ProcessHandler.HProcess, address, buffer, 4, ref bytesRead);
                         iSave = BitConverter.ToInt32(buffer, 0);
                     }
-                    if (GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] == CheckState) return;
-                    Console.WriteLine(Name + " number " + iLive + " collected.");
-                    GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] = BitConverter.GetBytes(CheckState)[0];
-                    Program.HSync.SendDataToServer(iLive, iSave, Program.HLevel.CurrentLevelId, Name);
+                    if (GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] != CheckState)
+                    {
+                        Console.WriteLine(Name + " number " + iLive + " collected.");
+                        GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] = (byte)CheckState;
+                        Program.HSync.SendDataToServer(iLive, iSave, Program.HLevel.CurrentLevelId, Name);
+                    }
                 }
             }
         }

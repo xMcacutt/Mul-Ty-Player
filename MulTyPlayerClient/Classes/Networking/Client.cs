@@ -33,7 +33,7 @@ namespace MulTyPlayerClient
             while (_command != "/stop")
             {
                 //Console.WriteLine(CommandHandler.host);
-                if(CommandHandler.host != 0)
+                if (CommandHandler.host != 0 && _command != "/doNothing") 
                 {
                     commandHandler.ParseCommand(_command);
                     _command = Console.ReadLine();

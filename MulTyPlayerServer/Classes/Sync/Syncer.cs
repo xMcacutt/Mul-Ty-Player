@@ -19,7 +19,11 @@ namespace MulTyPlayerServer
         public virtual void HandleServerUpdate(int iLive, int iSave, int level, ushort originalSender)
         {
             if (!GlobalObjectData.Keys.Contains(level)) return;
-            if (GlobalObjectData[level][iLive] == CheckState) return;
+            if (GlobalObjectData[level][iLive] == CheckState)
+            {
+                Console.WriteLine("Object has already been collected"); return;
+            }
+            Console.WriteLine("Sending " + Name + " LiveNumber: " + iLive + " SaveNumber: " + iSave + " For Level: " + level + " To All But: " + Server.PlayerList[originalSender].Name);
             GlobalObjectData[level][iLive] = (byte)CheckState;
             GlobalObjectSaveData[level][iSave] = (byte)CheckState;
             GlobalObjectCounts[level] = GlobalObjectData[level].Count(i => i == CheckState);

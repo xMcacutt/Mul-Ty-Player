@@ -16,7 +16,7 @@ namespace MulTyPlayerClient
         public override void Save(int iAttribute, int? nullableInt)
         {
             int address = SyncHandler.SaveDataBaseAddress + 0xAA4 + iAttribute;
-            ProcessHandler.WriteData(address, BitConverter.GetBytes(SaveWriteValue));
+            ProcessHandler.WriteData(address, new byte[] { 1 });
             Console.WriteLine("writing to " + Enum.GetValues(typeof(Attributes)).GetValue(iAttribute));
         }
 

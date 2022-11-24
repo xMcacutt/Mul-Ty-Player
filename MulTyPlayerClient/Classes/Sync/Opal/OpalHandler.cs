@@ -38,7 +38,7 @@ namespace MulTyPlayerClient
         {
             int gemPtrListAddress = PointerCalculations.AddOffset(GEM_PTR_LIST_BASE_ADDRESS);
             NonCrateOpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x0, 0x0});
-            B3OpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0xB20, 0x0});
+            B3OpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x2B0, 0x0});
             CrateOpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x4AC, 0x0});
         }
 
