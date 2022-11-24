@@ -44,7 +44,7 @@ namespace MulTyPlayerClient
             this.SaveSync = SaveSync;
         }
 
-        public abstract void SetMemAddrs();
+        public virtual void SetMemAddrs() { }
 
         public virtual void HandleClientUpdate(int iLive, int iSave, int level)
         {
@@ -92,17 +92,21 @@ namespace MulTyPlayerClient
             }
         }
 
-        public abstract bool CheckObserverCondition(byte previousState, byte currentState);
+        public virtual bool CheckObserverCondition(byte previousState, byte currentState) { return false; }
 
         public virtual void Sync(int level, byte[] liveData, byte[] saveData)
         {
+            SaveSync.Sync(level, ConvertSave(level, saveData));
+            for(int i = 0; i < ObjectAmount; i++)
+            {
+                if (liveData[i] == CheckState) GlobalObjectData[level][i] = WriteState;
+            }
             if(Program.HLevel.CurrentLevelId == level)
             {
                 CurrentObjectData = liveData;
                 PreviousObjectData = liveData;
                 LiveSync.Sync(liveData, ObjectAmount, CheckState);
             }
-            SaveSync.Sync(level, ConvertSave(level, saveData));
         }
 
         public virtual byte[] ConvertSave(int level, byte[] data)

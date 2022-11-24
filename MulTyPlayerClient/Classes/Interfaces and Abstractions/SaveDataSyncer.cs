@@ -12,9 +12,9 @@ namespace MulTyPlayerClient
         public int SaveDataOffset { get; set; }
         public int SaveWriteValue { get; set; }
 
-        public virtual void Save(int iSave, int level) 
+        public virtual void Save(int iSave, int? level) 
         {
-            int address = SyncHandler.SaveDataBaseAddress + (SaveDataOffset) + (0x70 * level) + iSave;
+            int address = (int)(SyncHandler.SaveDataBaseAddress + (SaveDataOffset) + (0x70 * level) + iSave);
             ProcessHandler.WriteData(address, BitConverter.GetBytes(SaveWriteValue));
         }
 

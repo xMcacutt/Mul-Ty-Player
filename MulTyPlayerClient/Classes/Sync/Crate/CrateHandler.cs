@@ -8,6 +8,7 @@ namespace MulTyPlayerClient
 {
     internal class CrateHandler : SyncObjectHandler
     {
+        /*
         public CrateHandler()
         {
             Name = "Crate";
@@ -16,15 +17,14 @@ namespace MulTyPlayerClient
             CounterAddress = PointerCalculations.AddOffset(0x11877F20);
             PreviousObjectData = new byte[ObjectAmount];
             CurrentObjectData = new byte[ObjectAmount];
-            //LiveSync = new LiveCrateSyncer(this);
+            LiveSync = new LiveCrateSyncer(this);
             SetSyncClasses(LiveSync);
-            GlobalObjectData = new Dictionary<int, byte[]>();
-            foreach (int i in Program.HLevel.MainStages) GlobalObjectData.Add(i, new byte[ObjectAmount]);
         }
 
+        */
         public override bool CheckObserverCondition(byte previousState, byte currentState)
         {
-            return (previousState < 3 && currentState > 3);
+            return previousState < 3 && currentState > 3;
         }
 
         public override void SetMemAddrs()

@@ -12,12 +12,13 @@ namespace MulTyPlayerServer
     {
 
         public static int[] MainStages = { 4, 5, 6, 8, 9, 10, 12, 13, 14 };
-        public static Dictionary<string, Syncer> Syncers;
+        public Dictionary<string, Syncer> Syncers;
 
         public static OpalSyncer SOpal;
         public static TESyncer SThEg;
         public static CogSyncer SCog;
         public static BilbySyncer SBilby;
+        public static AttributeSyncer SAttribute;
 
         public SyncHandler()
         {
@@ -26,6 +27,7 @@ namespace MulTyPlayerServer
             Syncers.Add("TE", SThEg = new TESyncer());
             Syncers.Add("Cog", SCog = new CogSyncer());
             Syncers.Add("Bilby", SBilby = new BilbySyncer());
+            Syncers.Add("Attribute", SAttribute = new AttributeSyncer());
         }
 
         public static void SendResetSyncMessage()
@@ -37,7 +39,7 @@ namespace MulTyPlayerServer
         [MessageHandler((ushort)MessageID.ReqSync)]
         private static void HandleSyncRequest(ushort fromClientId, Message message)
         {
-            foreach(Syncer s in Syncers.Values)
+            foreach(Syncer s in Program.HSync.Syncers.Values)
             {
                 s.Sync(fromClientId);
             }
@@ -47,7 +49,7 @@ namespace MulTyPlayerServer
         private static void HandleServerDataUpdate(ushort fromClientId, Message message)
         {
             SyncMessage syncMessage = SyncMessage.Decode(message);
-            Syncers[syncMessage.type].HandleServerUpdate(syncMessage.iLive, syncMessage.iSave, syncMessage.level, fromClientId);
+            Program.HSync.Syncers[syncMessage.type].HandleServerUpdate(syncMessage.iLive, syncMessage.iSave, syncMessage.level, fromClientId);
         }
     }
 }

@@ -9,12 +9,13 @@ namespace MulTyPlayerClient
         IntPtr HProcess = ProcessHandler.HProcess;
         static LevelHandler HLevel => Program.HLevel;
 
-        public static Dictionary<string, SyncObjectHandler> SyncObjects;
+        public Dictionary<string, SyncObjectHandler> SyncObjects;
 
         public static OpalHandler HOpal;
         public static TEHandler HThEg;
         public static CogHandler HCog;
         public static BilbyHandler HBilby;
+        public static AttributeHandler HAttribute;
 
         public static int SaveDataBaseAddress => PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x288730), 0x10);
 
@@ -25,6 +26,7 @@ namespace MulTyPlayerClient
             SyncObjects.Add("TE", HThEg = new TEHandler());
             SyncObjects.Add("Cog", HCog = new CogHandler());
             SyncObjects.Add("Bilby", HBilby = new BilbyHandler());
+            SyncObjects.Add("Attribute", HAttribute = new AttributeHandler());
         }
 
         public void SetMemAddrs()
@@ -43,14 +45,14 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ReqSync)]
         private static void HandleSyncReqResponse(Message message)
         {
-            SyncObjects[message.GetString()].Sync(message.GetInt(), message.GetBytes(), message.GetBytes());
+            Program.HSync.SyncObjects[message.GetString()].Sync(message.GetInt(), message.GetBytes(), message.GetBytes());
         }
 
         [MessageHandler((ushort)MessageID.ClientDataUpdate)]
         private static void HandleClientDataUpdate(Message message)
         {
             SyncMessage syncMessage = SyncMessage.Decode(message);
-            SyncObjects[syncMessage.type].HandleClientUpdate(syncMessage.iLive, syncMessage.iSave, syncMessage.level);
+            Program.HSync.SyncObjects[syncMessage.type].HandleClientUpdate(syncMessage.iLive, syncMessage.iSave, syncMessage.level);
         }
         public void SendDataToServer(int iLive, int iSave, int level, string type)
         {

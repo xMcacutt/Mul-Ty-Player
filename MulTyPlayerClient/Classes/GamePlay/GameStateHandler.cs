@@ -49,6 +49,7 @@ namespace MulTyPlayerClient
                     if (SettingsHandler.DoTESyncing) SyncHandler.HThEg.CheckObserverChanged();
                     if (SettingsHandler.DoCogSyncing) SyncHandler.HCog.CheckObserverChanged();
                     if (SettingsHandler.DoBilbySyncing) SyncHandler.HBilby.CheckObserverChanged();
+                    if (SettingsHandler.DoRangSyncing) SyncHandler.HAttribute.CheckObserverChanged();
                     Program.HHero.GetTyPosRot();
                     Program.HKoala.SetCoordAddrs();
                 }
