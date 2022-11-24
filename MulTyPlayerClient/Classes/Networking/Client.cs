@@ -45,7 +45,6 @@ namespace MulTyPlayerClient
                 IsRunning = false;
                 _client.Disconnect();
                 Console.WriteLine("\nYou have been disconnected from the server.");
-                Disconnected();
             }
 
         }
