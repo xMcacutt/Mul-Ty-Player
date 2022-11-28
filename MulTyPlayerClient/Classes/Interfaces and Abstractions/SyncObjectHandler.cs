@@ -101,13 +101,13 @@ namespace MulTyPlayerClient
             SaveSync.Sync(level, ConvertSave(level, saveData));
             for(int i = 0; i < ObjectAmount; i++)
             {
-                if (liveData[i] == CheckState) GlobalObjectData[level][i] = WriteState;
+                if (liveData[i] == CheckState && GlobalObjectData[level][i] != CheckState) GlobalObjectData[level][i] = WriteState;
             }
             if(Program.HLevel.CurrentLevelId == level)
             {
-                CurrentObjectData = liveData;
-                PreviousObjectData = liveData;
                 LiveSync.Sync(liveData, ObjectAmount, CheckState);
+                PreviousObjectData = liveData;
+                CurrentObjectData = liveData;
             }
         }
 

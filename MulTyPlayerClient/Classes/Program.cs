@@ -116,7 +116,7 @@ namespace MulTyPlayerClient
             {
                 ipStr = SettingsHandler.DefaultAddress;
             }
-            while (!IPAddress.TryParse(ipStr, out IPAddress ip))
+            while (!IPAddress.TryParse(ipStr, out IPAddress ip) && ipStr != "localhost")
             {
                 Console.WriteLine("Please enter a VALID IP address to connect to...");
                 ipStr = Console.ReadLine();
