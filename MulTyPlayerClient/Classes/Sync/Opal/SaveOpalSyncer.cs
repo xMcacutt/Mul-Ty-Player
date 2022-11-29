@@ -29,8 +29,9 @@ namespace MulTyPlayerClient
             else bitValue = (int)Math.Pow(2, rem - 1);
 
             int address = (int)(SyncHandler.SaveDataBaseAddress + SaveDataOffset + (0x70 * level) + byteIndex);
-            byte b = ProcessHandler.ReadData("opal save read", address, 1)[0];
+            byte b = ProcessHandler.ReadData("Save Read", address, 1)[0];
             b += (byte)bitValue;
+            Console.WriteLine($"Adding {bitValue} to opal index {index} at byte {byteIndex - 1}");
             ProcessHandler.WriteData(address, BitConverter.GetBytes(b));
         }
 
