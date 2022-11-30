@@ -21,18 +21,33 @@ namespace MulTyPlayerClient
             int rem;
             int byteIndex;
             int bitValue;
+            int crateOpals = SyncHandler.HOpal._crateOpalsPerLevel[(int)level];
+
+            if(index > (299 - crateOpals))
+            {
+                index = (300 - crateOpals) + (299 - index);
+            }
 
             byteIndex = (int)Math.Ceiling((float)index / 8);
             rem = index % 8;
 
-            if (rem == 0) bitValue = 128;
-            else bitValue = (int)Math.Pow(2, rem - 1);
+            if (rem == 0)
+            {
+                byteIndex += 1;
+                if (byteIndex == 1) bitValue = 128;
+                else bitValue = 1;
+            }
+            else
+            {
+                if (byteIndex == 1) bitValue = (int)Math.Pow(2, rem - 1);
+                else bitValue = (int)Math.Pow(2, rem);
+            }
 
-            int address = (int)(SyncHandler.SaveDataBaseAddress + SaveDataOffset + (0x70 * level) + byteIndex);
+            int address = (int)(SyncHandler.SaveDataBaseAddress + SaveDataOffset + (0x70 * level) + (byteIndex - 1));
             byte b = ProcessHandler.ReadData("Save Read", address, 1)[0];
             b += (byte)bitValue;
             Console.WriteLine($"Adding {bitValue} to opal index {index} at byte {byteIndex - 1}");
-            ProcessHandler.WriteData(address, BitConverter.GetBytes(b));
+            ProcessHandler.WriteData(address, new byte[] {b});
         }
 
         public override void Sync(int level, byte[] data)
