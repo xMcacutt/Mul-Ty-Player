@@ -86,7 +86,7 @@ namespace MulTyPlayerClient
                     }
                     if (GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] != CheckState)
                     {
-                        Console.WriteLine(Name + " number " + iLive + " collected.");
+                        //Console.WriteLine(Name + " number " + iLive + " collected.");
                         GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] = (byte)CheckState;
                         Program.HSync.SendDataToServer(iLive, iSave, Program.HLevel.CurrentLevelId, Name);
                     }
