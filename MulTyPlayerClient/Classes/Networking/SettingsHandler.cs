@@ -19,6 +19,7 @@ namespace MulTyPlayerClient
         public static bool DoBilbySyncing;
         public static bool DoRangSyncing;
         public static bool DoOpalSyncing;
+        public static bool DoPortalSyncing;
 
         public static void Setup()
         {
@@ -49,6 +50,7 @@ namespace MulTyPlayerClient
             DoBilbySyncing = b[2];
             DoRangSyncing = b[3];
             DoOpalSyncing = b[4];
+            DoPortalSyncing = b[5];
         }
     }
 }

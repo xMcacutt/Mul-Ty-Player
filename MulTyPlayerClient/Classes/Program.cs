@@ -79,11 +79,9 @@ namespace MulTyPlayerClient
             //ATTEMPTS TO GET STEAM NAME OR DEFAULT NAME FROM SETTINGS FILE
             if (SettingsHandler.DoGetSteamName)
             {
-                Console.WriteLine("Attempting to get player name from steam...");
-                if (SteamAPI.Init())
-                {
-                    PlayerName = SteamFriends.GetPersonaName();
-                }
+                SteamClient.Init(411960);
+                PlayerName = SteamClient.Name;
+                SteamClient.Shutdown();
                 if (string.IsNullOrWhiteSpace(PlayerName) && !string.IsNullOrWhiteSpace(SettingsHandler.DefaultName))
                 {
                     PlayerName = SettingsHandler.DefaultName;
@@ -105,7 +103,7 @@ namespace MulTyPlayerClient
                 Console.WriteLine("Please enter a valid name");
                 PlayerName = Console.ReadLine();
             }
-
+            Console.WriteLine($"Your name is {PlayerName} If you'd like to use a different name, specify it in ClientSettings.mtps");
             //GET DEFAULTL IP ADDRESS
             string ipStr = string.Empty;
             if (string.IsNullOrWhiteSpace(SettingsHandler.DefaultAddress))

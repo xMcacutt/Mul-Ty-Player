@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+
 using Riptide;
 
 namespace MulTyPlayerServer
@@ -12,7 +13,7 @@ namespace MulTyPlayerServer
     {
         public static string RemoveWhiteSpaces(this string str)
         {
-            return String.Concat(str.Where(c => !Char.IsWhiteSpace(c)));
+            return string.Concat(str.Where(c => !Char.IsWhiteSpace(c)));
         }
     }
 
@@ -26,6 +27,7 @@ namespace MulTyPlayerServer
         public static bool DoSyncBilbies;
         public static bool DoSyncRangs;
         public static bool DoSyncOpals;
+        public static bool DoSyncPortals;
 
         public static void Setup()
         {
@@ -37,12 +39,13 @@ namespace MulTyPlayerServer
             DoSyncBilbies = _settingsFileLines[12].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
             DoSyncRangs = _settingsFileLines[14].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
             DoSyncOpals = _settingsFileLines[16].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
+            DoSyncPortals = _settingsFileLines[18].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
         }
 
         [MessageHandler((ushort)MessageID.ReqSettings)]
         static void HandleSettingsRequest(ushort fromClientId, Message message)
         {
-            bool[] b = { DoSyncTEs, DoSyncCogs, DoSyncBilbies, DoSyncRangs, DoSyncOpals };
+            bool[] b = { DoSyncTEs, DoSyncCogs, DoSyncBilbies, DoSyncRangs, DoSyncOpals, DoSyncPortals };
             Message response = Message.Create(MessageSendMode.Reliable, MessageID.ReqSettings);
             response.AddBools(b);
             Server._Server.Send(response, fromClientId);

@@ -8,17 +8,16 @@ namespace MulTyPlayerClient
 {
     internal class SavePortalSyncer : SaveDataSyncer
     {
-        public override void Save(int iSave, int? level)
+        public override void Save(int null1, int? level)
         {
             int address = (int)(SyncHandler.SaveDataBaseAddress + (0x70 * level));
-            ProcessHandler.WriteData(address, new byte[] { (byte)iSave });
+            ProcessHandler.WriteData(address, new byte[] { 3 });
         }
-        public override void Sync(int level, byte[] bytes)
+        public override void Sync(int null1, byte[] bytes)
         {
-            for(int i = 0; i < 24; i++)
+            for(int i = 0; i < 7; i++)
             {
-                int address = SyncHandler.SaveDataBaseAddress + (0x70 * i);
-                ProcessHandler.WriteData(address, new byte[] { bytes[i] });
+                if (bytes[i] == 1) Save(0, PortalHandler.FlakyPortals[i]);
             }
         }
     }

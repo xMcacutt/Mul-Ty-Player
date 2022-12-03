@@ -16,6 +16,7 @@ namespace MulTyPlayerClient
         public static CogHandler HCog;
         public static BilbyHandler HBilby;
         public static AttributeHandler HAttribute;
+        public static PortalHandler HPortal;
 
         public static int SaveDataBaseAddress => PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x288730), 0x10);
 
@@ -27,6 +28,7 @@ namespace MulTyPlayerClient
             SyncObjects.Add("Cog", HCog = new CogHandler());
             SyncObjects.Add("Bilby", HBilby = new BilbyHandler());
             SyncObjects.Add("Attribute", HAttribute = new AttributeHandler());
+            SyncObjects.Add("Portal", HPortal = new PortalHandler());
         }
 
         public void SetMemAddrs()

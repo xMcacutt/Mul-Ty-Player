@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace MulTyPlayerClient
 {
@@ -21,7 +22,7 @@ namespace MulTyPlayerClient
         {
             if (HSyncObject.CurrentObjectData[index] >= 3) return;
             if (Program.HGameState.CheckMenuOrLoading()) return;
-            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * index), BitConverter.GetBytes(HSyncObject.WriteState));
+            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * index), new byte[] {HSyncObject.WriteState});
             if (!SeparateCollisionByte) return;
             ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + CollisionOffset + (ObjectLength * index), BitConverter.GetBytes(0));
             ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + 0x31 + (ObjectLength * index), new byte[] { 0, 1 });

@@ -16,4 +16,6 @@ DoSyncRangs = true
 
 DoSyncOpals = true
 
+DoSyncPortals = true
+
 -------------------------------

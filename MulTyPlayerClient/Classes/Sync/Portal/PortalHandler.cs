@@ -13,15 +13,14 @@ namespace MulTyPlayerClient
     {
         Dictionary<int, int> NumberOfTimesEnteredLevel;
         Dictionary<int, int> PreviousNumberOfTimesEnteredLevel;
+        public static int[] FlakyPortals = { 4, 7, 15, 19, 22, 23, 24 };
+        public Dictionary<int, bool> portalsActive;
 
         public PortalHandler()
         {
             Name = "Portal";
             WriteState = 1;
             CheckState = 3;
-            ObjectAmount = 16;
-            PreviousObjectData = new byte[ObjectAmount];
-            CurrentObjectData = new byte[ObjectAmount];
             CounterAddress = SyncHandler.SaveDataBaseAddress;
             CounterByteLength = 1;
             PreviousObserverState = 0;
@@ -31,13 +30,14 @@ namespace MulTyPlayerClient
             SetSyncClasses(LiveSync, SaveSync);
             NumberOfTimesEnteredLevel = new();
             PreviousNumberOfTimesEnteredLevel = new();
+            portalsActive = new();
             for (int i = 0; i < 24; i++) NumberOfTimesEnteredLevel.Add(i, 0);
             for (int i = 0; i< 24; i++) PreviousNumberOfTimesEnteredLevel.Add(i, 0);
+            foreach(int level in FlakyPortals) portalsActive.Add(level, false);
         }
 
         public override void HandleClientUpdate(int iLive, int iSave, int level)
         {
-            NumberOfTimesEnteredLevel[level] = iSave;
             SaveSync.Save(iSave, level);
             if (level != 0) return;
             LiveSync.Collect(iLive);
@@ -52,7 +52,15 @@ namespace MulTyPlayerClient
             {
                 ProcessHandler.ReadProcessMemory((int)ProcessHandler.HProcess, address + (0x70 * i), buffer, size, ref bytesRead);
                 NumberOfTimesEnteredLevel[i] = buffer[0];
-                count += buffer[0];
+            }
+            foreach (int i in FlakyPortals)
+            {
+                portalsActive[i] = NumberOfTimesEnteredLevel[i] > 0;
+                if (NumberOfTimesEnteredLevel[i] > 0)
+                {
+                    portalsActive[i] = true;
+                    count++;
+                }
             }
             return count;
         }
@@ -64,11 +72,11 @@ namespace MulTyPlayerClient
 
             PreviousObserverState = ObserverState;
             
-            foreach(int i in NumberOfTimesEnteredLevel.Keys)
+            foreach(int i in FlakyPortals)
             {
-                if (NumberOfTimesEnteredLevel[i] > 0 && PreviousNumberOfTimesEnteredLevel[i] == 0 && !Program.HLevel.MainStages.Contains(i))
+                if (portalsActive[i])
                 {
-                    Program.HSync.SendDataToServer(i, NumberOfTimesEnteredLevel[i], i, Name);
+                    Program.HSync.SendDataToServer(i, i, i, Name);
                 } 
             }
         }
