@@ -19,15 +19,19 @@ namespace MulTyPlayerServer
         public static CogSyncer SCog;
         public static BilbySyncer SBilby;
         public static AttributeSyncer SAttribute;
+        public static PortalSyncer SPortal;
 
         public SyncHandler()
         {
-            Syncers = new Dictionary<string, Syncer>();
-            Syncers.Add("Opal", SOpal = new OpalSyncer());
-            Syncers.Add("TE", SThEg = new TESyncer());
-            Syncers.Add("Cog", SCog = new CogSyncer());
-            Syncers.Add("Bilby", SBilby = new BilbySyncer());
-            Syncers.Add("Attribute", SAttribute = new AttributeSyncer());
+            Syncers = new Dictionary<string, Syncer>
+            {
+                { "Opal", SOpal = new OpalSyncer() },
+                { "TE", SThEg = new TESyncer() },
+                { "Cog", SCog = new CogSyncer() },
+                { "Bilby", SBilby = new BilbySyncer() },
+                { "Attribute", SAttribute = new AttributeSyncer() },
+                { "Portal", SPortal = new PortalSyncer() }
+            };
         }
 
         public static void SendResetSyncMessage()

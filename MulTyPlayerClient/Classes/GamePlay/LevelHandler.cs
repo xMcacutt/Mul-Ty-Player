@@ -4,8 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace MulTyPlayerClient
 {
@@ -29,6 +28,10 @@ namespace MulTyPlayerClient
             HSync.RequestSync();
             if (!SettingsHandler.DoKoalaCollision) HKoala.RemoveCollision();
             if (CurrentLevelId == 9 || CurrentLevelId == 13) ObjectiveCountSet();
+            if (CurrentLevelId == 0 && SettingsHandler.DoPortalSyncing) 
+            { 
+                HSync.SyncObjects["Portal"].Sync(0, (HSync.SyncObjects["Portal"] as PortalHandler).PortalsActive.Values.ToArray(), new byte[] { 0 }); 
+            }
             LoadedIntoNewLevelStuffDone = true;
         }
 

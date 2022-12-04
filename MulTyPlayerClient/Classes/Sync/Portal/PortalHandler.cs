@@ -11,54 +11,62 @@ namespace MulTyPlayerClient
 {
     internal class PortalHandler : SyncObjectHandler
     {
-        Dictionary<int, int> NumberOfTimesEnteredLevel;
-        Dictionary<int, int> PreviousNumberOfTimesEnteredLevel;
+        public static int[] LivePortalOrder = { 7, 5, 4, 13, 10, 23, 20, 19, 9, 21, 22, 12, 8, 6, 14, 15 };
         public static int[] FlakyPortals = { 4, 7, 15, 19, 22, 23, 24 };
-        public Dictionary<int, bool> portalsActive;
+        public Dictionary<int, byte> PortalsActive;
+        public Dictionary<int, byte> OldPortalsActive;
 
         public PortalHandler()
         {
             Name = "Portal";
             WriteState = 1;
             CheckState = 3;
-            CounterAddress = SyncHandler.SaveDataBaseAddress;
             CounterByteLength = 1;
             PreviousObserverState = 0;
             ObserverState = 0;
             LiveSync = new LivePortalSyncer(this);
-            SaveSync = new SavePortalSyncer();
             SetSyncClasses(LiveSync, SaveSync);
-            NumberOfTimesEnteredLevel = new();
-            PreviousNumberOfTimesEnteredLevel = new();
-            portalsActive = new();
-            for (int i = 0; i < 24; i++) NumberOfTimesEnteredLevel.Add(i, 0);
-            for (int i = 0; i< 24; i++) PreviousNumberOfTimesEnteredLevel.Add(i, 0);
-            foreach(int level in FlakyPortals) portalsActive.Add(level, false);
+            PortalsActive = new();
+            OldPortalsActive = new();
+            foreach (int level in FlakyPortals)
+            {
+                PortalsActive.Add(level, 0);
+                OldPortalsActive.Add(level, 0);
+            }
         }
 
-        public override void HandleClientUpdate(int iLive, int iSave, int level)
+        public override void HandleClientUpdate(int null1, int null2, int level)
         {
-            SaveSync.Save(iSave, level);
-            if (level != 0) return;
-            LiveSync.Collect(iLive);
+            Console.WriteLine("spawning portal for level " + level);
+            if (PortalsActive[level] == 1) return;
+            PortalsActive[level] = 1;
+            if (Program.HLevel.CurrentLevelId != 0) return;
+            LiveSync.Collect(level);
+        }
+
+        public override void Sync(int null1, byte[] active, byte[] null2)
+        {
+            for(int i = 0; i < 7; i++)
+            {
+                if (active[i] == 1)
+                {
+                    HandleClientUpdate(null1, null1, FlakyPortals[i]);
+                }
+            }
         }
 
         public override int ReadObserver(int address, int size)
         {
             int bytesRead = 0;
-            int count = 0;
             byte[] buffer = new byte[size];
-            for (int i = 0; i < 24; i++)
-            {
-                ProcessHandler.ReadProcessMemory((int)ProcessHandler.HProcess, address + (0x70 * i), buffer, size, ref bytesRead);
-                NumberOfTimesEnteredLevel[i] = buffer[0];
-            }
+            int count = 0;
             foreach (int i in FlakyPortals)
             {
-                portalsActive[i] = NumberOfTimesEnteredLevel[i] > 0;
-                if (NumberOfTimesEnteredLevel[i] > 0)
+                int orderedIndex = Array.IndexOf(LivePortalOrder, i);
+                ProcessHandler.ReadProcessMemory((int)ProcessHandler.HProcess, address + (LiveSync.ObjectLength * orderedIndex), buffer, 4, ref bytesRead);
+                if (buffer[0] == 2)
                 {
-                    portalsActive[i] = true;
+                    if (PortalsActive[i] == 0) { PortalsActive[i] = 1; }
                     count++;
                 }
             }
@@ -67,18 +75,21 @@ namespace MulTyPlayerClient
 
         public override void CheckObserverChanged()
         {
-            ObserverState = ReadObserver(CounterAddress, CounterByteLength);
+            ObserverState = ReadObserver(LiveObjectAddress + LiveSync.StateOffset , CounterByteLength);
             if (PreviousObserverState == ObserverState || ObserverState == 0) return;
 
             PreviousObserverState = ObserverState;
             
             foreach(int i in FlakyPortals)
             {
-                if (portalsActive[i])
+                Console.WriteLine("Checking Portals");
+                if (OldPortalsActive[i] == 0 && PortalsActive[i] == 1)
                 {
+                    Console.WriteLine("Portal for level " + i + " being sent to server");
                     Program.HSync.SendDataToServer(i, i, i, Name);
                 } 
             }
+            foreach(int i in OldPortalsActive.Keys) OldPortalsActive[i] = PortalsActive[i]; 
         }
 
         public override void SetMemAddrs()
