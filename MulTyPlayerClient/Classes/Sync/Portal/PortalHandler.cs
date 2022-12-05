@@ -12,7 +12,7 @@ namespace MulTyPlayerClient
     internal class PortalHandler : SyncObjectHandler
     {
         public static int[] LivePortalOrder = { 7, 5, 4, 13, 10, 23, 20, 19, 9, 21, 22, 12, 8, 6, 14, 15 };
-        public static int[] FlakyPortals = { 4, 7, 15, 19, 22, 23, 24 };
+        public static int[] FlakyPortals = { 4, 7, 15, 19, 21, 22, 23 };
         public Dictionary<int, byte> PortalsActive;
         public Dictionary<int, byte> OldPortalsActive;
 
@@ -37,16 +37,16 @@ namespace MulTyPlayerClient
 
         public override void HandleClientUpdate(int null1, int null2, int level)
         {
-            Console.WriteLine("spawning portal for level " + level);
-            if (PortalsActive[level] == 1) return;
             PortalsActive[level] = 1;
             if (Program.HLevel.CurrentLevelId != 0) return;
+            //Console.WriteLine("Spawning Portal");
             LiveSync.Collect(level);
         }
 
         public override void Sync(int null1, byte[] active, byte[] null2)
         {
-            for(int i = 0; i < 7; i++)
+            if (Program.HLevel.CurrentLevelId != 0) return;
+            for (int i = 0; i < 7; i++)
             {
                 if (active[i] == 1)
                 {
@@ -62,6 +62,13 @@ namespace MulTyPlayerClient
             int count = 0;
             foreach (int i in FlakyPortals)
             {
+                ProcessHandler.ReadProcessMemory((int)ProcessHandler.HProcess, SyncHandler.SaveDataBaseAddress + (0x70 * i), buffer, 1, ref bytesRead);
+                if (buffer[0] > 0)
+                {
+                    if (PortalsActive[i] == 0) { PortalsActive[i] = 1; }
+                    count++;
+                }
+
                 int orderedIndex = Array.IndexOf(LivePortalOrder, i);
                 ProcessHandler.ReadProcessMemory((int)ProcessHandler.HProcess, address + (LiveSync.ObjectLength * orderedIndex), buffer, 4, ref bytesRead);
                 if (buffer[0] == 2)
@@ -82,10 +89,9 @@ namespace MulTyPlayerClient
             
             foreach(int i in FlakyPortals)
             {
-                Console.WriteLine("Checking Portals");
                 if (OldPortalsActive[i] == 0 && PortalsActive[i] == 1)
                 {
-                    Console.WriteLine("Portal for level " + i + " being sent to server");
+                    //Console.WriteLine("Portal for level " + i + " being sent to server");
                     Program.HSync.SendDataToServer(i, i, i, Name);
                 } 
             }

@@ -25,7 +25,7 @@ namespace MulTyPlayerServer.Classes.Sync
 
         public override void HandleServerUpdate(int null1, int null2, int level, ushort originalSender)
         {
-            Console.WriteLine("Portal for level " + level + " open");
+            //Console.WriteLine("Portal for level " + level + " open");
             if (ActivePortals[level] == 1) return;
             ActivePortals[level] = 1;
             SendUpdatedData(null1, null2, level, originalSender);
