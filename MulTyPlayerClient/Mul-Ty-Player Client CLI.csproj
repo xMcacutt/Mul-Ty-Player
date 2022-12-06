@@ -45,6 +45,7 @@
     <DefineConstants>$(DefineConstants)TRACE;STEAMWORKS_WIN</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Resources\Facepunch.Steamworks.Win32.dll" />
     <None Remove="Resources\steam_api.dll" />
   </ItemGroup>
   <ItemGroup>
@@ -55,10 +56,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Resources\RiptideNetworking.dll</HintPath>
     </Reference>
-    <Reference Include="Steamworks.NET, Version=20.1.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Resources\Steamworks.NET.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Update="ClientSettings.mtps">
@@ -66,9 +63,6 @@
     </None>
     <None Update="help.mtps">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Facepunch.Steamworks.Win32.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\Steamworks.NET.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -81,6 +75,9 @@
     <Content Include="Resources\RiptideNetworking.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Facepunch.Steamworks.Win32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="steam_api.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Mul-Ty-Player Installer\Setup\Setup.vdproj", "{A474016D-B4DB-4BA0-8139-8A31190CAA54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,16 @@ Global
 		{8FC2F74F-3012-4187-A11E-A02D395533FE}.Release|x64.Build.0 = Release|Any CPU
 		{8FC2F74F-3012-4187-A11E-A02D395533FE}.Release|x86.ActiveCfg = Release|Any CPU
 		{8FC2F74F-3012-4187-A11E-A02D395533FE}.Release|x86.Build.0 = Release|Any CPU
+		{A474016D-B4DB-4BA0-8139-8A31190CAA54}.Debug|Any CPU.ActiveCfg = Debug
+		{A474016D-B4DB-4BA0-8139-8A31190CAA54}.Debug|ARM32.ActiveCfg = Debug
+		{A474016D-B4DB-4BA0-8139-8A31190CAA54}.Debug|ARM64.ActiveCfg = Debug
+		{A474016D-B4DB-4BA0-8139-8A31190CAA54}.Debug|x64.ActiveCfg = Debug
+		{A474016D-B4DB-4BA0-8139-8A31190CAA54}.Debug|x86.ActiveCfg = Debug
+		{A474016D-B4DB-4BA0-8139-8A31190CAA54}.Release|Any CPU.ActiveCfg = Release
+		{A474016D-B4DB-4BA0-8139-8A31190CAA54}.Release|ARM32.ActiveCfg = Release
+		{A474016D-B4DB-4BA0-8139-8A31190CAA54}.Release|ARM64.ActiveCfg = Release
+		{A474016D-B4DB-4BA0-8139-8A31190CAA54}.Release|x64.ActiveCfg = Release
+		{A474016D-B4DB-4BA0-8139-8A31190CAA54}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
