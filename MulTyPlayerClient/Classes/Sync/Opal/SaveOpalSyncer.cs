@@ -21,7 +21,7 @@ namespace MulTyPlayerClient
             int rem;
             int byteIndex;
             int bitValue;
-            int crateOpals = SyncHandler.HOpal._crateOpalsPerLevel[(int)level];
+            int crateOpals = SyncHandler.HOpal.CrateOpalsPerLevel[(int)level];
 
             if(index > (299 - crateOpals))
             {

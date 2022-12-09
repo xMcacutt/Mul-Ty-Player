@@ -20,6 +20,7 @@ namespace MulTyPlayerServer
         public static BilbySyncer SBilby;
         public static AttributeSyncer SAttribute;
         public static PortalSyncer SPortal;
+        public static CrateSyncer SCrate;
 
         public SyncHandler()
         {
@@ -30,7 +31,8 @@ namespace MulTyPlayerServer
                 { "Cog", SCog = new CogSyncer() },
                 { "Bilby", SBilby = new BilbySyncer() },
                 { "Attribute", SAttribute = new AttributeSyncer() },
-                { "Portal", SPortal = new PortalSyncer() }
+                { "Portal", SPortal = new PortalSyncer() },
+                { "Crate", SCrate = new CrateSyncer() }
             };
         }
 

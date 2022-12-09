@@ -8,7 +8,7 @@ namespace MulTyPlayerClient
 {
     internal class OpalHandler : SyncObjectHandler
     {
-        public int[] _crateOpalsPerLevel = { 0, 0, 0, 0, 170, 102, 119, 0, 120, 60, 0, 0, 30, 170, 215 };
+        public int[] CrateOpalsPerLevel = { 0, 0, 0, 0, 170, 102, 119, 0, 120, 60, 0, 0, 30, 170, 215 };
         
         const int GEM_PTR_LIST_BASE_ADDRESS = 0x28AB7C;
         public int NonCrateOpalsAddress;

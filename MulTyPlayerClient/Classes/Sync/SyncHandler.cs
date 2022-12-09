@@ -17,18 +17,22 @@ namespace MulTyPlayerClient
         public static BilbyHandler HBilby;
         public static AttributeHandler HAttribute;
         public static PortalHandler HPortal;
+        public static CrateHandler HCrate;
 
         public static int SaveDataBaseAddress => PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x288730), 0x10);
 
         public SyncHandler()
         {
-            SyncObjects = new Dictionary<string, SyncObjectHandler>();
-            SyncObjects.Add("Opal", HOpal = new OpalHandler());
-            SyncObjects.Add("TE", HThEg = new TEHandler());
-            SyncObjects.Add("Cog", HCog = new CogHandler());
-            SyncObjects.Add("Bilby", HBilby = new BilbyHandler());
-            SyncObjects.Add("Attribute", HAttribute = new AttributeHandler());
-            SyncObjects.Add("Portal", HPortal = new PortalHandler());
+            SyncObjects = new Dictionary<string, SyncObjectHandler>
+            {
+                { "Opal", HOpal = new() },
+                { "TE", HThEg = new() },
+                { "Cog", HCog = new() },
+                { "Bilby", HBilby = new() },
+                { "Attribute", HAttribute = new() },
+                { "Portal", HPortal = new() },
+                { "Crate", HCrate = new() }
+            };
         }
 
         public void SetMemAddrs()
