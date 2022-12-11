@@ -18,6 +18,7 @@ namespace MulTyPlayerClient
         public static AttributeHandler HAttribute;
         public static PortalHandler HPortal;
         public static CrateHandler HCrate;
+        public static RCHandler HCliffs;
 
         public static int SaveDataBaseAddress => PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x288730), 0x10);
 
@@ -31,7 +32,8 @@ namespace MulTyPlayerClient
                 { "Bilby", HBilby = new() },
                 { "Attribute", HAttribute = new() },
                 { "Portal", HPortal = new() },
-                { "Crate", HCrate = new() }
+                { "Crate", HCrate = new() },
+                { "RC", HCliffs = new() }
             };
         }
 
@@ -51,7 +53,11 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ReqSync)]
         private static void HandleSyncReqResponse(Message message)
         {
-            Program.HSync.SyncObjects[message.GetString()].Sync(message.GetInt(), message.GetBytes(), message.GetBytes());
+            string type = message.GetString();
+            if (SettingsHandler.SyncSettings[type]) 
+            { 
+                Program.HSync.SyncObjects[message.GetString()].Sync(message.GetInt(), message.GetBytes(), message.GetBytes());
+            }
         }
 
         [MessageHandler((ushort)MessageID.ClientDataUpdate)]

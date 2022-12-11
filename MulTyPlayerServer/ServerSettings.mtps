@@ -18,4 +18,6 @@ DoSyncOpals = true
 
 DoSyncPortals = true
 
+DoSyncCliffs = true
+
 -------------------------------

@@ -1,5 +1,6 @@
 ﻿using Riptide;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -20,6 +21,9 @@ namespace MulTyPlayerClient
         public static bool DoRangSyncing;
         public static bool DoOpalSyncing;
         public static bool DoPortalSyncing;
+        public static bool DoCliffsSyncing;
+
+        public static Dictionary<string, bool> SyncSettings = new();
 
         public static void Setup()
         {
@@ -46,11 +50,20 @@ namespace MulTyPlayerClient
         {
             bool[] b = message.GetBools();
             DoTESyncing = b[0];
+            SyncSettings.Add("TE", DoTESyncing);
             DoCogSyncing = b[1];
+            SyncSettings.Add("Cog", DoCogSyncing);
             DoBilbySyncing = b[2];
+            SyncSettings.Add("Bilby", DoBilbySyncing);
             DoRangSyncing = b[3];
+            SyncSettings.Add("Attribute", DoRangSyncing);
             DoOpalSyncing = b[4];
+            SyncSettings.Add("Opal", DoOpalSyncing);
+            SyncSettings.Add("Crate", DoOpalSyncing);
             DoPortalSyncing = b[5];
+            SyncSettings.Add("Portal", DoPortalSyncing);
+            DoCliffsSyncing = b[6];
+            SyncSettings.Add("Cliffs", DoCliffsSyncing);
         }
     }
 }

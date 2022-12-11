@@ -21,6 +21,7 @@ namespace MulTyPlayerServer
         public static AttributeSyncer SAttribute;
         public static PortalSyncer SPortal;
         public static CrateSyncer SCrate;
+        public static RCSyncer SCliffs;
 
         public SyncHandler()
         {
@@ -32,7 +33,8 @@ namespace MulTyPlayerServer
                 { "Bilby", SBilby = new BilbySyncer() },
                 { "Attribute", SAttribute = new AttributeSyncer() },
                 { "Portal", SPortal = new PortalSyncer() },
-                { "Crate", SCrate = new CrateSyncer() }
+                { "Crate", SCrate = new CrateSyncer() },
+                { "Cliffs", SCliffs = new RCSyncer() }
             };
         }
 
@@ -45,9 +47,9 @@ namespace MulTyPlayerServer
         [MessageHandler((ushort)MessageID.ReqSync)]
         private static void HandleSyncRequest(ushort fromClientId, Message message)
         {
-            foreach(Syncer s in Program.HSync.Syncers.Values)
+            foreach(string s in Program.HSync.Syncers.Keys)
             {
-                s.Sync(fromClientId);
+                if (SettingsHandler.SyncSettings[s]) Program.HSync.Syncers[s].Sync(fromClientId);
             }
         }
 
