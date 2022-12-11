@@ -71,5 +71,13 @@ namespace MulTyPlayerClient
             SyncMessage syncMessage = SyncMessage.Create(iLive, iSave, level, type);
             Client._client.Send(SyncMessage.Encode(syncMessage));
         }
+
+        public void ProtectLeaderboard()
+        {
+            int address = SaveDataBaseAddress + 0xB07;
+            int bytesWritten = 0;
+            byte[] bytes = new byte[] { 1 };
+            ProcessHandler.WriteProcessMemory((int)HProcess, address, bytes, bytes.Length, ref bytesWritten);
+        }
     }
 }
