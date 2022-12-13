@@ -39,10 +39,13 @@ namespace MulTyPlayerClient
         {
             byte[] currentData = new byte[SyncHandler.HCrate.CratesPerLevel[Program.HLevel.CurrentLevelId]];
             int address = HSyncObject.LiveObjectAddress;
+            Console.WriteLine("Crates");
             for (int i = 0; i < currentData.Length; i++)
             {
                 currentData[i] = ProcessHandler.ReadData("current object read", address + StateOffset + (ObjectLength * i), 1)[0];
+                Console.Write(currentData[i]);
             }
+            Console.WriteLine("");
             return currentData;
         }
     }
