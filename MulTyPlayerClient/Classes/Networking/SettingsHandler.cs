@@ -59,20 +59,20 @@ namespace MulTyPlayerClient
         {
             bool[] b = message.GetBools();
             DoTESyncing = b[0];
-            SyncSettings.Add("TE", DoTESyncing);
+            SyncSettings["TE"] = DoTESyncing;
             DoCogSyncing = b[1];
-            SyncSettings.Add("Cog", DoCogSyncing);
+            SyncSettings["Cog"] = DoCogSyncing;
             DoBilbySyncing = b[2];
-            SyncSettings.Add("Bilby", DoBilbySyncing);
+            SyncSettings["Bilby"] = DoBilbySyncing;
             DoRangSyncing = b[3];
-            SyncSettings.Add("Attribute", DoRangSyncing);
+            SyncSettings["Attribute"] = DoRangSyncing;
             DoOpalSyncing = b[4];
-            SyncSettings.Add("Opal", DoOpalSyncing);
-            SyncSettings.Add("Crate", DoOpalSyncing);
+            SyncSettings["Opal"] = DoOpalSyncing;
+            SyncSettings["Crate"] = DoOpalSyncing;
             DoPortalSyncing = b[5];
-            SyncSettings.Add("Portal", DoPortalSyncing);
+            SyncSettings["Portal"] = DoPortalSyncing;
             DoCliffsSyncing = b[6];
-            SyncSettings.Add("RC", DoCliffsSyncing);
+            SyncSettings["RC"] = DoCliffsSyncing;
         }
     }
 }
