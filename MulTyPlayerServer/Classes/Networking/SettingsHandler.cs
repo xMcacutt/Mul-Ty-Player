@@ -53,7 +53,7 @@ namespace MulTyPlayerServer
                 {"Opal", DoSyncOpals},
                 {"Crate", DoSyncOpals},
                 {"Portal", DoSyncPortals},
-                {"Cliffs", DoSyncCliffs}
+                {"RC", DoSyncCliffs}
             };
         }
 

@@ -32,7 +32,7 @@ namespace MulTyPlayerClient
                 if (ProcessHandler.ReadData("rc data", CounterAddress + i, 1)[0] == 1 && GlobalObjectData[i] == 0)
                 {
                     GlobalObjectData[i] = 1;
-                    Console.WriteLine("You have now " + Enum.GetValues(typeof(Attributes)).GetValue(i));
+                    Console.WriteLine("You have now " + Enum.GetValues(typeof(RCData)).GetValue(i));
                     Program.HSync.SendDataToServer(0, i, 0, Name);
                 }
             }
