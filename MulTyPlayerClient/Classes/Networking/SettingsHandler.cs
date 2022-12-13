@@ -35,8 +35,6 @@ namespace MulTyPlayerClient
             DoKoalaCollision = settingsFileLines[12].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
             DoPositionLogging = settingsFileLines[14].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
             PositionLoggingOutputDir = settingsFileLines[16].Split('=')[1].TrimStart();
-
-            
         }
         
         public static void RequestServerSettings()
@@ -63,7 +61,7 @@ namespace MulTyPlayerClient
             DoPortalSyncing = b[5];
             SyncSettings.Add("Portal", DoPortalSyncing);
             DoCliffsSyncing = b[6];
-            SyncSettings.Add("Cliffs", DoCliffsSyncing);
+            SyncSettings.Add("RC", DoCliffsSyncing);
         }
     }
 }

@@ -56,7 +56,7 @@ namespace MulTyPlayerClient
             string type = message.GetString();
             if (SettingsHandler.SyncSettings[type]) 
             { 
-                Program.HSync.SyncObjects[message.GetString()].Sync(message.GetInt(), message.GetBytes(), message.GetBytes());
+                Program.HSync.SyncObjects[type].Sync(message.GetInt(), message.GetBytes(), message.GetBytes());
             }
         }
 

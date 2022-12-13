@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MulTyPlayerServer.Classes.Sync
+namespace MulTyPlayerServer
 {
     internal class RCSyncer : Syncer
     {

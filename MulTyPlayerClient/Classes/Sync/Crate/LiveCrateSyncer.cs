@@ -9,7 +9,7 @@ namespace MulTyPlayerClient
 {
     internal class LiveCrateSyncer : LiveDataSyncer
     {
-        int CrateOpalsAddress;
+
         public LiveCrateSyncer(SyncObjectHandler hCrate)
         {
             HSyncObject = hCrate;
