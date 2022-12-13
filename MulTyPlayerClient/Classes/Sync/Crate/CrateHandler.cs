@@ -76,9 +76,7 @@ namespace MulTyPlayerClient
         {
             if (!Program.HLevel.MainStages.Contains(Program.HLevel.CurrentLevelId)) return;
             ObserverState = ReadObserver(CounterAddress, CounterByteLength);
-            Console.WriteLine("Observer {0:N} at address {1:X}", ObserverState, CounterAddress);
             if (PreviousObserverState == ObserverState || ObserverState == 0) return;
-            Console.WriteLine("Observer changed crates");
             PreviousObserverState = ObserverState;
             CurrentObjectData = LiveSync.ReadData();
             for (int iLive = 0; iLive < CratesPerLevel[Program.HLevel.CurrentLevelId]; iLive++)
