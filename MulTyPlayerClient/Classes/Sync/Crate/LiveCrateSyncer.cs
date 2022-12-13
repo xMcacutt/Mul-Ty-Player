@@ -35,6 +35,15 @@ namespace MulTyPlayerClient
             }
         }
 
+        public override void Sync(byte[] bytes, int amount, int checkState)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                if (HSyncObject.GlobalObjectData[Program.HLevel.CurrentLevelId][i] == 0) return;
+                if (bytes[i] == checkState) Collect(i);
+            }
+        }
+
         public override byte[] ReadData()
         {
             byte[] currentData = new byte[SyncHandler.HCrate.CratesPerLevel[Program.HLevel.CurrentLevelId]];
