@@ -63,6 +63,7 @@ namespace MulTyPlayerClient
 
         public override void SetMemAddrs()
         {
+            if (!Program.HLevel.MainStages.Contains(Program.HLevel.CurrentLevelId)) return;
             PreviousObjectData = GlobalObjectData[Program.HLevel.CurrentLevelId];
             LiveObjectAddress = 
                 Program.HLevel.CurrentLevelId == 10 ?
@@ -72,6 +73,7 @@ namespace MulTyPlayerClient
 
         public override void CheckObserverChanged()
         {
+            if (!Program.HLevel.MainStages.Contains(Program.HLevel.CurrentLevelId)) return;
             ObserverState = ReadObserver(CounterAddress, CounterByteLength);
             if (PreviousObserverState == ObserverState || ObserverState == 0) return;
 
