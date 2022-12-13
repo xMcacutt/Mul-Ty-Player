@@ -35,6 +35,7 @@ namespace MulTyPlayerClient
             DoKoalaCollision = settingsFileLines[12].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
             DoPositionLogging = settingsFileLines[14].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
             PositionLoggingOutputDir = settingsFileLines[16].Split('=')[1].TrimStart();
+            foreach(string s in Program.HSync.SyncObjects.Keys) { SyncSettings.Add(s, false); }
         }
         
         public static void RequestServerSettings()
