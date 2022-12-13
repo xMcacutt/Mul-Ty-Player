@@ -19,7 +19,6 @@ namespace MulTyPlayerClient
 
         public override void Collect(int index)
         {
-            if (HSyncObject.GlobalObjectData[Program.HLevel.CurrentLevelId][index] == 0) return;
             int crateAddress = HSyncObject.LiveObjectAddress + (index * ObjectLength);
             ProcessHandler.WriteData(crateAddress + 0x48, new byte[] {0});
             ProcessHandler.WriteData(crateAddress + 0x114, new byte[] {0});

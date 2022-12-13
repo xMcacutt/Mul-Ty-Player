@@ -36,6 +36,7 @@ namespace MulTyPlayerClient
 
         public override void HandleClientUpdate(int iLive, int iSave, int level)
         {
+            if (GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] == 0) return;
             GlobalObjectData[level][iLive] = (byte)CheckState;
             if (level != Program.HLevel.CurrentLevelId) return;
             Console.WriteLine("Collecting Crate: " + iLive);
