@@ -66,7 +66,7 @@ namespace MulTyPlayerClient
             LiveObjectAddress = 
                 Program.HLevel.CurrentLevelId == 10 ?
                 PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x255190), 0x0):
-                PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x270280), 0x0);
+                PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x254CB8), 0x0);
         }
 
         public override void CheckObserverChanged()

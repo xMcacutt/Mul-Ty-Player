@@ -13,6 +13,7 @@ namespace MulTyPlayerClient
         public LiveCrateSyncer(SyncObjectHandler hCrate)
         {
             HSyncObject = hCrate;
+            StateOffset = 0x114;
         }
 
         public override void Collect(int index)
@@ -25,7 +26,7 @@ namespace MulTyPlayerClient
             for (int i = 0; i < opalCount; i++)
             {
                 int opalAddress = PointerCalculations.GetPointerAddress(crateAddress + 0x150 + (4 * i), 0x0);
-                int opalIndex = ((opalAddress - firstCrateOpalAddress) / 0x114) + (300 - SyncHandler.HOpal.CrateOpalsPerLevel[Program.HLevel.CurrentLevelId]);
+                int opalIndex = ((opalAddress - firstCrateOpalAddress) / 0x1C0) + (300 - SyncHandler.HOpal.CrateOpalsPerLevel[Program.HLevel.CurrentLevelId]);
                 if (Program.HSync.SyncObjects["Opal"].GlobalObjectData[Program.HLevel.CurrentLevelId][opalIndex] != 5)
                 {
                     ProcessHandler.WriteData(opalAddress + 0x78, BitConverter.GetBytes(1));
