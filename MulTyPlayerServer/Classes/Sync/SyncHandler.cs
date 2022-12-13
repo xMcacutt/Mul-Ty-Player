@@ -34,7 +34,7 @@ namespace MulTyPlayerServer
                 { "Attribute", SAttribute = new AttributeSyncer() },
                 { "Portal", SPortal = new PortalSyncer() },
                 { "Crate", SCrate = new CrateSyncer() },
-                { "Cliffs", SCliffs = new RCSyncer() }
+                { "RC", SCliffs = new RCSyncer() }
             };
         }
 
