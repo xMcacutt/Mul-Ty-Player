@@ -23,7 +23,7 @@ namespace MulTyPlayerClient
         public static bool DoPortalSyncing;
         public static bool DoCliffsSyncing;
 
-        public static Dictionary<string, bool> SyncSettings = new();
+        public static Dictionary<string, bool> SyncSettings;
 
         public static void Setup()
         {
@@ -35,7 +35,17 @@ namespace MulTyPlayerClient
             DoKoalaCollision = settingsFileLines[12].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
             DoPositionLogging = settingsFileLines[14].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
             PositionLoggingOutputDir = settingsFileLines[16].Split('=')[1].TrimStart();
-            foreach(string s in Program.HSync.SyncObjects.Keys) { SyncSettings.Add(s, false); }
+            SyncSettings = new()
+            {
+                {"TE", false},
+                {"Opal", false},
+                {"Cog", false},
+                {"Bilby", false},
+                {"Crate", false},
+                {"Portal", false},
+                {"RC", false},
+                {"Attribute", false},
+            };
         }
         
         public static void RequestServerSettings()
