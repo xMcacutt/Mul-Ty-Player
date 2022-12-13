@@ -14,7 +14,7 @@ namespace MulTyPlayerClient
             Name = "Crate";
             WriteState = 0;
             CheckState = 0;
-            CounterAddress = PointerCalculations.AddOffset(0x11877F20);
+            CounterAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x0028A8E8), 0x390);
             CounterByteLength = 4;
             CurrentObjectData = Enumerable.Repeat((byte)1, 300).ToArray();
             PreviousObjectData = Enumerable.Repeat((byte)1, 300).ToArray();
@@ -38,6 +38,7 @@ namespace MulTyPlayerClient
         {
             GlobalObjectData[level][iLive] = (byte)CheckState;
             if (level != Program.HLevel.CurrentLevelId) return;
+            Console.WriteLine("Collecting Crate: " + iLive);
             LiveSync.Collect(iLive);
         }
 
