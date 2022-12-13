@@ -63,6 +63,7 @@ namespace MulTyPlayerClient
 
         public override void SetMemAddrs()
         {
+            PreviousObjectData = GlobalObjectData[Program.HLevel.CurrentLevelId];
             LiveObjectAddress = 
                 Program.HLevel.CurrentLevelId == 10 ?
                 PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x255190), 0x0):
