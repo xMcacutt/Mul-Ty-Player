@@ -46,13 +46,13 @@ namespace MulTyPlayerClient
         {
             for (int i = 0; i < CratesPerLevel[level]; i++)
             {
-                if (liveData[i] == CheckState && GlobalObjectData[level][i] != CheckState) GlobalObjectData[level][i] = WriteState;
+                if (liveData[i] == 0 && GlobalObjectData[level][i] == 1) GlobalObjectData[level][i] = 0;
             }
             if (Program.HLevel.CurrentLevelId == level)
             {
-                LiveSync.Sync(liveData, CratesPerLevel[level], CheckState);
                 PreviousObjectData = liveData;
                 CurrentObjectData = liveData;
+                LiveSync.Sync(liveData, CratesPerLevel[level], CheckState);
             }
         }
 
@@ -65,6 +65,7 @@ namespace MulTyPlayerClient
         {
             if (!Program.HLevel.MainStages.Contains(Program.HLevel.CurrentLevelId)) return;
             PreviousObjectData = GlobalObjectData[Program.HLevel.CurrentLevelId];
+            CounterAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x0028A8E8), 0x390);
             LiveObjectAddress = 
                 Program.HLevel.CurrentLevelId == 10 ?
                 PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x255190), 0x0):
@@ -75,8 +76,9 @@ namespace MulTyPlayerClient
         {
             if (!Program.HLevel.MainStages.Contains(Program.HLevel.CurrentLevelId)) return;
             ObserverState = ReadObserver(CounterAddress, CounterByteLength);
+            Console.WriteLine("Observer {0:N} at address {1:X}", ObserverState, CounterAddress);
             if (PreviousObserverState == ObserverState || ObserverState == 0) return;
-
+            Console.WriteLine("Observer changed crates");
             PreviousObserverState = ObserverState;
             CurrentObjectData = LiveSync.ReadData();
             for (int iLive = 0; iLive < CratesPerLevel[Program.HLevel.CurrentLevelId]; iLive++)

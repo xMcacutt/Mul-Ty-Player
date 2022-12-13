@@ -29,7 +29,7 @@ namespace MulTyPlayerServer
 
         public override void HandleServerUpdate(int iLive, int iSave, int level, ushort originalSender)
         {
-            if (!GlobalObjectData.Keys.Contains(level)) return;
+            if (!GlobalObjectData.ContainsKey(level)) return;
             //Console.WriteLine("Sending " + Name + " LiveNumber: " + iLive + " SaveNumber: " + iSave + " For Level: " + level + " To All But: " + Server.PlayerList[originalSender].Name);
             GlobalObjectData[level][iLive] = (byte)CheckState;
             SendUpdatedData(iLive, iSave, level, originalSender);
