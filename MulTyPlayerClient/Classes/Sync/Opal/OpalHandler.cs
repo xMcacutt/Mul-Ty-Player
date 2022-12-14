@@ -20,6 +20,7 @@ namespace MulTyPlayerClient
             Name = "Opal";
             WriteState = 3;
             CheckState = 5;
+            SaveState = 1;
             ObjectAmount = 300;
             CounterAddress = PointerCalculations.AddOffset(0x26547C);
             CounterByteLength = 4;
@@ -40,6 +41,7 @@ namespace MulTyPlayerClient
             NonCrateOpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x0, 0x0});
             B3OpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x2B0, 0x0});
             CrateOpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x4AC, 0x0});
+            Console.WriteLine("Opal address: {0:X}", NonCrateOpalsAddress);
         }
 
         public override bool CheckObserverCondition(byte previousState, byte currentState)

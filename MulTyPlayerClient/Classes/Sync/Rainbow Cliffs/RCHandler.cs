@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -27,9 +28,12 @@ namespace MulTyPlayerClient
         public override void CheckObserverChanged()
         {
             int dataAmount = 12;
+            byte[] buffer = new byte[1];
+            int bytesRead = 0;
             for (int i = 0; i < dataAmount; i++)
             {
-                if (ProcessHandler.ReadData("rc data", CounterAddress + i, 1)[0] == 1 && GlobalObjectData[i] == 0)
+                ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), CounterAddress + i, buffer, 1, ref bytesRead);
+                if (buffer[0] == 1 && GlobalObjectData[i] == 0)
                 {
                     GlobalObjectData[i] = 1;
                     Console.WriteLine("You have now " + Enum.GetValues(typeof(RCData)).GetValue(i));

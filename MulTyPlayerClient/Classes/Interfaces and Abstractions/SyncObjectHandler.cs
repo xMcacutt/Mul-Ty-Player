@@ -66,7 +66,6 @@ namespace MulTyPlayerClient
         {
             ObserverState = ReadObserver(CounterAddress, CounterByteLength);
             if (PreviousObserverState == ObserverState || ObserverState == 0) return;
-
             PreviousObserverState = ObserverState;
             CurrentObjectData = LiveSync.ReadData();
             int iSave;
@@ -86,7 +85,7 @@ namespace MulTyPlayerClient
                     }
                     if (GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] != CheckState)
                     {
-                        //Console.WriteLine(Name + " number " + iLive + " collected.");
+                        Console.WriteLine(Name + " number " + iLive + " collected.");
                         GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] = (byte)CheckState;
                         Program.HSync.SendDataToServer(iLive, iSave, Program.HLevel.CurrentLevelId, Name);
                     }
@@ -122,6 +121,12 @@ namespace MulTyPlayerClient
                 }
             }
             return output;
+        }
+
+        public virtual void SetCurrentData()
+        {
+            CurrentObjectData = GlobalObjectData[Program.HLevel.CurrentLevelId];
+            PreviousObjectData = GlobalObjectData[Program.HLevel.CurrentLevelId];
         }
     }
 }

@@ -44,20 +44,27 @@ namespace MulTyPlayerClient
             }
 
             int address = (int)(SyncHandler.SaveDataBaseAddress + SaveDataOffset + (0x70 * level) + (byteIndex - 1));
-            byte b = ProcessHandler.ReadData("Save Read", address, 1)[0];
+            byte[] buffer = new byte[1];
+            int bytesRead = 0;
+            ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), address, buffer, 1, ref bytesRead);
+            byte b = buffer[0];
             b += (byte)bitValue;
-            Console.WriteLine($"Adding {bitValue} to opal index {index} at byte {byteIndex - 1}");
+            //Console.WriteLine($"Adding {bitValue} to opal index {index} at byte {byteIndex - 1}");
             ProcessHandler.WriteData(address, new byte[] {b});
         }
 
         public override void Sync(int level, byte[] data)
         {
-            byte[] opalBytes = ConvertOpals(data);
-            int address = SyncHandler.SaveDataBaseAddress + SaveDataOffset + (0x70 * level);
-            ProcessHandler.WriteData(address, opalBytes);
+            for(int i = 0; i < data.Length; i++)
+            {
+                if (data[i] != 0)
+                {
+                    Save(i, level);
+                }
+            }
         }
 
-        static byte[] ConvertOpals(byte[] data)
+       /* static byte[] ConvertOpals(byte[] data)
         {
             byte[] output = new byte[(int)Math.Ceiling((double)data.Length / 8)];
             for (int i = 0; i < Math.Ceiling((double)data.Length / 8); i++)
@@ -78,6 +85,6 @@ namespace MulTyPlayerClient
                 bits.CopyTo(output, i);
             }
             return output;
-        }
+        }*/
     }
 }

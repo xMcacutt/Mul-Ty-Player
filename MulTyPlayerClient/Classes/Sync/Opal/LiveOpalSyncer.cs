@@ -20,16 +20,21 @@ namespace MulTyPlayerClient
             int crateOpalsInLevel = HOpal.CrateOpalsPerLevel[HLevel.CurrentLevelId];
             byte[] currentOpals = new byte[300];
             int address = HLevel.CurrentLevelId == 10 ? HOpal.B3OpalsAddress : HOpal.NonCrateOpalsAddress;
+            Console.WriteLine("{0:X}", address);
+            byte[] buffer = new byte[1];
+            int bytesRead = 0;
             for (int i = 0; i < 300 - crateOpalsInLevel; i++)
             {
-                currentOpals[i] = ProcessHandler.ReadData("opal read", address + 0x78 + (0x114 * i), 1)[0];
+                ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), address + 0x78 + (0x114 * i), buffer, 1, ref bytesRead);
+                currentOpals[i] = buffer[0];
             }
             if (crateOpalsInLevel == 0) return currentOpals;
 
             address = HOpal.CrateOpalsAddress;
             for (int i = 0; i < crateOpalsInLevel; i++)
             {
-                currentOpals[300 - crateOpalsInLevel + i] = ProcessHandler.ReadData("opal read", address + 0x78 + (0x114 * i), 1)[0];
+                ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), address + 0x78 + (0x114 * i), buffer, 1, ref bytesRead);
+                currentOpals[300 - crateOpalsInLevel + i] = buffer[0];
             }
             return currentOpals;
         }

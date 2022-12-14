@@ -39,7 +39,7 @@ namespace MulTyPlayerClient
             if (GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] == 0) return;
             GlobalObjectData[level][iLive] = (byte)CheckState;
             if (level != Program.HLevel.CurrentLevelId) return;
-            Console.WriteLine("Collecting Crate: " + iLive);
+            //Console.WriteLine("Collecting Crate: " + iLive);
             LiveSync.Collect(iLive);
         }
 
@@ -64,8 +64,6 @@ namespace MulTyPlayerClient
 
         public override void SetMemAddrs()
         {
-            if (!Program.HLevel.MainStages.Contains(Program.HLevel.CurrentLevelId)) return;
-            PreviousObjectData = GlobalObjectData[Program.HLevel.CurrentLevelId];
             CounterAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x0028A8E8), 0x390);
             LiveObjectAddress = 
                 Program.HLevel.CurrentLevelId == 10 ?
@@ -87,7 +85,7 @@ namespace MulTyPlayerClient
                     PreviousObjectData[iLive] = CurrentObjectData[iLive] = WriteState;
                     if (GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] != CheckState)
                     {
-                        Console.WriteLine(Name + " number " + iLive + " collected.");
+                        //Console.WriteLine(Name + " number " + iLive + " collected.");
                         GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] = (byte)CheckState;
                         Program.HSync.SendDataToServer(iLive, iLive, Program.HLevel.CurrentLevelId, Name);
                     }

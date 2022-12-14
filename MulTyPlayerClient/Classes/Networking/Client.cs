@@ -64,9 +64,11 @@ namespace MulTyPlayerClient
                 if (!HGameState.CheckMenuOrLoading())
                 {
                     //IF NOT SET UP LOAD INTO LEVEL STUFF
-                    if (!HLevel.LoadedIntoNewLevelStuffDone)
+                    if (!HLevel.LoadedNewLevelNetworkingSetupDone)
                     {
-                        HLevel.DoLevelSetup();
+                        Program.HKoala.SetCoordAddrs();
+                        Program.HSync.RequestSync();
+                        HLevel.LoadedNewLevelNetworkingSetupDone = true;
                     }
                     HHero.SendCoordinates();
                 }

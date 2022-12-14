@@ -42,9 +42,11 @@ namespace MulTyPlayerClient
         {
             //GETS TY'S OR BUSHPIG'S POSITION AND ROTATION AND STORES IT IN CURRENTPOSROT 
             int[] tempInts = HLevel.CurrentLevelId == 10 ? _bpPosRotAddrs : _tyPosRotAddrs;
+            byte[] buffer = new byte[4];
+            int bytesRead = 0;
             for (int i = 0; i < tempInts.Length; i++)
             {
-                byte[] buffer = ProcessHandler.ReadData("Ty Pos Rot", tempInts[i], 4);
+                ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), tempInts[i], buffer, 4, ref bytesRead);
                 CurrentPosRot[i] = BitConverter.ToSingle(buffer, 0);
             }
         }

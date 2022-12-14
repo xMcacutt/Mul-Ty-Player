@@ -15,7 +15,8 @@ namespace MulTyPlayerClient
         static SyncHandler HSync => Program.HSync;
 
         public int CurrentLevelId { get; set; }
-        public bool LoadedIntoNewLevelStuffDone;
+        public bool LoadedNewLevelGameplaySetupDone;
+        public bool LoadedNewLevelNetworkingSetupDone;
         readonly int[] _objectiveCountOffsetsSnow = { 0x30, 0x54, 0x54, 0x6C };
         readonly int[] _objectiveCountOffsetsStump = { 0x30, 0x34, 0x54, 0x6C };
 
@@ -23,18 +24,21 @@ namespace MulTyPlayerClient
 
         public void DoLevelSetup()
         {
-            HKoala.SetCoordAddrs();
+            Console.WriteLine("Doing level setup");
             HSync.SetMemAddrs();
-            HSync.RequestSync();
+            HSync.SetCurrentData(MainStages.Contains(CurrentLevelId));
             HSync.ProtectLeaderboard();
             if (!SettingsHandler.DoKoalaCollision) HKoala.RemoveCollision();
             if (CurrentLevelId == 9 || CurrentLevelId == 13) ObjectiveCountSet();
-            LoadedIntoNewLevelStuffDone = true;
+            LoadedNewLevelGameplaySetupDone = true;
+            LoadedNewLevelNetworkingSetupDone = true;
         }
 
         public void GetCurrentLevel()
         {
-            byte[] buffer = ProcessHandler.ReadData("current level", PointerCalculations.AddOffset(0x280594), 4);
+            byte[] buffer = new byte[4];
+            int bytesRead = 0;
+            ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), PointerCalculations.AddOffset(0x280594), buffer, 4, ref bytesRead);
             CurrentLevelId = BitConverter.ToInt32(buffer, 0);
         }
 
@@ -51,7 +55,9 @@ namespace MulTyPlayerClient
                     break;
             }
             int objectiveCounterAddr = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x0028C318), objectiveCountOffsets, 2);
-            byte[] buffer = ProcessHandler.ReadData("objective count", objectiveCounterAddr, 2);
+            byte[] buffer = new byte[2];
+            int bytesRead = 0;
+            ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), objectiveCounterAddr, buffer, 2, ref bytesRead);
             if (BitConverter.ToInt16(buffer, 0) != 8) ProcessHandler.WriteData(objectiveCounterAddr, BitConverter.GetBytes(8));
         }
     }

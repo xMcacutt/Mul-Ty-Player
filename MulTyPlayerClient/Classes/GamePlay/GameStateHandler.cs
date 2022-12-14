@@ -17,7 +17,9 @@ namespace MulTyPlayerClient
 
         public bool CheckMenuOrLoading()
         {
-            byte[] buffer = ProcessHandler.ReadData("Menu or Loading", PointerCalculations.AddOffset(0x284DD8), 1);
+            byte[] buffer = new byte[1];
+            int bytesRead = 0;
+            ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), PointerCalculations.AddOffset(0x25601C), buffer, 1, ref bytesRead);
             return buffer[0] == 0;
             //IF METHOD RETURNS TRUE -> ON MENU
         }
@@ -29,11 +31,15 @@ namespace MulTyPlayerClient
             if (PreviousLoadingState != LoadingState)
             {
                 PreviousLoadingState = LoadingState;
-                if (!LoadingState) Program.HLevel.LoadedIntoNewLevelStuffDone = false;
+                if (!LoadingState)
+                {
+                    Program.HLevel.LoadedNewLevelGameplaySetupDone = false;
+                    Program.HLevel.LoadedNewLevelNetworkingSetupDone = false;
+                }
             }
         }
 
-        public void GetTyData(Object token)
+        public void GetTyData(object token)
         {
             while (!Client.IsRunning)
             {
@@ -42,8 +48,13 @@ namespace MulTyPlayerClient
             while (Client.IsRunning)
             {
                 CheckLoaded();
-                if (!CheckMenuOrLoading() && !LoadingState)
+                if (!CheckMenuOrLoading())
                 {
+                    if (!Program.HLevel.LoadedNewLevelGameplaySetupDone)
+                    {
+                        Thread.Sleep(1000);
+                        Program.HLevel.DoLevelSetup();
+                    }
                     Program.HLevel.GetCurrentLevel();
                     if (SettingsHandler.DoOpalSyncing) {SyncHandler.HOpal.CheckObserverChanged(); SyncHandler.HCrate.CheckObserverChanged();}
                     if (SettingsHandler.DoTESyncing) SyncHandler.HThEg.CheckObserverChanged();

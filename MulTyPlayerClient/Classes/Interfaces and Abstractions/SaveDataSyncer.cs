@@ -23,5 +23,7 @@ namespace MulTyPlayerClient
             int address = SyncHandler.SaveDataBaseAddress + SaveDataOffset + (0x70 * level);
             ProcessHandler.WriteData(address, bytes);
         }
+
+
     }
 }

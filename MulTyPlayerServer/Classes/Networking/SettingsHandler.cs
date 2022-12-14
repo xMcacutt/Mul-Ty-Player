@@ -13,7 +13,7 @@ namespace MulTyPlayerServer
     {
         public static string RemoveWhiteSpaces(this string str)
         {
-            return string.Concat(str.Where(c => !Char.IsWhiteSpace(c)));
+            return string.Concat(str.Where(c => !char.IsWhiteSpace(c)));
         }
     }
 

@@ -35,10 +35,14 @@ namespace MulTyPlayerClient
         {
             byte[] currentData = new byte[HSyncObject.ObjectAmount];
             int address = HSyncObject.LiveObjectAddress;
+            byte[] buffer = new byte[1];
+            int bytesRead = 0;
             for (int i = 0; i < HSyncObject.ObjectAmount; i++)
             {
-                currentData[i] = ProcessHandler.ReadData("current object read", address + StateOffset + (ObjectLength * i), 1)[0];
+                ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), address + StateOffset + (ObjectLength * i), buffer, 1, ref bytesRead);
+                currentData[i] = buffer[0];
             }
+            Console.WriteLine();
             return currentData;
         }
     }

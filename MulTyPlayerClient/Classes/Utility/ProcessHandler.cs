@@ -9,9 +9,7 @@ namespace MulTyPlayerClient
     internal static class ProcessHandler
     {
         public static IntPtr HProcess;
-
         public static Process TyProcess;
-
 
         [DllImport("kernel32.dll")]
         public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
@@ -41,18 +39,10 @@ namespace MulTyPlayerClient
             return null;
         }
 
-        public static byte[] ReadData(string dataName, int address, int length)
-        {
-            int bytesRead = 0;
-            byte[] buffer = new byte[length];
-            ReadProcessMemory((int)HProcess, address, buffer, buffer.Length, ref bytesRead);
-            return buffer;
-        }
-
         public static void WriteData(int address, byte[] bytes)
         {
             int bytesWritten = 0;
-            WriteProcessMemory((int)HProcess, address, bytes, bytes.Length, ref bytesWritten);
+            WriteProcessMemory(checked((int)HProcess), address, bytes, bytes.Length, ref bytesWritten);
         }
     }
 }

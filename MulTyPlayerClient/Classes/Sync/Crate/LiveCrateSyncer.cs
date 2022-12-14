@@ -22,7 +22,10 @@ namespace MulTyPlayerClient
             int crateAddress = HSyncObject.LiveObjectAddress + (index * ObjectLength);
             ProcessHandler.WriteData(crateAddress + 0x48, new byte[] {0});
             ProcessHandler.WriteData(crateAddress + 0x114, new byte[] {0});
-            int opalCount = ProcessHandler.ReadData("crate opal count", crateAddress + 0x178, 1)[0];
+            byte[] buffer = new byte[1];
+            int bytesRead = 0;
+            ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), crateAddress + 0x178, buffer, 1, ref bytesRead);
+            int opalCount = buffer[0];
             int firstCrateOpalAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x28AB7C), new int[] { 0x4AC, 0x0 });
             for (int i = 0; i < opalCount; i++)
             {
@@ -48,13 +51,13 @@ namespace MulTyPlayerClient
         {
             byte[] currentData = new byte[SyncHandler.HCrate.CratesPerLevel[Program.HLevel.CurrentLevelId]];
             int address = HSyncObject.LiveObjectAddress;
-            Console.WriteLine("Crates");
+            byte[] buffer = new byte[1];
+            int bytesRead = 0;
             for (int i = 0; i < currentData.Length; i++)
             {
-                currentData[i] = ProcessHandler.ReadData("current object read", address + StateOffset + (ObjectLength * i), 1)[0];
-                Console.Write(currentData[i]);
+                ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), address + StateOffset + (ObjectLength * i), buffer, 1, ref bytesRead);
+                currentData[i] = buffer[0];
             }
-            Console.WriteLine("");
             return currentData;
         }
     }
