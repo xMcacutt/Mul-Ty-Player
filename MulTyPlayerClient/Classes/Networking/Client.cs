@@ -67,7 +67,6 @@ namespace MulTyPlayerClient
                     if (!HLevel.LoadedNewLevelNetworkingSetupDone)
                     {
                         Program.HKoala.SetCoordAddrs();
-                        Program.HSync.RequestSync();
                         HLevel.LoadedNewLevelNetworkingSetupDone = true;
                     }
                     HHero.SendCoordinates();
