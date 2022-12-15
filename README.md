@@ -3,28 +3,13 @@
 
 ## Installation
 
-There are three parts to running Mul-Ty-Player
-  - Mul-Ty-Player Client CLI (The client application)
-  - Mul-Ty-Player Server CLI (The server application)
-  - Data_PC.rkv (The modified files that the client app interacts with)
-Installation for each of these is detailed below
-
-### Data_PC.rkv
-1. First download "Data_PC Multiplayer V1.0.0.rkv" from the releases page.
-2. Since core parts of the game are modified without the client app running, you'll want to create a separate installation of Ty. To do this, go to your steam library and right click on Ty. Then go to manage -> browse local files
-3. Now copy the contents of the folder that has been opened into a new folder placed somewhere accessible.
-4. Replace Data_PC.rkv with the downloaded rkv.
-5. Return to your steam library and click "add a game" in the bottom-left corner. Go to "add a non-steam game" -> "browse" and locate the TY.exe in the folder you created in step 4
-6. Name this Mul-Ty-Player or something similar. Always load this from steam when running multiplayer.
-
-### Mul-Ty-Player Client Command Line Interface
-1. First download "Mul-Ty-Player Client CLI.zip" from the releases page.
-2. Unzip the folder to an easily accessible place.
-3. Run the exe.
-
-### Mul-Ty-Player Server Command Line Interface
-This app is only required if you are running a server for others to join.
-To install simply download and place the exe in the same folder as the client CLI.
+Installing Mul-Ty-Player has been made EASIER THAN EVER
+Manually downloading and installing the client, server, and RKV is no longer necessary.
+To install Mul-Ty-Player, go to the releases page and download the "Mul-Ty-Player 1.3.0 Installer.msi".
+Next, run the installer. If this is your first time using v1.3.0+, you'll want to install the RKV patcher and client.
+The server application is only necessary if you wish to host sessions.
+Follow the instructions in the installer. Once completed, run the RKV patcher. This may take a while.
+Mul-Ty-Player should now be installed and ready to run.
 
 #### Port Forwarding For Server Hosts.
 To run the server you'll need to open port 8750 on UDP.
@@ -35,42 +20,34 @@ To run the server you'll need to open port 8750 on UDP.
 4. Log in to your router.
 5. Set up a new port forwarding rule.
 6. Paste IPv4 address into forwarding address, set port to 8750, set rule to UDP.
-7. Go to https://www.whatismypublicip.com/ this is your public IP address.
+7. READ THE ABOVE SENTENCE AGAIN AND MAKE SURE THE RULE IS UDP.
+8. Go to https://www.whatismypublicip.com/ this is your public IP address.
 
 With your port forwarding rule set up, people can now join your server using your public IP address.
 
 ## Features
 
 #### New Features
-- Collectible Synchronisation
-- Attribute Synchronisation
-- Server & Client Settings Files
-- Default IP and Name
-- Server Command Architecture
+- Collectible synchronisation (that works this time)
+- TE, Cog, Bilby, Opal, Crate, Rang, and Portal syncing in real time
+- Faster code
 
 #### Bug Fixes
-- Splash screen message fixed
-- Collision issues fixed
-- Potential fix on draw distance issues
+- Basically everything wrong with v1.2.0
+- Black stump actually works now
 
 #### Future Plans
-- Dedicated servers
+- Outback with koalas
 - Name Tags
 - Proximity chat
 - Pvp
 
 #### Known Issues
-- Collectibles do not update if a player is on main menu (avoid main menu in co-op runs)
-- Boonie turns pink in Black Stump
-- Speaking to Ken to start cable car mission in Black Stump crashes the game
-- Black Stump time attack thunderegg becomes bricked and unobtainable if collected with client connected
-- Black Stump 'Catch Boonie' thunderegg does not get collected if client is connected
-- Black Stump 'Catch Boonie' thunderegg teleports you to wrong place on collection if client is connected
-
+- Opals sometimes refuse to spawn from crates
 
 ## Support
 
-Join the Ty [Speedrunning Discord](https://discord.gg/YvGMBMM36V) for help and support or to help work on the project.
+Join the Ty [Modding Discord](https://discord.gg/ENTV72BWru) for help and support or to help work on the project.
 
 You can also leave feedback for future updates in my DMs on Discord Mcacutt#5671.
 
@@ -78,7 +55,7 @@ You can also leave feedback for future updates in my DMs on Discord Mcacutt#5671
 ## Acknowledgements
 
  - [Riptide Networking](https://github.com/RiptideNetworking/Riptide)
- - [Steamworks.NET](https://github.com/rlabrecque/Steamworks.NET)
- - [Modding Team From Speedrunning Discord](https://discord.gg/YvGMBMM36V)
+ - [Facepunch.Steamworks.Net](https://wiki.facepunch.com/steamworks/)
+ - [Modding Team From Speedrunning Discord](https://discord.gg/ENTV72BWru)
  - [Kanesthename for Artwork](https://www.deviantart.com/kanesthename/art/Ty-The-Tasmanian-Tiger-Logo-Recreation-Render-271468546)
  
