@@ -56,7 +56,7 @@ namespace MulTyPlayerClient
                         Thread.Sleep(1000);
                         Program.HLevel.DoLevelSetup();
                     }
-                    if (SettingsHandler.DoOpalSyncing) {SyncHandler.HOpal.CheckObserverChanged(); SyncHandler.HCrate.CheckObserverChanged();}
+                    if (SettingsHandler.DoOpalSyncing && Program.HLevel.MainStages.Contains(Program.HLevel.CurrentLevelId)) {SyncHandler.HOpal.CheckObserverChanged(); SyncHandler.HCrate.CheckObserverChanged();}
                     if (SettingsHandler.DoTESyncing) SyncHandler.HThEg.CheckObserverChanged();
                     if (SettingsHandler.DoCogSyncing) SyncHandler.HCog.CheckObserverChanged();
                     if (SettingsHandler.DoBilbySyncing) SyncHandler.HBilby.CheckObserverChanged();

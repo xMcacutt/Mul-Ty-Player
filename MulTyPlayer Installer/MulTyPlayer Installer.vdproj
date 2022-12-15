@@ -15,7 +15,31 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_7AF5F488A75D6106682A68FCE897CE97"
+        "OwnerKey" = "8:_97389A78313E409399F9F90324A0F38C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_97389A78313E409399F9F90324A0F38C"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9991C1EEA780487192390D6BC24DE2C2"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_B28CC8CAD8904FFD80A883C5F1D6206F"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B4526F339B0F443BB7918DC4E437F417"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -27,14 +51,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_D93102046E3C46349AD820C6362DA984"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_7AF5F488A75D6106682A68FCE897CE97"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_E3EF3EC8372D4A388989D3EE28FD5E81"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_97389A78313E409399F9F90324A0F38C"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -55,6 +79,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -71,6 +111,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -88,6 +136,14 @@
         {
             "LaunchCondition"
             {
+                "{A06ECF26-33A3-4562-8140-9B0E340D4F24}:_2E2643D55C0E4B71B36353CF72357E36"
+                {
+                "Name" = "8:.NET Framework"
+                "Message" = "8:[VSDNETMSG]"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.7.2"
+                "AllowLaterVersions" = "11:FALSE"
+                "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=863262"
+                }
                 "{A06ECF26-33A3-4562-8140-9B0E340D4F24}:_36A48BC2CC774BC1A2835EF61264F11C"
                 {
                 "Name" = "8:.NET Core"
@@ -102,9 +158,60 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D93102046E3C46349AD820C6362DA984"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7AF5F488A75D6106682A68FCE897CE97"
             {
-            "SourcePath" = "8:..\\..\\..\\..\\Documents\\Mul-Ty-Player Installer Wix Backup\\Assets\\APPBANNER.bmp"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+                "ScatterAssemblies"
+                {
+                    "_7AF5F488A75D6106682A68FCE897CE97"
+                    {
+                    "Name" = "8:System.Net.Http.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Net.Http.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_357D1D6D65C84168A5B8CFEDFFF71B0B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9991C1EEA780487192390D6BC24DE2C2"
+            {
+            "SourcePath" = "8:Assets\\Treasure_Chest.ico"
+            "TargetName" = "8:Treasure_Chest.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_101BA00EFD9244B783314A227047FE92"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B4526F339B0F443BB7918DC4E437F417"
+            {
+            "SourcePath" = "8:Assets\\APPBANNER.bmp"
             "TargetName" = "8:APPBANNER.bmp"
             "Tag" = "8:"
             "Folder" = "8:_101BA00EFD9244B783314A227047FE92"
@@ -118,27 +225,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E3EF3EC8372D4A388989D3EE28FD5E81"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\Documents\\Mul-Ty-Player Installer Wix Backup\\Assets\\Treasure Chest.ico"
-            "TargetName" = "8:Treasure Chest.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_101BA00EFD9244B783314A227047FE92"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
+            "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
@@ -232,7 +319,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Mul-Ty-Player"
         "ProductCode" = "8:{B6A07DC7-BF18-4D67-BC71-910A7023D5EC}"
-        "PackageCode" = "8:{262C768E-814D-4675-81EF-63AC1A68D730}"
+        "PackageCode" = "8:{6C9F4377-8A1A-402C-9585-F178ADA7987E}"
         "UpgradeCode" = "8:{AF60A6AB-7BC1-42FD-BD79-ED15F182746A}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -249,7 +336,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:Multiplayer support for Ty the Tasmanian Tiger"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:_E3EF3EC8372D4A388989D3EE28FD5E81"
+        "ARPPRODUCTICON" = "8:_9991C1EEA780487192390D6BC24DE2C2"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -380,7 +467,7 @@
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
                             "Setting" = "3:2"
-                            "Value" = "8:_D93102046E3C46349AD820C6362DA984"
+                            "Value" = "8:_B4526F339B0F443BB7918DC4E437F417"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "UpdateText"
@@ -564,9 +651,9 @@
             "Attributes" = "3:1"
                 "Dialogs"
                 {
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_1598591C592D45A8B925E05BC3BE0E1F"
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_08FCD07D1DFB40C08451ECD860F97029"
                     {
-                    "Sequence" = "3:300"
+                    "Sequence" = "3:320"
                     "DisplayName" = "8:Confirm Installation"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
@@ -582,42 +669,7 @@
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
                             "Setting" = "3:2"
-                            "Value" = "8:_D93102046E3C46349AD820C6362DA984"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                        }
-                    }
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_37F0DF0F825A4B51A2B274B78820872B"
-                    {
-                    "Sequence" = "3:200"
-                    "DisplayName" = "8:Installation Folder"
-                    "UseDynamicProperties" = "11:TRUE"
-                    "IsDependency" = "11:FALSE"
-                    "SourcePath" = "8:<VsdDialogDir>\\VsdFolderDlg.wid"
-                        "Properties"
-                        {
-                            "BannerBitmap"
-                            {
-                            "Name" = "8:BannerBitmap"
-                            "DisplayName" = "8:#1001"
-                            "Description" = "8:#1101"
-                            "Type" = "3:8"
-                            "ContextData" = "8:Bitmap"
-                            "Attributes" = "3:4"
-                            "Setting" = "3:1"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "InstallAllUsersVisible"
-                            {
-                            "Name" = "8:InstallAllUsersVisible"
-                            "DisplayName" = "8:#1059"
-                            "Description" = "8:#1159"
-                            "Type" = "3:5"
-                            "ContextData" = "8:1;True=1;False=0"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:0"
-                            "Value" = "3:1"
-                            "DefaultValue" = "3:1"
+                            "Value" = "8:_B4526F339B0F443BB7918DC4E437F417"
                             "UsePlugInResources" = "11:TRUE"
                             }
                         }
@@ -640,7 +692,7 @@
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
                             "Setting" = "3:2"
-                            "Value" = "8:_D93102046E3C46349AD820C6362DA984"
+                            "Value" = "8:_B4526F339B0F443BB7918DC4E437F417"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "CopyrightWarning"
@@ -689,7 +741,7 @@
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
                             "Setting" = "3:2"
-                            "Value" = "8:_D93102046E3C46349AD820C6362DA984"
+                            "Value" = "8:_B4526F339B0F443BB7918DC4E437F417"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "BannerText"
@@ -928,6 +980,42 @@
                             }
                         }
                     }
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_F73CE84922BE4D1C977BBD2A2B05998C"
+                    {
+                    "Sequence" = "3:310"
+                    "DisplayName" = "8:Installation Folder"
+                    "UseDynamicProperties" = "11:TRUE"
+                    "IsDependency" = "11:FALSE"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdFolderDlg.wid"
+                        "Properties"
+                        {
+                            "BannerBitmap"
+                            {
+                            "Name" = "8:BannerBitmap"
+                            "DisplayName" = "8:#1001"
+                            "Description" = "8:#1101"
+                            "Type" = "3:8"
+                            "ContextData" = "8:Bitmap"
+                            "Attributes" = "3:4"
+                            "Setting" = "3:2"
+                            "Value" = "8:_B4526F339B0F443BB7918DC4E437F417"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "InstallAllUsersVisible"
+                            {
+                            "Name" = "8:InstallAllUsersVisible"
+                            "DisplayName" = "8:#1059"
+                            "Description" = "8:#1159"
+                            "Type" = "3:5"
+                            "ContextData" = "8:1;True=1;False=0"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:0"
+                            "Value" = "3:1"
+                            "DefaultValue" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                        }
+                    }
                 }
             }
             "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_B0122B06FFC44AACB4C3A7F85B50DA5D"
@@ -955,7 +1043,7 @@
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
                             "Setting" = "3:2"
-                            "Value" = "8:_D93102046E3C46349AD820C6362DA984"
+                            "Value" = "8:_B4526F339B0F443BB7918DC4E437F417"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "ShowProgress"
@@ -1012,9 +1100,37 @@
         }
         "ProjectOutput"
         {
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_97389A78313E409399F9F90324A0F38C"
+            {
+            "SourcePath" = "8:..\\RKV Patcher\\obj\\Release\\RKV Patcher.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_357D1D6D65C84168A5B8CFEDFFF71B0B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{F31970F0-8073-4923-AAB0-797EAA1AF95B}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B28CC8CAD8904FFD80A883C5F1D6206F"
             {
-            "SourcePath" = "8:..\\MulTyPlayerClient\\obj\\Debug\\net7.0-windows\\apphost.exe"
+            "SourcePath" = "8:..\\MulTyPlayerClient\\bin\\Release\\net7.0-windows\\publish\\win-x86\\Mul-Ty-Player Client CLI.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_22D66307B79B4714BC89FA8AE9CFACCC"
@@ -1036,6 +1152,7 @@
             "OutputGroupCanonicalName" = "8:PublishItems"
             "OutputProjectGuid" = "8:{949DCE2F-61FB-46B8-B18D-C96842EF7A9F}"
             "ShowKeyOutput" = "11:TRUE"
+            "PublishProfilePath" = "8:Properties\\PublishProfiles\\FolderProfile.pubxml"
                 "ExcludeFilters"
                 {
                 }
@@ -1064,6 +1181,7 @@
             "OutputGroupCanonicalName" = "8:PublishItems"
             "OutputProjectGuid" = "8:{8FC2F74F-3012-4187-A11E-A02D395533FE}"
             "ShowKeyOutput" = "11:TRUE"
+            "PublishProfilePath" = "8:Properties\\PublishProfiles\\FolderProfile.pubxml"
                 "ExcludeFilters"
                 {
                 }

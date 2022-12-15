@@ -28,7 +28,6 @@ namespace MulTyPlayerClient
             HSync.SetMemAddrs();
             HSync.RequestSync();
             HSync.ProtectLeaderboard();
-            if (!SettingsHandler.DoKoalaCollision) HKoala.RemoveCollision();
             if (CurrentLevelId == 9 || CurrentLevelId == 13) ObjectiveCountSet();
             LoadedNewLevelGameplaySetupDone = true;
             LoadedNewLevelNetworkingSetupDone = true;
@@ -54,11 +53,15 @@ namespace MulTyPlayerClient
                     objectiveCountOffsets = _objectiveCountOffsetsStump;
                     break;
             }
-            int objectiveCounterAddr = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x0028C318), objectiveCountOffsets, 2);
             byte[] buffer = new byte[2];
+            buffer[0] = 8;
             int bytesRead = 0;
-            ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), objectiveCounterAddr, buffer, 2, ref bytesRead);
-            if (BitConverter.ToInt16(buffer, 0) != 8) ProcessHandler.WriteData(objectiveCounterAddr, BitConverter.GetBytes(8));
+            while(BitConverter.ToInt16(buffer, 0) == 8)
+            {
+                int objectiveCounterAddr = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x0028C318), objectiveCountOffsets, 2);
+                ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), objectiveCounterAddr, buffer, 2, ref bytesRead);
+                if (BitConverter.ToInt16(buffer, 0) != 8) ProcessHandler.WriteData(objectiveCounterAddr, BitConverter.GetBytes(8));
+            }
         }
     }
 }

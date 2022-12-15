@@ -47,7 +47,6 @@ namespace MulTyPlayerClient
                     }
                     HHero.SendCoordinates();
                 }
-
                 Thread.Sleep(10);
             }
         }

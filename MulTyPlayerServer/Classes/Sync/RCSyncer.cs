@@ -25,6 +25,7 @@ namespace MulTyPlayerServer
         {
             //ILIVE AND LEVEL UNNECESSARY
             if (GlobalObjectSaveData[iAttribute] == 1) return;
+            Console.WriteLine(Enum.GetName(typeof(RCData), iAttribute));
             GlobalObjectSaveData[iAttribute] = 1;
             SendUpdatedData(null1, iAttribute, null2, originalSender);
         }

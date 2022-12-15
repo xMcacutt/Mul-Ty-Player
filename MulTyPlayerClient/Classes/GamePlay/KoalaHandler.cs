@@ -98,6 +98,7 @@ namespace MulTyPlayerClient
                     0xC
                 );
             }
+            if (!SettingsHandler.DoKoalaCollision) RemoveCollision();
         }
 
         public void RemoveCollision()
@@ -105,7 +106,7 @@ namespace MulTyPlayerClient
             //WRITES 0 TO COLLISION BYTE
             foreach (int koala in KoalaAddrs.Keys)
             {
-                ProcessHandler.WriteData(KoalaAddrs[koala][6], BitConverter.GetBytes(0));
+                ProcessHandler.WriteData(KoalaAddrs[koala][6], new byte[] {0});
             }
         }
 
