@@ -39,7 +39,7 @@ namespace MulTyPlayerClient
         {
             PortalsActive[level] = 1;
             if (Program.HLevel.CurrentLevelId != 0) return;
-            //Console.WriteLine("Spawning Portal");
+            Console.WriteLine("Spawning Portal");
             LiveSync.Collect(level);
         }
 
@@ -62,7 +62,7 @@ namespace MulTyPlayerClient
             int count = 0;
             foreach (int i in FlakyPortals)
             {
-                ProcessHandler.ReadProcessMemory((int)ProcessHandler.HProcess, SyncHandler.SaveDataBaseAddress + (0x70 * i), buffer, 1, ref bytesRead);
+                ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), SyncHandler.SaveDataBaseAddress + (0x70 * i), buffer, 1, ref bytesRead);
                 if (buffer[0] > 0)
                 {
                     if (PortalsActive[i] == 0) { PortalsActive[i] = 1; }
@@ -70,18 +70,20 @@ namespace MulTyPlayerClient
                 }
 
                 int orderedIndex = Array.IndexOf(LivePortalOrder, i);
-                ProcessHandler.ReadProcessMemory((int)ProcessHandler.HProcess, address + (LiveSync.ObjectLength * orderedIndex), buffer, 4, ref bytesRead);
+                ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), address + (LiveSync.ObjectLength * orderedIndex), buffer, 4, ref bytesRead);
                 if (buffer[0] == 2)
                 {
                     if (PortalsActive[i] == 0) { PortalsActive[i] = 1; }
                     count++;
                 }
             }
+            Console.WriteLine(count);
             return count;
         }
 
         public override void CheckObserverChanged()
         {
+            if (Program.HLevel.CurrentLevelId != 0) return;
             ObserverState = ReadObserver(LiveObjectAddress + LiveSync.StateOffset , CounterByteLength);
             if (PreviousObserverState == ObserverState || ObserverState == 0) return;
 
@@ -91,7 +93,7 @@ namespace MulTyPlayerClient
             {
                 if (OldPortalsActive[i] == 0 && PortalsActive[i] == 1)
                 {
-                    //Console.WriteLine("Portal for level " + i + " being sent to server");
+                    Console.WriteLine("Portal for level " + i + " being sent to server");
                     Program.HSync.SendDataToServer(i, i, i, Name);
                 } 
             }
