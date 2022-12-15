@@ -4,11 +4,17 @@
 ## Installation
 
 Installing Mul-Ty-Player has been made EASIER THAN EVER
+
 Manually downloading and installing the client, server, and RKV is no longer necessary.
+
 To install Mul-Ty-Player, go to the releases page and download the "Mul-Ty-Player 1.3.0 Installer.msi".
+
 Next, run the installer. If this is your first time using v1.3.0+, you'll want to install the RKV patcher and client.
+
 The server application is only necessary if you wish to host sessions.
+
 Follow the instructions in the installer. Once completed, run the RKV patcher. This may take a while.
+
 Mul-Ty-Player should now be installed and ready to run.
 
 #### Port Forwarding For Server Hosts.
