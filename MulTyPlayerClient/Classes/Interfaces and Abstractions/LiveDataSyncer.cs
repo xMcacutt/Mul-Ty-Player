@@ -42,7 +42,6 @@ namespace MulTyPlayerClient
                 ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), address + StateOffset + (ObjectLength * i), buffer, 1, ref bytesRead);
                 currentData[i] = buffer[0];
             }
-            Console.WriteLine();
             return currentData;
         }
     }

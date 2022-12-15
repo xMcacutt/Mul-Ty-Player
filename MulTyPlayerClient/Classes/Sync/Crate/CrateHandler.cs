@@ -65,6 +65,7 @@ namespace MulTyPlayerClient
         public override void SetMemAddrs()
         {
             CounterAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x0028A8E8), 0x390);
+            ProcessHandler.WriteData(CounterAddress, new byte[] { 0, 0, 0, 0 });
             LiveObjectAddress = 
                 Program.HLevel.CurrentLevelId == 10 ?
                 PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x255190), 0x0):
@@ -85,7 +86,7 @@ namespace MulTyPlayerClient
                     PreviousObjectData[iLive] = CurrentObjectData[iLive] = WriteState;
                     if (GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] != CheckState)
                     {
-                        //Console.WriteLine(Name + " number " + iLive + " collected.");
+                        Console.WriteLine(Name + " number " + iLive + " collected.");
                         GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] = (byte)CheckState;
                         Program.HSync.SendDataToServer(iLive, iLive, Program.HLevel.CurrentLevelId, Name);
                     }

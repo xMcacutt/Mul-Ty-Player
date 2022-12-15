@@ -42,7 +42,6 @@ namespace MulTyPlayerClient
         {
             for (int i = 0; i < amount; i++)
             {
-                if (HSyncObject.GlobalObjectData[Program.HLevel.CurrentLevelId][i] == 0) return;
                 if (bytes[i] == checkState) Collect(i);
             }
         }

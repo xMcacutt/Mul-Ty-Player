@@ -50,12 +50,12 @@ namespace MulTyPlayerClient
                 CheckLoaded();
                 if (!CheckMenuOrLoading())
                 {
+                    Program.HLevel.GetCurrentLevel();
                     if (!Program.HLevel.LoadedNewLevelGameplaySetupDone)
                     {
                         Thread.Sleep(1000);
                         Program.HLevel.DoLevelSetup();
                     }
-                    Program.HLevel.GetCurrentLevel();
                     if (SettingsHandler.DoOpalSyncing) {SyncHandler.HOpal.CheckObserverChanged(); SyncHandler.HCrate.CheckObserverChanged();}
                     if (SettingsHandler.DoTESyncing) SyncHandler.HThEg.CheckObserverChanged();
                     if (SettingsHandler.DoCogSyncing) SyncHandler.HCog.CheckObserverChanged();

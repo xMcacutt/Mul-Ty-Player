@@ -19,8 +19,7 @@ namespace MulTyPlayerClient
         {
             int crateOpalsInLevel = HOpal.CrateOpalsPerLevel[HLevel.CurrentLevelId];
             byte[] currentOpals = new byte[300];
-            int address = HLevel.CurrentLevelId == 10 ? HOpal.B3OpalsAddress : HOpal.NonCrateOpalsAddress;
-            Console.WriteLine("{0:X}", address);
+            int address = HOpal.NonCrateOpalsAddress;
             byte[] buffer = new byte[1];
             int bytesRead = 0;
             for (int i = 0; i < 300 - crateOpalsInLevel; i++)

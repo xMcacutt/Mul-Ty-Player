@@ -8,7 +8,7 @@ namespace MulTyPlayerClient
 {
     internal class OpalHandler : SyncObjectHandler
     {
-        public int[] CrateOpalsPerLevel = { 0, 0, 0, 0, 170, 102, 119, 0, 120, 60, 0, 0, 30, 170, 215 };
+        public int[] CrateOpalsPerLevel = { 0, 0, 0, 0, 170, 102, 119, 0, 120, 60, 300, 0, 30, 170, 215 };
         
         const int GEM_PTR_LIST_BASE_ADDRESS = 0x28AB7C;
         public int NonCrateOpalsAddress;
@@ -39,7 +39,7 @@ namespace MulTyPlayerClient
         {
             int gemPtrListAddress = PointerCalculations.AddOffset(GEM_PTR_LIST_BASE_ADDRESS);
             NonCrateOpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x0, 0x0});
-            B3OpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x2B0, 0x0});
+            //B3OpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x2B0, 0x0});
             CrateOpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x4AC, 0x0});
         }
 

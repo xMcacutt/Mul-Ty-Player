@@ -13,7 +13,6 @@ namespace MulTyPlayerClient
 
         public SaveOpalSyncer()
         {
-            SaveDataOffset = 0x1;
         }
 
         public override void Save(int index, int? level)
@@ -31,25 +30,15 @@ namespace MulTyPlayerClient
             byteIndex = (int)Math.Ceiling((float)index / 8);
             rem = index % 8;
 
-            if (rem == 0)
-            {
-                byteIndex += 1;
-                if (byteIndex == 1) bitValue = 128;
-                else bitValue = 1;
-            }
-            else
-            {
-                if (byteIndex == 1) bitValue = (int)Math.Pow(2, rem - 1);
-                else bitValue = (int)Math.Pow(2, rem);
-            }
+            bitValue = (int)Math.Pow(2, rem);
 
-            int address = (int)(SyncHandler.SaveDataBaseAddress + SaveDataOffset + (0x70 * level) + (byteIndex - 1));
+            int address = (int)(SyncHandler.SaveDataBaseAddress + (0x70 * level) + (byteIndex));
             byte[] buffer = new byte[1];
             int bytesRead = 0;
             ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), address, buffer, 1, ref bytesRead);
             byte b = buffer[0];
             b += (byte)bitValue;
-            //Console.WriteLine($"Adding {bitValue} to opal index {index} at byte {byteIndex - 1}");
+            //Console.WriteLine($"Adding {bitValue} to opal index {index} at byte {byteIndex}");
             ProcessHandler.WriteData(address, new byte[] {b});
         }
 
@@ -57,7 +46,7 @@ namespace MulTyPlayerClient
         {
             for(int i = 0; i < data.Length; i++)
             {
-                if (data[i] != 0)
+                if (data[i] == 1 && SyncHandler.HOpal.GlobalObjectData[level][i] != (byte)5)
                 {
                     Save(i, level);
                 }

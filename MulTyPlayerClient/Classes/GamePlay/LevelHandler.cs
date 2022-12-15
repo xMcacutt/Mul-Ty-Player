@@ -24,10 +24,9 @@ namespace MulTyPlayerClient
 
         public void DoLevelSetup()
         {
-            Console.WriteLine("Doing level setup");
+            HSync.SetCurrentData(MainStages.Contains(CurrentLevelId));
             HSync.SetMemAddrs();
             HSync.RequestSync();
-            HSync.SetCurrentData(MainStages.Contains(CurrentLevelId));
             HSync.ProtectLeaderboard();
             if (!SettingsHandler.DoKoalaCollision) HKoala.RemoveCollision();
             if (CurrentLevelId == 9 || CurrentLevelId == 13) ObjectiveCountSet();
