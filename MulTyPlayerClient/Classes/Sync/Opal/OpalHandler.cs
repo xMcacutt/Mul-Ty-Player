@@ -13,7 +13,7 @@ namespace MulTyPlayerClient
         const int GEM_PTR_LIST_BASE_ADDRESS = 0x28AB7C;
         public int NonCrateOpalsAddress;
         public int CrateOpalsAddress;
-        public int B3OpalsAddress;
+        //public int B3OpalsAddress;
 
         public OpalHandler()
         {

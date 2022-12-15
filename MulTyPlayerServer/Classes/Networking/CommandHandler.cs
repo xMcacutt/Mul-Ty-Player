@@ -1,6 +1,7 @@
 ﻿using Riptide;
 using System.Linq;
 using System.IO;
+using System;
 
 namespace MulTyPlayerServer
 {
@@ -102,7 +103,7 @@ namespace MulTyPlayerServer
         private static string ListClients()
         {
             string listRes = null;
-            listRes += "\n--------------- Connected Clients ---------------";
+            listRes += "\n--------------- Connected Clients ---------------\n";
             if (Server.PlayerList.Count == 0)
             {
                 return listRes += "\nThere are no clients currently connected.";
@@ -158,8 +159,9 @@ namespace MulTyPlayerServer
         public static void HostCommand(ushort fromClientId, Message message)
         {
             Message response = Message.Create(MessageSendMode.Reliable, MessageID.HostCommand);
-            response.AddString(ParseCommand(message.GetString()));
-            Server._Server.Send(message, fromClientId);
+            string input = message.GetString();
+            response.AddString(ParseCommand(input));
+            Server._Server.Send(response, fromClientId);
         }
     }
 }

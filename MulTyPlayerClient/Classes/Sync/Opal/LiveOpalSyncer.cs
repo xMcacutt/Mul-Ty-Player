@@ -45,7 +45,7 @@ namespace MulTyPlayerClient
             int baseAddress;
             int crateOpalsInCurrentLevel = HOpal.CrateOpalsPerLevel[HLevel.CurrentLevelId];
 
-            if (HLevel.CurrentLevelId == 10) baseAddress = HOpal.B3OpalsAddress;
+            if (HLevel.CurrentLevelId == 10) baseAddress = HOpal.CrateOpalsAddress;
             else if (index < (300 - HOpal.CrateOpalsPerLevel[HLevel.CurrentLevelId])) baseAddress = HOpal.NonCrateOpalsAddress;
             else
             {

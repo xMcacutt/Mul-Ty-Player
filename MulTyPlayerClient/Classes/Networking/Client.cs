@@ -21,41 +21,17 @@ namespace MulTyPlayerClient
         {
             RiptideLogger.Initialize(Console.WriteLine, true);
             _ip = ipinput;
-   
-            Thread loop = new(new ParameterizedThreadStart(Loop));
-            loop.Start(Program._cts.Token);
 
             IsRunning = true;
 
-            CommandHandler commandHandler = new();
-
-            _command = "/doNothing";
-            while (_command != "/stop")
-            {
-                //Console.WriteLine(CommandHandler.host);
-                if (CommandHandler.host != 0 && _command != "/doNothing") 
-                {
-                    commandHandler.ParseCommand(_command);
-                    _command = Console.ReadLine();
-                }
-            }
-
-            if (IsRunning)
-            {
-                IsRunning = false;
-                _client.Disconnect();
-                Console.WriteLine("\nYou have been disconnected from the server.");
-            }
-
-        }
-
-        private static void Loop(Object token)
-        {
             _client = new Riptide.Client();
             _client.Connected += (s, e) => Connected();
             _client.Disconnected += (s, e) => Disconnected();
             _client.ConnectionFailed += (s, e) => ConnectionFailed();
             _client.Connect(_ip + ":8750");
+
+            Thread commandThread = new(new ParameterizedThreadStart(CommandThread));
+            commandThread.Start(Program._cts.Token);
 
             while (IsRunning)
             {
@@ -73,6 +49,28 @@ namespace MulTyPlayerClient
                 }
 
                 Thread.Sleep(10);
+            }
+        }
+
+        private static void CommandThread(Object token)
+        {
+            CommandHandler commandHandler = new();
+            _command = "/doNothing";
+            while (_command != "/stop")
+            {
+                //Console.WriteLine(CommandHandler.host);
+                if (CommandHandler.host != 0 && _command != "/doNothing")
+                {
+                    commandHandler.ParseCommand(_command);
+                }
+                _command = Console.ReadLine();
+            }
+
+            if (IsRunning)
+            {
+                IsRunning = false;
+                Console.WriteLine("\nYou have been disconnected from the server.");
+                _client.Disconnect();
             }
         }
 

@@ -39,7 +39,7 @@ namespace MulTyPlayerClient
         {
             PortalsActive[level] = 1;
             if (Program.HLevel.CurrentLevelId != 0) return;
-            Console.WriteLine("Spawning Portal");
+            //Console.WriteLine("Spawning Portal");
             LiveSync.Collect(level);
         }
 
@@ -77,7 +77,7 @@ namespace MulTyPlayerClient
                     count++;
                 }
             }
-            Console.WriteLine(count);
+            //Console.WriteLine(count);
             return count;
         }
 
@@ -93,7 +93,7 @@ namespace MulTyPlayerClient
             {
                 if (OldPortalsActive[i] == 0 && PortalsActive[i] == 1)
                 {
-                    Console.WriteLine("Portal for level " + i + " being sent to server");
+                    //Console.WriteLine("Portal for level " + i + " being sent to server");
                     Program.HSync.SendDataToServer(i, i, i, Name);
                 } 
             }
