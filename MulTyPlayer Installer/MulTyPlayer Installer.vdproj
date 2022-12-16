@@ -52,13 +52,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7AF5F488A75D6106682A68FCE897CE97"
+        "OwnerKey" = "8:_97389A78313E409399F9F90324A0F38C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_97389A78313E409399F9F90324A0F38C"
+        "OwnerKey" = "8:_7AF5F488A75D6106682A68FCE897CE97"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -118,6 +118,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -318,15 +326,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Mul-Ty-Player"
-        "ProductCode" = "8:{B6A07DC7-BF18-4D67-BC71-910A7023D5EC}"
-        "PackageCode" = "8:{6C9F4377-8A1A-402C-9585-F178ADA7987E}"
+        "ProductCode" = "8:{D20F8699-D456-4306-960A-72D223D7A6CB}"
+        "PackageCode" = "8:{0DAE7032-4723-43DE-B0FC-857CFBB41955}"
         "UpgradeCode" = "8:{AF60A6AB-7BC1-42FD-BD79-ED15F182746A}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.3.0"
+        "ProductVersion" = "8:1.3.1"
         "Manufacturer" = "8:xMcacutt"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1159,7 +1167,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CD05332290414F4EBB765BF3B1F446B3"
             {
-            "SourcePath" = "8:..\\MulTyPlayerServer\\obj\\Debug\\net7.0\\apphost.exe"
+            "SourcePath" = "8:..\\MulTyPlayerServer\\bin\\Release\\net7.0\\publish\\win-x86\\Mul-Ty-Player Server CLI.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_003FC456718C48BFA98FA74584594305"

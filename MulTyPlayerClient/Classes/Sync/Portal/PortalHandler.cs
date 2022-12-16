@@ -45,7 +45,6 @@ namespace MulTyPlayerClient
 
         public override void Sync(int null1, byte[] active, byte[] null2)
         {
-            if (Program.HLevel.CurrentLevelId != 0) return;
             for (int i = 0; i < 7; i++)
             {
                 if (active[i] == 1)
@@ -59,31 +58,32 @@ namespace MulTyPlayerClient
         {
             int bytesRead = 0;
             byte[] buffer = new byte[size];
-            int count = 0;
-            foreach (int i in FlakyPortals)
+            int[] portals = new int[7];
+            for (int i = 0; i < 7; i++)
             {
-                ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), SyncHandler.SaveDataBaseAddress + (0x70 * i), buffer, 1, ref bytesRead);
+                ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), SyncHandler.SaveDataBaseAddress + (0x70 * FlakyPortals[i]), buffer, 1, ref bytesRead);
                 if (buffer[0] > 0)
                 {
-                    if (PortalsActive[i] == 0) { PortalsActive[i] = 1; }
-                    count++;
+                    if (PortalsActive[FlakyPortals[i]] == 0) PortalsActive[FlakyPortals[i]] = 1;
+                    portals[i] = 1;
                 }
 
-                int orderedIndex = Array.IndexOf(LivePortalOrder, i);
-                ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), address + (LiveSync.ObjectLength * orderedIndex), buffer, 4, ref bytesRead);
-                if (buffer[0] == 2)
+                if (Program.HLevel.CurrentLevelId == 0)
                 {
-                    if (PortalsActive[i] == 0) { PortalsActive[i] = 1; }
-                    count++;
+                    int orderedIndex = Array.IndexOf(LivePortalOrder, FlakyPortals[i]);
+                    ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), address + (LiveSync.ObjectLength * orderedIndex), buffer, 4, ref bytesRead);
+                    if (buffer[0] == 2)
+                    {
+                        if (PortalsActive[FlakyPortals[i]] == 0) PortalsActive[FlakyPortals[i]] = 1;
+                        portals[i] = 1;
+                    }
                 }
             }
-            //Console.WriteLine(count);
-            return count;
+            return portals.Count(i => i == 1);
         }
 
         public override void CheckObserverChanged()
         {
-            if (Program.HLevel.CurrentLevelId != 0) return;
             ObserverState = ReadObserver(LiveObjectAddress + LiveSync.StateOffset , CounterByteLength);
             if (PreviousObserverState == ObserverState || ObserverState == 0) return;
 

@@ -10,7 +10,7 @@ namespace MulTyPlayerServer.Classes.Sync
 {
     internal class PortalSyncer : Syncer
     {
-        public static int[] FlakyPortals = { 4, 7, 15, 19, 22, 23, 24 };
+        public static int[] FlakyPortals = { 4, 7, 15, 19, 21, 22, 23 };
         public static Dictionary<int, byte> ActivePortals;
 
         public PortalSyncer()
@@ -25,7 +25,7 @@ namespace MulTyPlayerServer.Classes.Sync
 
         public override void HandleServerUpdate(int null1, int null2, int level, ushort originalSender)
         {
-            Console.WriteLine("Portal for level " + level + " open");
+            //Console.WriteLine("Portal for level " + level + " open");
             if (ActivePortals[level] == 1) return;
             ActivePortals[level] = 1;
             SendUpdatedData(null1, null2, level, originalSender);

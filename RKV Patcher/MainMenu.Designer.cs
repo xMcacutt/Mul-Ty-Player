@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainMenu));
             this.SelectTyFolder = new System.Windows.Forms.FolderBrowserDialog();
             this.SelectFolder = new System.Windows.Forms.Button();
             this.DownloadButton = new System.Windows.Forms.Button();
@@ -42,9 +43,10 @@
             this.SelectFolder.AllowDrop = true;
             this.SelectFolder.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.SelectFolder.Font = new System.Drawing.Font("Impact", 9F);
-            this.SelectFolder.Location = new System.Drawing.Point(67, 12);
+            this.SelectFolder.Location = new System.Drawing.Point(50, 10);
+            this.SelectFolder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.SelectFolder.Name = "SelectFolder";
-            this.SelectFolder.Size = new System.Drawing.Size(194, 31);
+            this.SelectFolder.Size = new System.Drawing.Size(146, 25);
             this.SelectFolder.TabIndex = 1;
             this.SelectFolder.Text = "Select Original Ty Folder";
             this.SelectFolder.UseVisualStyleBackColor = true;
@@ -57,9 +59,10 @@
             this.DownloadButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.DownloadButton.Enabled = false;
             this.DownloadButton.Font = new System.Drawing.Font("Impact", 9F);
-            this.DownloadButton.Location = new System.Drawing.Point(67, 71);
+            this.DownloadButton.Location = new System.Drawing.Point(50, 58);
+            this.DownloadButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.DownloadButton.Name = "DownloadButton";
-            this.DownloadButton.Size = new System.Drawing.Size(194, 31);
+            this.DownloadButton.Size = new System.Drawing.Size(146, 25);
             this.DownloadButton.TabIndex = 2;
             this.DownloadButton.Text = "Download and Install";
             this.DownloadButton.UseVisualStyleBackColor = true;
@@ -70,17 +73,19 @@
             this.progressBar.AccessibleName = "progressBar";
             this.progressBar.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.progressBar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.progressBar.Location = new System.Drawing.Point(26, 143);
+            this.progressBar.Location = new System.Drawing.Point(20, 116);
+            this.progressBar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(274, 27);
+            this.progressBar.Size = new System.Drawing.Size(206, 22);
             this.progressBar.TabIndex = 3;
             // 
             // info
             // 
             this.info.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.info.Location = new System.Drawing.Point(25, 115);
+            this.info.Location = new System.Drawing.Point(19, 93);
+            this.info.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.info.Name = "info";
-            this.info.Size = new System.Drawing.Size(275, 16);
+            this.info.Size = new System.Drawing.Size(206, 13);
             this.info.TabIndex = 4;
             this.info.Text = "Installing makes a new folder next to Ty folder";
             this.info.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -88,23 +93,27 @@
             // message
             // 
             this.message.AutoSize = true;
-            this.message.Location = new System.Drawing.Point(12, 50);
+            this.message.Location = new System.Drawing.Point(9, 41);
+            this.message.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.message.Name = "message";
-            this.message.Size = new System.Drawing.Size(0, 16);
+            this.message.Size = new System.Drawing.Size(0, 13);
             this.message.TabIndex = 5;
             // 
             // MainMenu
             // 
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(326, 182);
+            this.ClientSize = new System.Drawing.Size(244, 148);
             this.Controls.Add(this.message);
             this.Controls.Add(this.info);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.DownloadButton);
             this.Controls.Add(this.SelectFolder);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MaximizeBox = false;
             this.Name = "MainMenu";
             this.Text = "RKV Patcher";
             this.Load += new System.EventHandler(this.MainMenu_Load);
