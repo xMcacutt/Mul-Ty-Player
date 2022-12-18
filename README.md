@@ -4,7 +4,7 @@
 
 ## Installation
 
-UPDATE 1.3.2 HOTFIX IS HERE!!! IF YOU'RE CURRENTLY USING VERSION 1.3.0, YOU'LL NEED THE NEW CLIENT AND SERVER. THERE IS NO NEW RKV IF UPGRADING FROM 1.3.1
+UPDATE 1.3.3 HOTFIX IS HERE!!! IF YOU'RE CURRENTLY USING VERSION 1.3.0, YOU'LL NEED THE NEW CLIENT AND SERVER. THERE IS NO NEW RKV IF UPGRADING FROM 1.3.1
 
 Installing Mul-Ty-Player has been made EASIER THAN EVER
 
@@ -73,6 +73,11 @@ With your port forwarding rule set up, people can now join your server using you
 - Installer actually installs the new version
 - Correct Koalas now appear in Bull's Pen
 - Opals are more likely to correctly spawn from crates
+
+#### 1.3.3
+- Koalas fixed in Snow Worries and BtBS
+- Debug messages stripped
+- Added version message
 
 ### Future Plans
 - Outback with koalas

@@ -30,12 +30,10 @@ namespace MulTyPlayerClient
             Console.WriteLine(opalCount);
             for (int i = 0; i < opalCount; i++)
             {
-                Console.WriteLine("Crate opal number " + i);
                 int opalAddress = PointerCalculations.GetPointerAddress(crateAddress + 0x150 + (4 * i), 0x0);
                 ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), opalAddress + 0x78, buffer, 1, ref bytesRead);
                 if (buffer[0] != 5)
                 {
-                    Console.WriteLine("Did write 1 for opal");
                     ProcessHandler.WriteData(opalAddress + 0x78, BitConverter.GetBytes(1));
                 }
             }

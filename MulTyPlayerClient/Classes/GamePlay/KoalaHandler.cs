@@ -13,7 +13,6 @@ namespace MulTyPlayerClient
         int _bTimeAttackAddress = PointerCalculations.AddOffset(0x28AB84);
 
         public Dictionary<int, int[]> KoalaAddrs;
-        readonly int[][] koalaOffsets;
         int _baseKoalaAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x26B070), new int[] { 0x0 });
 
         public KoalaHandler()
@@ -38,25 +37,26 @@ namespace MulTyPlayerClient
         public void SetCoordAddrs()
         {
             int modifier = (Program.HLevel.CurrentLevelId == 9 || Program.HLevel.CurrentLevelId == 13) ? 2 : 1;
+            int offset = (Program.HLevel.CurrentLevelId == 9 || Program.HLevel.CurrentLevelId == 13) ? 0x518 : 0x0;
             if(_baseKoalaAddress == 0) _baseKoalaAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x26B070), new int[] { 0x0 });
             foreach (int koalaID in KoalaAddrs.Keys)
             {
                 //X COORDINATE
-                KoalaAddrs[koalaID][0] = _baseKoalaAddress + 0x2A4 + (0x518 * modifier * koalaID);
+                KoalaAddrs[koalaID][0] = _baseKoalaAddress + offset + 0x2A4 + (0x518 * modifier * koalaID);
                 //Y COORDINATE
-                KoalaAddrs[koalaID][1] = _baseKoalaAddress + 0x2A8 + (0x518 * modifier * koalaID);
+                KoalaAddrs[koalaID][1] = _baseKoalaAddress + offset + 0x2A8 + (0x518 * modifier * koalaID);
                 //Z COORDINATE
-                KoalaAddrs[koalaID][2] = _baseKoalaAddress + 0x2AC + (0x518 * modifier * koalaID);
+                KoalaAddrs[koalaID][2] = _baseKoalaAddress + offset + 0x2AC + (0x518 * modifier * koalaID);
                 //P COORDINATE
-                KoalaAddrs[koalaID][3] = _baseKoalaAddress + 0x2B4 + (0x518 * modifier * koalaID);
+                KoalaAddrs[koalaID][3] = _baseKoalaAddress + offset + 0x2B4 + (0x518 * modifier * koalaID);
                 //Y COORDINATE
-                KoalaAddrs[koalaID][4] = _baseKoalaAddress + 0x2B8 + (0x518 * modifier * koalaID);
+                KoalaAddrs[koalaID][4] = _baseKoalaAddress + offset + 0x2B8 + (0x518 * modifier * koalaID);
                 //R COORDINATE
-                KoalaAddrs[koalaID][5] = _baseKoalaAddress + 0x2BC + (0x518 * modifier * koalaID);
+                KoalaAddrs[koalaID][5] = _baseKoalaAddress + offset + 0x2BC + (0x518 * modifier * koalaID);
                 //COLLISION
-                KoalaAddrs[koalaID][6] = _baseKoalaAddress + 0x298 + (0x518 * modifier * koalaID);
+                KoalaAddrs[koalaID][6] = _baseKoalaAddress + offset + 0x298 + (0x518 * modifier * koalaID);
                 //VISIBILITY
-                KoalaAddrs[koalaID][7] = _baseKoalaAddress + 0x44 + (0x518 * modifier * koalaID);
+                KoalaAddrs[koalaID][7] = _baseKoalaAddress + offset + 0x44 + (0x518 * modifier * koalaID);
             }
             if (!SettingsHandler.DoKoalaCollision) RemoveCollision();
         }
