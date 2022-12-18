@@ -182,7 +182,7 @@
             "SourcePath" = "8:System.Net.Http.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_357D1D6D65C84168A5B8CFEDFFF71B0B"
+            "Folder" = "8:_4573CF5A267749C3AD1C95DC850BCC50"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -213,7 +213,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
@@ -233,7 +233,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
@@ -264,37 +264,48 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_003FC456718C48BFA98FA74584594305"
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_652DFEE426ED4537BC8E0244B55E3F14"
                     {
-                    "Name" = "8:Mul-Ty-Player Server"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:INSTALLSERVER"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_1BD8D1AF83F542C9B984AA68011AC26B"
-                        "Folders"
-                        {
-                        }
-                    }
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_22D66307B79B4714BC89FA8AE9CFACCC"
-                    {
-                    "Name" = "8:Mul-Ty-Player Client"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:INSTALLCLIENT"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_F57B368C2AD249AC8CCD4DE40267E8DB"
-                        "Folders"
-                        {
-                        }
-                    }
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_357D1D6D65C84168A5B8CFEDFFF71B0B"
-                    {
-                    "Name" = "8:RKV Patcher"
-                    "AlwaysCreate" = "11:FALSE"
+                    "Name" = "8:1.3.2"
+                    "AlwaysCreate" = "11:TRUE"
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
-                    "Property" = "8:_EF0F6916190842FDBE04F9F66E43E5C7"
+                    "Property" = "8:_57B9B49C45FC49D587B1D61F015285B2"
                         "Folders"
                         {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_3D9EEA0BCF95497CB339CDDFFF526A93"
+                            {
+                            "Name" = "8:Mul-Ty-Player Client"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:INSTALLCLIENT"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_F57B368C2AD249AC8CCD4DE40267E8DB"
+                                "Folders"
+                                {
+                                }
+                            }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_4573CF5A267749C3AD1C95DC850BCC50"
+                            {
+                            "Name" = "8:RKV Patcher"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:INSTALLPATCHER"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_EF0F6916190842FDBE04F9F66E43E5C7"
+                                "Folders"
+                                {
+                                }
+                            }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_636ACBC0D4EC4676AB5AFC7ED0B33719"
+                            {
+                            "Name" = "8:Mul-Ty-Player Server"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:INSTALLSERVER"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_1BD8D1AF83F542C9B984AA68011AC26B"
+                                "Folders"
+                                {
+                                }
+                            }
                         }
                     }
                 }
@@ -326,15 +337,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Mul-Ty-Player"
-        "ProductCode" = "8:{D20F8699-D456-4306-960A-72D223D7A6CB}"
-        "PackageCode" = "8:{0DAE7032-4723-43DE-B0FC-857CFBB41955}"
+        "ProductCode" = "8:{4DAD8974-046E-4488-89FD-CC47252F2640}"
+        "PackageCode" = "8:{206681B8-B248-4FBD-AC13-DED512B3095F}"
         "UpgradeCode" = "8:{AF60A6AB-7BC1-42FD-BD79-ED15F182746A}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.3.1"
+        "ProductVersion" = "8:1.3.2"
         "Manufacturer" = "8:xMcacutt"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1110,11 +1121,11 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_97389A78313E409399F9F90324A0F38C"
             {
-            "SourcePath" = "8:..\\RKV Patcher\\obj\\Release\\RKV Patcher.exe"
+            "SourcePath" = "8:"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_357D1D6D65C84168A5B8CFEDFFF71B0B"
-            "Condition" = "8:"
+            "Folder" = "8:_4573CF5A267749C3AD1C95DC850BCC50"
+            "Condition" = "8:INSTALLPATCHER"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
             "ReadOnly" = "11:FALSE"
@@ -1141,7 +1152,7 @@
             "SourcePath" = "8:..\\MulTyPlayerClient\\bin\\Release\\net7.0-windows\\publish\\win-x86\\Mul-Ty-Player Client CLI.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_22D66307B79B4714BC89FA8AE9CFACCC"
+            "Folder" = "8:_3D9EEA0BCF95497CB339CDDFFF526A93"
             "Condition" = "8:INSTALLCLIENT"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1170,7 +1181,7 @@
             "SourcePath" = "8:..\\MulTyPlayerServer\\bin\\Release\\net7.0\\publish\\win-x86\\Mul-Ty-Player Server CLI.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_003FC456718C48BFA98FA74584594305"
+            "Folder" = "8:_636ACBC0D4EC4676AB5AFC7ED0B33719"
             "Condition" = "8:INSTALLSERVER"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"

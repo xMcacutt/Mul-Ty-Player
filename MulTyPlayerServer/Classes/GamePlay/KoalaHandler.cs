@@ -16,19 +16,19 @@ namespace MulTyPlayerServer
 
         public KoalaHandler()
         {
-            Dictionary<string, Koala> koalas = new Dictionary<string, Koala>();
             availableKoalas = new Stack<Koala>();
-
-            koalas.Add("Boonie", new Koala(0, "Boonie"));
-            koalas.Add("Mim", new Koala(1, "Mim"));
-            koalas.Add("Kiki", new Koala(2, "Kiki"));
-            koalas.Add("Katie", new Koala(3, "Katie"));
-            koalas.Add("Snugs", new Koala(4, "Snugs"));
-            koalas.Add("Dubbo", new Koala(5, "Dubbo"));
-            koalas.Add("Gummy", new Koala(6, "Gummy"));
-            koalas.Add("Elizabeth", new Koala(7, "Elizabeth"));
-
-            foreach(string koala in SettingsHandler.KoalaOrder.Reverse())
+            Dictionary<string, Koala> koalas = new()
+            {
+                { "Katie", new Koala(0, "Katie") },
+                { "Mim", new Koala(1, "Mim") },
+                { "Elizabeth", new Koala(2, "Elizabeth") },
+                { "Snugs", new Koala(3, "Snugs") },
+                { "Gummy", new Koala(4, "Gummy") },
+                { "Dubbo", new Koala(5, "Dubbo") },
+                { "Kiki", new Koala(6, "Kiki") },
+                { "Boonie", new Koala(7, "Boonie") }
+            };
+            foreach (string koala in SettingsHandler.KoalaOrder.Reverse())
             {
                 availableKoalas.Push(koalas[koala]);
             }

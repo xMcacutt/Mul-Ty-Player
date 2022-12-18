@@ -27,12 +27,15 @@ namespace MulTyPlayerClient
             ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), crateAddress + 0x178, buffer, 1, ref bytesRead);
             int opalCount = buffer[0];
             int firstCrateOpalAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x28AB7C), new int[] { 0x4AC, 0x0 });
+            Console.WriteLine(opalCount);
             for (int i = 0; i < opalCount; i++)
             {
+                Console.WriteLine("Crate opal number " + i);
                 int opalAddress = PointerCalculations.GetPointerAddress(crateAddress + 0x150 + (4 * i), 0x0);
-                int opalIndex = ((opalAddress - firstCrateOpalAddress) / ObjectLength) + (300 - SyncHandler.HOpal.CrateOpalsPerLevel[Program.HLevel.CurrentLevelId]);
-                if (Program.HSync.SyncObjects["Opal"].GlobalObjectData[Program.HLevel.CurrentLevelId][opalIndex] != 5)
+                ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), opalAddress + 0x78, buffer, 1, ref bytesRead);
+                if (buffer[0] != 5)
                 {
+                    Console.WriteLine("Did write 1 for opal");
                     ProcessHandler.WriteData(opalAddress + 0x78, BitConverter.GetBytes(1));
                 }
             }
