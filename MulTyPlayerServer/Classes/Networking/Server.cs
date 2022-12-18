@@ -87,11 +87,11 @@ namespace MulTyPlayerServer
             foreach (Player player in PlayerList.Values)
             {
                 Message message = Message.Create(MessageSendMode.Unreliable, MessageID.KoalaCoordinates);
-                int[] intData = { koalaID, level };
-                message.AddInts(intData);
+                message.AddInt(koalaID);
+                message.AddInt(level);
                 message.AddFloats(coordinates);
                 message.AddString(name);
-                if (intData.Length == 2 && player.AssignedKoala.Coordinates != null && player.Name != null)
+                if (player.AssignedKoala.Coordinates != null && player.Name != null)
                 {
                     _Server.SendToAll(message);
                 }

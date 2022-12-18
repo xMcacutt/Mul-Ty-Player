@@ -23,7 +23,14 @@ namespace MulTyPlayerClient
         public override void Sync(int null1, byte[] bytes)
         {
             int address = SyncHandler.SaveDataBaseAddress + 0xAA4;
-            ProcessHandler.WriteData(address, bytes);
+            for(int i = 0; i < bytes.Length; i++)
+            {
+                if (bytes[i] == 1 && SyncHandler.HAttribute.GlobalObjectData[i] == 0)
+                {
+                    SyncHandler.HAttribute.GlobalObjectData[i] = 1;
+                    Save(i, null);
+                }
+            }
         }
     }
 }

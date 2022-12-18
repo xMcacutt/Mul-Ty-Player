@@ -54,13 +54,19 @@ namespace MulTyPlayerClient
                     break;
             }
             byte[] buffer = new byte[2];
-            buffer[0] = 8;
             int bytesRead = 0;
-            while(BitConverter.ToInt16(buffer, 0) == 8)
+            int currentCountMax = 16;
+            int inc = 1;
+            while(currentCountMax != 8)
             {
                 int objectiveCounterAddr = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x0028C318), objectiveCountOffsets, 2);
                 ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), objectiveCounterAddr, buffer, 2, ref bytesRead);
-                if (BitConverter.ToInt16(buffer, 0) != 8) ProcessHandler.WriteData(objectiveCounterAddr, BitConverter.GetBytes(8));
+                if (BitConverter.ToInt16(buffer, 0) == 16)
+                {
+                    ProcessHandler.WriteData(objectiveCounterAddr, BitConverter.GetBytes(8));
+                    currentCountMax = 8;
+                }
+                inc++;
             }
         }
     }

@@ -65,6 +65,7 @@ namespace MulTyPlayerClient
                     if (SettingsHandler.DoCliffsSyncing) SyncHandler.HCliffs.CheckObserverChanged();
                     Program.HHero.GetTyPosRot(); 
                     Program.HKoala.SetCoordAddrs();
+                    Program.HKoala.CheckTA();
                 }
                 Thread.Sleep(10);
             }
