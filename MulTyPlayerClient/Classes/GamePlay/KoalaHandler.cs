@@ -30,9 +30,15 @@ namespace MulTyPlayerClient
             }
         }
 
+        public void SetBaseAddress()
+        {
+            _baseKoalaAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x26B070), new int[] { 0x0 });
+        }
+
         public void SetCoordAddrs()
         {
             int modifier = (Program.HLevel.CurrentLevelId == 9 || Program.HLevel.CurrentLevelId == 13) ? 2 : 1;
+            if(_baseKoalaAddress == 0) _baseKoalaAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x26B070), new int[] { 0x0 });
             foreach (int koalaID in KoalaAddrs.Keys)
             {
                 //X COORDINATE

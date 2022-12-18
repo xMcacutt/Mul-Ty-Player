@@ -28,6 +28,7 @@ namespace MulTyPlayerClient
             HSync.SetMemAddrs();
             HSync.RequestSync();
             HSync.ProtectLeaderboard();
+            HKoala.SetBaseAddress();
             if (CurrentLevelId == 9 || CurrentLevelId == 13) ObjectiveCountSet();
             LoadedNewLevelGameplaySetupDone = true;
             LoadedNewLevelNetworkingSetupDone = true;

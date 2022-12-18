@@ -15,7 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_7AF5F488A75D6106682A68FCE897CE97"
+        "MsmKey" = "8:_273B7F5F19128BC6172012E8BEEE625E"
         "OwnerKey" = "8:_97389A78313E409399F9F90324A0F38C"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -58,7 +58,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7AF5F488A75D6106682A68FCE897CE97"
+        "OwnerKey" = "8:_273B7F5F19128BC6172012E8BEEE625E"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -166,14 +166,14 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7AF5F488A75D6106682A68FCE897CE97"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_273B7F5F19128BC6172012E8BEEE625E"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
                 "ScatterAssemblies"
                 {
-                    "_7AF5F488A75D6106682A68FCE897CE97"
+                    "_273B7F5F19128BC6172012E8BEEE625E"
                     {
                     "Name" = "8:System.Net.Http.dll"
                     "Attributes" = "3:512"
@@ -337,7 +337,7 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Mul-Ty-Player"
-        "ProductCode" = "8:{4DAD8974-046E-4488-89FD-CC47252F2640}"
+        "ProductCode" = "8:{6B36AAD7-6D5A-427D-A593-FBBCC9E04B65}"
         "PackageCode" = "8:{206681B8-B248-4FBD-AC13-DED512B3095F}"
         "UpgradeCode" = "8:{AF60A6AB-7BC1-42FD-BD79-ED15F182746A}"
         "AspNetVersion" = "8:2.0.50727.0"
@@ -1121,7 +1121,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_97389A78313E409399F9F90324A0F38C"
             {
-            "SourcePath" = "8:"
+            "SourcePath" = "8:..\\RKV Patcher\\obj\\Release\\RKV Patcher.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_4573CF5A267749C3AD1C95DC850BCC50"
