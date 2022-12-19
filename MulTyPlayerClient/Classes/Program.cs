@@ -37,7 +37,7 @@ namespace MulTyPlayerClient
         {
             SettingsHandler.Setup();
 
-            Console.WriteLine("Welcome to Mul-Ty-player 1.3.3");
+            Console.WriteLine("Welcome to Mul-Ty-player 1.3.4");
 
             //TRIES TO FIND TY AND GIVES WARNING MESSAGE TO OPEN TY ON FAILURE
             var messageShown = false;
