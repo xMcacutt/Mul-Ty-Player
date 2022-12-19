@@ -27,7 +27,6 @@ namespace MulTyPlayerClient
             ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), crateAddress + 0x178, buffer, 1, ref bytesRead);
             int opalCount = buffer[0];
             int firstCrateOpalAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x28AB7C), new int[] { 0x4AC, 0x0 });
-            Console.WriteLine(opalCount);
             for (int i = 0; i < opalCount; i++)
             {
                 int opalAddress = PointerCalculations.GetPointerAddress(crateAddress + 0x150 + (4 * i), 0x0);
