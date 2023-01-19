@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace MulTyPlayerClient
 {
@@ -20,18 +21,20 @@ namespace MulTyPlayerClient
         private static string _inputStr;
         public static string PosLogPath;
 
-        static void Main(string[] args)
+       /* static void Main(string[] args)
         {
+            
             //RESTARTS THE APP WHEN IT REACHES END (DISCONNECT)
             do
             {
-                Console.Clear();
+                
+                //Console.Clear();
                 _inputStr = "n";
                 RunProgram();
-                Console.WriteLine("Would you like to restart Mul-Ty-Player? [y/n]");
+                //Console.WriteLine("Would you like to restart Mul-Ty-Player? [y/n]");
                 _inputStr = Console.ReadLine();
             } while (_inputStr == "y");
-        }
+        }*/
 
         private static void RunProgram()
         {

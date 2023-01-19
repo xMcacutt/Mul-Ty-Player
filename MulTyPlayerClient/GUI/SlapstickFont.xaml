@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style TargetType="TextBlock">
+        <Setter Property="TextElement.FontFamily" Value="Fonts/#SF Slapstick Comic"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+    </Style>
+    <Style TargetType="TextBox">
+        <Setter Property="TextElement.FontFamily" Value="Fonts/#SF Slapstick Comic"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+    </Style>
+</ResourceDictionary>

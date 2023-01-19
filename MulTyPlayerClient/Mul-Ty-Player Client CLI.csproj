@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net7.0-windows</TargetFramework>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>MulTyPlayerClient</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <UseWindowsForms>true</UseWindowsForms>
+    <UseWindowsForms>True</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Platforms>AnyCPU;x86;x64</Platforms>
   </PropertyGroup>
@@ -14,6 +14,7 @@
     <SignAssembly>False</SignAssembly>
     <PackageIcon>fe_999_icon_koalakid.ico</PackageIcon>
     <ApplicationIcon>fe_999_icon_koalakid.ico</ApplicationIcon>
+    <UseWPF>True</UseWPF>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <OutputPath>bin\x86\Debug\</OutputPath>
@@ -54,8 +55,45 @@
     <DebugType>embedded</DebugType>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="GUI\block_black_24dp.svg" />
+    <None Remove="GUI\Fonts\SF Slapstick Comic.ttf" />
+    <None Remove="GUI\KoalaSelectionAssets\Dark\Boonie.jpg" />
+    <None Remove="GUI\KoalaSelectionAssets\Dark\Dubbo.jpg" />
+    <None Remove="GUI\KoalaSelectionAssets\Dark\Elizabeth.jpg" />
+    <None Remove="GUI\KoalaSelectionAssets\Dark\Gummy.jpg" />
+    <None Remove="GUI\KoalaSelectionAssets\Dark\Katie.jpg" />
+    <None Remove="GUI\KoalaSelectionAssets\Dark\Kiki.jpg" />
+    <None Remove="GUI\KoalaSelectionAssets\Dark\Mim.jpg" />
+    <None Remove="GUI\KoalaSelectionAssets\Dark\Snugs.jpg" />
+    <None Remove="GUI\KoalaSelectionAssets\Light\Boonie.png" />
+    <None Remove="GUI\KoalaSelectionAssets\Light\Dubbo.png" />
+    <None Remove="GUI\KoalaSelectionAssets\Light\Elizabeth.png" />
+    <None Remove="GUI\KoalaSelectionAssets\Light\Gummy.png" />
+    <None Remove="GUI\KoalaSelectionAssets\Light\Katie.png" />
+    <None Remove="GUI\KoalaSelectionAssets\Light\Kiki.png" />
+    <None Remove="GUI\KoalaSelectionAssets\Light\Mim.png" />
+    <None Remove="GUI\KoalaSelectionAssets\Light\Snugs.png" />
+    <None Remove="GUI\KoalaSelectionAssets\mp4\Boonie.mp4" />
+    <None Remove="GUI\KoalaSelectionAssets\mp4\Dubbo.mp4" />
+    <None Remove="GUI\KoalaSelectionAssets\mp4\Elizabeth.mp4" />
+    <None Remove="GUI\KoalaSelectionAssets\mp4\Gummy.mp4" />
+    <None Remove="GUI\KoalaSelectionAssets\mp4\Katie.mp4" />
+    <None Remove="GUI\KoalaSelectionAssets\mp4\Kiki.mp4" />
+    <None Remove="GUI\KoalaSelectionAssets\mp4\Mim.mp4" />
+    <None Remove="GUI\KoalaSelectionAssets\mp4\Snugs.mp4" />
     <None Remove="Resources\Facepunch.Steamworks.Win32.dll" />
     <None Remove="Resources\steam_api.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Remove="GUI\App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="GUI\App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Fonts\SF Slapstick Comic.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Facepunch.Steamworks.Win32">
@@ -74,6 +112,33 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <None Update="GUI\KoalaSelectionAssets\Background.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI\KoalaSelectionAssets\Background.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI\KoalaSelectionAssets\Taken\Boonie.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI\KoalaSelectionAssets\Taken\Dubbo.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI\KoalaSelectionAssets\Taken\Elizabeth.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI\KoalaSelectionAssets\Taken\Gummy.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI\KoalaSelectionAssets\Taken\Katie.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI\KoalaSelectionAssets\Taken\Kiki.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI\KoalaSelectionAssets\Taken\Snugs.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="help.mtps">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -83,6 +148,78 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="fe_999_icon_koalakid.ico" />
+    <Content Include="GUI\KoalaSelectionAssets\Dark\Boonie.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\Dark\Dubbo.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\Dark\Elizabeth.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\Dark\Gummy.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\Dark\Katie.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\Dark\Kiki.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\Dark\Mim.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\Dark\Snugs.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\Light\Boonie.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\Light\Dubbo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\Light\Elizabeth.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\Light\Gummy.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\Light\Katie.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\Light\Kiki.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\Light\Mim.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\Light\Snugs.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\mp4\Boonie.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\mp4\Dubbo.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\mp4\Elizabeth.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\mp4\Gummy.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\mp4\Katie.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\mp4\Kiki.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\mp4\Mim.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GUI\KoalaSelectionAssets\mp4\Snugs.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\fe_999_icon_koalakid.ico" />
     <Content Include="Resources\RiptideNetworking.dll" />
     <Content Include="Resources\RiptideNetworking.xml" />
@@ -96,6 +233,23 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="SharpVectors.Reloaded" Version="1.8.1" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GUI\Icons\" />
   </ItemGroup>
 </Project>
