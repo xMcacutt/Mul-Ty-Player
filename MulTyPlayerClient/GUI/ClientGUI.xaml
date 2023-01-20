@@ -10,83 +10,168 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/GUI/Icons.xaml"/>
+                <ResourceDictionary Source="/GUI/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
+    <Grid Margin="10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="0.3*"/>
-            <ColumnDefinition Width="0.3*"/>
-            <ColumnDefinition Width="0.3*"/>
-            <ColumnDefinition Width="0.3*"/>
-            <ColumnDefinition Width="0.3*"/>
+            <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="3.2*"/>
-            <ColumnDefinition Width="0.3*" MinWidth="30"/>
-            <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="0.5*" MinHeight="20"/>
-            <RowDefinition Height="4.1*"/>
-            <RowDefinition Height="0.25*" MinHeight="20"/>
-            <RowDefinition Height="0.25*" MinHeight="30"/>
-            <RowDefinition Height="10"/>
-        </Grid.RowDefinitions>
 
+        <!--Left side pannel-->
+        <Grid>
 
-        <DataGrid Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="5" HeadersVisibility="None" Background="White" BorderBrush="{x:Null}">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn/>
-                <DataGridTextColumn Width="*"/>
-                <DataGridTemplateColumn/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <Border Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="5" Grid.RowSpan="2" BorderBrush="#FFA1A1A1" BorderThickness="2,2,2,0" Margin="-1,-1,-1,-1"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4.6*"/>
+                <RowDefinition Height="0.5*" MinHeight="50"/>
+            </Grid.RowDefinitions>
 
-        <Button Grid.Column="1" Grid.Row="3" Grid.RowSpan="2" BorderBrush="#00000000" Background="#FFDDDDDD">
-            <Image Source="{StaticResource call_black_24dpDrawingImage}"/>
-        </Button>
-        <Button Grid.Column="2" Grid.Row="3" Grid.RowSpan="2" BorderBrush="{x:Null}">
-            <Image Source="{StaticResource volume_up_black_24dpDrawingImage}"/>
-        </Button>
-        <Button Grid.Column="3" Grid.Row="3" Grid.RowSpan="2" BorderBrush="{x:Null}">
-            <Image Source="{StaticResource mic_black_24dpDrawingImage}"/>
-        </Button>
-        <Button Grid.Column="4" Grid.Row="3" Grid.RowSpan="2" BorderBrush="{x:Null}">
-            <Image Source="{StaticResource cell_tower_black_24dpDrawingImage}"/>
-        </Button>
-        <Button Grid.Column="5" Grid.Row="3" Grid.RowSpan="2" BorderBrush="{x:Null}">
-            <Image Source="{StaticResource settings_black_24dpDrawingImage}"/>
-        </Button>
-        <Border Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="5" Grid.RowSpan="2" BorderBrush="#FFA1A1A1" BorderThickness="2,0,2,2" Margin="-1,-1,-1,-1"/>
+            <DataGrid HeadersVisibility="None" Background="White" BorderBrush="{x:Null}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn/>
+                    <DataGridTextColumn Width="*"/>
+                    <DataGridTemplateColumn/>
+                </DataGrid.Columns>
+            </DataGrid>
 
+            <Border BorderBrush="#FFA1A1A1" 
+                    BorderThickness="2,2,2,0" 
+                    Margin="-1"/>
 
-        <TextBox Grid.Row="4" 
-                Grid.Column="6"
-                Grid.ColumnSpan="2"
-                VerticalAlignment="Stretch" FontFamily="Segoe UI Variable Display Semibold" FontSize="12" Cursor="IBeam" Text="/help for commands" ClipToBounds="False" MinHeight="20" BorderBrush="{x:Null}"/>
-        <Button Grid.Row="4" Grid.Column="7" VerticalAlignment="Center" BorderBrush="{x:Null}">
-            <Image Source="{StaticResource send_black_24dpDrawingImage}"/>
-        </Button>
-        <Border Grid.Column="6" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="1" BorderBrush="#FFA1A1A1" BorderThickness="2,2,2,2" Margin="-1,-1,-1,-1"/>
+            <!--Button border-->
+            <Border Grid.Row="1" 
+                    BorderBrush="#FFA1A1A1" 
+                    BorderThickness="2,0,2,2" 
+                    Margin="-1">
+                <Grid Margin="-1 1 -1 -1">
 
-        <Border Grid.Column="6" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="3" BorderBrush="#FFA1A1A1" BorderThickness="2,2,2,2" CornerRadius="0,20,0,0" Margin="-1,-1,-1,-1">
-            <TextBlock Margin="0,0,5,0" Text="Hello" FontFamily="Cascadia Code" FontSize="9" TextAlignment="Right" VerticalAlignment="Bottom" ScrollViewer.VerticalScrollBarVisibility="Auto" TextWrapping="WrapWithOverflow"/>
-        </Border>
-        <Button 
-            Margin="3,3,3,3" 
-            Grid.Column="7" 
-            Grid.Row="1" 
-            BorderBrush="{x:Null}" Background="#FFDDDDDD">
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="15"/>
-                </Style>
-            </Button.Resources>
-            <Image Source="{StaticResource logout_black_24dpDrawingImage}"/>
-        </Button>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
+                    <!--Call button-->
+                    <Button BorderBrush="#00000000" 
+                            Background="#FFDDDDDD"
+                            Click="CallButton_Click">
+                        <Image Source="{StaticResource call_black_24dpDrawingImage}"/>
+                    </Button>
+                    <!--Volume button-->
+                    <Button Grid.Column="1" 
+                            BorderBrush="{x:Null}"
+                            Click="VolumeButton_Click">
+                        <Image Source="{StaticResource volume_up_black_24dpDrawingImage}"/>
+                    </Button>
+                    <!--Mic button-->
+                    <Button Grid.Column="2" 
+                            BorderBrush="{x:Null}"
+                            Click="MicButton_Click">
+                        <Image Source="{StaticResource mic_black_24dpDrawingImage}"/>
+                    </Button>
+                    <!--Connection button-->
+                    <Button Grid.Column="3" 
+                            BorderBrush="{x:Null}"
+                            Click="ConnectionButton_Click">
+                        <Image Source="{StaticResource cell_tower_black_24dpDrawingImage}"/>
+                    </Button>
+                    <!--Settings button-->
+                    <Button Grid.Column="4" 
+                            BorderBrush="{x:Null}"
+                            Click="SettingsButton_Click">
+                        <Image Source="{StaticResource settings_black_24dpDrawingImage}"/>
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!--Right side pannel-->
+        <Grid Grid.Column="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+
+            <!--Top pannel-->
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="4.85*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.RowSpan="2" 
+                        BorderBrush="#FFA1A1A1" 
+                        BorderThickness="2" 
+                        CornerRadius="0,20,0,0" 
+                        Margin="-1">
+                    <TextBlock Margin="0,0,5,0" 
+                               Text="Hello" 
+                               FontFamily="Cascadia Code" 
+                               FontSize="9" 
+                               TextAlignment="Right" 
+                               VerticalAlignment="Bottom" 
+                               ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                               TextWrapping="WrapWithOverflow"/>
+                </Border>
+                
+                <Button Margin="3"
+                        BorderBrush="{x:Null}" 
+                        Background="#FFDDDDDD"
+                        HorizontalAlignment="Right"
+                        Width="40">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="15"/>
+                        </Style>
+                    </Button.Resources>
+                    <Image Source="{StaticResource logout_black_24dpDrawingImage}"/>
+                </Button>
+
+            </Grid>
+
+            <!--Send button border-->
+            <Border Grid.Row="1" 
+                    BorderBrush="#FFA1A1A1" 
+                    BorderThickness="2,2,2,2" 
+                    Margin="-1">
+                
+                <Grid Margin="-1">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Tag only works as a placeholder text because of a custom style-->
+                    <TextBox VerticalAlignment="Stretch" 
+                             FontFamily="Segoe UI Variable Display Semibold" 
+                             FontSize="12" 
+                             Cursor="IBeam"
+                             ClipToBounds="False" 
+                             MinHeight="20" 
+                             BorderBrush="{x:Null}"
+                             x:Name="TextboxInput" 
+                             KeyDown="TextboxInput_KeyDown"
+                             Tag="/help for commands"
+                             Style="{StaticResource PlaceholderTextStyle}"/>
+                    
+                    <Button VerticalAlignment="Stretch" 
+                            BorderBrush="{x:Null}" 
+                            Click="SendButtonClick"
+                            Grid.Column="1">
+                        <Image Source="{StaticResource send_black_24dpDrawingImage}"/>
+                    </Button>
+
+                </Grid>
+            </Border>
+
+        </Grid>
 
     </Grid>
 
