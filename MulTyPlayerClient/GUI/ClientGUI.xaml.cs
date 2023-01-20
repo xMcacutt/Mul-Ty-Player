@@ -26,15 +26,14 @@ namespace MulTyPlayerClient.GUI
 
         private void SendButtonClick(object sender, RoutedEventArgs e)
         {
-            //Run send button logic here
-            return;
+            //Call send button function here
         }
 
         private void TextboxInput_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter)
                 return;
-            SendButtonClick(sender, null);
+            //Call send button function here
         }
 
         private void CallButton_Click(object sender, RoutedEventArgs e)
