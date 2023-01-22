@@ -7,107 +7,145 @@
         mc:Ignorable="d"
         Title="Select Your Koala" Height="300" Width="450" ResizeMode="NoResize">
 
-
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.02*"/>
-            <ColumnDefinition Width="0.2*"/>
-            <ColumnDefinition Width="0.02*"/>
-            <ColumnDefinition Width="0.2*"/>
-            <ColumnDefinition Width="0.02*"/>
-            <ColumnDefinition Width="0.2*"/>
-            <ColumnDefinition Width="0.02*"/>
-            <ColumnDefinition Width="0.2*"/>
-            <ColumnDefinition Width="0.02*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.02*"/>
-            <RowDefinition Height="0.2*"/>
-            <RowDefinition Height="0.05*"/>
-            <RowDefinition Height="0.2*"/>
-            <RowDefinition Height="0.05*"/>
-            <RowDefinition Height="0.04*"/>
-            <RowDefinition Height="0.02*"/>
-        </Grid.RowDefinitions>
+        <!--Background video-->
+        <MediaElement Stretch="UniformToFill" 
+                      Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.mp4"/>
 
-        <MediaElement Stretch="UniformToFill" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="9" Grid.RowSpan="7" Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.mp4"/>
+        <!--Koala grid-->
+        <Grid Margin="5 10 5 30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <Border Grid.Column="1" Grid.Row="1" BorderThickness="2" BorderBrush="Black" Background="Black">
-            <MediaElement Stretch="UniformToFill" Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Boonie.jpg"/>
-        </Border>
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="Boonie">
-            <TextBlock.Effect>
-                <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
-            </TextBlock.Effect></TextBlock>
+            <!--Boonie-->
+            <StackPanel Margin="6 0">
+                
+                <Border BorderThickness="2" 
+                    BorderBrush="Black" 
+                    Background="Black">
+                    <Image Stretch="UniformToFill" 
+                           Source="{Binding Boonie, Source={x:Static local:KoalaSelect.KoalasClass}}"
+                           IsMouseDirectlyOverChanged="Boonie_IsMouseDirectlyOverChanged"/>
+                </Border>
+                <TextBlock Text="Boonie"/>
 
-        <Border Grid.Column="3" Grid.Row="1" BorderThickness="2" BorderBrush="Black" Background="Black">
-            <MediaElement Stretch="UniformToFill" Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Mim.jpg"/>
-        </Border>
-        <TextBlock Grid.Row="2" Grid.Column="3" Text="Mim">
-            <TextBlock.Effect>
-                <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
-            </TextBlock.Effect>
-        </TextBlock>
+            </StackPanel>
 
-        <Border Grid.Column="5" Grid.Row="1" BorderThickness="2" BorderBrush="Black" Background="Black">
-            <MediaElement Stretch="UniformToFill" Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Gummy.jpg"/>
-        </Border>
-        <TextBlock Grid.Row="2" Grid.Column="5" Text="Gummy">
-            <TextBlock.Effect>
-                <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
-            </TextBlock.Effect>
-        </TextBlock>
+            <!--Mim-->
+            <StackPanel Grid.Column="1"
+                        Margin="6 0">
+                
+                <Border BorderThickness="2" 
+                        BorderBrush="Black" 
+                        Background="Black">
+                    <Image Stretch="UniformToFill" 
+                           Source="{Binding Mim, Source={x:Static local:KoalaSelect.KoalasClass}}"
+                           IsMouseDirectlyOverChanged="Mim_IsMouseDirectlyOverChanged"/>
+                </Border>
+                <TextBlock Text="Mim"/>
+            </StackPanel>
 
-        <Border Grid.Column="7" Grid.Row="1" BorderThickness="2" BorderBrush="Black" Background="Black">
-            <MediaElement Stretch="UniformToFill" Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Snugs.jpg"/>
-        </Border>
-        <TextBlock Grid.Row="2" Grid.Column="7" Text="Snugs">
-            <TextBlock.Effect>
-                <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
-            </TextBlock.Effect>
-        </TextBlock>
+            <!--Gummy-->
+            <StackPanel Grid.Column="2"
+                        Margin="6 0">
+                
+                <Border BorderThickness="2" 
+                        BorderBrush="Black" 
+                        Background="Black">
+                    <Image Stretch="UniformToFill" 
+                           Source="{Binding Gummy, Source={x:Static local:KoalaSelect.KoalasClass}}"
+                           IsMouseDirectlyOverChanged="Gummy_IsMouseDirectlyOverChanged"/>
+                </Border>
+                <TextBlock Text="Gummy"/>
+            </StackPanel>
 
-        <Border Grid.Column="1" Grid.Row="3" BorderThickness="2" BorderBrush="Black" Background="Black">
-            <MediaElement Stretch="UniformToFill" Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Katie.jpg"/>
-        </Border>
-        <TextBlock Grid.Row="4" Grid.Column="1" Text="Katie">
-            <TextBlock.Effect>
-                <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
-            </TextBlock.Effect>
-        </TextBlock>
+            <!--Snugs-->
+            <StackPanel Grid.Column="3"
+                        Margin="6 0">
+                
+                <Border BorderThickness="2" 
+                        BorderBrush="Black" 
+                        Background="Black">
+                    <Image Stretch="UniformToFill" 
+                           Source="{Binding Snugs, Source={x:Static local:KoalaSelect.KoalasClass}}"
+                           IsMouseDirectlyOverChanged="Snugs_IsMouseDirectlyOverChanged"/>
+                </Border>
+                <TextBlock Text="Snugs"/>
+            </StackPanel>
 
-        <Border Grid.Column="3" Grid.Row="3" BorderThickness="2" BorderBrush="Black" Background="Black">
-            <MediaElement Stretch="UniformToFill" Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Kiki.jpg"/>
-        </Border>
-        <TextBlock Grid.Row="4" Grid.Column="3" Text="Kiki">
-            <TextBlock.Effect>
-                <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
-            </TextBlock.Effect>
-        </TextBlock>
+            <!--Katie-->
+            <StackPanel Grid.Row="1"
+                        Margin="6 0">
 
-        <Border Grid.Column="5" Grid.Row="3" BorderThickness="2" BorderBrush="Black" Background="Black">
-            <MediaElement Stretch="UniformToFill" Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Elizabeth.jpg"/>
-        </Border>
-        <TextBlock Grid.Row="4" Grid.Column="5" Text="Elizabeth">
-            <TextBlock.Effect>
-                <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
-            </TextBlock.Effect>
-        </TextBlock>
+                <Border BorderThickness="2" 
+                        BorderBrush="Black" 
+                        Background="Black">
+                    <Image Stretch="UniformToFill" 
+                           Source="{Binding Katie, Source={x:Static local:KoalaSelect.KoalasClass}}"
+                           IsMouseDirectlyOverChanged="Katie_IsMouseDirectlyOverChanged"/>
+                </Border>
+                <TextBlock Text="Katie"/>
+            </StackPanel>
 
-        <Border Grid.Column="7" Grid.Row="3" BorderThickness="2" BorderBrush="Black" Background="Black">
-            <MediaElement Stretch="UniformToFill" Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Dubbo.jpg"/>
-        </Border>
-        <TextBlock Grid.Row="4" Grid.Column="7" Text="Dubbo">
-            <TextBlock.Effect>
-                <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
-            </TextBlock.Effect>
-        </TextBlock>
+            <!--Kiki-->
+            <StackPanel Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="6 0">
 
-        <TextBlock Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="3" Text="Select Your Koala" VerticalAlignment="Center">
-            <TextBlock.Effect>
-                <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
-            </TextBlock.Effect>
-        </TextBlock>
+                <Border BorderThickness="2" 
+                        BorderBrush="Black" 
+                        Background="Black">
+                    <Image Stretch="UniformToFill" 
+                           Source="{Binding Kiki, Source={x:Static local:KoalaSelect.KoalasClass}}"
+                           IsMouseDirectlyOverChanged="Kiki_IsMouseDirectlyOverChanged"/>
+                </Border>
+                <TextBlock Text="Kiki"/>
+            </StackPanel>
+
+            <!--Elizabeth-->
+            <StackPanel Grid.Row="1"
+                        Grid.Column="2"
+                        Margin="6 0">
+
+                <Border BorderThickness="2" 
+                        BorderBrush="Black" 
+                        Background="Black">
+                    <Image Stretch="UniformToFill" 
+                           Source="{Binding Elizabeth, Source={x:Static local:KoalaSelect.KoalasClass}}"
+                           IsMouseDirectlyOverChanged="Elizabeth_IsMouseDirectlyOverChanged"/>
+                </Border>
+                <TextBlock Text="Elizabeth"/>
+            </StackPanel>
+
+            <!--Dubbo-->
+            <StackPanel Grid.Row="1"
+                        Grid.Column="3"
+                        Margin="6 0">
+
+                <Border BorderThickness="2" 
+                        BorderBrush="Black" 
+                        Background="Black">
+                    <Image Stretch="UniformToFill" 
+                           Source="{Binding Dubbo, Source={x:Static local:KoalaSelect.KoalasClass}}"
+                           IsMouseDirectlyOverChanged="Dubbo_IsMouseDirectlyOverChanged"/>
+                </Border>
+                <TextBlock Text="Dubbo"/>
+            </StackPanel>
+
+        </Grid>
+
+        <TextBlock Text="Select Your Koala" 
+                   VerticalAlignment="Bottom"
+                   Margin="0 12"/>
+
     </Grid>
 
     <Window.Resources>
@@ -115,6 +153,13 @@
             <Setter Property="TextElement.FontFamily" Value="Fonts/#SF Slapstick Comic"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="#FFFFFFFF"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="0" 
+                                      Direction="315" 
+                                      ShadowDepth="2"/>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
     <Window.Background>
