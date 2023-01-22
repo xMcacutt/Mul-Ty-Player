@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MulTyPlayerServer
+namespace MulTyPlayerClient
 {
-    internal class Koala
-    { 
-        public float[] Coordinates;
+    class Koala
+    {
         public string KoalaName;
         public string PlayerName;
         public ushort ClientID;
@@ -20,7 +19,6 @@ namespace MulTyPlayerServer
             this.PlayerName = PlayerName;
             this.ClientID = ClientID;
             this.KoalaID = KoalaID;
-            Coordinates = new float[6];
         }
     }
 }

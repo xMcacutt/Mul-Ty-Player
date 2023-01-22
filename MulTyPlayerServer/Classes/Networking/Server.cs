@@ -47,7 +47,7 @@ namespace MulTyPlayerServer
                             HKoala.ReturnKoala(player);
                             player.PreviousLevel = player.CurrentLevel;
                         }
-                        SendCoordinates(player.AssignedKoala.KoalaId, player.CurrentLevel, player.AssignedKoala.Coordinates, player.Name);
+                        SendCoordinates(player.AssignedKoala.KoalaName, player.CurrentLevel, player.AssignedKoala.Coordinates);
                     }
                 }
                 Thread.Sleep(10);
@@ -71,26 +71,25 @@ namespace MulTyPlayerServer
             {
                 CommandHandler.SetNewHost(e.Client.Id);
             }
+            KoalaHandler.SendKoalaAvailability(e.Client.Id);
         }
 
         private static void ClientDisconnected(object sender, ServerDisconnectedEventArgs e)
         {
             SendMessageToClients($"{PlayerList[e.Client.Id].Name} has disconnected from the server.", true);
-            SendMessageToClients($"{PlayerList[e.Client.Id].AssignedKoala.Name} was returned to the koala pool", true);
-            KoalaHandler.availableKoalas.Push(PlayerList[e.Client.Id].AssignedKoala);
+            SendMessageToClients($"{PlayerList[e.Client.Id].AssignedKoala.KoalaName} was returned to the koala pool", true);
             HKoala.ReturnKoala(PlayerList[e.Client.Id]);
             PlayerList.Remove(e.Client.Id);
         }
 
-        public static void SendCoordinates(int koalaID, int level, float[] coordinates, string name)
+        public static void SendCoordinates(string koalaName, int level, float[] coordinates)
         {
             foreach (Player player in PlayerList.Values)
             {
                 Message message = Message.Create(MessageSendMode.Unreliable, MessageID.KoalaCoordinates);
-                message.AddInt(koalaID);
+                message.AddString(koalaName);
                 message.AddInt(level);
                 message.AddFloats(coordinates);
-                message.AddString(name);
                 if (player.AssignedKoala.Coordinates != null && player.Name != null)
                 {
                     _Server.SendToAll(message);

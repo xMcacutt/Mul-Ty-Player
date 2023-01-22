@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Riptide;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace MulTyPlayerServer
 {
     internal class KoalaHandler
     {
-        public static Stack<Koala> availableKoalas;
+        public static List<Koala> Koalas;
 
         readonly int[] _defaultKoalaPosX = { 250, 0, 0, 0, -2989, -8940, -13646, -572, -3242, -518, -14213, 0, -4246, -5499, -1615, 90, 0, -166, 0, -192, -8845, -82, -82, 10 };
         readonly int[] _defaultKoalaPosY = { 2200, 0, 0, 0, 40, -1653, 138, -695, -809, -2827, 4400, 0, -273, -708, -1488, -789, 0, -100, 0, -630, 1499, 524, 524, -200 };
@@ -16,27 +17,34 @@ namespace MulTyPlayerServer
 
         public KoalaHandler()
         {
-            availableKoalas = new Stack<Koala>();
-            Dictionary<string, Koala> koalas = new()
-            {
-                { "Katie", new Koala(0, "Katie") },
-                { "Mim", new Koala(1, "Mim") },
-                { "Elizabeth", new Koala(2, "Elizabeth") },
-                { "Snugs", new Koala(3, "Snugs") },
-                { "Gummy", new Koala(4, "Gummy") },
-                { "Dubbo", new Koala(5, "Dubbo") },
-                { "Kiki", new Koala(6, "Kiki") },
-                { "Boonie", new Koala(7, "Boonie") }
-            };
-            foreach (string koala in SettingsHandler.KoalaOrder.Reverse())
-            {
-                availableKoalas.Push(koalas[koala]);
-            }
+            Koalas = new();
         }
 
-        public void AssignKoala(Player player)
+        [MessageHandler((ushort)MessageID.KoalaSelected)]
+        private static void AssignKoala(Message message, ushort fromClientId)
         {
-            player.AssignedKoala = availableKoalas.Pop();
+            string koalaName = message.GetString();
+            string playerName = message.GetString();
+            ushort clientID = message.GetUShort();
+            int koalaID = message.GetInt();
+            Koalas.Add(new Koala(koalaName, playerName, clientID, koalaID));
+            AnnounceKoalaAssigned(koalaName, playerName, clientID, koalaID, fromClientId, true);
+        }
+
+        private static void AnnounceKoalaAssigned(string koalaName, string playerName, ushort clientID, int koalaID, ushort fromToClientId, bool bSendToAll)
+        {
+            Message announcement = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
+            announcement.AddString(koalaName);
+            announcement.AddString(playerName);
+            announcement.AddUShort(clientID);
+            announcement.AddInt(koalaID);
+            if (bSendToAll) Server._Server.SendToAll(announcement, clientID);
+            else Server._Server.Send(announcement, clientID);
+        }
+
+        public static void SendKoalaAvailability(ushort recipient)
+        {
+            foreach(Koala koala in Koalas) AnnounceKoalaAssigned(koala.KoalaName, koala.PlayerName, koala.ClientID, koala.KoalaID, recipient, false);
         }
 
         public void ReturnKoala(Player player)
@@ -54,7 +62,7 @@ namespace MulTyPlayerServer
                         0,
                         0
                     };
-                    Server.SendCoordinates(player.AssignedKoala.KoalaId, player.PreviousLevel, defaultCoords, player.Name);
+                    Server.SendCoordinates(player.AssignedKoala.KoalaName, player.PreviousLevel, defaultCoords);
                 }
 
             }

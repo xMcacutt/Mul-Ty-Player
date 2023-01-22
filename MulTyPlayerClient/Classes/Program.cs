@@ -64,7 +64,7 @@ namespace MulTyPlayerClient
             HKoala = new KoalaHandler();
 
             HHero.SetCoordAddrs();
-            HKoala.CreateKoalas();
+            HKoala.CreateKoalaAddrArrays();
 
             //STARTS THE THREAD THAT CONTINUOUSLY READS DATA FROM THE GAME
             _cts = new CancellationTokenSource();

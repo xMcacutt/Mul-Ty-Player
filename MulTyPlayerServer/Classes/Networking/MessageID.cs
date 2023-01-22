@@ -20,6 +20,7 @@ namespace MulTyPlayerServer
         ReqSettings,
         ReqHost,
         HostChange,
-        HostCommand
+        HostCommand,
+        KoalaSelected
     }
 }
