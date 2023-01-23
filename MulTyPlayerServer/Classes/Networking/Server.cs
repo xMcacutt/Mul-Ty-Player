@@ -32,6 +32,7 @@ namespace MulTyPlayerServer
             _Server = new Riptide.Server();
             _Server.Start(8750, 8);
 
+            _Server.HandleConnection += (s, e) => HandleConnection(s, e);
             _Server.ClientConnected += (s, e) => ClientConnected(s, e);
             _Server.ClientDisconnected += (s, e) => ClientDisconnected(s, e);
             
@@ -65,8 +66,7 @@ namespace MulTyPlayerServer
             _isRunning = false;
         }
 
-        [MessageHandler((ushort)MessageID.Authentication)]
-        private static void CheckClientValidity(Connection pendingConnection, Message authenticationMessage)
+        private static void HandleConnection(Connection pendingConnection, Message authenticationMessage)
         {
             string pass = authenticationMessage.GetString();
             if (string.Equals(pass, SettingsHandler.Password)) _Server.Accept(pendingConnection);
