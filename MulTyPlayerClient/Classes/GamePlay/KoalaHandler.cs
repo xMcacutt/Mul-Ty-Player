@@ -60,24 +60,24 @@ namespace MulTyPlayerClient
             int modifier = (Program.HLevel.CurrentLevelId == 9 || Program.HLevel.CurrentLevelId == 13) ? 2 : 1;
             int offset = (Program.HLevel.CurrentLevelId == 9 || Program.HLevel.CurrentLevelId == 13) ? 0x518 : 0x0;
             if(_baseKoalaAddress == 0) _baseKoalaAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x26B070), new int[] { 0x0 });
-            foreach (string koala in KoalaAddrs.Keys)
+            foreach (Koala koala in Koalas)
             {
                 //X COORDINATE
-                KoalaAddrs[koala][0] = _baseKoalaAddress + offset + 0x2A4 + (0x518 * modifier * koalaID);
+                KoalaAddrs[koala.KoalaName][0] = _baseKoalaAddress + offset + 0x2A4 + (0x518 * modifier * koala.KoalaID);
                 //Y COORDINATE
-                KoalaAddrs[koala][1] = _baseKoalaAddress + offset + 0x2A8 + (0x518 * modifier * koalaID);
+                KoalaAddrs[koala.KoalaName][1] = _baseKoalaAddress + offset + 0x2A8 + (0x518 * modifier * koala.KoalaID);
                 //Z COORDINATE
-                KoalaAddrs[koala][2] = _baseKoalaAddress + offset + 0x2AC + (0x518 * modifier * koalaID);
+                KoalaAddrs[koala.KoalaName][2] = _baseKoalaAddress + offset + 0x2AC + (0x518 * modifier * koala.KoalaID);
                 //P COORDINATE
-                KoalaAddrs[koala][3] = _baseKoalaAddress + offset + 0x2B4 + (0x518 * modifier * koalaID);
+                KoalaAddrs[koala.KoalaName][3] = _baseKoalaAddress + offset + 0x2B4 + (0x518 * modifier * koala.KoalaID);
                 //Y COORDINATE
-                KoalaAddrs[koala][4] = _baseKoalaAddress + offset + 0x2B8 + (0x518 * modifier * koalaID);
+                KoalaAddrs[koala.KoalaName][4] = _baseKoalaAddress + offset + 0x2B8 + (0x518 * modifier * koala.KoalaID);
                 //R COORDINATE
-                KoalaAddrs[koala][5] = _baseKoalaAddress + offset + 0x2BC + (0x518 * modifier * koalaID);
+                KoalaAddrs[koala.KoalaName][5] = _baseKoalaAddress + offset + 0x2BC + (0x518 * modifier * koala.KoalaID);
                 //COLLISION
-                KoalaAddrs[koala][6] = _baseKoalaAddress + offset + 0x298 + (0x518 * modifier * koalaID);
+                KoalaAddrs[koala.KoalaName][6] = _baseKoalaAddress + offset + 0x298 + (0x518 * modifier * koala.KoalaID);
                 //VISIBILITY
-                KoalaAddrs[koala][7] = _baseKoalaAddress + offset + 0x44 + (0x518 * modifier * koalaID);
+                KoalaAddrs[koala.KoalaName][7] = _baseKoalaAddress + offset + 0x44 + (0x518 * modifier * koala.KoalaID);
             }
             if (!SettingsHandler.DoKoalaCollision) RemoveCollision();
         }
@@ -85,9 +85,9 @@ namespace MulTyPlayerClient
         public void RemoveCollision()
         {
             //WRITES 0 TO COLLISION BYTE
-            foreach (int koala in KoalaAddrs.Keys)
+            foreach (Koala koala in Koalas)
             {
-                ProcessHandler.WriteData(KoalaAddrs[koala][6], new byte[] {0});
+                ProcessHandler.WriteData(KoalaAddrs[koala.KoalaName][6], new byte[] {0});
             }
         }
 
@@ -101,27 +101,26 @@ namespace MulTyPlayerClient
         
         public void MakeVisible()
         {
-            foreach (int koala in KoalaAddrs.Keys)
+            foreach (Koala koala in Koalas)
             {
-                ProcessHandler.WriteData(KoalaAddrs[koala][7], new byte[] {1});
+                ProcessHandler.WriteData(KoalaAddrs[koala.KoalaName][7], new byte[] {1});
             }
         }
 
         [MessageHandler((ushort)MessageID.KoalaCoordinates)]
         private static void HandleGettingCoordinates(Message message)
         {
-            int koalaID = message.GetInt();
+            string koalaName = message.GetString();
             int level = message.GetInt();
             float[] coordinates = message.GetFloats();
-            string name = message.GetString();
 
             //SANITY CHECK THAT WE HAVEN'T BEEN SENT OUR OWN COORDINATES AND WE AREN'T LOADING, ON THE MENU, OR IN A DIFFERENT LEVEL 
-            if (name == Program.PlayerName || HGameState.CheckMenuOrLoading() || level != HLevel.CurrentLevelId) return;
+            if (HGameState.CheckMenuOrLoading() || level != HLevel.CurrentLevelId) return;
             
             //WRITE COORDINATES TO KOALA COORDINATE ADDRESSES
             for (int i = 0; i < coordinates.Length; i++)
             {
-                ProcessHandler.WriteData(Program.HKoala.KoalaAddrs[koalaID][i], BitConverter.GetBytes(coordinates[i]));
+                ProcessHandler.WriteData(Program.HKoala.KoalaAddrs[koalaName][i], BitConverter.GetBytes(coordinates[i]));
                 //Console.WriteLine("Writing {0:F} to {1:X}", coordinates[i], Program.HKoala.KoalaAddrs[intData[0]][i]);
             }
         }
