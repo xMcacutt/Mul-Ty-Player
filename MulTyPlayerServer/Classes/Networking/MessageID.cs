@@ -8,6 +8,7 @@ namespace MulTyPlayerServer
 {
     public enum MessageID : ushort
     {
+        Authentication,
         Connected,
         PlayerInfo,
         KoalaCoordinates,
@@ -17,7 +18,7 @@ namespace MulTyPlayerServer
         Disconnect,
         ResetSync,
         ReqSync,
-        ReqSettings,
+        SyncSettings,
         ReqHost,
         HostChange,
         HostCommand,

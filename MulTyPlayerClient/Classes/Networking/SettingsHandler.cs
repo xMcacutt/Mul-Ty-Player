@@ -13,8 +13,8 @@ namespace MulTyPlayerClient
         public static string DefaultName;
         public static string DefaultAddress;
         public static bool DoKoalaCollision;
-        public static bool DoPositionLogging;
-        public static string PositionLoggingOutputDir;
+        public static bool CreateLogFile;
+        public static string LogFileOutputDir;
         public static bool DoTESyncing;
         public static bool DoCogSyncing;
         public static bool DoBilbySyncing;
@@ -33,8 +33,8 @@ namespace MulTyPlayerClient
             DefaultName = settingsFileLines[8].Split('=')[1].TrimStart();
             DefaultAddress = settingsFileLines[10].Split('=')[1].TrimStart();
             DoKoalaCollision = settingsFileLines[12].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
-            DoPositionLogging = settingsFileLines[14].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
-            PositionLoggingOutputDir = settingsFileLines[16].Split('=')[1].TrimStart();
+            CreateLogFile = settingsFileLines[14].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
+            LogFileOutputDir = settingsFileLines[16].Split('=')[1].TrimStart();
             SyncSettings = new()
             {
                 {"TE", false},
@@ -47,14 +47,8 @@ namespace MulTyPlayerClient
                 {"Attribute", false},
             };
         }
-        
-        public static void RequestServerSettings()
-        {
-            Message message = Message.Create(MessageSendMode.Reliable, MessageID.ReqSettings);
-            Client._client.Send(message);
-        }
 
-        [MessageHandler((ushort)MessageID.ReqSettings)]
+        [MessageHandler((ushort)MessageID.SyncSettings)]
         static void HandleSettingsUpdate(Message message)
         {
             bool[] b = message.GetBools();

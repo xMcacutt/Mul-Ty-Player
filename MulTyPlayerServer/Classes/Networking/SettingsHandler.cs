@@ -57,13 +57,12 @@ namespace MulTyPlayerServer
             };
         }
 
-        [MessageHandler((ushort)MessageID.ReqSettings)]
-        static void HandleSettingsRequest(ushort fromClientId, Message message)
+        public static void SendSettings(ushort clientId)
         {
             bool[] b = { DoSyncTEs, DoSyncCogs, DoSyncBilbies, DoSyncRangs, DoSyncOpals, DoSyncPortals, DoSyncCliffs };
-            Message response = Message.Create(MessageSendMode.Reliable, MessageID.ReqSettings);
-            response.AddBools(b);
-            Server._Server.Send(response, fromClientId);
+            Message message = Message.Create(MessageSendMode.Reliable, MessageID.SyncSettings);
+            message.AddBools(b);
+            Server._Server.Send(message, clientId);
         }
     }
 }

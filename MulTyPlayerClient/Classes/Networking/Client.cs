@@ -1,4 +1,5 @@
-﻿using Riptide;
+﻿using MulTyPlayerClient.Classes.ConsoleLog;
+using Riptide;
 using Riptide.Utils;
 using System;
 using System.Net.Cache;
@@ -15,11 +16,12 @@ namespace MulTyPlayerClient
         public static bool IsRunning;
         public static Riptide.Client _client;
         private static string _ip;
-        private static string _command;
+        private static string _pass;
 
         public static void StartClient(string ipinput)
         {
-            RiptideLogger.Initialize(Console.WriteLine, true);
+            Logger logger = new Logger(100);
+            RiptideLogger.Initialize(Logger.Write, true);
             _ip = ipinput;
 
             IsRunning = true;
@@ -28,11 +30,13 @@ namespace MulTyPlayerClient
             _client.Connected += (s, e) => Connected();
             _client.Disconnected += (s, e) => Disconnected();
             _client.ConnectionFailed += (s, e) => ConnectionFailed();
-            _client.Connect(_ip + ":8750");
 
-            Thread commandThread = new(new ParameterizedThreadStart(CommandThread));
-            commandThread.Start(Program._cts.Token);
+            Message authentication = Message.Create(MessageSendMode.Reliable, MessageID.Authentication);
+            authentication.AddString(Program.PlayerName);
+            authentication.AddString(_pass);
+            _client.Connect(_ip + ":8750", 5, 0, authentication);
 
+            /* NEEDS TO BE HANDLED ON A BACKGROUND WORKER
             while (IsRunning)
             {
                 _client.Update();
@@ -49,58 +53,28 @@ namespace MulTyPlayerClient
                 }
                 Thread.Sleep(10);
             }
-        }
-
-        private static void CommandThread(Object token)
-        {
-            CommandHandler commandHandler = new();
-            _command = "/doNothing";
-            while (_command != "/stop")
-            {
-                //Console.WriteLine(CommandHandler.host);
-                if (CommandHandler.host != 0 && _command != "/doNothing")
-                {
-                    commandHandler.ParseCommand(_command);
-                }
-                _command = Console.ReadLine();
-            }
-
-            if (IsRunning)
-            {
-                IsRunning = false;
-                Console.WriteLine("\nYou have been disconnected from the server.");
-                _client.Disconnect();
-            }
+            */
         }
 
         private static void Connected()
         {
-            Console.WriteLine("\nConnected to server successfully!\nType /stop to disconnect at any time.");
-            SettingsHandler.RequestServerSettings();
-            Message message = Message.Create(MessageSendMode.Reliable, MessageID.Connected);
-            message.AddString(Program.PlayerName);
-            _client.Send(message);
+            Logger.Write("Password accepted. Connected to server successfully!");
         }
 
         private static void Disconnected()
         {
-            Program._cts.Cancel();
-            Program._cts.Dispose();
         }
 
         private static void ConnectionFailed()
         {
-            Console.WriteLine("Could not connect to server...");
-            _command = "/stop";
-            IsRunning = false;
-            Disconnected();
+            //"Could not connect to server. Please try again."
             return;
         }
 
         [MessageHandler((ushort)MessageID.ConsoleSend)]
         public static void ConsoleSend(Message message)
         {
-            Console.WriteLine(message.GetString());
+            Logger.Write(message.GetString());
         }
 
 

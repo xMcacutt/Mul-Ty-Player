@@ -65,6 +65,14 @@ namespace MulTyPlayerServer
             _isRunning = false;
         }
 
+        [MessageHandler((ushort)MessageID.Authentication)]
+        private static void CheckClientValidity(Connection pendingConnection, Message authenticationMessage)
+        {
+            string pass = authenticationMessage.GetString();
+            if (string.Equals(pass, SettingsHandler.Password)) _Server.Accept(pendingConnection);
+            else _Server.Reject(pendingConnection);
+        }
+
         private static void ClientConnected(object sender, ServerConnectedEventArgs e)
         {
             if (_Server.Clients.Length == 1)
@@ -72,6 +80,7 @@ namespace MulTyPlayerServer
                 CommandHandler.SetNewHost(e.Client.Id);
             }
             KoalaHandler.SendKoalaAvailability(e.Client.Id);
+            SettingsHandler.SendSettings(e.Client.Id);
         }
 
         private static void ClientDisconnected(object sender, ServerDisconnectedEventArgs e)
