@@ -136,6 +136,9 @@
     <None Update="GUI\KoalaSelectionAssets\Taken\Kiki.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="GUI\KoalaSelectionAssets\Taken\Mim.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="GUI\KoalaSelectionAssets\Taken\Snugs.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

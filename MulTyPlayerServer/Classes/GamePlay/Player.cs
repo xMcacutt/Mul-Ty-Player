@@ -22,13 +22,12 @@ namespace MulTyPlayerServer
         private static void HandleConnectedInitialization(ushort fromClientId, Message message)
         {
             string name = message.GetString();
+            string pass = message.GetString();
+            //if (string.Equals(pass, pass, System.StringComparison.CurrentCultureIgnoreCase));
             ushort id = fromClientId;
             Server.SendMessageToClients($"{name} joined the server.", true, fromClientId);
             Player player = new Player(id, name);
             Server.PlayerList.Add(id, player);
-            Program.HKoala.AssignKoala(player);
-            Server.SendMessageToClients($"{name} was assgined {player.AssignedKoala.Name}", true, fromClientId);
-            Server.SendMessageToClient($"You were assigned {player.AssignedKoala.Name}", false, fromClientId);
         }
 
         [MessageHandler((ushort)MessageID.PlayerInfo)]
