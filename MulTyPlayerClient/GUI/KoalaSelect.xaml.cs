@@ -20,7 +20,6 @@ namespace MulTyPlayerClient.GUI
     /// </summary>
     public partial class KoalaSelect : Window
     {
-        public static KoalaImages KoalasClass = new KoalaImages();
 
         public KoalaSelect()
         {
@@ -29,42 +28,42 @@ namespace MulTyPlayerClient.GUI
 
         private void Boonie_IsMouseDirectlyOverChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            KoalasClass.Boonie = (bool)e.NewValue ? @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Light/Boonie.png" : @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Boonie.jpg";
+            BasicIoC.KoalaSelectBinding.Boonie = (bool)e.NewValue ? @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Light/Boonie.png" : @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Boonie.jpg";
         }
 
         private void Mim_IsMouseDirectlyOverChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            KoalasClass.Mim = (bool)e.NewValue ? @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Light/Mim.png" : @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Mim.jpg";
+            BasicIoC.KoalaSelectBinding.Mim = (bool)e.NewValue ? @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Light/Mim.png" : @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Mim.jpg";
         }
 
         private void Gummy_IsMouseDirectlyOverChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            KoalasClass.Gummy = (bool)e.NewValue ? @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Light/Gummy.png" : @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Gummy.jpg";
+            BasicIoC.KoalaSelectBinding.Gummy = (bool)e.NewValue ? @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Light/Gummy.png" : @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Gummy.jpg";
         }
 
         private void Snugs_IsMouseDirectlyOverChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            KoalasClass.Snugs = (bool)e.NewValue ? @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Light/Snugs.png" : @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Snugs.jpg";
+            BasicIoC.KoalaSelectBinding.Snugs = (bool)e.NewValue ? @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Light/Snugs.png" : @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Snugs.jpg";
         }
 
         private void Katie_IsMouseDirectlyOverChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            KoalasClass.Katie = (bool)e.NewValue ? @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Light/Katie.png" : @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Katie.jpg";
+            BasicIoC.KoalaSelectBinding.Katie = (bool)e.NewValue ? @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Light/Katie.png" : @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Katie.jpg";
         }
 
         private void Kiki_IsMouseDirectlyOverChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            KoalasClass.Kiki = (bool)e.NewValue ? @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Light/Kiki.png" : @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Kiki.jpg";
+            BasicIoC.KoalaSelectBinding.Kiki = (bool)e.NewValue ? @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Light/Kiki.png" : @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Kiki.jpg";
         }
 
         private void Elizabeth_IsMouseDirectlyOverChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            KoalasClass.Elizabeth = (bool)e.NewValue ? @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Light/Elizabeth.png" : @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Elizabeth.jpg";
+            BasicIoC.KoalaSelectBinding.Elizabeth = (bool)e.NewValue ? @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Light/Elizabeth.png" : @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Elizabeth.jpg";
         }
 
         private void Dubbo_IsMouseDirectlyOverChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            KoalasClass.Dubbo = (bool)e.NewValue ? @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Light/Dubbo.png" : @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Dubbo.jpg";
+            BasicIoC.KoalaSelectBinding.Dubbo = (bool)e.NewValue ? @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Light/Dubbo.png" : @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Dubbo.jpg";
         }
     }
 }
