@@ -6,95 +6,180 @@
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
         mc:Ignorable="d"
         Title="Login" Height="225" Width="350" ResizeMode="NoResize">
-    <Grid x:Name="MainGrid">
+    <Grid x:Name="MainGrid" Margin="10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="0.5*"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="0.25*"/>
-            <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="0.25*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="Title" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="Connect To Host" VerticalAlignment="Top" FontSize="30">
+        <!--Title-->
+        <TextBlock x:Name="Title" 
+                   Grid.ColumnSpan="3" 
+                   Text="Connect To Host" 
+                   VerticalAlignment="Top" 
+                   FontSize="30">
             <TextBlock.Effect>
-                <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
+                <DropShadowEffect BlurRadius="0" 
+                                  Direction="315" 
+                                  ShadowDepth="2"/>
             </TextBlock.Effect>
         </TextBlock>
 
-        <TextBlock x:Name="labelHostIP" Grid.Row="2" Grid.Column="1" Text="Host IP" HorizontalAlignment="Right" Margin="0,0,7,0" VerticalAlignment="Center" FontSize="22">
-            <TextBlock.Effect>
-                <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
-            </TextBlock.Effect>
-        </TextBlock>
-        <TextBox x:Name="fieldHostIP" HorizontalContentAlignment="Right" Text="192.168.1.101" Grid.Row="2" Grid.Column="2" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" BorderThickness="2" BorderBrush="{x:Null}">
-            <TextBox.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#7F6D4500"/>
-                    <GradientStop Color="#7F000000" Offset="1"/>
-                </LinearGradientBrush>
-            </TextBox.Background>
-        </TextBox>
-        <Button x:Name="buttonVisibHostIP" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" >
-            <Image x:Name="iconVisibHostIP" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{DynamicResource visibility_black_24dpDrawingImage}"/>
-        </Button>
+        <!--Labels-->
+        <StackPanel Grid.Row="1">
 
-        <TextBlock x:Name="labelPass" Grid.Row="3" Grid.Column="1" Text="Pass" HorizontalAlignment="Right" Margin="0,0,7,0" VerticalAlignment="Center" FontSize="22">
-            <TextBlock.Effect>
-                <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
-            </TextBlock.Effect>
-        </TextBlock>
-        <TextBox x:Name="fieldPass" HorizontalContentAlignment="Right" Text="OPALS" Grid.Row="3" Grid.Column="2" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" BorderThickness="2" BorderBrush="{x:Null}">
-            <TextBox.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#7F6D4500"/>
-                    <GradientStop Color="#7F000000" Offset="1"/>
-                </LinearGradientBrush>
-            </TextBox.Background>
-        </TextBox>
-        <Button x:Name="buttonVisibPass" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" >
-            <Image x:Name="iconVisibPass" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{DynamicResource visibility_black_24dpDrawingImage}"/>
-        </Button>
+            <TextBlock x:Name="labelHostIP" 
+                       Text="Host IP" 
+                       HorizontalAlignment="Right" 
+                       Margin="0,4,7,4" 
+                       FontSize="22">
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
+                </TextBlock.Effect>
+            </TextBlock>
 
-        <TextBlock x:Name="labelName" Grid.Row="4" Grid.Column="1" Text="Name" HorizontalAlignment="Right" Margin="0,0,7,0" VerticalAlignment="Center" FontSize="22">
-            <TextBlock.Effect>
-                <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
-            </TextBlock.Effect>
-        </TextBlock>
-        <TextBox x:Name="fieldName" HorizontalContentAlignment="Right" Text="xMcacutt" Grid.Row="4" Grid.Column="2" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" BorderThickness="2" BorderBrush="{x:Null}">
-            <TextBox.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#7F6D4500"/>
-                    <GradientStop Color="#7F000000" Offset="1"/>
-                </LinearGradientBrush>
-            </TextBox.Background>
-        </TextBox>
-        <Button x:Name="buttonVisibName" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" >
-            <Image x:Name="iconVisibName" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{DynamicResource visibility_black_24dpDrawingImage}"/>
-        </Button>
+            <TextBlock x:Name="labelPass" 
+                       Text="Pass" 
+                       HorizontalAlignment="Right" 
+                       Margin="0,4,7,4" 
+                       FontSize="22">
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
+                </TextBlock.Effect>
+            </TextBlock>
+            
+            <TextBlock x:Name="labelName" 
+                       Text="Name" 
+                       HorizontalAlignment="Right" 
+                       Margin="0,4,7,4"
+                       FontSize="22">
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
+                </TextBlock.Effect>
+            </TextBlock>
+            
+        </StackPanel>
 
-        <Button x:Name="buttonConnect" Grid.Column="2" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" BorderBrush="{x:Null}">
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="5"/>
-                </Style>
-            </Button.Resources>
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#BF4D1500"/>
-                    <GradientStop Color="#BF000000" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
-            <TextBlock x:Name="labelConnectButton" Margin="10,0,10,0" FontSize="20" Text="Connect"/>
-        </Button>
+        <!--Textboxes and connect button-->
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1">
+
+            <TextBox x:Name="fieldHostIP" 
+                     HorizontalContentAlignment="Right" 
+                     Text="192.168.1.101" 
+                     FontSize="20" 
+                     HorizontalAlignment="Stretch" 
+                     VerticalContentAlignment="Center" 
+                     BorderThickness="2" 
+                     BorderBrush="{x:Null}"
+                     Margin="0 3.5">
+                <TextBox.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#7F6D4500"/>
+                        <GradientStop Color="#7F000000" Offset="1"/>
+                    </LinearGradientBrush>
+                </TextBox.Background>
+            </TextBox>
+            
+            <TextBox x:Name="fieldPass" 
+                     HorizontalContentAlignment="Right" 
+                     Text="OPALS" 
+                     FontSize="20" 
+                     HorizontalAlignment="Stretch" 
+                     VerticalContentAlignment="Center"
+                     BorderThickness="2" 
+                     BorderBrush="{x:Null}"
+                     Margin="0 3.5">
+                <TextBox.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#7F6D4500"/>
+                        <GradientStop Color="#7F000000" Offset="1"/>
+                    </LinearGradientBrush>
+                </TextBox.Background>
+            </TextBox>
+            
+            <TextBox x:Name="fieldName" 
+                     HorizontalContentAlignment="Right" 
+                     Text="xMcacutt" 
+                     FontSize="20" 
+                     HorizontalAlignment="Stretch" 
+                     VerticalContentAlignment="Center" 
+                     BorderThickness="2" 
+                     BorderBrush="{x:Null}"
+                     Margin="0 3.5">
+                <TextBox.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#7F6D4500"/>
+                        <GradientStop Color="#7F000000" Offset="1"/>
+                    </LinearGradientBrush>
+                </TextBox.Background>
+            </TextBox>
+
+            <Button x:Name="buttonConnect" 
+                    HorizontalAlignment="Left" 
+                    BorderBrush="{x:Null}"
+                    Margin="0 3.5">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#BF4D1500"/>
+                        <GradientStop Color="#BF000000" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <TextBlock x:Name="labelConnectButton" Margin="10,0,10,0" FontSize="20" Text="Connect"/>
+            </Button>
+            
+        </StackPanel>
+
+        <!--Eye button-->
+        <StackPanel Grid.Row="1"
+                    Grid.Column="2">
+
+            <Button x:Name="buttonVisibHostIP" 
+                    HorizontalAlignment="Center" 
+                    Background="{x:Null}" 
+                    BorderBrush="{x:Null}"
+                    Width="37">
+                <Image x:Name="iconVisibHostIP" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       Source="{DynamicResource visibility_black_24dpDrawingImage}"/>
+            </Button>
+
+            <Button x:Name="buttonVisibPass" 
+                    HorizontalAlignment="Center" 
+                    Background="{x:Null}" 
+                    BorderBrush="{x:Null}"
+                    Width="37">
+                <Image x:Name="iconVisibPass" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       Source="{DynamicResource visibility_black_24dpDrawingImage}"/>
+            </Button>
+
+            <Button x:Name="buttonVisibName" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Background="{x:Null}" 
+                    BorderBrush="{x:Null}"
+                    Width="37">
+                <Image x:Name="iconVisibName" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       Source="{DynamicResource visibility_black_24dpDrawingImage}"/>
+            </Button>
+            
+        </StackPanel>
+
     </Grid>
 
     <Window.Background>

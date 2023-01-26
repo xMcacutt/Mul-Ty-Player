@@ -78,7 +78,7 @@
                                 <Setter Property="Source" Value="{Binding Mim, Source={x:Static local:BasicIoC.KoalaSelectBinding}}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding MimAvailable, Source={x:Static local:BasicIoC.KoalaSelectBinding}}" Value="false">
-                                        <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Mim.jpg"/>
+                                        <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Taken/Mim.jpg"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
