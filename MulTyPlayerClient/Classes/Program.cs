@@ -18,7 +18,6 @@ namespace MulTyPlayerClient
 
         public static CancellationTokenSource _cts;
         public static string PlayerName;
-        private static string _inputStr;
         public static string PosLogPath;
 
        /* static void Main(string[] args)
@@ -39,8 +38,6 @@ namespace MulTyPlayerClient
         private static void RunProgram()
         {
             SettingsHandler.Setup();
-
-            Console.WriteLine("Welcome to Mul-Ty-player 1.3.4");
 
             //TRIES TO FIND TY AND GIVES WARNING MESSAGE TO OPEN TY ON FAILURE
             var messageShown = false;
@@ -70,14 +67,6 @@ namespace MulTyPlayerClient
             _cts = new CancellationTokenSource();
             Thread TyDataThread = new Thread(new ParameterizedThreadStart(HGameState.GetTyData));
             TyDataThread.Start(_cts.Token);
-
-            //MAKES FILE FOR POSITION LOGGING
-            if (SettingsHandler.DoPositionLogging)
-            {
-                PosLogPath = SettingsHandler.PositionLoggingOutputDir + DateTime.Now;
-                //  File.Create(posLogPath);
-                //   Console.WriteLine("File created for position logging");
-            }
 
             //ATTEMPTS TO GET STEAM NAME OR DEFAULT NAME FROM SETTINGS FILE
             if (SettingsHandler.DoGetSteamName)

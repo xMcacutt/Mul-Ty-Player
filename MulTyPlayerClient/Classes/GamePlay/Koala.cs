@@ -11,10 +11,10 @@ namespace MulTyPlayerClient
         public string KoalaName;
         public int KoalaID;
 
-        public Koala(string KoalaName, int KoalaID)
+        public Koala(string koalaName, int koalaID)
         {
-            this.KoalaName = KoalaName;
-            this.KoalaID = KoalaID;
+            KoalaName = koalaName;
+            KoalaID = koalaID;
         }
     }
 }

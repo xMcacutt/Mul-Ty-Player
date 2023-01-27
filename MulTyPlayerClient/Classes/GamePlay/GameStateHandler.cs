@@ -10,8 +10,6 @@ namespace MulTyPlayerClient
 {
     public class GameStateHandler
     {
-        static SyncHandler HSync => Program.HSync;
-
         public bool LoadingState { get; set; }
         public bool PreviousLoadingState { get; set; }
 

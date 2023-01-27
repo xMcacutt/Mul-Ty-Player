@@ -22,10 +22,10 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.KoalaSelected)]
         private static void HandleKoalaSelected(Message message)
         {
-            string KoalaName = message.GetString();
-            string PlayerName = message.GetString();
-            ushort ClientID = message.GetUShort();
-            PlayerHandler.AddPlayer(KoalaName, PlayerName, ClientID);
+            string koalaName = message.GetString();
+            string playerName = message.GetString();
+            ushort clientID = message.GetUShort();
+            PlayerHandler.AddPlayer(koalaName, playerName, clientID);
         }
 
         public void CreateKoalaAddrArrays()
@@ -48,7 +48,7 @@ namespace MulTyPlayerClient
             int modifier = (Program.HLevel.CurrentLevelId == 9 || Program.HLevel.CurrentLevelId == 13) ? 2 : 1;
             int offset = (Program.HLevel.CurrentLevelId == 9 || Program.HLevel.CurrentLevelId == 13) ? 0x518 : 0x0;
             if(_baseKoalaAddress == 0) _baseKoalaAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x26B070), new int[] { 0x0 });
-            foreach (Player player in PlayerHandler.Players)
+            foreach(Player player in PlayerHandler.Players.Values)
             {
                 //X COORDINATE
                 KoalaAddrs[player.Koala.KoalaName][0] = _baseKoalaAddress + offset + 0x2A4 + (0x518 * modifier * player.Koala.KoalaID);
@@ -73,7 +73,7 @@ namespace MulTyPlayerClient
         public void RemoveCollision()
         {
             //WRITES 0 TO COLLISION BYTE
-            foreach (Player player in PlayerHandler.Players)
+            foreach (Player player in PlayerHandler.Players.Values)
             {
                 ProcessHandler.WriteData(KoalaAddrs[player.Koala.KoalaName][6], new byte[] {0});
             }
@@ -89,7 +89,7 @@ namespace MulTyPlayerClient
         
         public void MakeVisible()
         {
-            foreach (Player player in PlayerHandler.Players)
+            foreach (Player player in PlayerHandler.Players.Values)
             {
                 ProcessHandler.WriteData(KoalaAddrs[player.Koala.KoalaName][7], new byte[] {1});
             }

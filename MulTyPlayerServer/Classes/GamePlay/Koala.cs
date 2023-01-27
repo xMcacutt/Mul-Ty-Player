@@ -8,19 +8,13 @@ namespace MulTyPlayerServer
 {
     internal class Koala
     { 
-        public float[] Coordinates;
         public string KoalaName;
-        public string PlayerName;
-        public ushort ClientID;
         public int KoalaID;
 
-        public Koala(string KoalaName, string PlayerName, ushort ClientID, int KoalaID)
+        public Koala(string koalaName, int koalaID)
         {
-            this.KoalaName = KoalaName;
-            this.PlayerName = PlayerName;
-            this.ClientID = ClientID;
-            this.KoalaID = KoalaID;
-            Coordinates = new float[6];
+            KoalaName = koalaName;
+            KoalaID = koalaID;
         }
     }
 }

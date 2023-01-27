@@ -10,7 +10,6 @@ namespace MulTyPlayerClient
 {
     internal class LevelHandler
     {
-        IntPtr HProcess => ProcessHandler.HProcess;
         static KoalaHandler HKoala => Program.HKoala;
         static SyncHandler HSync => Program.HSync;
 

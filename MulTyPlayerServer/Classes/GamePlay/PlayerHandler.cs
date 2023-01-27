@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Riptide;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MulTyPlayerClient
+namespace MulTyPlayerServer
 {
     internal class PlayerHandler
     {
@@ -25,6 +25,17 @@ namespace MulTyPlayerClient
         public static void RemovePlayer(ushort id)
         {
             Players.Remove(id);
+        }
+
+        [MessageHandler((ushort)MessageID.PlayerInfo)]
+        private static void HandleGettingCoordinates(ushort fromClientId, Message message)
+        {
+            if (Players.ContainsKey(fromClientId))
+            {
+                if (message.GetBool()) { return; }
+                Players[fromClientId].CurrentLevel = message.GetInt();
+                Players[fromClientId].Coordinates = message.GetFloats();
+            }
         }
     }
 }

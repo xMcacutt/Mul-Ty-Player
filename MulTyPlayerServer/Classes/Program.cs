@@ -9,6 +9,7 @@ namespace MulTyPlayerServer
         public static KoalaHandler HKoala;
         public static SyncHandler HSync;
         public static CommandHandler HCommand;
+        public static PlayerHandler HPlayer;
         public static string _inputStr;
 
         private static void Main()
