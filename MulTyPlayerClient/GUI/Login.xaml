@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
         mc:Ignorable="d"
-        Title="Login" Height="225" Width="350" ResizeMode="NoResize">
+        Title="Login" Height="245" Width="350" ResizeMode="NoResize">
     <Grid x:Name="MainGrid" Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*"/>
@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
 
         <!--Title-->
-        <TextBlock x:Name="Title" 
+        <TextBlock x:Name="TextTitle" 
                    Grid.ColumnSpan="3" 
                    Text="Connect To Host" 
                    VerticalAlignment="Top" 
@@ -105,7 +105,7 @@
             
             <TextBox x:Name="fieldName" 
                      HorizontalContentAlignment="Right" 
-                     Text="xMcacutt" 
+                     Text="{Binding Name, Source={x:Static local:BasicIoC.LoginViewModel}}" 
                      FontSize="20" 
                      HorizontalAlignment="Stretch" 
                      VerticalContentAlignment="Center" 

@@ -11,7 +11,7 @@ namespace MulTyPlayerServer
     {
         public static Dictionary<ushort, Player> Players = new();
 
-        PlayerHandler()
+        public PlayerHandler()
         {
             Players = new();
         }

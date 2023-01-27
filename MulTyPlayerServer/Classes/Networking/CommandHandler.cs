@@ -32,11 +32,11 @@ namespace MulTyPlayerServer
                             return "Usage: /kick [client id]\nFor a list of client ids, use /clist";
                         }
 
-                        if (!ushort.TryParse(args[0], out _) || !Server.PlayerList.ContainsKey(ushort.Parse(args[0])))
+                        if (!ushort.TryParse(args[0], out _) || !PlayerHandler.Players.ContainsKey(ushort.Parse(args[0])))
                         {
                             return args[0] + " is not a valid client ID";
                         }
-                        string kickSuccess = $"Successfully Kicked {Server.PlayerList[ushort.Parse(args[0])].Name}";
+                        string kickSuccess = $"Successfully Kicked {PlayerHandler.Players[ushort.Parse(args[0])].Name}";
                         KickPlayer(ushort.Parse(args[0]));
                         return kickSuccess;
                     }
@@ -104,7 +104,7 @@ namespace MulTyPlayerServer
         {
             string listRes = null;
             listRes += "\n--------------- Connected Clients ---------------\n";
-            if (Server.PlayerList.Count == 0)
+            if (PlayerHandler.Players.Count == 0)
             {
                 return listRes += "\nThere are no clients currently connected.";
             }
@@ -112,7 +112,7 @@ namespace MulTyPlayerServer
             {
                 if (client.IsConnected)
                 {
-                    return listRes += "Client " + client.Id + " Name: " + Server.PlayerList[client.Id].Name;
+                    return listRes += "Client " + client.Id + " Name: " + PlayerHandler.Players[client.Id].Name;
                 }
             }
             return listRes;
@@ -148,11 +148,11 @@ namespace MulTyPlayerServer
             Message notifyHostChange = Message.Create(MessageSendMode.Reliable, MessageID.HostChange);
             notifyHostChange.AddUShort(newHost);
             Server._Server.SendToAll(notifyHostChange);
-            if(Server.PlayerList.Count == 0)
+            if(PlayerHandler.Players.Count == 0)
             {
                 return;
             }
-            Server.SendMessageToClients($"{Server.PlayerList[newHost].Name} has been made host", true);
+            Server.SendMessageToClients($"{PlayerHandler.Players[newHost].Name} has been made host", true);
         }
 
         [MessageHandler((ushort)MessageID.HostCommand)]

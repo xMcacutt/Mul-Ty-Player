@@ -9,10 +9,6 @@ namespace MulTyPlayerClient
 {
     internal class Client
     {
-        static HeroHandler HHero => Program.HHero;
-        static LevelHandler HLevel => Program.HLevel;
-        static GameStateHandler HGameState => Program.HGameState;
-
         public static bool IsRunning;
         public static Riptide.Client _client;
         private static string _ip;
@@ -20,7 +16,7 @@ namespace MulTyPlayerClient
 
         public static void StartClient(string ipinput)
         {
-            Logger logger = new Logger(100);
+            Logger logger = new(100);
             RiptideLogger.Initialize(Logger.Write, true);
             _ip = ipinput;
 

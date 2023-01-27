@@ -32,7 +32,7 @@
             </TextBlock>
         </StackPanel>
 
-        <TextBlock x:Name="messageText" Grid.Row="2" Grid.Column="1" FontSize="30" Text="{Binding Path=MessageText}">
+        <TextBlock x:Name="messageText" Grid.Row="2" Grid.Column="1" FontSize="30" TextAlignment="Center" TextWrapping="Wrap" Text="{Binding MessageText, Source={x:Static local:BasicIoC.SplashScreenViewModel}}">
             <TextBlock.Effect>
                 <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="3"/>
             </TextBlock.Effect>

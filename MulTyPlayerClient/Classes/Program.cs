@@ -18,7 +18,6 @@ namespace MulTyPlayerClient
 
         public static CancellationTokenSource _cts;
         public static string PlayerName;
-        public static string PosLogPath;
 
        /* static void Main(string[] args)
         {

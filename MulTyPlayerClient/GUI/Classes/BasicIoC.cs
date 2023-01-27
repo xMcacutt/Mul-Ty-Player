@@ -2,6 +2,8 @@
 {
     public class BasicIoC
     {
-        public static KoalasViewModel KoalaSelectBinding = new KoalasViewModel();
+        public static SplashViewModel SplashScreenViewModel = new();
+        public static LoginPageViewModel LoginViewModel = new();
+        public static KoalasViewModel KoalaSelectBinding = new();
     }
 }

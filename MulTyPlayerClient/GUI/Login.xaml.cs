@@ -24,10 +24,6 @@ namespace MulTyPlayerClient.GUI
         public Login()
         {
             InitializeComponent();
-            SteamClient.Init(411960);
-            if (SteamClient.IsValid) fieldName.Text = SteamClient.Name;
-            SteamClient.Shutdown();
-
         }
     }
 }
