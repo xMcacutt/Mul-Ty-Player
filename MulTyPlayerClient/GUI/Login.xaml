@@ -6,6 +6,14 @@
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
         mc:Ignorable="d"
         Title="Login" Height="245" Width="350" ResizeMode="NoResize">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GUI/SlapstickFont.xaml"/>
+                <ResourceDictionary Source="/GUI/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid x:Name="MainGrid" Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*"/>
@@ -148,22 +156,16 @@
                     HorizontalAlignment="Center" 
                     Background="{x:Null}" 
                     BorderBrush="{x:Null}"
-                    Width="37">
-                <Image x:Name="iconVisibHostIP" 
-                       HorizontalAlignment="Center" 
-                       VerticalAlignment="Center" 
-                       Source="{DynamicResource visibility_black_24dpDrawingImage}"/>
+                    Width="37"
+                    Style="{StaticResource VisibilityButton}">
             </Button>
 
             <Button x:Name="buttonVisibPass" 
                     HorizontalAlignment="Center" 
                     Background="{x:Null}" 
                     BorderBrush="{x:Null}"
-                    Width="37">
-                <Image x:Name="iconVisibPass" 
-                       HorizontalAlignment="Center" 
-                       VerticalAlignment="Center" 
-                       Source="{DynamicResource visibility_black_24dpDrawingImage}"/>
+                    Width="37"
+                    Style="{StaticResource VisibilityButton}">
             </Button>
 
             <Button x:Name="buttonVisibName" 
@@ -171,11 +173,8 @@
                     VerticalAlignment="Center" 
                     Background="{x:Null}" 
                     BorderBrush="{x:Null}"
-                    Width="37">
-                <Image x:Name="iconVisibName" 
-                       HorizontalAlignment="Center" 
-                       VerticalAlignment="Center" 
-                       Source="{DynamicResource visibility_black_24dpDrawingImage}"/>
+                    Width="37"
+                    Style="{StaticResource VisibilityButton}">
             </Button>
             
         </StackPanel>
@@ -185,12 +184,4 @@
     <Window.Background>
         <ImageBrush x:Name="bgImage" ImageSource="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.jpg"/>
     </Window.Background>
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/GUI/Icons.xaml"/>
-                <ResourceDictionary Source="/GUI/SlapstickFont.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
 </Window>
