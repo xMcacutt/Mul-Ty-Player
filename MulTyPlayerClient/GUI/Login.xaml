@@ -79,7 +79,7 @@
 
             <TextBox x:Name="fieldHostIP" 
                      HorizontalContentAlignment="Right" 
-                     Text="192.168.1.101" 
+                     Text="{Binding ConnectingAddress, Source={x:Static local:BasicIoC.LoginViewModel}}" 
                      FontSize="20" 
                      HorizontalAlignment="Stretch" 
                      VerticalContentAlignment="Center" 
@@ -96,7 +96,7 @@
             
             <TextBox x:Name="fieldPass" 
                      HorizontalContentAlignment="Right" 
-                     Text="OPALS" 
+                     Text="{Binding Pass, Source={x:Static local:BasicIoC.LoginViewModel}}" 
                      FontSize="20" 
                      HorizontalAlignment="Stretch" 
                      VerticalContentAlignment="Center"
