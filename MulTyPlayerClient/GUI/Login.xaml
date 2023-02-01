@@ -138,11 +138,6 @@
                         <Setter Property="CornerRadius" Value="5"/>
                     </Style>
                 </Button.Resources>
-                <TextBlock 
-                    x:Name="labelConnectButton" 
-                    Margin="10,0,10,0" 
-                    FontSize="20" 
-                    Text="Connect"/>
             </Button>
             
         </StackPanel>
