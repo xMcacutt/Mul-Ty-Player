@@ -8,15 +8,20 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace MulTyPlayerClient.GUI
 {
     [AddINotifyPropertyChangedInterface]
     public class LoginPageViewModel
     {
-        public string Name { get; set; }
-        public string Pass { get; set; }
-        public string ConnectingAddress { get; set; }
+        public string Name { get; set; } = "";
+        public string Pass { get; set; } = "";
+        public string ConnectingAddress { get; set; } = "";
+
+        public bool HideName { get; set; }
+        public bool HidePass { get; set; }
+        public bool HideAddress { get; set; }
 
         public LoginPageViewModel()
         {

@@ -9,5 +9,6 @@
         <Setter Property="TextElement.FontFamily" Value="Fonts/#SF Slapstick Comic"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="#FFFFFF"/>
+        <Setter Property="CaretBrush" Value="#FFFFFF"/>
     </Style>
 </ResourceDictionary>
