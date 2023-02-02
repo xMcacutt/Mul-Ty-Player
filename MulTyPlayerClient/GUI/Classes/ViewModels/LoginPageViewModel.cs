@@ -36,6 +36,9 @@ namespace MulTyPlayerClient.GUI
          */
         public void SetupLogin()
         {
+            HideName = true;
+            HidePass = true;
+            HideAddress = true;
             SteamClient.Init(411960);
             if (SteamClient.IsValid) Name = SteamClient.Name;
             else Name = "Please Enter Name";

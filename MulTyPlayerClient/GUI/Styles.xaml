@@ -91,6 +91,11 @@
         <GradientStop Color="#BF000000" Offset="1"/>
     </LinearGradientBrush>
 
+    <LinearGradientBrush x:Key="ButtonHoverGradient" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#BF000000"/>
+        <GradientStop Color="#BF4D1500" Offset="1"/>
+    </LinearGradientBrush>
+
     <Style TargetType="{x:Type Button}" x:Key="SelectButton">
         <Style.Resources>
             <ResourceDictionary>
@@ -113,7 +118,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="DarkGoldenrod"/>
+                            <Setter Property="Background" Value="{StaticResource ButtonHoverGradient}"/>
                             <Setter Property="Foreground" TargetName="selectButtonText" Value="#FFFFFF0F"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
