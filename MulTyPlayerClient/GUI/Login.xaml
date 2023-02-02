@@ -132,14 +132,9 @@
                     HorizontalAlignment="Left" 
                     BorderBrush="{x:Null}"
                     Margin="0 3.5"
-                    Style="{StaticResource SelectButton}">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="5"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            
+                    Style="{StaticResource SelectButton}"
+                    Tag="Connect"/>
+
         </StackPanel>
 
         <!--Eye button-->
@@ -151,16 +146,14 @@
                     Background="{x:Null}" 
                     BorderBrush="{x:Null}"
                     Width="37"
-                    Style="{StaticResource VisibilityButton}">
-            </Button>
+                    Style="{StaticResource VisibilityButton}"/>
 
             <Button x:Name="buttonVisibPass" 
                     HorizontalAlignment="Center" 
                     Background="{x:Null}" 
                     BorderBrush="{x:Null}"
                     Width="37"
-                    Style="{StaticResource VisibilityButton}">
-            </Button>
+                    Style="{StaticResource VisibilityButton}"/>
 
             <Button x:Name="buttonVisibName" 
                     HorizontalAlignment="Center" 
@@ -168,9 +161,8 @@
                     Background="{x:Null}" 
                     BorderBrush="{x:Null}"
                     Width="37"
-                    Style="{StaticResource VisibilityButton}">
-            </Button>
-            
+                    Style="{StaticResource VisibilityButton}"/>
+
         </StackPanel>
 
     </Grid>
