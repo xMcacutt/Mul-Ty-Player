@@ -13,14 +13,15 @@ namespace MulTyPlayerClient
         public static Riptide.Client _client;
         private static string _ip;
         private static string _pass;
+        private static string _name;
 
-        public static void StartClient(string ipinput)
+        public static void StartClient(string ip, string name, string pass)
         {
             Logger logger = new(100);
             RiptideLogger.Initialize(Logger.Write, true);
-            _ip = ipinput;
-
-            IsRunning = true;
+            _ip = ip;
+            _pass = pass;
+            _name = name;
 
             _client = new Riptide.Client();
             _client.Connected += (s, e) => Connected();
@@ -28,11 +29,13 @@ namespace MulTyPlayerClient
             _client.ConnectionFailed += (s, e) => ConnectionFailed();
 
             Message authentication = Message.Create(MessageSendMode.Reliable, MessageID.Authentication);
-            authentication.AddString(Program.PlayerName);
+            authentication.AddString(_name);
             authentication.AddString(_pass);
             _client.Connect(_ip + ":8750", 5, 0, authentication);
 
+
             /* NEEDS TO BE HANDLED ON A BACKGROUND WORKER
+            IsRunning = true;
             while (IsRunning)
             {
                 _client.Update();

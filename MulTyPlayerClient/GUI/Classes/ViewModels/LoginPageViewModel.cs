@@ -19,26 +19,19 @@ namespace MulTyPlayerClient.GUI
         public string Pass { get; set; } = "";
         public string ConnectingAddress { get; set; } = "";
 
-        public bool HideName { get; set; }
-        public bool HidePass { get; set; }
-        public bool HideAddress { get; set; }
+        public bool HideName { get; set; } = true;
+        public bool HidePass { get; set; } = true;
+        public bool HideAddress { get; set; } = true;
+
+        public ICommand ConnectCommand { get; set; }
 
         public LoginPageViewModel()
         {
-
+            ConnectCommand = new RelayCommand(Connect);
         }
 
-        /*
-         list.servers example
-        192.186.1.1 CRATE
-        192.186.1.2 OPALS *
-        192.186.1.3 FRILL
-         */
         public void SetupLogin()
         {
-            HideName = true;
-            HidePass = true;
-            HideAddress = true;
             SteamClient.Init(411960);
             if (SteamClient.IsValid) Name = SteamClient.Name;
             else Name = "Please Enter Name";
@@ -57,5 +50,9 @@ namespace MulTyPlayerClient.GUI
             Pass = "OPALS";
         }
 
+        public void Connect()
+        {
+            Client.StartClient(ConnectingAddress, Name, Pass);
+        }
     }
 }
