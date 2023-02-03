@@ -94,7 +94,7 @@
                         </LinearGradientBrush>
                     </TextBox.Background>
                     <TextBox.Style>
-                        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                        <Style TargetType="TextBox" BasedOn="{StaticResource TyTextBox}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding HideAddress, Source={x:Static local:BasicIoC.LoginViewModel}}" Value="True">
                                     <Setter Property="Foreground" Value="Transparent"/>
@@ -135,7 +135,7 @@
                         </LinearGradientBrush>
                     </TextBox.Background>
                     <TextBox.Style>
-                        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                        <Style TargetType="TextBox" BasedOn="{StaticResource TyTextBox}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding HidePass, Source={x:Static local:BasicIoC.LoginViewModel}}" Value="True">
                                     <Setter Property="Foreground" Value="Transparent"/>
@@ -176,7 +176,7 @@
                         </LinearGradientBrush>
                     </TextBox.Background>
                     <TextBox.Style>
-                        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                        <Style TargetType="TextBox" BasedOn="{StaticResource TyTextBox}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding HideName, Source={x:Static local:BasicIoC.LoginViewModel}}" Value="True">
                                     <Setter Property="Foreground" Value="Transparent"/>
