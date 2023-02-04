@@ -8,6 +8,7 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 
 namespace MulTyPlayerClient.GUI
@@ -19,15 +20,22 @@ namespace MulTyPlayerClient.GUI
         public string Pass { get; set; } = "";
         public string ConnectingAddress { get; set; } = "";
 
-        public bool HideName { get; set; } = true;
+        public bool HideName { get; set; } = false;
         public bool HidePass { get; set; } = true;
         public bool HideAddress { get; set; } = true;
 
         public ICommand ConnectCommand { get; set; }
+        public bool ConnectEnabled { get; set; } = true;
 
         public LoginPageViewModel()
         {
             ConnectCommand = new RelayCommand(Connect);
+        }
+
+        public void Connect()
+        {
+            ConnectEnabled = false;
+            Client.StartClient(ConnectingAddress, Name, Pass);
         }
 
         public void SetupLogin()
@@ -48,11 +56,6 @@ namespace MulTyPlayerClient.GUI
             }
             ConnectingAddress = "192.168.1.1";
             Pass = "OPALS";
-        }
-
-        public void Connect()
-        {
-            Client.StartClient(ConnectingAddress, Name, Pass);
         }
     }
 }

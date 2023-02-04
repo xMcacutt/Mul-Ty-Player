@@ -205,7 +205,10 @@
                     BorderBrush="{x:Null}"
                     Margin="0 3.5"
                     Style="{StaticResource SelectButton}"
-                    Tag="Connect"/>
+                    Tag="Connect"
+                    Command="{Binding ConnectCommand, Source={x:Static local:BasicIoC.LoginViewModel}}"
+                    IsEnabled="{Binding ConnectEnabled, Source={x:Static local:BasicIoC.LoginViewModel}}"
+                    />
 
         </StackPanel>
 

@@ -110,7 +110,7 @@ namespace MulTyPlayerClient
                 Console.WriteLine("Please enter a VALID IP address to connect to...");
                 ipStr = Console.ReadLine();
             }
-            Client.StartClient(ipStr);
+            //Client.StartClient(ipStr);
         }
     }
 }
