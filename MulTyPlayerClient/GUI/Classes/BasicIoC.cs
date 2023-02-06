@@ -4,6 +4,6 @@
     {
         public static SplashViewModel SplashScreenViewModel = new();
         public static LoginPageViewModel LoginViewModel = new();
-        public static KoalasViewModel KoalaSelectBinding = new();
+        public static KoalasViewModel KoalaSelectViewModel = new();
     }
 }

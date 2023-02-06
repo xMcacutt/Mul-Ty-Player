@@ -20,7 +20,7 @@ namespace MulTyPlayerServer
         }
 
         [MessageHandler((ushort)MessageID.KoalaSelected)]
-        private static void AssignKoala(Message message, ushort fromClientId)
+        private static void AssignKoala(ushort fromClientId, Message message)
         {
             string koalaName = message.GetString();
             string playerName = message.GetString();

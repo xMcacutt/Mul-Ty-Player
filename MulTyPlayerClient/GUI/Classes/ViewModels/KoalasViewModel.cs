@@ -49,6 +49,11 @@ namespace MulTyPlayerClient
             DubboClickCommand = new RelayCommandWithInputParam(KoalaClicked);
         }
 
+        public void Setup()
+        {
+
+        }
+
         //Just placeholder functionallity
         public void KoalaClicked(object inputParameter)
         {

@@ -65,8 +65,16 @@ namespace MulTyPlayerServer
 
         private static void HandleConnection(Connection pendingConnection, Message authenticationMessage)
         {
+            string name = authenticationMessage.GetString();
             string pass = authenticationMessage.GetString();
-            if (string.Equals(pass, SettingsHandler.Password)) _Server.Accept(pendingConnection);
+            Console.WriteLine(pass);
+            Console.WriteLine(SettingsHandler.Password);
+            if (string.Equals(pass, SettingsHandler.Password, StringComparison.CurrentCultureIgnoreCase)
+                || string.Equals(SettingsHandler.Password, "XXXXX", StringComparison.CurrentCultureIgnoreCase)
+                || string.IsNullOrWhiteSpace(SettingsHandler.Password))
+            {
+                _Server.Accept(pendingConnection);
+            }
             else _Server.Reject(pendingConnection);
         }
 

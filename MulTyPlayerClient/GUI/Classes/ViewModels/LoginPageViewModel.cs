@@ -38,7 +38,14 @@ namespace MulTyPlayerClient.GUI
             Client.StartClient(ConnectingAddress, Name, Pass);
         }
 
-        public void SetupLogin()
+        public void Connected()
+        {
+            BasicIoC.KoalaSelectViewModel.Setup();
+            WindowHandler.KoalaSelectWindow.Show();
+            WindowHandler.LoginWindow.Close();
+        }
+
+        public void Setup()
         {
             SteamClient.Init(411960);
             if (SteamClient.IsValid) Name = SteamClient.Name;

@@ -32,7 +32,7 @@ namespace MulTyPlayerClient
             _client.Disconnected += (s, e) => Disconnected();
             _client.ConnectionFailed += (s, e) => ConnectionFailed();
 
-            Message authentication = Message.Create(MessageSendMode.Reliable, MessageID.Authentication);
+            Message authentication = Message.Create();
             authentication.AddString(_name);
             authentication.AddString(_pass);
             _client.Connect(_ip + ":8750", 5, 0, authentication);
@@ -86,9 +86,8 @@ namespace MulTyPlayerClient
         private static void ConnectionFailed()
         {
             BasicIoC.LoginViewModel.ConnectEnabled = true;
-            //"Could not connect to server. Please try again."
             SystemSounds.Hand.Play();
-            MessageBox.Show("Connection failed!\nPlease check IPAddress & password are correct and server is open.");
+            MessageBox.Show("Connection failed!\nPlease check IPAddress & Password are correct and server is open.");
             IsRunning = false;
             return;
         }

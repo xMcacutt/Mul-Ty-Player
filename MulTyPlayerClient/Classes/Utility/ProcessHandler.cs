@@ -39,6 +39,11 @@ namespace MulTyPlayerClient
             return null;
         }
 
+        public static bool CheckTyProcess()
+        {
+            return TyProcess.HasExited;
+        }
+
         public static void WriteData(int address, byte[] bytes)
         {
             int bytesWritten = 0;

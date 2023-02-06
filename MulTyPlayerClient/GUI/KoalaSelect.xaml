@@ -34,18 +34,18 @@
                     Background="Black">
                     <Image Stretch="UniformToFill"
                            IsMouseDirectlyOverChanged="Boonie_IsMouseDirectlyOverChanged"
-                           IsEnabled="{Binding BoonieAvailable, Source={x:Static local:BasicIoC.KoalaSelectBinding}}">
+                           IsEnabled="{Binding BoonieAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseUp">
-                                <i:InvokeCommandAction Command="{Binding BoonieClickCommand, Source={x:Static local:BasicIoC.KoalaSelectBinding}}"
+                                <i:InvokeCommandAction Command="{Binding BoonieClickCommand, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
                                                        CommandParameter="Boonie"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <Image.Style>
                             <Style TargetType="Image">
-                                <Setter Property="Source" Value="{Binding Boonie, Source={x:Static local:BasicIoC.KoalaSelectBinding}}"/>
+                                <Setter Property="Source" Value="{Binding Boonie, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding BoonieAvailable, Source={x:Static local:BasicIoC.KoalaSelectBinding}}" Value="false">
+                                    <DataTrigger Binding="{Binding BoonieAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}" Value="false">
                                         <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Taken/Boonie.jpg"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -66,18 +66,18 @@
                         Background="Black">
                     <Image Stretch="UniformToFill"
                            IsMouseDirectlyOverChanged="Mim_IsMouseDirectlyOverChanged"
-                           IsEnabled="{Binding MimAvailable, Source={x:Static local:BasicIoC.KoalaSelectBinding}}">
+                           IsEnabled="{Binding MimAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseUp">
-                                <i:InvokeCommandAction Command="{Binding MimClickCommand, Source={x:Static local:BasicIoC.KoalaSelectBinding}}"
+                                <i:InvokeCommandAction Command="{Binding MimClickCommand, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
                                                        CommandParameter="Mim"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <Image.Style>
                             <Style TargetType="Image">
-                                <Setter Property="Source" Value="{Binding Mim, Source={x:Static local:BasicIoC.KoalaSelectBinding}}"/>
+                                <Setter Property="Source" Value="{Binding Mim, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding MimAvailable, Source={x:Static local:BasicIoC.KoalaSelectBinding}}" Value="false">
+                                    <DataTrigger Binding="{Binding MimAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}" Value="false">
                                         <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Taken/Mim.jpg"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -97,18 +97,18 @@
                         Background="Black">
                     <Image Stretch="UniformToFill" 
                            IsMouseDirectlyOverChanged="Gummy_IsMouseDirectlyOverChanged"
-                           IsEnabled="{Binding GummyAvailable, Source={x:Static local:BasicIoC.KoalaSelectBinding}}">
+                           IsEnabled="{Binding GummyAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseUp">
-                                <i:InvokeCommandAction Command="{Binding GummyClickCommand, Source={x:Static local:BasicIoC.KoalaSelectBinding}}"
+                                <i:InvokeCommandAction Command="{Binding GummyClickCommand, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
                                                        CommandParameter="Gummy"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <Image.Style>
                             <Style TargetType="Image">
-                                <Setter Property="Source" Value="{Binding Gummy, Source={x:Static local:BasicIoC.KoalaSelectBinding}}"/>
+                                <Setter Property="Source" Value="{Binding Gummy, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding GummyAvailable, Source={x:Static local:BasicIoC.KoalaSelectBinding}}" Value="false">
+                                    <DataTrigger Binding="{Binding GummyAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}" Value="false">
                                         <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Taken/Gummy.jpg"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -128,18 +128,18 @@
                         Background="Black">
                     <Image Stretch="UniformToFill" 
                            IsMouseDirectlyOverChanged="Snugs_IsMouseDirectlyOverChanged"
-                           IsEnabled="{Binding SnugsAvailable, Source={x:Static local:BasicIoC.KoalaSelectBinding}}">
+                           IsEnabled="{Binding SnugsAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseUp">
-                                <i:InvokeCommandAction Command="{Binding SnugsClickCommand, Source={x:Static local:BasicIoC.KoalaSelectBinding}}"
+                                <i:InvokeCommandAction Command="{Binding SnugsClickCommand, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
                                                        CommandParameter="Snugs"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <Image.Style>
                             <Style TargetType="Image">
-                                <Setter Property="Source" Value="{Binding Snugs, Source={x:Static local:BasicIoC.KoalaSelectBinding}}"/>
+                                <Setter Property="Source" Value="{Binding Snugs, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SnugsAvailable, Source={x:Static local:BasicIoC.KoalaSelectBinding}}" Value="false">
+                                    <DataTrigger Binding="{Binding SnugsAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}" Value="false">
                                         <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Taken/Snugs.jpg"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -159,18 +159,18 @@
                         Background="Black">
                     <Image Stretch="UniformToFill" 
                            IsMouseDirectlyOverChanged="Katie_IsMouseDirectlyOverChanged"
-                           IsEnabled="{Binding KatieAvailable, Source={x:Static local:BasicIoC.KoalaSelectBinding}}">
+                           IsEnabled="{Binding KatieAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseUp">
-                                <i:InvokeCommandAction Command="{Binding KatieClickCommand, Source={x:Static local:BasicIoC.KoalaSelectBinding}}"
+                                <i:InvokeCommandAction Command="{Binding KatieClickCommand, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
                                                        CommandParameter="Katie"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <Image.Style>
                             <Style TargetType="Image">
-                                <Setter Property="Source" Value="{Binding Katie, Source={x:Static local:BasicIoC.KoalaSelectBinding}}"/>
+                                <Setter Property="Source" Value="{Binding Katie, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding KatieAvailable, Source={x:Static local:BasicIoC.KoalaSelectBinding}}" Value="false">
+                                    <DataTrigger Binding="{Binding KatieAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}" Value="false">
                                         <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Taken/Katie.jpg"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -191,18 +191,18 @@
                         Background="Black">
                     <Image Stretch="UniformToFill" 
                            IsMouseDirectlyOverChanged="Kiki_IsMouseDirectlyOverChanged"
-                           IsEnabled="{Binding KikiAvailable, Source={x:Static local:BasicIoC.KoalaSelectBinding}}">
+                           IsEnabled="{Binding KikiAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseUp">
-                                <i:InvokeCommandAction Command="{Binding KikiClickCommand, Source={x:Static local:BasicIoC.KoalaSelectBinding}}"
+                                <i:InvokeCommandAction Command="{Binding KikiClickCommand, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
                                                        CommandParameter="Kiki"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <Image.Style>
                             <Style TargetType="Image">
-                                <Setter Property="Source" Value="{Binding Kiki, Source={x:Static local:BasicIoC.KoalaSelectBinding}}"/>
+                                <Setter Property="Source" Value="{Binding Kiki, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding KikiAvailable, Source={x:Static local:BasicIoC.KoalaSelectBinding}}" Value="false">
+                                    <DataTrigger Binding="{Binding KikiAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}" Value="false">
                                         <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Taken/Kiki.jpg"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -223,18 +223,18 @@
                         Background="Black">
                     <Image Stretch="UniformToFill"
                            IsMouseDirectlyOverChanged="Elizabeth_IsMouseDirectlyOverChanged"
-                           IsEnabled="{Binding ElizabethAvailable, Source={x:Static local:BasicIoC.KoalaSelectBinding}}">
+                           IsEnabled="{Binding ElizabethAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseUp">
-                                <i:InvokeCommandAction Command="{Binding ElizabethClickCommand, Source={x:Static local:BasicIoC.KoalaSelectBinding}}"
+                                <i:InvokeCommandAction Command="{Binding ElizabethClickCommand, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
                                                        CommandParameter="Elizabeth"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <Image.Style>
                             <Style TargetType="Image">
-                                <Setter Property="Source" Value="{Binding Elizabeth, Source={x:Static local:BasicIoC.KoalaSelectBinding}}"/>
+                                <Setter Property="Source" Value="{Binding Elizabeth, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElizabethAvailable, Source={x:Static local:BasicIoC.KoalaSelectBinding}}" Value="false">
+                                    <DataTrigger Binding="{Binding ElizabethAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}" Value="false">
                                         <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Taken/Elizabeth.jpg"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -255,18 +255,18 @@
                         Background="Black">
                     <Image Stretch="UniformToFill" 
                            IsMouseDirectlyOverChanged="Dubbo_IsMouseDirectlyOverChanged"
-                           IsEnabled="{Binding DubboAvailable, Source={x:Static local:BasicIoC.KoalaSelectBinding}}">
+                           IsEnabled="{Binding DubboAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseUp">
-                                <i:InvokeCommandAction Command="{Binding DubboClickCommand, Source={x:Static local:BasicIoC.KoalaSelectBinding}}"
+                                <i:InvokeCommandAction Command="{Binding DubboClickCommand, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
                                                        CommandParameter="Dubbo"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <Image.Style>
                             <Style TargetType="Image">
-                                <Setter Property="Source" Value="{Binding Dubbo, Source={x:Static local:BasicIoC.KoalaSelectBinding}}"/>
+                                <Setter Property="Source" Value="{Binding Dubbo, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding DubboAvailable, Source={x:Static local:BasicIoC.KoalaSelectBinding}}" Value="false">
+                                    <DataTrigger Binding="{Binding DubboAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}" Value="false">
                                         <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Taken/Dubbo.jpg"/>
                                     </DataTrigger>
                                 </Style.Triggers>

@@ -8,7 +8,6 @@ namespace MulTyPlayerClient
 {
     public enum MessageID : ushort
     {
-        Authentication,
         Connected,
         PlayerInfo,
         KoalaCoordinates,

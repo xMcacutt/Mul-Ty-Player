@@ -14,7 +14,7 @@ namespace MulTyPlayerClient.GUI
         public Splash()
         {
             InitializeComponent();
-            BasicIoC.SplashScreenViewModel.SplashWindow = this;
+            WindowHandler.InitializeWindows(this);
         }
     }
 }

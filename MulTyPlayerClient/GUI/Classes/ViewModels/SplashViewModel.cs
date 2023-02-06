@@ -14,7 +14,6 @@ namespace MulTyPlayerClient.GUI
     public class SplashViewModel
     {
         public string MessageText { get; set; } = "Hello!";
-        public Splash SplashWindow;
 
         public SplashViewModel()
         {
@@ -22,10 +21,9 @@ namespace MulTyPlayerClient.GUI
             backgroundWorker.DoWork += (s, e) => FindTy();
             backgroundWorker.RunWorkerCompleted += (s, e) =>
             {
-                Login login = new();
-                login.Show();
-                BasicIoC.LoginViewModel.SetupLogin();
-                SplashWindow.Close();
+                BasicIoC.LoginViewModel.Setup();
+                WindowHandler.LoginWindow.Show();
+                WindowHandler.SplashWindow.Close();
             };
             backgroundWorker.RunWorkerAsync();
         }
