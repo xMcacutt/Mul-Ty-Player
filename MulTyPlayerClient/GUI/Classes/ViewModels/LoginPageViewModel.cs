@@ -27,6 +27,8 @@ namespace MulTyPlayerClient.GUI
         public ICommand ConnectCommand { get; set; }
         public bool ConnectEnabled { get; set; } = true;
 
+        private List<ServerListing> _serverList;
+
         public LoginPageViewModel()
         {
             ConnectCommand = new RelayCommand(Connect);
@@ -38,11 +40,32 @@ namespace MulTyPlayerClient.GUI
             Client.StartClient(ConnectingAddress, Name, Pass);
         }
 
-        public void Connected()
+        public void SaveDetails()
         {
-            BasicIoC.KoalaSelectViewModel.Setup();
-            WindowHandler.KoalaSelectWindow.Show();
-            WindowHandler.LoginWindow.Close();
+            using (var fileStream = File.Create("./list.servers"))
+                if (!_serverList.Where(x => x.IP == ConnectingAddress).Any())
+                    _serverList.Add(new(ConnectingAddress, Pass, true));
+                else
+                {
+                    _serverList.Where(x => x.IP == ConnectingAddress).First().Pass = Pass;
+                    _serverList.Where(x => x.IP == ConnectingAddress).First().ActiveDefault = true;
+                }
+            foreach (ServerListing server in _serverList)
+            {
+                string s = $"{server.IP} {server.Pass}";
+                if (server.ActiveDefault) s += " *";
+                s += "\n";
+                File.AppendAllText("./list.servers", s);
+            }
+        }
+
+        private void ParseServerList(IEnumerable<string> file)
+        {
+            foreach (string server in file)
+            {
+                string[] entry = server.Split(' ');
+                _serverList.Add(new(entry[0], entry[1], false));
+            }
         }
 
         public void Setup()
@@ -51,15 +74,14 @@ namespace MulTyPlayerClient.GUI
             if (SteamClient.IsValid) Name = SteamClient.Name;
             else Name = "Please Enter Name";
             SteamClient.Shutdown();
-            string serverListPath = "./list.servers";
-            if (Path.Exists(serverListPath))
+            _serverList = new();
+            if (Path.Exists("./list.servers"))
             {
-                var serverList = File.ReadLines(serverListPath);
-                string server = serverList.Where(x => x.EndsWith('*')).First();
-                string[] entry = server.Split(' ');
-                ConnectingAddress = entry[0];
-                Pass = entry[1];
-                return;
+                ParseServerList(File.ReadLines("./list.servers"));
+                ServerListing current = _serverList.Where(x => x.ActiveDefault).First();
+                ConnectingAddress = current.IP;
+                Pass = current.Pass;
+                return; 
             }
             ConnectingAddress = "192.168.1.1";
             Pass = "OPALS";

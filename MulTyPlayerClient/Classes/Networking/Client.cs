@@ -73,13 +73,15 @@ namespace MulTyPlayerClient
 
         private static void Connected()
         {
-            Logger.Write("Password accepted. Connected to server successfully!");
-
+            SettingsHandler.Setup();
+            BasicIoC.LoginViewModel.SaveDetails();
+            BasicIoC.KoalaSelectViewModel.Setup();
+            WindowHandler.KoalaSelectWindow.Show();
+            WindowHandler.LoginWindow.Close();
         }
 
         private static void Disconnected()
         {
-            BasicIoC.LoginViewModel.ConnectEnabled = true;
             IsRunning = false;
         }
 
