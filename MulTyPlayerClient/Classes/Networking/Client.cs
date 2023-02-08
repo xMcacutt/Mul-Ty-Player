@@ -7,6 +7,7 @@ using System.Media;
 using System.Net.Cache;
 using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace MulTyPlayerClient
 {
@@ -76,8 +77,8 @@ namespace MulTyPlayerClient
             SettingsHandler.Setup();
             BasicIoC.LoginViewModel.SaveDetails();
             BasicIoC.KoalaSelectViewModel.Setup();
-            WindowHandler.KoalaSelectWindow.Show();
-            WindowHandler.LoginWindow.Close();
+            BasicIoC.LoginViewModel.ConnectionAttemptSuccessful = true;
+            BasicIoC.LoginViewModel.ConnectionAttemptCompleted = true;
         }
 
         private static void Disconnected()
@@ -91,6 +92,8 @@ namespace MulTyPlayerClient
             SystemSounds.Hand.Play();
             MessageBox.Show("Connection failed!\nPlease check IPAddress & Password are correct and server is open.");
             IsRunning = false;
+            BasicIoC.LoginViewModel.ConnectionAttemptSuccessful = false;
+            BasicIoC.LoginViewModel.ConnectionAttemptCompleted = true;
             return;
         }
 
