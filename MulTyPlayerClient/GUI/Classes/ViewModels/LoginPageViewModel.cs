@@ -60,7 +60,10 @@ namespace MulTyPlayerClient.GUI
         {
             ConnectionAttemptCompleted = false;
             Client.StartClient(ConnectingAddress, Name, Pass);
-            while (!ConnectionAttemptCompleted) { }
+            while (!ConnectionAttemptCompleted)
+            {
+
+            }
         }
 
         public void SaveDetails()
