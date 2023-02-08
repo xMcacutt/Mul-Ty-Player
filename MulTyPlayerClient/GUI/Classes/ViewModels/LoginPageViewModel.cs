@@ -2,6 +2,7 @@
 using Steamworks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Security;
@@ -27,6 +28,9 @@ namespace MulTyPlayerClient.GUI
         public ICommand ConnectCommand { get; set; }
         public bool ConnectEnabled { get; set; } = true;
 
+        public bool ConnectionAttemptCompleted = false;
+        public bool ConnectionAttemptSuccessful = false;
+
         private List<ServerListing> _serverList;
 
         public LoginPageViewModel()
@@ -37,7 +41,29 @@ namespace MulTyPlayerClient.GUI
         public void Connect()
         {
             ConnectEnabled = false;
+            var backgroundWorker = new BackgroundWorker();
+            backgroundWorker.DoWork += (s, e) => AttemptConnection();
+            backgroundWorker.RunWorkerCompleted += (s, e) =>
+            {
+                if (ConnectionAttemptSuccessful)
+                {
+                    BasicIoC.LoginViewModel.SaveDetails();
+                    BasicIoC.KoalaSelectViewModel.Setup();
+                    WindowHandler.KoalaSelectWindow.Show();
+                    WindowHandler.LoginWindow.Close();
+                }
+            };
+            backgroundWorker.RunWorkerAsync();
+        }
+
+        public void AttemptConnection()
+        {
+            ConnectionAttemptCompleted = false;
             Client.StartClient(ConnectingAddress, Name, Pass);
+            while (!ConnectionAttemptCompleted)
+            {
+
+            }
         }
 
         public void SaveDetails()
@@ -64,6 +90,11 @@ namespace MulTyPlayerClient.GUI
             foreach (string server in file)
             {
                 string[] entry = server.Split(' ');
+                if(entry.Length == 3)
+                {
+                    ConnectingAddress = entry[0];
+                    Pass = entry[1];
+                }
                 _serverList.Add(new(entry[0], entry[1], false));
             }
         }
@@ -78,9 +109,6 @@ namespace MulTyPlayerClient.GUI
             if (Path.Exists("./list.servers"))
             {
                 ParseServerList(File.ReadLines("./list.servers"));
-                ServerListing current = _serverList.Where(x => x.ActiveDefault).First();
-                ConnectingAddress = current.IP;
-                Pass = current.Pass;
                 return; 
             }
             ConnectingAddress = "192.168.1.1";
