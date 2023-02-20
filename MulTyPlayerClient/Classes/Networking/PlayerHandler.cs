@@ -1,6 +1,9 @@
-﻿using System;
+﻿using MulTyPlayerClient.Classes.Utility;
+using MulTyPlayerClient.GUI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +14,7 @@ namespace MulTyPlayerClient
     {
         public static Dictionary<ushort, Player> Players = new();
 
-        PlayerHandler()
+        public PlayerHandler()
         {
             Players = new();
         }
@@ -20,10 +23,19 @@ namespace MulTyPlayerClient
         {
             Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
             Players.Add(clientID, new Player(koala, name, clientID));
+            if (GUI.BasicIoC.KoalaSelectViewModel.KoalaAvailable(koalaName))
+            {
+                GUI.BasicIoC.KoalaSelectViewModel.SwitchAvailability(koalaName);
+            }
+            if (WindowHandler.ClientGUIWindow != null) SFXPlayer.PlaySound(SFX.PlayerConnect);
         }
 
         public static void RemovePlayer(ushort id)
         {
+            if (!GUI.BasicIoC.KoalaSelectViewModel.KoalaAvailable(Players[id].Koala.KoalaName))
+            {
+                GUI.BasicIoC.KoalaSelectViewModel.SwitchAvailability(Players[id].Koala.KoalaName);
+            }
             Players.Remove(id);
         }
     }

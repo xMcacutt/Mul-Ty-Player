@@ -14,11 +14,15 @@ namespace MulTyPlayerClient
     internal class Client
     {
         public static bool IsRunning;
+        public static bool KoalaSelected = false;
         public static Riptide.Client _client;
         private static Thread _loop;
         private static string _ip;
         private static string _pass;
-        private static string _name;
+        public static string Name;
+
+        public static KoalaHandler HKoala;
+        public static PlayerHandler HPlayer;
 
         public static void StartClient(string ip, string name, string pass)
         {
@@ -26,7 +30,7 @@ namespace MulTyPlayerClient
             RiptideLogger.Initialize(Logger.Write, true);
             _ip = ip;
             _pass = pass;
-            _name = name;
+            Name = name;
 
             _client = new Riptide.Client();
             _client.Connected += (s, e) => Connected();
