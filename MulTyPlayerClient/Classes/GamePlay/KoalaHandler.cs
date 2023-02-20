@@ -98,6 +98,7 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.KoalaCoordinates)]
         private static void HandleGettingCoordinates(Message message)
         {
+            if (!Client.KoalaSelected) return;
             string koalaName = message.GetString();
             int level = message.GetInt();
             float[] coordinates = message.GetFloats();

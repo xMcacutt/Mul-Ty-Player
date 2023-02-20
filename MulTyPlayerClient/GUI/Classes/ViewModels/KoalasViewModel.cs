@@ -6,6 +6,9 @@ namespace MulTyPlayerClient
     [AddINotifyPropertyChangedInterface]
     public class KoalasViewModel
     {
+        static KoalaHandler HKoala => Client.HKoala;
+        static KoalaHandler HPlayer => Client.HKoala;
+
         //Images
         public string Boonie { get; set; } = @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Boonie.jpg";
         public string Mim { get; set; } = @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Mim.jpg";
@@ -49,57 +52,29 @@ namespace MulTyPlayerClient
             DubboClickCommand = new RelayCommandWithInputParam(KoalaClicked);
         }
 
-        public void Setup()
+        public bool KoalaAvailable(string koalaName)
         {
-
+            var prop = GetType().GetProperty(koalaName + "Available");
+            if (prop != null) return (bool)prop.GetValue(this, null);
+            return false;
         }
 
-        //Just placeholder functionallity
+        public void SwitchAvailability(string koalaName)
+        {
+            var prop = GetType().GetProperty(koalaName + "Available");
+            prop?.SetValue(this, !(bool)prop.GetValue(this, null), null);
+        }
+
+        public void Setup()
+        {
+            Client.HPlayer = new PlayerHandler();
+            Client.HKoala = new KoalaHandler();
+        }
+
         public void KoalaClicked(object inputParameter)
         {
-            switch (inputParameter)
-            {
-                case "Boonie":
-                    {
-                        BoonieAvailable = false;
-                        break;
-                    }
-                case "Mim":
-                    {
-                        MimAvailable = false;
-                        break;
-                    }
-                case "Gummy":
-                    {
-                        GummyAvailable = false;
-                        break;
-                    }
-                case "Snugs":
-                    {
-                        SnugsAvailable = false;
-                        break;
-                    }
-                case "Katie":
-                    {
-                        KatieAvailable = false;
-                        break;
-                    }
-                case "Kiki":
-                    {
-                        KikiAvailable = false;
-                        break;
-                    }
-                case "Elizabeth":
-                    {
-                        ElizabethAvailable = false;
-                        break;
-                    }
-                case "Dubbo":
-                    {
-                        DubboAvailable = false;
-                        break;
-                    }
-            }
+            PlayerHandler.AddPlayer(inputParameter.ToString(), Client.Name, Client._client.Id);
+            PlayerHandler.TellServer(inputParameter, Client.Name, Client._client.Id);
         }
     }
 }

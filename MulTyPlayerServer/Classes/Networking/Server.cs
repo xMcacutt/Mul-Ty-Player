@@ -90,9 +90,9 @@ namespace MulTyPlayerServer
 
         private static void ClientDisconnected(object sender, ServerDisconnectedEventArgs e)
         {
-            SendMessageToClients($"{PlayerHandler.Players[e.Client.Id].Name} has disconnected from the server.", true);
-            SendMessageToClients($"{PlayerHandler.Players[e.Client.Id].Koala.KoalaName} was returned to the koala pool", true);
-            HKoala.ReturnKoala(PlayerHandler.Players[e.Client.Id]);
+            //SendMessageToClients($"{PlayerHandler.Players[e.Client.Id].Name} has disconnected from the server.", true);
+            //SendMessageToClients($"{PlayerHandler.Players[e.Client.Id].Koala.KoalaName} was returned to the koala pool", true);
+            if (PlayerHandler.Players[e.Client.Id].Koala != null) HKoala.ReturnKoala(PlayerHandler.Players[e.Client.Id]);
             PlayerHandler.Players.Remove(e.Client.Id);
         }
 
@@ -106,7 +106,7 @@ namespace MulTyPlayerServer
                 message.AddFloats(coordinates);
                 if (player.Coordinates != null && player.Name != null)
                 {
-                    _Server.SendToAll(message);
+                    _Server.SendToAll(message, player.ClientID);
                 }
             }
         }
