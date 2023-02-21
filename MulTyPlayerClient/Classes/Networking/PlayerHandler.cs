@@ -2,6 +2,7 @@
 using MulTyPlayerClient.GUI;
 using System;
 using System.Collections.Generic;
+using Riptide;
 using System.Linq;
 using System.Media;
 using System.Security.Cryptography.X509Certificates;
@@ -28,6 +29,16 @@ namespace MulTyPlayerClient
                 GUI.BasicIoC.KoalaSelectViewModel.SwitchAvailability(koalaName);
             }
             if (WindowHandler.ClientGUIWindow != null) SFXPlayer.PlaySound(SFX.PlayerConnect);
+        }
+
+        public static void AnnounceSelection(string koalaName, string name)
+        {
+            Message message = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
+            message.AddString(koalaName);
+            message.AddString(name);
+            message.AddUShort(Client._client.Id);
+            Client._client.Send(message);
+            Client.KoalaSelected = true;
         }
 
         public static void RemovePlayer(ushort id)

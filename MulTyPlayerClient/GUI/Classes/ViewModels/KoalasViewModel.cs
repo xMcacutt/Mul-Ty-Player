@@ -1,4 +1,6 @@
-﻿using PropertyChanged;
+﻿using MulTyPlayerClient.GUI;
+using PropertyChanged;
+using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace MulTyPlayerClient
@@ -73,8 +75,14 @@ namespace MulTyPlayerClient
 
         public void KoalaClicked(object inputParameter)
         {
-            PlayerHandler.AddPlayer(inputParameter.ToString(), Client.Name, Client._client.Id);
-            PlayerHandler.TellServer(inputParameter, Client.Name, Client._client.Id);
+            string koalaName = inputParameter.ToString();
+            if (KoalaAvailable(koalaName))
+            {
+                PlayerHandler.AddPlayer(koalaName, Client.Name, Client._client.Id);
+                PlayerHandler.AnnounceSelection(koalaName, Client.Name);
+                WindowHandler.ClientGUIWindow.Show();
+                WindowHandler.KoalaSelectWindow.Close();
+            }
         }
     }
 }

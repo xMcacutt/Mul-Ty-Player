@@ -38,7 +38,7 @@ namespace MulTyPlayerClient
             _client.ConnectionFailed += (s, e) => ConnectionFailed();
 
             Message authentication = Message.Create();
-            authentication.AddString(_name);
+            authentication.AddString(Name);
             authentication.AddString(_pass);
             _client.Connect(_ip + ":8750", 5, 0, authentication);
 
