@@ -1,5 +1,6 @@
 ﻿using MulTyPlayerClient.GUI;
 using PropertyChanged;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
 
@@ -21,6 +22,8 @@ namespace MulTyPlayerClient
         public string Elizabeth { get; set; } = @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Elizabeth.jpg";
         public string Dubbo { get; set; } = @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Dubbo.jpg";
 
+        public string KoalaAnimationSource { get; set; } = "";
+
         //Is available
         public bool BoonieAvailable { get; set; } = true;
         public bool MimAvailable { get; set; } = true;
@@ -31,27 +34,25 @@ namespace MulTyPlayerClient
         public bool ElizabethAvailable { get; set; } = true;
         public bool DubboAvailable { get; set; } = true;
 
+        //Show Animation
+        public bool BoonieShowAnimation { get; set; }
+        public bool MimShowAnimation { get; set; }
+        public bool GummyShowAnimation { get; set; }
+        public bool SnugsShowAnimation { get; set; }
+        public bool KatieShowAnimation { get; set; }
+        public bool KikiShowAnimation { get; set; }
+        public bool ElizabethShowAnimation { get; set; }
+        public bool DubboShowAnimation { get; set; }
+
+        public bool BlockKoalaSelect { get; set; }
+
         //Commands
-        public ICommand BoonieClickCommand { get; set; }
-        public ICommand MimClickCommand { get; set; }
-        public ICommand GummyClickCommand { get; set; }
-        public ICommand SnugsClickCommand { get; set; }
-        public ICommand KatieClickCommand { get; set; }
-        public ICommand KikiClickCommand { get; set; }
-        public ICommand ElizabethClickCommand { get; set; }
-        public ICommand DubboClickCommand { get; set; }
+        public ICommand KoalaClickCommand { get; set; }
 
         //Constructor
         public KoalasViewModel()
         {
-            BoonieClickCommand = new RelayCommandWithInputParam(KoalaClicked);
-            MimClickCommand = new RelayCommandWithInputParam(KoalaClicked);
-            GummyClickCommand = new RelayCommandWithInputParam(KoalaClicked);
-            SnugsClickCommand = new RelayCommandWithInputParam(KoalaClicked);
-            KatieClickCommand = new RelayCommandWithInputParam(KoalaClicked);
-            KikiClickCommand = new RelayCommandWithInputParam(KoalaClicked);
-            ElizabethClickCommand = new RelayCommandWithInputParam(KoalaClicked);
-            DubboClickCommand = new RelayCommandWithInputParam(KoalaClicked);
+            KoalaClickCommand = new RelayCommandWithInputParam(KoalaClicked);
         }
 
         public bool KoalaAvailable(string koalaName)
@@ -67,20 +68,36 @@ namespace MulTyPlayerClient
             prop?.SetValue(this, !(bool)prop.GetValue(this, null), null);
         }
 
+        public void ShowAnimation(string koalaName)
+        {
+            var prop = GetType().GetProperty(koalaName + "ShowAnimation");
+            prop?.SetValue(this, !(bool)prop.GetValue(this, null), null);
+        }
+
         public void Setup()
         {
             Client.HPlayer = new PlayerHandler();
             Client.HKoala = new KoalaHandler();
         }
 
-        public void KoalaClicked(object inputParameter)
+        public async void KoalaClicked(object inputParameter)
         {
             string koalaName = inputParameter.ToString();
             if (KoalaAvailable(koalaName))
             {
                 PlayerHandler.AddPlayer(koalaName, Client.Name, Client._client.Id);
                 PlayerHandler.AnnounceSelection(koalaName, Client.Name);
+
+                //Set animation, show it, and wait for it to finish
+                KoalaAnimationSource = @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/" + koalaName + ".mp4";
+                BlockKoalaSelect = true;
+                ShowAnimation(koalaName);
+                await Task.Delay(3500);
+
                 WindowHandler.ClientGUIWindow.Show();
+                //Reset back to false for when reopen the koala window
+                ShowAnimation(koalaName);
+                BlockKoalaSelect= false;
                 WindowHandler.KoalaSelectWindow.Close();
             }
         }
