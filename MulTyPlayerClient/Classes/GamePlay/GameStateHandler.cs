@@ -31,41 +31,9 @@ namespace MulTyPlayerClient
                 PreviousLoadingState = LoadingState;
                 if (!LoadingState)
                 {
-                    Program.HLevel.LoadedNewLevelGameplaySetupDone = false;
-                    Program.HLevel.LoadedNewLevelNetworkingSetupDone = false;
+                    Client.HLevel.bNewLevelSetup = false;
+                    Client.HLevel.LoadedNewLevelNetworkingSetupDone = false;
                 }
-            }
-        }
-
-        public void GetTyData(object token)
-        {
-            while (!Client.IsRunning)
-            {
-
-            }
-            while (Client.IsRunning)
-            {
-                CheckLoaded();
-                if (!CheckMenuOrLoading())
-                {
-                    Program.HLevel.GetCurrentLevel();
-                    if (!Program.HLevel.LoadedNewLevelGameplaySetupDone)
-                    {
-                        Thread.Sleep(1000);
-                        Program.HLevel.DoLevelSetup();
-                    }
-                    if (SettingsHandler.DoOpalSyncing && Program.HLevel.MainStages.Contains(Program.HLevel.CurrentLevelId)) {SyncHandler.HOpal.CheckObserverChanged(); SyncHandler.HCrate.CheckObserverChanged();}
-                    if (SettingsHandler.DoTESyncing) SyncHandler.HThEg.CheckObserverChanged();
-                    if (SettingsHandler.DoCogSyncing) SyncHandler.HCog.CheckObserverChanged();
-                    if (SettingsHandler.DoBilbySyncing) SyncHandler.HBilby.CheckObserverChanged();
-                    if (SettingsHandler.DoRangSyncing) SyncHandler.HAttribute.CheckObserverChanged();
-                    if (SettingsHandler.DoPortalSyncing) SyncHandler.HPortal.CheckObserverChanged();
-                    if (SettingsHandler.DoCliffsSyncing) SyncHandler.HCliffs.CheckObserverChanged();
-                    Program.HHero.GetTyPosRot(); 
-                    Program.HKoala.SetCoordAddrs();
-                    Program.HKoala.CheckTA();
-                }
-                Thread.Sleep(10);
             }
         }
     }

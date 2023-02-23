@@ -94,9 +94,9 @@ namespace MulTyPlayerClient
                 if (WindowHandler.ClientGUIWindow != null) SFXPlayer.PlaySound(SFX.PlayerConnect);
 
                 KoalaAnimationSource = @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/" + koalaName + ".mp4";
-                BlockKoalaSelect = true;
                 ShowAnimation(koalaName);
                 await Task.Delay(3500);
+                BlockKoalaSelect = true;
 
                 PlayerHandler.AnnounceSelection(koalaName, Client.Name);
 

@@ -3,6 +3,7 @@ using MulTyPlayerClient.GUI;
 using Riptide;
 using Riptide.Utils;
 using System;
+using System.Linq;
 using System.Media;
 using System.Net.Cache;
 using System.Threading;
@@ -21,8 +22,14 @@ namespace MulTyPlayerClient
         private static string _pass;
         public static string Name;
 
+        public static CancellationTokenSource _cts;
+
         public static KoalaHandler HKoala;
         public static PlayerHandler HPlayer;
+        public static GameStateHandler HGameState;
+        public static HeroHandler HHero;
+        public static LevelHandler HLevel;
+        public static SyncHandler HSync;
 
         public static void StartClient(string ip, string name, string pass)
         {
@@ -42,31 +49,11 @@ namespace MulTyPlayerClient
             authentication.AddString(_pass);
             _client.Connect(_ip + ":8750", 5, 0, authentication);
 
-            _loop = new Thread(new ThreadStart(Loop));
+            _loop = new Thread(new ThreadStart(ClientLoop));
             _loop.Start();
-
-            /* NEEDS TO BE HANDLED ON A BACKGROUND WORKER
-            IsRunning = true;
-            while (IsRunning)
-            {
-                _client.Update();
-                //CHECK IF ON MENU OR LOADING
-                if (!HGameState.CheckMenuOrLoading())
-                {
-                    //IF NOT SET UP LOAD INTO LEVEL STUFF
-                    if (!HLevel.LoadedNewLevelNetworkingSetupDone)
-                    {
-                        Program.HKoala.SetCoordAddrs();
-                        HLevel.LoadedNewLevelNetworkingSetupDone = true;
-                    }
-                    HHero.SendCoordinates();
-                }
-                Thread.Sleep(10);
-            }
-            */
         }
 
-        private static void Loop()
+        private static void ClientLoop()
         {
             IsRunning = true;
             while (IsRunning)
@@ -79,6 +66,17 @@ namespace MulTyPlayerClient
         private static void Connected()
         {
             SettingsHandler.Setup();
+            HLevel = new LevelHandler();
+            HSync = new SyncHandler();
+            HGameState = new GameStateHandler();
+            HHero = new HeroHandler();
+            HKoala = new KoalaHandler();
+            HHero.SetCoordAddrs();
+            HKoala.CreateKoalaAddrArrays();
+            _cts = new CancellationTokenSource();
+            Thread TyDataThread = new(new ParameterizedThreadStart(GameInteractionsLoop));
+            TyDataThread.Start(_cts.Token);
+
             BasicIoC.LoginViewModel.SaveDetails();
             BasicIoC.KoalaSelectViewModel.Setup();
             BasicIoC.LoginViewModel.ConnectionAttemptSuccessful = true;
@@ -101,12 +99,49 @@ namespace MulTyPlayerClient
             return;
         }
 
+        public static void GameInteractionsLoop(object token)
+        {
+            while (!IsRunning) { /*PREVENT MAIN LOOP FROM STARTING UNTIL THE CLIENT IS RUNNING*/ }
+            while (IsRunning)
+            {
+                //GET GAME LOADING STATUS
+                HGameState.CheckLoaded();
+                if (!HGameState.CheckMenuOrLoading())
+                {
+                    HLevel.GetCurrentLevel();
+                    //NEW LEVEL SETUP STUFF
+                    if (!HLevel.bNewLevelSetup)
+                    {
+                        HKoala.SetCoordAddrs();
+                        HLevel.DoLevelSetup();
+                        Thread.Sleep(1000); // MAY BE UNECESSARY
+                        HLevel.bNewLevelSetup = true;
+                    }
+
+                    HHero.SendCoordinates();
+
+                    //OBSERVERS
+                    if (SettingsHandler.DoOpalSyncing && HLevel.MainStages.Contains(HLevel.CurrentLevelId)) { SyncHandler.HOpal.CheckObserverChanged(); SyncHandler.HCrate.CheckObserverChanged(); }
+                    if (SettingsHandler.DoTESyncing) SyncHandler.HThEg.CheckObserverChanged();
+                    if (SettingsHandler.DoCogSyncing) SyncHandler.HCog.CheckObserverChanged();
+                    if (SettingsHandler.DoBilbySyncing) SyncHandler.HBilby.CheckObserverChanged();
+                    if (SettingsHandler.DoRangSyncing) SyncHandler.HAttribute.CheckObserverChanged();
+                    if (SettingsHandler.DoPortalSyncing) SyncHandler.HPortal.CheckObserverChanged();
+                    if (SettingsHandler.DoCliffsSyncing) SyncHandler.HCliffs.CheckObserverChanged();
+                    
+                    HHero.GetTyPosRot();
+                    HKoala.SetCoordAddrs();
+                    HKoala.CheckTA();
+                }
+                Thread.Sleep(10);
+            }
+        }
+
         [MessageHandler((ushort)MessageID.ConsoleSend)]
         public static void ConsoleSend(Message message)
         {
             Logger.Write(message.GetString());
         }
-
 
         [MessageHandler((ushort)MessageID.Disconnect)]
         public static void GetDisconnectedScrub(Message message)

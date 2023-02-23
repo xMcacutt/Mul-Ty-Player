@@ -14,7 +14,7 @@ namespace MulTyPlayerClient
         static SyncHandler HSync => Program.HSync;
 
         public int CurrentLevelId { get; set; }
-        public bool LoadedNewLevelGameplaySetupDone;
+        public bool bNewLevelSetup;
         public bool LoadedNewLevelNetworkingSetupDone;
         readonly int[] _objectiveCountOffsetsSnow = { 0x30, 0x54, 0x54, 0x6C };
         readonly int[] _objectiveCountOffsetsStump = { 0x30, 0x34, 0x54, 0x6C };
@@ -29,7 +29,7 @@ namespace MulTyPlayerClient
             HSync.ProtectLeaderboard();
             HKoala.SetBaseAddress();
             if (CurrentLevelId == 9 || CurrentLevelId == 13) ObjectiveCountSet();
-            LoadedNewLevelGameplaySetupDone = true;
+            bNewLevelSetup = true;
             LoadedNewLevelNetworkingSetupDone = true;
         }
 
