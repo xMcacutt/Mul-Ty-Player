@@ -1,8 +1,12 @@
-﻿using MulTyPlayerClient.GUI;
+﻿using MulTyPlayerClient.Classes.Utility;
+using MulTyPlayerClient.GUI;
 using PropertyChanged;
+using Riptide;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Xml.Linq;
 
 namespace MulTyPlayerClient
 {
@@ -85,14 +89,21 @@ namespace MulTyPlayerClient
             string koalaName = inputParameter.ToString();
             if (KoalaAvailable(koalaName))
             {
-                PlayerHandler.AddPlayer(koalaName, Client.Name, Client._client.Id);
-                PlayerHandler.AnnounceSelection(koalaName, Client.Name);
+                Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
+                PlayerHandler.Players.Add(Client._client.Id, new Player(koala, Client.Name, Client._client.Id));
+                if (WindowHandler.ClientGUIWindow != null) SFXPlayer.PlaySound(SFX.PlayerConnect);
 
-                //Set animation, show it, and wait for it to finish
                 KoalaAnimationSource = @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/" + koalaName + ".mp4";
                 BlockKoalaSelect = true;
                 ShowAnimation(koalaName);
                 await Task.Delay(3500);
+
+                PlayerHandler.AnnounceSelection(koalaName, Client.Name);
+
+                //Set animation, show it, and wait for it to finish
+
+
+                BasicIoC.KoalaSelectViewModel.SwitchAvailability(koalaName);
 
                 WindowHandler.ClientGUIWindow.Show();
                 //Reset back to false for when reopen the koala window

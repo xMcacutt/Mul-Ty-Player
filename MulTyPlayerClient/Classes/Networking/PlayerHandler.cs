@@ -33,6 +33,7 @@ namespace MulTyPlayerClient
 
         public static void AnnounceSelection(string koalaName, string name)
         {
+
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
             message.AddString(koalaName);
             message.AddString(name);
