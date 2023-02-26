@@ -1,5 +1,4 @@
-﻿using MulTyPlayerClient.Classes.ConsoleLog;
-using MulTyPlayerClient.GUI;
+﻿using MulTyPlayerClient.GUI;
 using Riptide;
 using Riptide.Utils;
 using System;
@@ -34,7 +33,8 @@ namespace MulTyPlayerClient
         public static void StartClient(string ip, string name, string pass)
         {
             Logger logger = new(100);
-            RiptideLogger.Initialize(Logger.Write, true);
+            BasicIoC.LoggerInstance = logger;
+            RiptideLogger.Initialize(logger.Write, true);
             _ip = ip;
             _pass = pass;
             Name = name;
@@ -140,7 +140,7 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ConsoleSend)]
         public static void ConsoleSend(Message message)
         {
-            Logger.Write(message.GetString());
+            BasicIoC.LoggerInstance.Write(message.GetString());
         }
 
         [MessageHandler((ushort)MessageID.Disconnect)]

@@ -1,15 +1,19 @@
-﻿using System;
+﻿using PropertyChanged;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MulTyPlayerClient.Classes.ConsoleLog
+namespace MulTyPlayerClient
 {
-    internal class Logger
+    [AddINotifyPropertyChangedInterface]
+    public class Logger
     {
-        private static List<string> Log;
+        public ObservableCollection<string> Log { get; set; }
+        public string Test { get; set; } = "hello test";
         private string _initTime;
         private string _fileName;
         private static string _filePath;
@@ -19,7 +23,7 @@ namespace MulTyPlayerClient.Classes.ConsoleLog
         {
             _initTime = DateTime.Now.ToString();
             _maxLogMessageCount = maxMessageCount;
-            Log = new();
+            Log = new ObservableCollection<string> { "test1", "test2", "test3", "test3", "test3", "test3", "test3", "test3", "test3", "test3aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"};
             if (SettingsHandler.CreateLogFile) CreateLogFile();
         }
 
@@ -32,7 +36,7 @@ namespace MulTyPlayerClient.Classes.ConsoleLog
             File.AppendAllLines(_filePath, initText);
         }
 
-        public static void Write(string message)
+        public void Write(string message)
         { 
             if (SettingsHandler.CreateLogFile) File.AppendAllText(_filePath, message + "\n");
             Log.Add(message);
