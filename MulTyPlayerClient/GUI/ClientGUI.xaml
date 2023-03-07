@@ -110,6 +110,34 @@
                         BorderThickness="2" 
                         CornerRadius="0,20,0,0" 
                         Margin="-1">
+                    <ScrollViewer Margin="0 30 0 0"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  RenderTransformOrigin="0.5,0.5"
+                                  PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                        <ScrollViewer.RenderTransform>
+                            <ScaleTransform ScaleY="-1"/>
+                        </ScrollViewer.RenderTransform>
+                        <ItemsControl ItemsSource="{Binding Log, Source={x:Static local:BasicIoC.LoggerInstance}}"
+                                      Margin="5"
+                                      RenderTransformOrigin="0.5,0.5">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0 2">
+                                        <TextBlock Text="{Binding}"
+                                                   TextWrapping="Wrap"
+                                                   FontFamily="Cascadia Code"
+                                                   FontSize="9"
+                                                   TextAlignment="Right">
+                                        </TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.RenderTransform>
+                                <ScaleTransform ScaleY="-1"/>
+                            </ItemsControl.RenderTransform>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <!--
                     <TextBlock Margin="0,0,5,0" 
                                Text="Hello" 
                                FontFamily="Cascadia Code" 
@@ -117,7 +145,7 @@
                                TextAlignment="Right" 
                                VerticalAlignment="Bottom" 
                                ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                               TextWrapping="WrapWithOverflow"/>
+                               TextWrapping="WrapWithOverflow"/>-->
                 </Border>
                 
                 <Button Margin="3"

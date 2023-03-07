@@ -60,5 +60,12 @@ namespace MulTyPlayerClient.GUI
         {
 
         }
+
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta != 0)
+                e = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta * -1);
+            base.OnPreviewMouseWheel(e);
+        }
     }
 }
