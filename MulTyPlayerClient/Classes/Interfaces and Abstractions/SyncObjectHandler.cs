@@ -50,7 +50,7 @@ namespace MulTyPlayerClient
         {
             GlobalObjectData[level][iLive] = (byte)CheckState;
             SaveSync.Save(iSave, level);
-            if (level != Program.HLevel.CurrentLevelId) return;
+            if (level != Client.HLevel.CurrentLevelId) return;
             LiveSync.Collect(iLive);
         }
 
@@ -83,11 +83,11 @@ namespace MulTyPlayerClient
                         ProcessHandler.ReadProcessMemory((int)ProcessHandler.HProcess, address, buffer, 4, ref bytesRead);
                         iSave = BitConverter.ToInt32(buffer, 0);
                     }
-                    if (GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] != CheckState)
+                    if (GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] != CheckState)
                     {
                         //Console.WriteLine(Name + " number " + iLive + " collected.");
-                        GlobalObjectData[Program.HLevel.CurrentLevelId][iLive] = (byte)CheckState;
-                        Program.HSync.SendDataToServer(iLive, iSave, Program.HLevel.CurrentLevelId, Name);
+                        GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] = (byte)CheckState;
+                        Client.HSync.SendDataToServer(iLive, iSave, Client.HLevel.CurrentLevelId, Name);
                     }
                 }
             }
@@ -102,7 +102,7 @@ namespace MulTyPlayerClient
             {
                 if (liveData[i] == CheckState && GlobalObjectData[level][i] != CheckState) GlobalObjectData[level][i] = WriteState;
             }
-            if(Program.HLevel.CurrentLevelId == level)
+            if(Client.HLevel.CurrentLevelId == level)
             {
                 LiveSync.Sync(liveData, ObjectAmount, CheckState);
                 PreviousObjectData = liveData;
@@ -125,8 +125,8 @@ namespace MulTyPlayerClient
 
         public virtual void SetCurrentData()
         {
-            CurrentObjectData = GlobalObjectData[Program.HLevel.CurrentLevelId];
-            PreviousObjectData = GlobalObjectData[Program.HLevel.CurrentLevelId];
+            CurrentObjectData = GlobalObjectData[Client.HLevel.CurrentLevelId];
+            PreviousObjectData = GlobalObjectData[Client.HLevel.CurrentLevelId];
         }
     }
 }

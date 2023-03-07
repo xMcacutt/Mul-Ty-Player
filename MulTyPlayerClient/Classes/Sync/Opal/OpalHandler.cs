@@ -32,7 +32,7 @@ namespace MulTyPlayerClient
             SaveSync = new SaveOpalSyncer();
             SetSyncClasses(LiveSync, SaveSync);
             GlobalObjectData = new Dictionary<int, byte[]>();
-            foreach (int i in Program.HLevel.MainStages) GlobalObjectData.Add(i, new byte[ObjectAmount]);
+            foreach (int i in Client.HLevel.MainStages) GlobalObjectData.Add(i, new byte[ObjectAmount]);
         }
 
         public override void SetMemAddrs()

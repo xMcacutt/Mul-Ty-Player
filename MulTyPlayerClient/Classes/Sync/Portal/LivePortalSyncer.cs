@@ -18,7 +18,7 @@ namespace MulTyPlayerClient
 
         public override void Collect(int level)
         {
-            if (Program.HGameState.CheckMenuOrLoading()) return;
+            if (Client.HGameState.CheckMenuOrLoading()) return;
             int portalIndex = Array.IndexOf(PortalHandler.LivePortalOrder, level);
             ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * portalIndex), new byte[] { HSyncObject.WriteState });
         }

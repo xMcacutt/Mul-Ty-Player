@@ -21,7 +21,7 @@ namespace MulTyPlayerClient
         public override void Collect(int index)
         {
             if (HSyncObject.CurrentObjectData[index] >= 3) return;
-            if (Program.HGameState.CheckMenuOrLoading()) return;
+            if (Client.HGameState.CheckMenuOrLoading()) return;
             ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * index), new byte[] {HSyncObject.WriteState});
             if (!SeparateCollisionByte) return;
             ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + CollisionOffset + (ObjectLength * index), BitConverter.GetBytes(0));

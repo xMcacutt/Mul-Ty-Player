@@ -37,7 +37,7 @@ namespace MulTyPlayerClient
                 {
                     GlobalObjectData[i] = 1;
                    //Console.WriteLine("You have now " + Enum.GetValues(typeof(Attributes)).GetValue(i));
-                    Program.HSync.SendDataToServer(0, i, 0, Name);
+                    Client.HSync.SendDataToServer(0, i, 0, Name);
                 }
             }
         }

@@ -25,7 +25,7 @@ namespace MulTyPlayerClient
             SaveSync = new SaveTESyncer();
             SetSyncClasses(LiveSync, SaveSync);
             GlobalObjectData = new Dictionary<int, byte[]>();
-            foreach (int i in Program.HLevel.MainStages) GlobalObjectData.Add(i, new byte[ObjectAmount]);
+            foreach (int i in Client.HLevel.MainStages) GlobalObjectData.Add(i, new byte[ObjectAmount]);
         }
 
         public override bool CheckObserverCondition(byte previousState, byte currentState)

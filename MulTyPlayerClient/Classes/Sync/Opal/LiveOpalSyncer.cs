@@ -7,7 +7,7 @@ namespace MulTyPlayerClient
     internal class LiveOpalSyncer : LiveDataSyncer
     {
         readonly OpalHandler HOpal;
-        static LevelHandler HLevel => Program.HLevel;
+        static LevelHandler HLevel => Client.HLevel;
 
         public LiveOpalSyncer(OpalHandler HOpal)
         {
@@ -41,7 +41,7 @@ namespace MulTyPlayerClient
         public override void Collect(int index)
         {
             if (HOpal.CurrentObjectData[index] >= 3) return;
-            if (Program.HGameState.CheckMenuOrLoading()) return;
+            if (Client.HGameState.CheckMenuOrLoading()) return;
             int baseAddress;
             int crateOpalsInCurrentLevel = HOpal.CrateOpalsPerLevel[HLevel.CurrentLevelId];
 

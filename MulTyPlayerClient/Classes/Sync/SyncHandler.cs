@@ -7,7 +7,7 @@ namespace MulTyPlayerClient
     internal class SyncHandler
     {
         IntPtr HProcess = ProcessHandler.HProcess;
-        static LevelHandler HLevel => Program.HLevel;
+        static LevelHandler HLevel => Client.HLevel;
 
         public Dictionary<string, SyncObjectHandler> SyncObjects;
 
@@ -68,7 +68,7 @@ namespace MulTyPlayerClient
             string type = message.GetString();
             if (SettingsHandler.SyncSettings[type]) 
             { 
-                Program.HSync.SyncObjects[type].Sync(message.GetInt(), message.GetBytes(), message.GetBytes());
+                Client.HSync.SyncObjects[type].Sync(message.GetInt(), message.GetBytes(), message.GetBytes());
             }
         }
 
@@ -76,7 +76,7 @@ namespace MulTyPlayerClient
         private static void HandleClientDataUpdate(Message message)
         {
             SyncMessage syncMessage = SyncMessage.Decode(message);
-            Program.HSync.SyncObjects[syncMessage.type].HandleClientUpdate(syncMessage.iLive, syncMessage.iSave, syncMessage.level);
+            Client.HSync.SyncObjects[syncMessage.type].HandleClientUpdate(syncMessage.iLive, syncMessage.iSave, syncMessage.level);
         }
         public void SendDataToServer(int iLive, int iSave, int level, string type)
         {

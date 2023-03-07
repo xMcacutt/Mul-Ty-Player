@@ -25,7 +25,7 @@ namespace MulTyPlayerClient
             SaveSync = new SaveBilbySyncer();
             SetSyncClasses(LiveSync, SaveSync);
             GlobalObjectData = new Dictionary<int, byte[]>();
-            foreach (int i in Program.HLevel.MainStages) GlobalObjectData.Add(i, Enumerable.Repeat((byte)1, ObjectAmount).ToArray());
+            foreach (int i in Client.HLevel.MainStages) GlobalObjectData.Add(i, Enumerable.Repeat((byte)1, ObjectAmount).ToArray());
         }
 
         public override bool CheckObserverCondition(byte previousState, byte currentState)

@@ -10,8 +10,8 @@ namespace MulTyPlayerClient
 {
     internal class LevelHandler
     {
-        static KoalaHandler HKoala => Program.HKoala;
-        static SyncHandler HSync => Program.HSync;
+        static KoalaHandler HKoala => Client.HKoala;
+        static SyncHandler HSync => Client.HSync;
 
         public int CurrentLevelId { get; set; }
         public bool bNewLevelSetup;

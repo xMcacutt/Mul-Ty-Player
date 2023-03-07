@@ -7,8 +7,8 @@ namespace MulTyPlayerClient
 {
     internal class KoalaHandler
     {
-        static GameStateHandler HGameState => Program.HGameState;
-        static LevelHandler HLevel => Program.HLevel;
+        static GameStateHandler HGameState => Client.HGameState;
+        static LevelHandler HLevel => Client.HLevel;
 
         public Dictionary<string, int[]> KoalaAddrs;
         public static string[] KoalaNames = { "Katie", "Mim", "Elizabeth", "Snugs", "Gummy", "Dubbo", "Kiki", "Boonie" };
@@ -45,8 +45,8 @@ namespace MulTyPlayerClient
 
         public void SetCoordAddrs()
         {
-            int modifier = (Program.HLevel.CurrentLevelId == 9 || Program.HLevel.CurrentLevelId == 13) ? 2 : 1;
-            int offset = (Program.HLevel.CurrentLevelId == 9 || Program.HLevel.CurrentLevelId == 13) ? 0x518 : 0x0;
+            int modifier = (Client.HLevel.CurrentLevelId == 9 || Client.HLevel.CurrentLevelId == 13) ? 2 : 1;
+            int offset = (Client.HLevel.CurrentLevelId == 9 || Client.HLevel.CurrentLevelId == 13) ? 0x518 : 0x0;
             if(_baseKoalaAddress == 0) _baseKoalaAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x26B070), new int[] { 0x0 });
             foreach(Player player in PlayerHandler.Players.Values)
             {
@@ -109,8 +109,8 @@ namespace MulTyPlayerClient
             //WRITE COORDINATES TO KOALA COORDINATE ADDRESSES
             for (int i = 0; i < coordinates.Length; i++)
             {
-                ProcessHandler.WriteData(Program.HKoala.KoalaAddrs[koalaName][i], BitConverter.GetBytes(coordinates[i]));
-                //Console.WriteLine("Writing {0:F} to {1:X}", coordinates[i], Program.HKoala.KoalaAddrs[intData[0]][i]);
+                ProcessHandler.WriteData(Client.HKoala.KoalaAddrs[koalaName][i], BitConverter.GetBytes(coordinates[i]));
+                //Console.WriteLine("Writing {0:F} to {1:X}", coordinates[i], Client.HKoala.KoalaAddrs[intData[0]][i]);
             }
         }
     }

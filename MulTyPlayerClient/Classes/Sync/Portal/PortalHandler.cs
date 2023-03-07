@@ -38,7 +38,7 @@ namespace MulTyPlayerClient
         public override void HandleClientUpdate(int null1, int null2, int level)
         {
             PortalsActive[level] = 1;
-            if (Program.HLevel.CurrentLevelId != 0) return;
+            if (Client.HLevel.CurrentLevelId != 0) return;
             //Console.WriteLine("Spawning Portal");
             LiveSync.Collect(level);
         }
@@ -68,7 +68,7 @@ namespace MulTyPlayerClient
                     portals[i] = 1;
                 }
 
-                if (Program.HLevel.CurrentLevelId == 0)
+                if (Client.HLevel.CurrentLevelId == 0)
                 {
                     int orderedIndex = Array.IndexOf(LivePortalOrder, FlakyPortals[i]);
                     ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), address + (LiveSync.ObjectLength * orderedIndex), buffer, 4, ref bytesRead);
@@ -94,7 +94,7 @@ namespace MulTyPlayerClient
                 if (OldPortalsActive[i] == 0 && PortalsActive[i] == 1)
                 {
                     //Console.WriteLine("Portal for level " + i + " being sent to server");
-                    Program.HSync.SendDataToServer(i, i, i, Name);
+                    Client.HSync.SendDataToServer(i, i, i, Name);
                 } 
             }
             foreach(int i in OldPortalsActive.Keys) OldPortalsActive[i] = PortalsActive[i]; 

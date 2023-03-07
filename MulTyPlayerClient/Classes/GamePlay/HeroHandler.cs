@@ -5,8 +5,8 @@ namespace MulTyPlayerClient
 {
     public class HeroHandler
     {
-        static LevelHandler HLevel => Program.HLevel;
-        static GameStateHandler HGameState => Program.HGameState;
+        static LevelHandler HLevel => Client.HLevel;
+        static GameStateHandler HGameState => Client.HGameState;
 
         const int TY_POSROT_BASE_ADDRESS = 0x270B78;
         const int BP_POSROT_BASE_ADDRESS = 0x254268;
@@ -57,7 +57,7 @@ namespace MulTyPlayerClient
             Message message = Message.Create(MessageSendMode.Unreliable, MessageID.PlayerInfo);
             message.AddBool(HGameState.CheckMenuOrLoading());
             message.AddInt(HLevel.CurrentLevelId);
-            message.AddFloats(Program.HHero.CurrentPosRot);
+            message.AddFloats(Client.HHero.CurrentPosRot);
             Client._client.Send(message);
         }
     }
