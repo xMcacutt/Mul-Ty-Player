@@ -97,7 +97,7 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ResetSync)]
         private static void HandleSyncReset(Message message)
         {
-            Program.HSync = new SyncHandler();
+            Client.HSync = new SyncHandler();
         }
     }
 }

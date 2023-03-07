@@ -30,11 +30,11 @@ namespace MulTyPlayerServer
         [MessageHandler((ushort)MessageID.PlayerInfo)]
         private static void HandleGettingCoordinates(ushort fromClientId, Message message)
         {
-            if (Players.ContainsKey(fromClientId))
+            if (Players.TryGetValue(fromClientId, out Player player))
             {
                 if (message.GetBool()) { return; }
-                Players[fromClientId].CurrentLevel = message.GetInt();
-                Players[fromClientId].Coordinates = message.GetFloats();
+                player.CurrentLevel = message.GetInt();
+                player.Coordinates = message.GetFloats();
             }
         }
     }
