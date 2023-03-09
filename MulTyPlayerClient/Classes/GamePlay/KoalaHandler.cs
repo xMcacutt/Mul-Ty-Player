@@ -105,7 +105,7 @@ namespace MulTyPlayerClient
 
             //SANITY CHECK THAT WE HAVEN'T BEEN SENT OUR OWN COORDINATES AND WE AREN'T LOADING, ON THE MENU, OR IN A DIFFERENT LEVEL 
             if (HGameState.CheckMenuOrLoading() || level != HLevel.CurrentLevelId) return;
-            
+
             //WRITE COORDINATES TO KOALA COORDINATE ADDRESSES
             for (int i = 0; i < coordinates.Length; i++)
             {

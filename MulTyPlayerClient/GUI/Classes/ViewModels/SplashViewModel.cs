@@ -40,6 +40,7 @@ namespace MulTyPlayerClient.GUI
                     messageShown = true;
                 }
             }
+            ProcessHandler.OpenTyHandle();
             BasicIoC.SplashScreenViewModel.MessageText = "Mul-Ty-Player is open!";
             Thread.Sleep(1000);
         }

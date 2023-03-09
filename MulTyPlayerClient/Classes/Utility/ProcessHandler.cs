@@ -20,7 +20,7 @@ namespace MulTyPlayerClient
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool WriteProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
 
-        public static void OpenTyProcess()
+        public static void OpenTyHandle()
         {
             HProcess = OpenProcess(0x1F0FFF, false, TyProcess.Id);
         }
