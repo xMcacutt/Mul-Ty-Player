@@ -56,7 +56,7 @@ namespace MulTyPlayerClient
 
         private static void ClientLoop()
         {
-            IsRunning = true;
+            while (!IsRunning) { _client.Update(); }
             while (IsRunning)
             {
                 //GET GAME LOADING STATUS
@@ -109,6 +109,7 @@ namespace MulTyPlayerClient
             BasicIoC.KoalaSelectViewModel.Setup();
             BasicIoC.LoginViewModel.ConnectionAttemptSuccessful = true;
             BasicIoC.LoginViewModel.ConnectionAttemptCompleted = true;
+            IsRunning = true;
         }
 
         private static void Disconnected()
