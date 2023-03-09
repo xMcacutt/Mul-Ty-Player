@@ -17,6 +17,7 @@ namespace MulTyPlayerClient
 
         public KoalaHandler()
         {
+            CreateKoalaAddrArrays();
         }
 
         [MessageHandler((ushort)MessageID.KoalaSelected)]

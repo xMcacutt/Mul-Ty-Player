@@ -72,7 +72,6 @@ namespace MulTyPlayerClient
             HHero = new HeroHandler();
             HKoala = new KoalaHandler();
             HHero.SetCoordAddrs();
-            HKoala.CreateKoalaAddrArrays();
             _cts = new CancellationTokenSource();
             Thread TyDataThread = new(new ParameterizedThreadStart(GameInteractionsLoop));
             TyDataThread.Start(_cts.Token);
