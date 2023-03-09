@@ -69,11 +69,12 @@ namespace MulTyPlayerClient
                     {
                         HKoala.SetCoordAddrs();
                         HLevel.DoLevelSetup();
-                        Thread.Sleep(1000); // MAY BE UNECESSARY
+                        _client.Update();
                         HLevel.bNewLevelSetup = true;
                     }
 
                     HHero.SendCoordinates();
+                    _client.Update();
 
                     //OBSERVERS
                     if (SettingsHandler.DoOpalSyncing && HLevel.MainStages.Contains(HLevel.CurrentLevelId)) { SyncHandler.HOpal.CheckObserverChanged(); SyncHandler.HCrate.CheckObserverChanged(); }
@@ -126,44 +127,6 @@ namespace MulTyPlayerClient
             BasicIoC.LoginViewModel.ConnectionAttemptSuccessful = false;
             BasicIoC.LoginViewModel.ConnectionAttemptCompleted = true;
             return;
-        }
-
-        public static void GameInteractionsLoop(object token)
-        {
-            while (!IsRunning) { /*PREVENT MAIN LOOP FROM STARTING UNTIL THE CLIENT IS RUNNING*/ }
-            while (IsRunning)
-            {
-                //GET GAME LOADING STATUS
-                HGameState.CheckLoaded();
-                if (!HGameState.CheckMenuOrLoading())
-                {
-                    HLevel.GetCurrentLevel();
-                    //NEW LEVEL SETUP STUFF
-                    if (!HLevel.bNewLevelSetup)
-                    {
-                        HKoala.SetCoordAddrs();
-                        HLevel.DoLevelSetup();
-                        Thread.Sleep(1000); // MAY BE UNECESSARY
-                        HLevel.bNewLevelSetup = true;
-                    }
-
-                    HHero.SendCoordinates();
-
-                    //OBSERVERS
-                    if (SettingsHandler.DoOpalSyncing && HLevel.MainStages.Contains(HLevel.CurrentLevelId)) { SyncHandler.HOpal.CheckObserverChanged(); SyncHandler.HCrate.CheckObserverChanged(); }
-                    if (SettingsHandler.DoTESyncing) SyncHandler.HThEg.CheckObserverChanged();
-                    if (SettingsHandler.DoCogSyncing) SyncHandler.HCog.CheckObserverChanged();
-                    if (SettingsHandler.DoBilbySyncing) SyncHandler.HBilby.CheckObserverChanged();
-                    if (SettingsHandler.DoRangSyncing) SyncHandler.HAttribute.CheckObserverChanged();
-                    if (SettingsHandler.DoPortalSyncing) SyncHandler.HPortal.CheckObserverChanged();
-                    if (SettingsHandler.DoCliffsSyncing) SyncHandler.HCliffs.CheckObserverChanged();
-                    
-                    HHero.GetTyPosRot();
-                    HKoala.SetCoordAddrs();
-                    HKoala.CheckTA();
-                }
-                Thread.Sleep(10);
-            }
         }
 
         [MessageHandler((ushort)MessageID.ConsoleSend)]
