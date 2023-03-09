@@ -32,6 +32,7 @@ namespace MulTyPlayerClient
 
         public static void StartClient(string ip, string name, string pass)
         {
+            SettingsHandler.Setup();
             Logger logger = new(100);
             BasicIoC.LoggerInstance = logger;
             RiptideLogger.Initialize(logger.Write, true);
@@ -65,7 +66,6 @@ namespace MulTyPlayerClient
 
         private static void Connected()
         {
-            SettingsHandler.Setup();
             HLevel = new LevelHandler();
             HSync = new SyncHandler();
             HGameState = new GameStateHandler();

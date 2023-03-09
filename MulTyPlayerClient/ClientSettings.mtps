@@ -12,8 +12,6 @@ DefaultIPAddress =
 
 DoKoalaCollision = false
 
-DoPositionLogging = false
-
-PositionLoggingOutputDir = ./
+CreateLogFile = true
  
 -------------------------------

@@ -34,7 +34,6 @@ namespace MulTyPlayerClient
             DefaultAddress = settingsFileLines[10].Split('=')[1].TrimStart();
             DoKoalaCollision = settingsFileLines[12].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
             CreateLogFile = settingsFileLines[14].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
-            LogFileOutputDir = settingsFileLines[16].Split('=')[1].TrimStart();
             SyncSettings = new()
             {
                 {"TE", false},

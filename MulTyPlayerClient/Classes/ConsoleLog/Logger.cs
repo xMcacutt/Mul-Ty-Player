@@ -21,23 +21,26 @@ namespace MulTyPlayerClient
 
         public Logger(int maxMessageCount)
         {
-            _initTime = DateTime.Now.ToString();
+            _initTime = DateTime.Now.ToString("MM-dd-yyyy h-mm-ss");
+            if (SettingsHandler.CreateLogFile) CreateLogFile();
             _maxLogMessageCount = maxMessageCount;
             Log = new ObservableCollection<string> { "test1", "test2", "test3", "test3", "test3", "test3", "test3", "test3", "test3", "test3aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"};
-            if (SettingsHandler.CreateLogFile) CreateLogFile();
         }
 
         public void CreateLogFile()
         {
             _fileName = "MTP-Log " + _initTime;
-            _filePath = SettingsHandler.LogFileOutputDir + "/" + _fileName + ".mtpl";
-            File.Create(_filePath);
-            string[] initText = {"Mul-Ty-Player Log File", "Created " + DateTime.Now.ToString() };
+            _filePath = "./" + _fileName + ".mtpl";
+            using (var fileStream = File.Create(_filePath))
+            {
+                fileStream.Close();
+            }
+            string[] initText = { "Mul-Ty-Player Log File", "Created " + DateTime.Now.ToString() };
             File.AppendAllLines(_filePath, initText);
         }
 
         public void Write(string message)
-        { 
+        {
             if (SettingsHandler.CreateLogFile) File.AppendAllText(_filePath, message + "\n");
             Log.Add(message);
             if (Log.Count > _maxLogMessageCount) Log.RemoveAt(0);  
