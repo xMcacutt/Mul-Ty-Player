@@ -59,6 +59,35 @@ namespace MulTyPlayerClient
             IsRunning = true;
             while (IsRunning)
             {
+                //GET GAME LOADING STATUS
+                HGameState.CheckLoaded();
+                if (!HGameState.CheckMenuOrLoading())
+                {
+                    HLevel.GetCurrentLevel();
+                    //NEW LEVEL SETUP STUFF
+                    if (!HLevel.bNewLevelSetup)
+                    {
+                        HKoala.SetCoordAddrs();
+                        HLevel.DoLevelSetup();
+                        Thread.Sleep(1000); // MAY BE UNECESSARY
+                        HLevel.bNewLevelSetup = true;
+                    }
+
+                    HHero.SendCoordinates();
+
+                    //OBSERVERS
+                    if (SettingsHandler.DoOpalSyncing && HLevel.MainStages.Contains(HLevel.CurrentLevelId)) { SyncHandler.HOpal.CheckObserverChanged(); SyncHandler.HCrate.CheckObserverChanged(); }
+                    if (SettingsHandler.DoTESyncing) SyncHandler.HThEg.CheckObserverChanged();
+                    if (SettingsHandler.DoCogSyncing) SyncHandler.HCog.CheckObserverChanged();
+                    if (SettingsHandler.DoBilbySyncing) SyncHandler.HBilby.CheckObserverChanged();
+                    if (SettingsHandler.DoRangSyncing) SyncHandler.HAttribute.CheckObserverChanged();
+                    if (SettingsHandler.DoPortalSyncing) SyncHandler.HPortal.CheckObserverChanged();
+                    if (SettingsHandler.DoCliffsSyncing) SyncHandler.HCliffs.CheckObserverChanged();
+
+                    HHero.GetTyPosRot();
+                    HKoala.SetCoordAddrs();
+                    HKoala.CheckTA();
+                }
                 _client.Update();
                 Thread.Sleep(10);
             }
@@ -73,8 +102,8 @@ namespace MulTyPlayerClient
             HKoala = new KoalaHandler();
             HHero.SetCoordAddrs();
             _cts = new CancellationTokenSource();
-            Thread TyDataThread = new(new ParameterizedThreadStart(GameInteractionsLoop));
-            TyDataThread.Start(_cts.Token);
+            //Thread TyDataThread = new(new ParameterizedThreadStart(GameInteractionsLoop));
+            //TyDataThread.Start(_cts.Token);
 
             BasicIoC.LoginViewModel.SaveDetails();
             BasicIoC.KoalaSelectViewModel.Setup();
