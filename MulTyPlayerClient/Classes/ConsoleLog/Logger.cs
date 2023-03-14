@@ -13,7 +13,6 @@ namespace MulTyPlayerClient
     public class Logger
     {
         public ObservableCollection<string> Log { get; set; }
-        public string Test { get; set; } = "hello test";
         private string _initTime;
         private string _fileName;
         private static string _filePath;
