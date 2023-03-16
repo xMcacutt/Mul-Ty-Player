@@ -68,7 +68,7 @@ namespace MulTyPlayerClient
                 //VISIBILITY
                 KoalaAddrs[player.Koala.KoalaName][7] = _baseKoalaAddress + offset + 0x44 + (0x518 * modifier * player.Koala.KoalaID);
             }
-            if (!SettingsHandler.DoKoalaCollision) RemoveCollision();
+            if (!SettingsHandler.Settings.DoKoalaCollision) RemoveCollision();
         }
 
         public void RemoveCollision()
@@ -111,7 +111,6 @@ namespace MulTyPlayerClient
             for (int i = 0; i < coordinates.Length; i++)
             {
                 ProcessHandler.WriteData(Client.HKoala.KoalaAddrs[koalaName][i], BitConverter.GetBytes(coordinates[i]));
-                //Console.WriteLine("Writing {0:F} to {1:X}", coordinates[i], Client.HKoala.KoalaAddrs[intData[0]][i]);
             }
         }
     }

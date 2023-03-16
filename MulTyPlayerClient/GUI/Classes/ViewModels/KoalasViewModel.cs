@@ -3,7 +3,9 @@ using MulTyPlayerClient.GUI;
 using PropertyChanged;
 using Riptide;
 using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Xml.Linq;
@@ -106,6 +108,7 @@ namespace MulTyPlayerClient
                 BasicIoC.KoalaSelectViewModel.SwitchAvailability(koalaName);
 
                 WindowHandler.ClientGUIWindow.Show();
+                CollectionViewSource.GetDefaultView(BasicIoC.LoggerInstance.Log).Refresh();
                 //Reset back to false for when reopen the koala window
                 ShowAnimation(koalaName);
                 BlockKoalaSelect= false;

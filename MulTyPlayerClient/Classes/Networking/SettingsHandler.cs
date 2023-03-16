@@ -1,20 +1,16 @@
-﻿using Riptide;
+﻿using Newtonsoft.Json;
+using Riptide;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows.Xps.Serialization;
 
 namespace MulTyPlayerClient
 {
     internal static class SettingsHandler
     {
-        public static string Password;
-        public static bool DoGetSteamName;
-        public static string DefaultName;
-        public static string DefaultAddress;
-        public static bool DoKoalaCollision;
-        public static bool CreateLogFile;
-        public static string LogFileOutputDir;
+        //GLOBAL SETTINGS [RECEIVED FROM SERVER]
         public static bool DoTESyncing;
         public static bool DoCogSyncing;
         public static bool DoBilbySyncing;
@@ -24,16 +20,15 @@ namespace MulTyPlayerClient
         public static bool DoCliffsSyncing;
 
         public static Dictionary<string, bool> SyncSettings;
+        public static Settings Settings { get; private set; }
 
         public static void Setup()
         {
-            string[] settingsFileLines = File.ReadAllLines("./ClientSettings.mtps");
-            Password = settingsFileLines[4].Split('=')[1].TrimStart();
-            DoGetSteamName = settingsFileLines[6].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
-            DefaultName = settingsFileLines[8].Split('=')[1].TrimStart();
-            DefaultAddress = settingsFileLines[10].Split('=')[1].TrimStart();
-            DoKoalaCollision = settingsFileLines[12].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
-            CreateLogFile = settingsFileLines[14].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
+            //MAIN SETTINGS
+            string json = File.ReadAllText("./ClientSettings.json");
+            Settings = JsonConvert.DeserializeObject<Settings>(json);
+
+            //SYNC SETTINGS
             SyncSettings = new()
             {
                 {"TE", false},

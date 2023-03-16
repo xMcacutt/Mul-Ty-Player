@@ -6,6 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Threading;
 
 namespace MulTyPlayerClient
 {
@@ -13,17 +16,16 @@ namespace MulTyPlayerClient
     public class Logger
     {
         public ObservableCollection<string> Log { get; set; }
-        private string _initTime;
+        private readonly string _initTime = DateTime.Now.ToString("MM-dd-yyyy h-mm-ss");
         private string _fileName;
         private static string _filePath;
         private static int _maxLogMessageCount;
 
         public Logger(int maxMessageCount)
         {
-            _initTime = DateTime.Now.ToString("MM-dd-yyyy h-mm-ss");
             if (SettingsHandler.CreateLogFile) CreateLogFile();
             _maxLogMessageCount = maxMessageCount;
-            Log = new ObservableCollection<string> { "test1", "test2", "test3", "test3", "test3", "test3", "test3", "test3", "test3", "test3aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"};
+            Log = new();
         }
 
         public void CreateLogFile()
@@ -40,8 +42,16 @@ namespace MulTyPlayerClient
 
         public void Write(string message)
         {
-            if (SettingsHandler.CreateLogFile) File.AppendAllText(_filePath, message + "\n");
-            Log.Add(message);
+            if (_filePath == null)
+            {
+                CreateLogFile();
+            }
+            if (SettingsHandler.Settings.CreateLogFile) File.AppendAllText(_filePath, message + "\n");
+            Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+                    new Action(() => {
+                        Log.Add(message);
+                }));
             if (Log.Count > _maxLogMessageCount) Log.RemoveAt(0);  
         }
     }

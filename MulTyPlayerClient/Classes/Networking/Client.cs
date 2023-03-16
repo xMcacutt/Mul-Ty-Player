@@ -1,4 +1,5 @@
-﻿using MulTyPlayerClient.GUI;
+﻿using Microsoft.VisualBasic.Logging;
+using MulTyPlayerClient.GUI;
 using Riptide;
 using Riptide.Utils;
 using System;
@@ -33,9 +34,7 @@ namespace MulTyPlayerClient
         public static void StartClient(string ip, string name, string pass)
         {
             SettingsHandler.Setup();
-            Logger logger = new(100);
-            BasicIoC.LoggerInstance = logger;
-            RiptideLogger.Initialize(logger.Write, true);
+            RiptideLogger.Initialize(BasicIoC.LoggerInstance.Write, true);
             _ip = ip;
             _pass = pass;
             Name = name;
@@ -101,9 +100,6 @@ namespace MulTyPlayerClient
             HHero = new HeroHandler();
             HKoala = new KoalaHandler();
             HHero.SetCoordAddrs();
-            _cts = new CancellationTokenSource();
-            //Thread TyDataThread = new(new ParameterizedThreadStart(GameInteractionsLoop));
-            //TyDataThread.Start(_cts.Token);
 
             BasicIoC.LoginViewModel.SaveDetails();
             BasicIoC.KoalaSelectViewModel.Setup();
@@ -115,6 +111,13 @@ namespace MulTyPlayerClient
         private static void Disconnected()
         {
             IsRunning = false;
+            System.Windows.Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+                new Action(() => {
+                    WindowHandler.KoalaSelectWindow.Close();
+                    WindowHandler.ClientGUIWindow.Close();
+
+                }));
         }
 
         private static void ConnectionFailed()

@@ -1,0 +1,7 @@
+﻿{
+  "DoGetSteamName": true,
+  "DefaultName": "USER",
+  "DoKoalaCollision": false,
+  "CreateLogFile": true,
+  "AttemptReconnect": true
+}

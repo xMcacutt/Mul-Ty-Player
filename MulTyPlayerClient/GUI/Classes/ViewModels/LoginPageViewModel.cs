@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Security;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -99,12 +100,25 @@ namespace MulTyPlayerClient.GUI
             }
         }
 
+        public string GenerateRandomUser()
+        {
+            Random random = new Random();
+            int randomNumber = random.Next(10000, 99999);
+            return "USER" + randomNumber;
+        }
+
         public void Setup()
         {
-            SteamClient.Init(411960);
-            if (SteamClient.IsValid) Name = SteamClient.Name;
-            else Name = "Please Enter Name";
-            SteamClient.Shutdown();
+            if (SettingsHandler.Settings.DoGetSteamName)
+            {
+                SteamClient.Init(411960);
+                Name = SteamClient.IsValid ? SteamClient.Name : GenerateRandomUser();
+                SteamClient.Shutdown();
+            }
+            else
+            {
+                Name = SettingsHandler.Settings.DefaultName == "USER" ? GenerateRandomUser() : SettingsHandler.Settings.DefaultName;
+            }
             _serverList = new();
             if (Path.Exists("./list.servers"))
             {
