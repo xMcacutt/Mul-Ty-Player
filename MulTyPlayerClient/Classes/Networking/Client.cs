@@ -131,7 +131,7 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ConsoleSend)]
         public static void ConsoleSend(Message message)
         {
-            BasicIoC.LoggerInstance.Write(message.GetString());
+            UITasks.LoggerWrite(message.GetString());
         }
 
         [MessageHandler((ushort)MessageID.Disconnect)]
