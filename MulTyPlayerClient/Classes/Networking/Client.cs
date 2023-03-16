@@ -89,7 +89,6 @@ namespace MulTyPlayerClient
                     HKoala.SetCoordAddrs();
                     HKoala.CheckTA();
                 }
-                _client.Update();
                 Thread.Sleep(10);
             }
         }
