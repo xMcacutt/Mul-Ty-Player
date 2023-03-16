@@ -33,7 +33,7 @@ namespace MulTyPlayerClient
 
         public static void StartClient(string ip, string name, string pass)
         {
-            SettingsHandler.Setup();
+            BasicIoC.LoggerInstance = new(100);
             RiptideLogger.Initialize(BasicIoC.LoggerInstance.Write, true);
             _ip = ip;
             _pass = pass;
@@ -111,7 +111,7 @@ namespace MulTyPlayerClient
         private static void Disconnected()
         {
             IsRunning = false;
-            System.Windows.Application.Current.Dispatcher.BeginInvoke(
+            Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                 new Action(() => {
                     WindowHandler.KoalaSelectWindow.Close();

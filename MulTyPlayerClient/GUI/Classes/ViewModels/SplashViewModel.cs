@@ -17,6 +17,7 @@ namespace MulTyPlayerClient.GUI
 
         public SplashViewModel()
         {
+            SettingsHandler.Setup();
             var backgroundWorker = new BackgroundWorker();
             backgroundWorker.DoWork += (s, e) => FindTy();
             backgroundWorker.RunWorkerCompleted += (s, e) =>

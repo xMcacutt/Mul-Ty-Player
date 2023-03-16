@@ -23,7 +23,7 @@ namespace MulTyPlayerClient
 
         public Logger(int maxMessageCount)
         {
-            if (SettingsHandler.CreateLogFile) CreateLogFile();
+            if (SettingsHandler.Settings.CreateLogFile) CreateLogFile();
             _maxLogMessageCount = maxMessageCount;
             Log = new();
         }

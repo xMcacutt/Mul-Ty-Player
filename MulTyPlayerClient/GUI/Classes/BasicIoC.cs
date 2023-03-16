@@ -7,6 +7,6 @@ namespace MulTyPlayerClient.GUI
         public static SplashViewModel SplashScreenViewModel = new();
         public static LoginPageViewModel LoginViewModel = new();
         public static KoalasViewModel KoalaSelectViewModel = new();
-        public static Logger LoggerInstance = new(100);
+        public static Logger LoggerInstance;
     }
 }
