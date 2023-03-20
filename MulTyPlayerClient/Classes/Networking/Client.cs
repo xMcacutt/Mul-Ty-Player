@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Media;
 using System.Net.Cache;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
@@ -21,18 +22,25 @@ namespace MulTyPlayerClient
         private static string _ip;
         private static string _pass;
         public static string Name;
-
-        public static CancellationTokenSource _cts;
+        private bool _reconnectMode = false;
 
         public static KoalaHandler HKoala;
         public static PlayerHandler HPlayer;
         public static GameStateHandler HGameState;
+        public static CommandHandler HCommand;
         public static HeroHandler HHero;
         public static LevelHandler HLevel;
         public static SyncHandler HSync;
 
         public static void StartClient(string ip, string name, string pass)
         {
+            HLevel = new LevelHandler();
+            HSync = new SyncHandler();
+            HGameState = new GameStateHandler();
+            HHero = new HeroHandler();
+            HKoala = new KoalaHandler();
+            HCommand = new CommandHandler();
+
             BasicIoC.LoggerInstance = new(100);
             RiptideLogger.Initialize(BasicIoC.LoggerInstance.Write, true);
             _ip = ip;
@@ -41,7 +49,7 @@ namespace MulTyPlayerClient
 
             _client = new Riptide.Client();
             _client.Connected += (s, e) => Connected();
-            _client.Disconnected += (s, e) => Disconnected();
+            _client.Disconnected += (s, e) => Disconnected(s, e);
             _client.ConnectionFailed += (s, e) => ConnectionFailed();
 
             Message authentication = Message.Create();
@@ -53,14 +61,14 @@ namespace MulTyPlayerClient
             _loop.Start();
         }
 
-        private static void ClientLoop()
+        private async static void ClientLoop()
         {
-            while (!IsRunning) { _client.Update(); }
+            while (!IsRunning) _client.Update();
             while (IsRunning)
             {
                 //GET GAME LOADING STATUS
                 HGameState.CheckLoaded();
-                if (!HGameState.CheckMenuOrLoading())
+                if (!(await HGameState.CheckMenuOrLoading()))
                 {
                     HLevel.GetCurrentLevel();
                     //NEW LEVEL SETUP STUFF
@@ -68,12 +76,11 @@ namespace MulTyPlayerClient
                     {
                         HKoala.SetCoordAddrs();
                         HLevel.DoLevelSetup();
-                        _client.Update();
                         HLevel.bNewLevelSetup = true;
                     }
 
                     HHero.SendCoordinates();
-                    _client.Update();
+                   
 
                     //OBSERVERS
                     if (SettingsHandler.DoOpalSyncing && HLevel.MainStages.Contains(HLevel.CurrentLevelId)) { SyncHandler.HOpal.CheckObserverChanged(); SyncHandler.HCrate.CheckObserverChanged(); }
@@ -88,17 +95,13 @@ namespace MulTyPlayerClient
                     HKoala.SetCoordAddrs();
                     HKoala.CheckTA();
                 }
+                _client.Update();
                 Thread.Sleep(10);
             }
         }
 
         private static void Connected()
         {
-            HLevel = new LevelHandler();
-            HSync = new SyncHandler();
-            HGameState = new GameStateHandler();
-            HHero = new HeroHandler();
-            HKoala = new KoalaHandler();
             HHero.SetCoordAddrs();
 
             BasicIoC.LoginViewModel.SaveDetails();
@@ -108,8 +111,12 @@ namespace MulTyPlayerClient
             IsRunning = true;
         }
 
-        private static void Disconnected()
+        private static void Disconnected(object sender, DisconnectedEventArgs e)
         {
+            if(e.Reason == DisconnectReason.TimedOut)
+            {
+
+            }
             IsRunning = false;
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
@@ -134,14 +141,13 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ConsoleSend)]
         public static void ConsoleSend(Message message)
         {
-            UITasks.LoggerWrite(message.GetString());
+            BasicIoC.LoggerInstance.Write(message.GetString());
         }
 
         [MessageHandler((ushort)MessageID.Disconnect)]
         public static void GetDisconnectedScrub(Message message)
         {
             _client.Disconnect();
-            Disconnected();
         }
     }
 }

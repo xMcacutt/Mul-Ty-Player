@@ -33,15 +33,12 @@ namespace MulTyPlayerClient
             LoadedNewLevelNetworkingSetupDone = true;
         }
 
-        public void GetCurrentLevel()
+        public async void GetCurrentLevel()
         {
-            byte[] buffer = new byte[4];
-            int bytesRead = 0;
-            ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), PointerCalculations.AddOffset(0x280594), buffer, 4, ref bytesRead);
-            CurrentLevelId = BitConverter.ToInt32(buffer, 0);
+            CurrentLevelId = BitConverter.ToInt32(await ProcessHandler.ReadDataAsync(PointerCalculations.AddOffset(0x280594), 4), 0);
         }
 
-        public void ObjectiveCountSet() 
+        public async void ObjectiveCountSet() 
         {
             int[] objectiveCountOffsets = null;
             switch (CurrentLevelId)
@@ -53,17 +50,15 @@ namespace MulTyPlayerClient
                     objectiveCountOffsets = _objectiveCountOffsetsStump;
                     break;
             }
-            byte[] buffer = new byte[2];
-            int bytesRead = 0;
             int currentCountMax = 16;
             int inc = 1;
             while(currentCountMax != 8)
             {
-                int objectiveCounterAddr = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x0028C318), objectiveCountOffsets, 2);
-                ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), objectiveCounterAddr, buffer, 2, ref bytesRead);
-                if (BitConverter.ToInt16(buffer, 0) == 16)
+                int objectiveCounterAddr = await PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x0028C318), objectiveCountOffsets, 2);
+                currentCountMax = BitConverter.ToInt16(await ProcessHandler.ReadDataAsync(objectiveCounterAddr, 2), 0);
+                if (currentCountMax == 16)
                 {
-                    ProcessHandler.WriteData(objectiveCounterAddr, BitConverter.GetBytes(8));
+                    await ProcessHandler.WriteDataAsync(objectiveCounterAddr, BitConverter.GetBytes(8));
                     currentCountMax = 8;
                 }
                 inc++;

@@ -35,12 +35,12 @@ namespace MulTyPlayerClient
             foreach (int i in Client.HLevel.MainStages) GlobalObjectData.Add(i, new byte[ObjectAmount]);
         }
 
-        public override void SetMemAddrs()
+        public async override void SetMemAddrs()
         {
             int gemPtrListAddress = PointerCalculations.AddOffset(GEM_PTR_LIST_BASE_ADDRESS);
-            NonCrateOpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x0, 0x0});
+            NonCrateOpalsAddress = await PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x0, 0x0});
             //B3OpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x2B0, 0x0});
-            CrateOpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x4AC, 0x0});
+            CrateOpalsAddress = await PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x4AC, 0x0});
         }
 
         public override bool CheckObserverCondition(byte previousState, byte currentState)

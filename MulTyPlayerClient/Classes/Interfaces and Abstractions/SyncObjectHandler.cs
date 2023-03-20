@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace MulTyPlayerClient
 {
@@ -54,20 +55,18 @@ namespace MulTyPlayerClient
             LiveSync.Collect(iLive);
         }
 
-        public virtual int ReadObserver(int address, int size)
+        public async virtual Task<int> ReadObserver(int address, int size)
         {
-            int bytesRead = 0;
-            byte[] buffer = new byte[size];
-            ProcessHandler.ReadProcessMemory((int)ProcessHandler.HProcess, address, buffer, size, ref bytesRead);
+            byte[] buffer = await ProcessHandler.ReadDataAsync(address, size);
             return size == 4 ? BitConverter.ToInt32(buffer, 0) : buffer[0];
         }
 
-        public virtual void CheckObserverChanged()
+        public async virtual void CheckObserverChanged()
         {
-            ObserverState = ReadObserver(CounterAddress, CounterByteLength);
+            ObserverState = await ReadObserver(CounterAddress, CounterByteLength);
             if (PreviousObserverState == ObserverState || ObserverState == 0) return;
             PreviousObserverState = ObserverState;
-            CurrentObjectData = LiveSync.ReadData();
+            CurrentObjectData = await LiveSync.ReadData();
             int iSave;
             for (int iLive = 0; iLive < CurrentObjectData.Length; iLive++)
             {
@@ -78,10 +77,7 @@ namespace MulTyPlayerClient
                     if (SeparateID) 
                     {
                         int address = LiveObjectAddress + (iLive * LiveSync.ObjectLength) + IDOffset;
-                        int bytesRead = 0;
-                        byte[] buffer = new byte[4];
-                        ProcessHandler.ReadProcessMemory((int)ProcessHandler.HProcess, address, buffer, 4, ref bytesRead);
-                        iSave = BitConverter.ToInt32(buffer, 0);
+                        iSave = BitConverter.ToInt32(await ProcessHandler.ReadDataAsync(address, 4), 0);
                     }
                     if (GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] != CheckState)
                     {

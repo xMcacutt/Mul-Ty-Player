@@ -13,10 +13,10 @@ namespace MulTyPlayerClient
             SaveWriteValue = 1;
         }
 
-        public override void Save(int iAttribute, int? nullableInt)
+        public async override void Save(int iAttribute, int? nullableInt)
         {
             int address = SyncHandler.SaveDataBaseAddress + 0xAA4 + iAttribute;
-            ProcessHandler.WriteData(address, new byte[] { 1 });
+            await ProcessHandler.WriteDataAsync(address, new byte[] { 1 });
             //Console.WriteLine("writing to " + Enum.GetValues(typeof(Attributes)).GetValue(iAttribute));
         }
 

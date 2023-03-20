@@ -33,9 +33,9 @@ namespace MulTyPlayerClient
             return previousState < 3 && currentState > 3;
         }
 
-        public override void SetMemAddrs()
+        public async override void SetMemAddrs()
         {
-            LiveObjectAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x270424), 0x0);
+            LiveObjectAddress = await PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x270424), new int[]{ 0x0 });
         }
     }
 }

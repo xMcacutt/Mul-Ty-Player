@@ -1,14 +1,12 @@
 ﻿using Riptide;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MulTyPlayerClient
 {
     internal class SyncHandler
     {
-        IntPtr HProcess = ProcessHandler.HProcess;
-        static LevelHandler HLevel => Client.HLevel;
-
         public Dictionary<string, SyncObjectHandler> SyncObjects;
 
         public static OpalHandler HOpal;
@@ -20,7 +18,7 @@ namespace MulTyPlayerClient
         public static CrateHandler HCrate;
         public static RCHandler HCliffs;
 
-        public static int SaveDataBaseAddress => PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x288730), 0x10);
+        public static int SaveDataBaseAddress => GetSaveDataBaseAddress().Result;
 
         public SyncHandler()
         {
@@ -35,6 +33,11 @@ namespace MulTyPlayerClient
                 { "Crate", HCrate = new() },
                 { "RC", HCliffs = new() }
             };
+        }
+
+        private static async Task<int> GetSaveDataBaseAddress()
+        {
+            return await PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x288730), new int[] { 0x10 });
         }
 
         public void SetMemAddrs()
@@ -62,6 +65,7 @@ namespace MulTyPlayerClient
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.ReqSync);
             Client._client.Send(message);
         }
+
         [MessageHandler((ushort)MessageID.ReqSync)]
         private static void HandleSyncReqResponse(Message message)
         {
@@ -84,12 +88,10 @@ namespace MulTyPlayerClient
             Client._client.Send(SyncMessage.Encode(syncMessage));
         }
 
-        public void ProtectLeaderboard()
+        public async void ProtectLeaderboard()
         {
             int address = SaveDataBaseAddress + 0xB07;
-            int bytesWritten = 0;
-            byte[] bytes = new byte[] { 1 };
-            ProcessHandler.WriteProcessMemory((int)HProcess, address, bytes, bytes.Length, ref bytesWritten);
+            await ProcessHandler.WriteDataAsync(address, new byte[]{1});
         }
     }
 }

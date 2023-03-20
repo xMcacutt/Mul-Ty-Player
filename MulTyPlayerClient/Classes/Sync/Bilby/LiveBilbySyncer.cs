@@ -18,14 +18,14 @@ namespace MulTyPlayerClient
             ObjectLength = 0x134;
         }
 
-        public override void Collect(int index)
+        public async override void Collect(int index)
         {
             if (HSyncObject.CurrentObjectData[index] >= 3) return;
-            if (Client.HGameState.CheckMenuOrLoading()) return;
-            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * index), new byte[] {HSyncObject.WriteState});
+            if (await Client.HGameState.CheckMenuOrLoading()) return;
+            await ProcessHandler.WriteDataAsync(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * index), new byte[] {HSyncObject.WriteState});
             if (!SeparateCollisionByte) return;
-            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + CollisionOffset + (ObjectLength * index), BitConverter.GetBytes(0));
-            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + 0x31 + (ObjectLength * index), new byte[] { 0, 1 });
+            await ProcessHandler.WriteDataAsync(HSyncObject.LiveObjectAddress + CollisionOffset + (ObjectLength * index), BitConverter.GetBytes(0));
+            await ProcessHandler.WriteDataAsync(HSyncObject.LiveObjectAddress + 0x31 + (ObjectLength * index), new byte[] { 0, 1 });
         }
     }
 }

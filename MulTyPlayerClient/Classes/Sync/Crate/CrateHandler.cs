@@ -14,7 +14,7 @@ namespace MulTyPlayerClient
             Name = "Crate";
             WriteState = 0;
             CheckState = 0;
-            CounterAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x0028A8E8), 0x390);
+            SetMemAddrs();
             CounterByteLength = 4;
             CurrentObjectData = Enumerable.Repeat((byte)1, 300).ToArray();
             PreviousObjectData = Enumerable.Repeat((byte)1, 300).ToArray();
@@ -62,23 +62,23 @@ namespace MulTyPlayerClient
             return previousState == 1 && currentState == 0;
         }
 
-        public override void SetMemAddrs()
+        public async override void SetMemAddrs()
         {
-            CounterAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x0028A8E8), 0x390);
-            ProcessHandler.WriteData(CounterAddress, new byte[] { 0, 0, 0, 0 });
+            CounterAddress = await PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x0028A8E8), new int[] { 0x390 });
+            await ProcessHandler.WriteDataAsync(CounterAddress, new byte[] { 0, 0, 0, 0 });
             LiveObjectAddress = 
                 Client.HLevel.CurrentLevelId == 10 ?
-                PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x255190), 0x0):
-                PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x254CB8), 0x0);
+                await PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x255190), new int[] { 0x0 }) :
+                await PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x254CB8), new int[] { 0x0 });
         }
 
-        public override void CheckObserverChanged()
+        public async override void CheckObserverChanged()
         {
             if (!Client.HLevel.MainStages.Contains(Client.HLevel.CurrentLevelId)) return;
-            ObserverState = ReadObserver(CounterAddress, CounterByteLength);
+            ObserverState = await ReadObserver(CounterAddress, CounterByteLength);
             if (PreviousObserverState == ObserverState || ObserverState == 0) return;
             PreviousObserverState = ObserverState;
-            CurrentObjectData = LiveSync.ReadData();
+            CurrentObjectData = await LiveSync.ReadData();
             for (int iLive = 0; iLive < CratesPerLevel[Client.HLevel.CurrentLevelId]; iLive++)
             {
                 if (CheckObserverCondition(PreviousObjectData[iLive], CurrentObjectData[iLive]))

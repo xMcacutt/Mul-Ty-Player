@@ -1,76 +1,22 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MulTyPlayerClient
 {
     internal static class PointerCalculations
     {
-        static IntPtr HProcess => ProcessHandler.HProcess;
-
-        public static int GetPointerAddress(int baseAddress, int[] offsets, int extraOffset)
+        public async static Task<int> GetPointerAddress(int baseAddress, int[] offsets, int extraOffset = 0)
         {
-            int bytesRead = 0;
-            byte[] buffer = new byte[4];
-            IntPtr addr = (IntPtr)baseAddress;
-            ProcessHandler.ReadProcessMemory((int)HProcess, (int)addr, buffer, 4, ref bytesRead);
-            addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
-            for (int i = 0; i < offsets.Length - 1; i++)
+            IntPtr addr = new(baseAddress);
+            for (int i = 0; i < offsets.Length; i++)
             {
-                addr += offsets[i];
-                ProcessHandler.ReadProcessMemory((int)HProcess, (int)addr, buffer, 4, ref bytesRead);
-                addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
+                int nextAddress = BitConverter.ToInt32(await ProcessHandler.ReadDataAsync((int)addr, 4), 0);
+                addr = new IntPtr(nextAddress + offsets[i]);
             }
-            addr += offsets[offsets.Length - 1];
             addr += extraOffset;
-            return (int)addr;
+            return addr.ToInt32();
         }
-
-        public static int GetPointerAddress(int baseAddress, int[] offsets)
-        {
-            int bytesRead = 0;
-            byte[] buffer = new byte[4];
-            IntPtr addr = (IntPtr)baseAddress;
-            ProcessHandler.ReadProcessMemory((int)HProcess, (int)addr, buffer, 4, ref bytesRead);
-            addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
-            for(int i = 0; i < offsets.Length - 1; i++)
-            { 
-                addr += offsets[i];
-                ProcessHandler.ReadProcessMemory((int)HProcess, (int)addr, buffer, 4, ref bytesRead);
-                addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
-            }
-            addr += offsets[offsets.Length - 1];
-            return (int)addr;
-        }
-
-        public static int GetPointerAddress(int baseAddress, int offset)
-        {
-            int bytesRead = 0;
-            byte[] buffer = new byte[4];
-            IntPtr addr = (IntPtr)baseAddress;
-            ProcessHandler.ReadProcessMemory((int)HProcess, (int)addr, buffer, 4, ref bytesRead);
-            addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
-            addr += offset;
-            return (int)addr;
-        }
-
-        public static int GetPointerAddressNegative(int baseAddress, int[] offsets, int extraOffset)
-        {
-            int bytesRead = 0;
-            byte[] buffer = new byte[4];
-            IntPtr addr = (IntPtr)baseAddress;
-            ProcessHandler.ReadProcessMemory((int)HProcess, (int)addr, buffer, 4, ref bytesRead);
-            addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
-            for (int i = 0; i < offsets.Length - 1; i++)
-            {
-                addr += offsets[i];
-                ProcessHandler.ReadProcessMemory((int)HProcess, (int)addr, buffer, 4, ref bytesRead);
-                addr = (IntPtr)BitConverter.ToInt32(buffer, 0);
-            }
-            addr += offsets[offsets.Length - 1];
-            addr -= extraOffset;
-            return (int)addr;
-        }
-
 
         public static int AddOffset(int i)
         {

@@ -12,16 +12,16 @@ namespace MulTyPlayerClient
         public int SaveDataOffset { get; set; }
         public byte SaveWriteValue { get; set; }
 
-        public virtual void Save(int iSave, int? level) 
+        public async virtual void Save(int iSave, int? level) 
         {
             int address = (int)(SyncHandler.SaveDataBaseAddress + (SaveDataOffset) + (0x70 * level) + iSave);
-            ProcessHandler.WriteData(address, new byte[] { SaveWriteValue });
+            await ProcessHandler.WriteDataAsync(address, new byte[] { SaveWriteValue });
         }
 
-        public virtual void Sync(int level, byte[] bytes) 
+        public async virtual void Sync(int level, byte[] bytes) 
         {
             int address = SyncHandler.SaveDataBaseAddress + SaveDataOffset + (0x70 * level);
-            ProcessHandler.WriteData(address, bytes);
+            await ProcessHandler.WriteDataAsync(address, bytes);
         }
 
 

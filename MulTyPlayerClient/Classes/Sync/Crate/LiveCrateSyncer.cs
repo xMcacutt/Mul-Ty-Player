@@ -17,23 +17,18 @@ namespace MulTyPlayerClient
             ObjectLength = 0x1C0;
         }
 
-        public override void Collect(int index)
+        public async override void Collect(int index)
         {
             int crateAddress = HSyncObject.LiveObjectAddress + (index * ObjectLength);
-            ProcessHandler.WriteData(crateAddress + 0x48, new byte[] {0});
-            ProcessHandler.WriteData(crateAddress + 0x114, new byte[] {0});
-            byte[] buffer = new byte[1];
-            int bytesRead = 0;
-            ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), crateAddress + 0x178, buffer, 1, ref bytesRead);
-            int opalCount = buffer[0];
-            int firstCrateOpalAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x28AB7C), new int[] { 0x4AC, 0x0 });
+            await ProcessHandler.WriteDataAsync(crateAddress + 0x48, new byte[] {0});
+            await ProcessHandler.WriteDataAsync(crateAddress + 0x114, new byte[] {0});
+            int opalCount = (await ProcessHandler.ReadDataAsync(crateAddress + 0x178, 1))[0];
             for (int i = 0; i < opalCount; i++)
             {
-                int opalAddress = PointerCalculations.GetPointerAddress(crateAddress + 0x150 + (4 * i), 0x0);
-                ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), opalAddress + 0x78, buffer, 1, ref bytesRead);
-                if (buffer[0] != 5)
+                int opalAddress = await PointerCalculations.GetPointerAddress(crateAddress + 0x150 + (4 * i), new int[] { 0x0 });
+                if ((await ProcessHandler.ReadDataAsync(opalAddress + 0x78, 1))[0] != 5)
                 {
-                    ProcessHandler.WriteData(opalAddress + 0x78, BitConverter.GetBytes(1));
+                    await ProcessHandler.WriteDataAsync(opalAddress + 0x78, BitConverter.GetBytes(1));
                 }
             }
         }
@@ -46,16 +41,13 @@ namespace MulTyPlayerClient
             }
         }
 
-        public override byte[] ReadData()
+        public async override Task<byte[]> ReadData()
         {
             byte[] currentData = new byte[SyncHandler.HCrate.CratesPerLevel[Client.HLevel.CurrentLevelId]];
             int address = HSyncObject.LiveObjectAddress;
-            byte[] buffer = new byte[1];
-            int bytesRead = 0;
             for (int i = 0; i < currentData.Length; i++)
             {
-                ProcessHandler.ReadProcessMemory(checked((int)ProcessHandler.HProcess), address + StateOffset + (ObjectLength * i), buffer, 1, ref bytesRead);
-                currentData[i] = buffer[0];
+                currentData[i] = (await ProcessHandler.ReadDataAsync(address + StateOffset + (ObjectLength * i), 1))[0];
             }
             return currentData;
         }

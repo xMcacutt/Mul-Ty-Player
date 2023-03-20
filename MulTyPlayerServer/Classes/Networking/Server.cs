@@ -67,8 +67,6 @@ namespace MulTyPlayerServer
         {
             string name = authenticationMessage.GetString();
             string pass = authenticationMessage.GetString();
-            Console.WriteLine(pass);
-            Console.WriteLine(SettingsHandler.Password);
             if (string.Equals(pass, SettingsHandler.Password, StringComparison.CurrentCultureIgnoreCase)
                 || string.Equals(SettingsHandler.Password, "XXXXX", StringComparison.CurrentCultureIgnoreCase)
                 || string.IsNullOrWhiteSpace(SettingsHandler.Password))
@@ -92,8 +90,11 @@ namespace MulTyPlayerServer
         {
             //SendMessageToClients($"{PlayerHandler.Players[e.Client.Id].Name} has disconnected from the server.", true);
             //SendMessageToClients($"{PlayerHandler.Players[e.Client.Id].Koala.KoalaName} was returned to the koala pool", true);
-            if (PlayerHandler.Players[e.Client.Id].Koala != null) HKoala.ReturnKoala(PlayerHandler.Players[e.Client.Id]);
-            PlayerHandler.Players.Remove(e.Client.Id);
+            if (PlayerHandler.Players.TryGetValue(e.Client.Id, out _))
+            {
+                if (PlayerHandler.Players[e.Client.Id].Koala != null) HKoala.ReturnKoala(PlayerHandler.Players[e.Client.Id]);
+                PlayerHandler.Players.Remove(e.Client.Id);
+            }
         }
 
         public static void SendCoordinates(string koalaName, int level, float[] coordinates)

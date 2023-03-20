@@ -16,11 +16,11 @@ namespace MulTyPlayerClient
             ObjectLength = 0xB0;
         }
 
-        public override void Collect(int level)
+        public async override void Collect(int level)
         {
-            if (Client.HGameState.CheckMenuOrLoading()) return;
+            if (await Client.HGameState.CheckMenuOrLoading()) return;
             int portalIndex = Array.IndexOf(PortalHandler.LivePortalOrder, level);
-            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * portalIndex), new byte[] { HSyncObject.WriteState });
+            await ProcessHandler.WriteDataAsync(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * portalIndex), new byte[] { HSyncObject.WriteState });
         }
     }
 }

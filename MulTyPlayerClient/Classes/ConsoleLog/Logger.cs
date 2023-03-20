@@ -51,8 +51,9 @@ namespace MulTyPlayerClient
                 DispatcherPriority.Background,
                     new Action(() => {
                         Log.Add(message);
-                }));
-            if (Log.Count > _maxLogMessageCount) Log.RemoveAt(0);  
+                        if (Log.Count > _maxLogMessageCount) Log.RemoveAt(0);
+                    }));
+            
         }
     }
 }
