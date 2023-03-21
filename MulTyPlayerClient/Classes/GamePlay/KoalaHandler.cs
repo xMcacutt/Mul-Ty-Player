@@ -74,8 +74,9 @@ namespace MulTyPlayerClient
 
         public async void RemoveCollision()
         {
+            var _players = PlayerHandler.Players.Values;
             //WRITES 0 TO COLLISION BYTE
-            foreach (Player player in PlayerHandler.Players.Values)
+            foreach (Player player in _players)
             {
                 await ProcessHandler.WriteDataAsync(KoalaAddrs[player.Koala.KoalaName][6], new byte[] {0});
             }

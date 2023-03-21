@@ -77,7 +77,7 @@ namespace MulTyPlayerClient
                     bool success = ReadProcessMemory(HProcess, address, buffer, length, out bytesRead);
                     if (!success)
                     {
-                        throw new Exception("Ty the Tasmanian Tiger has crashed or stopped responding.");
+                        //throw new Exception("Ty the Tasmanian Tiger has crashed or stopped responding.");
                     }
                 });
             }
