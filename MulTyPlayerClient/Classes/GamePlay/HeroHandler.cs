@@ -1,5 +1,6 @@
 ﻿using Riptide;
 using System;
+using System.Threading.Tasks;
 
 namespace MulTyPlayerClient
 {
@@ -38,7 +39,7 @@ namespace MulTyPlayerClient
             _bpPosRotAddrs[5] = _bpPosRotAddrs[4] + 0x4;
         }
 
-        public async void GetTyPosRot()
+        public async Task GetTyPosRot()
         {
             //GETS TY'S OR BUSHPIG'S POSITION AND ROTATION AND STORES IT IN CURRENTPOSROT 
             int[] tempInts = HLevel.CurrentLevelId == 10 ? _bpPosRotAddrs : _tyPosRotAddrs;
@@ -48,7 +49,7 @@ namespace MulTyPlayerClient
             }
         }
 
-        public async void SendCoordinates()
+        public async Task SendCoordinates()
         {
             //SENDS CURRENT COORDINATES TO SERVER WITH CURRENT LEVEL AND LOADING STATE
             Message message = Message.Create(MessageSendMode.Unreliable, MessageID.PlayerInfo);

@@ -8,6 +8,7 @@ using System.Media;
 using System.Net.Cache;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -18,7 +19,6 @@ namespace MulTyPlayerClient
         public static bool IsRunning;
         public static bool KoalaSelected = false;
         public static Riptide.Client _client;
-        private static Thread _loop;
         private static string _ip;
         private static string _pass;
         public static string Name;
@@ -57,43 +57,42 @@ namespace MulTyPlayerClient
             authentication.AddString(_pass);
             _client.Connect(_ip + ":8750", 5, 0, authentication);
 
-            _loop = new Thread(new ThreadStart(ClientLoop));
-            _loop.Start();
+            Task.Run(ClientLoop);
         }
 
-        private async static void ClientLoop()
+        private static async Task ClientLoop()
         {
             while (!IsRunning) _client.Update();
             while (IsRunning)
             {
                 //GET GAME LOADING STATUS
-                HGameState.CheckLoaded();
+                await HGameState.CheckLoaded();
                 if (!(await HGameState.CheckMenuOrLoading()))
                 {
-                    HLevel.GetCurrentLevel();
+                    await HLevel.GetCurrentLevel();
                     //NEW LEVEL SETUP STUFF
                     if (!HLevel.bNewLevelSetup)
                     {
-                        HKoala.SetCoordAddrs();
-                        HLevel.DoLevelSetup();
+                        await HKoala.SetCoordAddrs();
+                        await HLevel.DoLevelSetup();
                         HLevel.bNewLevelSetup = true;
                     }
 
-                    HHero.SendCoordinates();
+                    await HHero.SendCoordinates();
                    
 
                     //OBSERVERS
-                    if (SettingsHandler.DoOpalSyncing && HLevel.MainStages.Contains(HLevel.CurrentLevelId)) { SyncHandler.HOpal.CheckObserverChanged(); SyncHandler.HCrate.CheckObserverChanged(); }
-                    if (SettingsHandler.DoTESyncing) SyncHandler.HThEg.CheckObserverChanged();
-                    if (SettingsHandler.DoCogSyncing) SyncHandler.HCog.CheckObserverChanged();
-                    if (SettingsHandler.DoBilbySyncing) SyncHandler.HBilby.CheckObserverChanged();
-                    if (SettingsHandler.DoRangSyncing) SyncHandler.HAttribute.CheckObserverChanged();
-                    if (SettingsHandler.DoPortalSyncing) SyncHandler.HPortal.CheckObserverChanged();
-                    if (SettingsHandler.DoCliffsSyncing) SyncHandler.HCliffs.CheckObserverChanged();
+                    if (SettingsHandler.DoOpalSyncing && HLevel.MainStages.Contains(HLevel.CurrentLevelId)) { await SyncHandler.HOpal.CheckObserverChanged(); await SyncHandler.HCrate.CheckObserverChanged(); }
+                    if (SettingsHandler.DoTESyncing) await SyncHandler.HThEg.CheckObserverChanged();
+                    if (SettingsHandler.DoCogSyncing) await SyncHandler.HCog.CheckObserverChanged();
+                    if (SettingsHandler.DoBilbySyncing) await SyncHandler.HBilby.CheckObserverChanged();
+                    if (SettingsHandler.DoRangSyncing) await SyncHandler.HAttribute.CheckObserverChanged();
+                    if (SettingsHandler.DoPortalSyncing) await SyncHandler.HPortal.CheckObserverChanged();
+                    if (SettingsHandler.DoCliffsSyncing) await SyncHandler.HCliffs.CheckObserverChanged();
 
-                    HHero.GetTyPosRot();
-                    HKoala.SetCoordAddrs();
-                    HKoala.CheckTA();
+                    await HHero.GetTyPosRot();
+                    await HKoala.SetCoordAddrs();
+                    await HKoala.CheckTA();
                 }
                 _client.Update();
                 Thread.Sleep(10);

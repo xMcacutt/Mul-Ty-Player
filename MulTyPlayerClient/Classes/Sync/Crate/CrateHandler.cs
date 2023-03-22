@@ -34,16 +34,16 @@ namespace MulTyPlayerClient
             SetSyncClasses(LiveSync);
         }
 
-        public override void HandleClientUpdate(int iLive, int iSave, int level)
+        public async override Task HandleClientUpdate(int iLive, int iSave, int level)
         {
             if (GlobalObjectData[level][iLive] == 0) return;
             GlobalObjectData[level][iLive] = (byte)CheckState;
             if (level != Client.HLevel.CurrentLevelId) return;
             //Console.WriteLine("Collecting Crate: " + iLive);
-            LiveSync.Collect(iLive);
+            await LiveSync.Collect(iLive);
         }
 
-        public override void Sync(int level, byte[] liveData, byte[] saveData)
+        public async override Task Sync(int level, byte[] liveData, byte[] saveData)
         {
             for (int i = 0; i < CratesPerLevel[level]; i++)
             {
@@ -53,7 +53,7 @@ namespace MulTyPlayerClient
             {
                 PreviousObjectData = liveData;
                 CurrentObjectData = liveData;
-                LiveSync.Sync(liveData, CratesPerLevel[level], CheckState);
+                await LiveSync.Sync(liveData, CratesPerLevel[level], CheckState);
             }
         }
 
@@ -72,7 +72,7 @@ namespace MulTyPlayerClient
                 await PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x254CB8), new int[] { 0x0 });
         }
 
-        public async override void CheckObserverChanged()
+        public async override Task CheckObserverChanged()
         {
             if (!Client.HLevel.MainStages.Contains(Client.HLevel.CurrentLevelId)) return;
             ObserverState = await ReadObserver(CounterAddress, CounterByteLength);

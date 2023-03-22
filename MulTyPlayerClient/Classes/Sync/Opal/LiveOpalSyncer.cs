@@ -35,7 +35,7 @@ namespace MulTyPlayerClient
             return currentOpals;
         }
 
-        public async override void Collect(int index)
+        public async override Task Collect(int index)
         {
             if (HOpal.CurrentObjectData[index] >= 3) return;
             if (await Client.HGameState.CheckMenuOrLoading()) return;

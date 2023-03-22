@@ -88,7 +88,7 @@ namespace MulTyPlayerClient
             Client._client.Send(SyncMessage.Encode(syncMessage));
         }
 
-        public async void ProtectLeaderboard()
+        public async Task ProtectLeaderboard()
         {
             int address = SaveDataBaseAddress + 0xB07;
             await ProcessHandler.WriteDataAsync(address, new byte[]{1});

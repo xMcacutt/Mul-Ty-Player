@@ -24,22 +24,21 @@ namespace MulTyPlayerClient
             GlobalObjectData[(int)Attributes.GotBoom] = 1;
         }
 
-        public async override void CheckObserverChanged()
+        public async override Task CheckObserverChanged()
         {
             int attributeAmount = 21;
-            byte[] observerData = new byte[attributeAmount];
             for (int i = 0; i < attributeAmount; i++)
             {
                 if ((await ProcessHandler.ReadDataAsync(SyncHandler.SaveDataBaseAddress + 0xAA4 + i, 1))[0] == 1 && GlobalObjectData[i] == 0)
                 {
                     GlobalObjectData[i] = 1;
-                   //Console.WriteLine("You have now " + Enum.GetValues(typeof(Attributes)).GetValue(i));
+                    //Console.WriteLine("You have now " + Enum.GetValues(typeof(Attributes)).GetValue(i));
                     Client.HSync.SendDataToServer(0, i, 0, Name);
                 }
             }
         }
 
-        public override void Sync(int null1, byte[] null2, byte[] saveData)
+        public async override Task Sync(int null1, byte[] null2, byte[] saveData)
         {
             int attributeAmount = 21;
             for (int i = 0; i < attributeAmount; i++)
@@ -49,13 +48,13 @@ namespace MulTyPlayerClient
                     GlobalObjectData[i] = 1;
                 }
             }
-            SaveSync.Sync(0, saveData);
+            await SaveSync.Sync(0, saveData);
         }
 
-        public override void HandleClientUpdate(int null1, int iAttribute, int null2)
+        public async override Task HandleClientUpdate(int null1, int iAttribute, int null2)
         {
             GlobalObjectData[iAttribute] = 1;
-            SaveSync.Save(iAttribute, null);
+            await SaveSync.Save(iAttribute, null);
         }
     }
 }

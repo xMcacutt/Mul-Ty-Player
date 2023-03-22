@@ -14,7 +14,7 @@ namespace MulTyPlayerClient
         public int CollisionOffset { get; set; }
         public int ObjectLength { get; set; }
 
-        public async virtual void Collect(int index)
+        public async virtual Task Collect(int index)
         {
             if (HSyncObject.CurrentObjectData[index] >= 3) return;
             if (await Client.HGameState.CheckMenuOrLoading()) return;
@@ -23,11 +23,11 @@ namespace MulTyPlayerClient
             await ProcessHandler.WriteDataAsync(HSyncObject.LiveObjectAddress + CollisionOffset + (ObjectLength * index), BitConverter.GetBytes(0));
         }
 
-        public virtual void Sync(byte[] bytes, int amount, int checkState)
+        public async virtual Task Sync(byte[] bytes, int amount, int checkState)
         {
             for (int i = 0; i < amount; i++)
             {
-                if (bytes[i] == checkState) Collect(i);
+                if (bytes[i] == checkState) await Collect(i);
             }
         }
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MulTyPlayerClient
 {
@@ -40,12 +41,12 @@ namespace MulTyPlayerClient
             }
         }
 
-        public async void SetBaseAddress()
+        public async Task SetBaseAddress()
         {
             _baseKoalaAddress = await PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x26B070), new int[] { 0x0 });
         }
 
-        public async void SetCoordAddrs()
+        public async Task SetCoordAddrs()
         {
             int modifier = (Client.HLevel.CurrentLevelId == 9 || Client.HLevel.CurrentLevelId == 13) ? 2 : 1;
             int offset = (Client.HLevel.CurrentLevelId == 9 || Client.HLevel.CurrentLevelId == 13) ? 0x518 : 0x0;
@@ -69,10 +70,10 @@ namespace MulTyPlayerClient
                 //VISIBILITY
                 KoalaAddrs[player.Koala.KoalaName][7] = _baseKoalaAddress + offset + 0x44 + (0x518 * modifier * player.Koala.KoalaID);
             }
-            if (!SettingsHandler.Settings.DoKoalaCollision) RemoveCollision();
+            if (!SettingsHandler.Settings.DoKoalaCollision) await RemoveCollision();
         }
 
-        public async void RemoveCollision()
+        public async Task RemoveCollision()
         {
             var _players = PlayerHandler.Players.Values;
             //WRITES 0 TO COLLISION BYTE
@@ -82,12 +83,12 @@ namespace MulTyPlayerClient
             }
         }
 
-        public async void CheckTA()
+        public async Task CheckTA()
         {
-            if (BitConverter.ToInt32(await ProcessHandler.ReadDataAsync(_bTimeAttackAddress, 4), 0) == 1) MakeVisible();
+            if (BitConverter.ToInt32(await ProcessHandler.ReadDataAsync(_bTimeAttackAddress, 4), 0) == 1) await MakeVisible();
         }
         
-        public async void MakeVisible()
+        public async Task MakeVisible()
         {
             foreach (Player player in PlayerHandler.Players.Values)
             {
@@ -96,7 +97,7 @@ namespace MulTyPlayerClient
         }
 
         [MessageHandler((ushort)MessageID.KoalaCoordinates)]
-        private async static void HandleGettingCoordinates(Message message)
+        private static async Task HandleGettingCoordinates(Message message)
         {
             if (!Client.KoalaSelected) return;
             string koalaName = message.GetString();

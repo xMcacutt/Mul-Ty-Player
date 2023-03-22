@@ -19,7 +19,7 @@ namespace MulTyPlayerClient
             //IF METHOD RETURNS TRUE -> ON MENU
         }
 
-        public async void CheckLoaded()
+        public async Task CheckLoaded()
         {
             PreviousLoadingState = LoadingState;
             LoadingState = await CheckMenuOrLoading();

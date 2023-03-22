@@ -15,7 +15,7 @@ namespace MulTyPlayerClient
         {
         }
 
-        public async override void Save(int index, int? level)
+        public async override Task Save(int index, int? level)
         {
             int rem;
             int byteIndex;
@@ -36,13 +36,13 @@ namespace MulTyPlayerClient
             await ProcessHandler.WriteDataAsync(address, new byte[] {b});
         }
 
-        public override void Sync(int level, byte[] data)
+        public async override Task Sync(int level, byte[] data)
         {
             for(int i = 0; i < data.Length; i++)
             {
                 if (data[i] == 1 && SyncHandler.HOpal.GlobalObjectData[level][i] != (byte)5)
                 {
-                    Save(i, level);
+                    await Save(i, level);
                 }
             }
         }

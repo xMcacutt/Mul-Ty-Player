@@ -35,20 +35,20 @@ namespace MulTyPlayerClient
             }
         }
 
-        public override void HandleClientUpdate(int null1, int null2, int level)
+        public async override Task HandleClientUpdate(int null1, int null2, int level)
         {
             PortalsActive[level] = 1;
             if (Client.HLevel.CurrentLevelId != 0) return;
-            LiveSync.Collect(level);
+            await LiveSync.Collect(level);
         }
 
-        public override void Sync(int null1, byte[] active, byte[] null2)
+        public async override Task Sync(int null1, byte[] active, byte[] null2)
         {
             for (int i = 0; i < 7; i++)
             {
                 if (active[i] == 1)
                 {
-                    HandleClientUpdate(null1, null1, FlakyPortals[i]);
+                    await HandleClientUpdate(null1, null1, FlakyPortals[i]);
                 }
             }
         }
@@ -76,7 +76,7 @@ namespace MulTyPlayerClient
             return portals.Count(i => i == 1);
         }
 
-        public async override void CheckObserverChanged()
+        public async override Task CheckObserverChanged()
         {
             ObserverState = await ReadObserver(LiveObjectAddress + LiveSync.StateOffset , CounterByteLength);
             if (PreviousObserverState == ObserverState || ObserverState == 0) return;

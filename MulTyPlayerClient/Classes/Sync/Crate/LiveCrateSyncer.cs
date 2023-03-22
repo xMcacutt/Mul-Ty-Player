@@ -17,7 +17,7 @@ namespace MulTyPlayerClient
             ObjectLength = 0x1C0;
         }
 
-        public async override void Collect(int index)
+        public async override Task Collect(int index)
         {
             int crateAddress = HSyncObject.LiveObjectAddress + (index * ObjectLength);
             await ProcessHandler.WriteDataAsync(crateAddress + 0x48, new byte[] {0});
@@ -33,11 +33,11 @@ namespace MulTyPlayerClient
             }
         }
 
-        public override void Sync(byte[] bytes, int amount, int checkState)
+        public async override Task Sync(byte[] bytes, int amount, int checkState)
         {
             for (int i = 0; i < amount; i++)
             {
-                if (bytes[i] == checkState) Collect(i);
+                if (bytes[i] == checkState) await Collect(i);
             }
         }
 

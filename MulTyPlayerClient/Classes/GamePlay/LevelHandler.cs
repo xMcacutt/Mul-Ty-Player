@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
+using System.Threading.Tasks;
 
 namespace MulTyPlayerClient
 {
@@ -21,24 +21,24 @@ namespace MulTyPlayerClient
 
         public int[] MainStages = { 4, 5, 6, 8, 9, 10, 12, 13, 14 };
 
-        public void DoLevelSetup()
+        public async Task DoLevelSetup()
         {
             HSync.SetCurrentData(MainStages.Contains(CurrentLevelId));
             HSync.SetMemAddrs();
             HSync.RequestSync();
-            HSync.ProtectLeaderboard();
-            HKoala.SetBaseAddress();
-            if (CurrentLevelId == 9 || CurrentLevelId == 13) ObjectiveCountSet();
+            await HSync.ProtectLeaderboard();
+            await HKoala.SetBaseAddress();
+            if (CurrentLevelId == 9 || CurrentLevelId == 13) await ObjectiveCountSet();
             bNewLevelSetup = true;
             LoadedNewLevelNetworkingSetupDone = true;
         }
 
-        public async void GetCurrentLevel()
+        public async Task GetCurrentLevel()
         {
             CurrentLevelId = BitConverter.ToInt32(await ProcessHandler.ReadDataAsync(PointerCalculations.AddOffset(0x280594), 4), 0);
         }
 
-        public async void ObjectiveCountSet() 
+        public async Task ObjectiveCountSet() 
         {
             int[] objectiveCountOffsets = null;
             switch (CurrentLevelId)

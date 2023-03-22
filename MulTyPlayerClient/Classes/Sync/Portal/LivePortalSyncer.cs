@@ -16,7 +16,7 @@ namespace MulTyPlayerClient
             ObjectLength = 0xB0;
         }
 
-        public async override void Collect(int level)
+        public async override Task Collect(int level)
         {
             if (await Client.HGameState.CheckMenuOrLoading()) return;
             int portalIndex = Array.IndexOf(PortalHandler.LivePortalOrder, level);

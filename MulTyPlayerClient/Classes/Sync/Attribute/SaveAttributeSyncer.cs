@@ -13,14 +13,14 @@ namespace MulTyPlayerClient
             SaveWriteValue = 1;
         }
 
-        public async override void Save(int iAttribute, int? nullableInt)
+        public async override Task Save(int iAttribute, int? nullableInt)
         {
             int address = SyncHandler.SaveDataBaseAddress + 0xAA4 + iAttribute;
             await ProcessHandler.WriteDataAsync(address, new byte[] { 1 });
             //Console.WriteLine("writing to " + Enum.GetValues(typeof(Attributes)).GetValue(iAttribute));
         }
 
-        public override void Sync(int null1, byte[] bytes)
+        public async override Task Sync(int null1, byte[] bytes)
         {
             int address = SyncHandler.SaveDataBaseAddress + 0xAA4;
             for(int i = 0; i < bytes.Length; i++)
@@ -28,7 +28,7 @@ namespace MulTyPlayerClient
                 if (bytes[i] == 1 && SyncHandler.HAttribute.GlobalObjectData[i] == 0)
                 {
                     SyncHandler.HAttribute.GlobalObjectData[i] = 1;
-                    Save(i, null);
+                    await Save(i, null);
                 }
             }
         }

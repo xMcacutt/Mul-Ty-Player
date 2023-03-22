@@ -18,7 +18,7 @@ namespace MulTyPlayerClient
             ObjectLength = 0x134;
         }
 
-        public async override void Collect(int index)
+        public async override Task Collect(int index)
         {
             if (HSyncObject.CurrentObjectData[index] >= 3) return;
             if (await Client.HGameState.CheckMenuOrLoading()) return;
