@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -46,14 +47,31 @@ namespace MulTyPlayerClient
             {
                 CreateLogFile();
             }
-            if (SettingsHandler.Settings.CreateLogFile) File.AppendAllText(_filePath, message + "\n");
+            if (SettingsHandler.Settings.CreateLogFile)
+            {
+                try
+                {
+                    using (FileStream fileStream = new FileStream(_filePath, FileMode.Append, FileAccess.Write, FileShare.Read))
+                    {
+                        using (StreamWriter writer = new StreamWriter(fileStream))
+                        {
+                            writer.WriteLine(message);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception here
+                    Debug.WriteLine($"Error writing to log file: {ex.Message}");
+                }
+            }
+
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                     new Action(() => {
                         Log.Add(message);
                         if (Log.Count > _maxLogMessageCount) Log.RemoveAt(0);
                     }));
-            
         }
     }
 }

@@ -34,14 +34,13 @@ namespace MulTyPlayerClient
 
         public static void StartClient(string ip, string name, string pass)
         {
+            BasicIoC.LoggerInstance = new(100);
             HLevel = new LevelHandler();
             HSync = new SyncHandler();
             HGameState = new GameStateHandler();
             HHero = new HeroHandler();
             HKoala = new KoalaHandler();
             HCommand = new CommandHandler();
-
-            BasicIoC.LoggerInstance = new(100);
             RiptideLogger.Initialize(BasicIoC.LoggerInstance.Write, true);
             _ip = ip;
             _pass = pass;
@@ -66,6 +65,7 @@ namespace MulTyPlayerClient
             while (!IsRunning) _client.Update();
             while (IsRunning)
             {
+                BasicIoC.LoggerInstance.Write("|----------------> Start of Cycle <----------------|");
                 //GET GAME LOADING STATUS
                 HGameState.CheckLoaded();
                 if (!(HGameState.CheckMenuOrLoading()))
