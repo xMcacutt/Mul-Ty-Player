@@ -108,10 +108,10 @@ namespace MulTyPlayerClient
                 BasicIoC.KoalaSelectViewModel.SwitchAvailability(koalaName);
 
                 WindowHandler.ClientGUIWindow.Show();
-                CollectionViewSource.GetDefaultView(BasicIoC.LoggerInstance.Log).Refresh();
                 //Reset back to false for when reopen the koala window
                 ShowAnimation(koalaName);
                 BlockKoalaSelect= false;
+                CollectionViewSource.GetDefaultView(BasicIoC.LoggerInstance.Log).Refresh();
                 WindowHandler.KoalaSelectWindow.Close();
             }
         }

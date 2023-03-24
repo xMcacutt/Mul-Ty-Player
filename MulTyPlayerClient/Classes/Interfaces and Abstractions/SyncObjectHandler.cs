@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MulTyPlayerClient.GUI;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
@@ -81,7 +82,7 @@ namespace MulTyPlayerClient
                     }
                     if (GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] != CheckState)
                     {
-                        //Console.WriteLine(Name + " number " + iLive + " collected.");
+                        //BasicIoC.LoggerInstance.Write(Name + " number " + iLive + " collected.");
                         GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] = (byte)CheckState;
                         Client.HSync.SendDataToServer(iLive, iSave, Client.HLevel.CurrentLevelId, Name);
                     }

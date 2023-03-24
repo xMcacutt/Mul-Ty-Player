@@ -68,7 +68,7 @@ namespace MulTyPlayerClient
                 if(ProcessHandler.MemoryReadDebugLogging || ProcessHandler.MemoryWriteDebugLogging) BasicIoC.LoggerInstance.Write("|----------------> Start of Cycle <----------------|");
                 //GET GAME LOADING STATUS
                 HGameState.CheckLoaded();
-                if (!(HGameState.CheckMenuOrLoading()))
+                if (!HGameState.CheckMenuOrLoading())
                 {
                     HLevel.GetCurrentLevel();
                     //NEW LEVEL SETUP STUFF
@@ -80,7 +80,6 @@ namespace MulTyPlayerClient
                     }
 
                     HHero.SendCoordinates();
-                   
 
                     //OBSERVERS
                     if (SettingsHandler.DoOpalSyncing && HLevel.MainStages.Contains(HLevel.CurrentLevelId)) { SyncHandler.HOpal.CheckObserverChanged(); SyncHandler.HCrate.CheckObserverChanged(); }

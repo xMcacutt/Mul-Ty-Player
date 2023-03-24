@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MulTyPlayerClient.GUI;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,7 +21,15 @@ namespace MulTyPlayerClient
 
         public static int AddOffset(int i)
         {
-            return (int)IntPtr.Add(ProcessHandler.TyProcess.MainModule.BaseAddress, i);
+            try
+            {
+                return (int)IntPtr.Add(ProcessHandler.TyProcess.MainModule.BaseAddress, i);
+            }
+            catch
+            {
+                BasicIoC.LoggerInstance.Write("Failed to add offset, maybe you disconnected?");
+                return 0;
+            }
         }
     }
 }
