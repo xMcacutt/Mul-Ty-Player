@@ -35,30 +35,30 @@ namespace MulTyPlayerClient
             }
         }
 
-        public async override Task HandleClientUpdate(int null1, int null2, int level)
+        public override void HandleClientUpdate(int null1, int null2, int level)
         {
             PortalsActive[level] = 1;
             if (Client.HLevel.CurrentLevelId != 0) return;
-            await LiveSync.Collect(level);
+            LiveSync.Collect(level);
         }
 
-        public async override Task Sync(int null1, byte[] active, byte[] null2)
+        public override void Sync(int null1, byte[] active, byte[] null2)
         {
             for (int i = 0; i < 7; i++)
             {
                 if (active[i] == 1)
                 {
-                    await HandleClientUpdate(null1, null1, FlakyPortals[i]);
+                    HandleClientUpdate(null1, null1, FlakyPortals[i]);
                 }
             }
         }
 
-        public async override Task<int> ReadObserver(int address, int size)
+        public override int ReadObserver(int address, int size)
         {
             int[] portals = new int[7];
             for (int i = 0; i < 7; i++)
             {
-                if ((await ProcessHandler.ReadDataAsync(SyncHandler.SaveDataBaseAddress + (0x70 * FlakyPortals[i]), 1))[0] > 0)
+                if (ProcessHandler.ReadData(SyncHandler.SaveDataBaseAddress + (0x70 * FlakyPortals[i]), 1, $"Checking if flaky portals have been made active by save data {i+1} / 7")[0] > 0)
                 {
                     if (PortalsActive[FlakyPortals[i]] == 0) PortalsActive[FlakyPortals[i]] = 1;
                     portals[i] = 1;
@@ -66,7 +66,7 @@ namespace MulTyPlayerClient
                 if (Client.HLevel.CurrentLevelId == 0)
                 {
                     int orderedIndex = Array.IndexOf(LivePortalOrder, FlakyPortals[i]);
-                    if ((await ProcessHandler.ReadDataAsync(address + (LiveSync.ObjectLength * orderedIndex), 4))[0] == 2)
+                    if (ProcessHandler.ReadData(address + (LiveSync.ObjectLength * orderedIndex), 4, $"Checking if flaky portals have been made active by live data {i + 1} / 7")[0] == 2)
                     {
                         if (PortalsActive[FlakyPortals[i]] == 0) PortalsActive[FlakyPortals[i]] = 1;
                         portals[i] = 1;
@@ -76,9 +76,9 @@ namespace MulTyPlayerClient
             return portals.Count(i => i == 1);
         }
 
-        public async override Task CheckObserverChanged()
+        public override void CheckObserverChanged()
         {
-            ObserverState = await ReadObserver(LiveObjectAddress + LiveSync.StateOffset , CounterByteLength);
+            ObserverState = ReadObserver(LiveObjectAddress + LiveSync.StateOffset , CounterByteLength);
             if (PreviousObserverState == ObserverState || ObserverState == 0) return;
 
             PreviousObserverState = ObserverState;
@@ -93,9 +93,9 @@ namespace MulTyPlayerClient
             foreach(int i in OldPortalsActive.Keys) OldPortalsActive[i] = PortalsActive[i]; 
         }
 
-        public async override void SetMemAddrs()
+        public  override void SetMemAddrs()
         {
-            LiveObjectAddress = await PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x267408), new int[] { 0x0 });
+            LiveObjectAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x267408), new int[] { 0x0 });
         }
     }
 }

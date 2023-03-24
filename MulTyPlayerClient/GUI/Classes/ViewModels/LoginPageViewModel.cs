@@ -102,7 +102,7 @@ namespace MulTyPlayerClient.GUI
 
         public string GenerateRandomUser()
         {
-            Random random = new Random();
+            Random random = new();
             int randomNumber = random.Next(10000, 99999);
             return "USER" + randomNumber;
         }

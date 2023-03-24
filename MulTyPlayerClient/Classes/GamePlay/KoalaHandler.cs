@@ -41,16 +41,16 @@ namespace MulTyPlayerClient
             }
         }
 
-        public async Task SetBaseAddress()
+        public void SetBaseAddress()
         {
-            _baseKoalaAddress = await PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x26B070), new int[] { 0x0 });
+            _baseKoalaAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x26B070), new int[] { 0x0 });
         }
 
-        public async Task SetCoordAddrs()
+        public void SetCoordAddrs()
         {
             int modifier = (Client.HLevel.CurrentLevelId == 9 || Client.HLevel.CurrentLevelId == 13) ? 2 : 1;
             int offset = (Client.HLevel.CurrentLevelId == 9 || Client.HLevel.CurrentLevelId == 13) ? 0x518 : 0x0;
-            if(_baseKoalaAddress == 0) _baseKoalaAddress = await PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x26B070), new int[] { 0x0 });
+            if(_baseKoalaAddress == 0) _baseKoalaAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x26B070), new int[] { 0x0 });
             foreach(Player player in PlayerHandler.Players.Values)
             {
                 //X COORDINATE
@@ -70,34 +70,34 @@ namespace MulTyPlayerClient
                 //VISIBILITY
                 KoalaAddrs[player.Koala.KoalaName][7] = _baseKoalaAddress + offset + 0x44 + (0x518 * modifier * player.Koala.KoalaID);
             }
-            if (!SettingsHandler.Settings.DoKoalaCollision) await RemoveCollision();
+            if (!SettingsHandler.Settings.DoKoalaCollision) RemoveCollision();
         }
 
-        public async Task RemoveCollision()
+        public void RemoveCollision()
         {
             var _players = PlayerHandler.Players.Values;
             //WRITES 0 TO COLLISION BYTE
             foreach (Player player in _players)
             {
-                await ProcessHandler.WriteDataAsync(KoalaAddrs[player.Koala.KoalaName][6], new byte[] {0});
+                ProcessHandler.WriteData(KoalaAddrs[player.Koala.KoalaName][6], new byte[] {0}, "Removing collision");
             }
         }
 
-        public async Task CheckTA()
+        public void CheckTA()
         {
-            if (BitConverter.ToInt32(await ProcessHandler.ReadDataAsync(_bTimeAttackAddress, 4), 0) == 1) await MakeVisible();
+            if (BitConverter.ToInt32(ProcessHandler.ReadData(_bTimeAttackAddress, 4, "Checking TA"), 0) == 1) MakeVisible();
         }
         
-        public async Task MakeVisible()
+        public void MakeVisible()
         {
             foreach (Player player in PlayerHandler.Players.Values)
             {
-                await ProcessHandler.WriteDataAsync(KoalaAddrs[player.Koala.KoalaName][7], new byte[] {1});
+                ProcessHandler.WriteData(KoalaAddrs[player.Koala.KoalaName][7], new byte[] {1}, "Making players visible");
             }
         }
 
         [MessageHandler((ushort)MessageID.KoalaCoordinates)]
-        private static async Task HandleGettingCoordinates(Message message)
+        private static void HandleGettingCoordinates(Message message)
         {
             if (!Client.KoalaSelected) return;
             string koalaName = message.GetString();
@@ -105,12 +105,12 @@ namespace MulTyPlayerClient
             float[] coordinates = message.GetFloats();
 
             //SANITY CHECK THAT WE HAVEN'T BEEN SENT OUR OWN COORDINATES AND WE AREN'T LOADING, ON THE MENU, OR IN A DIFFERENT LEVEL 
-            if (await HGameState.CheckMenuOrLoading() || level != HLevel.CurrentLevelId || PlayerHandler.Players[Client._client.Id].Koala.KoalaName == koalaName) return;
+            if (HGameState.CheckMenuOrLoading() || level != HLevel.CurrentLevelId || PlayerHandler.Players[Client._client.Id].Koala.KoalaName == koalaName) return;
 
             //WRITE COORDINATES TO KOALA COORDINATE ADDRESSES
             for (int i = 0; i < coordinates.Length; i++)
             {
-                await ProcessHandler.WriteDataAsync(Client.HKoala.KoalaAddrs[koalaName][i], BitConverter.GetBytes(coordinates[i]));
+                ProcessHandler.WriteData(Client.HKoala.KoalaAddrs[koalaName][i], BitConverter.GetBytes(coordinates[i]), $"Writing coordinates {i} for koala {koalaName} in level {level}");
             }
         }
     }

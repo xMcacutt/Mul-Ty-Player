@@ -13,6 +13,8 @@ namespace MulTyPlayerClient
     {
         public static IntPtr HProcess;
         public static Process TyProcess;
+        public static bool MemoryWriteDebugLogging = true;
+        public static bool MemoryReadDebugLogging = true;
 
         [DllImport("kernel32.dll")]
         public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
@@ -45,19 +47,29 @@ namespace MulTyPlayerClient
             return TyProcess.HasExited;
         }
 
-        public static async Task WriteDataAsync(int address, byte[] bytes)
+        public static void WriteData(int address, byte[] bytes, string writeIndicator)
         {
             IntPtr bytesWritten = IntPtr.Zero;
             try
             {
-                await Task.Run(() =>
+                bool success = WriteProcessMemory(HProcess, address, bytes, bytes.Length, out bytesWritten);
+                if (!success)
                 {
-                    bool success = WriteProcessMemory(HProcess, address, bytes, bytes.Length, out bytesWritten);
-                    if (!success)
+                    if (MemoryWriteDebugLogging)
                     {
-                        //throw new Exception("Ty the Tasmanian Tiger has crashed or stopped responding.");
+                        string errorMsg = "Failed to write " + BitConverter.ToString(bytes) + " to 0x" + address.ToString("X") + " For: " + writeIndicator;
+                        BasicIoC.LoggerInstance.Write(errorMsg);
                     }
-                });
+                    //throw new Exception("Ty the Tasmanian Tiger has crashed or stopped responding.");
+                }
+                else
+                {
+                    if (MemoryWriteDebugLogging)
+                    {
+                        string errorMsg = "Written " + BitConverter.ToString(bytes) + " to 0x" + address.ToString("X") + " For: " + writeIndicator;
+                        BasicIoC.LoggerInstance.Write(errorMsg);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -66,20 +78,30 @@ namespace MulTyPlayerClient
             }
         }
 
-        public static async Task<byte[]> ReadDataAsync(int address, int length)
+        public static byte[] ReadData(int address, int length, string readIndicator)
         {
             byte[] buffer = new byte[length];
             IntPtr bytesRead = IntPtr.Zero;
             try
             {
-                await Task.Run(() =>
+                bool success = ReadProcessMemory(HProcess, address, buffer, length, out bytesRead);
+                if (!success)
                 {
-                    bool success = ReadProcessMemory(HProcess, address, buffer, length, out bytesRead);
-                    if (!success)
+                    if (MemoryReadDebugLogging)
                     {
-                        //throw new Exception("Ty the Tasmanian Tiger has crashed or stopped responding.");
+                        string errorMsg = "Failed to read data at 0x" + address.ToString("X") + " For: " + readIndicator;
+                        BasicIoC.LoggerInstance.Write(errorMsg);
                     }
-                });
+                    //throw new Exception("Ty the Tasmanian Tiger has crashed or stopped responding.");
+                }
+                else
+                {
+                    if (MemoryReadDebugLogging)
+                    {
+                        string errorMsg = "Read " + BitConverter.ToString(buffer) + "from address 0x" + address.ToString("X") + " For: " + readIndicator;
+                        BasicIoC.LoggerInstance.Write(errorMsg);
+                    }
+                }
             }
             catch (Exception ex)
             {

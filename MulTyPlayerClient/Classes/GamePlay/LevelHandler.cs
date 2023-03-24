@@ -21,24 +21,24 @@ namespace MulTyPlayerClient
 
         public int[] MainStages = { 4, 5, 6, 8, 9, 10, 12, 13, 14 };
 
-        public async Task DoLevelSetup()
+        public void DoLevelSetup()
         {
             HSync.SetCurrentData(MainStages.Contains(CurrentLevelId));
             HSync.SetMemAddrs();
             HSync.RequestSync();
-            await HSync.ProtectLeaderboard();
-            await HKoala.SetBaseAddress();
-            if (CurrentLevelId == 9 || CurrentLevelId == 13) await ObjectiveCountSet();
+            HSync.ProtectLeaderboard();
+            HKoala.SetBaseAddress();
+            if (CurrentLevelId == 9 || CurrentLevelId == 13) ObjectiveCountSet();
             bNewLevelSetup = true;
             LoadedNewLevelNetworkingSetupDone = true;
         }
 
-        public async Task GetCurrentLevel()
+        public void GetCurrentLevel()
         {
-            CurrentLevelId = BitConverter.ToInt32(await ProcessHandler.ReadDataAsync(PointerCalculations.AddOffset(0x280594), 4), 0);
+            CurrentLevelId = BitConverter.ToInt32(ProcessHandler.ReadData(PointerCalculations.AddOffset(0x280594), 4, "Getting current level"), 0);
         }
 
-        public async Task ObjectiveCountSet() 
+        public void ObjectiveCountSet() 
         {
             int[] objectiveCountOffsets = null;
             switch (CurrentLevelId)
@@ -54,11 +54,11 @@ namespace MulTyPlayerClient
             int inc = 1;
             while(currentCountMax != 8)
             {
-                int objectiveCounterAddr = await PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x0028C318), objectiveCountOffsets, 2);
-                currentCountMax = BitConverter.ToInt16(await ProcessHandler.ReadDataAsync(objectiveCounterAddr, 2), 0);
+                int objectiveCounterAddr = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x0028C318), objectiveCountOffsets, 2);
+                currentCountMax = BitConverter.ToInt16(ProcessHandler.ReadData(objectiveCounterAddr, 2, "Getting koala objective koala count"), 0);
                 if (currentCountMax == 16)
                 {
-                    await ProcessHandler.WriteDataAsync(objectiveCounterAddr, BitConverter.GetBytes(8));
+                    ProcessHandler.WriteData(objectiveCounterAddr, BitConverter.GetBytes(8), "Setting koala objective koala count");
                     currentCountMax = 8;
                 }
                 inc++;

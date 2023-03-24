@@ -14,17 +14,16 @@ namespace MulTyPlayerClient
             SaveWriteValue = 1;    
         }
 
-        public async override Task Save(int iAttribute, int? nullableInt)
+        public override void Save(int iAttribute, int? nullableInt)
         {
             int address = SyncHandler.SaveDataBaseAddress + 0xA84 + iAttribute;
-            await ProcessHandler.WriteDataAsync(address, new byte[] { 1 });
-            //Console.WriteLine("writing to " + Enum.GetValues(typeof(RCData)).GetValue(iAttribute));
+            ProcessHandler.WriteData(address, new byte[] { 1 }, $"Setting RC data attribute {Enum.GetValues(typeof(RCData)).GetValue(iAttribute)} to true in save data");
         }
 
-        public async override Task Sync(int null1, byte[] bytes)
+        public override void Sync(int null1, byte[] bytes)
         {
             int address = SyncHandler.SaveDataBaseAddress + 0xA84;
-            await ProcessHandler.WriteDataAsync(address, bytes);
+            ProcessHandler.WriteData(address, bytes, "Syncing all RC data");
         }
     }
 }

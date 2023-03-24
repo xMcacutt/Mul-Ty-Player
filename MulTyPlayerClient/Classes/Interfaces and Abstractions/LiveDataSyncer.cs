@@ -14,30 +14,30 @@ namespace MulTyPlayerClient
         public int CollisionOffset { get; set; }
         public int ObjectLength { get; set; }
 
-        public async virtual Task Collect(int index)
+        public virtual void Collect(int index)
         {
             if (HSyncObject.CurrentObjectData[index] >= 3) return;
-            if (await Client.HGameState.CheckMenuOrLoading()) return;
-            await ProcessHandler.WriteDataAsync(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * index), new byte[] { HSyncObject.WriteState });
+            if (Client.HGameState.CheckMenuOrLoading()) return;
+            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * index), new byte[] { HSyncObject.WriteState }, "Setting collectible to collected");
             if (!SeparateCollisionByte) return;
-            await ProcessHandler.WriteDataAsync(HSyncObject.LiveObjectAddress + CollisionOffset + (ObjectLength * index), BitConverter.GetBytes(0));
+            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + CollisionOffset + (ObjectLength * index), BitConverter.GetBytes(0), "Setting collision of collectible to off");
         }
 
-        public async virtual Task Sync(byte[] bytes, int amount, int checkState)
+        public virtual void Sync(byte[] bytes, int amount, int checkState)
         {
             for (int i = 0; i < amount; i++)
             {
-                if (bytes[i] == checkState) await Collect(i);
+                if (bytes[i] == checkState) Collect(i);
             }
         }
 
-        public async virtual Task<byte[]> ReadData()
+        public virtual byte[] ReadData()
         {
             byte[] currentData = new byte[HSyncObject.ObjectAmount];
             int address = HSyncObject.LiveObjectAddress;
             for (int i = 0; i < HSyncObject.ObjectAmount; i++)
             {
-                currentData[i] = (await ProcessHandler.ReadDataAsync(address + StateOffset + (ObjectLength * i), 1))[0];
+                currentData[i] = ProcessHandler.ReadData(address + StateOffset + (ObjectLength * i), 1, $"Getting live collectible state for collectible number {i} / {HSyncObject.ObjectAmount}")[0];
             }
             return currentData;
         }

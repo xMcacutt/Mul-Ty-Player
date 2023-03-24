@@ -22,7 +22,7 @@ namespace MulTyPlayerClient.GUI
         public static void LoggerWrite(string message)
         {
             _message= message;
-            //Start task factory with dummy action, to create a task to run on another thread
+            //Start voidfactory with dummy action, to create a voidto run on another thread
             //(Can't find a way to make it just start on the UI thread)
             var t1 = Task.Factory.StartNew(new Action(() => {}));
             // when t1 is done run t1..on the Ui thread.

@@ -15,34 +15,29 @@ namespace MulTyPlayerClient
         {
         }
 
-        public async override Task Save(int index, int? level)
+        public override void Save(int index, int? level)
         {
-            int rem;
-            int byteIndex;
-            int bitValue;
+            if (level == null) return;
+
             int crateOpals = SyncHandler.HOpal.CrateOpalsPerLevel[(int)level];
+            int newIndex = index > (299 - crateOpals) ? 300 - crateOpals + (299 - index) : index;
 
-            if(index > (299 - crateOpals)) index = 300 - crateOpals + (299 - index);
+            int byteIndex = newIndex / 8;
+            int bitIndex = newIndex % 8;
 
-            byteIndex = (int)Math.Ceiling((float)index / 8);
-            rem = index % 8;
-
-            bitValue = (int)Math.Pow(2, rem);
-
-            int address = (int)(SyncHandler.SaveDataBaseAddress + (0x70 * level) + (byteIndex));
-            byte b = (await ProcessHandler.ReadDataAsync(address, 1))[0];
-            b += (byte)bitValue;
-            //Console.WriteLine($"Adding {bitValue} to opal index {index} at byte {byteIndex}");
-            await ProcessHandler.WriteDataAsync(address, new byte[] {b});
+            int address = (int)(SyncHandler.SaveDataBaseAddress + (0x70 * (int)level) + byteIndex);
+            byte b = ProcessHandler.ReadData(address, 1, "Getting opal save data byte current value")[0];
+            b |= (byte)(1 << bitIndex);
+            ProcessHandler.WriteData(address, new byte[] {b}, "Setting new opal save data byte value");
         }
 
-        public async override Task Sync(int level, byte[] data)
+        public override void Sync(int level, byte[] data)
         {
             for(int i = 0; i < data.Length; i++)
             {
                 if (data[i] == 1 && SyncHandler.HOpal.GlobalObjectData[level][i] != (byte)5)
                 {
-                    await Save(i, level);
+                    Save(i, level);
                 }
             }
         }

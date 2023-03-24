@@ -25,12 +25,12 @@ namespace MulTyPlayerClient
             foreach (int i in Enum.GetValues(typeof(RCData))) GlobalObjectData.Add(i, 0);
         }
 
-        public async override Task CheckObserverChanged()
+        public override void CheckObserverChanged()
         {
             int dataAmount = 12;
             for (int i = 0; i < dataAmount; i++)
             {
-                if ((await ProcessHandler.ReadDataAsync(CounterAddress + i, 1))[0] == 1 && GlobalObjectData[i] == 0)
+                if (ProcessHandler.ReadData(CounterAddress + i, 1, $"Checking RC data observer {i} / {dataAmount}")[0] == 1 && GlobalObjectData[i] == 0)
                 {
                     GlobalObjectData[i] = 1;
                     Client.HSync.SendDataToServer(0, i, 0, Name);
@@ -38,7 +38,7 @@ namespace MulTyPlayerClient
             }
         }
 
-        public async override Task Sync(int null1, byte[] null2, byte[] saveData)
+        public  override void Sync(int null1, byte[] null2, byte[] saveData)
         {
             int dataAmount = 12;
             for (int i = 0; i < dataAmount; i++)
@@ -48,13 +48,13 @@ namespace MulTyPlayerClient
                     GlobalObjectData[i] = 1;
                 }
             }
-            await SaveSync.Sync(0, saveData);
+            SaveSync.Sync(0, saveData);
         }
 
-        public async override Task HandleClientUpdate(int null1, int iAttribute, int null2)
+        public override void HandleClientUpdate(int null1, int iAttribute, int null2)
         {
             GlobalObjectData[iAttribute] = 1;
-            await SaveSync.Save(iAttribute, null);
+            SaveSync.Save(iAttribute, null);
         }
     }
 }

@@ -6,12 +6,12 @@ namespace MulTyPlayerClient
 {
     internal static class PointerCalculations
     {
-        public async static Task<int> GetPointerAddress(int baseAddress, int[] offsets, int extraOffset = 0)
+        public static int GetPointerAddress(int baseAddress, int[] offsets, int extraOffset = 0)
         {
             IntPtr addr = new(baseAddress);
             for (int i = 0; i < offsets.Length; i++)
             {
-                int nextAddress = BitConverter.ToInt32(await ProcessHandler.ReadDataAsync((int)addr, 4), 0);
+                int nextAddress = BitConverter.ToInt32(ProcessHandler.ReadData((int)addr, 4, $"Following pointer path {i} / {offsets.Length}"), 0);
                 addr = new IntPtr(nextAddress + offsets[i]);
             }
             addr += extraOffset;

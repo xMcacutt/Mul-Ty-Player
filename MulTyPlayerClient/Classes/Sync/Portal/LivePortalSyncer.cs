@@ -16,11 +16,11 @@ namespace MulTyPlayerClient
             ObjectLength = 0xB0;
         }
 
-        public async override Task Collect(int level)
+        public override void Collect(int level)
         {
-            if (await Client.HGameState.CheckMenuOrLoading()) return;
+            if (Client.HGameState.CheckMenuOrLoading()) return;
             int portalIndex = Array.IndexOf(PortalHandler.LivePortalOrder, level);
-            await ProcessHandler.WriteDataAsync(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * portalIndex), new byte[] { HSyncObject.WriteState });
+            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * portalIndex), new byte[] { HSyncObject.WriteState }, "Making portal visible");
         }
     }
 }

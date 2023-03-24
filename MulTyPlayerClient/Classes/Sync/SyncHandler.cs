@@ -18,7 +18,7 @@ namespace MulTyPlayerClient
         public static CrateHandler HCrate;
         public static RCHandler HCliffs;
 
-        public static int SaveDataBaseAddress => GetSaveDataBaseAddress().Result;
+        public static int SaveDataBaseAddress => GetSaveDataBaseAddress();
 
         public SyncHandler()
         {
@@ -35,9 +35,9 @@ namespace MulTyPlayerClient
             };
         }
 
-        private static async Task<int> GetSaveDataBaseAddress()
+        private static int GetSaveDataBaseAddress()
         {
-            return await PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x288730), new int[] { 0x10 });
+            return PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x288730), new int[] { 0x10 });
         }
 
         public void SetMemAddrs()
@@ -88,10 +88,10 @@ namespace MulTyPlayerClient
             Client._client.Send(SyncMessage.Encode(syncMessage));
         }
 
-        public async Task ProtectLeaderboard()
+        public void ProtectLeaderboard()
         {
             int address = SaveDataBaseAddress + 0xB07;
-            await ProcessHandler.WriteDataAsync(address, new byte[]{1});
+            ProcessHandler.WriteData(address, new byte[]{1}, "Protecting leaderboard");
         }
     }
 }

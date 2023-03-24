@@ -86,7 +86,7 @@ namespace MulTyPlayerClient
             Client.HKoala = new KoalaHandler();
         }
 
-        public async void KoalaClicked(object inputParameter)
+        public  void KoalaClicked(object inputParameter)
         {
             string koalaName = inputParameter.ToString();
             if (KoalaAvailable(koalaName))
@@ -97,7 +97,7 @@ namespace MulTyPlayerClient
 
                 KoalaAnimationSource = @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/" + koalaName + ".mp4";
                 ShowAnimation(koalaName);
-                await Task.Delay(3500);
+                Task.Delay(3500);
                 BlockKoalaSelect = true;
 
                 PlayerHandler.AnnounceSelection(koalaName, Client.Name);

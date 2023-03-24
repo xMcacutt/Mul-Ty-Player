@@ -47,26 +47,26 @@ namespace MulTyPlayerClient
 
         public virtual void SetMemAddrs() { }
 
-        public virtual async Task HandleClientUpdate(int iLive, int iSave, int level)
+        public virtual void HandleClientUpdate(int iLive, int iSave, int level)
         {
             GlobalObjectData[level][iLive] = (byte)CheckState;
-            await SaveSync.Save(iSave, level);
+            SaveSync.Save(iSave, level);
             if (level != Client.HLevel.CurrentLevelId) return;
-            await LiveSync.Collect(iLive);
+            LiveSync.Collect(iLive);
         }
 
-        public async virtual Task<int> ReadObserver(int address, int size)
+        public virtual int ReadObserver(int address, int size)
         {
-            byte[] buffer = await ProcessHandler.ReadDataAsync(address, size);
+            byte[] buffer = ProcessHandler.ReadData(address, size, "Reading collectible change observer");
             return size == 4 ? BitConverter.ToInt32(buffer, 0) : buffer[0];
         }
 
-        public async virtual Task CheckObserverChanged()
+        public virtual void CheckObserverChanged()
         {
-            ObserverState = await ReadObserver(CounterAddress, CounterByteLength);
+            ObserverState = ReadObserver(CounterAddress, CounterByteLength);
             if (PreviousObserverState == ObserverState || ObserverState == 0) return;
             PreviousObserverState = ObserverState;
-            CurrentObjectData = await LiveSync.ReadData();
+            CurrentObjectData = LiveSync.ReadData();
             int iSave;
             for (int iLive = 0; iLive < CurrentObjectData.Length; iLive++)
             {
@@ -77,7 +77,7 @@ namespace MulTyPlayerClient
                     if (SeparateID) 
                     {
                         int address = LiveObjectAddress + (iLive * LiveSync.ObjectLength) + IDOffset;
-                        iSave = BitConverter.ToInt32(await ProcessHandler.ReadDataAsync(address, 4), 0);
+                        iSave = BitConverter.ToInt32(ProcessHandler.ReadData(address, 4, "Getting save index"), 0);
                     }
                     if (GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] != CheckState)
                     {
@@ -91,16 +91,16 @@ namespace MulTyPlayerClient
 
         public virtual bool CheckObserverCondition(byte previousState, byte currentState) { return false; }
 
-        public virtual async Task Sync(int level, byte[] liveData, byte[] saveData)
+        public virtual void Sync(int level, byte[] liveData, byte[] saveData)
         {
-            await SaveSync.Sync(level, ConvertSave(level, saveData));
+            SaveSync.Sync(level, ConvertSave(level, saveData));
             for(int i = 0; i < ObjectAmount; i++)
             {
                 if (liveData[i] == CheckState && GlobalObjectData[level][i] != CheckState) GlobalObjectData[level][i] = WriteState;
             }
             if(Client.HLevel.CurrentLevelId == level)
             {
-                await LiveSync.Sync(liveData, ObjectAmount, CheckState);
+                LiveSync.Sync(liveData, ObjectAmount, CheckState);
                 PreviousObjectData = liveData;
                 CurrentObjectData = liveData;
             }

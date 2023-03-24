@@ -39,21 +39,21 @@ namespace MulTyPlayerClient
             _bpPosRotAddrs[5] = _bpPosRotAddrs[4] + 0x4;
         }
 
-        public async Task GetTyPosRot()
+        public void GetTyPosRot()
         {
             //GETS TY'S OR BUSHPIG'S POSITION AND ROTATION AND STORES IT IN CURRENTPOSROT 
             int[] tempInts = HLevel.CurrentLevelId == 10 ? _bpPosRotAddrs : _tyPosRotAddrs;
             for (int i = 0; i < tempInts.Length; i++)
             {
-                CurrentPosRot[i] = BitConverter.ToSingle(await ProcessHandler.ReadDataAsync(tempInts[i], 4), 0);
+                CurrentPosRot[i] = BitConverter.ToSingle(ProcessHandler.ReadData(tempInts[i], 4, $"Getting coordinate {i+1} / 6"), 0);
             }
         }
 
-        public async Task SendCoordinates()
+        public void SendCoordinates()
         {
             //SENDS CURRENT COORDINATES TO SERVER WITH CURRENT LEVEL AND LOADING STATE
             Message message = Message.Create(MessageSendMode.Unreliable, MessageID.PlayerInfo);
-            message.AddBool(await HGameState.CheckMenuOrLoading());
+            message.AddBool(HGameState.CheckMenuOrLoading());
             message.AddInt(HLevel.CurrentLevelId);
             message.AddFloats(Client.HHero.CurrentPosRot);
             Client._client.Send(message);

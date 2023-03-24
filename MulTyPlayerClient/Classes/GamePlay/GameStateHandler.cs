@@ -13,16 +13,16 @@ namespace MulTyPlayerClient
         public bool LoadingState { get; set; }
         public bool PreviousLoadingState { get; set; }
 
-        public async Task<bool> CheckMenuOrLoading()
+        public bool CheckMenuOrLoading()
         {
-            return (await ProcessHandler.ReadDataAsync(PointerCalculations.AddOffset(0x25601C), 1))[0] == 0;
+            return ProcessHandler.ReadData(PointerCalculations.AddOffset(0x25601C), 1, "Checking menu/loading")[0] == 0;
             //IF METHOD RETURNS TRUE -> ON MENU
         }
 
-        public async Task CheckLoaded()
+        public void CheckLoaded()
         {
             PreviousLoadingState = LoadingState;
-            LoadingState = await CheckMenuOrLoading();
+            LoadingState = CheckMenuOrLoading();
             if (PreviousLoadingState != LoadingState)
             {
                 PreviousLoadingState = LoadingState;

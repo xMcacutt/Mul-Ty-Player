@@ -18,14 +18,14 @@ namespace MulTyPlayerClient
             ObjectLength = 0x134;
         }
 
-        public async override Task Collect(int index)
+        public override void Collect(int index)
         {
             if (HSyncObject.CurrentObjectData[index] >= 3) return;
-            if (await Client.HGameState.CheckMenuOrLoading()) return;
-            await ProcessHandler.WriteDataAsync(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * index), new byte[] {HSyncObject.WriteState});
+            if (Client.HGameState.CheckMenuOrLoading()) return;
+            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * index), new byte[] {HSyncObject.WriteState}, "Collecting bilby");
             if (!SeparateCollisionByte) return;
-            await ProcessHandler.WriteDataAsync(HSyncObject.LiveObjectAddress + CollisionOffset + (ObjectLength * index), BitConverter.GetBytes(0));
-            await ProcessHandler.WriteDataAsync(HSyncObject.LiveObjectAddress + 0x31 + (ObjectLength * index), new byte[] { 0, 1 });
+            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + CollisionOffset + (ObjectLength * index), BitConverter.GetBytes(0), "Setting bilby cage collision to off pt 1");
+            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + 0x31 + (ObjectLength * index), new byte[] { 0, 1 }, "Setting bilby cage collision to off pt 2");
         }
     }
 }
