@@ -13,8 +13,8 @@ namespace MulTyPlayerClient
     {
         public static IntPtr HProcess;
         public static Process TyProcess;
-        public static bool MemoryWriteDebugLogging = true;
-        public static bool MemoryReadDebugLogging = true;
+        public static bool MemoryWriteDebugLogging = false;
+        public static bool MemoryReadDebugLogging = false;
 
         [DllImport("kernel32.dll")]
         public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
@@ -98,7 +98,7 @@ namespace MulTyPlayerClient
                 {
                     if (MemoryReadDebugLogging)
                     {
-                        string errorMsg = "Read " + BitConverter.ToString(buffer) + "from address 0x" + address.ToString("X") + " For: " + readIndicator;
+                        string errorMsg = "Read " + BitConverter.ToString(buffer) + " from address 0x" + address.ToString("X") + " For: " + readIndicator;
                         BasicIoC.LoggerInstance.Write(errorMsg);
                     }
                 }
