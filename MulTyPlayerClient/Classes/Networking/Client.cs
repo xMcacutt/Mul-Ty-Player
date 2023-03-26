@@ -3,6 +3,7 @@ using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI;
 using Riptide;
 using Riptide.Utils;
+using Steamworks.Data;
 using System;
 using System.Linq;
 using System.Media;
@@ -17,11 +18,13 @@ namespace MulTyPlayerClient
     internal class Client
     {
         public static bool IsRunning;
+        public static bool Relaunching = false;
         public static bool KoalaSelected = false;
         public static Riptide.Client _client;
         private static string _ip;
         private static string _pass;
         public static string Name;
+        public static Koala OldKoala;
 
         public static KoalaHandler HKoala;
         public static PlayerHandler HPlayer;
@@ -65,7 +68,6 @@ namespace MulTyPlayerClient
             {
                 try
                 {
-
                     if (ProcessHandler.MemoryReadDebugLogging || ProcessHandler.MemoryWriteDebugLogging) BasicIoC.LoggerInstance.Write("|----------------> Start of Cycle <----------------|");
                     //GET GAME LOADING STATUS
                     HGameState.CheckLoaded();
@@ -100,6 +102,7 @@ namespace MulTyPlayerClient
                 }
                 catch (TyClosedException ex)
                 {
+                    Relaunching = true;
                     BasicIoC.LoggerInstance.Write(ex.Message);
                     SFXPlayer.PlaySound(SFX.MenuCancel);
                     while (ProcessHandler.FindTyProcess() == null)
@@ -109,6 +112,7 @@ namespace MulTyPlayerClient
                     }
                     BasicIoC.LoggerInstance.Write("Ty has been restarted. You're back in!");
                     SFXPlayer.PlaySound(SFX.MenuAccept);
+                    Relaunching = false;
                     continue;
                 }
             }
@@ -130,6 +134,24 @@ namespace MulTyPlayerClient
         {
             if(e.Reason == DisconnectReason.TimedOut)
             {
+                if (SettingsHandler.Settings.AttemptReconnect) 
+                {
+                    _client = new Riptide.Client();
+                    _client.Connected += (s, e) => AutoReconnect.Connected();
+                    _client.Disconnected += (s, e) => Disconnected(s, e);
+                    _client.ConnectionFailed += (s, e) => AutoReconnect.ConnectionFailed();
+                    Message authentication = Message.Create();
+                    authentication.AddString(Name);
+                    authentication.AddString(_pass);
+
+                    while (!IsRunning)
+                    {
+                        _client.Connect(_ip + ":8750", 1, 0, authentication);
+                        Thread.Sleep(200);
+                    }
+                    Thread _loop = new(new ThreadStart(ClientLoop));
+                    _loop.Start();
+                }
 
             }
             IsRunning = false;

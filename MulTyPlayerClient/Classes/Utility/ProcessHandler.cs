@@ -49,6 +49,7 @@ namespace MulTyPlayerClient
 
         public static void WriteData(int address, byte[] bytes, string writeIndicator)
         {
+            if (Client.Relaunching) return;
             IntPtr bytesWritten = IntPtr.Zero;
             try
             {
@@ -84,6 +85,7 @@ namespace MulTyPlayerClient
 
         public static byte[] ReadData(int address, int length, string readIndicator)
         {
+            if (Client.Relaunching) return null;
             byte[] buffer = new byte[length];
             IntPtr bytesRead = IntPtr.Zero;
             try
