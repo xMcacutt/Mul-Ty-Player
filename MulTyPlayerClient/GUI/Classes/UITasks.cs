@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MulTyPlayerClient.GUI
 {
@@ -21,7 +22,10 @@ namespace MulTyPlayerClient.GUI
 
         public static void LoggerWrite(string message)
         {
-            _message= message;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                _message = message;
+            });
             //Start voidfactory with dummy action, to create a voidto run on another thread
             //(Can't find a way to make it just start on the UI thread)
             var t1 = Task.Factory.StartNew(new Action(() => {}));

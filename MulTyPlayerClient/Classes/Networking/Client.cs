@@ -31,7 +31,6 @@ namespace MulTyPlayerClient
 
         public static void StartClient(string ip, string name, string pass)
         {
-            BasicIoC.LoggerInstance = new(100);
             HLevel = new LevelHandler();
             HSync = new SyncHandler();
             HGameState = new GameStateHandler();
