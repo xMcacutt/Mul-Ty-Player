@@ -15,6 +15,7 @@ namespace MulTyPlayerClient
         public static Process TyProcess;
         public static bool MemoryWriteDebugLogging = false;
         public static bool MemoryReadDebugLogging = false;
+        public static IntPtr BaseAddress;
 
         [DllImport("kernel32.dll")]
         public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
@@ -36,6 +37,7 @@ namespace MulTyPlayerClient
             if (processes.Length > 0)
             {
                 TyProcess = processes[0];
+                BaseAddress = TyProcess.MainModule.BaseAddress;
                 return TyProcess;
             }
             TyProcess = null;

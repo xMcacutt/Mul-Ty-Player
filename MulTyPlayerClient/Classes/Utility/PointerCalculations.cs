@@ -34,7 +34,8 @@ namespace MulTyPlayerClient
             try
             {
                 if (ProcessHandler.TyProcess == null) throw new TyClosedException();
-                return (int)IntPtr.Add(ProcessHandler.TyProcess.MainModule.BaseAddress, i);
+                int addr = (int)IntPtr.Add(ProcessHandler.BaseAddress, i);
+                return addr;
             }
             catch(TyClosedException ex)
             {
