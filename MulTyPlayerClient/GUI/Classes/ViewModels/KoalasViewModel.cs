@@ -15,9 +15,6 @@ namespace MulTyPlayerClient
     [AddINotifyPropertyChangedInterface]
     public class KoalasViewModel
     {
-        static KoalaHandler HKoala => Client.HKoala;
-        static KoalaHandler HPlayer => Client.HKoala;
-
         //Images
         public string Boonie { get; set; } = @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Boonie.jpg";
         public string Mim { get; set; } = @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Mim.jpg";
@@ -86,14 +83,15 @@ namespace MulTyPlayerClient
             Client.HKoala = new KoalaHandler();
         }
 
-        public  void KoalaClicked(object inputParameter)
+        public void KoalaClicked(object inputParameter)
         {
             string koalaName = inputParameter.ToString();
             if (KoalaAvailable(koalaName))
             {
                 Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
+                Client.OldKoala = koala;
                 PlayerHandler.Players.Add(Client._client.Id, new Player(koala, Client.Name, Client._client.Id));
-                if (WindowHandler.ClientGUIWindow != null) SFXPlayer.PlaySound(SFX.PlayerConnect);
+                SFXPlayer.PlaySound(SFX.PlayerConnect);
 
                 KoalaAnimationSource = @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/" + koalaName + ".mp4";
                 ShowAnimation(koalaName);
