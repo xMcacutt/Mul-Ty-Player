@@ -21,6 +21,7 @@ namespace MulTyPlayerClient
         ReqHost,
         HostChange,
         HostCommand,
-        KoalaSelected
+        KoalaSelected,
+        AnnounceDisconnect
     }
 }

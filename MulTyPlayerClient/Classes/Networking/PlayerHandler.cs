@@ -50,5 +50,11 @@ namespace MulTyPlayerClient
             }
             Players.Remove(id);
         }
+
+        [MessageHandler((ushort)MessageID.AnnounceDisconnect)]
+        public static void PeerDisconnected(Message message)
+        {
+            RemovePlayer(message.GetUShort());
+        }
     }
 }

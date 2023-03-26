@@ -68,6 +68,7 @@ namespace MulTyPlayerClient
             {
                 try
                 {
+                    BasicIoC.LoggerInstance.Write("hello");
                     if (ProcessHandler.MemoryReadDebugLogging || ProcessHandler.MemoryWriteDebugLogging) BasicIoC.LoggerInstance.Write("|----------------> Start of Cycle <----------------|");
                     //GET GAME LOADING STATUS
                     HGameState.CheckLoaded();

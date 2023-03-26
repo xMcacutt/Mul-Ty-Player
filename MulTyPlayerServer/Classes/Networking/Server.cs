@@ -88,12 +88,13 @@ namespace MulTyPlayerServer
 
         private static void ClientDisconnected(object sender, ServerDisconnectedEventArgs e)
         {
-            //SendMessageToClients($"{PlayerHandler.Players[e.Client.Id].Name} has disconnected from the server.", true);
-            //SendMessageToClients($"{PlayerHandler.Players[e.Client.Id].Koala.KoalaName} was returned to the koala pool", true);
             if (PlayerHandler.Players.TryGetValue(e.Client.Id, out _))
             {
+                SendMessageToClients($"{PlayerHandler.Players[e.Client.Id].Name} has disconnected from the server.", true);
+                SendMessageToClients($"{PlayerHandler.Players[e.Client.Id].Koala.KoalaName} was returned to the koala pool", true);
                 if (PlayerHandler.Players[e.Client.Id].Koala != null) HKoala.ReturnKoala(PlayerHandler.Players[e.Client.Id]);
-                PlayerHandler.Players.Remove(e.Client.Id);
+                PlayerHandler.RemovePlayer(e.Client.Id);
+                PlayerHandler.AnnounceDisconnect(e.Client.Id);
             }
         }
 

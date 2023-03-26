@@ -65,7 +65,6 @@ namespace MulTyPlayerClient
                     {
                         throw new TyClosedException();
                     }
-                    //throw new Exception("Ty the Tasmanian Tiger has crashed or stopped responding.");
                 }
                 else
                 {
@@ -102,7 +101,6 @@ namespace MulTyPlayerClient
                     {
                         throw new TyClosedException();
                     }
-                    //throw new Exception("Ty the Tasmanian Tiger has crashed or stopped responding.");
                 }
                 else
                 {

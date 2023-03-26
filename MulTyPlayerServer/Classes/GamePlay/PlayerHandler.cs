@@ -27,6 +27,13 @@ namespace MulTyPlayerServer
             Players.Remove(id);
         }
 
+        public static void AnnounceDisconnect(ushort id)
+        {
+            Message message = Message.Create(MessageSendMode.Reliable, (ushort)MessageID.AnnounceDisconnect);
+            message.AddUShort(id);
+            Server._Server.SendToAll(message);
+        }
+
         [MessageHandler((ushort)MessageID.PlayerInfo)]
         private static void HandleGettingCoordinates(ushort fromClientId, Message message)
         {
