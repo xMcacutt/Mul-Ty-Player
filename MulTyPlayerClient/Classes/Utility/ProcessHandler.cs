@@ -60,6 +60,10 @@ namespace MulTyPlayerClient
                         string errorMsg = "Failed to write " + BitConverter.ToString(bytes) + " to 0x" + address.ToString("X") + " For: " + writeIndicator;
                         BasicIoC.LoggerInstance.Write(errorMsg);
                     }
+                    if (CheckTyProcess())
+                    {
+                        throw new TyClosedException();
+                    }
                     //throw new Exception("Ty the Tasmanian Tiger has crashed or stopped responding.");
                 }
                 else
@@ -74,7 +78,7 @@ namespace MulTyPlayerClient
             catch (Exception ex)
             {
                 // Handle the exception here
-                BasicIoC.LoggerInstance.Write(ex.Message);
+                //BasicIoC.LoggerInstance.Write(ex.Message);
             }
         }
 
@@ -92,6 +96,10 @@ namespace MulTyPlayerClient
                         string errorMsg = "Failed to read data at 0x" + address.ToString("X") + " For: " + readIndicator;
                         BasicIoC.LoggerInstance.Write(errorMsg);
                     }
+                    if (CheckTyProcess())
+                    {
+                        throw new TyClosedException();
+                    }
                     //throw new Exception("Ty the Tasmanian Tiger has crashed or stopped responding.");
                 }
                 else
@@ -106,7 +114,7 @@ namespace MulTyPlayerClient
             catch (Exception ex)
             {
                 // Handle the exception here
-                BasicIoC.LoggerInstance.Write(ex.Message);
+                //BasicIoC.LoggerInstance.Write(ex.Message);
             }
             return buffer;
         }

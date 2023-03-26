@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.Logging;
+using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI;
 using Riptide;
 using Riptide.Utils;
@@ -7,7 +8,9 @@ using System.Linq;
 using System.Media;
 using System.Threading;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Threading;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MulTyPlayerClient
 {
@@ -19,7 +22,6 @@ namespace MulTyPlayerClient
         private static string _ip;
         private static string _pass;
         public static string Name;
-        private bool _reconnectMode = false;
 
         public static KoalaHandler HKoala;
         public static PlayerHandler HPlayer;
@@ -61,38 +63,56 @@ namespace MulTyPlayerClient
             while (!IsRunning) _client.Update();
             while (IsRunning)
             {
-                if(ProcessHandler.MemoryReadDebugLogging || ProcessHandler.MemoryWriteDebugLogging) BasicIoC.LoggerInstance.Write("|----------------> Start of Cycle <----------------|");
-                //GET GAME LOADING STATUS
-                HGameState.CheckLoaded();
-                if (!HGameState.LoadingState)
+                try
                 {
-                    HLevel.GetCurrentLevel();
-                    //NEW LEVEL SETUP STUFF
-                    if (!HLevel.bNewLevelSetup)
+
+                    if (ProcessHandler.MemoryReadDebugLogging || ProcessHandler.MemoryWriteDebugLogging) BasicIoC.LoggerInstance.Write("|----------------> Start of Cycle <----------------|");
+                    //GET GAME LOADING STATUS
+                    HGameState.CheckLoaded();
+                    if (!HGameState.LoadingState)
                     {
+                        HLevel.GetCurrentLevel();
+                        //NEW LEVEL SETUP STUFF
+                        if (!HLevel.bNewLevelSetup)
+                        {
+                            HKoala.SetCoordAddrs();
+                            HLevel.DoLevelSetup();
+                            HLevel.bNewLevelSetup = true;
+                        }
+
+                        HHero.SendCoordinates();
+
+                        //OBSERVERS
+                        if (SettingsHandler.DoOpalSyncing && HLevel.MainStages.Contains(HLevel.CurrentLevelId)) { SyncHandler.HOpal.CheckObserverChanged(); SyncHandler.HCrate.CheckObserverChanged(); }
+                        if (SettingsHandler.DoTESyncing) SyncHandler.HThEg.CheckObserverChanged();
+                        if (SettingsHandler.DoCogSyncing) SyncHandler.HCog.CheckObserverChanged();
+                        if (SettingsHandler.DoBilbySyncing) SyncHandler.HBilby.CheckObserverChanged();
+                        if (SettingsHandler.DoRangSyncing) SyncHandler.HAttribute.CheckObserverChanged();
+                        if (SettingsHandler.DoPortalSyncing) SyncHandler.HPortal.CheckObserverChanged();
+                        if (SettingsHandler.DoCliffsSyncing) SyncHandler.HCliffs.CheckObserverChanged();
+
+                        HHero.GetTyPosRot();
                         HKoala.SetCoordAddrs();
-                        HLevel.DoLevelSetup();
-                        HLevel.bNewLevelSetup = true;
+                        HKoala.CheckTA();
                     }
-
-                    HHero.SendCoordinates();
-
-                    //OBSERVERS
-                    if (SettingsHandler.DoOpalSyncing && HLevel.MainStages.Contains(HLevel.CurrentLevelId)) { SyncHandler.HOpal.CheckObserverChanged(); SyncHandler.HCrate.CheckObserverChanged(); }
-                    if (SettingsHandler.DoTESyncing) SyncHandler.HThEg.CheckObserverChanged();
-                    if (SettingsHandler.DoCogSyncing) SyncHandler.HCog.CheckObserverChanged();
-                    if (SettingsHandler.DoBilbySyncing) SyncHandler.HBilby.CheckObserverChanged();
-                    if (SettingsHandler.DoRangSyncing) SyncHandler.HAttribute.CheckObserverChanged();
-                    if (SettingsHandler.DoPortalSyncing) SyncHandler.HPortal.CheckObserverChanged();
-                    if (SettingsHandler.DoCliffsSyncing) SyncHandler.HCliffs.CheckObserverChanged();
-
-                    HHero.GetTyPosRot();
-                    HKoala.SetCoordAddrs();
-                    HKoala.CheckTA();
+                    _client.Update();
+                    Thread.Sleep(10);
                 }
-                _client.Update();
-                Thread.Sleep(10);
+                catch (TyClosedException ex)
+                {
+                    BasicIoC.LoggerInstance.Write(ex.Message);
+                    SFXPlayer.PlaySound(SFX.MenuCancel);
+                    while (ProcessHandler.FindTyProcess() == null)
+                    {
+                        _client.Update();
+                        Thread.Sleep(100);
+                    }
+                    BasicIoC.LoggerInstance.Write("Ty has been restarted. You're back in!");
+                    SFXPlayer.PlaySound(SFX.MenuAccept);
+                    continue;
+                }
             }
+            
         }
 
         private static void Connected()

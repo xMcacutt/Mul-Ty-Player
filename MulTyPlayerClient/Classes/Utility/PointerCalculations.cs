@@ -35,9 +35,12 @@ namespace MulTyPlayerClient
             {
                 return (int)IntPtr.Add(ProcessHandler.TyProcess.MainModule.BaseAddress, i);
             }
-            catch
+            catch(Exception ex)
             {
-                BasicIoC.LoggerInstance.Write("Failed to add offset, maybe you disconnected?");
+                if (ProcessHandler.CheckTyProcess())
+                {
+                    throw new TyClosedException();
+                }
                 return 0;
             }
         }
