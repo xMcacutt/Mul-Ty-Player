@@ -115,8 +115,7 @@ namespace MulTyPlayerClient
                     Relaunching = false;
                     continue;
                 }
-            }
-            
+            }           
         }
 
         private static void Connected()

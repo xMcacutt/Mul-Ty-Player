@@ -37,7 +37,6 @@ namespace MulTyPlayerClient
             if (processes.Length > 0)
             {
                 TyProcess = processes[0];
-                BaseAddress = TyProcess.MainModule.BaseAddress;
                 return TyProcess;
             }
             TyProcess = null;
@@ -77,7 +76,7 @@ namespace MulTyPlayerClient
                     }
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 // Handle the exception here
                 //BasicIoC.LoggerInstance.Write(ex.Message);
@@ -113,7 +112,7 @@ namespace MulTyPlayerClient
                     }
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 // Handle the exception here
                 //BasicIoC.LoggerInstance.Write(ex.Message);

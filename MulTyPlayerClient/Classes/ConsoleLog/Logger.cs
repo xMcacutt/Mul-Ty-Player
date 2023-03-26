@@ -65,10 +65,6 @@ namespace MulTyPlayerClient
                     Debug.WriteLine($"Error writing to log file: {ex.Message}");
                 }
             }
-            if(Application.Current == null)
-            {
-                return;
-            }
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                     new Action(() => {

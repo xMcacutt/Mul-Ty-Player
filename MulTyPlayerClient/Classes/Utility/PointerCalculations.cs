@@ -31,14 +31,17 @@ namespace MulTyPlayerClient
 
         public static int AddOffset(int i)
         {
+            //THIS IS AN UNNERVINGLY SPECIFIC IMPLEMENTATION CHANGING IT WILL BREAK THE APPLICTION
             try
             {
-                if (ProcessHandler.TyProcess == null) throw new TyClosedException();
-                int addr = (int)IntPtr.Add(ProcessHandler.BaseAddress, i);
-                return addr;
+                return (int)IntPtr.Add(ProcessHandler.TyProcess.MainModule.BaseAddress, i);
             }
-            catch(TyClosedException ex)
+            catch (Exception ex)
             {
+                if (ProcessHandler.CheckTyProcess())
+                {
+                    throw new TyClosedException();
+                }
                 return 0;
             }
         }
