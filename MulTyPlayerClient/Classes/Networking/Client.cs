@@ -5,10 +5,7 @@ using Riptide.Utils;
 using System;
 using System.Linq;
 using System.Media;
-using System.Net.Cache;
-using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -68,7 +65,7 @@ namespace MulTyPlayerClient
                 if(ProcessHandler.MemoryReadDebugLogging || ProcessHandler.MemoryWriteDebugLogging) BasicIoC.LoggerInstance.Write("|----------------> Start of Cycle <----------------|");
                 //GET GAME LOADING STATUS
                 HGameState.CheckLoaded();
-                if (!HGameState.CheckMenuOrLoading())
+                if (!HGameState.LoadingState)
                 {
                     HLevel.GetCurrentLevel();
                     //NEW LEVEL SETUP STUFF
