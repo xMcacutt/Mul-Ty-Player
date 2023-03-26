@@ -7,6 +7,8 @@ namespace MulTyPlayerClient.GUI
         public static SplashViewModel SplashScreenViewModel = new();
         public static LoginPageViewModel LoginViewModel = new();
         public static KoalasViewModel KoalaSelectViewModel = new();
-        public static Logger LoggerInstance;
+        
+        //IF LOGGER INSTANCE IS NO INSTANTIATED HERE, IT WON'T SHOW UP. IDK WHY
+        public static Logger LoggerInstance = new(200);
     }
 }
