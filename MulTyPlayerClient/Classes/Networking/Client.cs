@@ -11,7 +11,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Threading;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MulTyPlayerClient
 {
@@ -53,7 +52,6 @@ namespace MulTyPlayerClient
             _client.ConnectionFailed += (s, e) => ConnectionFailed();
 
             Message authentication = Message.Create();
-            authentication.AddString(Name);
             authentication.AddString(_pass);
             _client.Connect(_ip + ":8750", 5, 0, authentication);
 
@@ -108,8 +106,9 @@ namespace MulTyPlayerClient
                     while (ProcessHandler.FindTyProcess() == null)
                     {
                         _client.Update();
-                        Thread.Sleep(100);
+                        Thread.Sleep(10);
                     }
+                    ProcessHandler.OpenTyHandle();
                     BasicIoC.LoggerInstance.Write("Ty has been restarted. You're back in!");
                     SFXPlayer.PlaySound(SFX.MenuAccept);
                     Relaunching = false;

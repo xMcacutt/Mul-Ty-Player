@@ -2,10 +2,12 @@
 using MulTyPlayerClient.GUI;
 using System;
 using System.Diagnostics;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace MulTyPlayerClient
 {
@@ -15,7 +17,7 @@ namespace MulTyPlayerClient
         public static Process TyProcess;
         public static bool MemoryWriteDebugLogging = false;
         public static bool MemoryReadDebugLogging = false;
-        public static IntPtr BaseAddress;
+        public static int i = 0;
 
         [DllImport("kernel32.dll")]
         public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
@@ -33,13 +35,8 @@ namespace MulTyPlayerClient
 
         public static Process FindTyProcess()
         {
-            Process[] processes = Process.GetProcessesByName("TY");
-            if (processes.Length > 0)
-            {
-                TyProcess = processes[0];
-                return TyProcess;
-            }
-            return null;
+            TyProcess = Process.GetProcessesByName("TY").FirstOrDefault();
+            return TyProcess;
         }
 
         public static void WriteData(int address, byte[] bytes, string writeIndicator)
@@ -78,8 +75,8 @@ namespace MulTyPlayerClient
 
         public static byte[] ReadData(int address, int length, string readIndicator)
         {
-            if (Client.Relaunching) return null;
             byte[] buffer = new byte[length];
+            if (Client.Relaunching) return buffer;
             IntPtr bytesRead = IntPtr.Zero;
             try
             {

@@ -1,5 +1,6 @@
 ﻿using MulTyPlayerClient.GUI;
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,18 +32,18 @@ namespace MulTyPlayerClient
 
         public static int AddOffset(int i)
         {
-            //THIS IS AN UNNERVINGLY SPECIFIC IMPLEMENTATION CHANGING IT WILL BREAK THE APPLICTION
             try
             {
-                return (int)IntPtr.Add(ProcessHandler.TyProcess.MainModule.BaseAddress, i);
+                IntPtr baseAddress = ProcessHandler.TyProcess.MainModule.BaseAddress;
+                if (baseAddress == IntPtr.Zero)
+                {
+                    throw new TyClosedException();
+                }
+                return (int)IntPtr.Add(baseAddress, i);
             }
-            catch (Exception ex)
+            catch (Win32Exception ex) when (ex.Message.Contains("ReadProcessMemory") || ex.Message.Contains("WriteProcessMemory"))
             {
-                //if (ProcessHandler.CheckTyProcess())
-                //{
-                //    throw new TyClosedException();
-                //}
-                return 0;
+                throw new TyClosedException();
             }
         }
     }
