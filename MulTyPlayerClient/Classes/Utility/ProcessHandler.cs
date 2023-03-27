@@ -39,13 +39,7 @@ namespace MulTyPlayerClient
                 TyProcess = processes[0];
                 return TyProcess;
             }
-            TyProcess = null;
             return null;
-        }
-
-        public static bool CheckTyProcess()
-        {
-            return TyProcess.HasExited;
         }
 
         public static void WriteData(int address, byte[] bytes, string writeIndicator)
@@ -62,7 +56,7 @@ namespace MulTyPlayerClient
                         string errorMsg = "Failed to write " + BitConverter.ToString(bytes) + " to 0x" + address.ToString("X") + " For: " + writeIndicator;
                         BasicIoC.LoggerInstance.Write(errorMsg);
                     }
-                    if (CheckTyProcess())
+                    if (FindTyProcess() == null)
                     {
                         throw new TyClosedException();
                     }
@@ -76,10 +70,9 @@ namespace MulTyPlayerClient
                     }
                 }
             }
-            catch(Exception ex)
+            catch(TyClosedException ex)
             {
-                // Handle the exception here
-                //BasicIoC.LoggerInstance.Write(ex.Message);
+                throw;
             }
         }
 
@@ -98,7 +91,7 @@ namespace MulTyPlayerClient
                         string errorMsg = "Failed to read data at 0x" + address.ToString("X") + " For: " + readIndicator;
                         BasicIoC.LoggerInstance.Write(errorMsg);
                     }
-                    if (CheckTyProcess())
+                    if (FindTyProcess() == null)
                     {
                         throw new TyClosedException();
                     }
@@ -112,10 +105,9 @@ namespace MulTyPlayerClient
                     }
                 }
             }
-            catch(Exception ex)
+            catch(TyClosedException ex)
             {
-                // Handle the exception here
-                //BasicIoC.LoggerInstance.Write(ex.Message);
+                throw;
             }
             return buffer;
         }

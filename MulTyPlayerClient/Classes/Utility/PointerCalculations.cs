@@ -38,10 +38,10 @@ namespace MulTyPlayerClient
             }
             catch (Exception ex)
             {
-                if (ProcessHandler.CheckTyProcess())
-                {
-                    throw new TyClosedException();
-                }
+                //if (ProcessHandler.CheckTyProcess())
+                //{
+                //    throw new TyClosedException();
+                //}
                 return 0;
             }
         }
