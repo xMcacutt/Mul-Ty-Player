@@ -37,7 +37,7 @@ namespace MulTyPlayerClient
 
         private static int GetSaveDataBaseAddress()
         {
-            return PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x288730), new int[] { 0x10 });
+            return PointerCalculations.GetPointerAddress(0x288730, new int[] { 0x10 });
         }
 
         public void SetMemAddrs()
@@ -69,6 +69,7 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ReqSync)]
         private static void HandleSyncReqResponse(Message message)
         {
+            if (Client.Relaunching) return;
             string type = message.GetString();
             if (SettingsHandler.SyncSettings[type]) 
             { 
@@ -79,6 +80,7 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ClientDataUpdate)]
         private static void HandleClientDataUpdate(Message message)
         {
+            if (Client.Relaunching) return;
             SyncMessage syncMessage = SyncMessage.Decode(message);
             Client.HSync.SyncObjects[syncMessage.type].HandleClientUpdate(syncMessage.iLive, syncMessage.iSave, syncMessage.level);
         }

@@ -15,7 +15,7 @@ namespace MulTyPlayerClient
             WriteState = 0;
             CheckState = 0;
             SetMemAddrs();
-            CounterAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x0028A8E8), new int[] { 0x390 });
+            CounterAddress = PointerCalculations.GetPointerAddress(0x0028A8E8, new int[] { 0x390 });
             CounterByteLength = 4;
             CurrentObjectData = Enumerable.Repeat((byte)1, 300).ToArray();
             PreviousObjectData = Enumerable.Repeat((byte)1, 300).ToArray();
@@ -67,8 +67,8 @@ namespace MulTyPlayerClient
             ProcessHandler.WriteData(CounterAddress, new byte[] { 0, 0, 0, 0 }, "Setting crate anim counter to 0");
             LiveObjectAddress = 
                 Client.HLevel.CurrentLevelId == 10 ?
-                PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x255190), new int[] { 0x0 }) :
-                PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x254CB8), new int[] { 0x0 });
+                PointerCalculations.GetPointerAddress(0x255190, new int[] { 0x0 }) :
+                PointerCalculations.GetPointerAddress(0x254CB8, new int[] { 0x0 });
         }
 
         public override void CheckObserverChanged()

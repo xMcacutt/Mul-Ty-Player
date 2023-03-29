@@ -29,7 +29,8 @@ namespace MulTyPlayerClient
             int attributeAmount = 21;
             for (int i = 0; i < attributeAmount; i++)
             {
-                if (ProcessHandler.ReadData(SyncHandler.SaveDataBaseAddress + 0xAA4 + i, 1, $"Checking attribute observer {i} / {attributeAmount}")[0] == 1 && GlobalObjectData[i] == 0)
+                ProcessHandler.TryRead(CounterAddress + i, out byte result, false);
+                if (result == 1 && GlobalObjectData[i] == 0)
                 {
                     GlobalObjectData[i] = 1;
                     //Console.WriteLine("You have now " + Enum.GetValues(typeof(Attributes)).GetValue(i));

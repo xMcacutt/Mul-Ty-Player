@@ -18,34 +18,20 @@ namespace MulTyPlayerClient
         public HeroHandler()
         {
             CurrentPosRot = new float[6];
-            _tyPosRotAddrs = new int[6];
-            _bpPosRotAddrs = new int[6];
-        }
-
-        public void SetCoordAddrs()
-        {
-            //SET ADDRESSES RELATIVE TO ADDRESS OF X COORDINATE
-            _tyPosRotAddrs[0] = PointerCalculations.AddOffset(TY_POSROT_BASE_ADDRESS);
-            _tyPosRotAddrs[1] = _tyPosRotAddrs[0] + 0x4;
-            _tyPosRotAddrs[2] = _tyPosRotAddrs[1] + 0x4;
-            _tyPosRotAddrs[3] = _tyPosRotAddrs[2] + 0x109C;
-            _tyPosRotAddrs[4] = _tyPosRotAddrs[3] + 0x4;
-            _tyPosRotAddrs[5] = _tyPosRotAddrs[4] + 0x4;
-            _bpPosRotAddrs[0] = PointerCalculations.AddOffset(BP_POSROT_BASE_ADDRESS);
-            _bpPosRotAddrs[1] = _bpPosRotAddrs[0] + 0x4;
-            _bpPosRotAddrs[2] = _bpPosRotAddrs[1] + 0x4;
-            _bpPosRotAddrs[3] = _bpPosRotAddrs[2] + 0x380;
-            _bpPosRotAddrs[4] = _bpPosRotAddrs[3] + 0x4;
-            _bpPosRotAddrs[5] = _bpPosRotAddrs[4] + 0x4;
+            _tyPosRotAddrs = new int[2];
+            _bpPosRotAddrs = new int[2];
         }
 
         public void GetTyPosRot()
         {
             //GETS TY'S OR BUSHPIG'S POSITION AND ROTATION AND STORES IT IN CURRENTPOSROT 
-            int[] tempInts = HLevel.CurrentLevelId == 10 ? _bpPosRotAddrs : _tyPosRotAddrs;
-            for (int i = 0; i < tempInts.Length; i++)
+            int baseAddress = HLevel.CurrentLevelId == 10 ? BP_POSROT_BASE_ADDRESS : TY_POSROT_BASE_ADDRESS;
+            int rotOffset = HLevel.CurrentLevelId == 10 ? 0x388 : 0x10A4;
+
+            for (int i = 0; i < 6; i++)
             {
-                CurrentPosRot[i] = BitConverter.ToSingle(ProcessHandler.ReadData(tempInts[i], 4, $"Getting coordinate {i+1} / 6"), 0);
+                int offset = i < 3 ? i * 0x4 : rotOffset + (i - 3) * 0x4;
+                ProcessHandler.TryRead(baseAddress + offset, out CurrentPosRot[i], true);
             }
         }
 

@@ -1,5 +1,4 @@
-﻿using MulTyPlayerClient.Classes.Utility;
-using MulTyPlayerClient.GUI;
+﻿using MulTyPlayerClient.GUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;

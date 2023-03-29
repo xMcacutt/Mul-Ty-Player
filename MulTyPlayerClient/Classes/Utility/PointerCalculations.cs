@@ -16,7 +16,8 @@ namespace MulTyPlayerClient
             IntPtr addr = new(baseAddress);
             for (int i = 0; i < offsets.Length; i++)
             {
-                int nextAddress = BitConverter.ToInt32(ProcessHandler.ReadData((int)addr, 4, $"Following pointer path {i+1} / {offsets.Length}"), 0);
+                bool addBase = i == 0;
+                ProcessHandler.TryRead(addr, out int nextAddress, addBase);
                 addr = new IntPtr(nextAddress + offsets[i]);
             }
             if (extraOffset == 0)
@@ -27,23 +28,6 @@ namespace MulTyPlayerClient
             {
                 addr += extraOffset;
                 return addr.ToInt32();
-            }
-        }
-
-        public static int AddOffset(int i)
-        {
-            try
-            {
-                IntPtr baseAddress = ProcessHandler.TyProcess.MainModule.BaseAddress;
-                if (baseAddress == IntPtr.Zero)
-                {
-                    throw new TyClosedException();
-                }
-                return (int)IntPtr.Add(baseAddress, i);
-            }
-            catch (Win32Exception ex) when (ex.Message.Contains("ReadProcessMemory") || ex.Message.Contains("WriteProcessMemory"))
-            {
-                throw new TyClosedException();
             }
         }
     }

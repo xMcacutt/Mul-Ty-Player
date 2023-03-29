@@ -37,7 +37,7 @@ namespace MulTyPlayerClient
             int address = HSyncObject.LiveObjectAddress;
             for (int i = 0; i < HSyncObject.ObjectAmount; i++)
             {
-                currentData[i] = ProcessHandler.ReadData(address + StateOffset + (ObjectLength * i), 1, $"Getting live collectible state for collectible number {i} / {HSyncObject.ObjectAmount}")[0];
+                ProcessHandler.TryRead(address + StateOffset + (ObjectLength * i), out currentData[i], false);
             }
             return currentData;
         }

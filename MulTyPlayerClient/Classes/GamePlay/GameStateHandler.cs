@@ -15,7 +15,8 @@ namespace MulTyPlayerClient
 
         public bool CheckMenuOrLoading()
         {
-            return ProcessHandler.ReadData(PointerCalculations.AddOffset(0x25601C), 1, "Checking menu/loading")[0] == 0;
+            ProcessHandler.TryRead(0x25601C, out byte result, true);
+            return result == 0;
             //IF METHOD RETURNS TRUE -> ON MENU
         }
 

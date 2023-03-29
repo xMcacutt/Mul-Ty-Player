@@ -15,6 +15,7 @@
     <PackageIcon>fe_999_icon_koalakid.ico</PackageIcon>
     <ApplicationIcon>fe_999_icon_koalakid.ico</ApplicationIcon>
     <UseWPF>True</UseWPF>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <OutputPath>bin\x86\Debug\</OutputPath>

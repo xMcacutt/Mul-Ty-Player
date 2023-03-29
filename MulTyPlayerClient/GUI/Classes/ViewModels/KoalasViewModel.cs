@@ -1,5 +1,4 @@
-﻿using MulTyPlayerClient.Classes.Utility;
-using MulTyPlayerClient.GUI;
+﻿using MulTyPlayerClient.GUI;
 using PropertyChanged;
 using Riptide;
 using System;

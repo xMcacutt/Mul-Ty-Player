@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualBasic.Logging;
-using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI;
 using Riptide;
 using Riptide.Utils;
@@ -119,8 +118,6 @@ namespace MulTyPlayerClient
 
         private static void Connected()
         {
-            HHero.SetCoordAddrs();
-
             BasicIoC.LoginViewModel.SaveDetails();
             BasicIoC.KoalaSelectViewModel.Setup();
             BasicIoC.LoginViewModel.ConnectionAttemptSuccessful = true;

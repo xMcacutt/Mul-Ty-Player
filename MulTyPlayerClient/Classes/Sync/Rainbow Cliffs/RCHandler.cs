@@ -30,7 +30,8 @@ namespace MulTyPlayerClient
             int dataAmount = 12;
             for (int i = 0; i < dataAmount; i++)
             {
-                if (ProcessHandler.ReadData(CounterAddress + i, 1, $"Checking RC data observer {i} / {dataAmount}")[0] == 1 && GlobalObjectData[i] == 0)
+                ProcessHandler.TryRead(CounterAddress + i, out byte dataStae, false);
+                if (dataStae == 1 && GlobalObjectData[i] == 0)
                 {
                     GlobalObjectData[i] = 1;
                     Client.HSync.SendDataToServer(0, i, 0, Name);

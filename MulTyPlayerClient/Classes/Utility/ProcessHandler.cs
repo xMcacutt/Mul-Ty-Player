@@ -8,10 +8,12 @@ using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Reflection.Metadata;
+using System.CodeDom;
 
 namespace MulTyPlayerClient
 {
-    internal static class ProcessHandler
+    internal unsafe class ProcessHandler
     {
         public static IntPtr HProcess;
         public static Process TyProcess;
@@ -22,9 +24,14 @@ namespace MulTyPlayerClient
         [DllImport("kernel32.dll")]
         public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool ReadProcessMemory(IntPtr hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, out IntPtr lpNumberOfBytesRead);
-        
+        [DllImport("kernel32.dll")]
+        internal static extern bool ReadProcessMemory(
+            nint hProcess,
+            void* lpBaseAddress,
+            void* lpBuffer,
+            nuint nSize,
+            nuint* lpNumberOfBytesRead);
+
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool WriteProcessMemory(IntPtr hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, out IntPtr lpNumberOfBytesWritten);
 
@@ -41,11 +48,9 @@ namespace MulTyPlayerClient
 
         public static void WriteData(int address, byte[] bytes, string writeIndicator)
         {
-            if (Client.Relaunching) return;
-            IntPtr bytesWritten = IntPtr.Zero;
             try
             {
-                bool success = WriteProcessMemory(HProcess, address, bytes, bytes.Length, out bytesWritten);
+                bool success = WriteProcessMemory(HProcess, address, bytes, bytes.Length, out nint bytesWritten);
                 if (!success)
                 {
                     if (MemoryWriteDebugLogging)
@@ -73,40 +78,45 @@ namespace MulTyPlayerClient
             }
         }
 
-        public static byte[] ReadData(int address, int length, string readIndicator)
+        public static unsafe bool TryRead<T>(nint address, out T result, bool addBase)
+        where T : unmanaged
         {
-            byte[] buffer = new byte[length];
-            if (Client.Relaunching) return buffer;
-            IntPtr bytesRead = IntPtr.Zero;
             try
             {
-                bool success = ReadProcessMemory(HProcess, address, buffer, length, out bytesRead);
-                if (!success)
+                if (TyProcess == null)
                 {
-                    if (MemoryReadDebugLogging)
-                    {
-                        string errorMsg = "Failed to read data at 0x" + address.ToString("X") + " For: " + readIndicator;
-                        BasicIoC.LoggerInstance.Write(errorMsg);
-                    }
-                    if (FindTyProcess() == null)
+                    StackTrace stackTrace = new StackTrace();
+                    if(stackTrace.GetFrames()
+                        .Select(frame => frame.GetMethod())
+                        .Any(method => method.Name == "ClientLoop"))
                     {
                         throw new TyClosedException();
                     }
                 }
-                else
+                fixed (T* pResult = &result)
                 {
-                    if (MemoryReadDebugLogging)
-                    {
-                        string errorMsg = "Read " + BitConverter.ToString(buffer) + " from address 0x" + address.ToString("X") + " For: " + readIndicator;
-                        BasicIoC.LoggerInstance.Write(errorMsg);
-                    }
+                    if(addBase) address = TyProcess.MainModule.BaseAddress + address;
+                    nuint nSize = (nuint)sizeof(T), nRead;
+                    return ReadProcessMemory(HProcess, (void*)address, pResult, nSize, &nRead)
+                        && nRead == nSize;
                 }
             }
             catch(TyClosedException ex)
             {
-                throw;
+                throw new TyClosedException();
             }
-            return buffer;
+            catch(Win32Exception ex)
+            {
+                StackTrace stackTrace = new StackTrace();
+                if (stackTrace.GetFrames()
+                    .Select(frame => frame.GetMethod())
+                    .Any(method => method.Name == "ClientLoop"))
+                {
+                    throw new TyClosedException();
+                }
+                result = default;
+                return false;
+            }
         }
     }
 }

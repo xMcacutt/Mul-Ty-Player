@@ -13,7 +13,7 @@ namespace MulTyPlayerClient
 
         public Dictionary<string, int[]> KoalaAddrs;
         public static string[] KoalaNames = { "Katie", "Mim", "Elizabeth", "Snugs", "Gummy", "Dubbo", "Kiki", "Boonie" };
-        int _bTimeAttackAddress = PointerCalculations.AddOffset(0x28AB84);
+        int _bTimeAttackAddress = 0x28AB84;
         int _baseKoalaAddress;
 
         public KoalaHandler()
@@ -43,32 +43,38 @@ namespace MulTyPlayerClient
 
         public void SetBaseAddress()
         {
-            _baseKoalaAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x26B070), new int[] { 0x0 });
+            _baseKoalaAddress = PointerCalculations.GetPointerAddress(0x26B070, new int[] { 0x0 });
         }
 
         public void SetCoordAddrs()
         {
+            //KOALAS ARE STRUCTURED DIFFERENTLY IN STUMP AND SNOW SO MODIFIER AND OFFSET ARE NECESSARY
             int modifier = (Client.HLevel.CurrentLevelId == 9 || Client.HLevel.CurrentLevelId == 13) ? 2 : 1;
             int offset = (Client.HLevel.CurrentLevelId == 9 || Client.HLevel.CurrentLevelId == 13) ? 0x518 : 0x0;
-            if(_baseKoalaAddress == 0) _baseKoalaAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x26B070), new int[] { 0x0 });
-            foreach(Player player in PlayerHandler.Players.Values)
+            if(_baseKoalaAddress == 0) SetBaseAddress();
+            foreach (Player player in PlayerHandler.Players.Values)
             {
-                //X COORDINATE
-                KoalaAddrs[player.Koala.KoalaName][0] = _baseKoalaAddress + offset + 0x2A4 + (0x518 * modifier * player.Koala.KoalaID);
-                //Y COORDINATE
-                KoalaAddrs[player.Koala.KoalaName][1] = _baseKoalaAddress + offset + 0x2A8 + (0x518 * modifier * player.Koala.KoalaID);
-                //Z COORDINATE
-                KoalaAddrs[player.Koala.KoalaName][2] = _baseKoalaAddress + offset + 0x2AC + (0x518 * modifier * player.Koala.KoalaID);
-                //P COORDINATE
-                KoalaAddrs[player.Koala.KoalaName][3] = _baseKoalaAddress + offset + 0x2B4 + (0x518 * modifier * player.Koala.KoalaID);
-                //Y COORDINATE
-                KoalaAddrs[player.Koala.KoalaName][4] = _baseKoalaAddress + offset + 0x2B8 + (0x518 * modifier * player.Koala.KoalaID);
-                //R COORDINATE
-                KoalaAddrs[player.Koala.KoalaName][5] = _baseKoalaAddress + offset + 0x2BC + (0x518 * modifier * player.Koala.KoalaID);
-                //COLLISION
-                KoalaAddrs[player.Koala.KoalaName][6] = _baseKoalaAddress + offset + 0x298 + (0x518 * modifier * player.Koala.KoalaID);
-                //VISIBILITY
-                KoalaAddrs[player.Koala.KoalaName][7] = _baseKoalaAddress + offset + 0x44 + (0x518 * modifier * player.Koala.KoalaID);
+                if (KoalaAddrs.TryGetValue(player.Koala.KoalaName, out int[] koalaAddr))
+                {
+                    int koalaOffset = (0x518 * modifier * player.Koala.KoalaID);
+
+                    // X COORDINATE
+                    koalaAddr[0] = _baseKoalaAddress + offset + 0x2A4 + koalaOffset;
+                    // Y COORDINATE
+                    koalaAddr[1] = _baseKoalaAddress + offset + 0x2A8 + koalaOffset;
+                    // Z COORDINATE
+                    koalaAddr[2] = _baseKoalaAddress + offset + 0x2AC + koalaOffset;
+                    // P COORDINATE
+                    koalaAddr[3] = _baseKoalaAddress + offset + 0x2B4 + koalaOffset;
+                    // Y COORDINATE
+                    koalaAddr[4] = _baseKoalaAddress + offset + 0x2B8 + koalaOffset;
+                    // R COORDINATE
+                    koalaAddr[5] = _baseKoalaAddress + offset + 0x2BC + koalaOffset;
+                    // COLLISION
+                    koalaAddr[6] = _baseKoalaAddress + offset + 0x298 + koalaOffset;
+                    // VISIBILITY
+                    koalaAddr[7] = _baseKoalaAddress + offset + 0x44 + koalaOffset;
+                }
             }
             if (!SettingsHandler.Settings.DoKoalaCollision) RemoveCollision();
         }
@@ -85,7 +91,8 @@ namespace MulTyPlayerClient
 
         public void CheckTA()
         {
-            if (BitConverter.ToInt32(ProcessHandler.ReadData(_bTimeAttackAddress, 4, "Checking TA"), 0) == 1) MakeVisible();
+            ProcessHandler.TryRead(_bTimeAttackAddress, out int inTimeAttack, true);
+            if (inTimeAttack == 1) MakeVisible();
         }
         
         public void MakeVisible()
@@ -99,7 +106,7 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.KoalaCoordinates)]
         private static void HandleGettingCoordinates(Message message)
         {
-            if (!Client.KoalaSelected) return;
+            if (!Client.KoalaSelected || Client.Relaunching) return;
             string koalaName = message.GetString();
             int level = message.GetInt();
             float[] coordinates = message.GetFloats();

@@ -1,10 +1,12 @@
 ﻿using MulTyPlayerClient.GUI;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using System.Windows.Controls.Primitives;
 
 namespace MulTyPlayerClient
 {
@@ -58,8 +60,13 @@ namespace MulTyPlayerClient
 
         public virtual int ReadObserver(int address, int size)
         {
-            byte[] buffer = ProcessHandler.ReadData(address, size, "Reading collectible change observer");
-            return size == 4 ? BitConverter.ToInt32(buffer, 0) : buffer[0];
+            if (size == 4)
+            {
+                ProcessHandler.TryRead(address, out int result, true);
+                return result;
+            }
+            ProcessHandler.TryRead(address, out byte byteResult, true);
+            return byteResult;
         }
 
         public virtual void CheckObserverChanged()
@@ -78,7 +85,7 @@ namespace MulTyPlayerClient
                     if (SeparateID) 
                     {
                         int address = LiveObjectAddress + (iLive * LiveSync.ObjectLength) + IDOffset;
-                        iSave = BitConverter.ToInt32(ProcessHandler.ReadData(address, 4, "Getting save index"), 0);
+                        ProcessHandler.TryRead(address, out iSave, false);
                     }
                     if (GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] != CheckState)
                     {

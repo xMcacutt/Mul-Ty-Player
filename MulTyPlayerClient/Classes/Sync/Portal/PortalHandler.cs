@@ -56,19 +56,25 @@ namespace MulTyPlayerClient
         public override int ReadObserver(int address, int size)
         {
             int[] portals = new int[7];
+            //THERE ARE 7 PORTALS WHICH ARE HIDDEN BY DEFAULT IN RAINBOW CLIFFS
             for (int i = 0; i < 7; i++)
             {
-                if (ProcessHandler.ReadData(SyncHandler.SaveDataBaseAddress + (0x70 * FlakyPortals[i]), 1, $"Checking if flaky portals have been made active by save data {i+1} / 7")[0] > 0)
+                //CHECKS IF THE PORTAL SHOULD BE ACTIVE BECAUSE THE LEVEL HAS BEEN ENTERED ALREADY
+                ProcessHandler.TryRead(SyncHandler.SaveDataBaseAddress + (0x70 * FlakyPortals[i]), out byte portalSaveDataState, false);
+                if (portalSaveDataState > 0 && PortalsActive[FlakyPortals[i]] == 0)
                 {
-                    if (PortalsActive[FlakyPortals[i]] == 0) PortalsActive[FlakyPortals[i]] = 1;
+                    PortalsActive[FlakyPortals[i]] = 1;
                     portals[i] = 1;
                 }
+                //CHECKS IF THE PORTAL SHOULD BE ACTIVE BECAUSE IT IS LOADED IN RAINBOW CLIFFS
                 if (Client.HLevel.CurrentLevelId == 0)
                 {
+                    //ORDER OF PORTALS IS IRRITATING SO I JUST MADE A LIST OF THEM
                     int orderedIndex = Array.IndexOf(LivePortalOrder, FlakyPortals[i]);
-                    if (ProcessHandler.ReadData(address + (LiveSync.ObjectLength * orderedIndex), 4, $"Checking if flaky portals have been made active by live data {i + 1} / 7")[0] == 2)
+                    ProcessHandler.TryRead(address + (LiveSync.ObjectLength * orderedIndex), out byte portalLiveDataState, false);
+                    if (portalLiveDataState == 2 && PortalsActive[FlakyPortals[i]] == 0)
                     {
-                        if (PortalsActive[FlakyPortals[i]] == 0) PortalsActive[FlakyPortals[i]] = 1;
+                        PortalsActive[FlakyPortals[i]] = 1;
                         portals[i] = 1;
                     }
                 }
@@ -95,7 +101,7 @@ namespace MulTyPlayerClient
 
         public  override void SetMemAddrs()
         {
-            LiveObjectAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x267408), new int[] { 0x0 });
+            LiveObjectAddress = PointerCalculations.GetPointerAddress(0x267408, new int[] { 0x0 });
         }
     }
 }

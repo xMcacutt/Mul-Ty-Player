@@ -17,7 +17,7 @@ namespace MulTyPlayerClient
             ObjectAmount = 5;
             SeparateID = true;
             IDOffset = 0x0;
-            CounterAddress = PointerCalculations.AddOffset(0x2651AC);
+            CounterAddress = 0x2651AC;
             CounterByteLength = 1;
             PreviousObjectData = new byte[ObjectAmount];
             CurrentObjectData = new byte[ObjectAmount];
@@ -35,7 +35,7 @@ namespace MulTyPlayerClient
 
         public  override void SetMemAddrs()
         {
-            LiveObjectAddress = PointerCalculations.GetPointerAddress(PointerCalculations.AddOffset(0x27D608), new int[] { 0x0, 0x0 });
+            LiveObjectAddress = PointerCalculations.GetPointerAddress(0x27D608, new int[] { 0x0, 0x0 });
         }
     }
 }

@@ -18,20 +18,29 @@ namespace MulTyPlayerClient
 
         public override byte[] ReadData()
         {
+            // Get the number of crate opals in the current level
             int crateOpalsInLevel = HOpal.CrateOpalsPerLevel[HLevel.CurrentLevelId];
+
+            // Create an array to store the current opals
             byte[] currentOpals = new byte[300];
+
+            // Read the non-crate opals from memory
             int address = HOpal.NonCrateOpalsAddress;
             for (int i = 0; i < 300 - crateOpalsInLevel; i++)
             {
-                currentOpals[i] = ProcessHandler.ReadData(address + 0x78 + (0x114 * i), 1, $"Checking state of non crate opals {i} / {300 - crateOpalsInLevel}")[0];
+                ProcessHandler.TryRead(address + 0x78 + (0x114 * i), out currentOpals[i], false);
             }
+
+            // If there are no crate opals in the level, return the current opals array
             if (crateOpalsInLevel == 0) return currentOpals;
 
+            // Read the crate opals from memory and add them to the current opals array
             address = HOpal.CrateOpalsAddress;
             for (int i = 0; i < crateOpalsInLevel; i++)
             {
-                currentOpals[300 - crateOpalsInLevel + i] = ProcessHandler.ReadData(address + 0x78 + (0x114 * i), 1, $"Checking state of crate opals {i} / {crateOpalsInLevel}")[0];
+                ProcessHandler.TryRead(address + 0x78 + (0x114 * i), out currentOpals[300 - crateOpalsInLevel + i], false);
             }
+
             return currentOpals;
         }
 

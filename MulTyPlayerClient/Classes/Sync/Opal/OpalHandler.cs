@@ -22,7 +22,7 @@ namespace MulTyPlayerClient
             CheckState = 5;
             SaveState = 1;
             ObjectAmount = 300;
-            CounterAddress = PointerCalculations.AddOffset(0x26547C);
+            CounterAddress = 0x26547C;
             CounterByteLength = 4;
             PreviousObjectData = new byte[ObjectAmount];
             CurrentObjectData = new byte[ObjectAmount];
@@ -37,7 +37,7 @@ namespace MulTyPlayerClient
 
         public  override void SetMemAddrs()
         {
-            int gemPtrListAddress = PointerCalculations.AddOffset(GEM_PTR_LIST_BASE_ADDRESS);
+            int gemPtrListAddress = GEM_PTR_LIST_BASE_ADDRESS;
             NonCrateOpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x0, 0x0});
             //B3OpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x2B0, 0x0});
             CrateOpalsAddress = PointerCalculations.GetPointerAddress(gemPtrListAddress, new int[] {0x4AC, 0x0});
