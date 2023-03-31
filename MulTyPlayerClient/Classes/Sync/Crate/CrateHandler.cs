@@ -66,6 +66,7 @@ namespace MulTyPlayerClient
 
         public override void SetMemAddrs()
         {
+            CounterAddress = PointerCalculations.GetPointerAddress(0x0028A8E8, new int[] { 0x390 });
             ProcessHandler.WriteData(CounterAddress, new byte[] { 0, 0, 0, 0 }, "Setting crate anim counter to 0");
             LiveObjectAddress = 
                 Client.HLevel.CurrentLevelId == 10 ?
@@ -84,7 +85,6 @@ namespace MulTyPlayerClient
             {
                 if (CheckObserverCondition(PreviousObjectData[iLive], CurrentObjectData[iLive]))
                 {
-                    BasicIoC.LoggerInstance.Write(Name + " number " + iLive + " collected.");
                     PreviousObjectData[iLive] = CurrentObjectData[iLive] = WriteState;
                     if (GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] != CheckState)
                     {
