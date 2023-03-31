@@ -17,8 +17,8 @@ namespace MulTyPlayerClient
             for (int i = 0; i < offsets.Length; i++)
             {
                 bool addBase = i == 0;
-                ProcessHandler.TryRead(addr, out int nextAddress, addBase);
-                addr = new IntPtr(nextAddress + offsets[i]);
+                ProcessHandler.TryRead(addr, out IntPtr nextAddress, addBase);
+                addr = nextAddress + offsets[i];
             }
             if (extraOffset == 0)
             {

@@ -15,7 +15,7 @@ namespace MulTyPlayerClient
 
         public bool CheckMenuOrLoading()
         {
-            ProcessHandler.TryRead(0x25601C, out byte result, true);
+            ProcessHandler.TryRead(0x27EBCC, out byte result, true);
             return result == 0;
             //IF METHOD RETURNS TRUE -> ON MENU
         }
@@ -30,7 +30,6 @@ namespace MulTyPlayerClient
                 if (!LoadingState)
                 {
                     Client.HLevel.bNewLevelSetup = false;
-                    Client.HLevel.LoadedNewLevelNetworkingSetupDone = false;
                 }
             }
         }

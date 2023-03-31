@@ -78,6 +78,30 @@ namespace MulTyPlayerClient
             }
         }
 
+        private static string GetCallStackAsString()
+        {
+            StackTrace stackTrace = new StackTrace();
+
+            // Get the frames in the call stack
+            StackFrame[] stackFrames = stackTrace.GetFrames();
+
+            // Format the call stack as a string
+            string callStack = "";
+            foreach (StackFrame frame in stackFrames)
+            {
+                if (frame.GetMethod() != null)
+                {
+                    callStack += frame.GetMethod().Name + " -> ";
+                }
+            }
+            // Remove the last "-> " from the callStack string
+            if (callStack.EndsWith(" -> "))
+            {
+                callStack = callStack[..^4];
+            }
+            return callStack;
+        }
+
         public static unsafe bool TryRead<T>(nint address, out T result, bool addBase)
         where T : unmanaged
         {
@@ -95,8 +119,10 @@ namespace MulTyPlayerClient
                 }
                 fixed (T* pResult = &result)
                 {
+                    //string s = GetCallStackAsString();
                     if(addBase) address = TyProcess.MainModule.BaseAddress + address;
                     nuint nSize = (nuint)sizeof(T), nRead;
+                    //BasicIoC.LoggerInstance.Write(address.ToString() + " " + s);
                     return ReadProcessMemory(HProcess, (void*)address, pResult, nSize, &nRead)
                         && nRead == nSize;
                 }

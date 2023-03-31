@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Controls.Primitives;
 
@@ -16,6 +17,7 @@ namespace MulTyPlayerClient
         public int CheckState { get; set; }
         public int SaveState { get; set; }
         public int CounterByteLength { get; set; }
+        public bool CounterAddressStatic { get; set; }
         public bool SeparateID { get; set; }
         public int IDOffset { get; set; }
         public byte[] CurrentObjectData { get; set; }
@@ -62,10 +64,10 @@ namespace MulTyPlayerClient
         {
             if (size == 4)
             {
-                ProcessHandler.TryRead(address, out int result, true);
+                ProcessHandler.TryRead(address, out int result, CounterAddressStatic);
                 return result;
             }
-            ProcessHandler.TryRead(address, out byte byteResult, true);
+            ProcessHandler.TryRead(address, out byte byteResult, CounterAddressStatic);
             return byteResult;
         }
 

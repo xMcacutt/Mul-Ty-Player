@@ -19,6 +19,7 @@ namespace MulTyPlayerClient
             CheckState = 1;
             SaveState = 1;
             CounterAddress = SyncHandler.SaveDataBaseAddress + 0xA84;
+            CounterAddressStatic = false;
             SaveSync = new SaveRCSyncer();
             SetSyncClasses(SaveSync);
             GlobalObjectData = new Dictionary<int, byte>();

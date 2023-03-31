@@ -18,6 +18,7 @@ namespace MulTyPlayerClient
             SeparateID = true;
             IDOffset = 0x6C;
             CounterAddress = 0x265260;
+            CounterAddressStatic = true;
             CounterByteLength = 1;
             PreviousObjectData = new byte[ObjectAmount];
             CurrentObjectData = new byte[ObjectAmount];

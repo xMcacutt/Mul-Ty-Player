@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MulTyPlayerClient.GUI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ namespace MulTyPlayerClient
             SeparateID = true;
             IDOffset = 0x0;
             CounterAddress = 0x2651AC;
+            CounterAddressStatic = true;
             CounterByteLength = 1;
             PreviousObjectData = new byte[ObjectAmount];
             CurrentObjectData = new byte[ObjectAmount];

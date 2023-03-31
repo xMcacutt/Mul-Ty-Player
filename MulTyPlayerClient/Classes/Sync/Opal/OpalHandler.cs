@@ -23,6 +23,7 @@ namespace MulTyPlayerClient
             SaveState = 1;
             ObjectAmount = 300;
             CounterAddress = 0x26547C;
+            CounterAddressStatic = true;
             CounterByteLength = 4;
             PreviousObjectData = new byte[ObjectAmount];
             CurrentObjectData = new byte[ObjectAmount];

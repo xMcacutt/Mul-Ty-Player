@@ -10,7 +10,6 @@ namespace MulTyPlayerClient
 
         public int CurrentLevelId { get; set; }
         public bool bNewLevelSetup;
-        public bool LoadedNewLevelNetworkingSetupDone;
 
         public int[] MainStages = { 4, 5, 6, 8, 9, 10, 12, 13, 14 };
 
@@ -23,7 +22,6 @@ namespace MulTyPlayerClient
             HKoala.SetBaseAddress();
             if (CurrentLevelId == 9 || CurrentLevelId == 13) ObjectiveCountSet();
             bNewLevelSetup = true;
-            LoadedNewLevelNetworkingSetupDone = true;
         }
 
         public void GetCurrentLevel()
