@@ -35,7 +35,11 @@ namespace MulTyPlayerServer
             announcement.AddString(koalaName);
             announcement.AddString(playerName);
             announcement.AddUShort(clientID);
-            if (bSendToAll) Server._Server.SendToAll(announcement, fromToClientId);
+            if (bSendToAll)
+            {
+                Server._Server.SendToAll(announcement, fromToClientId);
+                Server.SendMessageToClients($"{playerName} (Client{fromToClientId}) selected {koalaName}", true);
+            }
             else Server._Server.Send(announcement, fromToClientId);
         }
 

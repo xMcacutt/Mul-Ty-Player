@@ -37,6 +37,7 @@ namespace MulTyPlayerClient
 
         public  override void SetMemAddrs()
         {
+            CounterAddress = PointerCalculations.GetPointerAddress(0x00288730, new int[] { 0xD });
             LiveObjectAddress = PointerCalculations.GetPointerAddress(0x270280, new int[] { 0x0 });
         }
     }

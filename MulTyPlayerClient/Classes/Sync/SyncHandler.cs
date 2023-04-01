@@ -18,7 +18,7 @@ namespace MulTyPlayerClient
         public static CrateHandler HCrate;
         public static RCHandler HCliffs;
 
-        public static int SaveDataBaseAddress => GetSaveDataBaseAddress();
+        public static int SaveDataBaseAddress;
 
         public SyncHandler()
         {
@@ -35,15 +35,11 @@ namespace MulTyPlayerClient
             };
         }
 
-        private static int GetSaveDataBaseAddress()
-        {
-            return PointerCalculations.GetPointerAddress(0x288730, new int[] { 0x10 });
-        }
-
         public void SetMemAddrs()
         {
             foreach(SyncObjectHandler syncObject in SyncObjects.Values)
             {
+                SaveDataBaseAddress = PointerCalculations.GetPointerAddress(0x288730, new int[] { 0x10 });
                 syncObject.SetMemAddrs();
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MulTyPlayerClient.GUI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -31,6 +32,7 @@ namespace MulTyPlayerClient
             int dataAmount = 12;
             for (int i = 0; i < dataAmount; i++)
             {
+                BasicIoC.LoggerInstance.Write(CounterAddress.ToString("X"));
                 ProcessHandler.TryRead(CounterAddress + i, out byte dataStae, false);
                 if (dataStae == 1 && GlobalObjectData[i] == 0)
                 {
@@ -38,6 +40,11 @@ namespace MulTyPlayerClient
                     Client.HSync.SendDataToServer(0, i, 0, Name);
                 }
             }
+        }
+
+        public override void SetMemAddrs()
+        {
+            CounterAddress = SyncHandler.SaveDataBaseAddress + 0xA84;
         }
 
         public  override void Sync(int null1, byte[] null2, byte[] saveData)

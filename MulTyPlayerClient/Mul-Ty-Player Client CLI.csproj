@@ -107,7 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Update="ClientSettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="fe_999_icon_koalakid.ico">
       <Pack>True</Pack>
@@ -279,5 +279,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GUI\Icons\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="GUI\ClientGUI.xaml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Page>
   </ItemGroup>
 </Project>
