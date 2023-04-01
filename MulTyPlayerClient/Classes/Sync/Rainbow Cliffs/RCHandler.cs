@@ -32,7 +32,6 @@ namespace MulTyPlayerClient
             int dataAmount = 12;
             for (int i = 0; i < dataAmount; i++)
             {
-                BasicIoC.LoggerInstance.Write(CounterAddress.ToString("X"));
                 ProcessHandler.TryRead(CounterAddress + i, out byte dataStae, false);
                 if (dataStae == 1 && GlobalObjectData[i] == 0)
                 {
