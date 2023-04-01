@@ -173,7 +173,6 @@ namespace MulTyPlayerClient
             SystemSounds.Hand.Play();
             MessageBox.Show("Connection failed!\nPlease check IPAddress & Password are correct and server is open.");
             cts.Cancel();
-            IsRunning = false;
             BasicIoC.LoginViewModel.ConnectionAttemptSuccessful = false;
             BasicIoC.LoginViewModel.ConnectionAttemptCompleted = true;
             return;
