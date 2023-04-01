@@ -32,6 +32,8 @@ namespace MulTyPlayerClient
         public static LevelHandler HLevel;
         public static SyncHandler HSync;
 
+        public static CancellationTokenSource cts;
+
         public static void StartClient(string ip, string name, string pass)
         {
             HLevel = new LevelHandler();
@@ -50,17 +52,23 @@ namespace MulTyPlayerClient
             _client.Disconnected += (s, e) => Disconnected(s, e);
             _client.ConnectionFailed += (s, e) => ConnectionFailed();
 
+            cts = new CancellationTokenSource();
+
             Message authentication = Message.Create();
             authentication.AddString(_pass);
             _client.Connect(_ip + ":8750", 5, 0, authentication);
 
-            Thread _loop = new(new ThreadStart(ClientLoop));
+            Thread _loop = new Thread(() => ClientLoop(cts.Token));
             _loop.Start();
         }
 
-        private static void ClientLoop()
+        private static void ClientLoop(CancellationToken ct)
         {
-            while (!IsRunning) _client.Update();
+            while (!IsRunning)
+            {
+                if (ct.IsCancellationRequested) return;
+                _client.Update();
+            }
             while (IsRunning)
             {
                 try
@@ -144,7 +152,7 @@ namespace MulTyPlayerClient
                         _client.Connect(_ip + ":8750", 1, 0, authentication);
                         Thread.Sleep(200);
                     }
-                    Thread _loop = new(new ThreadStart(ClientLoop));
+                    Thread _loop = new Thread(() => ClientLoop(cts.Token));
                     _loop.Start();
                 }
 
@@ -164,6 +172,7 @@ namespace MulTyPlayerClient
             BasicIoC.LoginViewModel.ConnectEnabled = true;
             SystemSounds.Hand.Play();
             MessageBox.Show("Connection failed!\nPlease check IPAddress & Password are correct and server is open.");
+            cts.Cancel();
             IsRunning = false;
             BasicIoC.LoginViewModel.ConnectionAttemptSuccessful = false;
             BasicIoC.LoginViewModel.ConnectionAttemptCompleted = true;
