@@ -80,7 +80,7 @@ namespace MulTyPlayerClient
 
         private static string GetCallStackAsString()
         {
-            StackTrace stackTrace = new StackTrace();
+            StackTrace stackTrace = new();
 
             // Get the frames in the call stack
             StackFrame[] stackFrames = stackTrace.GetFrames();
@@ -109,7 +109,7 @@ namespace MulTyPlayerClient
             {
                 if (TyProcess == null)
                 {
-                    StackTrace stackTrace = new StackTrace();
+                    StackTrace stackTrace = new();
                     if(stackTrace.GetFrames()
                         .Select(frame => frame.GetMethod())
                         .Any(method => method.Name == "ClientLoop"))
@@ -133,7 +133,7 @@ namespace MulTyPlayerClient
             }
             catch(Win32Exception ex)
             {
-                StackTrace stackTrace = new StackTrace();
+                StackTrace stackTrace = new();
                 if (stackTrace.GetFrames()
                     .Select(frame => frame.GetMethod())
                     .Any(method => method.Name == "ClientLoop"))

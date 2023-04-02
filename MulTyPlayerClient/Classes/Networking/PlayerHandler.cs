@@ -7,6 +7,7 @@ using System.Media;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace MulTyPlayerClient
 {
@@ -23,9 +24,11 @@ namespace MulTyPlayerClient
         {
             Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
             Players.Add(clientID, new Player(koala, name, clientID));
-            if (GUI.BasicIoC.KoalaSelectViewModel.KoalaAvailable(koalaName))
+            PlayerInfo player = new(clientID, name, koalaName);
+            BasicIoC.MainGUIViewModel.PlayerInfoList.Add(player);
+            if (BasicIoC.KoalaSelectViewModel.KoalaAvailable(koalaName))
             {
-                GUI.BasicIoC.KoalaSelectViewModel.SwitchAvailability(koalaName);
+                BasicIoC.KoalaSelectViewModel.SwitchAvailability(koalaName);
             }
             if (!WindowHandler.KoalaSelectWindow.IsVisible) SFXPlayer.PlaySound(SFX.PlayerConnect);
         }
@@ -43,11 +46,14 @@ namespace MulTyPlayerClient
 
         public static void RemovePlayer(ushort id)
         {
-            if (!GUI.BasicIoC.KoalaSelectViewModel.KoalaAvailable(Players[id].Koala.KoalaName))
+            if (!BasicIoC.KoalaSelectViewModel.KoalaAvailable(Players[id].Koala.KoalaName))
             {
-                GUI.BasicIoC.KoalaSelectViewModel.SwitchAvailability(Players[id].Koala.KoalaName);
+                BasicIoC.KoalaSelectViewModel.SwitchAvailability(Players[id].Koala.KoalaName);
             }
             Players.Remove(id);
+            BasicIoC.MainGUIViewModel.PlayerInfoList.Remove(
+                BasicIoC.MainGUIViewModel.PlayerInfoList.FirstOrDefault(playerInfo => playerInfo.ClientID == id)
+            );
         }
 
         [MessageHandler((ushort)MessageID.AnnounceDisconnect)]

@@ -64,7 +64,7 @@ namespace MulTyPlayerClient
             authentication.AddString(_pass);
             _client.Connect(_ip + ":8750", 5, 0, authentication);
 
-            Thread _loop = new Thread(() => ClientLoop(cts.Token));
+            Thread _loop = new(() => ClientLoop(cts.Token));
             _loop.Start();
         }
 
@@ -154,7 +154,7 @@ namespace MulTyPlayerClient
                     Message authentication = Message.Create();
                     authentication.AddString(_pass);
                     _client.Connect(_ip + ":8750", 10, 0, authentication);
-                    Thread _loop = new Thread(() => ClientLoop(cts.Token));
+                    Thread _loop = new(() => ClientLoop(cts.Token));
                     _loop.Start();
                     return;
                 }

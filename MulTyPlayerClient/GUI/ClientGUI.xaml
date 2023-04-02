@@ -11,8 +11,12 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/GUI/Icons.xaml"/>
                 <ResourceDictionary Source="/GUI/Styles.xaml"/>
+                <ResourceDictionary>
+                    <local:BooleanToHostIconConverter x:Key="BooleanToHostIconConverter" />
+                </ResourceDictionary> 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+        
     </Window.Resources>
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
@@ -25,68 +29,51 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="4.6*"/>
-                <RowDefinition Height="0.5*" MinHeight="50"/>
             </Grid.RowDefinitions>
 
-            <DataGrid HeadersVisibility="None" Background="White" BorderBrush="{x:Null}">
+            <DataGrid 
+                Name="PlayerInfo"
+                HeadersVisibility="None" 
+                Background="White" 
+                BorderBrush="{x:Null}"
+                Margin="3"
+                ItemsSource="{Binding PlayerInfoList, Source={x:Static local:BasicIoC.MainGUIViewModel}}">
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn/>
-                    <DataGridTextColumn Width="*"/>
-                    <DataGridTemplateColumn/>
+                    <DataGridTemplateColumn Header="Client ID" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding ClientID}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Koala Icon" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding KoalaIcon}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Player Name" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding PlayerName}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Host Status" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding IsHost, Converter={StaticResource BooleanToHostIconConverter}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
 
             <Border BorderBrush="#FFA1A1A1" 
-                    BorderThickness="2,2,2,0" 
-                    Margin="-1"/>
-
-            <!--Button border-->
-            <Border Grid.Row="1" 
-                    BorderBrush="#FFA1A1A1" 
-                    BorderThickness="2,0,2,2" 
-                    Margin="-1">
-                <Grid Margin="-1 1 -1 -1">
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <!--Call button-->
-                    <Button BorderBrush="#00000000" 
-                            Background="#FFDDDDDD"
-                            Click="CallButton_Click">
-                        <Image Source="{StaticResource call_black_24dpDrawingImage}"/>
-                    </Button>
-                    <!--Volume button-->
-                    <Button Grid.Column="1" 
-                            BorderBrush="{x:Null}"
-                            Click="VolumeButton_Click">
-                        <Image Source="{StaticResource volume_up_black_24dpDrawingImage}"/>
-                    </Button>
-                    <!--Mic button-->
-                    <Button Grid.Column="2" 
-                            BorderBrush="{x:Null}"
-                            Click="MicButton_Click">
-                        <Image Source="{StaticResource mic_black_24dpDrawingImage}"/>
-                    </Button>
-                    <!--Connection button-->
-                    <Button Grid.Column="3" 
-                            BorderBrush="{x:Null}"
-                            Click="ConnectionButton_Click">
-                        <Image Source="{StaticResource cell_tower_black_24dpDrawingImage}"/>
-                    </Button>
-                    <!--Settings button-->
-                    <Button Grid.Column="4" 
-                            BorderBrush="{x:Null}"
-                            Click="SettingsButton_Click">
-                        <Image Source="{StaticResource settings_black_24dpDrawingImage}"/>
-                    </Button>
-                </Grid>
-            </Border>
+                Grid.RowSpan="2"
+                BorderThickness="2,2,2,2" 
+                Margin="-1"/>
         </Grid>
 
         <!--Right side pannel-->
@@ -147,7 +134,21 @@
                                ScrollViewer.VerticalScrollBarVisibility="Auto" 
                                TextWrapping="WrapWithOverflow"/>-->
                 </Border>
-                
+
+                <Button Margin="3" 
+                        BorderBrush="{x:Null}"
+                        Click="SettingsButton_Click"
+                        Background="#FFDDDDDD"
+                        HorizontalAlignment="Left"
+                        Width="40">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="15"/>
+                        </Style>
+                    </Button.Resources>
+                    <Image Source="{StaticResource settings_black_24dpDrawingImage}"/>
+                </Button>
+
                 <Button Margin="3"
                         BorderBrush="{x:Null}" 
                         Background="#FFDDDDDD"
@@ -178,7 +179,9 @@
 
                     <!--Tag only works as a placeholder text because of a custom style-->
                     <TextBox VerticalAlignment="Stretch" 
-                             FontFamily="Segoe UI Variable Display Semibold" 
+                             Margin="3,0,0,0"
+                             VerticalContentAlignment="Center"
+                             FontFamily="Cascadia Code" 
                              FontSize="12" 
                              Cursor="IBeam"
                              ClipToBounds="False" 
@@ -186,7 +189,7 @@
                              BorderBrush="{x:Null}"
                              x:Name="TextboxInput" 
                              KeyDown="TextboxInput_KeyDown"
-                             Tag="/help for commands"
+                             Tag="See help.mtps file for commands"
                              Style="{StaticResource PlaceholderTextStyle}"/>
                     
                     <Button VerticalAlignment="Stretch" 

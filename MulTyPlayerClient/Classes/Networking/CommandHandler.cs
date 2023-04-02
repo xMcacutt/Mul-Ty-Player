@@ -8,7 +8,7 @@ namespace MulTyPlayerClient
 {
     internal class CommandHandler
     {
-        public static ushort host = 0;
+        public static ushort Host = 0;
         public List<string> hostCommands;
 
         public CommandHandler()
@@ -33,7 +33,7 @@ namespace MulTyPlayerClient
             string command = userInput.Split(' ')[0].Trim('/');
             string[] args = userInput.Split(' ').Skip(1).ToArray();
 
-            if (host == Client._client.Id && hostCommands.Contains(command))
+            if (Host == Client._client.Id && hostCommands.Contains(command))
             {
                 Message message = Message.Create(MessageSendMode.Reliable, MessageID.HostCommand);
                 message.AddString(userInput);
@@ -76,7 +76,7 @@ namespace MulTyPlayerClient
             if (message.GetBool())
             {
                 Console.WriteLine("You have been made host. You now have access to host only commands.");
-                host = Client._client.Id;
+                Host = Client._client.Id;
                 return;
             }
             Console.WriteLine("Someone else who is connected already has host privileges");
@@ -85,7 +85,7 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.HostChange)]
         public static void HostChange(Message message)
         {
-            host = message.GetUShort();
+            Host = message.GetUShort();
         }
 
         [MessageHandler((ushort)MessageID.HostCommand)]

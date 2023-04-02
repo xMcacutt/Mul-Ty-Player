@@ -51,13 +51,9 @@ namespace MulTyPlayerClient
             {
                 try
                 {
-                    using (FileStream fileStream = new FileStream(_filePath, FileMode.Append, FileAccess.Write, FileShare.Read))
-                    {
-                        using (StreamWriter writer = new StreamWriter(fileStream))
-                        {
-                            writer.WriteLine(message);
-                        }
-                    }
+                    using FileStream fileStream = new(_filePath, FileMode.Append, FileAccess.Write, FileShare.Read);
+                    using StreamWriter writer = new(fileStream);
+                    writer.WriteLine(message);
                 }
                 catch (Exception ex)
                 {

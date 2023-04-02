@@ -119,6 +119,30 @@
     <None Update="GUI\KoalaSelectionAssets\Background.mp4">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="GUI\KoalaSelectionAssets\Icons\Boonie.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI\KoalaSelectionAssets\Icons\Dubbo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI\KoalaSelectionAssets\Icons\Elizabeth.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI\KoalaSelectionAssets\Icons\Gummy.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI\KoalaSelectionAssets\Icons\Katie.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI\KoalaSelectionAssets\Icons\Kiki.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI\KoalaSelectionAssets\Icons\Mim.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI\KoalaSelectionAssets\Icons\Snugs.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="GUI\KoalaSelectionAssets\Taken\Boonie.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

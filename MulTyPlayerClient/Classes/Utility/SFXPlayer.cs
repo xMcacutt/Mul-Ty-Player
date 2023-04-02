@@ -14,7 +14,7 @@ namespace MulTyPlayerClient
         public static void PlaySound(string path)
         {
             MediaPlayer player = new();
-            Uri uri = new Uri(path);
+            Uri uri = new(path);
             player.Open(uri);
             player.Volume = 0.1;
             player.Play();
