@@ -1,4 +1,5 @@
-﻿using Riptide;
+﻿using MulTyPlayerClient.GUI;
+using Riptide;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -86,6 +87,7 @@ namespace MulTyPlayerClient
         public static void HostChange(Message message)
         {
             Host = message.GetUShort();
+            BasicIoC.MainGUIViewModel.PlayerInfoList.FirstOrDefault(playerInfo => playerInfo.ClientID == Host).IsHost = true;
         }
 
         [MessageHandler((ushort)MessageID.HostCommand)]

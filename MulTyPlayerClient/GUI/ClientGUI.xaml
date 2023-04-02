@@ -8,16 +8,24 @@
         Title="Mul-Ty-Player Client" Height="450" Width="800" FontSize="10" BorderBrush="Black">
     <Window.Resources>
         <ResourceDictionary>
+            <Style x:Key="CellPadding" TargetType="DataGridCell">
+                <Setter Property="Padding" Value="0" />
+            </Style>
+            <Style x:Key="ComicText" TargetType="TextBlock">
+                <Setter Property="TextElement.FontFamily" Value="Fonts/#SF Slapstick Comic"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="Foreground" Value="Black"/>
+            </Style>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/GUI/Icons.xaml"/>
                 <ResourceDictionary Source="/GUI/Styles.xaml"/>
                 <ResourceDictionary>
                     <local:BooleanToHostIconConverter x:Key="BooleanToHostIconConverter" />
-                </ResourceDictionary> 
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-        
     </Window.Resources>
+    
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1.5*"/>
@@ -32,46 +40,66 @@
             </Grid.RowDefinitions>
 
             <DataGrid 
+                CellStyle="{StaticResource CellPadding}"
+                AutoGenerateColumns="False"
+                GridLinesVisibility="Horizontal"
                 Name="PlayerInfo"
                 HeadersVisibility="None" 
                 Background="White" 
                 BorderBrush="{x:Null}"
-                Margin="3"
+                Margin="2"
+                ScrollViewer.CanContentScroll="False"
                 ItemsSource="{Binding PlayerInfoList, Source={x:Static local:BasicIoC.MainGUIViewModel}}">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Client ID" Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding ClientID}" />
+                                <TextBlock Style="{StaticResource ComicText}" 
+                                           VerticalAlignment="Center"
+                                           FontSize="16">
+                                        <Run Text="ID: " />
+                                        <Run Text="{Binding ClientID}" />
+                                </TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Koala Icon" Width="Auto">
+                    <DataGridTemplateColumn Header="Koala Icon" Width="30" CanUserResize="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding KoalaIcon}" />
+                                <Image Width="20" 
+                                       Margin="0"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Source="{Binding KoalaIcon}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="Player Name" Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding PlayerName}" />
+                                <TextBlock Style="{StaticResource ComicText}" 
+                                           VerticalAlignment="Center"
+                                           FontSize="16"
+                                           Text="{Binding PlayerName}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Host Status" Width="Auto">
+                    <DataGridTemplateColumn Header="Host Status" Width="30">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding IsHost, Converter={StaticResource BooleanToHostIconConverter}}" />
+                                <Image Width="20" 
+                                       Margin="0"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Source="{Binding IsHost, Converter={StaticResource BooleanToHostIconConverter}}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
 
+
             <Border BorderBrush="#FFA1A1A1" 
-                Grid.RowSpan="2"
                 BorderThickness="2,2,2,2" 
                 Margin="-1"/>
         </Grid>

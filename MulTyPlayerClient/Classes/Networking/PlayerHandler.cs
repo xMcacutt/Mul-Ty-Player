@@ -26,6 +26,7 @@ namespace MulTyPlayerClient
             Players.Add(clientID, new Player(koala, name, clientID));
             PlayerInfo player = new(clientID, name, koalaName);
             BasicIoC.MainGUIViewModel.PlayerInfoList.Add(player);
+            BasicIoC.LoggerInstance.Write(player.PlayerName + player.ClientID);
             if (BasicIoC.KoalaSelectViewModel.KoalaAvailable(koalaName))
             {
                 BasicIoC.KoalaSelectViewModel.SwitchAvailability(koalaName);
@@ -40,6 +41,8 @@ namespace MulTyPlayerClient
             message.AddString(koalaName);
             message.AddString(name);
             message.AddUShort(Client._client.Id);
+            PlayerInfo player = new(Client._client.Id, name, koalaName);
+            BasicIoC.MainGUIViewModel.PlayerInfoList.Add(player);
             Client._client.Send(message);
             Client.KoalaSelected = true;
         }
