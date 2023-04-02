@@ -36,10 +36,18 @@
         <Grid>
 
             <Grid.RowDefinitions>
+                <RowDefinition Height="0.4*"/>
                 <RowDefinition Height="4.6*"/>
             </Grid.RowDefinitions>
 
+            <TextBlock Grid.Row="0"
+                       Style="{StaticResource ComicText}" 
+                       VerticalAlignment="Center"
+                       FontSize="28"
+                       Margin="10,0,0,0"
+                       Text="Connected Koalas" />
             <DataGrid 
+                Grid.Row="1"
                 CellStyle="{StaticResource CellPadding}"
                 AutoGenerateColumns="False"
                 GridLinesVisibility="Horizontal"
@@ -100,8 +108,9 @@
 
 
             <Border BorderBrush="#FFA1A1A1" 
-                BorderThickness="2,2,2,2" 
-                Margin="-1"/>
+                    BorderThickness="2,2,2,2" 
+                    Margin="-1"
+                    Grid.RowSpan="2"/>
         </Grid>
 
         <!--Right side pannel-->

@@ -87,7 +87,6 @@ namespace MulTyPlayerClient
         public static void HostChange(Message message)
         {
             Host = message.GetUShort();
-            BasicIoC.MainGUIViewModel.PlayerInfoList.FirstOrDefault(playerInfo => playerInfo.ClientID == Host).IsHost = true;
         }
 
         [MessageHandler((ushort)MessageID.HostCommand)]
