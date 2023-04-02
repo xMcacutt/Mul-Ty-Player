@@ -3,6 +3,7 @@ using PropertyChanged;
 using Riptide;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Forms;
@@ -70,6 +71,17 @@ namespace MulTyPlayerClient
             prop?.SetValue(this, !(bool)prop.GetValue(this, null), null);
         }
 
+        public void MakeAllAvailable()
+        {
+            var properties = GetType().GetProperties()
+                .Where(prop => prop.Name.EndsWith("Available") && prop.PropertyType == typeof(bool));
+
+            foreach (var prop in properties)
+            {
+                prop.SetValue(this, true, null);
+            }
+        }
+
         public void ShowAnimation(string koalaName)
         {
             var prop = GetType().GetProperty(koalaName + "ShowAnimation");
@@ -109,7 +121,7 @@ namespace MulTyPlayerClient
                 ShowAnimation(koalaName);
                 BlockKoalaSelect= false;
                 CollectionViewSource.GetDefaultView(BasicIoC.LoggerInstance.Log).Refresh();
-                WindowHandler.KoalaSelectWindow.Close();
+                WindowHandler.KoalaSelectWindow.Hide();
             }
         }
     }

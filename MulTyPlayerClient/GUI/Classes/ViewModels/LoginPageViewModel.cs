@@ -51,7 +51,7 @@ namespace MulTyPlayerClient.GUI
                     BasicIoC.LoginViewModel.SaveDetails();
                     BasicIoC.KoalaSelectViewModel.Setup();
                     WindowHandler.KoalaSelectWindow.Show();
-                    WindowHandler.LoginWindow.Close();
+                    WindowHandler.LoginWindow.Hide();
                 }
             };
             backgroundWorker.RunWorkerAsync();

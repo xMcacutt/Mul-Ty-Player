@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic.Logging;
 using MulTyPlayerClient.GUI;
 using Riptide;
+using Riptide.Transports;
 using Riptide.Utils;
 using Steamworks.Data;
 using System;
@@ -34,6 +35,9 @@ namespace MulTyPlayerClient
 
         public static CancellationTokenSource cts;
 
+        public static EventHandler<ConnectionFailedEventArgs> connectionFailedHandler;
+        public static EventHandler<ConnectionFailedEventArgs> connectionFailedReconnectHandler;
+
         public static void StartClient(string ip, string name, string pass)
         {
             HLevel = new LevelHandler();
@@ -50,7 +54,9 @@ namespace MulTyPlayerClient
             _client = new Riptide.Client();
             _client.Connected += (s, e) => Connected();
             _client.Disconnected += (s, e) => Disconnected(s, e);
-            _client.ConnectionFailed += (s, e) => ConnectionFailed();
+            _client.ConnectionFailed -= connectionFailedReconnectHandler;
+            connectionFailedHandler = (s, e) => ConnectionFailed();
+            _client.ConnectionFailed += connectionFailedHandler;
 
             cts = new CancellationTokenSource();
 
@@ -133,37 +139,34 @@ namespace MulTyPlayerClient
             IsRunning = true;
         }
 
-        private static void Disconnected(object sender, DisconnectedEventArgs e)
+        private static void Disconnected(object sender, Riptide.DisconnectedEventArgs e)
         {
-            if(e.Reason == DisconnectReason.TimedOut)
+            IsRunning = false;
+            if (e.Reason == DisconnectReason.TimedOut)
             {
                 if (SettingsHandler.Settings.AttemptReconnect) 
                 {
-                    _client = new Riptide.Client();
-                    _client.Connected += (s, e) => AutoReconnect.Connected();
-                    _client.Disconnected += (s, e) => Disconnected(s, e);
-                    _client.ConnectionFailed += (s, e) => AutoReconnect.ConnectionFailed();
+                    BasicIoC.LoggerInstance.Write("Initiating reconnection attempt.");
+                    cts = new CancellationTokenSource();
+                    _client.ConnectionFailed -= connectionFailedHandler;
+                    connectionFailedReconnectHandler = (s, e) => AutoReconnect.ConnectionFailed();
+                    _client.ConnectionFailed += connectionFailedReconnectHandler;
                     Message authentication = Message.Create();
-                    authentication.AddString(Name);
                     authentication.AddString(_pass);
-
-                    while (!IsRunning)
-                    {
-                        _client.Connect(_ip + ":8750", 1, 0, authentication);
-                        Thread.Sleep(200);
-                    }
+                    _client.Connect(_ip + ":8750", 10, 0, authentication);
                     Thread _loop = new Thread(() => ClientLoop(cts.Token));
                     _loop.Start();
+                    return;
                 }
-
             }
-            IsRunning = false;
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                 new Action(() => {
-                    WindowHandler.KoalaSelectWindow.Close();
-                    WindowHandler.ClientGUIWindow.Close();
-
+                    WindowHandler.KoalaSelectWindow.Hide();
+                    WindowHandler.ClientGUIWindow.Hide();
+                    BasicIoC.LoggerInstance.Log.Clear();
+                    BasicIoC.LoginViewModel.ConnectEnabled = true;
+                    WindowHandler.LoginWindow.Show();
                 }));
         }
 
