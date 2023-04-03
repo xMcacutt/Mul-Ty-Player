@@ -13,8 +13,22 @@
 
     <Grid>
         <!--Background video-->
-        <MediaElement Stretch="UniformToFill" 
-                      Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.mp4"/>
+        <MediaElement Stretch="UniformToFill">
+            <MediaElement.Triggers>
+                <EventTrigger RoutedEvent="MediaElement.Loaded">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <!-- The MediaTimeline has a RepeatBehavior="Forever" which makes the media play
+                                over and over indefinitely.-->
+                                <MediaTimeline RepeatBehavior="Forever"
+                                               Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.mp4"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </MediaElement.Triggers>
+        </MediaElement>
 
         <!--Koala grid-->
         <Grid Margin="5 10 5 30">

@@ -1,6 +1,4 @@
-﻿using System.Windows.Data;
-
-namespace MulTyPlayerClient.GUI
+﻿namespace MulTyPlayerClient.GUI
 {
     public class BasicIoC
     {
