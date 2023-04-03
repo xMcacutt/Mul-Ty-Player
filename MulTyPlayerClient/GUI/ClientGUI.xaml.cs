@@ -34,7 +34,7 @@ namespace MulTyPlayerClient.GUI
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-
+            WindowHandler.SettingsWindow.Show();
         }
 
         private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)

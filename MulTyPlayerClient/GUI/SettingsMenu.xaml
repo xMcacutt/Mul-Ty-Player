@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
         mc:Ignorable="d"
-        Title="SettingsMenu" Height="Auto" Width="250" ResizeMode="NoResize">
+        Title="SettingsMenu" Height="110" Width="250" ResizeMode="NoResize">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="ComicText" TargetType="TextBlock">
@@ -30,10 +30,8 @@
         <CheckBox Grid.Row="1"
                   Content="Do Koala Collision?"
                   HorizontalAlignment="Left"
-                  FontFamily="SF Slapstick Comic"
+                  FontFamily="Fonts/#SF Slapstick Comic"
                   Margin="10,10,0,10"
-                  Checked="{Binding DoKoalaCollision, Source={x:Static local:BasicIoC.SettingsMenuViewModel}}"
-                  Click="{Binding CheckBoxClicked, Source={x:Static local:BasicIoC.SettingsMenuViewModel}}"
-                  />
+                  IsChecked="{Binding DoKoalaCollision, Source={x:Static local:BasicIoC.SettingsMenuViewModel}}"/>
     </Grid>
 </Window>

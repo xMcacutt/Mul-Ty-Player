@@ -14,6 +14,7 @@ namespace MulTyPlayerClient.GUI
     {
         public List<PlayerInfo> PlayerInfoList { get; set; }
         public ICommand ManageInputCommand { get; set; }
+
         public string Input { get; set; }
 
         public MainClientViewModel()

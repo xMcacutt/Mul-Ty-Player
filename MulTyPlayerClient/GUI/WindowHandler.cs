@@ -14,6 +14,7 @@ namespace MulTyPlayerClient.GUI
         public static Login LoginWindow;
         public static KoalaSelect KoalaSelectWindow;
         public static ClientGUI ClientGUIWindow;
+        public static SettingsMenu SettingsWindow;
 
         public static void InitializeWindows(Splash splash)
         {
@@ -21,6 +22,7 @@ namespace MulTyPlayerClient.GUI
             LoginWindow = new();
             KoalaSelectWindow = new();
             ClientGUIWindow = new();
+            SettingsWindow = new();
         }
     }
 }

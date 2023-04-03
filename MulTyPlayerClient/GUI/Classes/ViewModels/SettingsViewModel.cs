@@ -11,22 +11,25 @@ namespace MulTyPlayerClient.GUI
     [AddINotifyPropertyChangedInterface]
     public class SettingsViewModel
     {
-        public bool DoKoalaCollision { get; set; }
-        public ICommand CheckBoxClickedCommand { get; set; }
+        private bool _doKoalaCollision;
+        public bool DoKoalaCollision
+        {
+            get { return _doKoalaCollision; }
+            set
+            {
+                _doKoalaCollision = value;
+                // Update the settings file here
+                SettingsHandler.Settings.DoKoalaCollision = value;
+            }
+        }
 
         public SettingsViewModel()
         {
-            CheckBoxClickedCommand = new RelayCommand(CheckBoxClicked);
         }
 
         public void Setup()
         {
             DoKoalaCollision = SettingsHandler.Settings.DoKoalaCollision;
-        }
-
-        public void CheckBoxClicked()
-        {
-            SettingsHandler.Settings.DoKoalaCollision = DoKoalaCollision;
         }
     }
 }

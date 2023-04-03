@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace MulTyPlayerClient.GUI
 {
-    /// <summary>
-    /// Interaction logic for SettingsMenu.xaml
-    /// </summary>
     public partial class SettingsMenu : Window
     {
         public SettingsMenu()
