@@ -57,9 +57,9 @@ namespace MulTyPlayerClient
             PlayerHandler.Players.Add(Client._client.Id, new Player(koala, Client.Name, Client._client.Id));
             SFXPlayer.PlaySound(SFX.PlayerConnect);
             BlockKoalaSelect = true;
+            PlayerHandler.AnnounceSelection(koalaName, Client.Name);
             await Task.Delay(2400);
 
-            PlayerHandler.AnnounceSelection(koalaName, Client.Name);
             BasicIoC.KoalaSelectViewModel.SwitchAvailability(koalaName);
 
             WindowHandler.ClientGUIWindow.Show();

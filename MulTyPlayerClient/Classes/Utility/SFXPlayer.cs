@@ -13,11 +13,14 @@ namespace MulTyPlayerClient
     {
         public static void PlaySound(string path)
         {
-            MediaPlayer player = new();
-            Uri uri = new(path);
-            player.Open(uri);
-            player.Volume = 0.1;
-            player.Play();
+            Task.Run(() =>
+            {
+                MediaPlayer player = new();
+                Uri uri = new(path);
+                player.Open(uri);
+                player.Volume = 0.1;
+                player.Play();
+            });
         }
     }
 }
