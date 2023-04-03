@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
         mc:Ignorable="d"
+        Closing="Window_Closing"
         Title="Mul-Ty-Player Client" Height="450" Width="800" FontSize="10" BorderBrush="Black" ResizeMode="NoResize">
     <Window.Resources>
         <ResourceDictionary>

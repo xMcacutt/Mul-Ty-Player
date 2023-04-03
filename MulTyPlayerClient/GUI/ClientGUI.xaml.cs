@@ -48,5 +48,12 @@ namespace MulTyPlayerClient.GUI
         {
             Client._client.Disconnect();
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Client._client?.Disconnect();
+            e.Cancel = true;
+            WindowHandler.ClientGUIWindow.Hide();
+        }
     }
 }

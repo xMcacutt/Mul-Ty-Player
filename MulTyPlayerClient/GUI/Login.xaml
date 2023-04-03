@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
         mc:Ignorable="d"
+        Closing="LoginWindow_Closing"
         Title="Login" Height="245" Width="350" ResizeMode="NoResize">
     <Window.Resources>
         <ResourceDictionary>

@@ -9,6 +9,7 @@
         Title="Select Your Koala" 
         Height="300" 
         Width="450" 
+        Closing="Window_Closing"
         ResizeMode="NoResize"
         Activated="Window_Activated">
 

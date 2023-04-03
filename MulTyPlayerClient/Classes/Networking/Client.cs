@@ -143,6 +143,7 @@ namespace MulTyPlayerClient
         {
             IsRunning = false;
             BasicIoC.KoalaSelectViewModel.MakeAllAvailable();
+            BasicIoC.MainGUIViewModel.ResetPlayerList();
             if (e.Reason == DisconnectReason.TimedOut)
             {
                 if (SettingsHandler.Settings.AttemptReconnect) 
@@ -165,6 +166,7 @@ namespace MulTyPlayerClient
                 new Action(() => {
                     WindowHandler.KoalaSelectWindow.Hide();
                     WindowHandler.ClientGUIWindow.Hide();
+                    WindowHandler.SettingsWindow.Hide();
                     BasicIoC.LoggerInstance.Log.Clear();
                     BasicIoC.LoginViewModel.ConnectEnabled = true;
                     WindowHandler.LoginWindow.Show();

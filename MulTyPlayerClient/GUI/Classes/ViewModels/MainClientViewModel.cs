@@ -1,6 +1,7 @@
 ﻿using PropertyChanged;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,14 +13,14 @@ namespace MulTyPlayerClient.GUI
     [AddINotifyPropertyChangedInterface]
     public class MainClientViewModel
     {
-        public List<PlayerInfo> PlayerInfoList { get; set; }
+        public ObservableCollection<PlayerInfo> PlayerInfoList { get; set; }
         public ICommand ManageInputCommand { get; set; }
 
         public string Input { get; set; }
 
         public MainClientViewModel()
         {
-            PlayerInfoList = new List<PlayerInfo>();
+            PlayerInfoList = new ObservableCollection<PlayerInfo>();
             ManageInputCommand = new RelayCommand(ManageInput);
         }
 

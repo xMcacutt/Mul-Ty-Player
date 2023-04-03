@@ -182,5 +182,12 @@ namespace MulTyPlayerClient.GUI
             GummyME.Visibility = Visibility.Collapsed;
             ElizabethME.Visibility = Visibility.Collapsed;
         }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            Client._client?.Disconnect();
+            e.Cancel = true;
+            WindowHandler.KoalaSelectWindow.Hide();
+        }
     }
 }
