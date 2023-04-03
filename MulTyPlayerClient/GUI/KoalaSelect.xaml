@@ -9,7 +9,8 @@
         Title="Select Your Koala" 
         Height="300" 
         Width="450" 
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Activated="Window_Activated">
 
     <Grid>
         <!--Background video-->
@@ -52,13 +53,8 @@
                     <Grid>
                         <Image Stretch="UniformToFill"
                                IsMouseDirectlyOverChanged="Boonie_IsMouseDirectlyOverChanged"
+                               MouseUp="BoonieClicked"
                                IsEnabled="{Binding BoonieAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseUp">
-                                    <i:InvokeCommandAction Command="{Binding KoalaClickCommand, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
-                                                           CommandParameter="Boonie"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                             <Image.Style>
                                 <Style TargetType="Image">
                                     <Setter Property="Source" Value="{Binding Boonie, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
@@ -70,10 +66,10 @@
                                 </Style>
                             </Image.Style>
                         </Image>
-                        <MediaElement Source="{Binding KoalaAnimationSource, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
-                                      Visibility="{Binding BoonieShowAnimation, 
-                                                   Source={x:Static local:BasicIoC.KoalaSelectViewModel}, 
-                                                   Converter={local:BooleanToVisibilityConverter}, ConverterParameter=True}"/>
+                        <MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/Boonie.mp4"
+                                      LoadedBehavior="Manual"
+                                      x:Name="BoonieME"
+                                      Visibility="Collapsed"/>
                     </Grid>
                 </Border>
                 <TextBlock Text="Boonie"/>
@@ -83,20 +79,15 @@
             <!--Mim-->
             <StackPanel Grid.Column="1"
                         Margin="6 0">
-                
+
                 <Border BorderThickness="2" 
                         BorderBrush="Black" 
                         Background="Black">
                     <Grid>
                         <Image Stretch="UniformToFill"
                                IsMouseDirectlyOverChanged="Mim_IsMouseDirectlyOverChanged"
+                               MouseUp="MimClicked"
                                IsEnabled="{Binding MimAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseUp">
-                                    <i:InvokeCommandAction Command="{Binding KoalaClickCommand, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
-                                                           CommandParameter="Mim"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                             <Image.Style>
                                 <Style TargetType="Image">
                                     <Setter Property="Source" Value="{Binding Mim, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
@@ -108,10 +99,10 @@
                                 </Style>
                             </Image.Style>
                         </Image>
-                        <MediaElement Source="{Binding KoalaAnimationSource, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
-                                      Visibility="{Binding MimShowAnimation, 
-                                                   Source={x:Static local:BasicIoC.KoalaSelectViewModel}, 
-                                                   Converter={local:BooleanToVisibilityConverter}, ConverterParameter=True}"/>
+                        <MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/Mim.mp4"
+                                      LoadedBehavior="Manual"
+                                      x:Name="MimME"
+                                      Visibility="Collapsed"/>
                     </Grid>
                 </Border>
                 <TextBlock Text="Mim"/>
@@ -120,20 +111,15 @@
             <!--Gummy-->
             <StackPanel Grid.Column="2"
                         Margin="6 0">
-                
+
                 <Border BorderThickness="2" 
                         BorderBrush="Black" 
                         Background="Black">
                     <Grid>
-                        <Image Stretch="UniformToFill" 
+                        <Image Stretch="UniformToFill"
                                IsMouseDirectlyOverChanged="Gummy_IsMouseDirectlyOverChanged"
+                               MouseUp="GummyClicked"
                                IsEnabled="{Binding GummyAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseUp">
-                                    <i:InvokeCommandAction Command="{Binding KoalaClickCommand, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
-                                                           CommandParameter="Gummy"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                             <Image.Style>
                                 <Style TargetType="Image">
                                     <Setter Property="Source" Value="{Binding Gummy, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
@@ -145,10 +131,10 @@
                                 </Style>
                             </Image.Style>
                         </Image>
-                        <MediaElement Source="{Binding KoalaAnimationSource, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
-                                      Visibility="{Binding GummyShowAnimation, 
-                                                   Source={x:Static local:BasicIoC.KoalaSelectViewModel}, 
-                                                   Converter={local:BooleanToVisibilityConverter}, ConverterParameter=True}"/>
+                        <MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/Gummy.mp4"
+                                      LoadedBehavior="Manual"
+                                      x:Name="GummyME"
+                                      Visibility="Collapsed"/>
                     </Grid>
                 </Border>
                 <TextBlock Text="Gummy"/>
@@ -157,20 +143,15 @@
             <!--Snugs-->
             <StackPanel Grid.Column="3"
                         Margin="6 0">
-                
+
                 <Border BorderThickness="2" 
                         BorderBrush="Black" 
                         Background="Black">
                     <Grid>
-                        <Image Stretch="UniformToFill" 
+                        <Image Stretch="UniformToFill"
                                IsMouseDirectlyOverChanged="Snugs_IsMouseDirectlyOverChanged"
+                               MouseUp="SnugsClicked"
                                IsEnabled="{Binding SnugsAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseUp">
-                                    <i:InvokeCommandAction Command="{Binding KoalaClickCommand, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
-                                                           CommandParameter="Snugs"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                             <Image.Style>
                                 <Style TargetType="Image">
                                     <Setter Property="Source" Value="{Binding Snugs, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
@@ -182,10 +163,10 @@
                                 </Style>
                             </Image.Style>
                         </Image>
-                        <MediaElement Source="{Binding KoalaAnimationSource, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
-                                      Visibility="{Binding SnugsShowAnimation, 
-                                                   Source={x:Static local:BasicIoC.KoalaSelectViewModel}, 
-                                                   Converter={local:BooleanToVisibilityConverter}, ConverterParameter=True}"/>
+                        <MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/Snugs.mp4"
+                                      LoadedBehavior="Manual"
+                                      x:Name="SnugsME"
+                                      Visibility="Collapsed"/>
                     </Grid>
                 </Border>
                 <TextBlock Text="Snugs"/>
@@ -199,15 +180,10 @@
                         BorderBrush="Black" 
                         Background="Black">
                     <Grid>
-                        <Image Stretch="UniformToFill" 
+                        <Image Stretch="UniformToFill"
                                IsMouseDirectlyOverChanged="Katie_IsMouseDirectlyOverChanged"
+                               MouseUp="KatieClicked"
                                IsEnabled="{Binding KatieAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseUp">
-                                    <i:InvokeCommandAction Command="{Binding KoalaClickCommand, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
-                                                           CommandParameter="Katie"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                             <Image.Style>
                                 <Style TargetType="Image">
                                     <Setter Property="Source" Value="{Binding Katie, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
@@ -219,10 +195,10 @@
                                 </Style>
                             </Image.Style>
                         </Image>
-                        <MediaElement Source="{Binding KoalaAnimationSource, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
-                                      Visibility="{Binding KatieShowAnimation, 
-                                                   Source={x:Static local:BasicIoC.KoalaSelectViewModel}, 
-                                                   Converter={local:BooleanToVisibilityConverter}, ConverterParameter=True}"/>
+                        <MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/Katie.mp4"
+                                      LoadedBehavior="Manual"
+                                      x:Name="KatieME"
+                                      Visibility="Collapsed"/>
                     </Grid>
                 </Border>
                 <TextBlock Text="Katie"/>
@@ -237,15 +213,10 @@
                         BorderBrush="Black" 
                         Background="Black">
                     <Grid>
-                        <Image Stretch="UniformToFill" 
+                        <Image Stretch="UniformToFill"
                                IsMouseDirectlyOverChanged="Kiki_IsMouseDirectlyOverChanged"
+                               MouseUp="KikiClicked"
                                IsEnabled="{Binding KikiAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseUp">
-                                    <i:InvokeCommandAction Command="{Binding KoalaClickCommand, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
-                                                           CommandParameter="Kiki"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                             <Image.Style>
                                 <Style TargetType="Image">
                                     <Setter Property="Source" Value="{Binding Kiki, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
@@ -257,10 +228,10 @@
                                 </Style>
                             </Image.Style>
                         </Image>
-                        <MediaElement Source="{Binding KoalaAnimationSource, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
-                                      Visibility="{Binding KikiShowAnimation, 
-                                                   Source={x:Static local:BasicIoC.KoalaSelectViewModel}, 
-                                                   Converter={local:BooleanToVisibilityConverter}, ConverterParameter=True}"/>
+                        <MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/Kiki.mp4"
+                                      LoadedBehavior="Manual"
+                                      x:Name="KikiME"
+                                      Visibility="Collapsed"/>
                     </Grid>
                 </Border>
                 <TextBlock Text="Kiki"/>
@@ -277,13 +248,8 @@
                     <Grid>
                         <Image Stretch="UniformToFill"
                                IsMouseDirectlyOverChanged="Elizabeth_IsMouseDirectlyOverChanged"
+                               MouseUp="ElizabethClicked"
                                IsEnabled="{Binding ElizabethAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseUp">
-                                    <i:InvokeCommandAction Command="{Binding KoalaClickCommand, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
-                                                           CommandParameter="Elizabeth"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                             <Image.Style>
                                 <Style TargetType="Image">
                                     <Setter Property="Source" Value="{Binding Elizabeth, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
@@ -295,10 +261,10 @@
                                 </Style>
                             </Image.Style>
                         </Image>
-                        <MediaElement Source="{Binding KoalaAnimationSource, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
-                                      Visibility="{Binding ElizabethShowAnimation, 
-                                                   Source={x:Static local:BasicIoC.KoalaSelectViewModel}, 
-                                                   Converter={local:BooleanToVisibilityConverter}, ConverterParameter=True}"/>
+                        <MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/Elizabeth.mp4"
+                                      LoadedBehavior="Manual"
+                                      x:Name="ElizabethME"
+                                      Visibility="Collapsed"/>
                     </Grid>
                 </Border>
                 <TextBlock Text="Elizabeth"/>
@@ -313,15 +279,10 @@
                         BorderBrush="Black" 
                         Background="Black">
                     <Grid>
-                        <Image Stretch="UniformToFill" 
+                        <Image Stretch="UniformToFill"
                                IsMouseDirectlyOverChanged="Dubbo_IsMouseDirectlyOverChanged"
+                               MouseUp="DubboClicked"
                                IsEnabled="{Binding DubboAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseUp">
-                                    <i:InvokeCommandAction Command="{Binding KoalaClickCommand, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
-                                                           CommandParameter="Dubbo"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                             <Image.Style>
                                 <Style TargetType="Image">
                                     <Setter Property="Source" Value="{Binding Dubbo, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
@@ -333,10 +294,10 @@
                                 </Style>
                             </Image.Style>
                         </Image>
-                        <MediaElement Source="{Binding KoalaAnimationSource, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"
-                                      Visibility="{Binding DubboShowAnimation, 
-                                                   Source={x:Static local:BasicIoC.KoalaSelectViewModel}, 
-                                                   Converter={local:BooleanToVisibilityConverter}, ConverterParameter=True}"/>
+                        <MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/Dubbo.mp4"
+                                      LoadedBehavior="Manual"
+                                      x:Name="DubboME"
+                                      Visibility="Collapsed"/>
                     </Grid>
                 </Border>
                 <TextBlock Text="Dubbo"/>

@@ -153,7 +153,7 @@ namespace MulTyPlayerClient
                     _client.ConnectionFailed += connectionFailedReconnectHandler;
                     Message authentication = Message.Create();
                     authentication.AddString(_pass);
-                    _client.Connect(_ip + ":8750", 10, 0, authentication);
+                    _client.Connect(_ip + ":8750", 5, 0, authentication);
                     Thread _loop = new(() => ClientLoop(cts.Token));
                     _loop.Start();
                     return;
