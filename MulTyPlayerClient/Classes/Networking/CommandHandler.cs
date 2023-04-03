@@ -83,7 +83,7 @@ namespace MulTyPlayerClient
                             BasicIoC.LoggerInstance.Write($"{args[0]} is not a valid client ID");
                             break;
                         }
-                        string message = userInput[5..];
+                        string message = userInput[(userInput.IndexOf(' ') + 1 + args[0].Length + 1)..];
                         SendMessage(message, ushort.Parse(args[0]));
                         BasicIoC.LoggerInstance.Write($"Sent message to client {ushort.Parse(args[0])}.");
                         break;
@@ -106,6 +106,7 @@ namespace MulTyPlayerClient
         {
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.P2PMessage);
             message.AddString(text);
+            //bSendToAll
             message.AddBool(toClientId == null);
             if(toClientId != null) message.AddUShort((ushort)toClientId);
             Client._client.Send(message);

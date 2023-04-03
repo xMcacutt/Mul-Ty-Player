@@ -42,6 +42,12 @@ namespace MulTyPlayerClient
             };
         }
 
+        public static void Save()
+        {
+            string json = JsonConvert.SerializeObject(Settings);
+            File.WriteAllText("./ClientSettings.json", json);
+        }
+
         [MessageHandler((ushort)MessageID.SyncSettings)]
         static void HandleSettingsUpdate(Message message)
         {

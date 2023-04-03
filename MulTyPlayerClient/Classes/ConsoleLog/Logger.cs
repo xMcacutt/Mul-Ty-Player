@@ -32,7 +32,8 @@ namespace MulTyPlayerClient
         public void CreateLogFile()
         {
             _fileName = "MTP-Log " + _initTime;
-            _filePath = "./" + _fileName + ".mtpl";
+            if (!Directory.Exists("./Logs/")) Directory.CreateDirectory("./Logs/");
+            _filePath = "./Logs/" + _fileName + ".mtpl";
             using (var fileStream = File.Create(_filePath))
             {
                 fileStream.Close();

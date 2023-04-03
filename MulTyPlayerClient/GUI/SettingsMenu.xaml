@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
         mc:Ignorable="d"
-        Title="SettingsMenu" Height="110" Width="250" ResizeMode="NoResize">
+        Closing="Window_Closing"
+        Title="SettingsMenu" Height="150" Width="250" ResizeMode="NoResize">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="ComicText" TargetType="TextBlock">

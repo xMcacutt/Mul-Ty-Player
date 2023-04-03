@@ -142,6 +142,7 @@ namespace MulTyPlayerClient
         private static void Disconnected(object sender, Riptide.DisconnectedEventArgs e)
         {
             IsRunning = false;
+            BasicIoC.KoalaSelectViewModel.MakeAllAvailable();
             if (e.Reason == DisconnectReason.TimedOut)
             {
                 if (SettingsHandler.Settings.AttemptReconnect) 

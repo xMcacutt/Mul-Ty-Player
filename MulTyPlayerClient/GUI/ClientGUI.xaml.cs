@@ -43,5 +43,10 @@ namespace MulTyPlayerClient.GUI
                 e = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta * -1);
             base.OnPreviewMouseWheel(e);
         }
+
+        private void LogOutButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client._client.Disconnect();
+        }
     }
 }

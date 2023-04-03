@@ -158,7 +158,12 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                             <ItemsControl.RenderTransform>
-                                <ScaleTransform ScaleY="-1"/>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleY="-1"/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="-0.618"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
                             </ItemsControl.RenderTransform>
                         </ItemsControl>
                     </ScrollViewer>
@@ -191,7 +196,8 @@
                         BorderBrush="{x:Null}" 
                         Background="#FFDDDDDD"
                         HorizontalAlignment="Right"
-                        Width="40">
+                        Width="40"
+                        Click="LogOutButton_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="15"/>
