@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
              StartupUri="GUI/Splash.xaml">
     <Application.Resources>
-
+        
     </Application.Resources>
 </Application>

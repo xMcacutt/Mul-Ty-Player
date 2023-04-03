@@ -38,6 +38,14 @@ namespace MulTyPlayerClient.GUI
             else BasicIoC.LoggerInstance.Write(Input);
             Input = null;
         }
+
+        public void UpdateHostIcon()
+        {
+            foreach (var player in PlayerInfoList)
+            {
+                player.IsHost = player.ClientID == CommandHandler.Host;
+            }
+        }
     }
 }
 

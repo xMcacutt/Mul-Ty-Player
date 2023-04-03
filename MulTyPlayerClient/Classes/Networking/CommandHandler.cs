@@ -119,6 +119,7 @@ namespace MulTyPlayerClient
             {
                 BasicIoC.LoggerInstance.Write("You have been made host. You now have access to host only commands.");
                 Host = Client._client.Id;
+                BasicIoC.MainGUIViewModel.UpdateHostIcon();
                 return;
             }
             BasicIoC.LoggerInstance.Write("Someone else who is connected already has host privileges");
@@ -128,6 +129,7 @@ namespace MulTyPlayerClient
         public static void HostChange(Message message)
         {
             Host = message.GetUShort();
+            BasicIoC.MainGUIViewModel.UpdateHostIcon();
         }
 
         [MessageHandler((ushort)MessageID.HostCommand)]

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PropertyChanged;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using System.Windows.Media.Imaging;
 
 namespace MulTyPlayerClient.GUI
 {
+    [AddINotifyPropertyChangedInterface]
     public class PlayerInfo
     {
         public ushort ClientID { get; set; }
@@ -20,7 +22,7 @@ namespace MulTyPlayerClient.GUI
             PlayerName = playerName;
             var koalaIconPath = $"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Icons/{koalaName}.png";
             KoalaIcon = new BitmapImage(new Uri(koalaIconPath));
-            IsHost = (clientID == CommandHandler.Host);
+            IsHost = CommandHandler.Host == clientID;
         }
     }
 }

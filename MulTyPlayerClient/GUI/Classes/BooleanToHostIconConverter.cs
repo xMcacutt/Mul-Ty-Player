@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace MulTyPlayerClient.GUI
@@ -17,7 +18,14 @@ namespace MulTyPlayerClient.GUI
             if (value is bool isHost && isHost)
             {
                 // Return an icon that represents the host
-                return Application.Current.Resources["Verified_black_24dpDrawingImage"];
+                Uri uri = new(@"pack://siteoforigin:,,,/GUI/Icons/Icons.xaml");
+                ResourceDictionary resourceDict = new ResourceDictionary() { Source = uri };
+                DrawingGroup verifiedDrawingGroup = resourceDict["verified_black_24dpDrawingGroup"] as DrawingGroup;
+                if (verifiedDrawingGroup != null)
+                {
+                    return new DrawingImage(verifiedDrawingGroup);
+                }
+                else return null;
             }
             else
             {

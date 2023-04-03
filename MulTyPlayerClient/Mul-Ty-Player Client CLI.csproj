@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Page Remove="GUI\App.xaml" />
+    <Page Remove="GUI\Icons\Icons.xaml" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="GUI\App.xaml">
@@ -197,6 +198,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="fe_999_icon_koalakid.ico" />
+    <Content Include="GUI\Icons\Icons.xaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="GUI\KoalaSelectionAssets\Dark\Boonie.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -300,9 +304,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GUI\Icons\" />
   </ItemGroup>
   <ItemGroup>
     <Page Update="GUI\ClientGUI.xaml">
