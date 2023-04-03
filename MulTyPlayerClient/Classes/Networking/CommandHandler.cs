@@ -17,7 +17,6 @@ namespace MulTyPlayerClient
             hostCommands = new List<string>
             {
                 "resetsync",
-                "msg",
                 "kick",
                 "password",
                 "clist",
@@ -28,8 +27,6 @@ namespace MulTyPlayerClient
         public void ParseCommand(string userInput)
         {
             if (userInput == null) { return; }
-
-            if (!userInput.StartsWith("/")) { return; }
 
             string command = userInput.Split(' ')[0].Trim('/');
             string[] args = userInput.Split(' ').Skip(1).ToArray();
@@ -46,6 +43,11 @@ namespace MulTyPlayerClient
             {
                 case "requesthost":
                     {
+                        if (Host == Client._client.Id)
+                        {
+                            BasicIoC.LoggerInstance.Write("You already have host privileges");
+                            break;
+                        }
                         RequestHost();
                         break;
                     }
@@ -53,13 +55,42 @@ namespace MulTyPlayerClient
                     {
                         foreach (string line in File.ReadLines("./help.mtps"))
                         {
-                            Console.WriteLine(line);
+                            BasicIoC.LoggerInstance.Write(line);
                         }
+                        break;
+                    }
+                case "msg":
+                    {
+                        if (args.Length == 0)
+                        {
+                            BasicIoC.LoggerInstance.Write("Usage: /msg [message]");
+                            break;
+                        }
+                        string message = userInput[5..];
+                        SendMessage(message, null);
+                        BasicIoC.LoggerInstance.Write("Sent message to all connected clients.");
+                        break;
+                    }
+                case "whisper":
+                    {
+                        if (args.Length < 2 || !ushort.TryParse(args[0], out _))
+                        {
+                            BasicIoC.LoggerInstance.Write("Usage: /whisper [client Id] [message]");
+                            break;
+                        }
+                        if (!PlayerHandler.Players.ContainsKey(ushort.Parse(args[0])))
+                        {
+                            BasicIoC.LoggerInstance.Write($"{args[0]} is not a valid client ID");
+                            break;
+                        }
+                        string message = userInput[5..];
+                        SendMessage(message, ushort.Parse(args[0]));
+                        BasicIoC.LoggerInstance.Write($"Sent message to client {ushort.Parse(args[0])}.");
                         break;
                     }
                 default:
                     {
-                        Console.WriteLine($"/{command} is not a command. Try /help for a list of commands");
+                        BasicIoC.LoggerInstance.Write($"/{command} is not a command. Try /help for a list of commands");
                         break;
                     }
             }
@@ -71,16 +102,25 @@ namespace MulTyPlayerClient
             Client._client.Send(message);
         }
 
+        private static void SendMessage(string text, ushort? toClientId)
+        {
+            Message message = Message.Create(MessageSendMode.Reliable, MessageID.P2PMessage);
+            message.AddString(text);
+            message.AddBool(toClientId == null);
+            if(toClientId != null) message.AddUShort((ushort)toClientId);
+            Client._client.Send(message);
+        }
+
         [MessageHandler((ushort)MessageID.ReqHost)]
         public static void RequestHostResponse(Message message)
         {
             if (message.GetBool())
             {
-                Console.WriteLine("You have been made host. You now have access to host only commands.");
+                BasicIoC.LoggerInstance.Write("You have been made host. You now have access to host only commands.");
                 Host = Client._client.Id;
                 return;
             }
-            Console.WriteLine("Someone else who is connected already has host privileges");
+            BasicIoC.LoggerInstance.Write("Someone else who is connected already has host privileges");
         }
 
         [MessageHandler((ushort)MessageID.HostChange)]
@@ -92,13 +132,19 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.HostCommand)]
         public static void HostCommandResponse(Message message)
         {
-            Console.WriteLine(message.GetString());
+            BasicIoC.LoggerInstance.Write(message.GetString());
         }
 
         [MessageHandler((ushort)MessageID.ResetSync)]
         private static void HandleSyncReset(Message message)
         {
             Client.HSync = new SyncHandler();
+        }
+
+        [MessageHandler((ushort)MessageID.P2PMessage)]
+        private static void HandleMessageFromPeer(Message message)
+        {
+            BasicIoC.LoggerInstance.Write(message.GetString());
         }
     }
 }

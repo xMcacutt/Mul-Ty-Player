@@ -38,7 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Update="help.mtps">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="ServerSettings.mtps">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

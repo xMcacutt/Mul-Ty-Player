@@ -17,10 +17,10 @@ namespace MulTyPlayerClient.GUI
 
         public static void InitializeWindows(Splash splash)
         {
-            WindowHandler.SplashWindow = splash;
-            WindowHandler.LoginWindow = new();
-            WindowHandler.KoalaSelectWindow = new();
-            WindowHandler.ClientGUIWindow = new();
+            SplashWindow = splash;
+            LoginWindow = new();
+            KoalaSelectWindow = new();
+            ClientGUIWindow = new();
         }
     }
 }

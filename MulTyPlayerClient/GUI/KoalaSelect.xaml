@@ -6,7 +6,10 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
         mc:Ignorable="d"
-        Title="Select Your Koala" Height="300" Width="450" ResizeMode="NoResize">
+        Title="Select Your Koala" 
+        Height="300" 
+        Width="450" 
+        ResizeMode="NoResize">
 
     <Grid>
         <!--Background video-->

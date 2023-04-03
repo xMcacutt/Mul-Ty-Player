@@ -24,36 +24,12 @@ namespace MulTyPlayerClient.GUI
             InitializeComponent();
         }
 
-        private void SendButtonClick(object sender, RoutedEventArgs e)
-        {
-            //Call send button function here
-        }
-
         private void TextboxInput_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key != Key.Enter)
-                return;
-            //Call send button function here
-        }
-
-        private void CallButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void VolumeButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void MicButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ConnectionButton_Click(object sender, RoutedEventArgs e)
-        {
-
+            if (e.Key == Key.Return)
+            {
+                BasicIoC.MainGUIViewModel.ManageInput();
+            }
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)

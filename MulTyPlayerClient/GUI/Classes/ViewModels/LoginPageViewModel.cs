@@ -49,6 +49,7 @@ namespace MulTyPlayerClient.GUI
                 if (ConnectionAttemptSuccessful)
                 {
                     BasicIoC.LoginViewModel.SaveDetails();
+                    BasicIoC.MainGUIViewModel.ResetPlayerList();
                     BasicIoC.KoalaSelectViewModel.Setup();
                     WindowHandler.KoalaSelectWindow.Show();
                     WindowHandler.LoginWindow.Hide();

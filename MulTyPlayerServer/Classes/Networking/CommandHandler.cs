@@ -163,5 +163,15 @@ namespace MulTyPlayerServer
             response.AddString(ParseCommand(input));
             Server._Server.Send(response, fromClientId);
         }
+
+        [MessageHandler((ushort)MessageID.P2PMessage)]
+        public static void Convey(ushort fromClientId, Message message)
+        {
+            Message response = Message.Create(MessageSendMode.Reliable, MessageID.P2PMessage);
+            string responseText = $"[{DateTime.Now}] {PlayerHandler.Players[fromClientId].Name}: {message.GetString()}";
+            response.AddString(responseText);
+            if (message.GetBool()) Server._Server.Send(response, message.GetUShort());
+            else Server._Server.SendToAll(response, fromClientId);
+        }
     }
 }

@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
         mc:Ignorable="d"
-        Title="Mul-Ty-Player Client" Height="450" Width="800" FontSize="10" BorderBrush="Black">
+        Title="Mul-Ty-Player Client" Height="450" Width="800" FontSize="10" BorderBrush="Black" ResizeMode="NoResize">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="CellPadding" TargetType="DataGridCell">
                 <Setter Property="Padding" Value="0" />
+                <Setter Property="Background" Value="#00000000"/>
             </Style>
             <Style x:Key="ComicText" TargetType="TextBlock">
                 <Setter Property="TextElement.FontFamily" Value="Fonts/#SF Slapstick Comic"/>
@@ -216,7 +217,8 @@
 
                     <!--Tag only works as a placeholder text because of a custom style-->
                     <TextBox VerticalAlignment="Stretch" 
-                             Margin="3,0,0,0"
+                             Margin="0,0,0,0"
+                             Padding="4,0,0,0"
                              VerticalContentAlignment="Center"
                              FontFamily="Cascadia Code" 
                              FontSize="12" 
@@ -226,12 +228,13 @@
                              BorderBrush="{x:Null}"
                              x:Name="TextboxInput" 
                              KeyDown="TextboxInput_KeyDown"
-                             Tag="See help.mtps file for commands"
+                             Text="{Binding Input, Source={x:Static local:BasicIoC.MainGUIViewModel}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Tag=" See help.mtps file for commands"
                              Style="{StaticResource PlaceholderTextStyle}"/>
-                    
+
                     <Button VerticalAlignment="Stretch" 
                             BorderBrush="{x:Null}" 
-                            Click="SendButtonClick"
+                            Command="{Binding ManageInputCommand, Source={x:Static local:BasicIoC.MainGUIViewModel}}"
                             Grid.Column="1">
                         <Image Source="{StaticResource send_black_24dpDrawingImage}"/>
                     </Button>

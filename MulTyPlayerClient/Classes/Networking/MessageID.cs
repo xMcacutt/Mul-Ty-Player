@@ -22,6 +22,7 @@ namespace MulTyPlayerClient
         HostChange,
         HostCommand,
         KoalaSelected,
-        AnnounceDisconnect
+        AnnounceDisconnect,
+        P2PMessage
     }
 }
