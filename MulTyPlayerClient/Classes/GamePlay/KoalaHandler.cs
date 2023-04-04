@@ -113,7 +113,7 @@ namespace MulTyPlayerClient
             float[] coordinates = message.GetFloats();
 
             //SANITY CHECK THAT WE HAVEN'T BEEN SENT OUR OWN COORDINATES AND WE AREN'T LOADING, ON THE MENU, OR IN A DIFFERENT LEVEL 
-            if (PlayerHandler.Players.TryGetValue(Client._client.Id, out Player p)) return;
+            if (!PlayerHandler.Players.TryGetValue(Client._client.Id, out Player p)) return;
             if (HGameState.CheckMenuOrLoading() || level != HLevel.CurrentLevelId || p.Koala.KoalaName == koalaName) return;
 
             //WRITE COORDINATES TO KOALA COORDINATE ADDRESSES
