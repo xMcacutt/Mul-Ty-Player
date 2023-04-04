@@ -24,7 +24,7 @@ namespace MulTyPlayerClient.GUI
             {
                 BasicIoC.LoginViewModel.Setup();
                 WindowHandler.LoginWindow.Show();
-                WindowHandler.SplashWindow.Hide();
+                WindowHandler.SplashWindow.Close();
             };
             backgroundWorker.RunWorkerAsync();
         }
