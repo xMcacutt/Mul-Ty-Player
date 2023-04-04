@@ -8,6 +8,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace MulTyPlayerClient
 {
@@ -25,7 +27,11 @@ namespace MulTyPlayerClient
             Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
             Players.Add(clientID, new Player(koala, name, clientID));
             PlayerInfo player = new(clientID, name, koalaName);
-            BasicIoC.MainGUIViewModel.PlayerInfoList.Add(player);
+            Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+                new Action(() => {
+                    BasicIoC.MainGUIViewModel.PlayerInfoList.Add(player);
+                }));
             BasicIoC.LoggerInstance.Write(player.PlayerName + player.ClientID);
             if (BasicIoC.KoalaSelectViewModel.KoalaAvailable(koalaName))
             {
