@@ -27,7 +27,7 @@ namespace MulTyPlayerClient
             {
                 ProcessHandler.TryRead(crateAddress + 0x150 + (4 * i), out IntPtr opalAddress, false);
                 ProcessHandler.TryRead(opalAddress + 0x78, out byte opalState, false);
-                if (opalState != 5)
+                if (opalState == 0)
                 {
                     ProcessHandler.WriteData((int)(opalAddress + 0x78), BitConverter.GetBytes(1), $"Spawning opal from crate {i} / {opalCount}");
                 }
