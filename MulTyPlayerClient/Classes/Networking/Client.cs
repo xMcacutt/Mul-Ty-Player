@@ -144,6 +144,7 @@ namespace MulTyPlayerClient
             IsRunning = false;
             BasicIoC.KoalaSelectViewModel.MakeAllAvailable();
             BasicIoC.MainGUIViewModel.ResetPlayerList();
+            SFXPlayer.PlaySound(SFX.PlayerDisconnect);
             if (e.Reason == DisconnectReason.TimedOut)
             {
                 if (SettingsHandler.Settings.AttemptReconnect) 

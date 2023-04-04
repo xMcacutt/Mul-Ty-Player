@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
         mc:Ignorable="d"
+        Closing="Window_Closing"
         Title="Splash" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
