@@ -61,10 +61,6 @@ namespace MulTyPlayerClient
             await Task.Delay(2400);
 
             BasicIoC.KoalaSelectViewModel.SwitchAvailability(koalaName);
-            await WindowHandler.ClientGUIWindow.Dispatcher.InvokeAsync(() =>
-            {
-                WindowHandler.ClientGUIWindow.Show();
-            });
             BlockKoalaSelect = false;
             CollectionViewSource.GetDefaultView(BasicIoC.LoggerInstance.Log).Refresh();
             WindowHandler.KoalaSelectWindow.Hide();
