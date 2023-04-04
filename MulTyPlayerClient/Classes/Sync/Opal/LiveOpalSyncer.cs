@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -44,22 +45,37 @@ namespace MulTyPlayerClient
             return currentOpals;
         }
 
+        private void ReadSpecificOpalState(int index)
+        {
+            int crateOpalsInLevel = HOpal.CrateOpalsPerLevel[HLevel.CurrentLevelId];
+            if(index > (300 - crateOpalsInLevel))
+            {
+
+            }
+        }
+
         public override void Collect(int index)
         {
             if (HOpal.CurrentObjectData[index] >= 3) return;
             if (Client.HGameState.CheckMenuOrLoading()) return;
             int baseAddress;
             int crateOpalsInCurrentLevel = HOpal.CrateOpalsPerLevel[HLevel.CurrentLevelId];
-
+            int address;
             if (HLevel.CurrentLevelId == 10) baseAddress = HOpal.CrateOpalsAddress;
             else if (index < (300 - HOpal.CrateOpalsPerLevel[HLevel.CurrentLevelId])) baseAddress = HOpal.NonCrateOpalsAddress;
             else
             {
                 int nonCrateOpalsInCurrentLevel = 300 - crateOpalsInCurrentLevel;
+                address = HOpal.CrateOpalsAddress + 0x78 + (0x114 * (index - nonCrateOpalsInCurrentLevel));
+                ProcessHandler.TryRead(address, out HOpal.CurrentObjectData[index], false);
+                if (HOpal.CurrentObjectData[index] >= 3) return;
                 ProcessHandler.WriteData(HOpal.CrateOpalsAddress + 0x78 + (0x114 * (index - nonCrateOpalsInCurrentLevel)), BitConverter.GetBytes(3), $"Collecting opal {index}");
                 return;
             }
-            ProcessHandler.WriteData(baseAddress + 0x78 + (0x114 * index), BitConverter.GetBytes(3), $"Collecting opal {index}");
+            address = baseAddress + 0x78 + (0x114 * index);
+            ProcessHandler.TryRead(address, out HOpal.CurrentObjectData[index], false);
+            if (HOpal.CurrentObjectData[index] >= 3) return;
+            ProcessHandler.WriteData(address, BitConverter.GetBytes(3), $"Collecting opal {index}");
         }
 
     }
