@@ -23,10 +23,10 @@ namespace MulTyPlayerClient
             Players = new();
         }
 
-        public static void AddPlayer(string koalaName, string name, ushort clientID)
+        public static void AddPlayer(string koalaName, string name, ushort clientID, bool isHost)
         {
             Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
-            Players.Add(clientID, new Player(koala, name, clientID));
+            Players.Add(clientID, new Player(koala, name, clientID, isHost));
             PlayerInfo player = new(clientID, name, koalaName);
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,

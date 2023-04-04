@@ -77,10 +77,6 @@ namespace MulTyPlayerServer
 
         private static void ClientConnected(object sender, ServerConnectedEventArgs e)
         {
-            if (_Server.Clients.Length == 1)
-            {
-                CommandHandler.SetNewHost(e.Client.Id);
-            }
             KoalaHandler.SendKoalaAvailability(e.Client.Id);
             SettingsHandler.SendSettings(e.Client.Id);
         }

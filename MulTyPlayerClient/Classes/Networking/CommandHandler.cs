@@ -45,7 +45,7 @@ namespace MulTyPlayerClient
             {
                 case "requesthost":
                     {
-                        if (Host == Client._client.Id)
+                        if (PlayerHandler.Players[Client._client.Id].IsHost)
                         {
                             BasicIoC.LoggerInstance.Write("You already have host privileges");
                             break;
