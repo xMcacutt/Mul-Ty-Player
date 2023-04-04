@@ -5,6 +5,7 @@ using Riptide.Transports;
 using Riptide.Utils;
 using Steamworks.Data;
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Media;
 using System.Threading;
@@ -143,7 +144,11 @@ namespace MulTyPlayerClient
         {
             IsRunning = false;
             BasicIoC.KoalaSelectViewModel.MakeAllAvailable();
-            BasicIoC.MainGUIViewModel.ResetPlayerList();
+            Application.Current.Dispatcher.BeginInvoke(
+            DispatcherPriority.Background,
+            new Action(() => {
+                BasicIoC.MainGUIViewModel.ResetPlayerList();
+            }));
             SFXPlayer.PlaySound(SFX.PlayerDisconnect);
             if (e.Reason == DisconnectReason.TimedOut)
             {

@@ -17,7 +17,7 @@ namespace MulTyPlayerClient.GUI
         {
             if (value is bool isHost && isHost)
             {
-                /*// Return an icon that represents the host
+                // Return an icon that represents the host
                 Uri uri = new(@"pack://siteoforigin:,,,/GUI/Icons/Icons.xaml");
                 ResourceDictionary resourceDict = new ResourceDictionary() { Source = uri };
                 DrawingGroup verifiedDrawingGroup = resourceDict["verified_black_24dpDrawingGroup"] as DrawingGroup;
@@ -26,8 +26,6 @@ namespace MulTyPlayerClient.GUI
                     return new DrawingImage(verifiedDrawingGroup);
                 }
                 else return null;
-                */
-                return null;
             }
             else
             {

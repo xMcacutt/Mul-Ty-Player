@@ -22,6 +22,7 @@ namespace MulTyPlayerClient.GUI
             PlayerName = playerName;
             var koalaIconPath = $"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Icons/{koalaName}.png";
             KoalaIcon = new BitmapImage(new Uri(koalaIconPath));
+            KoalaIcon.Freeze();
             IsHost = CommandHandler.Host == clientID;
         }
     }
