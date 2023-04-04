@@ -22,16 +22,5 @@ namespace MulTyPlayerServer.Classes.Sync
                 GlobalObjectCounts.Add(i, 0);
             }
         }
-
-        public override void HandleServerUpdate(int iLive, int iSave, int level, ushort originalSender)
-        {
-            if (!GlobalObjectData.Keys.Contains(level)) return;
-            Console.WriteLine("Sending " + Name + " LiveNumber: " + iLive + " SaveNumber: " + iSave + " For Level: " + level);
-            GlobalObjectData[level][iLive] = (byte)CheckState;
-            GlobalObjectSaveData[level][iSave] = (byte)CheckState;
-            GlobalObjectCounts[level] = GlobalObjectData[level].Count(i => i == CheckState);
-            if(iSave == 0) { Program.HSync.Syncers["Crate"].GlobalObjectData[level] = new byte[CrateSyncer.CratesPerLevel[level]]; }
-            SendUpdatedData(iLive, iSave, level, originalSender);
-        }
     }
 }
