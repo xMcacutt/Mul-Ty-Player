@@ -128,7 +128,7 @@ namespace MulTyPlayerClient
                         new Action(BasicIoC.MainGUIViewModel.UpdateHostIcon));
                 return;
             }
-            BasicIoC.LoggerInstance.Write("Someone else who is connected already has host privileges");
+            BasicIoC.LoggerInstance.Write($"Client {Host} already has host privileges");
         }
 
         [MessageHandler((ushort)MessageID.HostChange)]
