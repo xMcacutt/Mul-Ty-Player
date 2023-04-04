@@ -11,15 +11,11 @@ namespace MulTyPlayerClient
 
         const int TY_POSROT_BASE_ADDRESS = 0x270B78;
         const int BP_POSROT_BASE_ADDRESS = 0x254268;
-        int[] _tyPosRotAddrs;
-        int[] _bpPosRotAddrs;
         float[] CurrentPosRot;
 
         public HeroHandler()
         {
             CurrentPosRot = new float[6];
-            _tyPosRotAddrs = new int[2];
-            _bpPosRotAddrs = new int[2];
         }
 
         public void GetTyPosRot()
