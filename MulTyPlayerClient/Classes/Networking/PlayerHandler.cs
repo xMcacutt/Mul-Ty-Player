@@ -33,7 +33,6 @@ namespace MulTyPlayerClient
                 new Action(() => {
                     BasicIoC.MainGUIViewModel.PlayerInfoList.Add(player);
                 }));
-            BasicIoC.LoggerInstance.Write(player.PlayerName + player.ClientID);
             if (BasicIoC.KoalaSelectViewModel.KoalaAvailable(koalaName))
             {
                 BasicIoC.KoalaSelectViewModel.SwitchAvailability(koalaName);
@@ -63,11 +62,12 @@ namespace MulTyPlayerClient
             Players.Remove(id);
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
-            new Action(() =>
-            {
-                BasicIoC.MainGUIViewModel.PlayerInfoList.Remove(
-                    BasicIoC.MainGUIViewModel.PlayerInfoList.FirstOrDefault(playerInfo => playerInfo.ClientID == id));
-            }));
+                new Action(() =>
+                {
+                    BasicIoC.MainGUIViewModel.PlayerInfoList.Remove(
+                        BasicIoC.MainGUIViewModel.PlayerInfoList.FirstOrDefault(playerInfo => playerInfo.ClientID == id));
+                })
+            );
             
         }
 

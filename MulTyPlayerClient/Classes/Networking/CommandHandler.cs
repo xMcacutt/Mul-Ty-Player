@@ -4,6 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace MulTyPlayerClient
 {
@@ -119,7 +122,10 @@ namespace MulTyPlayerClient
             {
                 BasicIoC.LoggerInstance.Write("You have been made host. You now have access to host only commands.");
                 Host = Client._client.Id;
-                BasicIoC.MainGUIViewModel.UpdateHostIcon();
+
+                Application.Current.Dispatcher.BeginInvoke(
+                    DispatcherPriority.Background,
+                        new Action(BasicIoC.MainGUIViewModel.UpdateHostIcon));
                 return;
             }
             BasicIoC.LoggerInstance.Write("Someone else who is connected already has host privileges");
@@ -129,7 +135,9 @@ namespace MulTyPlayerClient
         public static void HostChange(Message message)
         {
             Host = message.GetUShort();
-            BasicIoC.MainGUIViewModel.UpdateHostIcon();
+            Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+                    new Action(BasicIoC.MainGUIViewModel.UpdateHostIcon));
         }
 
         [MessageHandler((ushort)MessageID.HostCommand)]
