@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Windows;
 using System.Windows.Threading;
+using System.Numerics;
 
 namespace MulTyPlayerClient
 {
@@ -60,9 +61,14 @@ namespace MulTyPlayerClient
                 BasicIoC.KoalaSelectViewModel.SwitchAvailability(Players[id].Koala.KoalaName);
             }
             Players.Remove(id);
-            BasicIoC.MainGUIViewModel.PlayerInfoList.Remove(
-                BasicIoC.MainGUIViewModel.PlayerInfoList.FirstOrDefault(playerInfo => playerInfo.ClientID == id)
-            );
+            Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+            new Action(() =>
+            {
+                BasicIoC.MainGUIViewModel.PlayerInfoList.Remove(
+                    BasicIoC.MainGUIViewModel.PlayerInfoList.FirstOrDefault(playerInfo => playerInfo.ClientID == id));
+            }));
+            
         }
 
         [MessageHandler((ushort)MessageID.AnnounceDisconnect)]
