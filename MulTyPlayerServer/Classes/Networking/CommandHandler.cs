@@ -7,7 +7,6 @@ namespace MulTyPlayerServer
 {
     internal class CommandHandler
     {
-        public static ushort host;
 
         public static string ParseCommand(string userInput)
         {
@@ -128,11 +127,16 @@ namespace MulTyPlayerServer
             return $"{SettingsHandler.Password} set as new password.";
         }
 
+        private static bool HostExists()
+        {
+            return PlayerHandler.Players.Values.Any(p => p.IsHost);
+        }
+
         [MessageHandler((ushort)MessageID.ReqHost)]
         public static void RequestHost(ushort fromClientId, Message message)
         {
             bool acceptRequest = false;
-            if (!Server._Server.Clients[host].IsConnected)
+            if (!HostExists())
             {
                 acceptRequest = true;
                 SetNewHost(fromClientId);
@@ -144,14 +148,10 @@ namespace MulTyPlayerServer
 
         public static void SetNewHost(ushort newHost)
         {
-            host = newHost;
+            PlayerHandler.Players[newHost].IsHost = true;
             Message notifyHostChange = Message.Create(MessageSendMode.Reliable, MessageID.HostChange);
             notifyHostChange.AddUShort(newHost);
             Server._Server.SendToAll(notifyHostChange);
-            if(PlayerHandler.Players.Count == 0)
-            {
-                return;
-            }
             Server.SendMessageToClients($"{PlayerHandler.Players[newHost].Name} has been made host", true);
         }
 

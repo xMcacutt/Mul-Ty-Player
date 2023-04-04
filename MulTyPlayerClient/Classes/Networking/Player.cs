@@ -11,12 +11,14 @@ namespace MulTyPlayerClient
         public Koala Koala { get; set; }
         public string Name;
         public ushort Id;
+        public bool IsHost;
         
-        public Player(Koala koala, string name, ushort id)
+        public Player(Koala koala, string name, ushort id, bool isHost)
         {
-            this.Koala = koala;
-            this.Name = name;
-            this.Id = id;
+            Koala = koala;
+            Name = name;
+            Id = id;
+            IsHost = isHost;
         }
     }
 }

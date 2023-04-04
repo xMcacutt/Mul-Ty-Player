@@ -12,7 +12,6 @@ namespace MulTyPlayerClient
 {
     internal class CommandHandler
     {
-        public static ushort Host = 0;
         public List<string> hostCommands;
 
         public CommandHandler()
@@ -34,7 +33,7 @@ namespace MulTyPlayerClient
             string command = userInput.Split(' ')[0].Trim('/');
             string[] args = userInput.Split(' ').Skip(1).ToArray();
 
-            if (Host == Client._client.Id && hostCommands.Contains(command))
+            if (PlayerHandler.Players[Client._client.Id].IsHost && hostCommands.Contains(command))
             {
                 Message message = Message.Create(MessageSendMode.Reliable, MessageID.HostCommand);
                 message.AddString(userInput);
@@ -105,6 +104,11 @@ namespace MulTyPlayerClient
             Client._client.Send(message);
         }
 
+        public static bool HostExists()
+        {
+            return PlayerHandler.Players.Values.Any(p => p.IsHost);
+        }
+
         private static void SendMessage(string text, ushort? toClientId)
         {
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.P2PMessage);
@@ -121,20 +125,20 @@ namespace MulTyPlayerClient
             if (message.GetBool())
             {
                 BasicIoC.LoggerInstance.Write("You have been made host. You now have access to host only commands.");
-                Host = Client._client.Id;
+                PlayerHandler.Players[Client._client.Id].IsHost = true;
 
                 Application.Current.Dispatcher.BeginInvoke(
                     DispatcherPriority.Background,
                         new Action(BasicIoC.MainGUIViewModel.UpdateHostIcon));
                 return;
             }
-            BasicIoC.LoggerInstance.Write($"Client {Host} already has host privileges");
+            BasicIoC.LoggerInstance.Write($"Client {PlayerHandler.Players.Values.First(p => p.IsHost)} already has host privileges");
         }
 
         [MessageHandler((ushort)MessageID.HostChange)]
         public static void HostChange(Message message)
         {
-            Host = message.GetUShort();
+            PlayerHandler.Players[message.GetUShort()].IsHost = true;
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                     new Action(BasicIoC.MainGUIViewModel.UpdateHostIcon));

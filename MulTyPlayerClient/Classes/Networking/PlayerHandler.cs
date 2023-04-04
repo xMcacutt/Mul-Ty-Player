@@ -40,13 +40,13 @@ namespace MulTyPlayerClient
             if (!WindowHandler.KoalaSelectWindow.IsVisible) SFXPlayer.PlaySound(SFX.PlayerConnect);
         }
 
-        public static void AnnounceSelection(string koalaName, string name)
+        public static void AnnounceSelection(string koalaName, string name, bool isHost)
         {
-
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
             message.AddString(koalaName);
             message.AddString(name);
             message.AddUShort(Client._client.Id);
+            message.AddBool(isHost);
             PlayerInfo player = new(Client._client.Id, name, koalaName);
             BasicIoC.MainGUIViewModel.PlayerInfoList.Add(player);
             Client._client.Send(message);

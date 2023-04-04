@@ -54,10 +54,12 @@ namespace MulTyPlayerClient
         {
             Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
             Client.OldKoala = koala;
-            PlayerHandler.Players.Add(Client._client.Id, new Player(koala, Client.Name, Client._client.Id));
+            bool isHost = false;
+            if(!CommandHandler.HostExists()) { isHost = true; }
+            PlayerHandler.Players.Add(Client._client.Id, new Player(koala, Client.Name, Client._client.Id, isHost));
             SFXPlayer.PlaySound(SFX.PlayerConnect);
             BlockKoalaSelect = true;
-            PlayerHandler.AnnounceSelection(koalaName, Client.Name);
+            PlayerHandler.AnnounceSelection(koalaName, Client.Name, isHost);
             await Task.Delay(2400);
 
             BasicIoC.KoalaSelectViewModel.SwitchAvailability(koalaName);

@@ -7,15 +7,17 @@ namespace MulTyPlayerServer
         public Koala Koala { get; set; }
         public string Name;
         public ushort ClientID;
+        public bool IsHost;
         public float[] Coordinates;
         public int CurrentLevel;
         public int PreviousLevel = 99;
 
-        public Player(Koala koala, string name, ushort id)
+        public Player(Koala koala, string name, ushort id, bool isHost)
         {
-            this.Koala = koala;
-            this.Name = name;
-            this.ClientID = id;
+            Koala = koala;
+            Name = name;
+            ClientID = id;
+            IsHost = isHost;
             Coordinates = new float[6];
         }
     }

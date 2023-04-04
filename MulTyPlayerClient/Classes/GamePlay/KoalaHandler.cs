@@ -28,7 +28,8 @@ namespace MulTyPlayerClient
             string koalaName = message.GetString();
             string playerName = message.GetString();
             ushort clientID = message.GetUShort();
-            PlayerHandler.AddPlayer(koalaName, playerName, clientID);
+            bool isHost = message.GetBool();
+            PlayerHandler.AddPlayer(koalaName, playerName, clientID, isHost);
         }
 
         public void CreateKoalaAddrArrays()

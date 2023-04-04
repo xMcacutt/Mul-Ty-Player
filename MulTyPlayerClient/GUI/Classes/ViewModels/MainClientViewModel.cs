@@ -46,7 +46,7 @@ namespace MulTyPlayerClient.GUI
         {
             foreach (var player in PlayerInfoList)
             {
-                player.IsHost = player.ClientID == CommandHandler.Host;
+                player.IsHost = PlayerHandler.Players[player.ClientID].IsHost;
             }
         }
     }
