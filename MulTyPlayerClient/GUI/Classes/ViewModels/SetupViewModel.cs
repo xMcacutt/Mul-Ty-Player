@@ -49,14 +49,14 @@ namespace MulTyPlayerClient.GUI
         {
             if (Directory.GetFiles(MTPPath).Length == 0)
             {
-                long totalBytes = 0;
+                long totalBytes;
                 foreach (string file in TyFileNames)
                 {
                     var sourceFilePath = Path.Combine(TyPath, file);
                     var destinationFilePath = Path.Combine(MTPPath, file);
-
+                    if(file == "TY.exe") destinationFilePath = Path.Combine(MTPPath, "Mul-Ty-Player.exe");
                     var fileInfo = new FileInfo(sourceFilePath);
-                    totalBytes += fileInfo.Length;
+                    totalBytes = fileInfo.Length;
 
                     using var sourceStream = File.OpenRead(sourceFilePath);
                     using var destinationStream = new FileStream(destinationFilePath, FileMode.Create, FileAccess.Write);
@@ -125,73 +125,5 @@ namespace MulTyPlayerClient.GUI
                 ProgressText = e.Result.ToString();
             }
         }
-
-        /*       public void Install()
-               {
-                   if (Directory.GetFiles(MTPPath).Length == 0)
-                   {
-                       Task.Run(async () =>
-                       {
-                           long totalBytes = 0;
-                           foreach (string file in TyFileNames)
-                           {
-                               var sourceFilePath = Path.Combine(TyPath, file);
-                               var destinationFilePath = Path.Combine(MTPPath, file);
-
-                               var fileInfo = new FileInfo(sourceFilePath);
-                               totalBytes += fileInfo.Length;
-
-                               using var sourceStream = File.OpenRead(sourceFilePath);
-                               using var destinationStream = new FileStream(destinationFilePath, FileMode.Create, FileAccess.Write);
-
-                               var buffer = new byte[81920];
-                               int bytesRead;
-                               while ((bytesRead = sourceStream.Read(buffer, 0, buffer.Length)) > 0)
-                               {
-                                   destinationStream.Write(buffer, 0, bytesRead);
-
-                                   var bytesWritten = destinationStream.Position;
-                                   var progressPercentage = (double)bytesWritten / totalBytes * 100;
-                                   ProgressPercentage = (int)progressPercentage;
-                                   ProgressText = $"Copying file {file}: {(int)progressPercentage}%";
-                               }
-                           }
-                       });
-                   }
-                   string url = "https://drive.google.com/u/0/uc?id=1OTudAOfutB458mm2qKqRlX1Hi73h8WQw&export=download&confirm";
-                   HttpClient client = new();
-                   if (!string.IsNullOrEmpty(url))
-                   {
-                       Task.Run(async () =>
-                       {
-                           Uri uri = new Uri(url);
-                           HttpResponseMessage response = await client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
-                           response.EnsureSuccessStatusCode();
-                           using Stream contentStream = await response.Content.ReadAsStreamAsync();
-                           var totalBytes = response.Content.Headers.ContentLength;
-                           var destinationPath = Path.Combine(MTPPath, "Patch_PC.rkv");
-                           using FileStream fileStream = new(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 4096, useAsync: true);
-
-                           var buffer = new byte[4096];
-                           var bytesRead = default(int);
-                           var bytesWritten = 0L;
-                           do
-                           {
-                               bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length);
-                               await fileStream.WriteAsync(buffer, 0, bytesRead);
-                               bytesWritten += bytesRead;
-
-                               if (totalBytes.HasValue)
-                               {
-                                   var progressPercentage = bytesWritten * 100d / totalBytes.Value;
-                                   ProgressPercentage = (int)progressPercentage;
-                                   ProgressText = $"Downloading Patch: {(int)progressPercentage}%";
-                               }
-                           } while (bytesRead > 0);
-                       });
-                       ProgressText = "Mul-Ty-Player was successfully installed.";
-                   }
-
-               }*/
     }
 }
