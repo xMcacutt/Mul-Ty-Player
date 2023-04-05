@@ -135,8 +135,44 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    
+
+    <Style TargetType="{x:Type Button}" x:Key="InstallButton">
+        <Style.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="/GUI/SlapstickFont.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Style.Resources>
+        <Setter Property="Background" Value="Black"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="5">
+                        <TextBlock x:Name="installButtonText" 
+                                   Text="{TemplateBinding Tag}"
+                                   Margin="10,0,10,0"
+                                   FontSize="{TemplateBinding FontSize}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" TargetName="installButtonText" Value="#FFFFFF0F"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="White"/>
+                            <Setter Property="Foreground" TargetName="installButtonText" Value="White"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
     <!--CheckBox-->
     <Style x:Key="FocusVisual">
         <Setter Property="Control.Template">

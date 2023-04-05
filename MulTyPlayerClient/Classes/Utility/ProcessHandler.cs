@@ -42,7 +42,7 @@ namespace MulTyPlayerClient
 
         public static Process FindTyProcess()
         {
-            TyProcess = Process.GetProcessesByName("TY").FirstOrDefault();
+            TyProcess = Process.GetProcessesByName("Mul-Ty-Player").FirstOrDefault();
             return TyProcess;
         }
 

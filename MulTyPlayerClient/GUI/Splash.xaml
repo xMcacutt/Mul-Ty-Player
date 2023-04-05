@@ -7,11 +7,19 @@
         mc:Ignorable="d"
         Closing="Window_Closing"
         Title="Splash" Height="450" Width="800">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GUI/SlapstickFont.xaml"/>
+                <ResourceDictionary Source="/GUI/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.1*"/>
+            <ColumnDefinition Width="0.12*"/>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="0.1*"/>
+            <ColumnDefinition Width="0.12*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.1*"/>
@@ -19,6 +27,22 @@
             <RowDefinition Height="0.3*"/>
             <RowDefinition Height="0.1*"/>
         </Grid.RowDefinitions>
+
+        <Button x:Name="Setup" 
+                Click="Setup_Click"
+                HorizontalAlignment="Left" 
+                BorderBrush="{x:Null}"
+                Margin="0 3.5"
+                Style="{StaticResource SelectButton}"
+                Tag="Setup"/>
+        <TextBlock Grid.Column="1" 
+                   x:Name="SetupText"
+                   HorizontalAlignment="Left" 
+                   FontSize="20" 
+                   Padding="5,0,0,0" 
+                   VerticalAlignment="Center"
+                   Text="← First Time?"/>
+
 
         <StackPanel x:Name="titleStack" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" >
             <TextBlock x:Name="welcomeToMessage" FontSize="55" Text="Welcome To" Margin="0,0,0,-10">
@@ -43,11 +67,4 @@
     <Window.Background>
         <ImageBrush x:Name="bgImage" ImageSource="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.jpg"/>
     </Window.Background>
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="SlapstickFont.Xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
 </Window>
