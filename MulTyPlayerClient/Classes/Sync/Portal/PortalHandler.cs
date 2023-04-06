@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Xml;
+using MulTyPlayerClient.GUI;
 
 namespace MulTyPlayerClient
 {
@@ -61,7 +62,7 @@ namespace MulTyPlayerClient
             {
                 //CHECKS IF THE PORTAL SHOULD BE ACTIVE BECAUSE THE LEVEL HAS BEEN ENTERED ALREADY
                 ProcessHandler.TryRead(SyncHandler.SaveDataBaseAddress + (0x70 * FlakyPortals[i]), out byte portalSaveDataState, false);
-                if (portalSaveDataState > 0 && PortalsActive[FlakyPortals[i]] == 0)
+                if (portalSaveDataState > 0 || PortalsActive[FlakyPortals[i]] > 0)
                 {
                     PortalsActive[FlakyPortals[i]] = 1;
                     portals[i] = 1;
@@ -72,7 +73,7 @@ namespace MulTyPlayerClient
                     //ORDER OF PORTALS IS IRRITATING SO I JUST MADE A LIST OF THEM
                     int orderedIndex = Array.IndexOf(LivePortalOrder, FlakyPortals[i]);
                     ProcessHandler.TryRead(address + (LiveSync.ObjectLength * orderedIndex), out byte portalLiveDataState, false);
-                    if (portalLiveDataState == 2 && PortalsActive[FlakyPortals[i]] == 0)
+                    if (portalLiveDataState == 2)
                     {
                         PortalsActive[FlakyPortals[i]] = 1;
                         portals[i] = 1;
