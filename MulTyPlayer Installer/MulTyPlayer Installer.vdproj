@@ -836,7 +836,7 @@
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
                             "Setting" = "3:2"
-                            "Value" = "8:"
+                            "Value" = "8:Checkbox3"
                             "DefaultValue" = "8:#1236"
                             "UsePlugInResources" = "11:TRUE"
                             }
@@ -849,7 +849,7 @@
                             "ContextData" = "8:Public"
                             "Attributes" = "3:2"
                             "Setting" = "3:2"
-                            "Value" = "8:"
+                            "Value" = "8:INSTALLRKV"
                             "DefaultValue" = "8:CHECKBOXB3"
                             "UsePlugInResources" = "11:TRUE"
                             }
@@ -1055,7 +1055,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B28CC8CAD8904FFD80A883C5F1D6206F"
             {
-            "SourcePath" = "8:..\\MulTyPlayerClient\\bin\\Release\\net7.0-windows\\publish\\win-x86\\Mul-Ty-Player Client CLI.exe"
+            "SourcePath" = "8:..\\MulTyPlayerClient\\bin\\Release\\net7.0-windows\\publish\\win-x86\\Mul-Ty-Player Client.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_3D9EEA0BCF95497CB339CDDFFF526A93"
