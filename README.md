@@ -2,34 +2,55 @@
 ![Mul-Ty-Player](/Multyplayer%20logo.png)
 # Mul-Ty-Player
 
-## Installation
+## About
 
-UPDATE 1.3.4 HOTFIX IS HERE!!! IF YOU'RE CURRENTLY USING VERSION 1.3.0, YOU'LL NEED THE NEW CLIENT AND SERVER. THE NEW 1.3.4 RKV ONLY FIXES THE MAIN MENU VERSION.
+![Liz](/Liz.png)
 
-Installing Mul-Ty-Player has been made EASIER THAN EVER
+Mul-Ty-Player breathes new life into Ty the Tasmanian Tiger, allowing you to play online with your friends.
 
-Manually downloading and installing the client, server, and RKV is no longer necessary.
+In just a few minutes, you can be exploring snowy mountains, swimming through shark infested waters, and fighting off Boss Cass together as your favourite koalas.
 
-To install Mul-Ty-Player, go to the releases page and download the "Mul-Ty-Player 1.X.X Installer.msi".
+## Update & Installation
 
-Next, run the installer. If this is your first time using v1.3.0+, you'll want to install the RKV patcher and client.
+![Boonie](/Boonie.png)
+
+MEGA GUI UPDATE 2.0.0 IS HERE!!!
+
+ElusiveFluffy (Kana) jumped on board to bring us a brand new GUI to make Mul-Ty-Player foolproof.
+
+The rkv patcher is no more. Now, you can install the patch in less than a minute, directly from the client app.
+
+Finally, you can also select which koala you want to play as.
+
+![Koala Selection](/KoalaSelectionPreviewImage.png)
+
+Before installing, make sure you remove all pre-2.0.0 versions of Mul-Ty-Player from your computer, including the game files.
+
+You can remove the applications from the "Add or Remove Programs" section of your control panel.
+
+To remove the game files, delete the "Mul-Ty-Player" folder from your game directory.
+
+To install Mul-Ty-Player, go to the releases page and download the "Mul-Ty-Player 2.0.0 Installer.msi".
+
+Next, run the installer to get the client and server applications.
 
 The server application is only necessary if you wish to host sessions.
 
-Follow the instructions in the installer. Once completed, run the RKV patcher. This may take a while.
+The Mul-Ty-Player CLIENT should now be installed and ready to run.
 
-Mul-Ty-Player should now be installed and ready to run.
+### Installing Additional Files
 
-### Using The RKV Patcher
+Right click on "Mul-Ty-Player Client.exe" and select "Run as administrator".
 
-The RKV patcher is a simple application which automatically downloads the necessary game files and creates a new Mul-Ty-Player folder on your file system.
+In the top left of the splash screen, click the setup button.
 
-If you have previously used the RKV patcher or any old version of Mul-Ty-Player delete all game files for Mul-Ty-Player before using the RKV patcher.
+Select your original, clean, Ty the Tasmanian Tiger folder. This is the folder that contains the game files.
 
-If the RKV patcher crashes, run the app as administrator.
+Select the folder you wish to install the game files to. This is the folder that will contain the game files.
 
-Once the rkv patcher has finished, check the folder with the RKV patcher application. If there is a file called Data_PC.RKV,
-the application failed to move the file to the newly created Mul-Ty-Player folder. Simply locate this folder and drag the file across.
+Click "Install Patch" and wait for the installation to complete.
+
+If the "Install Patch" button doesn't appear, ensure that the original game folder is a clean copy of the game and that the destination folder is empty or contains a version of Mul-Ty-Player 2.0.0+
 
 ### Port Forwarding For Server Hosts.
 To run the server you'll need to open port 8750 on UDP.
@@ -48,12 +69,17 @@ With your port forwarding rule set up, people can now join your server using you
 ## Features
 
 ### New Features
-- Collectible synchronisation (that works this time)
-- TE, Cog, Bilby, Opal, Crate, Rang, and Portal syncing in real time
-- Faster code
+- New GUI.
+- Player list in client app.
+- Integrated install into client app.
+- Auto reconnect on network time out.
+- No disconnect if game crashes.
+- Functional password system.
+- Choose which koala to play as.
+- Crash stability. No more constant crashing.
+- Desync issues fixed.
+- Faster code.
 - K O A L A
-- Race your friends!!! Koalas will now appear in Time Attacks.
-- Smoother Koala movement than ever before! (They tilt now too)
 
 ### Bug Fixes
 
@@ -83,15 +109,17 @@ With your port forwarding rule set up, people can now join your server using you
 - Debug message removed
 - Patcher folder always created fixed
 
+#### 2.0.0
+- Opal duplication fixed
+- Opals now spawn correctly from crates
+- Safer menu checks
+
 ### Future Plans
-- Outback with koalas
-- Name Tags
-- Proximity chat
-- Pvp
+- Objectives Synchronisation
+- Picture Frames & Rainbow Scales Synchronisation
 
 ### Known Issues
-- Opals sometimes refuse to spawn from crates
-- Game is likely to crash more than usual (fixes are being worked on)
+- Sound effects sometimes fail to play
 
 ## Support
 
@@ -101,8 +129,10 @@ You can also leave feedback for future updates in my DMs on Discord Mcacutt#5671
 
 ## Acknowledgements
 
+ - [ElusiveFluffy (Kana Miyoshi)](https://github.com/ElusiveFluffy)
  - [Riptide Networking](https://github.com/RiptideNetworking/Riptide)
  - [Facepunch.Steamworks.Net](https://wiki.facepunch.com/steamworks/)
  - [Modding Team From Speedrunning Discord](https://discord.gg/ENTV72BWru)
  - [Kanesthename for Artwork](https://www.deviantart.com/kanesthename/art/Ty-The-Tasmanian-Tiger-Logo-Recreation-Render-271468546)
- - SilentKuudere and SirLaurenceNZ for stopping me from going mad and helping me to test
+ - SilentKuudere and SirLaurenceNZ for stopping me from going mad and helping me to test.
+ - GPT for learning with me and occasionally giving me useful code.

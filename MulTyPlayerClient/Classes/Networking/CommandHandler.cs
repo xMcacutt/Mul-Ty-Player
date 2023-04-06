@@ -70,7 +70,6 @@ namespace MulTyPlayerClient
                         }
                         string message = userInput[5..];
                         SendMessage(message, null);
-                        BasicIoC.LoggerInstance.Write("Sent message to all connected clients.");
                         break;
                     }
                 case "whisper":
@@ -112,9 +111,8 @@ namespace MulTyPlayerClient
         private static void SendMessage(string text, ushort? toClientId)
         {
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.P2PMessage);
-            message.AddString(text);
-            //bSendToAll
             message.AddBool(toClientId == null);
+            message.AddString(text);
             if(toClientId != null) message.AddUShort((ushort)toClientId);
             Client._client.Send(message);
         }

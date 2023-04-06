@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MulTyPlayerClient.GUI;
+using System;
 using System.Linq;
 
 namespace MulTyPlayerClient
@@ -35,8 +36,8 @@ namespace MulTyPlayerClient
             int currentCountMax = 16;
             while(currentCountMax != 8)
             {
-                int objectiveCounterAddr = PointerCalculations.GetPointerAddress(0x26A4B0, new int[] { 0x6C }, 2);
-                ProcessHandler.TryRead(objectiveCounterAddr, out short result, true);
+                int objectiveCounterAddr = PointerCalculations.GetPointerAddress(0x26A4B0, new int[] { 0x6E });
+                ProcessHandler.TryRead(objectiveCounterAddr, out byte result, false);
                 currentCountMax = result;
                 if (currentCountMax == 16)
                 {

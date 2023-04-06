@@ -15,18 +15,6 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_273B7F5F19128BC6172012E8BEEE625E"
-        "OwnerKey" = "8:_97389A78313E409399F9F90324A0F38C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_97389A78313E409399F9F90324A0F38C"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_9991C1EEA780487192390D6BC24DE2C2"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -47,18 +35,6 @@
         {
         "MsmKey" = "8:_CD05332290414F4EBB765BF3B1F446B3"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_97389A78313E409399F9F90324A0F38C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_273B7F5F19128BC6172012E8BEEE625E"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -166,37 +142,6 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_273B7F5F19128BC6172012E8BEEE625E"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
-                "ScatterAssemblies"
-                {
-                    "_273B7F5F19128BC6172012E8BEEE625E"
-                    {
-                    "Name" = "8:System.Net.Http.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:System.Net.Http.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_4573CF5A267749C3AD1C95DC850BCC50"
-            "Condition" = "8:INSTALLPATCHER"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9991C1EEA780487192390D6BC24DE2C2"
             {
             "SourcePath" = "8:Assets\\Treasure_Chest.ico"
@@ -266,7 +211,7 @@
                 {
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_652DFEE426ED4537BC8E0244B55E3F14"
                     {
-                    "Name" = "8:1.3.4"
+                    "Name" = "8:2.0.0"
                     "AlwaysCreate" = "11:TRUE"
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
@@ -280,17 +225,6 @@
                             "Condition" = "8:INSTALLCLIENT"
                             "Transitive" = "11:FALSE"
                             "Property" = "8:_F57B368C2AD249AC8CCD4DE40267E8DB"
-                                "Folders"
-                                {
-                                }
-                            }
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_4573CF5A267749C3AD1C95DC850BCC50"
-                            {
-                            "Name" = "8:RKV Patcher"
-                            "AlwaysCreate" = "11:FALSE"
-                            "Condition" = "8:INSTALLPATCHER"
-                            "Transitive" = "11:FALSE"
-                            "Property" = "8:_EF0F6916190842FDBE04F9F66E43E5C7"
                                 "Folders"
                                 {
                                 }
@@ -337,15 +271,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Mul-Ty-Player"
-        "ProductCode" = "8:{5F0C8F84-6526-4BCF-A5C8-B904A43F759E}"
-        "PackageCode" = "8:{36000DDA-5B50-4C95-9349-76F87005B910}"
+        "ProductCode" = "8:{DCB24C63-F788-4867-AD99-50CF9908136E}"
+        "PackageCode" = "8:{E97F2FCE-2B0C-42CE-BAC5-5F642DED1A31}"
         "UpgradeCode" = "8:{AF60A6AB-7BC1-42FD-BD79-ED15F182746A}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.3.4"
+        "ProductVersion" = "8:2.0.0"
         "Manufacturer" = "8:xMcacutt"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -902,7 +836,7 @@
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
                             "Setting" = "3:2"
-                            "Value" = "8:RKV Patcher"
+                            "Value" = "8:"
                             "DefaultValue" = "8:#1236"
                             "UsePlugInResources" = "11:TRUE"
                             }
@@ -915,7 +849,7 @@
                             "ContextData" = "8:Public"
                             "Attributes" = "3:2"
                             "Setting" = "3:2"
-                            "Value" = "8:INSTALLPATCHER"
+                            "Value" = "8:"
                             "DefaultValue" = "8:CHECKBOXB3"
                             "UsePlugInResources" = "11:TRUE"
                             }
@@ -941,7 +875,7 @@
                             "ContextData" = "8:1;True=1;False=0"
                             "Attributes" = "3:0"
                             "Setting" = "3:0"
-                            "Value" = "3:1"
+                            "Value" = "3:0"
                             "DefaultValue" = "3:1"
                             "UsePlugInResources" = "11:TRUE"
                             }
@@ -1119,34 +1053,6 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_97389A78313E409399F9F90324A0F38C"
-            {
-            "SourcePath" = "8:..\\RKV Patcher\\obj\\Release\\RKV Patcher.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_4573CF5A267749C3AD1C95DC850BCC50"
-            "Condition" = "8:INSTALLPATCHER"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{F31970F0-8073-4923-AAB0-797EAA1AF95B}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B28CC8CAD8904FFD80A883C5F1D6206F"
             {
             "SourcePath" = "8:..\\MulTyPlayerClient\\bin\\Release\\net7.0-windows\\publish\\win-x86\\Mul-Ty-Player Client CLI.exe"

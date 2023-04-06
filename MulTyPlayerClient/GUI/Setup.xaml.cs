@@ -63,5 +63,11 @@ namespace MulTyPlayerClient.GUI
         {
             BasicIoC.SetupViewModel.Install();
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            WindowHandler.SetupWindow.Hide();
+        }
     }
 }

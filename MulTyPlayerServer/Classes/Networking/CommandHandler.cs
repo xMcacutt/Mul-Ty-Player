@@ -168,9 +168,13 @@ namespace MulTyPlayerServer
         public static void Convey(ushort fromClientId, Message message)
         {
             Message response = Message.Create(MessageSendMode.Reliable, MessageID.P2PMessage);
-            string responseText = $"[{DateTime.Now}] {PlayerHandler.Players[fromClientId].Name}: {message.GetString()}";
+            bool bToAll = message.GetBool();
+            string messageText = message.GetString();
+            string responseText = bToAll ? 
+                $"[{DateTime.Now}] {PlayerHandler.Players[fromClientId].Name}: {messageText}" 
+                : $"[{DateTime.Now}] {PlayerHandler.Players[fromClientId].Name} [WHISPERED]: {messageText}";
             response.AddString(responseText);
-            if (message.GetBool()) Server._Server.SendToAll(response, fromClientId);
+            if (bToAll) Server._Server.SendToAll(response);
             else Server._Server.Send(response, message.GetUShort()); 
         }
     }
