@@ -190,7 +190,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="GUI\Sounds\Race10.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="GUI\Sounds\Race321.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

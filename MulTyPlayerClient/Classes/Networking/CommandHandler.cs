@@ -127,6 +127,9 @@ namespace MulTyPlayerClient
         public static void PeerReady(Message message)
         {
             PlayerHandler.Players[message.GetUShort()].IsReady = message.GetBool();
+            Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+                    new Action(BasicIoC.MainGUIViewModel.UpdateReadyStatus));
         }
 
         public void SetReady()
@@ -135,11 +138,17 @@ namespace MulTyPlayerClient
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.Ready);
             message.AddBool(PlayerHandler.Players[Client._client.Id].IsReady);
             Client._client.Send(message);
+            Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+                    new Action(BasicIoC.MainGUIViewModel.UpdateReadyStatus));
         }
 
         public void SetReady(ushort client)
         {
             PlayerHandler.Players[client].IsReady = !PlayerHandler.Players[client].IsReady;
+            Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+                    new Action(BasicIoC.MainGUIViewModel.UpdateReadyStatus));
         }
 
         [MessageHandler((ushort)MessageID.ReqHost)]

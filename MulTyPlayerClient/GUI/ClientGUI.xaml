@@ -23,6 +23,8 @@
                 <ResourceDictionary Source="/GUI/Styles.xaml"/>
                 <ResourceDictionary>
                     <local:BooleanToHostIconConverter x:Key="BooleanToHostIconConverter" />
+                    <local:ReadyCharConverter x:Key="ReadyCharConverter" />
+                    <local:SubstringConverter x:Key="SubstringConverter" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -30,7 +32,7 @@
     
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="1.7*"/>
             <ColumnDefinition Width="3.2*"/>
         </Grid.ColumnDefinitions>
 
@@ -45,8 +47,10 @@
             <TextBlock Grid.Row="0"
                        Style="{StaticResource ComicText}" 
                        VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
                        FontSize="28"
-                       Margin="10,0,0,0"
+                       Margin="0,0,0,0"
+                       Padding="0"
                        Text="Connected Koalas" />
             <DataGrid
                 Grid.Row="1"
@@ -66,7 +70,8 @@
                             <DataTemplate>
                                 <TextBlock Style="{StaticResource ComicText}" 
                                            VerticalAlignment="Center"
-                                           FontSize="16">
+                                           FontSize="16"
+                                           Padding="0">
                                         <Run Text="ID: " />
                                         <Run Text="{Binding ClientID}" />
                                 </TextBlock>
@@ -89,8 +94,10 @@
                             <DataTemplate>
                                 <TextBlock Style="{StaticResource ComicText}" 
                                            VerticalAlignment="Center"
-                                           FontSize="16"
-                                           Text="{Binding PlayerName}" />
+                                           FontSize="14"
+                                           Padding="0"
+                                           ToolTip="{Binding PlayerName}"
+                                           Text="{Binding PlayerName, Converter={StaticResource SubstringConverter}}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -102,6 +109,17 @@
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        Source="{Binding IsHost, Converter={StaticResource BooleanToHostIconConverter}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Ready Status" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Style="{StaticResource ComicText}" 
+                                        VerticalAlignment="Center"
+                                        Foreground="Black"
+                                        FontSize="16"
+                                        Text="{Binding IsReady, Converter={StaticResource ReadyCharConverter}}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

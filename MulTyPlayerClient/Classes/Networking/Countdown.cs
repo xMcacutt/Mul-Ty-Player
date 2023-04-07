@@ -23,7 +23,7 @@ namespace MulTyPlayerClient.Classes
                     if (i == 10) { SFXPlayer.PlaySound(SFX.Race10); }
                     BasicIoC.LoggerInstance.Write(i.ToString());
                     if(i == 3) { SFXPlayer.PlaySound(SFX.Race321); }
-                    Task.Delay(1000).Wait(1000);
+                    Task.Delay(1000).Wait();
                 }   
                 BasicIoC.LoggerInstance.Write("Go!");
             });

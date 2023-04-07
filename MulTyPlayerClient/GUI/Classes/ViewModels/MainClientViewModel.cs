@@ -52,6 +52,14 @@ namespace MulTyPlayerClient.GUI
                 player.IsHost = PlayerHandler.Players[player.ClientID].IsHost;
             }
         }
+
+        public void UpdateReadyStatus()
+        {
+            foreach (var player in PlayerInfoList)
+            {
+                player.IsReady = PlayerHandler.Players[player.ClientID].IsReady;
+            }
+        }
     }
 }
 

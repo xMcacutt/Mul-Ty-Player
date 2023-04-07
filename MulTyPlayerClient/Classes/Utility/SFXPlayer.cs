@@ -16,11 +16,14 @@ namespace MulTyPlayerClient
             Task.Run(() =>
             {
                 MediaPlayer player = new();
-                Task.Delay(100);
+                Task.Delay(50).Wait();
                 Uri uri = new(path);
                 player.Open(uri);
                 player.Volume = 0.1;
                 player.Play();
+                Task.Delay((int)player.NaturalDuration.TimeSpan.TotalMilliseconds).Wait();
+                player.Stop();
+                player.Close();
             });
         }
     }
