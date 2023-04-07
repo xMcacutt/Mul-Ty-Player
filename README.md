@@ -14,11 +14,20 @@ In just a few minutes, you can be exploring snowy mountains, swimming through sh
 
 ![Boonie](/Boonie.png)
 
-MEGA GUI UPDATE 2.0.0 IS HERE!!!
+2.1.0 is now available!!!
+
+This update fixes a few bugs and adds a few new features.
+Check the changelog below for more details.
+
+2.0.0 Update:
 
 ElusiveFluffy (Kana) jumped on board to bring us a brand new GUI to make Mul-Ty-Player foolproof.
 
+![ClientGUI](/ClientGUIDemo.png)
+
 The rkv patcher is no more. Now, you can install the patch in less than a minute, directly from the client app.
+
+![Patcher](/PatcherDemo.png)
 
 Finally, you can also select which koala you want to play as.
 
@@ -46,7 +55,8 @@ In the top left of the splash screen, click the setup button.
 
 Select your original, clean, Ty the Tasmanian Tiger folder. This is the folder that contains the game files.
 
-Select the folder you wish to install the game files to. This is the folder that will contain the game files.
+Select your Mul-Ty-Player folder. This is the folder that contains the game files.
+*If you don't have a Mul-Ty-Player folder yet, you can create and select an empty folder anywhere on your computer.*
 
 Click "Install Patch" and wait for the installation to complete.
 
@@ -66,10 +76,11 @@ To run the server you'll need to open port 8750 on UDP.
 
 With your port forwarding rule set up, people can now join your server using your public IP address.
 
-## Features
+## Changelog
 
 ### New Features
 - New GUI.
+- Ready up system and countdown.
 - Player list in client app.
 - Integrated install into client app.
 - Auto reconnect on network time out.
@@ -83,15 +94,27 @@ With your port forwarding rule set up, people can now join your server using you
 
 ### Bug Fixes
 
-#### 1.3.0
-- Basically everything wrong with v1.2.0
-- Black stump actually works now
+#### 2.1.0
+- Opal live -> save conversion fixed
+- Game no longer crashes when multiple people hit the credits screen
+- Long names are now truncated in the player list (tool tip still shows full name)
 
-#### 1.3.1
-- Spawning the Final Battle portal no longer crashes the server
-- Portals will appear in Rainbow Cliffs if someone activates one outside of Rainbow Cliffs
-- Debug output has been stripped from the applications
-- Counter Prop reset to original settings in LV2 (RKV PATCH)
+#### 2.0.1
+- Portal syncing fixed
+
+#### 2.0.0
+- Opal duplication fixed
+- Opals now spawn correctly from crates
+- Safer menu checks
+
+#### 1.3.4
+- Debug message removed
+- Patcher folder always created fixed
+
+#### 1.3.3
+- Koalas fixed in Snow Worries and BtBS
+- Debug messages stripped
+- Added version message
 
 #### 1.3.2
 - Rangs always sync after finishing boss
@@ -100,19 +123,15 @@ With your port forwarding rule set up, people can now join your server using you
 - Correct Koalas now appear in Bull's Pen
 - Opals are more likely to correctly spawn from crates
 
-#### 1.3.3
-- Koalas fixed in Snow Worries and BtBS
-- Debug messages stripped
-- Added version message
+#### 1.3.1
+- Spawning the Final Battle portal no longer crashes the server
+- Portals will appear in Rainbow Cliffs if someone activates one outside of Rainbow Cliffs
+- Debug output has been stripped from the applications
+- Counter Prop reset to original settings in LV2 (RKV PATCH)
 
-#### 1.3.4
-- Debug message removed
-- Patcher folder always created fixed
-
-#### 2.0.0
-- Opal duplication fixed
-- Opals now spawn correctly from crates
-- Safer menu checks
+#### 1.3.0
+- Basically everything wrong with v1.2.0
+- Black stump actually works now
 
 ### Future Plans
 - Objectives Synchronisation
@@ -120,6 +139,7 @@ With your port forwarding rule set up, people can now join your server using you
 
 ### Known Issues
 - Sound effects sometimes fail to play
+- Client can very rarely crash if the game crashes
 
 ## Support
 

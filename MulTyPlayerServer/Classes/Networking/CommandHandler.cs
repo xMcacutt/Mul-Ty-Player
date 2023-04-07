@@ -169,7 +169,7 @@ namespace MulTyPlayerServer
         public static void ClientReady(ushort fromClientId, Message message)
         {
             bool ready = message.GetBool();
-            string readyStatus = ready? "ready" : "no longer ready";
+            //string readyStatus = ready? "ready" : "no longer ready";
             PlayerHandler.Players[fromClientId].IsReady = ready;
 
             Message status = Message.Create(MessageSendMode.Reliable, MessageID.Ready);
@@ -177,7 +177,7 @@ namespace MulTyPlayerServer
             status.AddBool(ready);
             Server._Server.SendToAll(status, fromClientId);
 
-            Server.SendMessageToClients($"Client {fromClientId} is {readyStatus}, {PlayerHandler.Players.Count(x => x.Value.IsReady)} / {Server._Server.ClientCount}", true);
+            //Server.SendMessageToClients($"Client {fromClientId} is {readyStatus}, {PlayerHandler.Players.Count(x => x.Value.IsReady)} / {Server._Server.ClientCount}", true);
             if (PlayerHandler.Players.Count(x => x.Value.IsReady) == Server._Server.ClientCount)
             {
                 foreach (var entry in PlayerHandler.Players)
