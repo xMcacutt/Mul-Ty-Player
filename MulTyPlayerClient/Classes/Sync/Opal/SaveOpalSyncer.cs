@@ -25,7 +25,7 @@ namespace MulTyPlayerClient
             int byteIndex = (int)Math.Ceiling((float)newIndex / 8);
             int bitIndex = newIndex % 8;
 
-            int address = (SyncHandler.SaveDataBaseAddress + (0x70 * (int)level) + byteIndex);
+            int address = (SyncHandler.SaveDataBaseAddress + 0x1 + (0x70 * (int)level) + byteIndex);
             ProcessHandler.TryRead(address, out byte b, false);
             b |= (byte)(1 << bitIndex);
             ProcessHandler.WriteData(address, new byte[] {b}, "Setting new opal save data byte value");
