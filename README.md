@@ -1,4 +1,3 @@
-
 ![Mul-Ty-Player](/Multyplayer%20logo.png)
 # Mul-Ty-Player
 
@@ -45,6 +44,8 @@ Next, run the installer to get the client and server applications.
 
 The server application is only necessary if you wish to host sessions.
 
+Avoid installing the client and server in protected locations such as Program Files.
+
 The Mul-Ty-Player CLIENT should now be installed and ready to run.
 
 ### Installing Additional Files
@@ -71,7 +72,7 @@ To run the server you'll need to open port 8750 on UDP.
 4. Log in to your router.
 5. Set up a new port forwarding rule.
 6. Paste IPv4 address into forwarding address, set port to 8750, set rule to UDP.
-7. READ THE ABOVE SENTENCE AGAIN AND MAKE SURE THE RULE IS UDP.
+7. *Read the above sentence again and make sure the rule is set to UDP.*
 8. Go to https://www.whatismypublicip.com/ this is your public IP address.
 
 With your port forwarding rule set up, people can now join your server using your public IP address.
