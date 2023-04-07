@@ -8,17 +8,19 @@ namespace MulTyPlayerServer
         public string Name;
         public ushort ClientID;
         public bool IsHost;
+        public bool IsReady;
         public float[] Coordinates;
         public int CurrentLevel;
         public int PreviousLevel = 99;
 
-        public Player(Koala koala, string name, ushort id, bool isHost)
+        public Player(Koala koala, string name, ushort id, bool isHost, bool isReady)
         {
             Koala = koala;
             Name = name;
             ClientID = id;
             IsHost = isHost;
             Coordinates = new float[6];
+            IsReady = isReady;
         }
     }
 }

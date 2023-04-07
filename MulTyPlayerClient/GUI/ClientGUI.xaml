@@ -179,19 +179,34 @@
                                TextWrapping="WrapWithOverflow"/>-->
                 </Border>
 
-                <Button Margin="3" 
+                <StackPanel Orientation="Horizontal">
+                    <Button Margin="3" 
                         BorderBrush="{x:Null}"
                         Click="SettingsButton_Click"
                         Background="#FFDDDDDD"
                         HorizontalAlignment="Left"
                         Width="40">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="15"/>
-                        </Style>
-                    </Button.Resources>
-                    <Image Source="{StaticResource settings_black_24dpDrawingImage}"/>
-                </Button>
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="15"/>
+                            </Style>
+                        </Button.Resources>
+                        <Image Source="{StaticResource settings_black_24dpDrawingImage}"/>
+                    </Button>
+                    <Button Margin="3" 
+                        BorderBrush="{x:Null}"
+                        Click="ReadyButton_Click"
+                        Background="#FFDDDDDD"
+                        HorizontalAlignment="Left"
+                        Width="Auto">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="15"/>
+                            </Style>
+                        </Button.Resources>
+                        <TextBlock Padding="10" Style="{StaticResource ComicText}" FontSize="20" VerticalAlignment="Center" Text="{Binding ReadyText, Source={x:Static local:BasicIoC.MainGUIViewModel}}"/>
+                    </Button>
+                </StackPanel>
 
                 <Button Margin="3"
                         BorderBrush="{x:Null}" 

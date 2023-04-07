@@ -16,6 +16,7 @@ namespace MulTyPlayerClient
             Task.Run(() =>
             {
                 MediaPlayer player = new();
+                Task.Delay(100);
                 Uri uri = new(path);
                 player.Open(uri);
                 player.Volume = 0.1;

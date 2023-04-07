@@ -55,5 +55,10 @@ namespace MulTyPlayerClient.GUI
             e.Cancel = true;
             WindowHandler.ClientGUIWindow.Hide();
         }
+
+        private void ReadyButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.HCommand.SetReady();
+        }
     }
 }

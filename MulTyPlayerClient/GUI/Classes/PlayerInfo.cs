@@ -15,6 +15,7 @@ namespace MulTyPlayerClient.GUI
         public BitmapImage KoalaIcon { get; set; }
         public string PlayerName { get; set; }
         public bool IsHost { get; set; }
+        public bool IsReady { get; set; }
 
         public PlayerInfo(ushort clientID, string playerName, string koalaName) 
         {
@@ -24,6 +25,7 @@ namespace MulTyPlayerClient.GUI
             KoalaIcon = new BitmapImage(new Uri(koalaIconPath));
             KoalaIcon.Freeze();
             IsHost = PlayerHandler.Players[clientID].IsHost;
+            IsReady = PlayerHandler.Players[clientID].IsReady;
         }
     }
 }

@@ -23,6 +23,8 @@ namespace MulTyPlayerServer
         HostCommand,
         KoalaSelected,
         AnnounceDisconnect,
-        P2PMessage
+        P2PMessage,
+        Ready,
+        Countdown
     }
 }

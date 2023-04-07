@@ -19,7 +19,7 @@ namespace MulTyPlayerServer
         public static void AddPlayer(string koalaName, string name, ushort clientID, bool isHost)
         {
             Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
-            Players.Add(clientID, new Player(koala, name, clientID, isHost));
+            Players.Add(clientID, new Player(koala, name, clientID, isHost, false));
         }
 
         public static void RemovePlayer(ushort id)

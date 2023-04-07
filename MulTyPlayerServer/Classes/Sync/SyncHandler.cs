@@ -57,10 +57,6 @@ namespace MulTyPlayerServer
         private static void HandleServerDataUpdate(ushort fromClientId, Message message)
         {
             SyncMessage syncMessage = SyncMessage.Decode(message);
-            if (syncMessage.type == "Opal")
-            {
-                Console.WriteLine("LiveNumber: " + syncMessage.iLive + " SaveNumber: " + syncMessage.iSave + " For Level: " + syncMessage.level);
-            }
             //Console.WriteLine($"{syncMessage.type} {syncMessage.iLive} collected in level {syncMessage.level} by client {fromClientId}.");
             Program.HSync.Syncers[syncMessage.type].HandleServerUpdate(syncMessage.iLive, syncMessage.iSave, syncMessage.level, fromClientId);
         }

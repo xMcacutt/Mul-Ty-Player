@@ -189,6 +189,15 @@
     <None Update="GUI\Sounds\PlayerDisconnect.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="GUI\Sounds\Race10.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI\Sounds\Race321.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="GUI\Sounds\RaceStart.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="help.mtps">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -20,10 +20,13 @@ namespace MulTyPlayerClient.GUI
 
         public string Input { get; set; }
 
+        public string ReadyText { get; set; }
+
         public MainClientViewModel()
         {
             PlayerInfoList = new ObservableCollection<PlayerInfo>();
             ManageInputCommand = new RelayCommand(ManageInput);
+            ReadyText = "Ready";
         }
 
         public void ResetPlayerList()

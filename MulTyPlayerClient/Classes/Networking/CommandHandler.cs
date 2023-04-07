@@ -1,5 +1,6 @@
 ﻿using MulTyPlayerClient.GUI;
 using Riptide;
+using Riptide.Transports;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -51,6 +52,11 @@ namespace MulTyPlayerClient
                             break;
                         }
                         RequestHost();
+                        break;
+                    }
+                case "ready":
+                    {
+                        SetReady();
                         break;
                     }
                 case "help":
@@ -117,6 +123,25 @@ namespace MulTyPlayerClient
             Client._client.Send(message);
         }
 
+        [MessageHandler((ushort)MessageID.Ready)]
+        public static void PeerReady(Message message)
+        {
+            PlayerHandler.Players[message.GetUShort()].IsReady = message.GetBool();
+        }
+
+        public void SetReady()
+        {
+            PlayerHandler.Players[Client._client.Id].IsReady = !PlayerHandler.Players[Client._client.Id].IsReady;
+            Message message = Message.Create(MessageSendMode.Reliable, MessageID.Ready);
+            message.AddBool(PlayerHandler.Players[Client._client.Id].IsReady);
+            Client._client.Send(message);
+        }
+
+        public void SetReady(ushort client)
+        {
+            PlayerHandler.Players[client].IsReady = !PlayerHandler.Players[client].IsReady;
+        }
+
         [MessageHandler((ushort)MessageID.ReqHost)]
         public static void RequestHostResponse(Message message)
         {
@@ -151,6 +176,7 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ResetSync)]
         private static void HandleSyncReset(Message message)
         {
+            BasicIoC.LoggerInstance.Write("Synchronisations have been reset to new game state.");
             Client.HSync = new SyncHandler();
         }
 

@@ -2,12 +2,13 @@
 using System.Linq;
 using System.IO;
 using System;
+using System.Threading;
+using System.Security.Cryptography.X509Certificates;
 
 namespace MulTyPlayerServer
 {
     internal class CommandHandler
     {
-
         public static string ParseCommand(string userInput)
         {
             if (userInput == null) { return null; }
@@ -164,6 +165,29 @@ namespace MulTyPlayerServer
             Server._Server.Send(response, fromClientId);
         }
 
+        [MessageHandler((ushort)MessageID.Ready)]
+        public static void ClientReady(ushort fromClientId, Message message)
+        {
+            bool ready = message.GetBool();
+            string readyStatus = ready? "ready" : "no longer ready";
+            PlayerHandler.Players[fromClientId].IsReady = ready;
+            Message status = Message.Create(MessageSendMode.Reliable, MessageID.Ready);
+            status.AddUShort(fromClientId);
+            status.AddBool(ready);
+            Server._Server.SendToAll(status, fromClientId);
+            Server.SendMessageToClients($"Client {fromClientId} is {readyStatus}, {PlayerHandler.Players.Count(x => x.Value.IsReady)} / {Server._Server.ClientCount}", true);
+            if (PlayerHandler.Players.Count(x => x.Value.IsReady) == Server._Server.ClientCount)
+            {
+                foreach (var entry in PlayerHandler.Players)
+                {
+                    entry.Value.IsReady = false;
+                }
+                Server.SendMessageToClients("All clients are ready, starting countdown", true);
+                Message countdownStart = Message.Create(MessageSendMode.Reliable, MessageID.Countdown);
+                Server._Server.SendToAll(countdownStart);
+            }
+        }
+
         [MessageHandler((ushort)MessageID.P2PMessage)]
         public static void Convey(ushort fromClientId, Message message)
         {
@@ -171,8 +195,8 @@ namespace MulTyPlayerServer
             bool bToAll = message.GetBool();
             string messageText = message.GetString();
             string responseText = bToAll ? 
-                $"[{DateTime.Now}] {PlayerHandler.Players[fromClientId].Name}: {messageText}" 
-                : $"[{DateTime.Now}] {PlayerHandler.Players[fromClientId].Name} [WHISPERED]: {messageText}";
+                $"[{DateTime.Now:HH:mm:ss}] {PlayerHandler.Players[fromClientId].Name}: {messageText}" 
+                : $"[{DateTime.Now:HH:mm:ss}] {PlayerHandler.Players[fromClientId].Name} [WHISPERED]: {messageText}";
             response.AddString(responseText);
             if (bToAll) Server._Server.SendToAll(response);
             else Server._Server.Send(response, message.GetUShort()); 
