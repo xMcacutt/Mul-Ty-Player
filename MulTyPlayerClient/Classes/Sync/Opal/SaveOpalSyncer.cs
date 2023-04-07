@@ -22,7 +22,7 @@ namespace MulTyPlayerClient
             int crateOpals = SyncHandler.HOpal.CrateOpalsPerLevel[(int)level];
             int newIndex = index > (299 - crateOpals) ? 300 - crateOpals + (299 - index) : index;
 
-            int byteIndex = newIndex / 8;
+            int byteIndex = (int)Math.Ceiling((float)newIndex / 8);
             int bitIndex = newIndex % 8;
 
             int address = (SyncHandler.SaveDataBaseAddress + (0x70 * (int)level) + byteIndex);
