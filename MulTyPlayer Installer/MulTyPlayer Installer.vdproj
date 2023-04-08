@@ -211,7 +211,7 @@
                 {
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_652DFEE426ED4537BC8E0244B55E3F14"
                     {
-                    "Name" = "8:2.1.0"
+                    "Name" = "8:2.1.1"
                     "AlwaysCreate" = "11:TRUE"
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
@@ -271,15 +271,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Mul-Ty-Player"
-        "ProductCode" = "8:{DADC5201-E8E0-43CB-AF6C-CE8B9DA1A80F}"
-        "PackageCode" = "8:{E9AF3317-57E5-44F6-99B9-AB7A7DF73019}"
+        "ProductCode" = "8:{B574F0B5-C7AB-4B1F-8E20-B90551392999}"
+        "PackageCode" = "8:{11ACB253-6EAB-49FC-B67C-1DD74A8FC1BE}"
         "UpgradeCode" = "8:{AF60A6AB-7BC1-42FD-BD79-ED15F182746A}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:2.1.0"
+        "ProductVersion" = "8:2.1.1"
         "Manufacturer" = "8:xMcacutt"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

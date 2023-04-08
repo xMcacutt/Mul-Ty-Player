@@ -41,7 +41,7 @@ namespace MulTyPlayerClient.GUI
                 string filePath = System.IO.Path.Combine(tyPath, fileName);
                 FileInfo fileInfo = new FileInfo(filePath);
                 int index = Array.IndexOf(BasicIoC.SetupViewModel.TyFileNames, fileName);
-                if (fileInfo.Exists && fileInfo.Length == BasicIoC.SetupViewModel.TyFileSizes[index])
+                if (fileInfo.Exists)
                 {
                     i++;
                 }

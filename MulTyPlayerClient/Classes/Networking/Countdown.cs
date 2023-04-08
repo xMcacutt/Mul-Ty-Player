@@ -17,6 +17,7 @@ namespace MulTyPlayerClient.Classes
             {
                 entry.Value.IsReady = false;
             }
+            BasicIoC.MainGUIViewModel.UpdateReadyStatus();
             Task.Run(() => {
                 for (int i = 10; i > 0; i--)
                 {

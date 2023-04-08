@@ -13,9 +13,9 @@ In just a few minutes, you can be exploring snowy mountains, swimming through sh
 
 ![Boonie](/Boonie.png)
 
-2.1.0 is now available!!!
+2.1.1 is now available!!!
 
-This update fixes a few bugs and adds a few new features.
+This update fixes a few bugs.
 Check the changelog below for more details.
 
 2.0.0 Update:
@@ -94,6 +94,12 @@ With your port forwarding rule set up, people can now join your server using you
 - K O A L A
 
 ### Bug Fixes
+
+#### 2.1.1
+- Install patch button is far less picky and no longer checks file sizes of clean files
+- Ready indicators update visually when the countdown resets them
+- /restart command removed from host privilages and is only available from server app
+- Upscaled koala textures included in new RKV
 
 #### 2.1.0
 - Opal live -> save conversion fixed

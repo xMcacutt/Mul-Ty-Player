@@ -22,8 +22,7 @@ namespace MulTyPlayerClient
                 "resetsync",
                 "kick",
                 "password",
-                "clist",
-                "restart"
+                "clist"
             };
         }
 

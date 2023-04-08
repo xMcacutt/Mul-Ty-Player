@@ -20,7 +20,6 @@ namespace MulTyPlayerClient.GUI
         public string MTPPath { get; set; }
 
         public string[] TyFileNames = { "Data_PC.rkv", "Music_PC.rkv", "Override_PC.rkv", "Video_PC.rkv", "OpenAL32.dll", "soft_oal.dll", "steam_api.dll", "steam_appid.txt", "TY.exe"};
-        public long[] TyFileSizes = { 1574956936, 150179528, 77896, 1109856456, 843809, 843809, 187472, 6, 2762752 };
 
         public string ProgressText { get; set; }
         public int ProgressPercentage { get; set; }
