@@ -100,7 +100,7 @@ With your port forwarding rule set up, people can now join your server using you
 #### 2.1.1
 - Install patch button is far less picky and no longer checks file sizes of clean files
 - Ready indicators update visually when the countdown resets them
-- /restart command removed from host privilages and is only available from server app
+- /restart command removed from host privileges and is only available from server app
 - Upscaled koala textures included in new RKV
 
 #### 2.1.0
