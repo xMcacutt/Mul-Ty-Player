@@ -38,6 +38,8 @@ You can remove the applications from the "Add or Remove Programs" section of you
 
 To remove the game files, delete the "Mul-Ty-Player" folder from your game directory.
 
+WARNING! Until further notice, if you do not see the install patch button on selecting your Ty and Mul-Ty-Player folders in the patcher, you will need to do a clean reinstall of your clean Ty game files.
+
 To install Mul-Ty-Player, go to the releases page and download the "Mul-Ty-Player 2.0.0 Installer.msi".
 
 Next, run the installer to get the client and server applications.
