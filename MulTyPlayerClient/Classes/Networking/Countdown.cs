@@ -52,7 +52,7 @@ namespace MulTyPlayerClient.Classes
 
         private static bool CheckAbort()
         {
-            return !Client.HGameState.CheckMainMenu();
+            return !Client.HGameState.CheckMainMenu() || BasicIoC.MainGUIViewModel.PlayerInfoList.Any(p => p.Level != "Menu");
         }
     }
 }
