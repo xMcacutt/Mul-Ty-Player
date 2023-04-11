@@ -48,7 +48,7 @@ namespace MulTyPlayerServer
                     {
                         if (args.Length == 0)
                         {
-                            return $"The current password is {SettingsHandler.Password}\nTo set a new password use /password [password]";
+                            return $"The current password is {SettingsHandler.Settings.Password}\nTo set a new password use /password [password]";
                         }
                         return SetPassword(args[0]);
                     }
@@ -124,8 +124,8 @@ namespace MulTyPlayerServer
             {
                 return $"{password} is not a valid password. A password must be exactly 5 LETTERS.";
             }
-            SettingsHandler.Password = password.ToUpper();
-            return $"{SettingsHandler.Password} set as new password.";
+            SettingsHandler.Settings.Password = password.ToUpper();
+            return $"{SettingsHandler.Settings.Password} set as new password.";
         }
 
         private static bool HostExists()

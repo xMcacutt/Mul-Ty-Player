@@ -1,4 +1,5 @@
-﻿using Riptide;
+﻿using MulTyPlayerClient.GUI;
+using Riptide;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -108,10 +109,11 @@ namespace MulTyPlayerClient
         private static void HandleGettingCoordinates(Message message)
         {
             if (!Client.KoalaSelected || Client.Relaunching) return;
+            ushort clientID = message.GetUShort();
             string koalaName = message.GetString();
             int level = message.GetInt();
             float[] coordinates = message.GetFloats();
-
+            BasicIoC.MainGUIViewModel.PlayerInfoList.FirstOrDefault(p => p.ClientID == clientID).Level = Enum.GetName(typeof(LevelID), level);
             //SANITY CHECK THAT WE HAVEN'T BEEN SENT OUR OWN COORDINATES AND WE AREN'T LOADING, ON THE MENU, OR IN A DIFFERENT LEVEL 
             if (!PlayerHandler.Players.TryGetValue(Client._client.Id, out Player p) ||
                 HGameState.CheckMenuOrLoading() || 

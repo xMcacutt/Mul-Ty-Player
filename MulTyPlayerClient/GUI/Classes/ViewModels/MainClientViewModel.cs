@@ -6,6 +6,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -22,10 +23,18 @@ namespace MulTyPlayerClient.GUI
 
         public string ReadyText { get; set; }
 
+        public bool ReadyEnabled { get; set; }
+
+        public bool IsOnMenu { get; set; }
+
+        public bool IsReadyButtonEnabled => IsOnMenu && ReadyEnabled;
+
         public MainClientViewModel()
         {
             PlayerInfoList = new ObservableCollection<PlayerInfo>();
             ManageInputCommand = new RelayCommand(ManageInput);
+            ReadyEnabled = true;
+            IsOnMenu = false;
             ReadyText = "Ready";
         }
 

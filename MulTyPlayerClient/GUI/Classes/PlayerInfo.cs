@@ -16,6 +16,7 @@ namespace MulTyPlayerClient.GUI
         public string PlayerName { get; set; }
         public bool IsHost { get; set; }
         public bool IsReady { get; set; }
+        public string Level { get; set; }
 
         public PlayerInfo(ushort clientID, string playerName, string koalaName) 
         {

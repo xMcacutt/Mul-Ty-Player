@@ -29,6 +29,7 @@ namespace MulTyPlayerClient.GUI
         private void LoginWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Application.Current.Shutdown();
+            Environment.Exit(0);
         }
     }
 }

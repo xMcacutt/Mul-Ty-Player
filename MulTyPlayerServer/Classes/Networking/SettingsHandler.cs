@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,47 +20,40 @@ namespace MulTyPlayerServer
 
     internal class SettingsHandler
     {
-        private static string[] _settingsFileLines;
-        public static string Password;
-        public static string[] KoalaOrder;
-        public static bool DoSyncTEs;
-        public static bool DoSyncCogs;
-        public static bool DoSyncBilbies;
-        public static bool DoSyncRangs;
-        public static bool DoSyncOpals;
-        public static bool DoSyncPortals;
-        public static bool DoSyncCliffs;
+        public static Settings Settings { get; private set; }
 
         public static Dictionary<string, bool> SyncSettings;
-        
+
         public static void Setup()
         {
-            _settingsFileLines = File.ReadAllLines("./ServerSettings.mtps");
-            Password = _settingsFileLines[4].Split('=')[1].TrimStart();
-            KoalaOrder = _settingsFileLines[6].Split('=')[1].RemoveWhiteSpaces().Split(',');
-            DoSyncTEs = _settingsFileLines[8].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
-            DoSyncCogs = _settingsFileLines[10].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
-            DoSyncBilbies = _settingsFileLines[12].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
-            DoSyncRangs = _settingsFileLines[14].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
-            DoSyncOpals = _settingsFileLines[16].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
-            DoSyncPortals = _settingsFileLines[18].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
-            DoSyncCliffs = _settingsFileLines[20].Split('=')[1].TrimStart().Equals("true", StringComparison.CurrentCultureIgnoreCase);
+            string json = File.ReadAllText("./ServerSettings.json");
+            Settings = JsonConvert.DeserializeObject<Settings>(json);
+
             SyncSettings = new()
             {
-                {"TE", DoSyncTEs},
-                {"Cog", DoSyncCogs},
-                {"Bilby", DoSyncBilbies},
-                {"Attribute", DoSyncRangs},
-                {"Opal", DoSyncOpals},
-                {"Crate", DoSyncOpals},
-                {"Portal", DoSyncPortals},
-                {"RC", DoSyncCliffs}
+                {"TE", Settings.DoSyncTEs},
+                {"Cog", Settings.DoSyncCogs},
+                {"Bilby", Settings.DoSyncBilbies},
+                {"Attribute", Settings.DoSyncRangs},
+                {"Opal", Settings.DoSyncOpals},
+                {"Crate", Settings.DoSyncOpals},
+                {"Portal", Settings.DoSyncPortals},
+                {"RC", Settings.DoSyncCliffs}
             };
         }
 
         public static void SendSettings(ushort clientId)
         {
-            bool[] b = { DoSyncTEs, DoSyncCogs, DoSyncBilbies, DoSyncRangs, DoSyncOpals, DoSyncPortals, DoSyncCliffs };
+            bool[] b = 
+            { 
+                Settings.DoSyncTEs, 
+                Settings.DoSyncCogs, 
+                Settings.DoSyncBilbies, 
+                Settings.DoSyncRangs, 
+                Settings.DoSyncOpals, 
+                Settings.DoSyncPortals, 
+                Settings.DoSyncCliffs 
+            };
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.SyncSettings);
             message.AddBools(b);
             Server._Server.Send(message, clientId);

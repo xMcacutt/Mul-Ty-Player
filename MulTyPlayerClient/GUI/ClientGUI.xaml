@@ -18,6 +18,20 @@
                 <Setter Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="Foreground" Value="Black"/>
             </Style>
+            <ControlTemplate x:Key="ButtonTemplate" TargetType="{x:Type Button}">
+                <Border Name="border" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+                    <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter TargetName="border" Property="Opacity" Value="0.5"/>
+                        <Setter Property="Foreground" Value="#FFDDDDDD"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="border" Property="Background" Value="#FFFFBF70"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/GUI/Icons.xaml"/>
                 <ResourceDictionary Source="/GUI/Styles.xaml"/>
@@ -25,6 +39,7 @@
                     <local:BooleanToHostIconConverter x:Key="BooleanToHostIconConverter" />
                     <local:ReadyCharConverter x:Key="ReadyCharConverter" />
                     <local:SubstringConverter x:Key="SubstringConverter" />
+                    <local:LevelNameConverter x:Key="LevelNameConverter" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -71,7 +86,7 @@
                                 <TextBlock Style="{StaticResource ComicText}" 
                                            VerticalAlignment="Center"
                                            FontSize="16"
-                                           Padding="0">
+                                           Padding="3">
                                         <Run Text="ID: " />
                                         <Run Text="{Binding ClientID}" />
                                 </TextBlock>
@@ -112,13 +127,25 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Ready Status" Width="Auto">
+                    <DataGridTemplateColumn Header="Level" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Style="{StaticResource ComicText}" 
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           Padding="3"
+                                           ToolTip="{Binding Level, Converter={StaticResource LevelNameConverter}}"
+                                           Text="{Binding Level}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Ready Status" Width="">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Style="{StaticResource ComicText}" 
                                         VerticalAlignment="Center"
-                                        Foreground="Black"
                                         FontSize="16"
+                                        Padding="3"
                                         Text="{Binding IsReady, Converter={StaticResource ReadyCharConverter}}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -199,11 +226,12 @@
 
                 <StackPanel Orientation="Horizontal">
                     <Button Margin="3" 
-                        BorderBrush="{x:Null}"
-                        Click="SettingsButton_Click"
-                        Background="#FFDDDDDD"
-                        HorizontalAlignment="Left"
-                        Width="40">
+                            BorderBrush="{x:Null}"
+                            Click="SettingsButton_Click"
+                            Background="#FFDDDDDD"
+                            HorizontalAlignment="Left"
+                            Template="{StaticResource ButtonTemplate}"
+                            Width="40">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="15"/>
@@ -212,11 +240,13 @@
                         <Image Source="{StaticResource settings_black_24dpDrawingImage}"/>
                     </Button>
                     <Button Margin="3" 
-                        BorderBrush="{x:Null}"
-                        Click="ReadyButton_Click"
-                        Background="#FFDDDDDD"
-                        HorizontalAlignment="Left"
-                        Width="Auto">
+                            BorderBrush="{x:Null}"
+                            Click="ReadyButton_Click"
+                            Background="#FFDDDDDD"
+                            HorizontalAlignment="Left"
+                            Width="Auto"
+                            IsEnabled="{Binding IsReadyButtonEnabled, Source={x:Static local:BasicIoC.MainGUIViewModel}}"
+                            Template="{StaticResource ButtonTemplate}">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="15"/>
@@ -231,6 +261,7 @@
                         Background="#FFDDDDDD"
                         HorizontalAlignment="Right"
                         Width="40"
+                        Template="{StaticResource ButtonTemplate}"
                         Click="LogOutButton_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
@@ -275,6 +306,7 @@
                     <Button VerticalAlignment="Stretch" 
                             BorderBrush="{x:Null}" 
                             Command="{Binding ManageInputCommand, Source={x:Static local:BasicIoC.MainGUIViewModel}}"
+                            Template="{StaticResource ButtonTemplate}"
                             Grid.Column="1">
                         <Image Source="{StaticResource send_black_24dpDrawingImage}"/>
                     </Button>

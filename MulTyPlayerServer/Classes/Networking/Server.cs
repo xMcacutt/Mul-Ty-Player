@@ -27,7 +27,7 @@ namespace MulTyPlayerServer
         private static void Loop()
         {
             _Server = new Riptide.Server();
-            _Server.Start(8750, 8);
+            _Server.Start(SettingsHandler.Settings.Port, 8);
 
             _Server.HandleConnection += (s, e) => HandleConnection(s, e);
             _Server.ClientConnected += (s, e) => ClientConnected(s, e);
@@ -66,13 +66,14 @@ namespace MulTyPlayerServer
         private static void HandleConnection(Connection pendingConnection, Message authenticationMessage)
         {
             string pass = authenticationMessage.GetString();
-            if (string.Equals(pass, SettingsHandler.Password, StringComparison.CurrentCultureIgnoreCase)
-                || string.Equals(SettingsHandler.Password, "XXXXX", StringComparison.CurrentCultureIgnoreCase)
-                || string.IsNullOrWhiteSpace(SettingsHandler.Password))
+            if (!string.Equals(pass, SettingsHandler.Settings.Password, StringComparison.CurrentCultureIgnoreCase)
+                && !string.Equals(SettingsHandler.Settings.Password, "XXXXX", StringComparison.CurrentCultureIgnoreCase)
+                && !string.IsNullOrWhiteSpace(SettingsHandler.Settings.Password)
+                && _Server.ClientCount > 0)
             {
-                _Server.Accept(pendingConnection);
+                _Server.Reject(pendingConnection);
             }
-            else _Server.Reject(pendingConnection);
+            else _Server.Accept(pendingConnection);
         }
 
         private static void ClientConnected(object sender, ServerConnectedEventArgs e)
@@ -98,6 +99,7 @@ namespace MulTyPlayerServer
             foreach (Player player in PlayerHandler.Players.Values)
             {
                 Message message = Message.Create(MessageSendMode.Unreliable, MessageID.KoalaCoordinates);
+                message.AddUShort(player.ClientID);
                 message.AddString(koalaName);
                 message.AddInt(level);
                 message.AddFloats(coordinates);

@@ -1,6 +1,7 @@
 ﻿using Steamworks.Data;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Media;
 using System.Text;
@@ -15,15 +16,10 @@ namespace MulTyPlayerClient
         {
             Task.Run(() =>
             {
-                MediaPlayer player = new();
-                Task.Delay(50).Wait();
+                MediaPlayer player = new() { Volume = 0.15 };
                 Uri uri = new(path);
                 player.Open(uri);
-                player.Volume = 0.1;
                 player.Play();
-                Task.Delay((int)player.NaturalDuration.TimeSpan.TotalMilliseconds).Wait();
-                player.Stop();
-                player.Close();
             });
         }
     }

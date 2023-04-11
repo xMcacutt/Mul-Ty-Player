@@ -63,7 +63,8 @@ namespace MulTyPlayerClient
 
             Message authentication = Message.Create();
             authentication.AddString(_pass);
-            _client.Connect(_ip + ":8750", 5, 0, authentication);
+            if (!_ip.Contains(':')) { _ip += ":" + SettingsHandler.Settings.Port; }
+            _client.Connect(_ip, 5, 0, authentication);
 
             Thread _loop = new(() => ClientLoop(cts.Token));
             _loop.Start();
@@ -80,7 +81,6 @@ namespace MulTyPlayerClient
             {
                 try
                 {
-                    if (ProcessHandler.MemoryReadDebugLogging || ProcessHandler.MemoryWriteDebugLogging) BasicIoC.LoggerInstance.Write("|----------------> Start of Cycle <----------------|");
                     //GET GAME LOADING STATUS
                     HGameState.CheckLoaded();
                     if (!HGameState.LoadingState)

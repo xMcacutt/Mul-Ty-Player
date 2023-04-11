@@ -1,4 +1,5 @@
 ﻿using MulTyPlayerClient.GUI;
+using Riptide;
 using System;
 using System.Linq;
 
@@ -28,6 +29,10 @@ namespace MulTyPlayerClient
         public void GetCurrentLevel()
         {
             ProcessHandler.TryRead(0x280594, out int result, true);
+            if (BasicIoC.MainGUIViewModel.PlayerInfoList?.Any(p => p.ClientID == Client._client.Id) == true)
+            {
+                BasicIoC.MainGUIViewModel.PlayerInfoList.First(p => p.ClientID == Client._client.Id).Level = Enum.GetName(typeof(LevelID), result);
+            }
             CurrentLevelId = result;
         }
 
