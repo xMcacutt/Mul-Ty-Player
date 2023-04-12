@@ -13,7 +13,7 @@ In just a few minutes, you can be exploring snowy mountains, swimming through sh
 
 ![Boonie](/Boonie.png)
 
-2.2.0 has been released!!!!
+2.2.1 has been released!!!!
 
 This update focuses on polishing the ready up system, adding more player info to the sidebar, and supporting dedicated 24/7 servers.
 Check the changelog below for more details.
@@ -97,7 +97,7 @@ With your port forwarding rule set up, people can now join your server using you
 
 ### Bug Fixes
 
-#### 2.2.0
+#### 2.2.1
 - Process shuts down fully now (client)
 - Support added for custom ports
 - Ready button disabled when not on main menu
