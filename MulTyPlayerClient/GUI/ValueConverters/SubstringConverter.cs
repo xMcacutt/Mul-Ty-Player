@@ -10,7 +10,7 @@ namespace MulTyPlayerClient.GUI
         {
             if (value is string str && str.Length >= 14)
             {
-                return str[..14] + "...";
+                return str[..12] + "...";
             }
             // return some default value or throw an exception
             return value;
