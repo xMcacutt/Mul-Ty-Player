@@ -83,6 +83,7 @@ namespace MulTyPlayerClient
                 {
                     //GET GAME LOADING STATUS
                     HGameState.CheckLoaded();
+                    HHero.SendCoordinates();
                     if (!HGameState.LoadingState)
                     {
                         HLevel.GetCurrentLevel();
@@ -93,8 +94,6 @@ namespace MulTyPlayerClient
                             HLevel.DoLevelSetup();
                             HLevel.bNewLevelSetup = true;
                         }
-
-                        HHero.SendCoordinates();
 
                         //OBSERVERS
                         if (SettingsHandler.DoOpalSyncing && HLevel.MainStages.Contains(HLevel.CurrentLevelId)) { SyncHandler.HOpal.CheckObserverChanged(); SyncHandler.HCrate.CheckObserverChanged(); }
