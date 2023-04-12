@@ -28,6 +28,7 @@ namespace MulTyPlayerClient
 
         public void GetCurrentLevel()
         {
+            if (BasicIoC.MainGUIViewModel.IsOnMenu) return;
             ProcessHandler.TryRead(0x280594, out int result, true);
             if (BasicIoC.MainGUIViewModel.PlayerInfoList?.Any(p => p.ClientID == Client._client.Id) == true)
             {

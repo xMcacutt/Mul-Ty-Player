@@ -13,9 +13,9 @@ In just a few minutes, you can be exploring snowy mountains, swimming through sh
 
 ![Boonie](/Boonie.png)
 
-2.1.1 is now available!!!
+2.2.0 has been released!!!!
 
-This update fixes a few bugs.
+This update focuses on polishing the ready up system, adding more player info to the sidebar, and supporting dedicated 24/7 servers.
 Check the changelog below for more details.
 
 2.0.0 Update:
@@ -96,6 +96,14 @@ With your port forwarding rule set up, people can now join your server using you
 - K O A L A
 
 ### Bug Fixes
+
+#### 2.2.0
+- Process shuts down fully now (client)
+- Support added for custom ports
+- Ready button disabled when not on main menu
+- Prevented multiple countdowns triggering at once
+- Added level to playerinfo
+- Sync is reset during countdown
 
 #### 2.1.1
 - Install patch button is far less picky and no longer checks file sizes of clean files

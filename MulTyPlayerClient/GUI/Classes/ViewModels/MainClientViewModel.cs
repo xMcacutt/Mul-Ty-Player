@@ -66,7 +66,8 @@ namespace MulTyPlayerClient.GUI
         {
             foreach (var player in PlayerInfoList)
             {
-                player.IsReady = PlayerHandler.Players[player.ClientID].IsReady;
+                if(PlayerHandler.Players.TryGetValue(player.ClientID, out Player value))
+                player.IsReady = value.IsReady;
             }
         }
     }

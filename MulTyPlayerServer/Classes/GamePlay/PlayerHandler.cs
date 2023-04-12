@@ -19,7 +19,7 @@ namespace MulTyPlayerServer
         public static void AddPlayer(string koalaName, string name, ushort clientID, bool isHost)
         {
             Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
-            Players.Add(clientID, new Player(koala, name, clientID, isHost, false));
+            Players.Add(clientID, new Player(koala, name, clientID, isHost, false, true));
         }
 
         public static void RemovePlayer(ushort id)
@@ -34,12 +34,21 @@ namespace MulTyPlayerServer
             Server._Server.SendToAll(message);
         }
 
+        [MessageHandler((ushort)MessageID.OnMenuStatus)]
+        private static void HandleGettingOnMenuStatus(ushort fromClientId, Message message)
+        {
+            Players.TryGetValue(fromClientId, out Player player);
+            if (player == null) return;
+            player.OnMenu = true;
+            return;
+        }
+
         [MessageHandler((ushort)MessageID.PlayerInfo)]
         private static void HandleGettingCoordinates(ushort fromClientId, Message message)
         {
             if (Players.TryGetValue(fromClientId, out Player player))
             {
-                if (message.GetBool()) { return; }
+                player.OnMenu = message.GetBool();
                 player.CurrentLevel = message.GetInt();
                 player.Coordinates = message.GetFloats();
             }

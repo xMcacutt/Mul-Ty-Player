@@ -21,8 +21,8 @@ namespace MulTyPlayerClient.GUI
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            Application.Current.Shutdown();
             Environment.Exit(0);
+            Application.Current.Shutdown();
         }
 
         private void Setup_Click(object sender, RoutedEventArgs e)

@@ -40,7 +40,7 @@ namespace MulTyPlayerClient.GUI
                 "E3" => "Bonus World 2",
                 "E4" => "Final Battle",
                 "END" => "Credits",
-                "Menu" => "On Main Menu",
+                "M/L" => "Menu / Loading",
                 _ => "Not In Level",
             };
         }

@@ -45,7 +45,7 @@ namespace MulTyPlayerServer
                             HKoala.ReturnKoala(player);
                             player.PreviousLevel = player.CurrentLevel;
                         }
-                        SendCoordinates(player.Koala.KoalaName, player.CurrentLevel, player.Coordinates);
+                        SendCoordinates(player.ClientID, player.Koala.KoalaName, player.CurrentLevel, player.Coordinates, player.OnMenu);
                     }
                 }
                 Thread.Sleep(10);
@@ -94,18 +94,19 @@ namespace MulTyPlayerServer
             }
         }
 
-        public static void SendCoordinates(string koalaName, int level, float[] coordinates)
+        public static void SendCoordinates(ushort clientID, string koalaName, int level, float[] coordinates, bool onMenu)
         {
             foreach (Player player in PlayerHandler.Players.Values)
             {
                 Message message = Message.Create(MessageSendMode.Unreliable, MessageID.KoalaCoordinates);
-                message.AddUShort(player.ClientID);
+                message.AddBool(onMenu);
+                message.AddUShort(clientID);
                 message.AddString(koalaName);
                 message.AddInt(level);
                 message.AddFloats(coordinates);
                 if (player.Coordinates != null && player.Name != null)
                 {
-                    _Server.SendToAll(message, player.ClientID);
+                    _Server.SendToAll(message, clientID);
                 }
             }
         }

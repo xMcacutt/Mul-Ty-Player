@@ -28,12 +28,14 @@ namespace MulTyPlayerClient
         {
             ProcessHandler.TryRead(0x286641, out byte result, true);
             BasicIoC.MainGUIViewModel.IsOnMenu = result == 0;
-            if(PlayerHandler.Players.TryGetValue(Client._client.Id, out Player value) && value.IsReady)
+            if (PlayerHandler.Players.TryGetValue(Client._client.Id, out Player value) && value.IsReady && result != 0)
+            {
                 value.IsReady = false;
-            BasicIoC.MainGUIViewModel.UpdateReadyStatus();
+                BasicIoC.MainGUIViewModel.UpdateReadyStatus();
+            }
             if (result == 0 && BasicIoC.MainGUIViewModel.PlayerInfoList?.Any(p => p.ClientID == Client._client.Id) == true)
             {
-                BasicIoC.MainGUIViewModel.PlayerInfoList.First(p => p.ClientID == Client._client.Id).Level = "Menu";
+                BasicIoC.MainGUIViewModel.PlayerInfoList.First(p => p.ClientID == Client._client.Id).Level = "M/L";
             }
             return result == 0;
             //IF METHOD RETURNS TRUE -> ON MENU

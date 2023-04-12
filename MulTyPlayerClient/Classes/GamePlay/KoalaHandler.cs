@@ -1,5 +1,6 @@
 ﻿using MulTyPlayerClient.GUI;
 using Riptide;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -105,22 +106,40 @@ namespace MulTyPlayerClient
             }
         }
 
+        [MessageHandler((ushort)MessageID.OnMenuStatus)]
+        private static void HandleGettingMenuStatus(Message message)
+        {
+            ushort client = message.GetUShort();
+            if (BasicIoC.MainGUIViewModel.PlayerInfoList?.Any(p => p.ClientID == client) == true)
+            {
+                BasicIoC.MainGUIViewModel.PlayerInfoList.First(p => p.ClientID == client).Level = "M/L";
+            }
+        }
+
         [MessageHandler((ushort)MessageID.KoalaCoordinates)]
         private static void HandleGettingCoordinates(Message message)
         {
             if (!Client.KoalaSelected || Client.Relaunching) return;
+            bool onMenu = message.GetBool();
             ushort clientID = message.GetUShort();
+            if (onMenu)
+            {
+                if (BasicIoC.MainGUIViewModel.PlayerInfoList?.Any(p => p.ClientID == clientID) == true)
+                    BasicIoC.MainGUIViewModel.PlayerInfoList.FirstOrDefault(p => p.ClientID == clientID).Level = "M/L";
+                return;
+            }
             string koalaName = message.GetString();
             int level = message.GetInt();
             float[] coordinates = message.GetFloats();
-            BasicIoC.MainGUIViewModel.PlayerInfoList.FirstOrDefault(p => p.ClientID == clientID).Level = Enum.GetName(typeof(LevelID), level);
+            if (BasicIoC.MainGUIViewModel.PlayerInfoList?.Any(p => p.ClientID == clientID) == true)
+                BasicIoC.MainGUIViewModel.PlayerInfoList.FirstOrDefault(p => p.ClientID == clientID).Level = Enum.GetName(typeof(LevelID), level);
             //SANITY CHECK THAT WE HAVEN'T BEEN SENT OUR OWN COORDINATES AND WE AREN'T LOADING, ON THE MENU, OR IN A DIFFERENT LEVEL 
             if (!PlayerHandler.Players.TryGetValue(Client._client.Id, out Player p) ||
                 HGameState.CheckMenuOrLoading() || 
                 level != HLevel.CurrentLevelId || 
                 p.Koala.KoalaName == koalaName || 
                 level == 16) return;
-
+           
             //WRITE COORDINATES TO KOALA COORDINATE ADDRESSES
             for (int i = 0; i < coordinates.Length; i++)
             {

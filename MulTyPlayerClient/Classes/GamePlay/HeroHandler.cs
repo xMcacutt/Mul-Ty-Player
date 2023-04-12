@@ -35,7 +35,7 @@ namespace MulTyPlayerClient
         {
             //SENDS CURRENT COORDINATES TO SERVER WITH CURRENT LEVEL AND LOADING STATE
             Message message = Message.Create(MessageSendMode.Unreliable, MessageID.PlayerInfo);
-            message.AddBool(HGameState.CheckMenuOrLoading());
+            message.AddBool(HGameState.CheckMainMenu());
             message.AddInt(HLevel.CurrentLevelId);
             message.AddFloats(Client.HHero.CurrentPosRot);
             Client._client.Send(message);
