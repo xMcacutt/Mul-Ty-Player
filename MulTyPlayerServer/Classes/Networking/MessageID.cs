@@ -25,7 +25,6 @@ namespace MulTyPlayerServer
         AnnounceDisconnect,
         P2PMessage,
         Ready,
-        Countdown,
-        OnMenuStatus
+        Countdown
     }
 }

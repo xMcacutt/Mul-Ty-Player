@@ -106,16 +106,6 @@ namespace MulTyPlayerClient
             }
         }
 
-        [MessageHandler((ushort)MessageID.OnMenuStatus)]
-        private static void HandleGettingMenuStatus(Message message)
-        {
-            ushort client = message.GetUShort();
-            if (BasicIoC.MainGUIViewModel.PlayerInfoList?.Any(p => p.ClientID == client) == true)
-            {
-                BasicIoC.MainGUIViewModel.PlayerInfoList.First(p => p.ClientID == client).Level = "M/L";
-            }
-        }
-
         [MessageHandler((ushort)MessageID.KoalaCoordinates)]
         private static void HandleGettingCoordinates(Message message)
         {

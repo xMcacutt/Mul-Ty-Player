@@ -34,15 +34,6 @@ namespace MulTyPlayerServer
             Server._Server.SendToAll(message);
         }
 
-        [MessageHandler((ushort)MessageID.OnMenuStatus)]
-        private static void HandleGettingOnMenuStatus(ushort fromClientId, Message message)
-        {
-            Players.TryGetValue(fromClientId, out Player player);
-            if (player == null) return;
-            player.OnMenu = true;
-            return;
-        }
-
         [MessageHandler((ushort)MessageID.PlayerInfo)]
         private static void HandleGettingCoordinates(ushort fromClientId, Message message)
         {
