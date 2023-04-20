@@ -37,7 +37,7 @@ namespace MulTyPlayerClient
             {
                 BasicIoC.KoalaSelectViewModel.SwitchAvailability(koalaName);
             }
-            if (!WindowHandler.KoalaSelectWindow.IsVisible) SFXPlayer.PlaySound(SFX.PlayerConnect);
+            if (!WindowHandler.KoalaSelectWindow.IsVisible) BasicIoC.SFXPlayer.PlaySound(SFX.PlayerConnect);
         }
 
         public static void AnnounceSelection(string koalaName, string name, bool isHost)
@@ -75,7 +75,7 @@ namespace MulTyPlayerClient
         public static void PeerDisconnected(Message message)
         {
             RemovePlayer(message.GetUShort());
-            SFXPlayer.PlaySound(SFX.PlayerDisconnect);
+            BasicIoC.SFXPlayer.PlaySound(SFX.PlayerDisconnect);
         }
     }
 }

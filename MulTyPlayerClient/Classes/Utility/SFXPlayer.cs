@@ -5,22 +5,53 @@ using System.Diagnostics;
 using System.Linq;
 using System.Media;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 
 namespace MulTyPlayerClient
 {
-    internal class SFXPlayer
+    public enum SFX
     {
-        public static void PlaySound(string path)
+        PlayerConnect,
+        PlayerDisconnect,
+        MenuClick1,
+        MenuClick2,
+        MenuAccept,
+        MenuCancel,
+        Race321,
+        Race10,
+    }
+
+    public class SFXPlayer
+    {
+        static Dictionary<SFX, Uri> sounds = new Dictionary<SFX, Uri>()
         {
-            Task.Run(() =>
+            {SFX.PlayerConnect,      new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/PlayerConnect.wav") },
+            {SFX.PlayerDisconnect,   new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/PlayerDisconnect.wav") },
+            {SFX.MenuClick1,         new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/MenuClick1.wav") },
+            {SFX.MenuClick2,         new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/MenuClick2.wav") },
+            {SFX.MenuAccept,         new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/MenuAccept.wav") },
+            {SFX.MenuCancel,         new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/MenuCancel.wav") },
+            {SFX.Race321,            new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Race321.wav") },
+            {SFX.Race10,             new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Race10.wav") },
+        };
+
+        MediaPlayer player = new() { Volume = 0.15 };
+
+        public void PlaySound(SFX sfxName)
+        {
+            Application.Current.Dispatcher.BeginInvoke(() =>
             {
-                MediaPlayer player = new() { Volume = 0.15 };
-                Uri uri = new(path);
-                player.Open(uri);
+                player.Open(sounds[sfxName]);
                 player.Play();
             });
+        }
+
+        public void Stop()
+        {
+            player.Stop();
         }
     }
 }

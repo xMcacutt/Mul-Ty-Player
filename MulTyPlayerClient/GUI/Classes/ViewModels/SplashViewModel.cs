@@ -33,7 +33,7 @@ namespace MulTyPlayerClient.GUI
         {
             Thread.Sleep(2000);
             var messageShown = false;
-            while (ProcessHandler.FindTyProcess() == null)
+            while (!ProcessHandler.FindTyProcess())
             {
                 if (!messageShown)
                 {
@@ -41,7 +41,6 @@ namespace MulTyPlayerClient.GUI
                     messageShown = true;
                 }
             }
-            ProcessHandler.OpenTyHandle();
             BasicIoC.SplashScreenViewModel.MessageText = "Mul-Ty-Player is open!";
             Thread.Sleep(1000);
         }

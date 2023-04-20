@@ -66,68 +66,69 @@ namespace MulTyPlayerClient
             if (!_ip.Contains(':')) { _ip += ":" + SettingsHandler.Settings.Port; }
             _client.Connect(_ip, 5, 0, authentication);
 
-            Thread _loop = new(() => ClientLoop(cts.Token));
+            Thread _loop = new(ClientLoop);
             _loop.Start();
         }
 
-        private static void ClientLoop(CancellationToken ct)
+        private static void ClientLoop()
         {
-            while (!IsRunning)
+            while (!cts.Token.IsCancellationRequested)
             {
-                if (ct.IsCancellationRequested) return;
-                _client.Update();
-            }
-            while (IsRunning)
-            {
-                try
+                if (IsRunning)
                 {
-                    //GET GAME LOADING STATUS
-                    HGameState.CheckLoaded();
-                    HHero.SendCoordinates();
-                    if (!HGameState.LoadingState)
+                    try
                     {
-                        HLevel.GetCurrentLevel();
-                        //NEW LEVEL SETUP STUFF
-                        if (!HLevel.bNewLevelSetup)
+                        //GET GAME LOADING STATUS
+                        HGameState.CheckLoaded();
+                        HHero.SendCoordinates();
+                        if (!HGameState.LoadingState)
                         {
+                            HLevel.GetCurrentLevel();
+                            //NEW LEVEL SETUP STUFF
+                            if (!HLevel.bNewLevelSetup)
+                            {
+                                HKoala.SetCoordAddrs();
+                                HLevel.DoLevelSetup();
+                                HLevel.bNewLevelSetup = true;
+                            }
+
+                            //OBSERVERS
+                            if (SettingsHandler.DoOpalSyncing && HLevel.MainStages.Contains(HLevel.CurrentLevelId))
+                            {
+                                SyncHandler.HOpal.CheckObserverChanged();
+                                SyncHandler.HCrate.CheckObserverChanged();
+                            }
+                            if (SettingsHandler.DoTESyncing) SyncHandler.HThEg.CheckObserverChanged();
+                            if (SettingsHandler.DoCogSyncing) SyncHandler.HCog.CheckObserverChanged();
+                            if (SettingsHandler.DoBilbySyncing) SyncHandler.HBilby.CheckObserverChanged();
+                            if (SettingsHandler.DoRangSyncing) SyncHandler.HAttribute.CheckObserverChanged();
+                            if (SettingsHandler.DoPortalSyncing) SyncHandler.HPortal.CheckObserverChanged();
+                            if (SettingsHandler.DoCliffsSyncing) SyncHandler.HCliffs.CheckObserverChanged();
+
+                            HHero.GetTyPosRot();
                             HKoala.SetCoordAddrs();
-                            HLevel.DoLevelSetup();
-                            HLevel.bNewLevelSetup = true;
-                        }
-
-                        //OBSERVERS
-                        if (SettingsHandler.DoOpalSyncing && HLevel.MainStages.Contains(HLevel.CurrentLevelId)) { SyncHandler.HOpal.CheckObserverChanged(); SyncHandler.HCrate.CheckObserverChanged(); }
-                        if (SettingsHandler.DoTESyncing) SyncHandler.HThEg.CheckObserverChanged();
-                        if (SettingsHandler.DoCogSyncing) SyncHandler.HCog.CheckObserverChanged();
-                        if (SettingsHandler.DoBilbySyncing) SyncHandler.HBilby.CheckObserverChanged();
-                        if (SettingsHandler.DoRangSyncing) SyncHandler.HAttribute.CheckObserverChanged();
-                        if (SettingsHandler.DoPortalSyncing) SyncHandler.HPortal.CheckObserverChanged();
-                        if (SettingsHandler.DoCliffsSyncing) SyncHandler.HCliffs.CheckObserverChanged();
-
-                        HHero.GetTyPosRot();
-                        HKoala.SetCoordAddrs();
-                        HKoala.CheckTA();
+                            HKoala.CheckTA();
+                        }                        
                     }
-                    _client.Update();
-                    Thread.Sleep(10);
-                }
-                catch (TyClosedException ex)
-                {
-                    Relaunching = true;
-                    BasicIoC.LoggerInstance.Write(ex.Message);
-                    SFXPlayer.PlaySound(SFX.MenuCancel);
-                    while (ProcessHandler.FindTyProcess() == null)
+                    catch (TyClosedException ex)
                     {
-                        _client.Update();
-                        Thread.Sleep(10);
-                    }
-                    ProcessHandler.OpenTyHandle();
-                    BasicIoC.LoggerInstance.Write("Ty has been restarted. You're back in!");
-                    SFXPlayer.PlaySound(SFX.MenuAccept);
-                    Relaunching = false;
-                    continue;
+                        Relaunching = true;
+                        BasicIoC.LoggerInstance.Write(ex.Message);
+                        BasicIoC.SFXPlayer.PlaySound(SFX.MenuCancel);
+                        while (!ProcessHandler.FindTyProcess())
+                        {
+                            _client.Update();
+                            Thread.Sleep(10);
+                        }
+                        BasicIoC.LoggerInstance.Write("Ty has been restarted. You're back in!");
+                        BasicIoC.SFXPlayer.PlaySound(SFX.MenuAccept);
+                        Relaunching = false;
+                        continue;
+                    }                    
                 }
-            }           
+                _client.Update();
+                Thread.Sleep(10);
+            }         
         }
 
         private static void Connected()
@@ -141,32 +142,30 @@ namespace MulTyPlayerClient
 
         private static void Disconnected(object sender, Riptide.DisconnectedEventArgs e)
         {
+            cts.Cancel();
             IsRunning = false;
             BasicIoC.KoalaSelectViewModel.MakeAllAvailable();
             Application.Current.Dispatcher.BeginInvoke(
             DispatcherPriority.Background,
-            new Action(() => {
-                BasicIoC.MainGUIViewModel.ResetPlayerList();
-            }));
-            SFXPlayer.PlaySound(SFX.PlayerDisconnect);
-            if (e.Reason == DisconnectReason.TimedOut)
+            new Action(BasicIoC.MainGUIViewModel.ResetPlayerList));
+            BasicIoC.SFXPlayer.PlaySound(SFX.PlayerDisconnect);
+
+            if (e.Reason == DisconnectReason.TimedOut && SettingsHandler.Settings.AttemptReconnect)
             {
-                if (SettingsHandler.Settings.AttemptReconnect) 
-                {
-                    BasicIoC.LoggerInstance.Write("Initiating reconnection attempt.");
-                    cts = new CancellationTokenSource();
-                    _client.ConnectionFailed -= connectionFailedHandler;
-                    connectionFailedReconnectHandler = (s, e) => AutoReconnect.ConnectionFailed();
-                    _client.ConnectionFailed += connectionFailedReconnectHandler;
-                    Message authentication = Message.Create();
-                    authentication.AddString(_pass);
-                    if (!_ip.Contains(':')) { _ip += ":" + SettingsHandler.Settings.Port; }
-                    _client.Connect(_ip, 5, 0, authentication);
-                    Thread _loop = new(() => ClientLoop(cts.Token));
-                    _loop.Start();
-                    return;
-                }
+                BasicIoC.LoggerInstance.Write("Initiating reconnection attempt.");
+                cts = new CancellationTokenSource();
+                _client.ConnectionFailed -= connectionFailedHandler;
+                connectionFailedReconnectHandler = (s, e) => AutoReconnect.ConnectionFailed();
+                _client.ConnectionFailed += connectionFailedReconnectHandler;
+                Message authentication = Message.Create();
+                authentication.AddString(_pass);
+                if (!_ip.Contains(':')) { _ip += ":" + SettingsHandler.Settings.Port; }
+                _client.Connect(_ip, 5, 0, authentication);
+                Thread _loop = new(ClientLoop);
+                _loop.Start();
+                return;
             }
+
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                 new Action(() => {

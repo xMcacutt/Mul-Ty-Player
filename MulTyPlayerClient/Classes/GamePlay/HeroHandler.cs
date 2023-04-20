@@ -1,4 +1,5 @@
-﻿using Riptide;
+﻿using BenchmarkDotNet.Attributes;
+using Riptide;
 using System;
 using System.Threading.Tasks;
 

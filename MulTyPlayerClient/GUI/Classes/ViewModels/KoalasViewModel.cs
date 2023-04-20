@@ -57,7 +57,7 @@ namespace MulTyPlayerClient
             bool isHost = false;
             if(!CommandHandler.HostExists()) { isHost = true; }
             PlayerHandler.Players.Add(Client._client.Id, new Player(koala, Client.Name, Client._client.Id, isHost, false));
-            SFXPlayer.PlaySound(SFX.PlayerConnect);
+            BasicIoC.SFXPlayer.PlaySound(SFX.PlayerConnect);
             BlockKoalaSelect = true;
             PlayerHandler.AnnounceSelection(koalaName, Client.Name, isHost);
             await Task.Delay(2400);

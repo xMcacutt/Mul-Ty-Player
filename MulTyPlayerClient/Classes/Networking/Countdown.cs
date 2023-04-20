@@ -11,6 +11,7 @@ namespace MulTyPlayerClient.Classes
 {
     public class Countdown
     {
+        
         [MessageHandler((ushort)MessageID.Countdown)]
         public static void StartCountdown(Message message)
         {
@@ -20,27 +21,26 @@ namespace MulTyPlayerClient.Classes
             }
             BasicIoC.MainGUIViewModel.ReadyEnabled = false;
             BasicIoC.MainGUIViewModel.UpdateReadyStatus();
-            Task.Run(() => {
-                MediaPlayer player = new() { Volume = 0.15 };
+
+            Task.Run(() =>
+            {
                 for (int i = 10; i > 0; i--)
                 {
                     if (CheckAbort())
                     {
                         BasicIoC.LoggerInstance.Write("Countdown aborted");
-                        player.Stop();
+                        BasicIoC.SFXPlayer.Stop();
                         BasicIoC.MainGUIViewModel.ReadyEnabled = true;
                         return;
                     }
-                    if (i == 10) 
-                    { 
-                        player.Open(new Uri(SFX.Race10));
-                        player.Play();
+                    if (i == 10)
+                    {
+                        BasicIoC.SFXPlayer.PlaySound(SFX.Race10);
                     }
                     BasicIoC.LoggerInstance.Write(i.ToString());
-                    if(i == 3) 
-                    { 
-                        player.Open(new Uri(SFX.Race321));
-                        player.Play();
+                    if (i == 3)
+                    {
+                        BasicIoC.SFXPlayer.PlaySound(SFX.Race321);
                         Client.HSync = new SyncHandler();
                     }
                     Task.Delay(1000).Wait();
@@ -48,6 +48,8 @@ namespace MulTyPlayerClient.Classes
                 BasicIoC.MainGUIViewModel.ReadyEnabled = true;
                 BasicIoC.LoggerInstance.Write("Go!");
             });
+
+            
         }
 
         private static bool CheckAbort()

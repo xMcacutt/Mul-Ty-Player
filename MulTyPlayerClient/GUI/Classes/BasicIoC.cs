@@ -1,4 +1,6 @@
-﻿namespace MulTyPlayerClient.GUI
+﻿using System.Windows.Media;
+
+namespace MulTyPlayerClient.GUI
 {
     public class BasicIoC
     {
@@ -11,5 +13,6 @@
         
         //IF LOGGER INSTANCE IS NO INSTANTIATED HERE, IT WON'T SHOW UP. IDK WHY
         public static Logger LoggerInstance = new(200);
+        public static SFXPlayer SFXPlayer = new();
     }
 }
