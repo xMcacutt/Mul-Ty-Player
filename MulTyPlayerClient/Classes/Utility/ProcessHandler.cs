@@ -126,7 +126,7 @@ namespace MulTyPlayerClient
         {
             try
             {
-                if (TyProcess == null)
+                if (!HasProcess)
                 {
                     StackTrace stackTrace = new();
                     if(stackTrace.GetFrames()
