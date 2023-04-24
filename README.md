@@ -13,9 +13,9 @@ In just a few minutes, you can be exploring snowy mountains, swimming through sh
 
 ![Boonie](/Boonie.png)
 
-2.2.1 has been released!!!!
+2.2.2 has been released!!!!
 
-This update focuses on polishing the ready up system, adding more player info to the sidebar, and supporting dedicated 24/7 servers.
+This update is a huge improvement to the memory usage as well as fixing a sound playing memory leak.
 Check the changelog below for more details.
 
 2.0.0 Update:
@@ -96,6 +96,10 @@ With your port forwarding rule set up, people can now join your server using you
 - K O A L A
 
 ### Bug Fixes
+
+#### 2.2.2
+- Fixed sounds not playing
+- Massive memory optimisation
 
 #### 2.2.1
 - Process shuts down fully now (client)
