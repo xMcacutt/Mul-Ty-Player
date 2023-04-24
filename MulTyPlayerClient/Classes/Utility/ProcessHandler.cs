@@ -10,17 +10,13 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.CodeDom;
-using System.Collections;
 
 namespace MulTyPlayerClient
 {
-    internal class ProcessHandler
+    internal unsafe class ProcessHandler
     {
         public static IntPtr HProcess;
         public static Process TyProcess;
-        private static nint TyProcessBaseAddress;
-        private static bool HasProcess;
-
         public static bool MemoryWriteDebugLogging = false;
         public static bool MemoryReadDebugLogging = false;
         public static int i = 0;
@@ -29,7 +25,7 @@ namespace MulTyPlayerClient
         public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
 
         [DllImport("kernel32.dll")]
-        internal static unsafe extern bool ReadProcessMemory(
+        internal static extern bool ReadProcessMemory(
             nint hProcess,
             void* lpBaseAddress,
             void* lpBuffer,
@@ -39,40 +35,15 @@ namespace MulTyPlayerClient
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool WriteProcessMemory(IntPtr hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, out IntPtr lpNumberOfBytesWritten);
 
-        //Attempts to find the Ty process, returns true if successfully found
-        //Automatically opens handle if found
-        public static bool FindTyProcess(bool overrideOld = true)
+        public static void OpenTyHandle()
         {
-            if (!overrideOld && HasProcess)
-                return true;
-
-            Process[] processes = Process.GetProcessesByName("Mul-Ty-Player");
-
-            if (processes.Length == 0)
-            {
-                //No process found
-                return false;
-            }
-            else if (processes.Length > 1)
-            {
-                //Multiple found
-                BasicIoC.LoggerInstance.Write($"WARNING: Multiple ({processes.Length}) instances of Mul-Ty-Player are open, can and will cause fuckery.");
-            }
-            TyProcess = processes.First();
-            TyProcess.Refresh();
-            TyProcess.EnableRaisingEvents = true;
-
-            TyProcess.Exited += (o, e) =>
-            {
-                TyProcess.Close();
-                TyProcess.Dispose();
-                HasProcess = false;
-            };
-
             HProcess = OpenProcess(0x1F0FFF, false, TyProcess.Id);
-            TyProcessBaseAddress = TyProcess.MainModule.BaseAddress;
-            HasProcess = true;
-            return true;
+        }
+
+        public static Process FindTyProcess()
+        {
+            TyProcess = Process.GetProcessesByName("Mul-Ty-Player").FirstOrDefault();
+            return TyProcess;
         }
 
         public static void WriteData(int address, byte[] bytes, string writeIndicator)
@@ -80,20 +51,30 @@ namespace MulTyPlayerClient
             try
             {
                 bool success = WriteProcessMemory(HProcess, address, bytes, bytes.Length, out nint bytesWritten);
-                if (MemoryWriteDebugLogging)
+                if (!success)
                 {
-                    string message = BitConverter.ToString(bytes) + " to 0x" + address.ToString("X") + " For: " + writeIndicator;
-                    string logMsg = (success ? "Successfully wrote " : "Failed to write") + message;
-                    BasicIoC.LoggerInstance.Write(logMsg);
+                    if (MemoryWriteDebugLogging)
+                    {
+                        string errorMsg = "Failed to write " + BitConverter.ToString(bytes) + " to 0x" + address.ToString("X") + " For: " + writeIndicator;
+                        BasicIoC.LoggerInstance.Write(errorMsg);
+                    }
+                    if (FindTyProcess() == null)
+                    {
+                        throw new TyClosedException();
+                    }
                 }
-                if (!success && !HasProcess)
+                else
                 {
-                    throw new TyClosedException();
+                    if (MemoryWriteDebugLogging)
+                    {
+                        string errorMsg = "Written " + BitConverter.ToString(bytes) + " to 0x" + address.ToString("X") + " For: " + writeIndicator;
+                        BasicIoC.LoggerInstance.Write(errorMsg);
+                    }
                 }
             }
             catch(TyClosedException ex)
             {
-                throw ex;
+                throw new TyClosedException();
             }
         }
 
@@ -139,7 +120,7 @@ namespace MulTyPlayerClient
                 fixed (T* pResult = &result)
                 {
                     //string s = GetCallStackAsString();
-                    if(addBase) address = TyProcessBaseAddress + address;
+                    if(addBase) address = TyProcess.MainModule.BaseAddress + address;
                     nuint nSize = (nuint)sizeof(T), nRead;
                     //BasicIoC.LoggerInstance.Write(address.ToString() + " " + s);
                     return ReadProcessMemory(HProcess, (void*)address, pResult, nSize, &nRead)
@@ -148,7 +129,7 @@ namespace MulTyPlayerClient
             }
             catch(TyClosedException ex)
             {
-                throw ex;
+                throw new TyClosedException();
             }
             catch(Win32Exception ex)
             {
@@ -157,7 +138,7 @@ namespace MulTyPlayerClient
                     .Select(frame => frame.GetMethod())
                     .Any(method => method.Name == "ClientLoop"))
                 {
-                    BasicIoC.LoggerInstance.Write(ex.ToString());
+                    throw new TyClosedException();
                 }
                 result = default;
                 return false;
