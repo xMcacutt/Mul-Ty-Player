@@ -44,7 +44,8 @@ namespace MulTyPlayerClient
 
         public override byte[] ReadData()
         {
-            byte[] currentData = new byte[SyncHandler.HCrate.CratesPerLevel[Client.HLevel.CurrentLevelId]];
+            int crateCount = Levels.GetLevelData(Client.HLevel.CurrentLevelId).CrateCount;
+            byte[] currentData = new byte[crateCount];
             int address = HSyncObject.LiveObjectAddress;
             for (int i = 0; i < currentData.Length; i++)
             {

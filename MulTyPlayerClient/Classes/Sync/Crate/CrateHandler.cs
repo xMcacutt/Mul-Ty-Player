@@ -46,7 +46,8 @@ namespace MulTyPlayerClient
 
         public override void Sync(int level, byte[] liveData, byte[] saveData)
         {
-            for (int i = 0; i < CratesPerLevel[level]; i++)
+            int crateCount = Levels.GetLevelData(level).CrateCount;
+            for (int i = 0; i < crateCount; i++)
             {
                 if (liveData[i] == 0 && GlobalObjectData[level][i] == 1) GlobalObjectData[level][i] = 0;
             }
@@ -54,7 +55,7 @@ namespace MulTyPlayerClient
             {
                 PreviousObjectData = liveData;
                 CurrentObjectData = liveData;
-                LiveSync.Sync(liveData, CratesPerLevel[level], CheckState);
+                LiveSync.Sync(liveData, crateCount, CheckState);
             }
         }
 
@@ -85,7 +86,8 @@ namespace MulTyPlayerClient
 
             PreviousObserverState = ObserverState;
             CurrentObjectData = LiveSync.ReadData();
-            for (int iLive = 0; iLive < CratesPerLevel[Client.HLevel.CurrentLevelId]; iLive++)
+            int crateCount = Levels.GetLevelData(Client.HLevel.CurrentLevelId).CrateCount;
+            for (int iLive = 0; iLive < crateCount; iLive++)
             {
                 if (CheckObserverCondition(PreviousObjectData[iLive], CurrentObjectData[iLive]))
                 {
