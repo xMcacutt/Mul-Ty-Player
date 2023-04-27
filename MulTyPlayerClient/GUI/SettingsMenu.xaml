@@ -33,13 +33,13 @@
                       HorizontalAlignment="Left"
                       FontFamily="Fonts/#SF Slapstick Comic"
                       Margin="10,10,0,10"
-                      IsChecked="{Binding AutoRestartTy, Source={x:Static local:BasicIoC.SettingsMenuViewModel}}"/>
+                      IsChecked="{Binding DoKoalaCollision, Source={x:Static local:BasicIoC.SettingsMenuViewModel}}"/>
             
             <CheckBox Content="Auto-Restart Ty?"
                       HorizontalAlignment="Left"
                       FontFamily="Fonts/#SF Slapstick Comic"
                       Margin="10,10,0,10"
-                      IsChecked="{Binding DoKoalaCollision, Source={x:Static local:BasicIoC.SettingsMenuViewModel}}"/>
+                      IsChecked="{Binding AutoRestartTy, Source={x:Static local:BasicIoC.SettingsMenuViewModel}}"/>
         </StackPanel>
     </Grid>
 </Window>
