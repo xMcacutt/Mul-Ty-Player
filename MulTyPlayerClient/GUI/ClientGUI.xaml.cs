@@ -34,6 +34,7 @@ namespace MulTyPlayerClient.GUI
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
+            BasicIoC.SettingsMenuViewModel.Setup();
             WindowHandler.SettingsWindow.Show();
         }
 

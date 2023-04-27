@@ -21,6 +21,7 @@ namespace MulTyPlayerClient.GUI
                 _doKoalaCollision = value;
                 // Update the settings file here
                 SettingsHandler.Settings.DoKoalaCollision = value;
+                SettingsHandler.Save();
             }
         }
 
@@ -32,6 +33,7 @@ namespace MulTyPlayerClient.GUI
                 _autoRestartTy = value;
                 // Update the settings file here
                 SettingsHandler.Settings.AutoRestartTyOnCrash = value;
+                SettingsHandler.Save();
             }
         }
 
