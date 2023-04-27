@@ -8,5 +8,6 @@
   "DoSyncOpals": true,
   "DoSyncPortals": true,
   "DoSyncCliffs": true,
-  "DoSyncCrate": true
+  "DoSyncCrate": true,
+  "DoSyncScale": true
 }

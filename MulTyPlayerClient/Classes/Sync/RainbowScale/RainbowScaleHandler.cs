@@ -15,7 +15,7 @@ namespace MulTyPlayerClient
 
         public RSHandler()
         {
-            Name = "RS";
+            Name = "RainbowScale";
             WriteState = 3;
             CheckState = 5;
             SaveState = 1;

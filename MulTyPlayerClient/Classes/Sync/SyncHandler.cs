@@ -33,7 +33,7 @@ namespace MulTyPlayerClient
                 { "Portal", HPortal = new() },
                 { "Crate", HCrate = new() },
                 { "RC", HCliffs = new() },
-                { "RS", HRainbowScale = new() },
+                { "RainbowScale", HRainbowScale = new() },
             };
         }
 

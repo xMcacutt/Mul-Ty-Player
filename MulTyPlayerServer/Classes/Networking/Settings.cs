@@ -18,5 +18,6 @@ namespace MulTyPlayerServer
         public bool DoSyncPortals { get; set; }
         public bool DoSyncCliffs { get; set; }
         public bool DoSyncCrate { get; set; }
+        public bool DoSyncScale { get; set; }
     }
 }

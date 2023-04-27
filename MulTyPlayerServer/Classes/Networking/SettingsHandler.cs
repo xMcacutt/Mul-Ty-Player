@@ -38,7 +38,8 @@ namespace MulTyPlayerServer
                 {"Opal", Settings.DoSyncOpals},
                 {"Crate", Settings.DoSyncOpals},
                 {"Portal", Settings.DoSyncPortals},
-                {"RC", Settings.DoSyncCliffs}
+                {"RC", Settings.DoSyncCliffs},
+                {"RainbowScale", Settings.DoSyncScale}
             };
         }
 
@@ -52,7 +53,8 @@ namespace MulTyPlayerServer
                 Settings.DoSyncRangs, 
                 Settings.DoSyncOpals, 
                 Settings.DoSyncPortals, 
-                Settings.DoSyncCliffs 
+                Settings.DoSyncCliffs,
+                Settings.DoSyncScale
             };
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.SyncSettings);
             message.AddBools(b);
