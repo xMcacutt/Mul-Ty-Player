@@ -104,9 +104,7 @@ namespace MulTyPlayerClient
                         {
                             if (!Relaunching)
                             {
-                                var ex = new TyClosedException();
-                                BasicIoC.LoggerInstance.Write(ex.Message);
-                                throw ex;
+                                throw new TyClosedException();
                             }
                         }
                     }
