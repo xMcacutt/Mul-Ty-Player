@@ -52,9 +52,13 @@ namespace MulTyPlayerClient
         public void SetCoordAddrs()
         {
             //KOALAS ARE STRUCTURED DIFFERENTLY IN STUMP AND SNOW SO MODIFIER AND OFFSET ARE NECESSARY
-            int modifier = (Client.HLevel.CurrentLevelId == 9 || Client.HLevel.CurrentLevelId == 13) ? 2 : 1;
-            int offset = (Client.HLevel.CurrentLevelId == 9 || Client.HLevel.CurrentLevelId == 13) ? 0x518 : 0x0;
-            if(_baseKoalaAddress == 0) SetBaseAddress();
+            bool levelHasKoalas = Levels.GetLevelData(Client.HLevel.CurrentLevelId).HasKoalas;
+            int modifier = levelHasKoalas ? 2 : 1;
+            int offset = levelHasKoalas ? 0x518 : 0x0;
+
+            if(_baseKoalaAddress == 0)
+                SetBaseAddress();
+
             foreach (Player player in PlayerHandler.Players.Values)
             {
                 if (KoalaAddrs.TryGetValue(player.Koala.KoalaName, out int[] koalaAddr))
@@ -109,31 +113,50 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.KoalaCoordinates)]
         private static void HandleGettingCoordinates(Message message)
         {
-            if (!Client.KoalaSelected || Client.Relaunching) return;
+            //If this client isnt in game, or hasnt selected a koala, return
+            if (!Client.KoalaSelected || Client.Relaunching )
+                return;
+
             bool onMenu = message.GetBool();
             ushort clientID = message.GetUShort();
-            if (onMenu)
-            {
-                if (BasicIoC.MainGUIViewModel.PlayerInfoList?.Any(p => p.ClientID == clientID) == true)
-                    BasicIoC.MainGUIViewModel.PlayerInfoList.FirstOrDefault(p => p.ClientID == clientID).Level = "M/L";
-                return;
-            }
             string koalaName = message.GetString();
             int level = message.GetInt();
-            float[] coordinates = message.GetFloats();
-            if (BasicIoC.MainGUIViewModel.PlayerInfoList?.Any(p => p.ClientID == clientID) == true)
-                BasicIoC.MainGUIViewModel.PlayerInfoList.FirstOrDefault(p => p.ClientID == clientID).Level = Enum.GetName(typeof(LevelID), level);
-            //SANITY CHECK THAT WE HAVEN'T BEEN SENT OUR OWN COORDINATES AND WE AREN'T LOADING, ON THE MENU, OR IN A DIFFERENT LEVEL 
+
+            //Set the incoming players current level code
+            if (BasicIoC.MainGUIViewModel.TryGetPlayerInfo(clientID, out PlayerInfo playerInfo))
+            {
+                if (onMenu)
+                {
+                    playerInfo.Level = "M/L";
+                    return;
+                }
+                else
+                {
+                    playerInfo.Level = Levels.GetLevelData(level).Code;
+                }
+            }
+
+            //Return if player is on the main menu or loading screen,
+            //No need to set coords
+            if (HGameState.CheckMenuOrLoading())
+                return;
+
+            //If failed to get this clients player, or received our own coordinates, return
             if (!PlayerHandler.Players.TryGetValue(Client._client.Id, out Player p) ||
-                HGameState.CheckMenuOrLoading() || 
-                level != HLevel.CurrentLevelId || 
-                p.Koala.KoalaName == koalaName || 
-                level == 16) return;
-           
+                p.Koala.KoalaName == koalaName)
+                return;            
+            
+            //If the received player is on a different level, or has finished the game, return
+            if (level != HLevel.CurrentLevelId || level == Levels.EndGame.Id)
+                return;
+
+            float[] coordinates = message.GetFloats();
+
+            int[] koalaValues = Client.HKoala.KoalaAddrs[koalaName];
             //WRITE COORDINATES TO KOALA COORDINATE ADDRESSES
             for (int i = 0; i < coordinates.Length; i++)
             {
-                ProcessHandler.WriteData(Client.HKoala.KoalaAddrs[koalaName][i], BitConverter.GetBytes(coordinates[i]), $"Writing coordinates {i} for koala {koalaName} in level {level}");
+                ProcessHandler.WriteData(koalaValues[i], BitConverter.GetBytes(coordinates[i]), $"Writing coordinates {i} for koala {koalaName} in level {level}");
             }
         }
     }

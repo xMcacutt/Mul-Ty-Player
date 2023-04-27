@@ -76,9 +76,14 @@ namespace MulTyPlayerClient
 
         public override void CheckObserverChanged()
         {
-            if (!Client.HLevel.MainStages.Contains(Client.HLevel.CurrentLevelId)) return;
+            if (Levels.GetLevelData(Client.HLevel.CurrentLevelId).IsMainStage)
+                return;
+
             ObserverState = ReadObserver(CounterAddress, CounterByteLength);
-            if (PreviousObserverState == ObserverState || ObserverState == 0) return;
+
+            if (PreviousObserverState == ObserverState || ObserverState == 0)
+                return;
+
             PreviousObserverState = ObserverState;
             CurrentObjectData = LiveSync.ReadData();
             for (int iLive = 0; iLive < CratesPerLevel[Client.HLevel.CurrentLevelId]; iLive++)

@@ -1,6 +1,7 @@
 ﻿using MulTyPlayerClient.GUI;
 using Riptide;
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace MulTyPlayerClient
@@ -10,34 +11,53 @@ namespace MulTyPlayerClient
         static KoalaHandler HKoala => Client.HKoala;
         static SyncHandler HSync => Client.HSync;
 
-        public int CurrentLevelId { get; set; }
-        public bool bNewLevelSetup;
+        public int CurrentLevelId
+        {
+            get
+            {
+                return currentLevelId;
+            }
 
-        public int[] MainStages = { 4, 5, 6, 8, 9, 10, 12, 13, 14 };
+            set
+            {
+                if (currentLevelId != value)
+                {
+                    currentLevelId = value;
+                    DoLevelSetup();
+                }
+            }
+        }
+        private int currentLevelId;
 
+        public Action<int> OnLevelChange = delegate { };
+        
         public void DoLevelSetup()
         {
-            HSync.SetCurrentData(MainStages.Contains(CurrentLevelId));
+            LevelData lData = Levels.GetLevelData(currentLevelId);
+            HSync.SetCurrentData(lData.IsMainStage);
             HSync.SetMemAddrs();
             HSync.RequestSync();
             HSync.ProtectLeaderboard();
             HKoala.SetBaseAddress();
-            if (CurrentLevelId == 9 || CurrentLevelId == 13) ObjectiveCountSet();
-            bNewLevelSetup = true;
+            HKoala.SetCoordAddrs();
+            if (lData.HasKoalas)
+                ObjectiveCountSet();
+            OnLevelChange?.Invoke(currentLevelId);
         }
 
         public void GetCurrentLevel()
         {
             if (BasicIoC.MainGUIViewModel.IsOnMenu) return;
-            ProcessHandler.TryRead(0x280594, out int result, true);
-            if (BasicIoC.MainGUIViewModel.PlayerInfoList?.Any(p => p.ClientID == Client._client.Id) == true)
+            ProcessHandler.TryRead(0x280594, out int levelId, true);
+
+            if (BasicIoC.MainGUIViewModel.TryGetPlayerInfo(Client._client.Id, out PlayerInfo playerInfo))
             {
-                BasicIoC.MainGUIViewModel.PlayerInfoList.First(p => p.ClientID == Client._client.Id).Level = Enum.GetName(typeof(LevelID), result);
+                playerInfo.Level = Levels.GetLevelData(levelId).Code;
             }
-            CurrentLevelId = result;
+            CurrentLevelId = levelId;
         }
 
-        public void ObjectiveCountSet() 
+        public static void ObjectiveCountSet() 
         {
             int currentCountMax = 16;
             while(currentCountMax != 8)

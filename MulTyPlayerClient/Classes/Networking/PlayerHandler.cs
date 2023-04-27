@@ -30,14 +30,12 @@ namespace MulTyPlayerClient
             PlayerInfo player = new(clientID, name, koalaName);
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
-                new Action(() => {
+                () => {
                     BasicIoC.MainGUIViewModel.PlayerInfoList.Add(player);
-                }));
-            if (BasicIoC.KoalaSelectViewModel.KoalaAvailable(koalaName))
-            {
-                BasicIoC.KoalaSelectViewModel.SwitchAvailability(koalaName);
-            }
-            if (!WindowHandler.KoalaSelectWindow.IsVisible) BasicIoC.SFXPlayer.PlaySound(SFX.PlayerConnect);
+                });
+            BasicIoC.KoalaSelectViewModel.SetAvailability(koalaName, false);
+            if (!WindowHandler.KoalaSelectWindow.IsVisible)
+                BasicIoC.SFXPlayer.PlaySound(SFX.PlayerConnect);
         }
 
         public static void AnnounceSelection(string koalaName, string name, bool isHost)
@@ -55,20 +53,15 @@ namespace MulTyPlayerClient
 
         public static void RemovePlayer(ushort id)
         {
-            if (!BasicIoC.KoalaSelectViewModel.KoalaAvailable(Players[id].Koala.KoalaName))
-            {
-                BasicIoC.KoalaSelectViewModel.SwitchAvailability(Players[id].Koala.KoalaName);
-            }
+            BasicIoC.KoalaSelectViewModel.SetAvailability(Players[id].Koala.KoalaName, true);
             Players.Remove(id);
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
-                new Action(() =>
-                {
-                    BasicIoC.MainGUIViewModel.PlayerInfoList.Remove(
-                        BasicIoC.MainGUIViewModel.PlayerInfoList.FirstOrDefault(playerInfo => playerInfo.ClientID == id));
-                })
-            );
-            
+                () => {
+                    if (BasicIoC.MainGUIViewModel.TryGetPlayerInfo(id, out PlayerInfo playerInfo))
+                        BasicIoC.MainGUIViewModel.PlayerInfoList.Remove(playerInfo);
+                }
+            );            
         }
 
         [MessageHandler((ushort)MessageID.AnnounceDisconnect)]
@@ -76,6 +69,11 @@ namespace MulTyPlayerClient
         {
             RemovePlayer(message.GetUShort());
             BasicIoC.SFXPlayer.PlaySound(SFX.PlayerDisconnect);
+        }
+
+        public static bool TryGetLocalPlayer(out Player player)
+        {
+            return Players.TryGetValue(Client._client.Id, out player);
         }
     }
 }

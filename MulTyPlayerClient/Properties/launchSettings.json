@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Mul-Ty-Player Client": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

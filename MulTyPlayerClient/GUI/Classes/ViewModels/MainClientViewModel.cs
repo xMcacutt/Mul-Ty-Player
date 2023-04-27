@@ -67,7 +67,21 @@ namespace MulTyPlayerClient.GUI
             foreach (var player in PlayerInfoList)
             {
                 if(PlayerHandler.Players.TryGetValue(player.ClientID, out Player value))
-                player.IsReady = value.IsReady;
+                    player.IsReady = value.IsReady;
+            }
+        }
+
+        public bool TryGetPlayerInfo(ushort clientID, out PlayerInfo playerInfo)
+        {
+            try
+            {
+                playerInfo = PlayerInfoList.First(pInfo => pInfo.ClientID == clientID);
+                return true;
+            }
+            catch
+            {
+                playerInfo = null;
+                return false;
             }
         }
     }

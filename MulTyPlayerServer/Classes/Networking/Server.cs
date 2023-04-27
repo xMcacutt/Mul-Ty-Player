@@ -11,6 +11,9 @@ namespace MulTyPlayerServer
 {
     internal class Server
     {
+        public const int TICK_RATE_HZ = 50;
+        public const int MS_PER_TICK = 1000 / TICK_RATE_HZ;
+
         public static Riptide.Server _Server;
         public static bool _isRunning;
 
@@ -29,9 +32,9 @@ namespace MulTyPlayerServer
             _Server = new Riptide.Server();
             _Server.Start(SettingsHandler.Settings.Port, 8);
 
-            _Server.HandleConnection += (s, e) => HandleConnection(s, e);
-            _Server.ClientConnected += (s, e) => ClientConnected(s, e);
-            _Server.ClientDisconnected += (s, e) => ClientDisconnected(s, e);
+            _Server.HandleConnection += HandleConnection;
+            _Server.ClientConnected += ClientConnected;
+            _Server.ClientDisconnected += ClientDisconnected;
             
             while (_isRunning)
             {
@@ -48,7 +51,7 @@ namespace MulTyPlayerServer
                         SendCoordinates(player.ClientID, player.Koala.KoalaName, player.CurrentLevel, player.Coordinates, player.OnMenu);
                     }
                 }
-                Thread.Sleep(10);
+                Thread.Sleep(MS_PER_TICK);
             }
 
             if (Program._inputStr == "y") { return; }

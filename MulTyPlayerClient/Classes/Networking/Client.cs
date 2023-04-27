@@ -36,8 +36,10 @@ namespace MulTyPlayerClient
 
         public static CancellationTokenSource cts;
 
-        public static EventHandler<ConnectionFailedEventArgs> connectionFailedHandler;
-        public static EventHandler<ConnectionFailedEventArgs> connectionFailedReconnectHandler;
+        public static EventHandler<ConnectionFailedEventArgs> connectionFailedHandler = delegate { ConnectionFailed(); };
+        public static EventHandler<ConnectionFailedEventArgs> connectionFailedReconnectHandler = delegate { AutoReconnect.ConnectionFailed(); };
+
+        public const int MS_PER_TICK = 20;
 
         public static void StartClient(string ip, string name, string pass)
         {
@@ -54,9 +56,8 @@ namespace MulTyPlayerClient
 
             _client = new Riptide.Client();
             _client.Connected += (s, e) => Connected();
-            _client.Disconnected += (s, e) => Disconnected(s, e);
+            _client.Disconnected += Disconnected;
             _client.ConnectionFailed -= connectionFailedReconnectHandler;
-            connectionFailedHandler = (s, e) => ConnectionFailed();
             _client.ConnectionFailed += connectionFailedHandler;
 
             cts = new CancellationTokenSource();
@@ -78,56 +79,44 @@ namespace MulTyPlayerClient
                 {
                     try
                     {
-                        //GET GAME LOADING STATUS
-                        HGameState.CheckLoaded();
-                        HHero.SendCoordinates();
-                        if (!HGameState.LoadingState)
+                        if (ProcessHandler.FindTyProcess())
                         {
-                            HLevel.GetCurrentLevel();
-                            //NEW LEVEL SETUP STUFF
-                            if (!HLevel.bNewLevelSetup)
+                            if (Relaunching)
                             {
-                                HKoala.SetCoordAddrs();
-                                HLevel.DoLevelSetup();
-                                HLevel.bNewLevelSetup = true;
+                                BasicIoC.LoggerInstance.Write("Ty has been restarted. You're back in!");
+                                BasicIoC.SFXPlayer.PlaySound(SFX.MenuAccept);
+                                Relaunching = false;
+                                continue;
                             }
-
-                            //OBSERVERS
-                            if (SettingsHandler.DoOpalSyncing && HLevel.MainStages.Contains(HLevel.CurrentLevelId))
+                            else
                             {
-                                SyncHandler.HOpal.CheckObserverChanged();
-                                SyncHandler.HCrate.CheckObserverChanged();
+                                if (!HGameState.CheckLoaded())
+                                {
+                                    HLevel.GetCurrentLevel();
+                                    HSync.CheckEnabledObservers();
+                                    HHero.GetTyPosRot();
+                                    HKoala.CheckTA();
+                                }
+                                HHero.SendCoordinates();
                             }
-                            if (SettingsHandler.DoTESyncing) SyncHandler.HThEg.CheckObserverChanged();
-                            if (SettingsHandler.DoCogSyncing) SyncHandler.HCog.CheckObserverChanged();
-                            if (SettingsHandler.DoBilbySyncing) SyncHandler.HBilby.CheckObserverChanged();
-                            if (SettingsHandler.DoRangSyncing) SyncHandler.HAttribute.CheckObserverChanged();
-                            if (SettingsHandler.DoPortalSyncing) SyncHandler.HPortal.CheckObserverChanged();
-                            if (SettingsHandler.DoCliffsSyncing) SyncHandler.HCliffs.CheckObserverChanged();
-
-                            HHero.GetTyPosRot();
-                            HKoala.SetCoordAddrs();
-                            HKoala.CheckTA();
-                        }                        
+                        }
+                        else
+                        {
+                            if (!Relaunching)
+                            {
+                                throw new TyClosedException();
+                            }
+                        }
                     }
                     catch (TyClosedException ex)
                     {
                         Relaunching = true;
                         BasicIoC.LoggerInstance.Write(ex.Message);
                         BasicIoC.SFXPlayer.PlaySound(SFX.MenuCancel);
-                        while (!ProcessHandler.FindTyProcess())
-                        {
-                            _client.Update();
-                            Thread.Sleep(10);
-                        }
-                        BasicIoC.LoggerInstance.Write("Ty has been restarted. You're back in!");
-                        BasicIoC.SFXPlayer.PlaySound(SFX.MenuAccept);
-                        Relaunching = false;
-                        continue;
-                    }                    
+                    }
                 }
                 _client.Update();
-                Thread.Sleep(10);
+                Thread.Sleep(MS_PER_TICK);
             }         
         }
 
@@ -155,7 +144,6 @@ namespace MulTyPlayerClient
                 BasicIoC.LoggerInstance.Write("Initiating reconnection attempt.");
                 cts = new CancellationTokenSource();
                 _client.ConnectionFailed -= connectionFailedHandler;
-                connectionFailedReconnectHandler = (s, e) => AutoReconnect.ConnectionFailed();
                 _client.ConnectionFailed += connectionFailedReconnectHandler;
                 Message authentication = Message.Create();
                 authentication.AddString(_pass);
@@ -168,14 +156,14 @@ namespace MulTyPlayerClient
 
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
-                new Action(() => {
+                () => {
                     WindowHandler.KoalaSelectWindow.Hide();
                     WindowHandler.ClientGUIWindow.Hide();
                     WindowHandler.SettingsWindow.Hide();
                     BasicIoC.LoggerInstance.Log.Clear();
                     BasicIoC.LoginViewModel.ConnectEnabled = true;
                     WindowHandler.LoginWindow.Show();
-                }));
+                });
         }
 
         private static void ConnectionFailed()

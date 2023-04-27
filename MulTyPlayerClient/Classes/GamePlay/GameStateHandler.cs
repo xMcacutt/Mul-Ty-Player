@@ -14,46 +14,42 @@ namespace MulTyPlayerClient
 {
     public class GameStateHandler
     {
-        public bool LoadingState { get; set; }
-        public bool PreviousLoadingState { get; set; }
+        public bool CurrentlyLoading;
+        public bool WasLoadingLastFrame;
 
         public bool CheckMenuOrLoading()
         {
-            ProcessHandler.TryRead(0x27EBCC, out byte result, true);
-            return result == 0;
+            ProcessHandler.TryRead(0x27EBCC, out bool result, true);
+            return !result;
             //IF METHOD RETURNS TRUE -> ON MENU
         }
 
         public bool CheckMainMenu()
         {
-            ProcessHandler.TryRead(0x286641, out byte result, true);
-            BasicIoC.MainGUIViewModel.IsOnMenu = result == 0;
-            if (PlayerHandler.Players.TryGetValue(Client._client.Id, out Player value) && value.IsReady && result != 0)
+            ProcessHandler.TryRead(0x286641, out bool result, true);
+            bool onMenu = !result;
+            BasicIoC.MainGUIViewModel.IsOnMenu = onMenu;
+            if(PlayerHandler.TryGetLocalPlayer(out Player player))
+                player.IsReady &= onMenu;
+            BasicIoC.MainGUIViewModel.UpdateReadyStatus();
+
+            if (onMenu && BasicIoC.MainGUIViewModel.TryGetPlayerInfo(Client._client.Id, out PlayerInfo playerInfo))
             {
-                value.IsReady = false;
-                BasicIoC.MainGUIViewModel.UpdateReadyStatus();
+                playerInfo.Level = "M/L";
             }
-            if (result == 0 && BasicIoC.MainGUIViewModel.PlayerInfoList?.Any(p => p.ClientID == Client._client.Id) == true)
-            {
-                BasicIoC.MainGUIViewModel.PlayerInfoList.First(p => p.ClientID == Client._client.Id).Level = "M/L";
-            }
-            return result == 0;
-            //IF METHOD RETURNS TRUE -> ON MENU
+            return onMenu;
         }
 
-        public void CheckLoaded()
+        public bool CheckLoaded()
         {
-            PreviousLoadingState = LoadingState;
-            LoadingState = CheckMenuOrLoading();
+            CurrentlyLoading = CheckMenuOrLoading();
             CheckMainMenu();
-            if (PreviousLoadingState != LoadingState)
+            if (WasLoadingLastFrame && !CurrentlyLoading)
             {
-                PreviousLoadingState = LoadingState;
-                if (!LoadingState)
-                {
-                    Client.HLevel.bNewLevelSetup = false;
-                }
+                Client.HLevel.DoLevelSetup();
             }
+            WasLoadingLastFrame = CurrentlyLoading;
+            return CurrentlyLoading;
         }
     }
 }

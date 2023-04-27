@@ -40,9 +40,9 @@ namespace MulTyPlayerClient.GUI
                     BasicIoC.SplashScreenViewModel.MessageText = "Mul-Ty-Player could not be found.\nPlease open the game to continue.";
                     messageShown = true;
                 }
+                Thread.Sleep(500);
             }
-            BasicIoC.SplashScreenViewModel.MessageText = "Mul-Ty-Player is open!";
-            Thread.Sleep(1000);
+            BasicIoC.SplashScreenViewModel.MessageText = "Mul-Ty-Player is open!";            
         }
     }
 }

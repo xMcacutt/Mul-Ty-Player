@@ -10,25 +10,43 @@ namespace MulTyPlayerClient
         static LevelHandler HLevel => Client.HLevel;
         static GameStateHandler HGameState => Client.HGameState;
 
-        const int TY_POSROT_BASE_ADDRESS = 0x270B78;
-        const int BP_POSROT_BASE_ADDRESS = 0x254268;
-        float[] CurrentPosRot;
+        const int TY_POSITION_ADDRESS = 0x270B78;
+        const int TY_ROTATION_ADDRESS = 0x271C1C;
+
+        const int BP_POSITION_ADDRESS = 0x254268;
+        const int BP_ROTATION_ADDRESS = 0x2545F0;
+
+        int positionAddress = TY_POSITION_ADDRESS;
+        int rotationAddress = TY_ROTATION_ADDRESS;
+
+        float[] currentPositionRotation;
 
         public HeroHandler()
         {
-            CurrentPosRot = new float[6];
+            currentPositionRotation = new float[6];
+            HLevel.OnLevelChange += CheckOutbackSafari;
         }
 
         public void GetTyPosRot()
         {
-            //GETS TY'S OR BUSHPIG'S POSITION AND ROTATION AND STORES IT IN CURRENTPOSROT 
-            int baseAddress = HLevel.CurrentLevelId == 10 ? BP_POSROT_BASE_ADDRESS : TY_POSROT_BASE_ADDRESS;
-            int rotOffset = HLevel.CurrentLevelId == 10 ? 0x388 : 0x10A4;
-
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 3; i++)
             {
-                int offset = i < 3 ? i * 0x4 : rotOffset + (i - 3) * 0x4;
-                ProcessHandler.TryRead(baseAddress + offset, out CurrentPosRot[i], true);
+                ProcessHandler.TryRead(positionAddress + sizeof(float) * i, out currentPositionRotation[i], true);
+                ProcessHandler.TryRead(rotationAddress + sizeof(float) * i, out currentPositionRotation[i+3], true);
+            }
+        }
+
+        public void CheckOutbackSafari(int levelId)
+        {
+            if (levelId == Levels.OutbackSafari.Id)
+            {
+                positionAddress = BP_POSITION_ADDRESS;
+                rotationAddress = BP_ROTATION_ADDRESS;
+            }
+            else
+            {
+                positionAddress = TY_POSITION_ADDRESS;
+                rotationAddress = TY_ROTATION_ADDRESS;
             }
         }
 
@@ -38,7 +56,7 @@ namespace MulTyPlayerClient
             Message message = Message.Create(MessageSendMode.Unreliable, MessageID.PlayerInfo);
             message.AddBool(HGameState.CheckMainMenu());
             message.AddInt(HLevel.CurrentLevelId);
-            message.AddFloats(Client.HHero.CurrentPosRot);
+            message.AddFloats(Client.HHero.currentPositionRotation);
             Client._client.Send(message);
         }
     }

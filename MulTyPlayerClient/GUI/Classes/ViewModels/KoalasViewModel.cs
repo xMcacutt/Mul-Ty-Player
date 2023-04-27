@@ -1,9 +1,12 @@
-﻿using MulTyPlayerClient.GUI;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using MulTyPlayerClient.GUI;
 using PropertyChanged;
 using Riptide;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,21 +30,22 @@ namespace MulTyPlayerClient
         public string Elizabeth { get; set; } = @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Elizabeth.jpg";
         public string Dubbo { get; set; } = @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Dubbo.jpg";
 
-        //Is available
-        public bool BoonieAvailable { get; set; } = true;
-        public bool MimAvailable { get; set; } = true;
-        public bool GummyAvailable { get; set; } = true;
-        public bool SnugsAvailable { get; set; } = true;
-        public bool KatieAvailable { get; set; } = true;
-        public bool KikiAvailable { get; set; } = true;
-        public bool ElizabethAvailable { get; set; } = true;
-        public bool DubboAvailable { get; set; } = true;
+        public bool BoonieAvailable => koalaAvailability["Boonie"];
+        public bool MimAvailable => koalaAvailability["Mim"];
+        public bool GummyAvailable => koalaAvailability["Gummy"];
+        public bool SnugsAvailable => koalaAvailability["Snugs"];
+        public bool KatieAvailable => koalaAvailability["Katie"]   ;
+        public bool KikiAvailable => koalaAvailability["Kiki"];
+        public bool ElizabethAvailable => koalaAvailability["Elizabeth"];
+        public bool DubboAvailable => koalaAvailability["Dubbo"];
 
+        Dictionary<string, bool> koalaAvailability;
         public bool BlockKoalaSelect { get; set; }
 
         //Constructor
         public KoalasViewModel()
         {
+            MakeAllAvailable();
         }
 
         public void Setup()
@@ -54,43 +58,49 @@ namespace MulTyPlayerClient
         {
             Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
             Client.OldKoala = koala;
-            bool isHost = false;
-            if(!CommandHandler.HostExists()) { isHost = true; }
+            bool isHost = !CommandHandler.HostExists();
             PlayerHandler.Players.Add(Client._client.Id, new Player(koala, Client.Name, Client._client.Id, isHost, false));
             BasicIoC.SFXPlayer.PlaySound(SFX.PlayerConnect);
             BlockKoalaSelect = true;
             PlayerHandler.AnnounceSelection(koalaName, Client.Name, isHost);
             await Task.Delay(2400);
-
-            BasicIoC.KoalaSelectViewModel.SwitchAvailability(koalaName);
+            SetAvailability(koalaName, false);
             WindowHandler.ClientGUIWindow.Show();
             BlockKoalaSelect = false;
             CollectionViewSource.GetDefaultView(BasicIoC.LoggerInstance.Log).Refresh();
             WindowHandler.KoalaSelectWindow.Hide();
         }
 
-        public bool KoalaAvailable(string koalaName)
+        public bool IsKoalaAvailable(string koalaName)
         {
-            var prop = GetType().GetProperty(koalaName + "Available");
-            if (prop != null) return (bool)prop.GetValue(this, null);
-            return false;
+            return koalaAvailability[koalaName];
         }
 
         public void SwitchAvailability(string koalaName)
         {
-            var prop = GetType().GetProperty(koalaName + "Available");
-            prop?.SetValue(this, !(bool)prop.GetValue(this, null), null);
+            //Bitwise negation
+            koalaAvailability[koalaName] ^= true;
+        }
+
+        public void SetAvailability(string koalaName, bool available)
+        {
+            koalaAvailability[koalaName] = available;
         }
 
         public void MakeAllAvailable()
         {
-            var properties = GetType().GetProperties()
-                .Where(prop => prop.Name.EndsWith("Available") && prop.PropertyType == typeof(bool));
-
-            foreach (var prop in properties)
+            koalaAvailability = new()
             {
-                prop.SetValue(this, true, null);
-            }
+                { "Boonie", true },
+                { "Mim", true },
+                { "Gummy", true },
+                { "Snugs", true },
+                { "Katie", true },
+                { "Kiki", true },
+                { "Elizabeth", true },
+                { "Dubbo", true },
+            };
         }
+
     }
 }

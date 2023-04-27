@@ -32,8 +32,8 @@ namespace MulTyPlayerClient
             int dataAmount = 12;
             for (int i = 0; i < dataAmount; i++)
             {
-                ProcessHandler.TryRead(CounterAddress + i, out byte dataStae, false);
-                if (dataStae == 1 && GlobalObjectData[i] == 0)
+                ProcessHandler.TryRead(CounterAddress + i, out byte dataState, false);
+                if (dataState == 1 && GlobalObjectData[i] == 0)
                 {
                     GlobalObjectData[i] = 1;
                     Client.HSync.SendDataToServer(0, i, 0, Name);

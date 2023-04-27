@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Drawing;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace MulTyPlayerClient
 {
@@ -20,7 +16,7 @@ namespace MulTyPlayerClient
         public override byte[] ReadData()
         {
             // Get the number of crate opals in the current level
-            int crateOpalsInLevel = HOpal.CrateOpalsPerLevel[HLevel.CurrentLevelId];
+            int crateOpalsInLevel = Levels.GetLevelData(HLevel.CurrentLevelId).CrateOpalCount;
 
             // Create an array to store the current opals
             byte[] currentOpals = new byte[300];
@@ -47,7 +43,7 @@ namespace MulTyPlayerClient
 
         private void ReadSpecificOpalState(int index)
         {
-            int crateOpalsInLevel = HOpal.CrateOpalsPerLevel[HLevel.CurrentLevelId];
+            int crateOpalsInLevel = Levels.GetLevelData(HLevel.CurrentLevelId).CrateOpalCount;
             if(index > (300 - crateOpalsInLevel))
             {
 
@@ -59,10 +55,10 @@ namespace MulTyPlayerClient
             if (HOpal.CurrentObjectData[index] >= 3) return;
             if (Client.HGameState.CheckMenuOrLoading()) return;
             int baseAddress;
-            int crateOpalsInCurrentLevel = HOpal.CrateOpalsPerLevel[HLevel.CurrentLevelId];
+            int crateOpalsInCurrentLevel = Levels.GetLevelData(HLevel.CurrentLevelId).CrateOpalCount;
             int address;
             if (HLevel.CurrentLevelId == 10) baseAddress = HOpal.CrateOpalsAddress;
-            else if (index < (300 - HOpal.CrateOpalsPerLevel[HLevel.CurrentLevelId])) baseAddress = HOpal.NonCrateOpalsAddress;
+            else if (index < (300 - crateOpalsInCurrentLevel)) baseAddress = HOpal.NonCrateOpalsAddress;
             else
             {
                 int nonCrateOpalsInCurrentLevel = 300 - crateOpalsInCurrentLevel;

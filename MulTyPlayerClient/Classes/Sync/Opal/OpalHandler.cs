@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MulTyPlayerClient
 {
     internal class OpalHandler : SyncObjectHandler
     {
-        public int[] CrateOpalsPerLevel = { 0, 0, 0, 0, 170, 102, 119, 0, 120, 60, 300, 0, 30, 170, 215 };
-        
         const int GEM_PTR_LIST_BASE_ADDRESS = 0x28AB7C;
         public int NonCrateOpalsAddress;
         public int CrateOpalsAddress;
@@ -33,7 +29,12 @@ namespace MulTyPlayerClient
             SaveSync = new SaveOpalSyncer();
             SetSyncClasses(LiveSync, SaveSync);
             GlobalObjectData = new Dictionary<int, byte[]>();
-            foreach (int i in Client.HLevel.MainStages) GlobalObjectData.Add(i, new byte[ObjectAmount]);
+
+            foreach (LevelData ld in Levels.MainStages)
+            {
+                Debug.WriteLine(ld.Id);
+                GlobalObjectData.Add(ld.Id, new byte[ObjectAmount]);
+            }
         }
 
         public  override void SetMemAddrs()

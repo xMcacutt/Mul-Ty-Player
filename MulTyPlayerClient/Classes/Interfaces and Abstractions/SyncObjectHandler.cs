@@ -62,13 +62,12 @@ namespace MulTyPlayerClient
 
         public virtual int ReadObserver(int address, int size)
         {
-            if (size == 4)
+            ProcessHandler.TryRead(address, out int result, CounterAddressStatic);
+            if (size == 1)
             {
-                ProcessHandler.TryRead(address, out int result, CounterAddressStatic);
-                return result;
+                result = BitConverter.GetBytes(result)[0];
             }
-            ProcessHandler.TryRead(address, out byte byteResult, CounterAddressStatic);
-            return byteResult;
+            return result;
         }
 
         public virtual void CheckObserverChanged()

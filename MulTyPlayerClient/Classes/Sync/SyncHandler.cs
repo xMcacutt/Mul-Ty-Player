@@ -17,6 +17,7 @@ namespace MulTyPlayerClient
         public static PortalHandler HPortal;
         public static CrateHandler HCrate;
         public static RCHandler HCliffs;
+        public static RSHandler HRainbowScale;
 
         public static int SaveDataBaseAddress;
 
@@ -31,7 +32,8 @@ namespace MulTyPlayerClient
                 { "Attribute", HAttribute = new() },
                 { "Portal", HPortal = new() },
                 { "Crate", HCrate = new() },
-                { "RC", HCliffs = new() }
+                { "RC", HCliffs = new() },
+                { "RS", HRainbowScale = new() },
             };
         }
 
@@ -90,6 +92,23 @@ namespace MulTyPlayerClient
         {
             int address = SaveDataBaseAddress + 0xB07;
             ProcessHandler.WriteData(address, new byte[]{1}, "Protecting leaderboard");
+        }
+
+        public void CheckEnabledObservers()
+        {
+            //OBSERVERS
+            if (SettingsHandler.DoOpalSyncing && Levels.GetLevelData(Client.HLevel.CurrentLevelId).IsMainStage)
+            {
+                HOpal.CheckObserverChanged();
+                HCrate.CheckObserverChanged();
+            }
+            if (SettingsHandler.DoTESyncing) HThEg.CheckObserverChanged();
+            if (SettingsHandler.DoCogSyncing) HCog.CheckObserverChanged();
+            if (SettingsHandler.DoBilbySyncing) HBilby.CheckObserverChanged();
+            if (SettingsHandler.DoRangSyncing) HAttribute.CheckObserverChanged();
+            if (SettingsHandler.DoPortalSyncing) HPortal.CheckObserverChanged();
+            if (SettingsHandler.DoCliffsSyncing) HCliffs.CheckObserverChanged();
+            if (SettingsHandler.DoRainbowScaleSyncing) HRainbowScale.CheckObserverChanged();
         }
     }
 }

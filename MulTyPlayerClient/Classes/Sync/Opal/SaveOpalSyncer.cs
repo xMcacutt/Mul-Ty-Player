@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Cache;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MulTyPlayerClient
+﻿namespace MulTyPlayerClient
 {
     internal class SaveOpalSyncer : SaveDataSyncer
     {
@@ -17,9 +9,7 @@ namespace MulTyPlayerClient
 
         public override void Save(int index, int? level)
         {
-            if (level == null) return;
-
-            int crateOpals = SyncHandler.HOpal.CrateOpalsPerLevel[(int)level];
+            int crateOpals = Levels.GetLevelData((int)level).CrateOpalCount;
             int newIndex = index > (299 - crateOpals) ? 300 - crateOpals + (299 - index) : index;
 
             int byteIndex = (newIndex / 8) + 1;
@@ -35,7 +25,7 @@ namespace MulTyPlayerClient
         {
             for(int i = 0; i < data.Length; i++)
             {
-                if (data[i] == 1 && SyncHandler.HOpal.GlobalObjectData[level][i] != (byte)5)
+                if (data[i] == 1 && SyncHandler.HOpal.GlobalObjectData[level][i] != 5)
                 {
                     Save(i, level);
                 }
