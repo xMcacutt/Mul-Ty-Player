@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
         mc:Ignorable="d"
         Closing="Window_Closing"
-        Title="SettingsMenu" Height="150" Width="250" ResizeMode="NoResize">
+        Title="SettingsMenu" Height="175" Width="250" ResizeMode="NoResize">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="ComicText" TargetType="TextBlock">
