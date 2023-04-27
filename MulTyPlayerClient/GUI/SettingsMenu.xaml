@@ -28,11 +28,18 @@
                    FontSize="30"
                    HorizontalAlignment="Center"/>
 
-        <CheckBox Grid.Row="1"
-                  Content="Do Koala Collision?"
-                  HorizontalAlignment="Left"
-                  FontFamily="Fonts/#SF Slapstick Comic"
-                  Margin="10,10,0,10"
-                  IsChecked="{Binding DoKoalaCollision, Source={x:Static local:BasicIoC.SettingsMenuViewModel}}"/>
+        <StackPanel Grid.Row="1">
+            <CheckBox Content="Do Koala Collision?"
+                      HorizontalAlignment="Left"
+                      FontFamily="Fonts/#SF Slapstick Comic"
+                      Margin="10,10,0,10"
+                      IsChecked="{Binding AutoRestartTy, Source={x:Static local:BasicIoC.SettingsMenuViewModel}}"/>
+            
+            <CheckBox Content="Auto-Restart Ty?"
+                      HorizontalAlignment="Left"
+                      FontFamily="Fonts/#SF Slapstick Comic"
+                      Margin="10,10,0,10"
+                      IsChecked="{Binding DoKoalaCollision, Source={x:Static local:BasicIoC.SettingsMenuViewModel}}"/>
+        </StackPanel>
     </Grid>
 </Window>

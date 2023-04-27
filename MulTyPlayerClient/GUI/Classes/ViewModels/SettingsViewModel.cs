@@ -12,6 +12,7 @@ namespace MulTyPlayerClient.GUI
     public class SettingsViewModel
     {
         private bool _doKoalaCollision;
+        private bool _autoRestartTy;
         public bool DoKoalaCollision
         {
             get { return _doKoalaCollision; }
@@ -23,6 +24,17 @@ namespace MulTyPlayerClient.GUI
             }
         }
 
+        public bool AutoRestartTy
+        {
+            get { return _autoRestartTy; }
+            set
+            {
+                _autoRestartTy = value;
+                // Update the settings file here
+                SettingsHandler.Settings.AutoRestartTyOnCrash = value;
+            }
+        }
+
         public SettingsViewModel()
         {
         }
@@ -30,6 +42,7 @@ namespace MulTyPlayerClient.GUI
         public void Setup()
         {
             DoKoalaCollision = SettingsHandler.Settings.DoKoalaCollision;
+            AutoRestartTy = SettingsHandler.Settings.AutoRestartTyOnCrash;
         }
     }
 }
