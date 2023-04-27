@@ -9,7 +9,6 @@ namespace MulTyPlayerClient
 {
     internal class CrateHandler : SyncObjectHandler
     {
-        public int[] CratesPerLevel = { 0, 0, 0, 0, 31, 16, 24, 0, 24, 12, 300, 0, 6, 34, 43 };
         public CrateHandler()
         {
             Name = "Crate";
