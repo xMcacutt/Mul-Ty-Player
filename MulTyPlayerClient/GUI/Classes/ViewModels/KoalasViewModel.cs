@@ -30,16 +30,16 @@ namespace MulTyPlayerClient
         public string Elizabeth { get; set; } = @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Elizabeth.jpg";
         public string Dubbo { get; set; } = @"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Dark/Dubbo.jpg";
 
-        public bool BoonieAvailable => koalaAvailability["Boonie"];
-        public bool MimAvailable => koalaAvailability["Mim"];
-        public bool GummyAvailable => koalaAvailability["Gummy"];
-        public bool SnugsAvailable => koalaAvailability["Snugs"];
-        public bool KatieAvailable => koalaAvailability["Katie"]   ;
-        public bool KikiAvailable => koalaAvailability["Kiki"];
-        public bool ElizabethAvailable => koalaAvailability["Elizabeth"];
-        public bool DubboAvailable => koalaAvailability["Dubbo"];
+        //Is available
+        public bool BoonieAvailable { get; set; } = true;
+        public bool MimAvailable { get; set; } = true;
+        public bool GummyAvailable { get; set; } = true;
+        public bool SnugsAvailable { get; set; } = true;
+        public bool KatieAvailable { get; set; } = true;
+        public bool KikiAvailable { get; set; } = true;
+        public bool ElizabethAvailable { get; set; } = true;
+        public bool DubboAvailable { get; set; } = true;
 
-        Dictionary<string, bool> koalaAvailability;
         public bool BlockKoalaSelect { get; set; }
 
         //Constructor
@@ -64,7 +64,7 @@ namespace MulTyPlayerClient
             BlockKoalaSelect = true;
             PlayerHandler.AnnounceSelection(koalaName, Client.Name, isHost);
             await Task.Delay(2400);
-            SetAvailability(koalaName, false);
+            BasicIoC.KoalaSelectViewModel.SetAvailability(koalaName, false);
             WindowHandler.ClientGUIWindow.Show();
             BlockKoalaSelect = false;
             CollectionViewSource.GetDefaultView(BasicIoC.LoggerInstance.Log).Refresh();
@@ -73,33 +73,32 @@ namespace MulTyPlayerClient
 
         public bool IsKoalaAvailable(string koalaName)
         {
-            return koalaAvailability[koalaName];
+            var prop = GetType().GetProperty(koalaName + "Available");
+            if (prop != null) return (bool)prop.GetValue(this, null);
+            return false;
         }
 
         public void SwitchAvailability(string koalaName)
         {
-            //Bitwise negation
-            koalaAvailability[koalaName] ^= true;
+            var prop = GetType().GetProperty(koalaName + "Available");
+            prop?.SetValue(this, !(bool)prop.GetValue(this, null), null);
         }
 
         public void SetAvailability(string koalaName, bool available)
         {
-            koalaAvailability[koalaName] = available;
+            var prop = GetType().GetProperty(koalaName + "Available");
+            prop?.SetValue(this, available, null);
         }
 
         public void MakeAllAvailable()
         {
-            koalaAvailability = new()
+            var properties = GetType().GetProperties()
+                .Where(prop => prop.Name.EndsWith("Available") && prop.PropertyType == typeof(bool));
+
+            foreach (var prop in properties)
             {
-                { "Boonie", true },
-                { "Mim", true },
-                { "Gummy", true },
-                { "Snugs", true },
-                { "Katie", true },
-                { "Kiki", true },
-                { "Elizabeth", true },
-                { "Dubbo", true },
-            };
+                prop.SetValue(this, true, null);
+            }
         }
 
     }
