@@ -69,8 +69,11 @@ namespace MulTyPlayerClient
             SyncSettings["Portal"] = DoPortalSyncing;
             DoCliffsSyncing = b[6];
             SyncSettings["RC"] = DoCliffsSyncing;
-            DoRainbowScaleSyncing = b[7];
-            SyncSettings["RainbowScale"] = DoRainbowScaleSyncing;
+            if (b.Length > 7)
+            {
+                DoRainbowScaleSyncing = b[7];
+                SyncSettings["RainbowScale"] = DoRainbowScaleSyncing;
+            }
         }
     }
 }

@@ -22,6 +22,7 @@ namespace MulTyPlayerServer
         public static PortalSyncer SPortal;
         public static CrateSyncer SCrate;
         public static RCSyncer SCliffs;
+        public static RainbowScaleSyncer SRainbowScale;
 
         public SyncHandler()
         {
@@ -34,7 +35,8 @@ namespace MulTyPlayerServer
                 { "Attribute", SAttribute = new AttributeSyncer() },
                 { "Portal", SPortal = new PortalSyncer() },
                 { "Crate", SCrate = new CrateSyncer() },
-                { "RC", SCliffs = new RCSyncer() }
+                { "RC", SCliffs = new RCSyncer() },
+                { "RainbowScale", SRainbowScale = new RainbowScaleSyncer() },
             };
         }
 
