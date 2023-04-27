@@ -104,11 +104,13 @@ namespace MulTyPlayerClient
                         {
                             if (!Relaunching)
                             {
-                                throw new TyClosedException();
+                                var ex = new TyClosedException();
+                                BasicIoC.LoggerInstance.Write(ex.Message);
+                                throw ex;
                             }
                         }
                     }
-                    catch (TyClosedException ex)
+                    catch (Exception ex) when (ex is TyClosedException || ex is TyProcessException)
                     {
                         Relaunching = true;
                         BasicIoC.LoggerInstance.Write(ex.Message);

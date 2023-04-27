@@ -33,6 +33,7 @@ namespace MulTyPlayerClient.GUI
         {
             Thread.Sleep(2000);
             var messageShown = false;
+            ProcessHandler.Initialize();
             while (!ProcessHandler.FindTyProcess())
             {
                 if (!messageShown)

@@ -19,8 +19,6 @@ namespace MulTyPlayerClient
 {
     internal class ProcessHandler
     {
-        const string MUL_TY_PLAYER_PATH = "D:\\SteamLibrary\\steamapps\\common\\TY MulTyPlayer\\";
-
         public static IntPtr HProcess;
         public static Process TyProcess;
         public static bool HasTyProcess;
@@ -28,7 +26,8 @@ namespace MulTyPlayerClient
 
         public static bool MemoryWriteDebugLogging = false;
         public static bool MemoryReadDebugLogging = false;
-        public static int i = 0;
+
+        private static bool HasFolderPath = false;
 
         [DllImport("kernel32.dll")]
         public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
@@ -44,27 +43,39 @@ namespace MulTyPlayerClient
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool WriteProcessMemory(IntPtr hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, out IntPtr lpNumberOfBytesWritten);
 
-        public static void RestartTy()
+        public static void Initialize()
         {
-            TyProcess = new Process();
-            TyProcess.StartInfo = new ProcessStartInfo(MUL_TY_PLAYER_PATH+"Mul-Ty-Player.exe") { UseShellExecute = false, RedirectStandardError = true, RedirectStandardOutput = true };
-            TyProcess.StartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(MUL_TY_PLAYER_PATH);
-            TyProcess.Start();
-            SetupProcess();
+            HasFolderPath = SettingsHandler.Settings.MulTyPlayerFolderPath != "";
+            if (HasFolderPath && SettingsHandler.Settings.AutoLaunchTyOnStartup)
+            {
+                if(FindTyProcess())
+                    RestartTy();
+            }
         }
 
-        private static void SetupProcess()
+
+
+        public static bool RestartTy()
         {
-            //TyProcess.Refresh();
+            TyProcess = new Process();
+            TyProcess.StartInfo = new ProcessStartInfo(SettingsHandler.Settings.MulTyPlayerFolderPath) { UseShellExecute = false, RedirectStandardError = true, RedirectStandardOutput = true };
+            TyProcess.StartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(SettingsHandler.Settings.MulTyPlayerFolderPath);
+            TyProcess.Start();
+            BasicIoC.LoggerInstance.Write("Ty has been restarted. You're back in!");
+            BasicIoC.SFXPlayer.PlaySound(SFX.MenuAccept);
+            return SetupProcess();
+        }
+
+        private static bool SetupProcess()
+        {
             TyProcess.EnableRaisingEvents = true;
             TyProcess.Exited += (o, e) =>
             {
                 var exitedProcess = o as Process;
-                BasicIoC.LoggerInstance.Write("TyProcess has exited with code " + exitedProcess.ExitCode);
+                BasicIoC.LoggerInstance.Write("Ty has exited with code " + exitedProcess.ExitCode + ", restarting...");
                 TyProcess.Close();
                 TyProcess.Dispose();
-                HasTyProcess = false;
-                
+                HasTyProcess = false;                
             };
 
             HProcess = OpenProcess(0x1F0FFF, false, TyProcess.Id);
@@ -72,7 +83,15 @@ namespace MulTyPlayerClient
             {
             }
             TyProcessBaseAddress = TyProcess.MainModule.BaseAddress;
+            if (!HasFolderPath)
+            {
+                SettingsHandler.Settings.MulTyPlayerFolderPath = TyProcess.MainModule.FileName;
+                SettingsHandler.Save();
+                HasFolderPath = true;
+            }
             HasTyProcess = true;
+            
+            return true;
         }
 
         //Returns true if currently has a handle to the Ty process
@@ -87,6 +106,8 @@ namespace MulTyPlayerClient
 
             if (processes.Length == 0)
             {
+                if(HasFolderPath && SettingsHandler.Settings.AutoRestartTyOnCrash)
+                    return RestartTy();
                 return false;
             }
             else if (processes.Length > 1)

@@ -4,5 +4,8 @@
   "Port": 8750,
   "DoKoalaCollision": false,
   "CreateLogFile": true,
-  "AttemptReconnect": true
+  "AttemptReconnect": true,
+  "AutoRestartTyOnCrash": true,
+  "MulTyPlayerFolderPath": "",
+  "AutoLaunchTyOnStartup": true
 }
