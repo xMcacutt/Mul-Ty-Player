@@ -5,7 +5,7 @@
   "DoKoalaCollision": false,
   "CreateLogFile": true,
   "AttemptReconnect": true,
-  "AutoRestartTyOnCrash": true,
+  "AutoRestartTyOnCrash": false,
   "MulTyPlayerFolderPath": "",
   "AutoLaunchTyOnStartup": true
 }

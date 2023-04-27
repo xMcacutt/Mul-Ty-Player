@@ -111,7 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Update="ClientSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="fe_999_icon_koalakid.ico">
       <Pack>True</Pack>

@@ -43,7 +43,8 @@ namespace MulTyPlayerClient.GUI
                 }
                 Thread.Sleep(500);
             }
-            BasicIoC.SplashScreenViewModel.MessageText = "Mul-Ty-Player is open!";            
+            BasicIoC.SplashScreenViewModel.MessageText = "Mul-Ty-Player is open!";
+            Thread.Sleep(500);
         }
     }
 }

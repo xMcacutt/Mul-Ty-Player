@@ -48,12 +48,10 @@ namespace MulTyPlayerClient
             HasFolderPath = SettingsHandler.Settings.MulTyPlayerFolderPath != "";
             if (HasFolderPath && SettingsHandler.Settings.AutoLaunchTyOnStartup)
             {
-                if(FindTyProcess())
+                if(!FindTyProcess())
                     RestartTy();
             }
         }
-
-
 
         public static bool RestartTy()
         {
@@ -72,7 +70,8 @@ namespace MulTyPlayerClient
             TyProcess.Exited += (o, e) =>
             {
                 var exitedProcess = o as Process;
-                BasicIoC.LoggerInstance.Write("Ty has exited with code " + exitedProcess.ExitCode + ", restarting...");
+                if(SettingsHandler.Settings.AutoRestartTyOnCrash)
+                    BasicIoC.LoggerInstance.Write("Ty has exited with code " + exitedProcess.ExitCode + ", restarting...");
                 TyProcess.Close();
                 TyProcess.Dispose();
                 HasTyProcess = false;                
