@@ -9,6 +9,7 @@ namespace MulTyPlayerClient
 {
     internal class CrateHandler : SyncObjectHandler
     {
+        public int[] CratesPerLevel = { 0, 0, 0, 0, 31, 16, 24, 0, 24, 12, 300, 0, 6, 34, 43 };
         public CrateHandler()
         {
             Name = "Crate";
@@ -46,7 +47,7 @@ namespace MulTyPlayerClient
 
         public override void Sync(int level, byte[] liveData, byte[] saveData)
         {
-            for (int i = 0; i < Levels.GetLevelData(level).CrateCount; i++)
+            for (int i = 0; i < CratesPerLevel[level]; i++)
             {
                 if (liveData[i] == 0 && GlobalObjectData[level][i] == 1) GlobalObjectData[level][i] = 0;
             }
@@ -54,7 +55,7 @@ namespace MulTyPlayerClient
             {
                 PreviousObjectData = liveData;
                 CurrentObjectData = liveData;
-                LiveSync.Sync(liveData, Levels.GetLevelData(level).CrateCount, CheckState);
+                LiveSync.Sync(liveData, CratesPerLevel[level], CheckState);
             }
         }
 
@@ -85,7 +86,7 @@ namespace MulTyPlayerClient
 
             PreviousObserverState = ObserverState;
             CurrentObjectData = LiveSync.ReadData();
-            for (int iLive = 0; iLive < Levels.GetLevelData(Client.HLevel.CurrentLevelId).CrateCount; iLive++)
+            for (int iLive = 0; iLive < CratesPerLevel[Client.HLevel.CurrentLevelId]; iLive++)
             {
                 if (CheckObserverCondition(PreviousObjectData[iLive], CurrentObjectData[iLive]))
                 {

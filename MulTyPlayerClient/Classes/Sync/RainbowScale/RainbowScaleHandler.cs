@@ -32,7 +32,7 @@ namespace MulTyPlayerClient
             SetSyncClasses(LiveSync, SaveSync);
             GlobalObjectData = new ()
             {
-                { Levels.RainbowCliffs.Id, new byte[ObjectAmount] }
+                { 0, new byte[ObjectAmount] }
             };
         }
 
@@ -43,7 +43,6 @@ namespace MulTyPlayerClient
 
         public override bool CheckObserverCondition(byte previousState, byte currentState)
         {
-            //May cause issues if state is 3 for 1 or 0 frames???? hasnt yet, dont worry
             return (previousState < 3 && currentState > 3);
         }
     }
