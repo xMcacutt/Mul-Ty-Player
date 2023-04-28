@@ -75,5 +75,10 @@ namespace MulTyPlayerClient
                 SyncSettings["RainbowScale"] = DoRainbowScaleSyncing;
             }
         }
+
+        public static bool HasValidTyExePath()
+        {
+            return Settings.MulTyPlayerFolderPath != "" && Settings.MulTyPlayerFolderPath != null;
+        }
     }
 }

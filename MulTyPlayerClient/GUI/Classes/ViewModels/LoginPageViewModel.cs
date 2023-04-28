@@ -1,4 +1,5 @@
-﻿using PropertyChanged;
+﻿using MulTyPlayerClient.Classes.Utility;
+using PropertyChanged;
 using Steamworks;
 using System;
 using System.Collections.Generic;
@@ -109,16 +110,16 @@ namespace MulTyPlayerClient.GUI
 
         public void Setup()
         {
-            if (SettingsHandler.Settings.DoGetSteamName)
+            if (SettingsHandler.Settings.DoGetSteamName && SteamHelper.TryGetName(out string username))
             {
-                SteamClient.Init(411960);
-                Name = SteamClient.IsValid ? SteamClient.Name : GenerateRandomUser();
-                SteamClient.Shutdown();
+                Name = username;
+                
             }
             else
             {
                 Name = SettingsHandler.Settings.DefaultName == "USER" ? GenerateRandomUser() : SettingsHandler.Settings.DefaultName;
             }
+
             _serverList = new();
             if (Path.Exists("./list.servers"))
             {

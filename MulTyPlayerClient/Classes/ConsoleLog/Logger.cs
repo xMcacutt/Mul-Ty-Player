@@ -1,4 +1,6 @@
-﻿using PropertyChanged;
+﻿#define _DEBUG
+using MulTyPlayerClient.Classes.ConsoleLog;
+using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,6 +26,7 @@ namespace MulTyPlayerClient
 
         public Logger(int maxMessageCount)
         {
+            EventMessageLogger.Init();
             if (SettingsHandler.Settings.CreateLogFile) CreateLogFile();
             _maxLogMessageCount = maxMessageCount;
             Log = new();
@@ -68,6 +71,14 @@ namespace MulTyPlayerClient
                         Log.Add(message);
                         if (Log.Count > _maxLogMessageCount) Log.RemoveAt(0);
                     }));
+        }
+
+
+        public void WriteDebug(string message)
+        {
+#if _DEBUG
+            Write("DEBUG: " + message);
+#endif
         }
     }
 }

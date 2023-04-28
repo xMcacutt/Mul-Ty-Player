@@ -17,8 +17,8 @@ namespace MulTyPlayerClient
 {
     internal class Client
     {
-        public static bool IsRunning;
-        public static bool Relaunching = false;
+        public static bool IsConnected;
+        public static bool Relaunching => TyProcess.LaunchingGame;
         public static bool KoalaSelected = false;
         public static Riptide.Client _client;
         private static string _ip;
@@ -75,44 +75,22 @@ namespace MulTyPlayerClient
         {
             while (!cts.Token.IsCancellationRequested)
             {
-                if (IsRunning)
+                if (IsConnected && TyProcess.FindProcess())
                 {
                     try
                     {
-                        if (ProcessHandler.FindTyProcess())
+                        if (!HGameState.CheckLoaded())
                         {
-                            if (Relaunching)
-                            {
-                                BasicIoC.LoggerInstance.Write("Ty has been restarted. You're back in!");
-                                BasicIoC.SFXPlayer.PlaySound(SFX.MenuAccept);
-                                Relaunching = false;
-                                continue;
-                            }
-                            else
-                            {
-                                if (!HGameState.CheckLoaded())
-                                {
-                                    HLevel.GetCurrentLevel();
-                                    HSync.CheckEnabledObservers();
-                                    HHero.GetTyPosRot();
-                                    HKoala.CheckTA();
-                                }
-                                HHero.SendCoordinates();
-                            }
+                            HLevel.GetCurrentLevel();
+                            HSync.CheckEnabledObservers();
+                            HHero.GetTyPosRot();
+                            HKoala.CheckTA();
                         }
-                        else
-                        {
-                            if (!Relaunching)
-                            {
-                                throw new TyClosedException();
-                            }
-                        }
+                        HHero.SendCoordinates();
                     }
                     catch (Exception ex) when (ex is TyClosedException || ex is TyProcessException)
                     {
-                        Relaunching = true;
-                        BasicIoC.LoggerInstance.Write(ex.Message);
-                        BasicIoC.SFXPlayer.PlaySound(SFX.MenuCancel);
+                        BasicIoC.LoggerInstance.Write(ex.Message);                        
                     }
                 }
                 _client.Update();
@@ -126,13 +104,13 @@ namespace MulTyPlayerClient
             BasicIoC.KoalaSelectViewModel.Setup();
             BasicIoC.LoginViewModel.ConnectionAttemptSuccessful = true;
             BasicIoC.LoginViewModel.ConnectionAttemptCompleted = true;
-            IsRunning = true;
+            IsConnected = true;
         }
 
         private static void Disconnected(object sender, Riptide.DisconnectedEventArgs e)
         {
             cts.Cancel();
-            IsRunning = false;
+            IsConnected = false;
             BasicIoC.KoalaSelectViewModel.MakeAllAvailable();
             Application.Current.Dispatcher.BeginInvoke(
             DispatcherPriority.Background,

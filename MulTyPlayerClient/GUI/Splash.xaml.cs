@@ -27,12 +27,18 @@ namespace MulTyPlayerClient.GUI
 
         private void Setup_Click(object sender, RoutedEventArgs e)
         {
-            bool isAdmin;
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(identity);
-            isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
+            bool isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
             if (isAdmin) WindowHandler.SetupWindow.Show();
             else SetupText.Text = "Run app as administrator to run setup.";
+        }
+
+        private void Launch_Click(object sender, RoutedEventArgs e)
+        {
+            TyProcess.TryLaunchGame();
+            Button button = sender as Button;
+            button.IsEnabled = false;
         }
     }
 }

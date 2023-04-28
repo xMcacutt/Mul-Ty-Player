@@ -63,6 +63,16 @@
             </TextBlock.Effect>
         </TextBlock>
 
+        <Button x:Name="LaunchGame_Button" 
+            Click="Launch_Click"            
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top" 
+            BorderBrush="{x:Null}"
+            Style="{StaticResource SelectButton}"
+            Tag="Launch Game" Grid.Column="1" Grid.Row="1" Width="230" Height="32" Margin="0,208,0,0"
+            IsEnabled = "{Binding EnableLaunchGameButton, Source={x:Static local:BasicIoC.SplashScreenViewModel}}"
+            Visibility = "{Binding LaunchGameButtonVisibility, Source={x:Static local:BasicIoC.SplashScreenViewModel}}" />
+
     </Grid>
     <Window.Background>
         <ImageBrush x:Name="bgImage" ImageSource="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.jpg"/>
