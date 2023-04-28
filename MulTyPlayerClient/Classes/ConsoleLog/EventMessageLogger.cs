@@ -1,4 +1,5 @@
-﻿using MulTyPlayerClient.GUI;
+﻿using MulTyPlayerClient.Classes.Utility;
+using MulTyPlayerClient.GUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,24 +29,28 @@ namespace MulTyPlayerClient.Classes.ConsoleLog
             }
             else
             {
+                BasicIoC.MainGUIViewModel.IsLaunchGameButtonEnabled = SettingsHandler.HasValidExePath() && SteamHelper.IsLoggedOn();
                 BasicIoC.LoggerInstance.Write(msg + "please re-open the game to continue.");
             }
         }
 
         private static void OnTyProcessFound()
         {
+            BasicIoC.MainGUIViewModel.IsLaunchGameButtonEnabled = false;
             BasicIoC.SFXPlayer.PlaySound(SFX.MenuAccept);
             BasicIoC.LoggerInstance.Write("Found game process, you're in!");
         }
 
         private static void OnTyProcessLaunched()
         {
+            BasicIoC.MainGUIViewModel.IsLaunchGameButtonEnabled = false;
             BasicIoC.SFXPlayer.PlaySound(SFX.MenuAccept);
             BasicIoC.LoggerInstance.Write("Launched game successfully, you're in!");
         }
 
         private static void OnTyProcessLaunchFailed()
         {
+            BasicIoC.MainGUIViewModel.IsLaunchGameButtonEnabled = SettingsHandler.HasValidExePath() && SteamHelper.IsLoggedOn();
             BasicIoC.SFXPlayer.PlaySound(SFX.PlayerDisconnect);
             BasicIoC.LoggerInstance.Write("Failed to restart Ty automatically, please manually open the game.");
         }

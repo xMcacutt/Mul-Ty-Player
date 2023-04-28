@@ -33,7 +33,7 @@ namespace MulTyPlayerClient
         
         public void DoLevelSetup()
         {
-            BasicIoC.LoggerInstance.Write("Doing level setup");
+            BasicIoC.LoggerInstance.WriteDebug("Doing level setup");
             LevelData lData = Levels.GetLevelData(currentLevelId);
             HSync.SetCurrentData(lData.IsMainStage);
             HSync.SetMemAddrs();

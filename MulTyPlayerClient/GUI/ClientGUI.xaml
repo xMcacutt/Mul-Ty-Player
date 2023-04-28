@@ -225,7 +225,7 @@
                 </Border>
 
                 <StackPanel Orientation="Horizontal">
-                    <Button Margin="3" 
+                    <Button x:Name="SettingsButton" Margin="3" 
                             BorderBrush="{x:Null}"
                             Click="SettingsButton_Click"
                             Background="#FFDDDDDD"
@@ -239,7 +239,7 @@
                         </Button.Resources>
                         <Image Source="{StaticResource settings_black_24dpDrawingImage}"/>
                     </Button>
-                    <Button Margin="3" 
+                    <Button x:Name="ReadyButton" Margin="3" 
                             BorderBrush="{x:Null}"
                             Click="ReadyButton_Click"
                             Background="#FFDDDDDD"
@@ -254,9 +254,24 @@
                         </Button.Resources>
                         <TextBlock Padding="10" Style="{StaticResource ComicText}" FontSize="20" VerticalAlignment="Center" Text="{Binding ReadyText, Source={x:Static local:BasicIoC.MainGUIViewModel}}"/>
                     </Button>
+                    <Button x:Name="LaunchGameButton" Margin="3"
+                            BorderBrush="{x:Null}"
+                            Click="LaunchGameButton_Click"
+                            Background="#FFDDDDDD"
+                            HorizontalAlignment="Left"
+                            Width="Auto"
+                            IsEnabled="{Binding IsLaunchGameButtonEnabled, Source={x:Static local:BasicIoC.MainGUIViewModel}}"
+                            Template="{StaticResource ButtonTemplate}">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="15"/>
+                            </Style>
+                        </Button.Resources>
+                        <TextBlock Padding="10" Style="{StaticResource ComicText}" FontSize="20" VerticalAlignment="Center" Text="{Binding LaunchGameText, Source={x:Static local:BasicIoC.MainGUIViewModel}}"/>
+                    </Button>
                 </StackPanel>
 
-                <Button Margin="3"
+                <Button x:Name="DisconnectButton" Margin="3"
                         BorderBrush="{x:Null}" 
                         Background="#FFDDDDDD"
                         HorizontalAlignment="Right"

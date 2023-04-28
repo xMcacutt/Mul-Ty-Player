@@ -1,28 +1,19 @@
-﻿using MulTyPlayerClient.GUI;
+﻿using MulTyPlayerClient.Classes.Utility;
+using MulTyPlayerClient.GUI;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Documents;
 
 namespace MulTyPlayerClient
 {
     internal class TyProcess
     {
         [DllImport("kernel32.dll")]
-        public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
-
-        static Process process;
-        static nint processBaseAddress;
-        static IntPtr handle;
+        public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);        
 
         public static bool IsRunning {get; private set; }
         public static bool LaunchingGame { get; private set; }
+        public static bool CanLaunchGame => !IsRunning && !LaunchingGame;
 
         public static event Action OnTyProcessExited = delegate { };
         public static event Action OnTyProcessFound = delegate { };
@@ -32,22 +23,26 @@ namespace MulTyPlayerClient
         public static nint BaseAddress => processBaseAddress;
         public static IntPtr Handle => handle;
 
+        private static Process process;
+        private static nint processBaseAddress;
+        private static IntPtr handle;
+
         //Launches the game from the path saved in settings.
         //Returns whether or not game was succesfully launched.
         public static bool TryLaunchGame()
         {
             //If game is already running, or being launched, fail
-            if (IsRunning || LaunchingGame)
+            if (!CanLaunchGame)
                 return false;
             //If we dont have a valid path to the exe, fail
-            if (!SettingsHandler.HasValidTyExePath())
+            if (!SettingsHandler.HasValidExePath() || !SteamHelper.IsLoggedOn())
                 return false;
 
             LaunchingGame = true;
             try
             {
                 process = new Process();
-                process.StartInfo = new ProcessStartInfo(SettingsHandler.Settings.MulTyPlayerFolderPath) { UseShellExecute = false, RedirectStandardError = true, RedirectStandardOutput = true };
+                process.StartInfo = new ProcessStartInfo(SettingsHandler.Settings.MulTyPlayerFolderPath, "noidle") { UseShellExecute = false, RedirectStandardError = true, RedirectStandardOutput = true };
                 process.StartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(SettingsHandler.Settings.MulTyPlayerFolderPath);
                 process.Start();
                 PullProcessData();
@@ -58,7 +53,7 @@ namespace MulTyPlayerClient
             catch
             {
                 OnTyProcessLaunchFailed?.Invoke();
-                LaunchingGame=false;
+                LaunchingGame = false;
                 return false;
             }
         }
@@ -77,7 +72,7 @@ namespace MulTyPlayerClient
 
             if (processes.Length == 0)
             {
-                BasicIoC.LoggerInstance.WriteDebug("Found no processes");
+                //BasicIoC.LoggerInstance.WriteDebug("Found no processes");
                 return false;
             }
             else if (processes.Length > 1)

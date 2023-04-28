@@ -1,4 +1,4 @@
-﻿#define _DEBUG
+﻿#define DEBUG
 using MulTyPlayerClient.Classes.ConsoleLog;
 using PropertyChanged;
 using System;
@@ -67,17 +67,17 @@ namespace MulTyPlayerClient
             }
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
-                    new Action(() => {
+                    () => {
                         Log.Add(message);
                         if (Log.Count > _maxLogMessageCount) Log.RemoveAt(0);
-                    }));
+                    });
         }
 
 
         public void WriteDebug(string message)
         {
-#if _DEBUG
-            Write("DEBUG: " + message);
+#if DEBUG
+            Write("[DEBUG]: " + message);
 #endif
         }
     }

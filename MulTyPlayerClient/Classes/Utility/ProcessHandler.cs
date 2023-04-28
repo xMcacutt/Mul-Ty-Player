@@ -19,11 +19,8 @@ namespace MulTyPlayerClient
 {
     internal class ProcessHandler
     {   
-        private static nint TyProcessBaseAddress;
         public static bool MemoryWriteDebugLogging = false;
         public static bool MemoryReadDebugLogging = false;
-
-        private static bool HasFolderPath = false;        
 
         [DllImport("kernel32.dll")]
         internal static unsafe extern bool ReadProcessMemory(

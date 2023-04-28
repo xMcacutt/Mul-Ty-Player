@@ -76,9 +76,6 @@ namespace MulTyPlayerClient
             }
         }
 
-        public static bool HasValidTyExePath()
-        {
-            return Settings.MulTyPlayerFolderPath != "" && Settings.MulTyPlayerFolderPath != null;
-        }
+        public static bool HasValidExePath() => Settings.MulTyPlayerFolderPath != "" && Settings.MulTyPlayerFolderPath != null;
     }
 }

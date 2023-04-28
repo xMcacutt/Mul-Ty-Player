@@ -61,5 +61,10 @@ namespace MulTyPlayerClient.GUI
         {
             Client.HCommand.SetReady();
         }
+
+        private void LaunchGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            TyProcess.TryLaunchGame();
+        }
     }
 }

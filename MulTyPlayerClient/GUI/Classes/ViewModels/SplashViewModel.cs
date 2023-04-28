@@ -51,15 +51,15 @@ namespace MulTyPlayerClient.GUI
                 //and if we are logged into steam,
                 //If all conditions are met, launch the game
                 
-                bool launchOnStartup = SettingsHandler.HasValidTyExePath() && SettingsHandler.Settings.AutoLaunchTyOnStartup && SteamHelper.IsLoggedOn();
+                bool launchOnStartup = SettingsHandler.HasValidExePath() && SettingsHandler.Settings.AutoLaunchTyOnStartup && SteamHelper.IsLoggedOn();
                 
                 if (launchOnStartup && TyProcess.TryLaunchGame())
                 {                    
                 }
                 else
                 {
-                    LaunchGameButtonVisibility = SettingsHandler.HasValidTyExePath() ? Visibility.Visible : Visibility.Hidden;
-                    EnableLaunchGameButton = SettingsHandler.HasValidTyExePath() && SteamHelper.IsLoggedOn();
+                    LaunchGameButtonVisibility = SettingsHandler.HasValidExePath() ? Visibility.Visible : Visibility.Hidden;
+                    EnableLaunchGameButton = TyProcess.CanLaunchGame;
                     BasicIoC.SplashScreenViewModel.MessageText = "Mul-Ty-Player could not be found.\nPlease open the game to continue.";
                 }
             }
@@ -69,7 +69,7 @@ namespace MulTyPlayerClient.GUI
             //Enable the launch button if conditions are met
             while (!TyProcess.FindProcess())
             {
-                EnableLaunchGameButton = SettingsHandler.HasValidTyExePath() && SteamHelper.IsLoggedOn();
+                EnableLaunchGameButton = TyProcess.CanLaunchGame;
                 Thread.Sleep(250);
             }
 
@@ -97,7 +97,7 @@ namespace MulTyPlayerClient.GUI
         private void TyLaunchFailed()
         {
             LaunchGameButtonVisibility = Visibility.Hidden;
-            EnableLaunchGameButton = SettingsHandler.HasValidTyExePath() && SteamHelper.IsLoggedOn();
+            EnableLaunchGameButton = SettingsHandler.HasValidExePath() && SteamHelper.IsLoggedOn();
             BasicIoC.SplashScreenViewModel.MessageText = "Failed to auto-launch Mul-Ty-Player, please open the game manually to continue.";
             Thread.Sleep(1000);
         }

@@ -1,4 +1,5 @@
-﻿using PropertyChanged;
+﻿using MulTyPlayerClient.Classes.Utility;
+using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,6 +30,10 @@ namespace MulTyPlayerClient.GUI
 
         public bool IsReadyButtonEnabled => IsOnMenu && ReadyEnabled;
 
+        public string LaunchGameText { get; set; }
+
+        public bool IsLaunchGameButtonEnabled {get; set;}
+
         public MainClientViewModel()
         {
             PlayerInfoList = new ObservableCollection<PlayerInfo>();
@@ -36,6 +41,7 @@ namespace MulTyPlayerClient.GUI
             ReadyEnabled = true;
             IsOnMenu = false;
             ReadyText = "Ready";
+            LaunchGameText = "Launch Game";
         }
 
         public void ResetPlayerList()
