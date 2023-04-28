@@ -28,7 +28,7 @@ namespace MulTyPlayerClient
             if (HLevel.CurrentLevelId != Levels.RainbowCliffs.Id)
                 return;
 
-            int address = HRainbowScale.LiveObjectAddress + 0x78 + (0x114 * index);
+            int address = HRainbowScale.LiveObjectAddress + StateOffset + (ObjectLength * index);
             ProcessHandler.TryRead(address, out HRainbowScale.CurrentObjectData[index], false);
 
             if (HRainbowScale.CurrentObjectData[index] >= 3)

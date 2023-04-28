@@ -20,7 +20,6 @@ namespace MulTyPlayerClient.Classes.Utility
                 bool ok = SteamClient.IsValid && SteamClient.IsLoggedOn;
                 SteamClient.Shutdown();
                 return ok;
-
             }
             catch
             {
