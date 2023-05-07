@@ -1,0 +1,341 @@
+﻿<UserControl x:Class="MulTyPlayerClient.GUI.Views.ClientGUI"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
+        xmlns:viewmodels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
+        d:DataContext="{d:DesignInstance Type=viewmodels:LobbyViewModel}"
+        d:DesignHeight="450" d:DesignWidth="800" FontSize="10" BorderBrush="Black"
+        mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons/Icons.xaml"/>
+                <ResourceDictionary Source="/Resources/Icons/Icons (2).xaml"/>
+                <ResourceDictionary Source="/Resources/Styles.xaml"/>
+                <ResourceDictionary Source="/Resources/Fonts/SlapstickFont.xaml"/>
+                <ResourceDictionary>
+                    <local:BooleanToHostIconConverter x:Key="BooleanToHostIconConverter" />
+                    <local:ReadyCharConverter x:Key="ReadyCharConverter" />
+                    <local:SubstringConverter x:Key="SubstringConverter" />
+                    <local:LevelNameConverter x:Key="LevelNameConverter" />
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <Style x:Key="CellPadding" TargetType="DataGridCell">
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="Background" Value="#00000000"/>
+            </Style>
+            <Style x:Key="ComicText" TargetType="TextBlock">
+                <Setter Property="TextElement.FontFamily" Value="{StaticResource SlapstickFont}"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="Foreground" Value="Black"/>
+            </Style>
+            <ControlTemplate x:Key="ButtonTemplate" TargetType="{x:Type Button}">
+                <Border Name="border" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+                    <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter TargetName="border" Property="Opacity" Value="0.5"/>
+                        <Setter Property="Foreground" Value="#FFDDDDDD"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="border" Property="Background" Value="#FFFFBF70"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.8*"/>
+            <ColumnDefinition Width="3.2*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Left side pannel-->
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.4*"/>
+                <RowDefinition Height="4.6*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" 
+                       VerticalAlignment="Center"
+                       Style="{StaticResource ComicText}"
+                       HorizontalAlignment="Center"
+                       FontSize="28"
+                       Margin="0,0,0,0"
+                       Padding="0"
+                       Text="Connected Koalas"/>
+            <DataGrid
+                Grid.Row="1"
+                CellStyle="{StaticResource CellPadding}"
+                AutoGenerateColumns="False"
+                GridLinesVisibility="Horizontal"
+                Name="PlayerInfo"
+                HeadersVisibility="None" 
+                Background="White" 
+                BorderBrush="{x:Null}"
+                Margin="2"
+                ScrollViewer.CanContentScroll="False"
+                ItemsSource="{Binding PlayerInfoList}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Client ID" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Style="{StaticResource ComicText}" 
+                                           VerticalAlignment="Center"
+                                           FontSize="16"
+                                           Padding="3">
+                                        <Run Text="ID: " />
+                                        <Run Text="{Binding ClientID}" />
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Koala Icon" Width="30" CanUserResize="False">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Width="20" 
+                                       Margin="0"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Source="{Binding KoalaIcon}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Player Name" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Style="{StaticResource ComicText}" 
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           Padding="0"
+                                           ToolTip="{Binding PlayerName}"
+                                           Text="{Binding PlayerName, Converter={StaticResource SubstringConverter}}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Host Status" Width="30">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Width="20" 
+                                       Margin="0"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Source="{Binding IsHost, Converter={StaticResource BooleanToHostIconConverter}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Level" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Style="{StaticResource ComicText}" 
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           Padding="3"
+                                           ToolTip="{Binding Level, Converter={StaticResource LevelNameConverter}}"
+                                           Text="{Binding Level}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Ready Status" Width="">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Style="{StaticResource ComicText}" 
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        Padding="3"
+                                        Text="{Binding IsReady, Converter={StaticResource ReadyCharConverter}}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+
+            <Border BorderBrush="#FFA1A1A1" 
+                    BorderThickness="2,2,2,2" 
+                    Margin="-1"
+                    Grid.RowSpan="2"/>
+        </Grid>
+
+        <!--Right side pannel-->
+        <Grid Grid.Column="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+
+            <!--Top pannel-->
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="4.85*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.RowSpan="2" 
+                        BorderBrush="#FFA1A1A1" 
+                        BorderThickness="2" 
+                        CornerRadius="0,20,0,0" 
+                        Margin="-1">
+                    <ScrollViewer Margin="0 30 0 0"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  RenderTransformOrigin="0.5,0.5"
+                                  PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                        <ScrollViewer.RenderTransform>
+                            <ScaleTransform ScaleY="-1"/>
+                        </ScrollViewer.RenderTransform>
+                        <ItemsControl ItemsSource="{Binding Messages, Source={x:Static local:ChatLog}}"
+                                      Margin="5"
+                                      RenderTransformOrigin="0.5,0.5">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0 2">
+                                        <TextBlock Text="{Binding}"
+                                                   TextWrapping="Wrap"
+                                                   FontFamily="Cascadia Code"
+                                                   FontSize="9"
+                                                   TextAlignment="Right">
+                                        </TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleY="-1"/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="-0.618"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </ItemsControl.RenderTransform>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <!--
+                    <TextBlock Margin="0,0,5,0" 
+                               Text="Hello" 
+                               FontFamily="Cascadia Code" 
+                               FontSize="9" 
+                               TextAlignment="Right" 
+                               VerticalAlignment="Bottom" 
+                               ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                               TextWrapping="WrapWithOverflow"/>-->
+                </Border>
+
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="SettingsButton" Margin="3" 
+                            BorderBrush="{x:Null}"
+                            Click="SettingsButton_Click"
+                            Background="#FFDDDDDD"
+                            HorizontalAlignment="Left"
+                            Template="{StaticResource ButtonTemplate}"
+                            Width="40">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="15"/>
+                            </Style>
+                        </Button.Resources>
+                        <Image Source="{StaticResource settings_black_24dpDrawingImage}"/>
+                    </Button>
+                    <Button x:Name="ReadyButton" Margin="3" 
+                            BorderBrush="{x:Null}"
+                            Click="ReadyButton_Click"
+                            Background="#FFDDDDDD"
+                            HorizontalAlignment="Left"
+                            Width="Auto"
+                            IsEnabled="{Binding IsReadyButtonEnabled}"
+                            Template="{StaticResource ButtonTemplate}">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="15"/>
+                            </Style>
+                        </Button.Resources>
+                        <TextBlock Padding="10" Style="{StaticResource ComicText}" FontSize="20" VerticalAlignment="Center" Text="Ready"/>
+                    </Button>
+                    <Button x:Name="LaunchGameButton" Margin="3"
+                            BorderBrush="{x:Null}"
+                            Click="LaunchGameButton_Click"
+                            Background="#FFDDDDDD"
+                            HorizontalAlignment="Left"
+                            Width="Auto"
+                            IsEnabled="{Binding IsLaunchGameButtonEnabled}"
+                            Template="{StaticResource ButtonTemplate}">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="15"/>
+                            </Style>
+                        </Button.Resources>
+                        <TextBlock Padding="10" Style="{StaticResource ComicText}" FontSize="20" VerticalAlignment="Center" Text="Launch Game"/>
+                    </Button>
+                </StackPanel>
+
+                <Button x:Name="DisconnectButton" Margin="3"
+                        BorderBrush="{x:Null}" 
+                        Background="#FFDDDDDD"
+                        HorizontalAlignment="Right"
+                        Width="40"
+                        Template="{StaticResource ButtonTemplate}"
+                        Click="LogOutButton_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="15"/>
+                        </Style>
+                    </Button.Resources>
+                    <Image Source="{StaticResource logout_black_24dpDrawingImage}"/>
+                </Button>
+
+            </Grid>
+
+            <!--Send button border-->
+            <Border Grid.Row="1" 
+                    BorderBrush="#FFA1A1A1" 
+                    BorderThickness="2,2,2,2" 
+                    Margin="-1">
+                
+                <Grid Margin="-1">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Tag only works as a placeholder text because of a custom style-->
+                    <TextBox VerticalAlignment="Stretch" 
+                             Margin="0,0,0,0"
+                             Padding="4,0,0,0"
+                             VerticalContentAlignment="Center"
+                             FontFamily="Cascadia Code" 
+                             FontSize="12" 
+                             Cursor="IBeam"
+                             ClipToBounds="False" 
+                             MinHeight="20" 
+                             BorderBrush="{x:Null}"
+                             x:Name="TextboxInput" 
+                             KeyDown="TextboxInput_KeyDown"
+                             Text="{Binding Input, Source={x:Static local:BasicIoC.LobbyViewModel}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Tag=" See help.mtps file for commands"
+                             Style="{StaticResource PlaceholderTextStyle}"/>
+
+                    <Button VerticalAlignment="Stretch" 
+                            BorderBrush="{x:Null}" 
+                            Command="{Binding ManageInputCommand}"
+                            Template="{StaticResource ButtonTemplate}"
+                            Grid.Column="1">
+                        <Image Source="{StaticResource send_black_24dpDrawingImage}"/>
+                    </Button>
+
+                </Grid>
+            </Border>
+
+        </Grid>
+
+    </Grid>
+
+</UserControl>
