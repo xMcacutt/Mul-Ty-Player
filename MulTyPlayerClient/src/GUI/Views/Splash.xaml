@@ -1,0 +1,79 @@
+﻿<UserControl x:Name="SplashWindow" x:Class="MulTyPlayerClient.GUI.Views.Splash"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        d:DesignHeight="450"
+        d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Fonts/SlapstickFont.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.12*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="0.12*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.7*"/>
+            <RowDefinition Height="0.3*"/>
+            <RowDefinition Height="0.1*"/>
+        </Grid.RowDefinitions>
+
+        <Button x:Name="Setup" 
+                Click="Setup_Click"
+                HorizontalAlignment="Left" 
+                BorderBrush="{x:Null}"
+                Margin="0 3.5"
+                Style="{StaticResource SelectButton}"
+                Tag="Setup"/>
+        <TextBlock Grid.Column="1" 
+                   x:Name="SetupText"
+                   HorizontalAlignment="Left" 
+                   FontSize="20" 
+                   Padding="5,0,0,0" 
+                   VerticalAlignment="Center"
+                   Text="← First Time?"/>
+
+
+        <StackPanel x:Name="titleStack" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" >
+            <TextBlock x:Name="welcomeToMessage" FontSize="55" Text="Welcome To" Margin="0,0,0,-10">
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="5"/>
+                </TextBlock.Effect>
+            </TextBlock>
+            <TextBlock x:Name="mtpTitle" FontSize="90" Text="Mul-Ty-Player" Margin="0,-20,0,0">
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="5"/>
+                </TextBlock.Effect>
+            </TextBlock>
+        </StackPanel>
+
+        <TextBlock x:Name="messageText" Grid.Row="2" Grid.Column="1" FontSize="30" TextAlignment="Center" TextWrapping="Wrap" Text="{Binding MessageText}">
+            <TextBlock.Effect>
+                <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="3"/>
+            </TextBlock.Effect>
+        </TextBlock>
+
+        <Button x:Name="LaunchGame_Button" 
+            Click="Launch_Click"            
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top" 
+            BorderBrush="{x:Null}"
+            Style="{StaticResource SelectButton}"
+            Tag="Launch Game" Grid.Column="1" Grid.Row="1" Width="230" Height="32" Margin="0,208,0,0"
+            IsEnabled = "{Binding EnableLaunchGameButton}"
+            Visibility = "{Binding LaunchGameButtonVisibility}" />
+
+    </Grid>
+    <UserControl.Background>
+        <ImageBrush x:Name="bgImage" ImageSource="/Resources/KoalaSelectionAssets/Background.jpg"/>
+    </UserControl.Background>
+</UserControl>

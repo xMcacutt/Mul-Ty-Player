@@ -4,6 +4,7 @@ using System.IO;
 using System;
 using System.Threading;
 using System.Security.Cryptography.X509Certificates;
+using MulTyPlayerCommon;
 
 namespace MulTyPlayerServer
 {
