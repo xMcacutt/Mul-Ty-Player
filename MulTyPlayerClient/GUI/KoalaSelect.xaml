@@ -1,0 +1,337 @@
+﻿<Window x:Class="MulTyPlayerClient.GUI.KoalaSelect"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
+        mc:Ignorable="d"
+        Title="Select Your Koala" 
+        Height="300" 
+        Width="450" 
+        Closing="Window_Closing"
+        ResizeMode="NoResize"
+        Activated="Window_Activated">
+
+    <Grid>
+        <!--Background video-->
+        <MediaElement Stretch="UniformToFill">
+            <MediaElement.Triggers>
+                <EventTrigger RoutedEvent="MediaElement.Loaded">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <!-- The MediaTimeline has a RepeatBehavior="Forever" which makes the media play
+                                over and over indefinitely.-->
+                                <MediaTimeline RepeatBehavior="Forever"
+                                               Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.mp4"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </MediaElement.Triggers>
+        </MediaElement>
+
+        <!--Koala grid-->
+        <Grid Margin="5 10 5 30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!--Boonie-->
+            <StackPanel Margin="6 0">
+                
+                <Border BorderThickness="2" 
+                    BorderBrush="Black" 
+                    Background="Black">
+                    <Grid>
+                        <Image Stretch="UniformToFill"
+                               IsMouseDirectlyOverChanged="Boonie_IsMouseDirectlyOverChanged"
+                               MouseUp="BoonieClicked"
+                               IsEnabled="{Binding BoonieAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source" Value="{Binding Boonie, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding BoonieAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}" Value="false">
+                                            <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Taken/Boonie.jpg"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/Boonie.mp4"
+                                      LoadedBehavior="Manual"
+                                      x:Name="BoonieME"
+                                      Visibility="Collapsed"/>
+                    </Grid>
+                </Border>
+                <TextBlock Text="Boonie"/>
+
+            </StackPanel>
+
+            <!--Mim-->
+            <StackPanel Grid.Column="1"
+                        Margin="6 0">
+
+                <Border BorderThickness="2" 
+                        BorderBrush="Black" 
+                        Background="Black">
+                    <Grid>
+                        <Image Stretch="UniformToFill"
+                               IsMouseDirectlyOverChanged="Mim_IsMouseDirectlyOverChanged"
+                               MouseUp="MimClicked"
+                               IsEnabled="{Binding MimAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source" Value="{Binding Mim, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding MimAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}" Value="false">
+                                            <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Taken/Mim.jpg"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/Mim.mp4"
+                                      LoadedBehavior="Manual"
+                                      x:Name="MimME"
+                                      Visibility="Collapsed"/>
+                    </Grid>
+                </Border>
+                <TextBlock Text="Mim"/>
+            </StackPanel>
+
+            <!--Gummy-->
+            <StackPanel Grid.Column="2"
+                        Margin="6 0">
+
+                <Border BorderThickness="2" 
+                        BorderBrush="Black" 
+                        Background="Black">
+                    <Grid>
+                        <Image Stretch="UniformToFill"
+                               IsMouseDirectlyOverChanged="Gummy_IsMouseDirectlyOverChanged"
+                               MouseUp="GummyClicked"
+                               IsEnabled="{Binding GummyAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source" Value="{Binding Gummy, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding GummyAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}" Value="false">
+                                            <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Taken/Gummy.jpg"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/Gummy.mp4"
+                                      LoadedBehavior="Manual"
+                                      x:Name="GummyME"
+                                      Visibility="Collapsed"/>
+                    </Grid>
+                </Border>
+                <TextBlock Text="Gummy"/>
+            </StackPanel>
+
+            <!--Snugs-->
+            <StackPanel Grid.Column="3"
+                        Margin="6 0">
+
+                <Border BorderThickness="2" 
+                        BorderBrush="Black" 
+                        Background="Black">
+                    <Grid>
+                        <Image Stretch="UniformToFill"
+                               IsMouseDirectlyOverChanged="Snugs_IsMouseDirectlyOverChanged"
+                               MouseUp="SnugsClicked"
+                               IsEnabled="{Binding SnugsAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source" Value="{Binding Snugs, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SnugsAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}" Value="false">
+                                            <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Taken/Snugs.jpg"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/Snugs.mp4"
+                                      LoadedBehavior="Manual"
+                                      x:Name="SnugsME"
+                                      Visibility="Collapsed"/>
+                    </Grid>
+                </Border>
+                <TextBlock Text="Snugs"/>
+            </StackPanel>
+
+            <!--Katie-->
+            <StackPanel Grid.Row="1"
+                        Margin="6 0">
+
+                <Border BorderThickness="2" 
+                        BorderBrush="Black" 
+                        Background="Black">
+                    <Grid>
+                        <Image Stretch="UniformToFill"
+                               IsMouseDirectlyOverChanged="Katie_IsMouseDirectlyOverChanged"
+                               MouseUp="KatieClicked"
+                               IsEnabled="{Binding KatieAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source" Value="{Binding Katie, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding KatieAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}" Value="false">
+                                            <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Taken/Katie.jpg"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/Katie.mp4"
+                                      LoadedBehavior="Manual"
+                                      x:Name="KatieME"
+                                      Visibility="Collapsed"/>
+                    </Grid>
+                </Border>
+                <TextBlock Text="Katie"/>
+            </StackPanel>
+
+            <!--Kiki-->
+            <StackPanel Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="6 0">
+
+                <Border BorderThickness="2" 
+                        BorderBrush="Black" 
+                        Background="Black">
+                    <Grid>
+                        <Image Stretch="UniformToFill"
+                               IsMouseDirectlyOverChanged="Kiki_IsMouseDirectlyOverChanged"
+                               MouseUp="KikiClicked"
+                               IsEnabled="{Binding KikiAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source" Value="{Binding Kiki, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding KikiAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}" Value="false">
+                                            <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Taken/Kiki.jpg"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/Kiki.mp4"
+                                      LoadedBehavior="Manual"
+                                      x:Name="KikiME"
+                                      Visibility="Collapsed"/>
+                    </Grid>
+                </Border>
+                <TextBlock Text="Kiki"/>
+            </StackPanel>
+
+            <!--Elizabeth-->
+            <StackPanel Grid.Row="1"
+                        Grid.Column="2"
+                        Margin="6 0">
+
+                <Border BorderThickness="2" 
+                        BorderBrush="Black" 
+                        Background="Black">
+                    <Grid>
+                        <Image Stretch="UniformToFill"
+                               IsMouseDirectlyOverChanged="Elizabeth_IsMouseDirectlyOverChanged"
+                               MouseUp="ElizabethClicked"
+                               IsEnabled="{Binding ElizabethAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source" Value="{Binding Elizabeth, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElizabethAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}" Value="false">
+                                            <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Taken/Elizabeth.jpg"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/Elizabeth.mp4"
+                                      LoadedBehavior="Manual"
+                                      x:Name="ElizabethME"
+                                      Visibility="Collapsed"/>
+                    </Grid>
+                </Border>
+                <TextBlock Text="Elizabeth"/>
+            </StackPanel>
+
+            <!--Dubbo-->
+            <StackPanel Grid.Row="1"
+                        Grid.Column="3"
+                        Margin="6 0">
+
+                <Border BorderThickness="2" 
+                        BorderBrush="Black" 
+                        Background="Black">
+                    <Grid>
+                        <Image Stretch="UniformToFill"
+                               IsMouseDirectlyOverChanged="Dubbo_IsMouseDirectlyOverChanged"
+                               MouseUp="DubboClicked"
+                               IsEnabled="{Binding DubboAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source" Value="{Binding Dubbo, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DubboAvailable, Source={x:Static local:BasicIoC.KoalaSelectViewModel}}" Value="false">
+                                            <Setter Property="Source" Value="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Taken/Dubbo.jpg"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/mp4/Dubbo.mp4"
+                                      LoadedBehavior="Manual"
+                                      x:Name="DubboME"
+                                      Visibility="Collapsed"/>
+                    </Grid>
+                </Border>
+                <TextBlock Text="Dubbo"/>
+            </StackPanel>
+
+        </Grid>
+
+        <TextBlock Text="Select Your Koala" 
+                   VerticalAlignment="Bottom"
+                   Margin="0 12"/>
+
+        <Border Background="Transparent"
+                IsHitTestVisible="{Binding BlockKoalaSelect, 
+                                   Source={x:Static local:BasicIoC.KoalaSelectViewModel}}"/>
+
+    </Grid>
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="TextElement.FontFamily" Value="Fonts/#SF Slapstick Comic"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#FFFFFFFF"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="0" 
+                                      Direction="315" 
+                                      ShadowDepth="2"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Window.Background>
+        <ImageBrush ImageSource="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.jpg" Stretch="UniformToFill"/>
+    </Window.Background>
+
+</Window>

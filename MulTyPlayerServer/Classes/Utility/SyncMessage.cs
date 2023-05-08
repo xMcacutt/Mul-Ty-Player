@@ -1,5 +1,4 @@
-﻿using MulTyPlayerCommon;
-using Riptide;
+﻿using Riptide;
 
 namespace MulTyPlayerServer
 {
