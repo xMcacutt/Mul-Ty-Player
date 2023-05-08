@@ -54,7 +54,4 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Mul-Ty-Player SyncLibrary\Mul-Ty-Player Common.csproj" />
-  </ItemGroup>
 </Project>

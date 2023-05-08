@@ -4,14 +4,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mul-Ty-Player Client", "MulTyPlayerClient\Mul-Ty-Player Client.csproj", "{949DCE2F-61FB-46B8-B18D-C96842EF7A9F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8} = {A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mul-Ty-Player Server CLI", "MulTyPlayerServer\Mul-Ty-Player Server CLI.csproj", "{8FC2F74F-3012-4187-A11E-A02D395533FE}"
-	ProjectSection(ProjectDependencies) = postProject
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8} = {A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AC07365F-39B3-43EE-B08B-AEDAAE322F2A}"
 	ProjectSection(SolutionItems) = preProject
@@ -19,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MulTyPlayer Installer", "MulTyPlayer Installer\MulTyPlayer Installer.vdproj", "{4E75F27B-0DAE-4A89-93A4-2E4819D9158D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mul-Ty-Player Common", "Mul-Ty-Player SyncLibrary\Mul-Ty-Player Common.csproj", "{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,24 +72,6 @@ Global
 		{4E75F27B-0DAE-4A89-93A4-2E4819D9158D}.Release|Any CPU.ActiveCfg = Release
 		{4E75F27B-0DAE-4A89-93A4-2E4819D9158D}.Release|x64.ActiveCfg = Release
 		{4E75F27B-0DAE-4A89-93A4-2E4819D9158D}.Release|x86.ActiveCfg = Release
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.All|Any CPU.ActiveCfg = Debug|Any CPU
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.All|Any CPU.Build.0 = Debug|Any CPU
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.All|x64.ActiveCfg = Debug|Any CPU
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.All|x64.Build.0 = Debug|Any CPU
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.All|x86.ActiveCfg = Debug|Any CPU
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.All|x86.Build.0 = Debug|Any CPU
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.Debug|x64.Build.0 = Debug|Any CPU
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.Debug|x86.Build.0 = Debug|Any CPU
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.Release|x64.ActiveCfg = Release|Any CPU
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.Release|x64.Build.0 = Release|Any CPU
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.Release|x86.ActiveCfg = Release|Any CPU
-		{A992DBCF-98F1-4DB7-BA8C-0E74D947F8D8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
