@@ -1,4 +1,5 @@
 ﻿using MulTyPlayerClient.GUI;
+using MulTyPlayerClient.GUI.Models;
 using PropertyChanged;
 using System;
 using System.Collections.Generic;
@@ -28,12 +29,12 @@ namespace MulTyPlayerClient
         {
             ProcessHandler.TryRead(0x286641, out bool result, true);
             bool onMenu = !result;
-            BasicIoC.MainGUIViewModel.IsOnMenu = onMenu;
+            ModelController.Lobby.IsOnMenu = onMenu;
             if(PlayerHandler.TryGetLocalPlayer(out Player player))
                 player.IsReady &= onMenu;
-            BasicIoC.MainGUIViewModel.UpdateReadyStatus();
+            ModelController.Lobby.UpdateReadyStatus();
 
-            if (onMenu && BasicIoC.MainGUIViewModel.TryGetPlayerInfo(Client._client.Id, out PlayerInfo playerInfo))
+            if (onMenu && ModelController.Lobby.TryGetPlayerInfo(Client._client.Id, out PlayerInfo playerInfo))
             {
                 playerInfo.Level = "M/L";
             }

@@ -14,6 +14,7 @@ using System.Collections;
 using System.IO;
 using System.Windows.Shapes;
 using System.Windows.Controls;
+using MulTyPlayerClient.GUI.Models;
 
 namespace MulTyPlayerClient
 {
@@ -38,19 +39,34 @@ namespace MulTyPlayerClient
         //may restructure in future
         public static void WriteData(int address, byte[] bytes, string writeIndicator)
         {
+            if (MemoryWriteDebugLogging)
+            {
+                bool success = WriteData(address, bytes);
+                string message = BitConverter.ToString(bytes) + " to 0x" + address.ToString("X") + " For: " + writeIndicator;
+                string logMsg = (success ? "Successfully wrote " : "Failed to write") + message;
+                ModelController.LoggerInstance.Write(logMsg);
+            }
             try
             {
                 bool success = WriteProcessMemory(TyProcess.Handle, address, bytes, bytes.Length, out nint bytesWritten);
-                if (MemoryWriteDebugLogging)
-                {
-                    string message = BitConverter.ToString(bytes) + " to 0x" + address.ToString("X") + " For: " + writeIndicator;
-                    string logMsg = (success ? "Successfully wrote " : "Failed to write") + message;
-                    BasicIoC.LoggerInstance.Write(logMsg);
-                }
+                
             }
             catch (Exception ex)
             {
-                BasicIoC.LoggerInstance.Write($"Error writing data: {ex}");
+                ModelController.LoggerInstance.Write($"Error writing data: {ex}");
+                throw new TyProcessException("ProcessHandler.WriteData()", ex);
+            }
+        }
+
+        public static bool WriteData(int address, byte[] bytes)
+        {
+            try
+            {
+                return WriteProcessMemory(TyProcess.Handle, address, bytes, bytes.Length, out nint bytesWritten);
+            }
+            catch (Exception ex)
+            {
+                ModelController.LoggerInstance.Write($"Error writing data: {ex}");
                 throw new TyProcessException("ProcessHandler.WriteData()", ex);
             }
         }
@@ -75,7 +91,7 @@ namespace MulTyPlayerClient
             }
             catch(Exception ex)
             {
-                BasicIoC.LoggerInstance.Write(ex.ToString());
+                ModelController.LoggerInstance.Write(ex.ToString());
                 result = default;
                 throw new TyProcessException("ProcessHandler.TryRead()", ex);
             }

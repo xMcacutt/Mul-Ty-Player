@@ -1,4 +1,5 @@
 ﻿using MulTyPlayerClient.GUI;
+using MulTyPlayerClient.GUI.Models;
 using Riptide;
 using System;
 using System.Diagnostics;
@@ -33,7 +34,7 @@ namespace MulTyPlayerClient
         
         public void DoLevelSetup()
         {
-            BasicIoC.LoggerInstance.WriteDebug("Doing level setup");
+            ModelController.LoggerInstance.WriteDebug("Doing level setup");
             LevelData lData = Levels.GetLevelData(currentLevelId);
             HSync.SetCurrentData(lData.IsMainStage);
             HSync.SetMemAddrs();
@@ -48,10 +49,10 @@ namespace MulTyPlayerClient
 
         public void GetCurrentLevel()
         {
-            if (BasicIoC.MainGUIViewModel.IsOnMenu) return;
+            if (ModelController.Lobby.IsOnMenu) return;
             ProcessHandler.TryRead(0x280594, out int levelId, true);
 
-            if (BasicIoC.MainGUIViewModel.TryGetPlayerInfo(Client._client.Id, out PlayerInfo playerInfo))
+            if (ModelController.Lobby.TryGetPlayerInfo(Client._client.Id, out PlayerInfo playerInfo))
             {
                 playerInfo.Level = Levels.GetLevelData(levelId).Code;
             }

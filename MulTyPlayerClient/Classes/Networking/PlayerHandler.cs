@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using System.Numerics;
+using MulTyPlayerClient.GUI.Models;
 
 namespace MulTyPlayerClient
 {
@@ -23,19 +24,18 @@ namespace MulTyPlayerClient
             Players = new();
         }
 
-        public static void AddPlayer(string koalaName, string name, ushort clientID, bool isHost)
+        public static void AddPlayer(Koala koala, string name, ushort clientID, bool isHost)
         {
-            Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
+            string koalaName = Koalas.GetInfo[koala].Name;
             Players.Add(clientID, new Player(koala, name, clientID, isHost, false));
             PlayerInfo player = new(clientID, name, koalaName);
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                 () => {
-                    BasicIoC.MainGUIViewModel.PlayerInfoList.Add(player);
+                    ModelController.Lobby.PlayerInfoList.Add(player);
                 });
-            BasicIoC.KoalaSelectViewModel.SetAvailability(koalaName, false);
-            if (!WindowHandler.KoalaSelectWindow.IsVisible)
-                BasicIoC.SFXPlayer.PlaySound(SFX.PlayerConnect);
+            ModelController.KoalaSelect.SetAvailability(koala, false);
+            ModelController.SFXPlayer.PlaySound(SFX.PlayerConnect);
         }
 
         public static void AnnounceSelection(string koalaName, string name, bool isHost)
@@ -46,20 +46,20 @@ namespace MulTyPlayerClient
             message.AddUShort(Client._client.Id);
             message.AddBool(isHost);
             PlayerInfo player = new(Client._client.Id, name, koalaName);
-            BasicIoC.MainGUIViewModel.PlayerInfoList.Add(player);
+            ModelController.Lobby.PlayerInfoList.Add(player);
             Client._client.Send(message);
             Client.KoalaSelected = true;
         }
 
         public static void RemovePlayer(ushort id)
         {
-            BasicIoC.KoalaSelectViewModel.SetAvailability(Players[id].Koala.KoalaName, true);
+            ModelController.KoalaSelect.SetAvailability(Players[id].Koala, true);
             Players.Remove(id);
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                 () => {
-                    if (BasicIoC.MainGUIViewModel.TryGetPlayerInfo(id, out PlayerInfo playerInfo))
-                        BasicIoC.MainGUIViewModel.PlayerInfoList.Remove(playerInfo);
+                    if (ModelController.Lobby.TryGetPlayerInfo(id, out PlayerInfo playerInfo))
+                        ModelController.Lobby.PlayerInfoList.Remove(playerInfo);
                 }
             );            
         }
@@ -68,7 +68,7 @@ namespace MulTyPlayerClient
         public static void PeerDisconnected(Message message)
         {
             RemovePlayer(message.GetUShort());
-            BasicIoC.SFXPlayer.PlaySound(SFX.PlayerDisconnect);
+            ModelController.SFXPlayer.PlaySound(SFX.PlayerDisconnect);
         }
 
         public static bool TryGetLocalPlayer(out Player player)

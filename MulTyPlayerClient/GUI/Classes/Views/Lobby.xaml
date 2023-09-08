@@ -1,13 +1,14 @@
-﻿<Window x:Class="MulTyPlayerClient.GUI.ClientGUI"
+﻿<UserControl x:Class="MulTyPlayerClient.GUI.Views.Lobby"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
+        xmlns:viewmodels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
         mc:Ignorable="d"
-        Closing="Window_Closing"
-        Title="Mul-Ty-Player Client" Height="450" Width="800" FontSize="10" BorderBrush="Black" ResizeMode="NoResize">
-    <Window.Resources>
+        Height="450" Width="800" FontSize="10" BorderBrush="Black"
+        d:DataContext="{d:DesignInstance Type=viewmodels:LobbyViewModel}">
+    <UserControl.Resources>
         <ResourceDictionary>
             <Style x:Key="CellPadding" TargetType="DataGridCell">
                 <Setter Property="Padding" Value="0" />
@@ -43,7 +44,7 @@
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </Window.Resources>
+    </UserControl.Resources>
     
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
@@ -78,7 +79,7 @@
                 BorderBrush="{x:Null}"
                 Margin="2"
                 ScrollViewer.CanContentScroll="False"
-                ItemsSource="{Binding PlayerInfoList, Source={x:Static local:BasicIoC.MainGUIViewModel}}">
+                ItemsSource="{Binding PlayerInfoList}">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Client ID" Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
@@ -188,7 +189,7 @@
                         <ScrollViewer.RenderTransform>
                             <ScaleTransform ScaleY="-1"/>
                         </ScrollViewer.RenderTransform>
-                        <ItemsControl ItemsSource="{Binding Log, Source={x:Static local:BasicIoC.LoggerInstance}}"
+                        <ItemsControl ItemsSource="{Binding ChatMessages}"
                                       Margin="5"
                                       RenderTransformOrigin="0.5,0.5">
                             <ItemsControl.ItemTemplate>
@@ -245,14 +246,14 @@
                             Background="#FFDDDDDD"
                             HorizontalAlignment="Left"
                             Width="Auto"
-                            IsEnabled="{Binding IsReadyButtonEnabled, Source={x:Static local:BasicIoC.MainGUIViewModel}}"
+                            IsEnabled="{Binding IsReadyButtonEnabled}"
                             Template="{StaticResource ButtonTemplate}">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="15"/>
                             </Style>
                         </Button.Resources>
-                        <TextBlock Padding="10" Style="{StaticResource ComicText}" FontSize="20" VerticalAlignment="Center" Text="{Binding ReadyText, Source={x:Static local:BasicIoC.MainGUIViewModel}}"/>
+                        <TextBlock Padding="10" Style="{StaticResource ComicText}" FontSize="20" VerticalAlignment="Center" Text="{Binding ReadyText}"/>
                     </Button>
                     <Button x:Name="LaunchGameButton" Margin="3"
                             BorderBrush="{x:Null}"
@@ -260,14 +261,14 @@
                             Background="#FFDDDDDD"
                             HorizontalAlignment="Left"
                             Width="Auto"
-                            IsEnabled="{Binding IsLaunchGameButtonEnabled, Source={x:Static local:BasicIoC.MainGUIViewModel}}"
+                            IsEnabled="{Binding IsLaunchGameButtonEnabled}"
                             Template="{StaticResource ButtonTemplate}">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="15"/>
                             </Style>
                         </Button.Resources>
-                        <TextBlock Padding="10" Style="{StaticResource ComicText}" FontSize="20" VerticalAlignment="Center" Text="{Binding LaunchGameText, Source={x:Static local:BasicIoC.MainGUIViewModel}}"/>
+                        <TextBlock Padding="10" Style="{StaticResource ComicText}" FontSize="20" VerticalAlignment="Center" Text="{Binding LaunchGameText}"/>
                     </Button>
                 </StackPanel>
 
@@ -277,7 +278,7 @@
                         HorizontalAlignment="Right"
                         Width="40"
                         Template="{StaticResource ButtonTemplate}"
-                        Click="LogOutButton_Click">
+                        Command="{Binding LogoutCommand}">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="15"/>
@@ -314,13 +315,13 @@
                              BorderBrush="{x:Null}"
                              x:Name="TextboxInput" 
                              KeyDown="TextboxInput_KeyDown"
-                             Text="{Binding Input, Source={x:Static local:BasicIoC.MainGUIViewModel}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Tag=" See help.mtps file for commands"
                              Style="{StaticResource PlaceholderTextStyle}"/>
 
                     <Button VerticalAlignment="Stretch" 
                             BorderBrush="{x:Null}" 
-                            Command="{Binding ManageInputCommand, Source={x:Static local:BasicIoC.MainGUIViewModel}}"
+                            Command="{Binding ManageInputCommand}"
                             Template="{StaticResource ButtonTemplate}"
                             Grid.Column="1">
                         <Image Source="{StaticResource send_black_24dpDrawingImage}"/>
@@ -333,4 +334,4 @@
 
     </Grid>
 
-</Window>
+</UserControl>

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace MulTyPlayerClient.GUI
+namespace MulTyPlayerClient.GUI.ViewModels
 {
     [AddINotifyPropertyChangedInterface]
     public class SettingsViewModel

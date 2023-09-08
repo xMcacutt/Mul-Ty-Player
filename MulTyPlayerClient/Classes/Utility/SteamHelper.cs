@@ -11,52 +11,44 @@ namespace MulTyPlayerClient.Classes.Utility
     {
         public const int TY_APP_ID = 411960;
         private static string steamUserName = "";
-        
-        public static bool IsLoggedOn()
+
+        //returns whether or not successfully intialized, or is already initialized
+        public static bool Init()
         {
+            if (SteamClient.IsValid)
+                return true;
+
             try
             {
                 SteamClient.Init(TY_APP_ID);
-                bool ok = SteamClient.IsValid && SteamClient.IsLoggedOn;
-                SteamClient.Shutdown();
-                return ok;
+                return SteamClient.IsValid;
             }
             catch
             {
-                SteamClient.Shutdown();
                 return false;
             }
+        }
+        
+        public static bool IsLoggedOn()
+        {
+            if (Init())
+                return SteamClient.IsLoggedOn;
+            return false;
         }
 
         public static bool TryGetName(out string userName)
         {
-            if (steamUserName != "")
+            if (steamUserName == "" && IsLoggedOn())
             {
-                userName = steamUserName;
-                return true;
+                steamUserName = SteamClient.Name;
             }
+            userName = steamUserName;
+            return (userName == "");
+        }
 
-            try
-            {
-                SteamClient.Init(TY_APP_ID);
-                bool ok = SteamClient.IsValid && SteamClient.IsLoggedOn;
-                if (ok)
-                {
-                    steamUserName = SteamClient.Name;
-                    userName = steamUserName;
-                    SteamClient.Shutdown();
-                    return true;
-                }
-                else
-                {
-                    throw new Exception("Failed to get steam username");
-                }
-            }
-            catch
-            {
-                userName = "";
-                return false;
-            }
+        public static void Shutdown()
+        {
+            SteamClient.Shutdown();
         }
     }
 }

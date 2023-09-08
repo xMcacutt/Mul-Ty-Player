@@ -1,12 +1,13 @@
-﻿<Window x:Class="MulTyPlayerClient.GUI.SettingsMenu"
+﻿<Window x:Class="MulTyPlayerClient.GUI.Views.SettingsMenu"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
+        xmlns:viewmodels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
         mc:Ignorable="d"
         Closing="Window_Closing"
-        Title="SettingsMenu" Height="175" Width="250" ResizeMode="NoResize">
+        Title="SettingsMenu" Height="175" Width="250" ResizeMode="NoResize"
+        d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="ComicText" TargetType="TextBlock">
@@ -33,13 +34,13 @@
                       HorizontalAlignment="Left"
                       FontFamily="Fonts/#SF Slapstick Comic"
                       Margin="10,10,0,10"
-                      IsChecked="{Binding DoKoalaCollision, Source={x:Static local:BasicIoC.SettingsMenuViewModel}}"/>
+                      IsChecked="{Binding DoKoalaCollision}"/>
             
             <CheckBox Content="Auto-Restart Ty?"
                       HorizontalAlignment="Left"
                       FontFamily="Fonts/#SF Slapstick Comic"
                       Margin="10,10,0,10"
-                      IsChecked="{Binding AutoRestartTy, Source={x:Static local:BasicIoC.SettingsMenuViewModel}}"/>
+                      IsChecked="{Binding AutoRestartTy}"/>
         </StackPanel>
     </Grid>
 </Window>

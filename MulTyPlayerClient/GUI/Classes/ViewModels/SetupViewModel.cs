@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace MulTyPlayerClient.GUI
+namespace MulTyPlayerClient.GUI.ViewModels
 {
     [AddINotifyPropertyChangedInterface]
     public class SetupViewModel

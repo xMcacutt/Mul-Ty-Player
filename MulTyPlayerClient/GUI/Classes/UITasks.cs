@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MulTyPlayerClient.GUI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace MulTyPlayerClient.GUI
         //Action to write to the logger 
         public static Action DoOnUIThread = new Action(() =>
         {
-            BasicIoC.LoggerInstance.Write(_message);
+            ModelController.LoggerInstance.Write(_message);
         });
 
         public static void LoggerWrite(string message)

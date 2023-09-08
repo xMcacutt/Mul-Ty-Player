@@ -1,16 +1,11 @@
-﻿using Microsoft.VisualBasic.Logging;
-using MulTyPlayerClient.GUI;
+﻿using MulTyPlayerClient.GUI;
+using MulTyPlayerClient.GUI.Models;
 using Riptide;
-using Riptide.Transports;
 using Riptide.Utils;
-using Steamworks.Data;
 using System;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Media;
 using System.Threading;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Threading;
 
 namespace MulTyPlayerClient
@@ -49,7 +44,7 @@ namespace MulTyPlayerClient
             HHero = new HeroHandler();
             HKoala = new KoalaHandler();
             HCommand = new CommandHandler();
-            RiptideLogger.Initialize(BasicIoC.LoggerInstance.Write, true);
+            RiptideLogger.Initialize(ModelController.LoggerInstance.Write, true);
             _ip = ip;
             _pass = pass;
             Name = name;
@@ -90,7 +85,7 @@ namespace MulTyPlayerClient
                     }
                     catch (Exception ex) when (ex is TyClosedException || ex is TyProcessException)
                     {
-                        BasicIoC.LoggerInstance.Write(ex.Message);                        
+                        ModelController.LoggerInstance.Write(ex.Message);                        
                     }
                 }
                 _client.Update();
@@ -100,10 +95,8 @@ namespace MulTyPlayerClient
 
         private static void Connected()
         {
-            BasicIoC.LoginViewModel.SaveDetails();
-            BasicIoC.KoalaSelectViewModel.Setup();
-            BasicIoC.LoginViewModel.ConnectionAttemptSuccessful = true;
-            BasicIoC.LoginViewModel.ConnectionAttemptCompleted = true;
+            ModelController.Login.ConnectionAttemptSuccessful = true;
+            ModelController.Login.ConnectionAttemptCompleted = true;
             IsConnected = true;
         }
 
@@ -111,15 +104,15 @@ namespace MulTyPlayerClient
         {
             cts.Cancel();
             IsConnected = false;
-            BasicIoC.KoalaSelectViewModel.MakeAllAvailable();
+            ModelController.KoalaSelect.MakeAllAvailable();
             Application.Current.Dispatcher.BeginInvoke(
             DispatcherPriority.Background,
-            new Action(BasicIoC.MainGUIViewModel.ResetPlayerList));
-            BasicIoC.SFXPlayer.PlaySound(SFX.PlayerDisconnect);
+            new Action(ModelController.Lobby.ResetPlayerList));
+            ModelController.SFXPlayer.PlaySound(SFX.PlayerDisconnect);
 
             if (e.Reason == DisconnectReason.TimedOut && SettingsHandler.Settings.AttemptReconnect)
             {
-                BasicIoC.LoggerInstance.Write("Initiating reconnection attempt.");
+                ModelController.LoggerInstance.Write("Initiating reconnection attempt.");
                 cts = new CancellationTokenSource();
                 _client.ConnectionFailed -= connectionFailedHandler;
                 _client.ConnectionFailed += connectionFailedReconnectHandler;
@@ -135,30 +128,25 @@ namespace MulTyPlayerClient
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                 () => {
-                    WindowHandler.KoalaSelectWindow.Hide();
-                    WindowHandler.ClientGUIWindow.Hide();
                     WindowHandler.SettingsWindow.Hide();
-                    BasicIoC.LoggerInstance.Log.Clear();
-                    BasicIoC.LoginViewModel.ConnectEnabled = true;
-                    WindowHandler.LoginWindow.Show();
+                    ModelController.LoggerInstance.Log.Clear();
                 });
         }
 
         private static void ConnectionFailed()
         {
-            BasicIoC.LoginViewModel.ConnectEnabled = true;
             SystemSounds.Hand.Play();
             MessageBox.Show("Connection failed!\nPlease check IPAddress & Password are correct and server is open.");
             cts.Cancel();
-            BasicIoC.LoginViewModel.ConnectionAttemptSuccessful = false;
-            BasicIoC.LoginViewModel.ConnectionAttemptCompleted = true;
+            ModelController.Login.ConnectionAttemptSuccessful = false;
+            ModelController.Login.ConnectionAttemptCompleted = true;
             return;
         }
 
         [MessageHandler((ushort)MessageID.ConsoleSend)]
         public static void ConsoleSend(Message message)
         {
-            BasicIoC.LoggerInstance.Write(message.GetString());
+            ModelController.LoggerInstance.Write(message.GetString());
         }
 
         [MessageHandler((ushort)MessageID.Disconnect)]

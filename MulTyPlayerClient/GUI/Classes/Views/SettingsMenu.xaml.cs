@@ -1,5 +1,4 @@
-﻿using Steamworks;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,23 +12,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-
-namespace MulTyPlayerClient.GUI
+namespace MulTyPlayerClient.GUI.Views
 {
-    /// <summary>
-    /// Interaction logic for Login.xaml
-    /// </summary>
-    public partial class Login : Window
+    public partial class SettingsMenu : Window
     {
-        public Login()
+        public SettingsMenu()
         {
             InitializeComponent();
         }
 
-        private void LoginWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Environment.Exit(0);
-            Application.Current.Shutdown();
+            WindowHandler.SettingsWindow.Hide();
+            SettingsHandler.Save();
+            e.Cancel = true;
         }
     }
 }

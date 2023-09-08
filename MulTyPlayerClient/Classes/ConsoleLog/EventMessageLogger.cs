@@ -1,5 +1,6 @@
 ﻿using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI;
+using MulTyPlayerClient.GUI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,39 +21,39 @@ namespace MulTyPlayerClient.Classes.ConsoleLog
 
         private static void OnTyProcessExited()
         {
-            BasicIoC.SFXPlayer.PlaySound(SFX.MenuCancel);
+            ModelController.SFXPlayer.PlaySound(SFX.MenuCancel);
             string msg = "Ty the Tasmanian Tiger has exited, ";
 
             if (SettingsHandler.Settings.AutoRestartTyOnCrash)
             {
-                BasicIoC.LoggerInstance.Write(msg + "attempting to re-launch the game...");
+                ModelController.LoggerInstance.Write(msg + "attempting to re-launch the game...");
             }
             else
             {
-                BasicIoC.MainGUIViewModel.IsLaunchGameButtonEnabled = SettingsHandler.HasValidExePath() && SteamHelper.IsLoggedOn();
-                BasicIoC.LoggerInstance.Write(msg + "please re-open the game to continue.");
+                ModelController.Lobby.CanLaunchGame = SettingsHandler.HasValidExePath() && SteamHelper.IsLoggedOn();
+                ModelController.LoggerInstance.Write(msg + "please re-open the game to continue.");
             }
         }
 
         private static void OnTyProcessFound()
         {
-            BasicIoC.MainGUIViewModel.IsLaunchGameButtonEnabled = false;
-            BasicIoC.SFXPlayer.PlaySound(SFX.MenuAccept);
-            BasicIoC.LoggerInstance.Write("Found game process, you're in!");
+            ModelController.Lobby.CanLaunchGame = false;
+            ModelController.SFXPlayer.PlaySound(SFX.MenuAccept);
+            ModelController.LoggerInstance.Write("Found game process, you're in!");
         }
 
         private static void OnTyProcessLaunched()
         {
-            BasicIoC.MainGUIViewModel.IsLaunchGameButtonEnabled = false;
-            BasicIoC.SFXPlayer.PlaySound(SFX.MenuAccept);
-            BasicIoC.LoggerInstance.Write("Launched game successfully, you're in!");
+            ModelController.Lobby.CanLaunchGame = false;
+            ModelController.SFXPlayer.PlaySound(SFX.MenuAccept);
+            ModelController.LoggerInstance.Write("Launched game successfully, you're in!");
         }
 
         private static void OnTyProcessLaunchFailed()
         {
-            BasicIoC.MainGUIViewModel.IsLaunchGameButtonEnabled = SettingsHandler.HasValidExePath() && SteamHelper.IsLoggedOn();
-            BasicIoC.SFXPlayer.PlaySound(SFX.PlayerDisconnect);
-            BasicIoC.LoggerInstance.Write("Failed to restart Ty automatically, please manually open the game.");
+            ModelController.Lobby.CanLaunchGame = SettingsHandler.HasValidExePath() && SteamHelper.IsLoggedOn();
+            ModelController.SFXPlayer.PlaySound(SFX.PlayerDisconnect);
+            ModelController.LoggerInstance.Write("Failed to restart Ty automatically, please manually open the game.");
         }
     }
 }

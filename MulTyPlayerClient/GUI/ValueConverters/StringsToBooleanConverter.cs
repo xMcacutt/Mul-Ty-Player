@@ -1,4 +1,5 @@
-﻿using Steamworks;
+﻿using MulTyPlayerClient.GUI.Models;
+using Steamworks;
 using System;
 using System.DirectoryServices.ActiveDirectory;
 using System.Globalization;
@@ -36,17 +37,17 @@ namespace MulTyPlayerClient.GUI
         private bool CheckTyFolder(string tyPath)
         {
             int i = 0;
-            foreach (string fileName in BasicIoC.SetupViewModel.TyFileNames)
+            foreach (string fileName in ModelController.Setup.TyFileNames)
             {
                 string filePath = System.IO.Path.Combine(tyPath, fileName);
                 FileInfo fileInfo = new FileInfo(filePath);
-                int index = Array.IndexOf(BasicIoC.SetupViewModel.TyFileNames, fileName);
+                int index = Array.IndexOf(ModelController.Setup.TyFileNames, fileName);
                 if (fileInfo.Exists)
                 {
                     i++;
                 }
             }
-            if (i == BasicIoC.SetupViewModel.TyFileNames.Length)
+            if (i == ModelController.Setup.TyFileNames.Length)
             {
                 return true;
             }

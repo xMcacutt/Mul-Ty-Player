@@ -1,10 +1,12 @@
-﻿<Window x:Class="MulTyPlayerClient.GUI.Setup"
+﻿<Window x:Class="MulTyPlayerClient.GUI.Views.Setup"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
+        xmlns:viewmodels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=viewmodels:SetupViewModel}"
         Title="Setup" Height="275" Width="300" ResizeMode="NoResize" Closing="Window_Closing">
     <Window.Resources>
         <ResourceDictionary>
@@ -119,7 +121,7 @@
                          FontSize="8"
                          VerticalContentAlignment="Center"
                          Foreground="Black"
-                         Text="{Binding TyPath, Source={x:Static local:BasicIoC.SetupViewModel}}"
+                         Text="{Binding TyPath}"
                          Width="230"
                          Height="15"/>
 
@@ -148,7 +150,7 @@
                          FontSize="8"
                          VerticalContentAlignment="Center"
                          Foreground="Black"
-                         Text="{Binding MTPPath, Source={x:Static local:BasicIoC.SetupViewModel}}"
+                         Text="{Binding MTPPath}"
                          Width="230"
                          Height="15"/>
 
@@ -176,8 +178,8 @@
                 Tag="Install Patch">
             <Button.IsEnabled>
                 <MultiBinding Converter="{StaticResource StringsToBooleanConverter}">
-                    <Binding Path="TyPath" Source="{x:Static local:BasicIoC.SetupViewModel}" />
-                    <Binding Path="MTPPath" Source="{x:Static local:BasicIoC.SetupViewModel}" />
+                    <Binding Path="TyPath"/>
+                    <Binding Path="MTPPath"/>
                 </MultiBinding>
             </Button.IsEnabled>
         </Button>
@@ -193,7 +195,7 @@
                        Text="Folders must be selected and valid to run."/>
 
             <ProgressBar Style="{DynamicResource ProgressBarStyle}" 
-                         Value="{Binding ProgressPercentage, Source={x:Static local:BasicIoC.SetupViewModel}}"
+                         Value="{Binding ProgressPercentage}"
                          Height="20"
                          Width="250"
                          Background="#00000000">
@@ -212,7 +214,7 @@
                        HorizontalAlignment="Center"
                        FontSize="12"
                        Margin="0,0,0,0"
-                       Text="{Binding ProgressText, Source={x:Static local:BasicIoC.SetupViewModel}}"/>
+                       Text="{Binding ProgressText}"/>
 
         </StackPanel>
     </Grid>

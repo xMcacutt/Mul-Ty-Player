@@ -1,9 +1,11 @@
 ﻿using MulTyPlayerClient.GUI;
+using MulTyPlayerClient.GUI.Models;
 using Riptide;
 using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 
 namespace MulTyPlayerClient
@@ -13,15 +15,27 @@ namespace MulTyPlayerClient
         static GameStateHandler HGameState => Client.HGameState;
         static LevelHandler HLevel => Client.HLevel;
 
-        public Dictionary<string, int[]> KoalaAddrs;
-        public static string[] KoalaNames = { "Katie", "Mim", "Elizabeth", "Snugs", "Gummy", "Dubbo", "Kiki", "Boonie" };
+        public KoalaTransformPtrs[] koalaTransforms;
+
+        public struct KoalaTransformPtrs
+        {
+            public int X;
+            public int Y;
+            public int Z;
+            public int Pitch;
+            public int Yaw;
+            public int Roll;
+            public int Collision;
+            public int Visibility;
+        }
+
         int _bTimeAttackAddress = 0x28AB84;
         int _baseKoalaAddress;
 
         public KoalaHandler()
         {
             SetBaseAddress();
-            CreateKoalaAddrArrays();
+            CreateKoalaAddressArray();
         }
 
         [MessageHandler((ushort)MessageID.KoalaSelected)]
@@ -31,16 +45,16 @@ namespace MulTyPlayerClient
             string playerName = message.GetString();
             ushort clientID = message.GetUShort();
             bool isHost = message.GetBool();
-            PlayerHandler.AddPlayer(koalaName, playerName, clientID, isHost);
+            Koala k = Enum.Parse<Koala>(koalaName, true);
+            PlayerHandler.AddPlayer(k, playerName, clientID, isHost);
         }
 
-        public void CreateKoalaAddrArrays()
+        public void CreateKoalaAddressArray()
         {
-            //SETUP KOALA ADDRESS DICTIONARY
-            KoalaAddrs = new Dictionary<string, int[]>();
-            foreach (string koala in KoalaNames)
+            koalaTransforms = new KoalaTransformPtrs[8];
+            for (int i = 0; i < 8; i++)
             {
-                KoalaAddrs.Add(koala, new int[8]);
+                koalaTransforms[i] = new KoalaTransformPtrs();
             }
         }
 
@@ -61,38 +75,31 @@ namespace MulTyPlayerClient
 
             foreach (Player player in PlayerHandler.Players.Values)
             {
-                if (KoalaAddrs.TryGetValue(player.Koala.KoalaName, out int[] koalaAddr))
-                {
-                    int koalaOffset = (0x518 * modifier * player.Koala.KoalaID);
+                int koalaID = (int)player.Koala;
+                int koalaOffset = 0x518 * modifier * koalaID + offset;
 
-                    // X COORDINATE
-                    koalaAddr[0] = _baseKoalaAddress + offset + 0x2A4 + koalaOffset;
-                    // Y COORDINATE
-                    koalaAddr[1] = _baseKoalaAddress + offset + 0x2A8 + koalaOffset;
-                    // Z COORDINATE
-                    koalaAddr[2] = _baseKoalaAddress + offset + 0x2AC + koalaOffset;
-                    // P COORDINATE
-                    koalaAddr[3] = _baseKoalaAddress + offset + 0x2B4 + koalaOffset;
-                    // Y COORDINATE
-                    koalaAddr[4] = _baseKoalaAddress + offset + 0x2B8 + koalaOffset;
-                    // R COORDINATE
-                    koalaAddr[5] = _baseKoalaAddress + offset + 0x2BC + koalaOffset;
-                    // COLLISION
-                    koalaAddr[6] = _baseKoalaAddress + offset + 0x298 + koalaOffset;
-                    // VISIBILITY
-                    koalaAddr[7] = _baseKoalaAddress + offset + 0x44 + koalaOffset;
-                }
+                koalaTransforms[koalaID] = new KoalaTransformPtrs();
+                KoalaTransformPtrs ktp = koalaTransforms[koalaID];
+                ktp.X = _baseKoalaAddress + 0x2A4 + koalaOffset;
+                ktp.Y = _baseKoalaAddress + 0x2A8 + koalaOffset;
+                ktp.Z = _baseKoalaAddress + 0x2AC + koalaOffset;
+                ktp.Pitch = _baseKoalaAddress + 0x2B4 + koalaOffset;
+                ktp.Yaw = _baseKoalaAddress + 0x2B8 + koalaOffset;
+                ktp.Roll = _baseKoalaAddress + 0x2BC + koalaOffset;
+                ktp.Collision = _baseKoalaAddress + 0x298 + koalaOffset;
+                ktp.Visibility = _baseKoalaAddress + 0x44 + koalaOffset;
+
             }
-            if (!SettingsHandler.Settings.DoKoalaCollision) RemoveCollision();
+
+            if (!SettingsHandler.Settings.DoKoalaCollision)
+                RemoveCollision();
         }
 
         public void RemoveCollision()
         {
-            var _players = PlayerHandler.Players.Values;
-            //WRITES 0 TO COLLISION BYTE
-            foreach (Player player in _players)
+            for (int i = 0; i < 8; i++)
             {
-                ProcessHandler.WriteData(KoalaAddrs[player.Koala.KoalaName][6], new byte[] {0}, "Removing collision");
+                ProcessHandler.WriteData(koalaTransforms[i].Collision, new byte[] { 0 }, "Removing collision");
             }
         }
 
@@ -104,9 +111,9 @@ namespace MulTyPlayerClient
         
         public void MakeVisible()
         {
-            foreach (Player player in PlayerHandler.Players.Values)
+            for (int i = 0; i < 8; i++)
             {
-                ProcessHandler.WriteData(KoalaAddrs[player.Koala.KoalaName][7], new byte[] {1}, "Making players visible");
+                ProcessHandler.WriteData(koalaTransforms[i].Visibility, new byte[] { 1 }, "Making players visible");
             }
         }
 
@@ -120,10 +127,12 @@ namespace MulTyPlayerClient
             bool onMenu = message.GetBool();
             ushort clientID = message.GetUShort();
             string koalaName = message.GetString();
+            Koala k = (Koala)Enum.Parse(typeof(Koala), koalaName, true);
+            int koalaID = (int)k;
             int level = message.GetInt();
 
             //Set the incoming players current level code
-            if (BasicIoC.MainGUIViewModel.TryGetPlayerInfo(clientID, out PlayerInfo playerInfo))
+            if (ModelController.Lobby.TryGetPlayerInfo(clientID, out PlayerInfo playerInfo))
             {
                 if (onMenu)
                 {
@@ -143,21 +152,27 @@ namespace MulTyPlayerClient
 
             //If failed to get this clients player, or received our own coordinates, return
             if (!PlayerHandler.Players.TryGetValue(Client._client.Id, out Player p) ||
-                p.Koala.KoalaName == koalaName)
+                Koalas.GetInfo[p.Koala].Name == koalaName)
                 return;            
             
             //If the received player is on a different level, or has finished the game, return
             if (level != HLevel.CurrentLevelId || level == Levels.EndGame.Id)
                 return;
 
-            float[] coordinates = message.GetFloats();
+            WriteCoordinateData(koalaID, message.GetFloats());            
+        }
 
-            int[] koalaValues = Client.HKoala.KoalaAddrs[koalaName];
-            //WRITE COORDINATES TO KOALA COORDINATE ADDRESSES
-            for (int i = 0; i < coordinates.Length; i++)
-            {
-                ProcessHandler.WriteData(koalaValues[i], BitConverter.GetBytes(coordinates[i]), $"Writing coordinates {i} for koala {koalaName} in level {level}");
-            }
+        private static void WriteCoordinateData(int koalaID, float[] coordinates)
+        {
+            KoalaTransformPtrs ktp = Client.HKoala.koalaTransforms[koalaID];
+
+            ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(coordinates[0]));
+            ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(coordinates[1]));
+            ProcessHandler.WriteData(ktp.Z, BitConverter.GetBytes(coordinates[2]));
+
+            ProcessHandler.WriteData(ktp.Pitch, BitConverter.GetBytes(coordinates[3]));
+            ProcessHandler.WriteData(ktp.Yaw, BitConverter.GetBytes(coordinates[4]));
+            ProcessHandler.WriteData(ktp.Roll, BitConverter.GetBytes(coordinates[5]));
         }
     }
 }

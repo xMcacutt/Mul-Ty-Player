@@ -6,23 +6,16 @@ using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System;
 
-namespace MulTyPlayerClient.GUI
+namespace MulTyPlayerClient.GUI.Views
 {
     /// <summary>
     /// Interaction logic for Splash.xaml
     /// </summary>
-    public partial class Splash : Window
+    public partial class Splash : UserControl
     {
         public Splash()
         {
-            InitializeComponent();
-            WindowHandler.InitializeWindows(this);
-        }
-
-        private void Window_Closing(object sender, CancelEventArgs e)
-        {
-            Environment.Exit(0);
-            Application.Current.Shutdown();
+            InitializeComponent();            
         }
 
         private void Setup_Click(object sender, RoutedEventArgs e)

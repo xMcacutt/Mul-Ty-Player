@@ -1,4 +1,5 @@
 ﻿using MulTyPlayerClient.GUI;
+using MulTyPlayerClient.GUI.Models;
 using Riptide;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,8 @@ namespace MulTyPlayerClient.Classes
             {
                 entry.Value.IsReady = false;
             }
-            BasicIoC.MainGUIViewModel.ReadyEnabled = false;
-            BasicIoC.MainGUIViewModel.UpdateReadyStatus();
+            ModelController.Lobby.IsReady = false;
+            ModelController.Lobby.UpdateReadyStatus();
 
             Task.Run(() =>
             {
@@ -28,25 +29,25 @@ namespace MulTyPlayerClient.Classes
                 {
                     if (CheckAbort())
                     {
-                        BasicIoC.LoggerInstance.Write("Countdown aborted");
-                        BasicIoC.SFXPlayer.Stop();
-                        BasicIoC.MainGUIViewModel.ReadyEnabled = true;
+                        ModelController.LoggerInstance.Write("Countdown aborted");
+                        ModelController.SFXPlayer.Stop();
+                        ModelController.Lobby.IsReady = true;
                         return;
                     }
                     if (i == 10)
                     {
-                        BasicIoC.SFXPlayer.PlaySound(SFX.Race10);
+                        ModelController.SFXPlayer.PlaySound(SFX.Race10);
                     }
-                    BasicIoC.LoggerInstance.Write(i.ToString());
+                    ModelController.LoggerInstance.Write(i.ToString());
                     if (i == 3)
                     {
-                        BasicIoC.SFXPlayer.PlaySound(SFX.Race321);
+                        ModelController.SFXPlayer.PlaySound(SFX.Race321);
                         Client.HSync = new SyncHandler();
                     }
                     Task.Delay(1000).Wait();
                 }
-                BasicIoC.MainGUIViewModel.ReadyEnabled = true;
-                BasicIoC.LoggerInstance.Write("Go!");
+                ModelController.Lobby.IsReady = true;
+                ModelController.LoggerInstance.Write("Go!");
             });
 
             
@@ -54,7 +55,7 @@ namespace MulTyPlayerClient.Classes
 
         private static bool CheckAbort()
         {
-            return !Client.HGameState.CheckMainMenu() || BasicIoC.MainGUIViewModel.PlayerInfoList.Any(p => p.Level != "M/L");
+            return !Client.HGameState.CheckMainMenu() || ModelController.Lobby.PlayerInfoList.Any(p => p.Level != "M/L");
         }
     }
 }

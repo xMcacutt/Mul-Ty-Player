@@ -1,4 +1,5 @@
 ﻿using MulTyPlayerClient.GUI;
+using MulTyPlayerClient.GUI.Models;
 using Riptide;
 using Riptide.Transports;
 using System;
@@ -47,7 +48,7 @@ namespace MulTyPlayerClient
                     {
                         if (PlayerHandler.Players[Client._client.Id].IsHost)
                         {
-                            BasicIoC.LoggerInstance.Write("You already have host privileges");
+                            ModelController.LoggerInstance.Write("You already have host privileges");
                             break;
                         }
                         RequestHost();
@@ -62,7 +63,7 @@ namespace MulTyPlayerClient
                     {
                         foreach (string line in File.ReadLines("./help.mtps"))
                         {
-                            BasicIoC.LoggerInstance.Write(line);
+                            ModelController.LoggerInstance.Write(line);
                         }
                         break;
                     }
@@ -70,7 +71,7 @@ namespace MulTyPlayerClient
                     {
                         if (args.Length == 0)
                         {
-                            BasicIoC.LoggerInstance.Write("Usage: /msg [message]");
+                            ModelController.LoggerInstance.Write("Usage: /msg [message]");
                             break;
                         }
                         string message = userInput[5..];
@@ -81,22 +82,22 @@ namespace MulTyPlayerClient
                     {
                         if (args.Length < 2 || !ushort.TryParse(args[0], out _))
                         {
-                            BasicIoC.LoggerInstance.Write("Usage: /whisper [client Id] [message]");
+                            ModelController.LoggerInstance.Write("Usage: /whisper [client Id] [message]");
                             break;
                         }
                         if (!PlayerHandler.Players.ContainsKey(ushort.Parse(args[0])))
                         {
-                            BasicIoC.LoggerInstance.Write($"{args[0]} is not a valid client ID");
+                            ModelController.LoggerInstance.Write($"{args[0]} is not a valid client ID");
                             break;
                         }
                         string message = userInput[(userInput.IndexOf(' ') + 1 + args[0].Length + 1)..];
                         SendMessage(message, ushort.Parse(args[0]));
-                        BasicIoC.LoggerInstance.Write($"Sent message to client {ushort.Parse(args[0])}.");
+                        ModelController.LoggerInstance.Write($"Sent message to client {ushort.Parse(args[0])}.");
                         break;
                     }
                 default:
                     {
-                        BasicIoC.LoggerInstance.Write($"/{command} is not a command. Try /help for a list of commands");
+                        ModelController.LoggerInstance.Write($"/{command} is not a command. Try /help for a list of commands");
                         break;
                     }
             }
@@ -128,7 +129,7 @@ namespace MulTyPlayerClient
             PlayerHandler.Players[message.GetUShort()].IsReady = message.GetBool();
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
-                    new Action(BasicIoC.MainGUIViewModel.UpdateReadyStatus));
+                    new Action(ModelController.Lobby.UpdateReadyStatus));
         }
 
         public void SetReady()
@@ -139,7 +140,7 @@ namespace MulTyPlayerClient
             Client._client.Send(message);
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
-                    new Action(BasicIoC.MainGUIViewModel.UpdateReadyStatus));
+                    new Action(ModelController.Lobby.UpdateReadyStatus));
         }
 
         public void SetReady(ushort client)
@@ -147,7 +148,7 @@ namespace MulTyPlayerClient
             PlayerHandler.Players[client].IsReady = !PlayerHandler.Players[client].IsReady;
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
-                    new Action(BasicIoC.MainGUIViewModel.UpdateReadyStatus));
+                    new Action(ModelController.Lobby.UpdateReadyStatus));
         }
 
         [MessageHandler((ushort)MessageID.ReqHost)]
@@ -155,15 +156,15 @@ namespace MulTyPlayerClient
         {
             if (message.GetBool())
             {
-                BasicIoC.LoggerInstance.Write("You have been made host. You now have access to host only commands.");
+                ModelController.LoggerInstance.Write("You have been made host. You now have access to host only commands.");
                 PlayerHandler.Players[Client._client.Id].IsHost = true;
 
                 Application.Current.Dispatcher.BeginInvoke(
                     DispatcherPriority.Background,
-                        new Action(BasicIoC.MainGUIViewModel.UpdateHostIcon));
+                        new Action(ModelController.Lobby.UpdateHostIcon));
                 return;
             }
-            BasicIoC.LoggerInstance.Write($"Client {PlayerHandler.Players.Values.First(p => p.IsHost)} already has host privileges");
+            ModelController.LoggerInstance.Write($"Client {PlayerHandler.Players.Values.First(p => p.IsHost)} already has host privileges");
         }
 
         [MessageHandler((ushort)MessageID.HostChange)]
@@ -172,26 +173,26 @@ namespace MulTyPlayerClient
             PlayerHandler.Players[message.GetUShort()].IsHost = true;
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
-                    new Action(BasicIoC.MainGUIViewModel.UpdateHostIcon));
+                    new Action(ModelController.Lobby.UpdateHostIcon));
         }
 
         [MessageHandler((ushort)MessageID.HostCommand)]
         public static void HostCommandResponse(Message message)
         {
-            BasicIoC.LoggerInstance.Write(message.GetString());
+            ModelController.LoggerInstance.Write(message.GetString());
         }
 
         [MessageHandler((ushort)MessageID.ResetSync)]
         private static void HandleSyncReset(Message message)
         {
-            BasicIoC.LoggerInstance.Write("Synchronisations have been reset to new game state.");
+            ModelController.LoggerInstance.Write("Synchronisations have been reset to new game state.");
             Client.HSync = new SyncHandler();
         }
 
         [MessageHandler((ushort)MessageID.P2PMessage)]
         private static void HandleMessageFromPeer(Message message)
         {
-            BasicIoC.LoggerInstance.Write(message.GetString());
+            ModelController.LoggerInstance.Write(message.GetString());
         }
     }
 }

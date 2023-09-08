@@ -1,5 +1,6 @@
 ﻿using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI;
+using MulTyPlayerClient.GUI.Models;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -9,7 +10,9 @@ namespace MulTyPlayerClient
     internal class TyProcess
     {
         [DllImport("kernel32.dll")]
-        public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);        
+        public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
+        [DllImport("kernel32.dll")]
+        public static extern bool CloseHandle(IntPtr handle);
 
         public static bool IsRunning {get; private set; }
         public static bool LaunchingGame { get; private set; }
@@ -26,6 +29,7 @@ namespace MulTyPlayerClient
         private static Process process;
         private static nint processBaseAddress;
         private static IntPtr handle;
+        private static bool handleOpen = false;
 
         //Launches the game from the path saved in settings.
         //Returns whether or not game was succesfully launched.
@@ -78,7 +82,7 @@ namespace MulTyPlayerClient
             else if (processes.Length > 1)
             {
                 //Multiple found
-                BasicIoC.LoggerInstance.WriteDebug($"WARNING: Multiple ({processes.Length}) instances of Mul-Ty-Player are open, can and will cause fuckery.");
+                ModelController.LoggerInstance.WriteDebug($"WARNING: Multiple ({processes.Length}) instances of Mul-Ty-Player are open, can and will cause fuckery.");
 
                 //Use first non-exiting process
                 bool setProcess = false;
@@ -110,10 +114,11 @@ namespace MulTyPlayerClient
 
         private static void PullProcessData()
         {
-            BasicIoC.LoggerInstance.WriteDebug("Got process, pulling data");
+            ModelController.LoggerInstance.WriteDebug("Got process, pulling data");
             process.EnableRaisingEvents = true;
             process.Exited += OnExit;
             handle = OpenProcess(0x1F0FFF, false, process.Id);
+            handleOpen = true;
 
             //Ty takes a little while to open from process.Start(), so we wait until we can find the mainmodule before continuing
             while (process.MainModule == null)
@@ -128,10 +133,11 @@ namespace MulTyPlayerClient
 
         private static void OnExit(object o, EventArgs e)
         {
-            BasicIoC.LoggerInstance.WriteDebug("Process exited");
+            ModelController.LoggerInstance.WriteDebug("Process exited");
             OnTyProcessExited?.Invoke();
             IsRunning = false;
             process.Close();
+            CloseHandle();
             process.Dispose();
             process.Refresh();
             if (SettingsHandler.Settings.AutoRestartTyOnCrash)
@@ -140,12 +146,27 @@ namespace MulTyPlayerClient
 
         private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
-            BasicIoC.LoggerInstance.WriteDebug($"Output data received: {e.Data}");
+            ModelController.LoggerInstance.WriteDebug($"Output data received: {e.Data}");
         }
 
         private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
-            BasicIoC.LoggerInstance.WriteDebug($"Error data received: {e.Data}");
+            ModelController.LoggerInstance.WriteDebug($"Error data received: {e.Data}");
+        }
+
+        public static void CloseHandle()
+        {
+            if (!handleOpen)
+                return;
+
+            bool successfullyClosed = CloseHandle(handle);
+            handleOpen = false;
+
+            if (!successfullyClosed)
+            {
+                ModelController.LoggerInstance.WriteDebug("Handle was not successfully closed!!!");
+                //oh well
+            }
         }
     }
 }

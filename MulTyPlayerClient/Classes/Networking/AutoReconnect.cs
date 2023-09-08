@@ -1,4 +1,5 @@
 ﻿using MulTyPlayerClient.GUI;
+using MulTyPlayerClient.GUI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,18 +18,14 @@ namespace MulTyPlayerClient
         {
             Client.IsConnected = false;
             Client.cts.Cancel();
-            BasicIoC.KoalaSelectViewModel.MakeAllAvailable();
+            ModelController.KoalaSelect.MakeAllAvailable();
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                 new Action(() => {
-                    WindowHandler.KoalaSelectWindow.Hide();
-                    WindowHandler.ClientGUIWindow.Hide();
-                    BasicIoC.LoggerInstance.Log.Clear();
-                    BasicIoC.LoginViewModel.ConnectEnabled = true;
-                    WindowHandler.LoginWindow.Show();
+                    ModelController.LoggerInstance.Log.Clear();
                 }));
-            BasicIoC.LoginViewModel.ConnectionAttemptSuccessful = false;
-            BasicIoC.LoginViewModel.ConnectionAttemptCompleted = true;
+            ModelController.Login.ConnectionAttemptSuccessful = false;
+            ModelController.Login.ConnectionAttemptCompleted = true;
             return;
         }
     }

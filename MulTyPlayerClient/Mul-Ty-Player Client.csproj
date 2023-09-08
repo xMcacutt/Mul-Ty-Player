@@ -320,7 +320,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="GUI\ClientGUI.xaml">
+    <Page Update="GUI\Classes\Views\Lobby.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Page>
   </ItemGroup>

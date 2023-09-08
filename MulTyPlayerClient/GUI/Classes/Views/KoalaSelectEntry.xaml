@@ -1,0 +1,57 @@
+<UserControl x:Class="MulTyPlayerClient.GUI.Views.KoalaSelectEntry"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:local="clr-namespace:MulTyPlayerClient.GUI.Views"
+        xmlns:viewmodels ="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
+        mc:Ignorable="d"
+        d:DataContext ="{d:DesignInstance Type=viewmodels:KoalaSelectEntryViewModel, IsDesignTimeCreatable=True}">
+    <Grid>
+    <StackPanel Margin="6 0">
+        <Border BorderThickness="2" 
+                BorderBrush="Black" 
+                Background="Black"
+                IsEnabled="{Binding IsAvailable}"
+                IsMouseDirectlyOverChanged="KoalaEntry_OnMouseOverChanged"
+                MouseUp="KoalaEntry_OnClicked">            
+            <Grid IsHitTestVisible="False">
+                <Image Stretch="UniformToFill"
+                       Source="{Binding DarkSource}"
+                       Visibility="{Binding DarkPortraitVisibility}"/>
+
+                <Image Stretch="UniformToFill"
+                       Source="{Binding LightSource}"
+                       Visibility="{Binding LightPortraitVisibility}"
+                       MouseUp="KoalaEntry_OnClicked"/>
+
+                <Image Stretch="UniformToFill"
+                       Source="{Binding TakenSource}"
+                       Visibility="{Binding TakenPortraitVisibility}"/>
+
+                <MediaElement Source="{Binding SelectedSource}"
+                              LoadedBehavior="Manual"
+                              x:Name="SelectedAnimation"
+                              Visibility="Collapsed"/>
+            </Grid>
+        </Border>
+        <TextBlock Text="{Binding KoalaName}"/>
+    </StackPanel>
+    </Grid>
+
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="TextElement.FontFamily" Value="Fonts/#SF Slapstick Comic"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#FFFFFFFF"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="0" 
+                                      Direction="315" 
+                                      ShadowDepth="2"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+</UserControl>

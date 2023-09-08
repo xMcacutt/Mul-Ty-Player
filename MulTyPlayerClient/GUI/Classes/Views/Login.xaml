@@ -1,20 +1,20 @@
-﻿<Window x:Name="LoginWindow" x:Class="MulTyPlayerClient.GUI.Login"
+﻿<UserControl x:Class="MulTyPlayerClient.GUI.Views.Login"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
+        xmlns:viewmodels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
         mc:Ignorable="d"
-        Closing="LoginWindow_Closing"
-        Title="Login" Height="245" Width="350" ResizeMode="NoResize">
-    <Window.Resources>
+        d:DataContext ="{d:DesignInstance Type=viewmodels:LoginViewModel, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/GUI/SlapstickFont.xaml"/>
                 <ResourceDictionary Source="/GUI/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </Window.Resources>
+    </UserControl.Resources>
     <Grid x:Name="MainGrid" Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*"/>
@@ -81,7 +81,7 @@
             <Grid>
                 <TextBox x:Name="fieldHostIP" 
                          HorizontalContentAlignment="Right" 
-                         Text="{Binding ConnectingAddress, Source={x:Static local:BasicIoC.LoginViewModel}, UpdateSourceTrigger=PropertyChanged}" 
+                         Text="{Binding ConnectingAddress, UpdateSourceTrigger=PropertyChanged}" 
                          FontSize="20" 
                          HorizontalAlignment="Stretch" 
                          VerticalContentAlignment="Center" 
@@ -97,7 +97,7 @@
                     <TextBox.Style>
                         <Style TargetType="TextBox" BasedOn="{StaticResource TyTextBox}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding HideAddress, Source={x:Static local:BasicIoC.LoginViewModel}}" Value="True">
+                                <DataTrigger Binding="{Binding HideAddress}" Value="True">
                                     <Setter Property="Foreground" Value="Transparent"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -105,8 +105,7 @@
                     </TextBox.Style>
                 </TextBox>
                 <TextBlock Text="{Binding ConnectingAddress, 
-                                  Mode=OneWay,
-                                  Source={x:Static local:BasicIoC.LoginViewModel}, 
+                                  Mode=OneWay, 
                                   Converter={local:BoolTextCensorConverter}}"
                            IsHitTestVisible="False"
                            HorizontalAlignment="Right"
@@ -115,14 +114,13 @@
                            Margin="3 4 4.5 1"
                            Visibility="{Binding HideAddress, 
                                         Converter={local:BooleanToVisibilityConverter},
-                                        ConverterParameter=True, 
-                                        Source={x:Static local:BasicIoC.LoginViewModel}}"/>
+                                        ConverterParameter=True}"/>
             </Grid>
 
             <Grid>
                 <TextBox x:Name="fieldPass" 
                          HorizontalContentAlignment="Right" 
-                         Text="{Binding Pass, Source={x:Static local:BasicIoC.LoginViewModel}, UpdateSourceTrigger=PropertyChanged}" 
+                         Text="{Binding Pass, UpdateSourceTrigger=PropertyChanged}" 
                          FontSize="20" 
                          HorizontalAlignment="Stretch" 
                          VerticalContentAlignment="Center"
@@ -138,7 +136,7 @@
                     <TextBox.Style>
                         <Style TargetType="TextBox" BasedOn="{StaticResource TyTextBox}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding HidePass, Source={x:Static local:BasicIoC.LoginViewModel}}" Value="True">
+                                <DataTrigger Binding="{Binding HidePass}" Value="True">
                                     <Setter Property="Foreground" Value="Transparent"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -147,7 +145,6 @@
                 </TextBox>
                 <TextBlock Text="{Binding Pass, 
                                   Mode=OneWay,
-                                  Source={x:Static local:BasicIoC.LoginViewModel}, 
                                   Converter={local:BoolTextCensorConverter}}"
                            IsHitTestVisible="False"
                            HorizontalAlignment="Right"
@@ -156,14 +153,13 @@
                            Margin="3 4 4.5 1"
                            Visibility="{Binding HidePass, 
                                         Converter={local:BooleanToVisibilityConverter},
-                                        ConverterParameter=True, 
-                                        Source={x:Static local:BasicIoC.LoginViewModel}}"/>
+                                        ConverterParameter=True}"/>
             </Grid>
 
             <Grid>
                 <TextBox x:Name="fieldName" 
                          HorizontalContentAlignment="Right"
-                         Text="{Binding Name, Source={x:Static local:BasicIoC.LoginViewModel}, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                          FontSize="20" 
                          HorizontalAlignment="Stretch" 
                          VerticalContentAlignment="Center" 
@@ -179,7 +175,7 @@
                     <TextBox.Style>
                         <Style TargetType="TextBox" BasedOn="{StaticResource TyTextBox}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding HideName, Source={x:Static local:BasicIoC.LoginViewModel}}" Value="True">
+                                <DataTrigger Binding="{Binding HideName}" Value="True">
                                     <Setter Property="Foreground" Value="Transparent"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -187,8 +183,7 @@
                     </TextBox.Style>
                 </TextBox>
                 <TextBlock Text="{Binding Name, 
-                                  Mode=OneWay,
-                                  Source={x:Static local:BasicIoC.LoginViewModel}, 
+                                  Mode=OneWay, 
                                   Converter={local:BoolTextCensorConverter}}"
                            IsHitTestVisible="False"
                            HorizontalAlignment="Right"
@@ -197,8 +192,7 @@
                            Margin="3 4 4.5 1"
                            Visibility="{Binding HideName, 
                                         Converter={local:BooleanToVisibilityConverter},
-                                        ConverterParameter=True, 
-                                        Source={x:Static local:BasicIoC.LoginViewModel}}"/>
+                                        ConverterParameter=True}"/>
             </Grid>
 
             <Button x:Name="buttonConnect" 
@@ -207,8 +201,8 @@
                     Margin="0 3.5"
                     Style="{StaticResource SelectButton}"
                     Tag="Connect"
-                    Command="{Binding ConnectCommand, Source={x:Static local:BasicIoC.LoginViewModel}}"
-                    IsEnabled="{Binding ConnectEnabled, Source={x:Static local:BasicIoC.LoginViewModel}}"
+                    Command="{Binding ConnectCommand}"
+                    IsEnabled="{Binding ConnectEnabled}"
                     />
 
         </StackPanel>
@@ -223,7 +217,7 @@
                       Width="35"
                       Margin="1.5"
                       Style="{StaticResource VisibilityCheckBox}"
-                      IsChecked="{Binding HideAddress, Source={x:Static local:BasicIoC.LoginViewModel}}"/>
+                      IsChecked="{Binding HideAddress}"/>
 
             <CheckBox HorizontalAlignment="Center" 
                       Background="{x:Null}" 
@@ -231,7 +225,7 @@
                       Width="35"
                       Margin="1.5"
                       Style="{StaticResource VisibilityCheckBox}"
-                      IsChecked="{Binding HidePass, Source={x:Static local:BasicIoC.LoginViewModel}}"/>
+                      IsChecked="{Binding HidePass}"/>
 
             <CheckBox HorizontalAlignment="Center" 
                       Background="{x:Null}" 
@@ -239,13 +233,13 @@
                       Width="35"
                       Margin="1.5"
                       Style="{StaticResource VisibilityCheckBox}"
-                      IsChecked="{Binding HideName, Source={x:Static local:BasicIoC.LoginViewModel}}"/>
+                      IsChecked="{Binding HideName}"/>
 
         </StackPanel>
 
     </Grid>
 
-    <Window.Background>
+    <UserControl.Background>
         <ImageBrush x:Name="bgImage" ImageSource="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.jpg"/>
-    </Window.Background>
-</Window>
+    </UserControl.Background>
+</UserControl>

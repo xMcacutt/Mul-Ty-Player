@@ -1,4 +1,5 @@
-﻿using Ookii.Dialogs.Wpf;
+﻿using MulTyPlayerClient.GUI.Models;
+using Ookii.Dialogs.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace MulTyPlayerClient.GUI
+namespace MulTyPlayerClient.GUI.Views
 {
     /// <summary>
     /// Interaction logic for Setup.xaml
@@ -30,7 +31,7 @@ namespace MulTyPlayerClient.GUI
             var dialog = new VistaFolderBrowserDialog();
             dialog.Description = "Select Ty the Tasmanian Tiger Folder.";
             dialog.ShowNewFolderButton = true;
-            dialog.SelectedPath = BasicIoC.SetupViewModel.TyPath ?? dialog.SelectedPath;
+            dialog.SelectedPath = ModelController.Setup.TyPath ?? dialog.SelectedPath;
             dialog.UseDescriptionForTitle = true; // This applies to the Vista style dialog only, not the old dialog.
             if (!VistaFolderBrowserDialog.IsVistaFolderDialogSupported)
             {
@@ -38,7 +39,7 @@ namespace MulTyPlayerClient.GUI
             }
             if ((bool)dialog.ShowDialog(this))
             {
-                BasicIoC.SetupViewModel.TyPath = dialog.SelectedPath;
+                ModelController.Setup.TyPath = dialog.SelectedPath;
             }
         }
 
@@ -47,7 +48,7 @@ namespace MulTyPlayerClient.GUI
             var dialog = new VistaFolderBrowserDialog();
             dialog.Description = "Select Ty the Tasmanian Tiger Folder.";
             dialog.ShowNewFolderButton = true;
-            dialog.SelectedPath = BasicIoC.SetupViewModel.MTPPath ?? dialog.SelectedPath;
+            dialog.SelectedPath = ModelController.Setup.MTPPath ?? dialog.SelectedPath;
             dialog.UseDescriptionForTitle = true; // This applies to the Vista style dialog only, not the old dialog.
             if (!VistaFolderBrowserDialog.IsVistaFolderDialogSupported)
             {
@@ -55,13 +56,13 @@ namespace MulTyPlayerClient.GUI
             }
             if ((bool)dialog.ShowDialog(this))
             {
-                BasicIoC.SetupViewModel.MTPPath = dialog.SelectedPath;
+                ModelController.Setup.MTPPath = dialog.SelectedPath;
             }
         }
 
         private void InstallButton_Click(object sender, RoutedEventArgs e)
         {
-            BasicIoC.SetupViewModel.Install();
+            ModelController.Setup.Install();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
