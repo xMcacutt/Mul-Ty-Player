@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace MulTyPlayerClient
@@ -75,20 +76,19 @@ namespace MulTyPlayerClient
 
             foreach (Player player in PlayerHandler.Players.Values)
             {
+                ModelController.LoggerInstance.Write("WRITING KOALA ADDRESS FOR PLAYER: " + player.Name);
                 int koalaID = (int)player.Koala;
                 int koalaOffset = 0x518 * modifier * koalaID + offset;
 
                 koalaTransforms[koalaID] = new KoalaTransformPtrs();
-                KoalaTransformPtrs ktp = koalaTransforms[koalaID];
-                ktp.X = _baseKoalaAddress + 0x2A4 + koalaOffset;
-                ktp.Y = _baseKoalaAddress + 0x2A8 + koalaOffset;
-                ktp.Z = _baseKoalaAddress + 0x2AC + koalaOffset;
-                ktp.Pitch = _baseKoalaAddress + 0x2B4 + koalaOffset;
-                ktp.Yaw = _baseKoalaAddress + 0x2B8 + koalaOffset;
-                ktp.Roll = _baseKoalaAddress + 0x2BC + koalaOffset;
-                ktp.Collision = _baseKoalaAddress + 0x298 + koalaOffset;
-                ktp.Visibility = _baseKoalaAddress + 0x44 + koalaOffset;
-
+                koalaTransforms[koalaID].X = _baseKoalaAddress + 0x2A4 + koalaOffset;
+                koalaTransforms[koalaID].Y = _baseKoalaAddress + 0x2A8 + koalaOffset;
+                koalaTransforms[koalaID].Z = _baseKoalaAddress + 0x2AC + koalaOffset;
+                koalaTransforms[koalaID].Pitch = _baseKoalaAddress + 0x2B4 + koalaOffset;
+                koalaTransforms[koalaID].Yaw = _baseKoalaAddress + 0x2B8 + koalaOffset;
+                koalaTransforms[koalaID].Roll = _baseKoalaAddress + 0x2BC + koalaOffset;
+                koalaTransforms[koalaID].Collision = _baseKoalaAddress + 0x298 + koalaOffset;
+                koalaTransforms[koalaID].Visibility = _baseKoalaAddress + 0x44 + koalaOffset;
             }
 
             if (!SettingsHandler.Settings.DoKoalaCollision)
@@ -123,12 +123,14 @@ namespace MulTyPlayerClient
             //If this client isnt in game, or hasnt selected a koala, return
             if (!Client.KoalaSelected || Client.Relaunching )
                 return;
-
+            Console.WriteLine("Received koala coord");
             bool onMenu = message.GetBool();
             ushort clientID = message.GetUShort();
             string koalaName = message.GetString();
+            Console.WriteLine(koalaName);
             Koala k = (Koala)Enum.Parse(typeof(Koala), koalaName, true);
             int koalaID = (int)k;
+            Console.WriteLine(koalaName);
             int level = message.GetInt();
 
             //Set the incoming players current level code

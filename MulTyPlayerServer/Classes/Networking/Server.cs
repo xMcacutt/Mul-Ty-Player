@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,7 +49,7 @@ namespace MulTyPlayerServer
                             HKoala.ReturnKoala(player);
                             player.PreviousLevel = player.CurrentLevel;
                         }
-                        SendCoordinates(player.ClientID, player.Koala.KoalaName, player.CurrentLevel, player.Coordinates, player.OnMenu);
+                        SendCoordinatesToAll(player.ClientID, player.Koala.KoalaName, player.CurrentLevel, player.Coordinates, player.OnMenu);
                     }
                 }
                 Thread.Sleep(MS_PER_TICK);
@@ -97,21 +98,15 @@ namespace MulTyPlayerServer
             }
         }
 
-        public static void SendCoordinates(ushort clientID, string koalaName, int level, float[] coordinates, bool onMenu)
+        public static void SendCoordinatesToAll(ushort clientID, string koalaName, int level, float[] coordinates, bool onMenu)
         {
-            foreach (Player player in PlayerHandler.Players.Values)
-            {
-                Message message = Message.Create(MessageSendMode.Unreliable, MessageID.KoalaCoordinates);
-                message.AddBool(onMenu);
-                message.AddUShort(clientID);
-                message.AddString(koalaName);
-                message.AddInt(level);
-                message.AddFloats(coordinates);
-                if (player.Coordinates != null && player.Name != null)
-                {
-                    _Server.SendToAll(message, clientID);
-                }
-            }
+            Message message = Message.Create(MessageSendMode.Unreliable, MessageID.KoalaCoordinates);
+            message.AddBool(onMenu);
+            message.AddUShort(clientID);
+            message.AddString(koalaName);
+            message.AddInt(level);
+            message.AddFloats(coordinates);
+            _Server.SendToAll(message, clientID);
         }
 
         public static void SendMessageToClient(string str, bool printToServer, ushort to)

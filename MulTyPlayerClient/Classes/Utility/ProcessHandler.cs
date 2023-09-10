@@ -20,8 +20,8 @@ namespace MulTyPlayerClient
 {
     internal class ProcessHandler
     {   
-        public static bool MemoryWriteDebugLogging = false;
-        public static bool MemoryReadDebugLogging = false;
+        public static bool MemoryWriteDebugLogging = true;
+        public static bool MemoryReadDebugLogging = true;
 
         [DllImport("kernel32.dll")]
         internal static unsafe extern bool ReadProcessMemory(
@@ -67,8 +67,8 @@ namespace MulTyPlayerClient
             catch (Exception ex)
             {
                 ModelController.LoggerInstance.Write($"Error writing data: {ex}");
-                throw new TyProcessException("ProcessHandler.WriteData()", ex);
             }
+            return false;
         }
 
         //Do not check if the process is running (for now),

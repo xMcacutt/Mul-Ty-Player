@@ -65,7 +65,7 @@ namespace MulTyPlayerServer
                         0,
                         0
                     };
-                    Server.SendCoordinates(player.ClientID, player.Koala.KoalaName, player.PreviousLevel, defaultCoords, player.OnMenu);
+                    Server.SendCoordinatesToAll(player.ClientID, player.Koala.KoalaName, player.PreviousLevel, defaultCoords, player.OnMenu);
                 }
 
             }
