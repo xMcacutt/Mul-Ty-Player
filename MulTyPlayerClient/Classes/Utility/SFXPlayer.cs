@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Xml.Linq;
 
 namespace MulTyPlayerClient
 {
@@ -26,7 +27,7 @@ namespace MulTyPlayerClient
 
     public class SFXPlayer
     {
-        static Dictionary<SFX, Uri> sounds = new Dictionary<SFX, Uri>()
+        readonly static Dictionary<SFX, Uri> sounds = new Dictionary<SFX, Uri>()
         {
             {SFX.PlayerConnect,      new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/PlayerConnect.wav") },
             {SFX.PlayerDisconnect,   new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/PlayerDisconnect.wav") },
@@ -44,14 +45,19 @@ namespace MulTyPlayerClient
         {
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
+                player.MediaEnded += (o, e) => player.Close();
                 player.Open(sounds[sfxName]);
                 player.Play();
             });
         }
 
+
         public void Stop()
         {
-            player.Stop();
+            Application.Current.Dispatcher.BeginInvoke(() =>
+            {
+                player.Stop();
+            });            
         }
     }
 }
