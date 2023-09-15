@@ -202,7 +202,7 @@
                     Style="{StaticResource SelectButton}"
                     Tag="Connect"
                     Command="{Binding ConnectCommand}"
-                    IsEnabled="{Binding ConnectEnabled}"
+                    IsEnabled="{Binding ConnectButtonEnabled}"
                     />
 
         </StackPanel>

@@ -69,6 +69,7 @@ namespace MulTyPlayerServer
 
         private static void HandleConnection(Connection pendingConnection, Message authenticationMessage)
         {
+            Console.WriteLine("Received connection attempt...");
             string pass = authenticationMessage.GetString();
             if (!string.Equals(pass, SettingsHandler.Settings.Password, StringComparison.CurrentCultureIgnoreCase)
                 && !string.Equals(SettingsHandler.Settings.Password, "XXXXX", StringComparison.CurrentCultureIgnoreCase)
@@ -76,12 +77,18 @@ namespace MulTyPlayerServer
                 && _Server.ClientCount > 0)
             {
                 _Server.Reject(pendingConnection);
+                Console.WriteLine("Rejecting.");
             }
-            else _Server.Accept(pendingConnection);
+            else
+            {
+                _Server.Accept(pendingConnection);
+                Console.WriteLine("Accepting.");
+            }
         }
 
         private static void ClientConnected(object sender, ServerConnectedEventArgs e)
         {
+            //Console.WriteLine("Client connected.");
             KoalaHandler.SendKoalaAvailability(e.Client.Id);
             SettingsHandler.SendSettings(e.Client.Id);
         }

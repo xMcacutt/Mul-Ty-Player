@@ -4,6 +4,7 @@ using Riptide;
 using Steamworks;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -123,14 +124,12 @@ namespace MulTyPlayerClient
             //If this client isnt in game, or hasnt selected a koala, return
             if (!Client.KoalaSelected || Client.Relaunching )
                 return;
-            Console.WriteLine("Received koala coord");
+            Debug.WriteLine("Received koala coord");
             bool onMenu = message.GetBool();
             ushort clientID = message.GetUShort();
             string koalaName = message.GetString();
-            Console.WriteLine(koalaName);
             Koala k = (Koala)Enum.Parse(typeof(Koala), koalaName, true);
             int koalaID = (int)k;
-            Console.WriteLine(koalaName);
             int level = message.GetInt();
 
             //Set the incoming players current level code

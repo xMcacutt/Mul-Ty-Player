@@ -17,7 +17,7 @@ namespace MulTyPlayerClient
         public static void ConnectionFailed()
         {
             Client.IsConnected = false;
-            Client.cts.Cancel();
+            Client.ClientThreadToken.Cancel();
             ModelController.KoalaSelect.MakeAllAvailable();
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
@@ -26,7 +26,6 @@ namespace MulTyPlayerClient
                 }));
             ModelController.Login.ConnectionAttemptSuccessful = false;
             ModelController.Login.ConnectionAttemptCompleted = true;
-            return;
         }
     }
 }

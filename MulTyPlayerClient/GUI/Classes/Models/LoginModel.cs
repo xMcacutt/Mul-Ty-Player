@@ -33,6 +33,7 @@ namespace MulTyPlayerClient.GUI.Models
             this.name = name;
             this.pass = pass;
             var backgroundWorker = new BackgroundWorker();
+
             backgroundWorker.DoWork += (s, e) => AttemptConnection();
             backgroundWorker.RunWorkerCompleted += (s, e) =>
             {
@@ -62,10 +63,9 @@ namespace MulTyPlayerClient.GUI.Models
         private void AttemptConnection()
         {
             ConnectionAttemptCompleted = false;
-            Client.StartClient(ip, name, pass);
+            Client.Start(ip, name, pass);
             while (!ConnectionAttemptCompleted)
             {
-                //twiddle thumbs
             }
         }
 

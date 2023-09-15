@@ -5,6 +5,7 @@ using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace MulTyPlayerClient.GUI.ViewModels
         public bool HideAddress { get; set; } = true;
 
         public ICommand ConnectCommand { get; set; }
-        public bool ConnectEnabled { get; set; } = true;
+        public bool ConnectButtonEnabled { get; set; } = true;
 
         public bool ConnectionAttemptSuccessful { get; set; }
         public bool ConnectionAttemptCompleted  { get; set; }
@@ -45,20 +46,22 @@ namespace MulTyPlayerClient.GUI.ViewModels
 
         private void TryConnect()
         {
-            ConnectEnabled = false;            
+            ConnectButtonEnabled = false;
+            Debug.WriteLine("Connecting address: " + ConnectingAddress);
+            Debug.WriteLine("Pass: " + Pass);
             model.Connect(ConnectingAddress, Name, Pass);
         }
 
         private void Model_OnLoginSuccess()
         {
-            //display some message about successful login idgaf
+            //display some message about successful login idk
         }
 
         private async void Model_OnLoginFailed()
         {
-            ConnectEnabled = false;
+            ConnectButtonEnabled = false;
             await Task.Delay(2000);
-            ConnectEnabled = true;
+            ConnectButtonEnabled = true;
         }
 
         public void OnEntered()
