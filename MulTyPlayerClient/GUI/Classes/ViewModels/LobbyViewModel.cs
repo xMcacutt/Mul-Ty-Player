@@ -38,7 +38,7 @@ namespace MulTyPlayerClient.GUI.ViewModels
 
         public string ReadyText { get; set; } = "Ready";
         public bool ReadyEnabled { get; set; } = true;
-        public bool IsReadyButtonEnabled => IsOnMenu && ReadyEnabled;
+        public bool IsReadyButtonEnabled { get; set; } = true;
 
         public string LaunchGameText { get; set; } = "Launch Game";
         public bool IsLaunchGameButtonEnabled {get; set;}

@@ -71,22 +71,33 @@ namespace MulTyPlayerClient.GUI.Models
 
         private void Setup()
         {
-            if (SettingsHandler.Settings.DoGetSteamName && SteamHelper.TryGetName(out name))
-            {
-                //twiddle thumbs again
-            }
-            else
-            {
-                name = SettingsHandler.Settings.DefaultName == "USER" ? GenerateRandomUser() : SettingsHandler.Settings.DefaultName;
-            }
-            _serverList = new();
+            SetName();
+
             if (Path.Exists("./list.servers"))
             {
                 ParseServerList(File.ReadLines("./list.servers"));
                 return;
             }
-            ip = "192.168.1.1";
-            pass = "OPALS";
+        }
+
+        private void SetName()
+        {
+            //If steam name retrieval is successful, set that as the name and set the default name in settings
+            if (SettingsHandler.Settings.DoGetSteamName)
+            {
+                name = SteamHelper.GetSteamName();
+                SettingsHandler.Settings.DefaultName = name;
+            }
+            //If the steam name setting is disabled, use the previously stored default name
+            else
+            {
+                name = SettingsHandler.Settings.DefaultName;
+            }
+            //If the name is still null, generate a random one
+            if (name == null)
+            {
+                name = GenerateRandomUser();
+            }
         }
 
         private void SaveDetails()
@@ -110,22 +121,27 @@ namespace MulTyPlayerClient.GUI.Models
 
         private void ParseServerList(IEnumerable<string> file)
         {
+            _serverList = new List<ServerListing>();
+            ServerListing local = new ServerListing("192.168.1.1", "OPALS", false);
             foreach (string server in file)
             {
                 string[] entry = server.Split(' ');
-                if (entry.Length == 3)
-                {
-                    ip = entry[0];
-                    pass = entry[1];
-                }
                 _serverList.Add(new(entry[0], entry[1], false));
             }
+
+            SetDetailsFromServer(_serverList.FirstOrDefault(local));
+        }
+
+        private void SetDetailsFromServer(ServerListing server)
+        {
+            ip = server.IP;
+            pass = server.Pass;
         }
 
         private string GenerateRandomUser()
         {
             Random random = new();
-            int randomNumber = random.Next(10000, 99999);
+            int randomNumber = random.Next(100000, 999999);
             return "USER" + randomNumber;
         }
     }

@@ -1,6 +1,6 @@
 ﻿{
   "DoGetSteamName": true,
-  "DefaultName": "USER",
+  "DefaultName": null,
   "Port": 8750,
   "DoKoalaCollision": false,
   "CreateLogFile": true,

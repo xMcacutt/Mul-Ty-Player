@@ -1,4 +1,5 @@
-﻿using Steamworks;
+﻿using MulTyPlayerClient.GUI.Models;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,40 +11,45 @@ namespace MulTyPlayerClient.Classes.Utility
     internal static class SteamHelper
     {
         public const int TY_APP_ID = 411960;
-        private static string steamUserName = "";
 
-        //returns whether or not successfully intialized, or is already initialized
-        public static bool Init()
+        public static bool Initialized { get => SteamClient.IsValid; }
+
+        public static void Init()
         {
-            if (SteamClient.IsValid)
-                return true;
-
-            try
+            if (Initialized)
             {
-                SteamClient.Init(TY_APP_ID);
-                return SteamClient.IsValid;
+                return;
             }
-            catch
+            else
             {
-                return false;
+                try
+                {
+                    SteamClient.Init(TY_APP_ID);
+                }
+                catch (Exception e)
+                {
+                    ModelController.LoggerInstance.Write("Error: SteamAPI initialization failed\n" + e.ToString);
+                }
             }
         }
         
         public static bool IsLoggedOn()
         {
-            if (Init())
+            if (Initialized)
                 return SteamClient.IsLoggedOn;
             return false;
         }
 
-        public static bool TryGetName(out string userName)
+        public static string GetSteamName()
         {
-            if (steamUserName == "" && IsLoggedOn())
+            string userName = null;
+            Init();
+
+            if (IsLoggedOn())
             {
-                steamUserName = SteamClient.Name;
-            }
-            userName = steamUserName;
-            return (userName == "");
+                userName = SteamClient.Name;
+            }            
+            return userName;
         }
 
         public static void Shutdown()

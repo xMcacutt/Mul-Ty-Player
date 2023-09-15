@@ -13,6 +13,7 @@ namespace MulTyPlayerClient.GUI
             mainViewModel = new MainViewModel();
             DataContext = mainViewModel;
             InitializeComponent();
+            SteamHelper.Init();
         }
 
         private void Window_Closed(object sender, System.EventArgs e)

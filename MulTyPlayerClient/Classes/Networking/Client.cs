@@ -83,9 +83,17 @@ namespace MulTyPlayerClient
                         }
                         HHero.SendCoordinates();
                     }
-                    catch (Exception ex) when (ex is TyClosedException || ex is TyProcessException)
+                    catch (TyClosedException e)
                     {
-                        ModelController.LoggerInstance.Write(ex.Message);                        
+                        ModelController.LoggerInstance.Write("TyClosedException:\n" + e.ToString());
+                    }
+                    catch (TyProcessException e)
+                    {
+                        ModelController.LoggerInstance.Write("TyProcessException:\n" + e.ToString());
+                    }                    
+                    catch (Exception e)
+                    {
+                        ModelController.LoggerInstance.Write(e.ToString());
                     }
                 }
                 _client.Update();
