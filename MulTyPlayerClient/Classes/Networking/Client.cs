@@ -86,6 +86,7 @@ namespace MulTyPlayerClient
             ModelController.Login.ConnectionAttemptSuccessful = true;
             ModelController.Login.ConnectionAttemptCompleted = true;
             IsConnected = true;
+            HSync.SetMemAddrs();
             HSync.RequestSync();
         }
 

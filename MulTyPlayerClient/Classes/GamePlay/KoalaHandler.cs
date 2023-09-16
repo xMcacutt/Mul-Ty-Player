@@ -70,6 +70,7 @@ namespace MulTyPlayerClient
             Koala k = Enum.Parse<Koala>(koalaName, true);
             PlayerHandler.AddPlayer(k, playerName, clientID, isHost);
             Client.HKoala.SetCoordAddrs();
+            Client.HSync.SetMemAddrs();
             Client.HSync.RequestSync();
         }
 

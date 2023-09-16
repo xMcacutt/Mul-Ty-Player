@@ -49,6 +49,9 @@ namespace MulTyPlayerClient
         {
             Debug.WriteLine("Got frosty: " + saveData[5]);
             int attributeAmount = 21;
+
+            SaveSync.Sync(0, saveData);
+
             for (int i = 0; i < attributeAmount; i++)
             {
                 if (saveData[i] == 1)
@@ -56,7 +59,7 @@ namespace MulTyPlayerClient
                     GlobalObjectData[i] = 1;
                 }
             }
-            SaveSync.Sync(0, saveData);
+            
         }
 
         public override void HandleClientUpdate(int null1, int iAttribute, int null2)

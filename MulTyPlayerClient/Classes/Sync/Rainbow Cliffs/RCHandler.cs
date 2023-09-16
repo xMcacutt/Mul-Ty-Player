@@ -46,17 +46,19 @@ namespace MulTyPlayerClient
             CounterAddress = SyncHandler.SaveDataBaseAddress + 0xA84;
         }
 
-        public  override void Sync(int null1, byte[] null2, byte[] saveData)
+        public override void Sync(int null1, byte[] null2, byte[] saveData)
         {
             int dataAmount = 12;
+
+            SaveSync.Sync(0, saveData);
+
             for (int i = 0; i < dataAmount; i++)
             {
                 if (saveData[i] == 1)
                 {
                     GlobalObjectData[i] = 1;
                 }
-            }
-            SaveSync.Sync(0, saveData);
+            }            
         }
 
         public override void HandleClientUpdate(int null1, int iAttribute, int null2)
