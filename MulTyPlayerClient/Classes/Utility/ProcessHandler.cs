@@ -20,7 +20,7 @@ namespace MulTyPlayerClient
 {
     internal class ProcessHandler
     {   
-        public static bool MemoryWriteDebugLogging = true;
+        public static bool MemoryWriteDebugLogging = false;
         public static bool MemoryReadDebugLogging = false;
 
         [DllImport("kernel32.dll")]
