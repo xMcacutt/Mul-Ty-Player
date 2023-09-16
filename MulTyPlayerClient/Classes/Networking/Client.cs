@@ -116,10 +116,7 @@ namespace MulTyPlayerClient
         }
 
         private static void ConnectionFailed()
-        {
-            ModelController.Login.EnableLoginButton();
-            SystemSounds.Hand.Play();
-            MessageBox.Show("Connection failed!\nPlease check IPAddress & Password are correct and server is open.");
+        {            
             ClientThreadToken.Cancel();
             ModelController.Login.ConnectionAttemptSuccessful = false;
             ModelController.Login.ConnectionAttemptCompleted = true;

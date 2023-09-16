@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace MulTyPlayerClient.GUI.Models
@@ -14,7 +16,6 @@ namespace MulTyPlayerClient.GUI.Models
     {
         public event Action OnLoginSuccess;
         public event Action OnLoginFailed;
-        public event Action OnEnableLoginButton;
 
         public bool ConnectionAttemptCompleted = false;
         public bool ConnectionAttemptSuccessful = false;
@@ -41,17 +42,24 @@ namespace MulTyPlayerClient.GUI.Models
                 if (e.Error != null)
                 {
                     ModelController.LoggerInstance.Write(e.Error.ToString());
-                    OnLoginFailed?.Invoke();
+                    LoginFailed();
+                    return;
                 }
                 else if (e.Cancelled)
-                {                    
-                    OnLoginFailed?.Invoke();
+                {
+                    LoginFailed();
+                    return;
                 }
 
                 if (ConnectionAttemptSuccessful)
                 {
                     SaveDetails();
                     OnLoginSuccess?.Invoke();
+                }
+                else
+                {
+                    LoginFailed();
+                    return;
                 }
             };
             backgroundWorker.RunWorkerAsync();
@@ -146,9 +154,11 @@ namespace MulTyPlayerClient.GUI.Models
             return "USER" + randomNumber;
         }
 
-        public void EnableLoginButton()
+        private void LoginFailed()
         {
-            OnEnableLoginButton?.Invoke();
+            SystemSounds.Hand.Play();
+            MessageBox.Show("Connection failed!\nPlease check IPAddress & Password are correct and server is open.");
+            OnLoginFailed?.Invoke();
         }
     }
 }
