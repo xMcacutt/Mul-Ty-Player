@@ -32,7 +32,6 @@ namespace MulTyPlayerClient
 
             foreach (LevelData ld in Levels.MainStages)
             {
-                Debug.WriteLine(ld.Id);
                 GlobalObjectData.Add(ld.Id, new byte[ObjectAmount]);
             }
         }

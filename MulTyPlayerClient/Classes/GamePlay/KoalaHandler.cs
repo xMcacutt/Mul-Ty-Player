@@ -31,8 +31,28 @@ namespace MulTyPlayerClient
             public int Visibility;
         }
 
+        struct KoalaTransform
+        {
+            public float X, Y, Z, Pitch, Yaw, Roll;
+
+            public KoalaTransform(float[] f)
+            {
+                X = f[0];
+                Y = f[1];
+                Z = f[2];
+                Pitch = f[3];
+                Yaw = f[4];
+                Roll = f[5];
+            }
+        }
+
         static int _bTimeAttackAddress = 0x28AB84;
         static int _baseKoalaAddress;
+
+        //                      koala id
+        private static Dictionary<int, KoalaTransform> playerKoalaTransforms = new();
+        private static bool interpolateKoalaPositions = false;
+        private static bool interpolateKoalaRotations = false;
 
         public KoalaHandler()
         {
@@ -126,7 +146,7 @@ namespace MulTyPlayerClient
             //If this client isnt in game, or hasnt selected a koala, return
             if (!Client.KoalaSelected || Client.Relaunching )
                 return;
-            Debug.WriteLine("Received koala coord");
+            //Debug.WriteLine("Received koala coord");
             bool onMenu = message.GetBool();
             ushort clientID = message.GetUShort();
             string koalaName = message.GetString();
@@ -162,7 +182,10 @@ namespace MulTyPlayerClient
             if (level != HLevel.CurrentLevelId || level == Levels.EndGame.Id)
                 return;
 
-            WriteCoordinateData(koalaID, message.GetFloats());            
+            float[] transform = message.GetFloats();
+            playerKoalaTransforms[koalaID] = new(transform);
+
+            WriteCoordinateData(koalaID, transform);            
         }
 
         private static void WriteCoordinateData(int koalaID, float[] coordinates)
