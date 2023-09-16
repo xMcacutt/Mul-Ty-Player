@@ -14,6 +14,7 @@ namespace MulTyPlayerClient.GUI.Models
     {
         public event Action OnLoginSuccess;
         public event Action OnLoginFailed;
+        public event Action OnEnableLoginButton;
 
         public bool ConnectionAttemptCompleted = false;
         public bool ConnectionAttemptSuccessful = false;
@@ -80,7 +81,7 @@ namespace MulTyPlayerClient.GUI.Models
             }
         }
 
-        private void SetName()
+        public void SetName()
         {
             //If steam name retrieval is successful, set that as the name and set the default name in settings
             if (SettingsHandler.Settings.DoGetSteamName)
@@ -143,6 +144,11 @@ namespace MulTyPlayerClient.GUI.Models
             Random random = new();
             int randomNumber = random.Next(100000, 999999);
             return "USER" + randomNumber;
+        }
+
+        public void EnableLoginButton()
+        {
+            OnEnableLoginButton?.Invoke();
         }
     }
 }

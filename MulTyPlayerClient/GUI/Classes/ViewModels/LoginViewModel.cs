@@ -42,6 +42,8 @@ namespace MulTyPlayerClient.GUI.ViewModels
 
             model.OnLoginFailed += Model_OnLoginFailed;
             model.OnLoginSuccess += Model_OnLoginSuccess;
+            model.OnEnableLoginButton += Model_EnableLoginButton;
+            
         }
 
         private void TryConnect()
@@ -64,8 +66,14 @@ namespace MulTyPlayerClient.GUI.ViewModels
             ConnectButtonEnabled = true;
         }
 
+        private void Model_EnableLoginButton()
+        {
+            ConnectButtonEnabled = true;
+        }
+
         public void OnEntered()
         {
+            model.SetName();
         }
 
         public void OnExited()

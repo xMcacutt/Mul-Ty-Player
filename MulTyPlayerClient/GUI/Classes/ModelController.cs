@@ -3,17 +3,30 @@ using System.Windows.Media;
 
 namespace MulTyPlayerClient.GUI.Models
 {
-    public class ModelController
+    public static class ModelController
     {
-        public static SplashModel Splash = new();
-        public static LoginModel Login = new();
-        public static KoalaSelectModel KoalaSelect = new();
-        public static LobbyModel Lobby = new();
-        public static SettingsViewModel Settings = new();
-        public static SetupViewModel Setup = new();
+        public static SplashModel Splash;
+        public static LoginModel Login;
+        public static KoalaSelectModel KoalaSelect;
+        public static LobbyModel Lobby;
+        public static SettingsViewModel Settings;
+        public static SetupViewModel Setup;
         
         //IF LOGGER INSTANCE IS NO INSTANTIATED HERE, IT WON'T SHOW UP. IDK WHY
-        public static Logger LoggerInstance = new(200);
-        public static SFXPlayer SFXPlayer = new();
+        public static Logger LoggerInstance;
+        public static SFXPlayer SFXPlayer;
+
+        public static void InstantiateModels()
+        {
+            Settings = new();
+            LoggerInstance = new(200);
+
+            Splash = new();
+            Login = new();
+            KoalaSelect = new();
+            Lobby = new();
+            Setup = new();
+            SFXPlayer = new();
+        }
     }
 }

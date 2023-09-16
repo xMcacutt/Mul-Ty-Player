@@ -17,8 +17,8 @@ namespace MulTyPlayerClient
         public static bool Relaunching => TyProcess.LaunchingGame;
         public static bool KoalaSelected = false;
         public static Riptide.Client _client;
-        private static string ip;
-        private static string pass;
+        private static string _ip;
+        private static string _pass;
         public static string Name;
         public static Koala OldKoala;
 
@@ -40,15 +40,24 @@ namespace MulTyPlayerClient
         public static void Start(string ip, string name, string pass)
         {
             InitHandlers();
-            InitRiptide();
-            ClientThreadToken = new CancellationTokenSource();
-            Client.ip = ip;
-            if (!Client.ip.Contains(':'))
-                Client.ip += ":" + SettingsHandler.Settings.Port;
-            Client.pass = pass;
+
+            _ip = ip;
+            _pass = pass;
             Name = name;
-            
-            RiptideConnect();
+
+            InitRiptide();
+
+            ClientThreadToken = new CancellationTokenSource();
+
+            Message authentication = Message.Create();
+            authentication.AddString(_pass);
+            if (!_ip.Contains(':'))
+                _ip += ":" + SettingsHandler.Settings.Port;
+
+            _client.Connect(_ip, 5, 0, authentication);
+
+            Thread _loop = new(ClientLoop);
+            _loop.Start();
         }
 
         private static void InitHandlers()
@@ -59,19 +68,6 @@ namespace MulTyPlayerClient
             HHero = new HeroHandler();
             HKoala = new KoalaHandler();
             HCommand = new CommandHandler();
-        }
-
-        private static void RiptideConnect()
-        {
-            Message authentication = Message.Create();
-            authentication.AddString(pass);
-            bool attemptingConnection = _client.Connect(ip, 5, 0, authentication);
-            if (!attemptingConnection)
-            {
-                ConnectionFailed();
-            }
-            Thread _loop = new(ClientLoop);
-            _loop.Start();
         }
 
         private static void InitRiptide()
@@ -90,9 +86,6 @@ namespace MulTyPlayerClient
             ModelController.Login.ConnectionAttemptSuccessful = true;
             ModelController.Login.ConnectionAttemptCompleted = true;
             IsConnected = true;
-            
-            Thread _loop = new(ClientLoop);
-            _loop.Start();
         }
 
         private static void Disconnected(object sender, Riptide.DisconnectedEventArgs e)
@@ -109,7 +102,9 @@ namespace MulTyPlayerClient
             {
                 ModelController.LoggerInstance.Write("Initiating reconnection attempt.");
                 InitRiptide();
-                RiptideConnect();
+                Message authentication = Message.Create();
+                authentication.AddString(_pass);
+                _client.Connect(_ip, 5, 0, authentication);
             }
 
             Application.Current.Dispatcher.BeginInvoke(
@@ -122,11 +117,12 @@ namespace MulTyPlayerClient
 
         private static void ConnectionFailed()
         {
+            ModelController.Login.EnableLoginButton();
             SystemSounds.Hand.Play();
             MessageBox.Show("Connection failed!\nPlease check IPAddress & Password are correct and server is open.");
+            ClientThreadToken.Cancel();
             ModelController.Login.ConnectionAttemptSuccessful = false;
             ModelController.Login.ConnectionAttemptCompleted = true;
-            ClientThreadToken.Cancel();
         }
 
         private static void ClientLoop()

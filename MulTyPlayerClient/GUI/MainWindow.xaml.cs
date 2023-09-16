@@ -1,4 +1,5 @@
 ﻿using MulTyPlayerClient.Classes.Utility;
+using MulTyPlayerClient.GUI.Models;
 using MulTyPlayerClient.GUI.ViewModels;
 using System;
 using System.Windows;
@@ -10,10 +11,10 @@ namespace MulTyPlayerClient.GUI
         private MainViewModel mainViewModel;
         public MainWindow()
         {
+            ModelController.InstantiateModels();
             mainViewModel = new MainViewModel();
             DataContext = mainViewModel;
             InitializeComponent();
-            SteamHelper.Init();
         }
 
         private void Window_Closed(object sender, System.EventArgs e)

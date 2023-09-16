@@ -39,6 +39,7 @@ namespace MulTyPlayerClient.GUI.ViewModels
 
         public SettingsViewModel()
         {
+            SettingsHandler.Setup();
         }
 
         public void Setup()

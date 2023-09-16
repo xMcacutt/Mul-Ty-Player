@@ -11,8 +11,7 @@ namespace MulTyPlayerClient.GUI.Models
         public event Action<SplashState> OnStateChange;
 
         public SplashModel()
-        {
-            SettingsHandler.Setup();
+        {            
             var backgroundWorker = new BackgroundWorker();
             backgroundWorker.DoWork += (s, e) => GetProcessSequence();
             backgroundWorker.RunWorkerCompleted += (s, e) =>
