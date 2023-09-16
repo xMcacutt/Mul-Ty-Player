@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,7 +47,7 @@ namespace MulTyPlayerClient.GUI.Models
             OnKoalaSelected?.Invoke(koala);
             PlayerHandler.AnnounceSelection(Koalas.GetInfo[koala].Name, Client.Name, isHost);
             await Task.Delay(2500);
-            GetEntry(koala).IsAvailable = false;
+            GetEntry(koala).SetAvailability(false);
             CollectionViewSource.GetDefaultView(ModelController.LoggerInstance.Log).Refresh();
             OnProceedToLobby?.Invoke();
         }
@@ -69,36 +70,38 @@ namespace MulTyPlayerClient.GUI.Models
 
         public void MakeAllAvailable()
         {
-            Boonie.IsAvailable = true;
-            Dubbo.IsAvailable = true;
-            Elizabeth.IsAvailable = true;
-            Gummy.IsAvailable = true;
-            Katie.IsAvailable = true;
-            Kiki.IsAvailable = true;
-            Mim.IsAvailable = true;
-            Snugs.IsAvailable = true;
+            Boonie.SetAvailability(true);
+            Dubbo.SetAvailability(true);
+            Elizabeth.SetAvailability(true);
+            Gummy.SetAvailability(true);
+            Katie.SetAvailability(true);
+            Kiki.SetAvailability(true);
+            Mim.SetAvailability(true);
+            Snugs.SetAvailability(true);
         }
 
         public void SetAvailability(Koala koala, bool value)
         {
+            Debug.WriteLine("Koala: " + koala.ToString());
+            Debug.WriteLine("Available: " + value);
             switch (koala)
             {
                 case Koala.Boonie:
-                    Boonie.IsAvailable = value; return;
+                    Boonie.SetAvailability(value); return;
                 case Koala.Dubbo:
-                    Dubbo.IsAvailable = value; return;
+                    Dubbo.SetAvailability(value); return;
                 case Koala.Elizabeth:
-                    Elizabeth.IsAvailable = value; return;
+                    Elizabeth.SetAvailability(value); return;
                 case Koala.Gummy:
-                    Gummy.IsAvailable = value; return;
+                    Gummy.SetAvailability(value); return;
                 case Koala.Katie:
-                    Katie.IsAvailable = value; return;
+                    Katie.SetAvailability(value); return;
                 case Koala.Kiki:
-                    Kiki.IsAvailable = value; return;
+                    Kiki.SetAvailability(value); return;
                 case Koala.Mim:
-                    Mim.IsAvailable = value; return;
+                    Mim.SetAvailability(value); return;
                 case Koala.Snugs:
-                    Snugs.IsAvailable = value; return;
+                    Snugs.SetAvailability(value); return;
             }
 
             throw new InvalidKoalaException((int)koala);

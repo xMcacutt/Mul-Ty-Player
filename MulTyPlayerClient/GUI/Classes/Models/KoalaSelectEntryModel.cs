@@ -11,9 +11,16 @@ namespace MulTyPlayerClient.GUI.Models
         public Uri TakenPortraitSource { get; private set; }
         public Uri SelectedAnimationSource { get; private set; }
 
-        public bool IsAvailable { get; set; } = true;
+        public bool IsAvailable { get; private set; }
 
-        
+        public event Action<bool> OnAvailabilityChanged;
+
+        public void SetAvailability(bool available)
+        {
+            IsAvailable = available;
+            OnAvailabilityChanged?.Invoke(available);
+        }
+
         public KoalaSelectEntryModel(Koala koala)
         {
             KoalaInfo = Koalas.GetInfo[koala];

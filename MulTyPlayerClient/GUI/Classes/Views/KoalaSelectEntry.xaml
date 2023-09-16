@@ -19,7 +19,12 @@
                 IsMouseDirectlyOverChanged="KoalaEntry_OnMouseOverChanged"
                 MouseUp="KoalaEntry_OnClicked">            
             <Grid IsHitTestVisible="False">
-                <Image Stretch="UniformToFill"
+                
+                    <Image Stretch="UniformToFill"
+                       Source="{Binding TakenSource}"
+                       Visibility="{Binding TakenPortraitVisibility}"/>
+                
+                    <Image Stretch="UniformToFill"
                        Source="{Binding DarkSource}"
                        Visibility="{Binding DarkPortraitVisibility}"/>
 
@@ -28,9 +33,7 @@
                        Visibility="{Binding LightPortraitVisibility}"
                        MouseUp="KoalaEntry_OnClicked"/>
 
-                <Image Stretch="UniformToFill"
-                       Source="{Binding TakenSource}"
-                       Visibility="{Binding TakenPortraitVisibility}"/>
+                
 
                 <MediaElement Source="{Binding SelectedSource}"
                               LoadedBehavior="Manual"

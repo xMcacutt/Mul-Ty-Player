@@ -33,6 +33,7 @@ namespace MulTyPlayerClient.GUI.ViewModels
         public KoalaSelectEntryViewModel(KoalaSelectEntryModel kseModel)
         {
             this.kseModel = kseModel;
+            this.kseModel.OnAvailabilityChanged += (b) => { IsAvailable = b; SetPortraitVisibility(); };
             KoalaName = kseModel.KoalaInfo.Name;
             IsAvailable = kseModel.IsAvailable;
             LightSource = kseModel.LightPortraitSource;
@@ -60,7 +61,7 @@ namespace MulTyPlayerClient.GUI.ViewModels
         {
             LightPortraitVisibility = (IsAvailable && IsHovered) ? Visibility.Visible : Visibility.Hidden;
             DarkPortraitVisibility = (IsAvailable && !IsHovered) ? Visibility.Visible : Visibility.Hidden;
-            TakenPortraitVisibility = !IsAvailable ? Visibility.Visible : Visibility.Hidden;
+            TakenPortraitVisibility = (!IsAvailable) ? Visibility.Visible : Visibility.Hidden;
         }
         
     }

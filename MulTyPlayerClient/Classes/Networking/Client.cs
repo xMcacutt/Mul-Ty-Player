@@ -54,6 +54,8 @@ namespace MulTyPlayerClient
             if (!_ip.Contains(':'))
                 _ip += ":" + SettingsHandler.Settings.Port;
 
+            PlayerHandler.Players.Clear();
+            
             _client.Connect(_ip, 5, 0, authentication);
 
             Thread _loop = new(ClientLoop);
