@@ -31,8 +31,8 @@ namespace MulTyPlayerClient
             public int Visibility;
         }
 
-        int _bTimeAttackAddress = 0x28AB84;
-        int _baseKoalaAddress;
+        static int _bTimeAttackAddress = 0x28AB84;
+        static int _baseKoalaAddress;
 
         public KoalaHandler()
         {
@@ -49,6 +49,8 @@ namespace MulTyPlayerClient
             bool isHost = message.GetBool();
             Koala k = Enum.Parse<Koala>(koalaName, true);
             PlayerHandler.AddPlayer(k, playerName, clientID, isHost);
+            Client.HKoala.SetCoordAddrs();
+            Client.HSync.RequestSync();
         }
 
         public void CreateKoalaAddressArray()

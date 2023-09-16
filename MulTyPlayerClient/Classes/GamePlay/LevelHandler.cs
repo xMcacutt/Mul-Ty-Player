@@ -24,6 +24,7 @@ namespace MulTyPlayerClient
                 if (currentLevelId != value)
                 {
                     currentLevelId = value;
+                    //OnLevelChange?.Invoke(currentLevelId);
                     DoLevelSetup();
                 }
             }
@@ -34,7 +35,6 @@ namespace MulTyPlayerClient
         
         public void DoLevelSetup()
         {
-            ModelController.LoggerInstance.WriteDebug("Doing level setup");
             LevelData lData = Levels.GetLevelData(currentLevelId);
             HSync.SetCurrentData(lData.IsMainStage);
             HSync.SetMemAddrs();

@@ -9,7 +9,7 @@ namespace MulTyPlayerClient
 {
     internal class AttributeHandler : SyncObjectHandler
     {
-        public new Dictionary<int, byte> GlobalObjectData;
+        public new byte[] GlobalObjectData;
 
         public AttributeHandler()
         {
@@ -20,8 +20,7 @@ namespace MulTyPlayerClient
             CounterAddressStatic = false;
             SaveSync = new SaveAttributeSyncer();
             SetSyncClasses(SaveSync);
-            GlobalObjectData = new Dictionary<int, byte>();
-            foreach (int i in Enum.GetValues(typeof(Attributes))) GlobalObjectData.Add(i, 0);
+            GlobalObjectData = new byte[21];                            
             GlobalObjectData[(int)Attributes.GotBoom] = 1;
         }
 

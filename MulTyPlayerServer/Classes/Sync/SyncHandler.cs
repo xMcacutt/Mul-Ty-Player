@@ -10,7 +10,6 @@ namespace MulTyPlayerServer
 {
     internal class SyncHandler
     {
-
         public static int[] MainStages = { 4, 5, 6, 8, 9, 10, 12, 13, 14 };
         public Dictionary<string, Syncer> Syncers;
 
