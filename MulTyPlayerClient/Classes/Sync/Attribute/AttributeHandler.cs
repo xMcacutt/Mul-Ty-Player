@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace MulTyPlayerClient
             CounterAddressStatic = false;
             SaveSync = new SaveAttributeSyncer();
             SetSyncClasses(SaveSync);
-            GlobalObjectData = new byte[21];                            
+            GlobalObjectData = new byte[21];
             GlobalObjectData[(int)Attributes.GotBoom] = 1;
         }
 
@@ -46,6 +47,7 @@ namespace MulTyPlayerClient
 
         public override void Sync(int null1, byte[] null2, byte[] saveData)
         {
+            Debug.WriteLine("Got frosty: " + saveData[5]);
             int attributeAmount = 21;
             for (int i = 0; i < attributeAmount; i++)
             {

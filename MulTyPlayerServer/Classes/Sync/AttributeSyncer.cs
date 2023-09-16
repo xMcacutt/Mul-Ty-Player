@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace MulTyPlayerServer
 {
     internal class AttributeSyncer : Syncer
-    {
-  
+    {  
         public new Dictionary<int, byte> GlobalObjectSaveData;
 
         public AttributeSyncer()
@@ -31,14 +30,14 @@ namespace MulTyPlayerServer
             SendUpdatedData(null1, iAttribute, null2, originalSender);
         }
 
-        public override void Sync(ushort player)
+        public override void Sync(ushort clientID)
         {
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.ReqSync);
             message.AddString(Name);
             message.AddInt(0);
             message.AddBytes(new byte[1]);
             message.AddBytes(GlobalObjectSaveData.Values.ToArray());
-            Server._Server.Send(message, player);
+            Server._Server.Send(message, clientID);
         }
     }
 }

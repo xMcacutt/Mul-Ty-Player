@@ -50,7 +50,8 @@ namespace MulTyPlayerServer
         {
             foreach(string s in Program.HSync.Syncers.Keys)
             {
-                if (SettingsHandler.SyncSettings[s]) Program.HSync.Syncers[s].Sync(fromClientId);
+                if (SettingsHandler.SyncSettings[s])
+                    Program.HSync.Syncers[s].Sync(fromClientId);
             }
         }
 
