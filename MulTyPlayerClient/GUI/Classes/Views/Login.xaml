@@ -6,6 +6,8 @@
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
         xmlns:viewmodels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
         mc:Ignorable="d"
+        Height="450"
+        Width="800"
         d:DataContext ="{d:DesignInstance Type=viewmodels:LoginViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -17,9 +19,9 @@
     </UserControl.Resources>
     <Grid x:Name="MainGrid" Margin="10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="0.3*"/>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="0.25*"/>
+            <ColumnDefinition Width="0.3*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.25*"/>
@@ -40,13 +42,13 @@
         </TextBlock>
 
         <!--Labels-->
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="1" Margin="0, 0, 15, 0">
 
             <TextBlock x:Name="labelHostIP" 
                        Text="Host IP" 
-                       HorizontalAlignment="Right" 
-                       Margin="0,4,7,4" 
-                       FontSize="22">
+                       HorizontalAlignment="Right"
+                       FontSize="22"
+                       Margin="0, 1, 0, 1">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
                 </TextBlock.Effect>
@@ -54,9 +56,9 @@
 
             <TextBlock x:Name="labelPass" 
                        Text="Pass" 
-                       HorizontalAlignment="Right" 
-                       Margin="0,4,7,4" 
-                       FontSize="22">
+                       HorizontalAlignment="Right"
+                       FontSize="22"
+                       Margin="0, 1, 0, 1">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
                 </TextBlock.Effect>
@@ -64,9 +66,9 @@
             
             <TextBlock x:Name="labelName" 
                        Text="Name" 
-                       HorizontalAlignment="Right" 
-                       Margin="0,4,7,4"
-                       FontSize="22">
+                       HorizontalAlignment="Right"
+                       FontSize="22"
+                       Margin="0, 1, 0, 1">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
                 </TextBlock.Effect>
@@ -80,14 +82,14 @@
 
             <Grid>
                 <TextBox x:Name="fieldHostIP" 
-                         HorizontalContentAlignment="Right" 
+                         HorizontalContentAlignment="Left" 
                          Text="{Binding ConnectingAddress, UpdateSourceTrigger=PropertyChanged}" 
-                         FontSize="20" 
+                         FontSize="20"
+                         Padding="5 0 0 0"
                          HorizontalAlignment="Stretch" 
                          VerticalContentAlignment="Center" 
                          BorderThickness="2" 
-                         BorderBrush="{x:Null}"
-                         Margin="0 3.5">
+                         BorderBrush="{x:Null}">
                     <TextBox.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#7F6D4500"/>
@@ -108,10 +110,11 @@
                                   Mode=OneWay, 
                                   Converter={local:BoolTextCensorConverter}}"
                            IsHitTestVisible="False"
-                           HorizontalAlignment="Right"
+                           HorizontalAlignment="Stretch"
                            VerticalAlignment="Center"
-                           FontSize="21.5"
-                           Margin="3 4 4.5 1"
+                           Padding="5 0 0 0"
+                           FontSize="20"
+                           Height="30"
                            Visibility="{Binding HideAddress, 
                                         Converter={local:BooleanToVisibilityConverter},
                                         ConverterParameter=True}"/>
@@ -119,14 +122,15 @@
 
             <Grid>
                 <TextBox x:Name="fieldPass" 
-                         HorizontalContentAlignment="Right" 
+                         HorizontalContentAlignment="Left" 
                          Text="{Binding Pass, UpdateSourceTrigger=PropertyChanged}" 
                          FontSize="20" 
+                         Height="30"
+                         Padding="5 0 0 0"
                          HorizontalAlignment="Stretch" 
                          VerticalContentAlignment="Center"
                          BorderThickness="2" 
-                         BorderBrush="{x:Null}"
-                         Margin="0 3.5">
+                         BorderBrush="{x:Null}">
                     <TextBox.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#7F6D4500"/>
@@ -147,10 +151,10 @@
                                   Mode=OneWay,
                                   Converter={local:BoolTextCensorConverter}}"
                            IsHitTestVisible="False"
-                           HorizontalAlignment="Right"
+                           Padding="5 0 0 0"
+                           HorizontalAlignment="Stretch"
                            VerticalAlignment="Center"
-                           FontSize="24"
-                           Margin="3 4 4.5 1"
+                           FontSize="20"
                            Visibility="{Binding HidePass, 
                                         Converter={local:BooleanToVisibilityConverter},
                                         ConverterParameter=True}"/>
@@ -158,14 +162,15 @@
 
             <Grid>
                 <TextBox x:Name="fieldName" 
-                         HorizontalContentAlignment="Right"
+                         HorizontalContentAlignment="Left"
                          Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                          FontSize="20" 
+                         Height="30"
                          HorizontalAlignment="Stretch" 
                          VerticalContentAlignment="Center" 
-                         BorderThickness="2" 
-                         BorderBrush="{x:Null}"
-                         Margin="0 3.5">
+                         BorderThickness="2"
+                         Padding="5 0 0 0"
+                         BorderBrush="{x:Null}">
                     <TextBox.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#7F6D4500"/>
@@ -186,52 +191,56 @@
                                   Mode=OneWay, 
                                   Converter={local:BoolTextCensorConverter}}"
                            IsHitTestVisible="False"
-                           HorizontalAlignment="Right"
+                           HorizontalAlignment="Left"
+                           Padding="5 0 0 0"
                            VerticalAlignment="Center"
-                           FontSize="24"
-                           Margin="3 4 4.5 1"
+                           FontSize="20"
                            Visibility="{Binding HideName, 
                                         Converter={local:BooleanToVisibilityConverter},
                                         ConverterParameter=True}"/>
             </Grid>
 
+            
+            
             <Button x:Name="buttonConnect" 
-                    HorizontalAlignment="Left" 
+                    HorizontalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Width="200"
+                    Height="40"
                     BorderBrush="{x:Null}"
-                    Margin="0 3.5"
+                    Margin="0 30"
+                    Content="Connect"
                     Style="{StaticResource SelectButton}"
-                    Tag="Connect"
                     Command="{Binding ConnectCommand}"
-                    IsEnabled="{Binding ConnectButtonEnabled}"
-                    />
-
+                    IsEnabled="{Binding ConnectButtonEnabled}"/>
         </StackPanel>
 
         <!--Eye button-->
         <StackPanel Grid.Row="1"
-                    Grid.Column="2">
+                    Grid.Column="2"
+                    Margin="0 0">
             
-            <CheckBox HorizontalAlignment="Center" 
+            <CheckBox HorizontalAlignment="Left" 
                       Background="{x:Null}" 
                       BorderBrush="{x:Null}"
-                      Width="35"
-                      Margin="1.5"
+                      Width="30"
+                      Margin="10 0"
                       Style="{StaticResource VisibilityCheckBox}"
                       IsChecked="{Binding HideAddress}"/>
 
-            <CheckBox HorizontalAlignment="Center" 
+            <CheckBox HorizontalAlignment="Left" 
                       Background="{x:Null}" 
                       BorderBrush="{x:Null}"
-                      Width="35"
-                      Margin="1.5"
+                      Width="30"
+                      Margin="10 0"
                       Style="{StaticResource VisibilityCheckBox}"
                       IsChecked="{Binding HidePass}"/>
 
-            <CheckBox HorizontalAlignment="Center" 
+            <CheckBox HorizontalAlignment="Left" 
                       Background="{x:Null}" 
                       BorderBrush="{x:Null}"
-                      Width="35"
-                      Margin="1.5"
+                      Width="30"
+                      Margin="10 0"
                       Style="{StaticResource VisibilityCheckBox}"
                       IsChecked="{Binding HideName}"/>
 

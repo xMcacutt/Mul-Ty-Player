@@ -7,9 +7,11 @@
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI.Views"
         xmlns:viewmodels ="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
         mc:Ignorable="d"
+        Height="210"
+        Width="170"
         d:DataContext ="{d:DesignInstance Type=viewmodels:KoalaSelectEntryViewModel, IsDesignTimeCreatable=True}">
     <Grid>
-    <StackPanel Margin="6 0">
+    <StackPanel Margin="6 6">
         <Border BorderThickness="2" 
                 BorderBrush="Black" 
                 Background="Black"
@@ -36,22 +38,22 @@
                               Visibility="Collapsed"/>
             </Grid>
         </Border>
-        <TextBlock Text="{Binding KoalaName}"/>
+            <TextBlock Text="{Binding KoalaName}"
+                   FontSize="25">
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="3"/>
+                </TextBlock.Effect>
+            </TextBlock>
+        
     </StackPanel>
     </Grid>
 
     <UserControl.Resources>
-        <Style TargetType="TextBlock">
-            <Setter Property="TextElement.FontFamily" Value="Fonts/#SF Slapstick Comic"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="#FFFFFFFF"/>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect BlurRadius="0" 
-                                      Direction="315" 
-                                      ShadowDepth="2"/>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GUI/SlapstickFont.xaml"/>
+                <ResourceDictionary Source="/GUI/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
 </UserControl>

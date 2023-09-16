@@ -11,11 +11,6 @@
     <Window.Resources>
         <ResourceDictionary>
             <local:StringsToBooleanConverter x:Key="StringsToBooleanConverter" />
-            <Style x:Key="ComicText" TargetType="TextBlock">
-                <Setter Property="TextElement.FontFamily" Value="Fonts/#SF Slapstick Comic"/>
-                <Setter Property="HorizontalAlignment" Value="Left"/>
-                <Setter Property="Foreground" Value="Black"/>
-            </Style>
             <SolidColorBrush x:Key="ProgressBar.Progress" Color="#FF06B025"/>
             <SolidColorBrush x:Key="ProgressBar.Background" Color="#FFE6E6E6"/>
             <SolidColorBrush x:Key="ProgressBar.Border" Color="#FFBCBCBC"/>

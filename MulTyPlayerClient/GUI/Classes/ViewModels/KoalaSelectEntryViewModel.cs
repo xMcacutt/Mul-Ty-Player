@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using PropertyChanged;
 using static MulTyPlayerClient.GUI.Models.KoalaSelectEntryModel;
+using System.Windows.Controls;
 
 namespace MulTyPlayerClient.GUI.ViewModels
 {

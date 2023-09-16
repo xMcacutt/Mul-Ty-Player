@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Closing="Window_Closing"
-        Closed="Window_Closed">
+        Closed="Window_Closed"
+        SizeToContent="WidthAndHeight">
     
     <Grid>
         <ContentControl Content="{Binding CurrentViewModel}"/>

@@ -6,6 +6,8 @@
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI"
         xmlns:viewmodels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
         mc:Ignorable="d"
+        Width="800"
+        Height="450"
         d:DataContext="{Binding {d:DesignInstance Type=viewmodels:SplashViewModel, IsDesignTimeCreatable=True}}">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -23,18 +25,19 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.1*"/>
-            <RowDefinition Height="0.7*"/>
+            <RowDefinition Height="0.8*"/>
             <RowDefinition Height="0.3*"/>
-            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.05*"/>
         </Grid.RowDefinitions>
 
         <Button x:Name="Setup" 
                 Click="Setup_Click"
                 HorizontalAlignment="Left" 
                 BorderBrush="{x:Null}"
-                Margin="0 3.5"
+                FontSize="19"
+                Margin="3.5 3.5"
                 Style="{StaticResource SelectButton}"
-                Tag="Setup"/>
+                Content="Setup"/>
         <TextBlock Grid.Column="1" 
                    x:Name="SetupText"
                    HorizontalAlignment="Left" 
@@ -44,13 +47,13 @@
                    Text="← First Time?"/>
 
 
-        <StackPanel x:Name="titleStack" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" >
-            <TextBlock x:Name="welcomeToMessage" FontSize="55" Text="Welcome To" Margin="0,0,0,-10">
+        <StackPanel x:Name="titleStack" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,46,0,0" Grid.RowSpan="2" Width="800" Grid.Column="0" Grid.ColumnSpan="3">
+            <TextBlock x:Name="welcomeToMessage" FontSize="80" Text="Welcome To" Margin="0,0,0,-10">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="5"/>
                 </TextBlock.Effect>
             </TextBlock>
-            <TextBlock x:Name="mtpTitle" FontSize="90" Text="Mul-Ty-Player" Margin="0,-20,0,0">
+            <TextBlock x:Name="mtpTitle" FontSize="120" Text="Mul-Ty-Player" Margin="0,-20,0,0">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="5"/>
                 </TextBlock.Effect>
@@ -69,9 +72,9 @@
             VerticalAlignment="Top" 
             BorderBrush="{x:Null}"
             Style="{StaticResource SelectButton}"
-            Tag="Launch Game" Grid.Column="1" Grid.Row="1" Width="230" Height="32" Margin="0,208,0,0"
+            Content="Launch Game" Grid.Column="1" Grid.Row="2" Width="250" Height="40"
             IsEnabled = "{Binding EnableLaunchGameButton}"
-            Visibility = "{Binding LaunchGameButtonVisibility}" />
+            Visibility = "{Binding LaunchGameButtonVisibility}" Margin="0,68,0,0" />
 
     </Grid>
     <UserControl.Background>

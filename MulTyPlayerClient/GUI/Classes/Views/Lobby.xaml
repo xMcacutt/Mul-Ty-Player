@@ -14,11 +14,7 @@
                 <Setter Property="Padding" Value="0" />
                 <Setter Property="Background" Value="#00000000"/>
             </Style>
-            <Style x:Key="ComicText" TargetType="TextBlock">
-                <Setter Property="TextElement.FontFamily" Value="Fonts/#SF Slapstick Comic"/>
-                <Setter Property="HorizontalAlignment" Value="Left"/>
-                <Setter Property="Foreground" Value="Black"/>
-            </Style>
+            
             <ControlTemplate x:Key="ButtonTemplate" TargetType="{x:Type Button}">
                 <Border Name="border" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
                     <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
@@ -41,6 +37,12 @@
                     <local:ReadyCharConverter x:Key="ReadyCharConverter" />
                     <local:SubstringConverter x:Key="SubstringConverter" />
                     <local:LevelNameConverter x:Key="LevelNameConverter" />
+                </ResourceDictionary>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="/GUI/SlapstickFont.xaml"/>
+                        <ResourceDictionary Source="/GUI/Styles.xaml"/>
+                    </ResourceDictionary.MergedDictionaries>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -143,7 +145,7 @@
                     <DataGridTemplateColumn Header="Ready Status" Width="">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Style="{StaticResource ComicText}" 
+                                <TextBlock Style="{StaticResource ComicText}"
                                         VerticalAlignment="Center"
                                         FontSize="16"
                                         Padding="3"
@@ -208,7 +210,6 @@
                                 <TransformGroup>
                                     <ScaleTransform ScaleY="-1"/>
                                     <SkewTransform/>
-                                    <RotateTransform Angle="-0.618"/>
                                     <TranslateTransform/>
                                 </TransformGroup>
                             </ItemsControl.RenderTransform>

@@ -10,11 +10,10 @@
         d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}">
     <Window.Resources>
         <ResourceDictionary>
-            <Style x:Key="ComicText" TargetType="TextBlock">
-                <Setter Property="TextElement.FontFamily" Value="Fonts/#SF Slapstick Comic"/>
-                <Setter Property="HorizontalAlignment" Value="Left"/>
-                <Setter Property="Foreground" Value="Black"/>
-            </Style>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GUI/SlapstickFont.xaml" />
+                <ResourceDictionary Source="/GUI/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
     <Grid Margin="10,10,10,10">
@@ -31,14 +30,12 @@
 
         <StackPanel Grid.Row="1">
             <CheckBox Content="Do Koala Collision?"
-                      HorizontalAlignment="Left"
-                      FontFamily="Fonts/#SF Slapstick Comic"
+                      Style="{StaticResource ComicTextCheck}"
                       Margin="10,10,0,10"
                       IsChecked="{Binding DoKoalaCollision}"/>
             
             <CheckBox Content="Auto-Restart Ty?"
-                      HorizontalAlignment="Left"
-                      FontFamily="Fonts/#SF Slapstick Comic"
+                      Style="{StaticResource ComicTextCheck}"
                       Margin="10,10,0,10"
                       IsChecked="{Binding AutoRestartTy}"/>
         </StackPanel>

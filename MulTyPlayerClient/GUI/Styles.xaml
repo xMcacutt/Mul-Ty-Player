@@ -83,6 +83,17 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="ComicText" TargetType="TextBlock">
+        <Setter Property="TextElement.FontFamily" Value="Fonts/#SF Slapstick Comic"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Foreground" Value="Black"/>
+    </Style>
+
+    <Style x:Key="ComicTextCheck" TargetType="CheckBox">
+        <Setter Property="FontFamily" Value="Fonts/#SF Slapstick Comic"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Foreground" Value="Black"/>
+    </Style>
 
 
     <!--Buttons-->
@@ -110,16 +121,19 @@
             </ResourceDictionary>
         </Style.Resources>
         <Setter Property="Background" Value="{StaticResource ButtonGradient}"/>
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontSize" Value="25"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border Background="{TemplateBinding Background}"
                             CornerRadius="5">
                         <TextBlock x:Name="selectButtonText" 
-                                   Text="{TemplateBinding Tag}"
+                                   Text="{TemplateBinding Content}"
                                    Margin="10,0,10,0"
-                                   FontSize="{TemplateBinding FontSize}"/>
+                                   FontSize="{TemplateBinding FontSize}"
+                                   VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
