@@ -20,8 +20,8 @@ namespace MulTyPlayerClient.GUI.Models
         public KoalaSelectEntryModel Mim { get; private set; } = new(Koala.Mim);
         public KoalaSelectEntryModel Snugs { get; private set; } = new(Koala.Snugs);
 
-        public bool BlockKoalaSelect { get; set; }
         public event Action<Koala> OnKoalaSelected;
+        public event Action OnProceedToLobby;
 
         public KoalaSelectModel()
         {
@@ -43,13 +43,12 @@ namespace MulTyPlayerClient.GUI.Models
             bool isHost = !CommandHandler.HostExists();
             PlayerHandler.Players.Add(Client._client.Id, new Player(koala, Client.Name, Client._client.Id, isHost, false));
             ModelController.SFXPlayer.PlaySound(SFX.PlayerConnect);
-            BlockKoalaSelect = true;
-            PlayerHandler.AnnounceSelection(Koalas.GetInfo[koala].Name, Client.Name, isHost);
-            await Task.Delay(2400);
-            GetEntry(koala).IsAvailable = false;
-            BlockKoalaSelect = false;
-            CollectionViewSource.GetDefaultView(ModelController.LoggerInstance.Log).Refresh();
             OnKoalaSelected?.Invoke(koala);
+            PlayerHandler.AnnounceSelection(Koalas.GetInfo[koala].Name, Client.Name, isHost);
+            await Task.Delay(2500);
+            GetEntry(koala).IsAvailable = false;
+            CollectionViewSource.GetDefaultView(ModelController.LoggerInstance.Log).Refresh();
+            OnProceedToLobby?.Invoke();
         }
 
         public bool IsKoalaAvailable(Koala koala)

@@ -27,7 +27,7 @@ namespace MulTyPlayerClient.GUI.ViewModels
 
             ModelController.Splash.OnComplete += () => GoToView(View.Login);
             ModelController.Login.OnLoginSuccess += () => GoToView(View.KoalaSelect);
-            ModelController.KoalaSelect.OnKoalaSelected += (k) => GoToView(View.Lobby);
+            ModelController.KoalaSelect.OnProceedToLobby += () => GoToView(View.Lobby);
             ModelController.Lobby.OnLogout += () => GoToView(View.Login);
         }
 

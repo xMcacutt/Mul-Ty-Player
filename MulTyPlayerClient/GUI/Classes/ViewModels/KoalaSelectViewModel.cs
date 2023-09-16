@@ -38,6 +38,8 @@ namespace MulTyPlayerClient.GUI.ViewModels
         {
             model = ModelController.KoalaSelect;
             model.MakeAllAvailable();
+            model.OnKoalaSelected += delegate { BlockKoalaSelect = true; };
+            model.OnProceedToLobby += delegate { BlockKoalaSelect = false; };
             Boonie = new (model.Boonie);
             Mim = new (model.Mim);
             Gummy = new (model.Gummy);
