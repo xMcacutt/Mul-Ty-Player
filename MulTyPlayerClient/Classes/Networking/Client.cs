@@ -68,6 +68,7 @@ namespace MulTyPlayerClient
             HHero = new HeroHandler();
             HKoala = new KoalaHandler();
             HCommand = new CommandHandler();
+            HPlayer = new PlayerHandler();
         }
 
         private static void InitRiptide()

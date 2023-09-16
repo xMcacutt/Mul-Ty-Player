@@ -37,7 +37,7 @@ namespace MulTyPlayerClient
         //Do not check if the process is running (for now),
         //throwing this exception allows up to exit the client loop
         //may restructure in future
-        public static void WriteData(int address, byte[] bytes, string writeIndicator)
+        public static bool WriteData(int address, byte[] bytes, string writeIndicator)
         {
             if (MemoryWriteDebugLogging)
             {
@@ -46,10 +46,11 @@ namespace MulTyPlayerClient
                 string logMsg = (success ? "Successfully wrote " : "Failed to write") + message;
                 ModelController.LoggerInstance.Write(logMsg);
             }
+
             try
             {
                 bool success = WriteProcessMemory(TyProcess.Handle, address, bytes, bytes.Length, out nint bytesWritten);
-                
+                return success;
             }
             catch (Exception ex)
             {
