@@ -1,10 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Riptide;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Windows.Xps.Serialization;
 
 namespace MulTyPlayerClient
 {

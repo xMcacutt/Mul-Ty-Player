@@ -1,7 +1,6 @@
 ﻿using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI.Models;
 using MulTyPlayerClient.GUI.ViewModels;
-using System;
 using System.Windows;
 
 namespace MulTyPlayerClient.GUI

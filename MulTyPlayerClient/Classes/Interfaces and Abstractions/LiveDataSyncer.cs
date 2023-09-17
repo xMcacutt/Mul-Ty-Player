@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MulTyPlayerClient
 {
@@ -17,7 +13,7 @@ namespace MulTyPlayerClient
         public virtual void Collect(int index)
         {
             if (HSyncObject.CurrentObjectData[index] >= 3) return;
-            if (Client.HGameState.CheckMenuOrLoading()) return;
+            if (Client.HGameState.IsAtMainMenuOrLoading()) return;
             ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * index), new byte[] { HSyncObject.WriteState }, "Setting collectible to collected");
             if (!SeparateCollisionByte) return;
             ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + CollisionOffset + (ObjectLength * index), BitConverter.GetBytes(0), "Setting collision of collectible to off");

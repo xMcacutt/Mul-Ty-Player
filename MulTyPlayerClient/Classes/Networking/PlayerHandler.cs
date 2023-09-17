@@ -1,17 +1,9 @@
 ﻿using MulTyPlayerClient.GUI;
-using System;
 using System.Collections.Generic;
-using Riptide;
-using System.Linq;
-using System.Media;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using System.Windows;
 using System.Windows.Threading;
-using System.Numerics;
 using MulTyPlayerClient.GUI.Models;
+using Riptide;
 
 namespace MulTyPlayerClient
 {
@@ -24,6 +16,7 @@ namespace MulTyPlayerClient
             Players = new();
         }
 
+        //Adds other player to players & playerInfo
         public static void AddPlayer(Koala koala, string name, ushort clientID, bool isHost)
         {
             string koalaName = Koalas.GetInfo[koala].Name;
@@ -38,6 +31,7 @@ namespace MulTyPlayerClient
             ModelController.SFXPlayer.PlaySound(SFX.PlayerConnect);
         }
 
+        //Adds yourself to playerInfo
         public static void AnnounceSelection(string koalaName, string name, bool isHost)
         {
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
@@ -50,6 +44,13 @@ namespace MulTyPlayerClient
             Client._client.Send(message);
             Client.KoalaSelected = true;
         }
+
+        // Linq error spam come from client loop
+        // client loop calls checkloaded which calls checkmainmenu
+        // which tries to set the local playerinfo level to "M/L"
+        // local player info is not added until we select a koala
+        // so the linq tries to find player where player.id = client.id and fails which throws an exception
+        // every frame
 
         public static void RemovePlayer(ushort id)
         {

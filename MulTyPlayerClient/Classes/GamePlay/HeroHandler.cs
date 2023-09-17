@@ -1,8 +1,4 @@
-﻿using BenchmarkDotNet.Attributes;
-using Riptide;
-using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using Riptide;
 
 namespace MulTyPlayerClient
 {
@@ -56,7 +52,7 @@ namespace MulTyPlayerClient
             //Debug.WriteLine("SENDING KOALA COORDS");
             //SENDS CURRENT COORDINATES TO SERVER WITH CURRENT LEVEL AND LOADING STATE
             Message message = Message.Create(MessageSendMode.Unreliable, MessageID.PlayerInfo);
-            message.AddBool(HGameState.CheckMainMenu());
+            message.AddBool(HGameState.IsAtMainMenu());
             message.AddInt(HLevel.CurrentLevelId);
             message.AddFloats(Client.HHero.currentPositionRotation);
             Client._client.Send(message);

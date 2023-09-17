@@ -1,10 +1,6 @@
-﻿using System.ComponentModel;
-using System.Threading;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Runtime.CompilerServices;
 using System.Security.Principal;
-using System;
 
 namespace MulTyPlayerClient.GUI.Views
 {

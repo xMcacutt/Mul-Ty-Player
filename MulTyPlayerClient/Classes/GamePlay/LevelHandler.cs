@@ -1,9 +1,6 @@
 ﻿using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
-using Riptide;
 using System;
-using System.Diagnostics;
-using System.Linq;
 
 namespace MulTyPlayerClient
 {

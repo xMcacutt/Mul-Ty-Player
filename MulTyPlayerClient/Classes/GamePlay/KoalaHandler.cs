@@ -1,14 +1,8 @@
 ﻿using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
 using Riptide;
-using Steamworks;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Numerics;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 namespace MulTyPlayerClient
 {
@@ -171,7 +165,7 @@ namespace MulTyPlayerClient
 
             //Return if player is on the main menu or loading screen,
             //No need to set coords
-            if (HGameState.CheckMenuOrLoading())
+            if (HGameState.IsAtMainMenuOrLoading())
                 return;
 
             //If failed to get this clients player, or received our own coordinates, return

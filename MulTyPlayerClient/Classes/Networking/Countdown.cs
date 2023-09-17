@@ -1,12 +1,7 @@
-﻿using MulTyPlayerClient.GUI;
-using MulTyPlayerClient.GUI.Models;
+﻿using MulTyPlayerClient.GUI.Models;
 using Riptide;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media;
 
 namespace MulTyPlayerClient.Classes
 {
@@ -55,7 +50,7 @@ namespace MulTyPlayerClient.Classes
 
         private static bool CheckAbort()
         {
-            return !Client.HGameState.CheckMainMenu() || ModelController.Lobby.PlayerInfoList.Any(p => p.Level != "M/L");
+            return !Client.HGameState.IsAtMainMenu() || ModelController.Lobby.PlayerInfoList.Any(p => p.Level != "M/L");
         }
     }
 }

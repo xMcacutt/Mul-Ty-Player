@@ -1,5 +1,4 @@
 ﻿using MulTyPlayerClient.GUI.ViewModels;
-using System.Windows.Media;
 
 namespace MulTyPlayerClient.GUI.Models
 {

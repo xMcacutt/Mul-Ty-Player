@@ -3,8 +3,6 @@ using MulTyPlayerClient.GUI.Models;
 using Riptide;
 using Riptide.Utils;
 using System;
-using System.Diagnostics;
-using System.Media;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
@@ -57,6 +55,15 @@ namespace MulTyPlayerClient
             PlayerHandler.Players.Clear();
             
             _client.Connect(_ip, 5, 0, authentication);
+
+            ModelController.KoalaSelect.OnProceedToLobby += () =>
+            {
+                KoalaSelected = true;
+            };
+            ModelController.Lobby.OnLogout += () =>
+            {
+                KoalaSelected = false;
+            };
 
             Thread _loop = new(ClientLoop);
             _loop.Start();
@@ -131,11 +138,11 @@ namespace MulTyPlayerClient
         {
             while (!ClientThreadToken.Token.IsCancellationRequested)
             {
-                if (IsConnected && TyProcess.FindProcess())
+                if (IsConnected && TyProcess.FindProcess() && KoalaSelected)
                 {
                     try
                     {
-                        if (!HGameState.CheckLoaded())
+                        if (!HGameState.IsAtMainMenuOrLoading())
                         {
                             HLevel.GetCurrentLevel();
                             HSync.CheckEnabledObservers();

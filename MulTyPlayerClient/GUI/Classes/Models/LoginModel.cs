@@ -1,4 +1,5 @@
-﻿using MulTyPlayerClient.Classes.Utility;
+﻿using Microsoft.CodeAnalysis;
+using MulTyPlayerClient.Classes.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,9 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 namespace MulTyPlayerClient.GUI.Models
 {
@@ -85,7 +84,11 @@ namespace MulTyPlayerClient.GUI.Models
             if (Path.Exists("./list.servers"))
             {
                 ParseServerList(File.ReadLines("./list.servers"));
-                return;
+            }
+            else
+            {
+                var _fs = File.Create("./list.servers");
+                _fs.Close();
             }
         }
 
@@ -111,21 +114,27 @@ namespace MulTyPlayerClient.GUI.Models
 
         private void SaveDetails()
         {
-            using (var fileStream = File.Create("./list.servers"))
-                if (!_serverList.Where(x => x.IP == ip).Any())
-                    _serverList.Add(new(ip, pass, true));
-                else
-                {
-                    _serverList.Where(x => x.IP == ip).First().Pass = pass;
-                    _serverList.Where(x => x.IP == ip).First().ActiveDefault = true;
-                }
+            //Save the currently connected server details to serverlist
+            if (!_serverList.Where(x => x.IP == ip).Any())
+                _serverList.Add(new(ip, pass, true));
+            else
+            {
+                _serverList.Where(x => x.IP == ip).First().Pass = pass;
+                _serverList.Where(x => x.IP == ip).First().ActiveDefault = true;
+            }
+
+            //Save serverlist to file
+            using FileStream fs = File.Create("./list.servers");
+            string servers = "";
             foreach (ServerListing server in _serverList)
             {
-                string s = $"{server.IP} {server.Pass}";
-                if (server.ActiveDefault) s += " *";
-                s += "\n";
-                File.AppendAllText("./list.servers", s);
+                servers += $"{server.IP} {server.Pass}";
+                if (server.ActiveDefault)
+                    servers += " *";
+                servers += "\n";
             }
+            byte[] serverInfo = new UTF8Encoding(true).GetBytes(servers);
+            fs.Write(serverInfo, 0, serverInfo.Length);
         }
 
         private void ParseServerList(IEnumerable<string> file)

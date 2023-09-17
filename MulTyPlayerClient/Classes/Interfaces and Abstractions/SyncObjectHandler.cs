@@ -1,13 +1,5 @@
-﻿using MulTyPlayerClient.GUI;
-using Steamworks;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Net.Sockets;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using System.Windows.Controls.Primitives;
 
 namespace MulTyPlayerClient
 {

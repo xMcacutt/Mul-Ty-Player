@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MulTyPlayerClient
 {
@@ -18,7 +14,7 @@ namespace MulTyPlayerClient
 
         public override void Collect(int level)
         {
-            if (Client.HGameState.CheckMenuOrLoading()) return;
+            if (Client.HGameState.IsAtMainMenuOrLoading()) return;
             int portalIndex = Array.IndexOf(PortalHandler.LivePortalOrder, level);
             ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * portalIndex), new byte[] { HSyncObject.WriteState }, "Making portal visible");
         }

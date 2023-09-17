@@ -1,19 +1,6 @@
-﻿using MulTyPlayerClient;
-using MulTyPlayerClient.GUI;
-using System;
+﻿using System;
 using System.Diagnostics;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
-using System.Security.Policy;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.CodeDom;
-using System.Collections;
-using System.IO;
-using System.Windows.Shapes;
-using System.Windows.Controls;
 using MulTyPlayerClient.GUI.Models;
 
 namespace MulTyPlayerClient

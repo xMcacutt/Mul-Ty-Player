@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MulTyPlayerClient.GUI.Models
 {
@@ -67,7 +64,7 @@ namespace MulTyPlayerClient.GUI.Models
         public LobbyModel()
         {
             PlayerInfoList = new ObservableCollection<PlayerInfo>();
-            OnLogout += () => { PlayerInfoList = new(); };
+            OnLogout += () => { PlayerInfoList.Clear(); };
         }
 
         public static void ProcessInput(string input)

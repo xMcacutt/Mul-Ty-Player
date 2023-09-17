@@ -1,6 +1,4 @@
-﻿using Riptide;
-
-namespace MulTyPlayerServer
+﻿namespace MulTyPlayerServer
 {
     internal class Player
     {

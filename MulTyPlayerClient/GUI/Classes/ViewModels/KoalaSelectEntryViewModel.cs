@@ -1,13 +1,7 @@
 ﻿using MulTyPlayerClient.GUI.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using PropertyChanged;
-using static MulTyPlayerClient.GUI.Models.KoalaSelectEntryModel;
-using System.Windows.Controls;
 
 namespace MulTyPlayerClient.GUI.ViewModels
 {
@@ -33,7 +27,7 @@ namespace MulTyPlayerClient.GUI.ViewModels
         public KoalaSelectEntryViewModel(KoalaSelectEntryModel kseModel)
         {
             this.kseModel = kseModel;
-            this.kseModel.OnAvailabilityChanged += (b) => { IsAvailable = b; SetPortraitVisibility(); };
+            this.kseModel.OnAvailabilityChanged += SetAvailability;
             KoalaName = kseModel.KoalaInfo.Name;
             IsAvailable = kseModel.IsAvailable;
             LightSource = kseModel.LightPortraitSource;
@@ -49,6 +43,12 @@ namespace MulTyPlayerClient.GUI.ViewModels
         public void SetHovered(bool newValue)
         {
             IsHovered = newValue;
+            SetPortraitVisibility();
+        }
+
+        private void SetAvailability(bool newValue)
+        {
+            IsAvailable = newValue;
             SetPortraitVisibility();
         }
 

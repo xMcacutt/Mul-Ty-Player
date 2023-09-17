@@ -22,7 +22,7 @@ namespace MulTyPlayerClient
                 return;
 
             //If in menu or loading, return
-            if (Client.HGameState.CheckMenuOrLoading())
+            if (Client.HGameState.IsAtMainMenuOrLoading())
                 return;
 
             if (HLevel.CurrentLevelId != Levels.RainbowCliffs.Id)

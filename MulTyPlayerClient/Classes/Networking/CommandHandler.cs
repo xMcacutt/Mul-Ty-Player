@@ -1,12 +1,9 @@
-﻿using MulTyPlayerClient.GUI;
-using MulTyPlayerClient.GUI.Models;
+﻿using MulTyPlayerClient.GUI.Models;
 using Riptide;
-using Riptide.Transports;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Numerics;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -156,15 +153,24 @@ namespace MulTyPlayerClient
         {
             if (message.GetBool())
             {
-                ModelController.LoggerInstance.Write("You have been made host. You now have access to host only commands.");
                 PlayerHandler.Players[Client._client.Id].IsHost = true;
 
                 Application.Current.Dispatcher.BeginInvoke(
                     DispatcherPriority.Background,
                         new Action(ModelController.Lobby.UpdateHostIcon));
+
+                ModelController.LoggerInstance.Write("You have been made host. You now have access to host only commands.");
                 return;
             }
-            ModelController.LoggerInstance.Write($"Client {PlayerHandler.Players.Values.First(p => p.IsHost)} already has host privileges");
+            try
+            {
+                Player existingHost = PlayerHandler.Players.Values.First(p => p.IsHost);
+                ModelController.LoggerInstance.Write($"Player {existingHost.Name} already has host privileges");
+            }
+            catch
+            {
+                ModelController.LoggerInstance.Write("Existing host was found by server, but not by client. Possible error occured. Denying host privileges.");
+            }            
         }
 
         [MessageHandler((ushort)MessageID.HostChange)]

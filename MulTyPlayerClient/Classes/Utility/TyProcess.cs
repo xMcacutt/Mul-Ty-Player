@@ -1,5 +1,4 @@
 ﻿using MulTyPlayerClient.Classes.Utility;
-using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
 using System;
 using System.Diagnostics;
