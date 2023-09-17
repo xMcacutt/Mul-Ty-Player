@@ -18,8 +18,11 @@ namespace MulTyPlayerClient.GUI.Models
             }
             set
             {
-                isOnMenu = value;
-                IsOnMenuChanged(isOnMenu);
+                if (isOnMenu != value)
+                {
+                    isOnMenu = value;
+                    IsOnMenuChanged(isOnMenu);
+                }                
             }
         }
         private bool isOnMenu;
@@ -59,12 +62,14 @@ namespace MulTyPlayerClient.GUI.Models
         private bool isReady;
         #endregion
 
-        public event Action OnLogout = delegate { };
+        public event Action OnLogout;
+        public event Action OnCountdownBegin;
+        public event Action OnCountdownEnded;
 
         public LobbyModel()
         {
             PlayerInfoList = new ObservableCollection<PlayerInfo>();
-            OnLogout += () => { PlayerInfoList.Clear(); };
+            OnLogout += PlayerInfoList.Clear;
         }
 
         public static void ProcessInput(string input)
@@ -77,7 +82,7 @@ namespace MulTyPlayerClient.GUI.Models
                 Client.HCommand.ParseCommand(input);
             }
             else
-                ModelController.LoggerInstance.Write(input);
+                Logger.Instance.Write(input);
         }
 
         public bool TryGetPlayerInfo(ushort clientID, out PlayerInfo playerInfo)
@@ -119,6 +124,11 @@ namespace MulTyPlayerClient.GUI.Models
         public void Logout()
         {
             OnLogout?.Invoke();
+        }
+
+        public void BeginCountdown()
+        {
+            OnCountdownBegin?.Invoke();
         }
     }
 }

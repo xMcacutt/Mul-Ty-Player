@@ -31,7 +31,7 @@ namespace MulTyPlayerClient
                 bool success = WriteData(address, bytes);
                 string message = BitConverter.ToString(bytes) + " to 0x" + address.ToString("X") + " For: " + writeIndicator;
                 string logMsg = (success ? "Successfully wrote " : "Failed to write") + message;
-                ModelController.LoggerInstance.Write(logMsg);
+                Logger.Instance.Write(logMsg);
             }
 
             try
@@ -41,7 +41,7 @@ namespace MulTyPlayerClient
             }
             catch (Exception ex)
             {
-                ModelController.LoggerInstance.Write($"Error writing data: {ex}");
+                Logger.Instance.Write($"Error writing data: {ex}");
                 throw new TyProcessException("ProcessHandler.WriteData()", ex);
             }
         }
@@ -54,7 +54,7 @@ namespace MulTyPlayerClient
             }
             catch (Exception ex)
             {
-                ModelController.LoggerInstance.Write($"Error writing data: {ex}");
+                Logger.Instance.Write($"Error writing data: {ex}");
             }
             return false;
         }
@@ -72,14 +72,14 @@ namespace MulTyPlayerClient
                     //string s = GetCallStackAsString();
                     if(addBase) address = TyProcess.BaseAddress + address;
                     nuint nSize = (nuint)sizeof(T), nRead;
-                    //BasicIoC.LoggerInstance.Write(address.ToString() + " " + s);
+                    //BasicIoC.Logger.Instance.Write(address.ToString() + " " + s);
                     return ReadProcessMemory(TyProcess.Handle, (void*)address, pResult, nSize, &nRead)
                         && nRead == nSize;
                 }
             }
             catch(Exception ex)
             {
-                ModelController.LoggerInstance.Write(ex.ToString());
+                Logger.Instance.Write(ex.ToString());
                 result = default;
                 throw new TyProcessException("ProcessHandler.TryRead()", ex);
             }

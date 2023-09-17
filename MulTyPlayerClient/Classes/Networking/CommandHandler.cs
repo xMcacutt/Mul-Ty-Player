@@ -45,7 +45,7 @@ namespace MulTyPlayerClient
                     {
                         if (PlayerHandler.Players[Client._client.Id].IsHost)
                         {
-                            ModelController.LoggerInstance.Write("You already have host privileges");
+                            Logger.Instance.Write("You already have host privileges");
                             break;
                         }
                         RequestHost();
@@ -60,7 +60,7 @@ namespace MulTyPlayerClient
                     {
                         foreach (string line in File.ReadLines("./help.mtps"))
                         {
-                            ModelController.LoggerInstance.Write(line);
+                            Logger.Instance.Write(line);
                         }
                         break;
                     }
@@ -68,7 +68,7 @@ namespace MulTyPlayerClient
                     {
                         if (args.Length == 0)
                         {
-                            ModelController.LoggerInstance.Write("Usage: /msg [message]");
+                            Logger.Instance.Write("Usage: /msg [message]");
                             break;
                         }
                         string message = userInput[5..];
@@ -79,22 +79,22 @@ namespace MulTyPlayerClient
                     {
                         if (args.Length < 2 || !ushort.TryParse(args[0], out _))
                         {
-                            ModelController.LoggerInstance.Write("Usage: /whisper [client Id] [message]");
+                            Logger.Instance.Write("Usage: /whisper [client Id] [message]");
                             break;
                         }
                         if (!PlayerHandler.Players.ContainsKey(ushort.Parse(args[0])))
                         {
-                            ModelController.LoggerInstance.Write($"{args[0]} is not a valid client ID");
+                            Logger.Instance.Write($"{args[0]} is not a valid client ID");
                             break;
                         }
                         string message = userInput[(userInput.IndexOf(' ') + 1 + args[0].Length + 1)..];
                         SendMessage(message, ushort.Parse(args[0]));
-                        ModelController.LoggerInstance.Write($"Sent message to client {ushort.Parse(args[0])}.");
+                        Logger.Instance.Write($"Sent message to client {ushort.Parse(args[0])}.");
                         break;
                     }
                 default:
                     {
-                        ModelController.LoggerInstance.Write($"/{command} is not a command. Try /help for a list of commands");
+                        Logger.Instance.Write($"/{command} is not a command. Try /help for a list of commands");
                         break;
                     }
             }
@@ -159,17 +159,17 @@ namespace MulTyPlayerClient
                     DispatcherPriority.Background,
                         new Action(ModelController.Lobby.UpdateHostIcon));
 
-                ModelController.LoggerInstance.Write("You have been made host. You now have access to host only commands.");
+                Logger.Instance.Write("You have been made host. You now have access to host only commands.");
                 return;
             }
             try
             {
                 Player existingHost = PlayerHandler.Players.Values.First(p => p.IsHost);
-                ModelController.LoggerInstance.Write($"Player {existingHost.Name} already has host privileges");
+                Logger.Instance.Write($"Player {existingHost.Name} already has host privileges");
             }
             catch
             {
-                ModelController.LoggerInstance.Write("Existing host was found by server, but not by client. Possible error occured. Denying host privileges.");
+                Logger.Instance.Write("Existing host was found by server, but not by client. Possible error occured. Denying host privileges.");
             }            
         }
 
@@ -185,20 +185,20 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.HostCommand)]
         public static void HostCommandResponse(Message message)
         {
-            ModelController.LoggerInstance.Write(message.GetString());
+            Logger.Instance.Write(message.GetString());
         }
 
         [MessageHandler((ushort)MessageID.ResetSync)]
         private static void HandleSyncReset(Message message)
         {
-            ModelController.LoggerInstance.Write("Synchronisations have been reset to new game state.");
+            Logger.Instance.Write("Synchronisations have been reset to new game state.");
             Client.HSync = new SyncHandler();
         }
 
         [MessageHandler((ushort)MessageID.P2PMessage)]
         private static void HandleMessageFromPeer(Message message)
         {
-            ModelController.LoggerInstance.Write(message.GetString());
+            Logger.Instance.Write(message.GetString());
         }
     }
 }

@@ -15,7 +15,7 @@ namespace MulTyPlayerClient
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                 new Action(() => {
-                    ModelController.LoggerInstance.Log.Clear();
+                    Logger.Instance.Log.Clear();
                 }));
             ModelController.Login.ConnectionAttemptSuccessful = false;
             ModelController.Login.ConnectionAttemptCompleted = true;

@@ -13,21 +13,24 @@ namespace MulTyPlayerClient
     [AddINotifyPropertyChangedInterface]
     public class Logger
     {
+        public static Logger Instance { get; private set; }
+
         public ObservableCollection<string> Log { get; set; }
-        private readonly string _initTime = DateTime.Now.ToString("MM-dd-yyyy h-mm-ss");
-        private string _fileName;
+        private static readonly string _initTime = DateTime.Now.ToString("MM-dd-yyyy h-mm-ss");
+        private static string _fileName;
         private static string _filePath;
         private static int _maxLogMessageCount;
 
         public Logger(int maxMessageCount)
         {
+            Instance = this;
             EventMessageLogger.Init();
             if (SettingsHandler.Settings.CreateLogFile) CreateLogFile();
             _maxLogMessageCount = maxMessageCount;
             Log = new();
         }
 
-        public void CreateLogFile()
+        public static void CreateLogFile()
         {
             _fileName = "MTP-Log " + _initTime;
             if (!Directory.Exists("./Logs/")) Directory.CreateDirectory("./Logs/");

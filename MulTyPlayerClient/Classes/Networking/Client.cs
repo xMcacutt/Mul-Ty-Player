@@ -82,7 +82,7 @@ namespace MulTyPlayerClient
 
         private static void InitRiptide()
         {
-            RiptideLogger.Initialize(ModelController.LoggerInstance.Write, true);
+            RiptideLogger.Initialize(Logger.Instance.Write, true);
             _client = new Riptide.Client();
             _client.Connected += (s, e) => OnRiptideConnected();
             _client.Disconnected += Disconnected;
@@ -108,11 +108,11 @@ namespace MulTyPlayerClient
             Application.Current.Dispatcher.BeginInvoke(
             DispatcherPriority.Background,
             new Action(ModelController.Lobby.ResetPlayerList));
-            ModelController.SFXPlayer.PlaySound(SFX.PlayerDisconnect);
+            SFXPlayer.PlaySound(SFX.PlayerDisconnect);
 
             if (e.Reason == DisconnectReason.TimedOut && SettingsHandler.Settings.AttemptReconnect)
             {
-                ModelController.LoggerInstance.Write("Initiating reconnection attempt.");
+                Logger.Instance.Write("Initiating reconnection attempt.");
                 InitRiptide();
                 Message authentication = Message.Create();
                 authentication.AddString(_pass);
@@ -123,7 +123,7 @@ namespace MulTyPlayerClient
                 DispatcherPriority.Background,
                 () => {
                     WindowHandler.SettingsWindow.Hide();
-                    ModelController.LoggerInstance.Log.Clear();
+                    Logger.Instance.Log.Clear();
                 });
         }
 
@@ -153,15 +153,15 @@ namespace MulTyPlayerClient
                     }
                     catch (TyClosedException e)
                     {
-                        ModelController.LoggerInstance.Write("TyClosedException:\n" + e.ToString());
+                        Logger.Instance.Write("TyClosedException:\n" + e.ToString());
                     }
                     catch (TyProcessException e)
                     {
-                        ModelController.LoggerInstance.Write("TyProcessException:\n" + e.ToString());
+                        Logger.Instance.Write("TyProcessException:\n" + e.ToString());
                     }
                     catch (Exception e)
                     {
-                        ModelController.LoggerInstance.Write(e.ToString());
+                        Logger.Instance.Write(e.ToString());
                     }
                 }
                 _client.Update();
@@ -172,7 +172,7 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ConsoleSend)]
         public static void ConsoleSend(Message message)
         {
-            ModelController.LoggerInstance.Write(message.GetString());
+            Logger.Instance.Write(message.GetString());
         }
 
         [MessageHandler((ushort)MessageID.Disconnect)]

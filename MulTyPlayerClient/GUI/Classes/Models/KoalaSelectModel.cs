@@ -38,12 +38,12 @@ namespace MulTyPlayerClient.GUI.Models
             Client.OldKoala = koala;
             bool isHost = !CommandHandler.HostExists();
             PlayerHandler.Players.Add(Client._client.Id, new Player(koala, Client.Name, Client._client.Id, isHost, false));
-            ModelController.SFXPlayer.PlaySound(SFX.PlayerConnect);
+            SFXPlayer.PlaySound(SFX.PlayerConnect);
             OnKoalaSelected?.Invoke(koala);
             PlayerHandler.AnnounceSelection(Koalas.GetInfo[koala].Name, Client.Name, isHost);
             await Task.Delay(2500);
             GetEntry(koala).SetAvailability(false);
-            CollectionViewSource.GetDefaultView(ModelController.LoggerInstance.Log).Refresh();
+            CollectionViewSource.GetDefaultView(Logger.Instance.Log).Refresh();
             OnProceedToLobby?.Invoke();
         }
 

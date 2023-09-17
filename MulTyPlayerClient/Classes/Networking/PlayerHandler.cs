@@ -28,7 +28,7 @@ namespace MulTyPlayerClient
                     ModelController.Lobby.PlayerInfoList.Add(player);
                 });
             ModelController.KoalaSelect.SetAvailability(koala, false);
-            ModelController.SFXPlayer.PlaySound(SFX.PlayerConnect);
+            SFXPlayer.PlaySound(SFX.PlayerConnect);
         }
 
         //Adds yourself to playerInfo
@@ -69,7 +69,7 @@ namespace MulTyPlayerClient
         public static void PeerDisconnected(Message message)
         {
             RemovePlayer(message.GetUShort());
-            ModelController.SFXPlayer.PlaySound(SFX.PlayerDisconnect);
+            SFXPlayer.PlaySound(SFX.PlayerDisconnect);
         }
 
         public static bool TryGetLocalPlayer(out Player player)

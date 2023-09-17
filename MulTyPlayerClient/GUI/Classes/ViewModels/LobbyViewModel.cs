@@ -1,4 +1,5 @@
-﻿using MulTyPlayerClient.GUI.Models;
+﻿using MulTyPlayerClient.Classes;
+using MulTyPlayerClient.GUI.Models;
 using PropertyChanged;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -17,7 +18,7 @@ namespace MulTyPlayerClient.GUI.ViewModels
             set{ model.PlayerInfoList = value; }
         }
         
-        public ObservableCollection<string> ChatMessages => ModelController.LoggerInstance.Log;
+        public ObservableCollection<string> ChatMessages => Logger.Instance.Log;
 
         public ICommand ManageInputCommand { get; set; }
         public ICommand LogoutCommand { get; set; }
@@ -27,7 +28,7 @@ namespace MulTyPlayerClient.GUI.ViewModels
         public string Input { get; set; } = "";
 
         public string ReadyText { get; set; } = "Ready";
-        public bool ReadyEnabled { get; set; } = true;
+        public bool IsReady { get; set; } = true;
         public bool IsReadyButtonEnabled { get; set; } = true;
 
         public string LaunchGameText { get; set; } = "Launch Game";
@@ -41,9 +42,12 @@ namespace MulTyPlayerClient.GUI.ViewModels
             ManageInputCommand = new RelayCommand(ManageInput);
             LogoutCommand = new RelayCommand(Logout);
 
-            model.IsOnMenuChanged += (bool b) => { IsOnMenu = b; };
-            model.IsReadyChanged += (bool b) => { ReadyEnabled = b; };
-            model.CanLaunchGameChanged += (bool b) => { IsLaunchGameButtonEnabled = b; };
+            model.IsOnMenuChanged += Model_IsOnMenuChanged;
+            model.IsReadyChanged += Model_IsReadyChanged;
+            model.CanLaunchGameChanged += Model_CanLaunchGameChanged;
+            Countdown.OnCountdownBegan += OnCountdownBegan;
+            Countdown.OnCountdownAborted += OnCountdownEnded;
+            Countdown.OnCountdownFinished += OnCountdownEnded;
         }
 
         public void ManageInput()
@@ -68,6 +72,32 @@ namespace MulTyPlayerClient.GUI.ViewModels
         public void OnExited()
         {
             Input = "";
+        }
+
+        private void Model_IsOnMenuChanged(bool value)
+        {
+            IsOnMenu = value;
+            IsReadyButtonEnabled = IsOnMenu;
+        }
+
+        private void Model_IsReadyChanged(bool value)
+        {
+            IsReady = value;
+        }
+
+        private void Model_CanLaunchGameChanged(bool value)
+        {
+            IsLaunchGameButtonEnabled = value;
+        }
+
+        private void OnCountdownEnded()
+        {
+            IsReadyButtonEnabled = IsOnMenu;
+        }
+
+        private void OnCountdownBegan()
+        {
+            IsReadyButtonEnabled = false;
         }
     }
 }

@@ -94,7 +94,7 @@ namespace MulTyPlayerClient
 
             foreach (Player player in PlayerHandler.Players.Values)
             {
-                ModelController.LoggerInstance.Write("WRITING KOALA ADDRESS FOR PLAYER: " + player.Name);
+                Logger.Instance.Write("WRITING KOALA ADDRESS FOR PLAYER: " + player.Name);
                 int koalaID = (int)player.Koala;
                 int koalaOffset = 0x518 * modifier * koalaID + offset;
 

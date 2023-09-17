@@ -40,7 +40,7 @@ namespace MulTyPlayerClient.GUI.Models
             {
                 if (e.Error != null)
                 {
-                    ModelController.LoggerInstance.Write(e.Error.ToString());
+                    Logger.Instance.Write(e.Error.ToString());
                     LoginFailed();
                     return;
                 }

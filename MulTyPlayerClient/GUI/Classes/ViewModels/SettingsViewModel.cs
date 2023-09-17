@@ -31,11 +31,6 @@ namespace MulTyPlayerClient.GUI.ViewModels
             }
         }
 
-        public SettingsViewModel()
-        {
-            SettingsHandler.Setup();
-        }
-
         public void Setup()
         {
             DoKoalaCollision = SettingsHandler.Settings.DoKoalaCollision;

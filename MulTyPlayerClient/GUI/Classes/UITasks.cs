@@ -15,7 +15,7 @@ namespace MulTyPlayerClient.GUI
         //Action to write to the logger 
         public static Action DoOnUIThread = new Action(() =>
         {
-            ModelController.LoggerInstance.Write(_message);
+            Logger.Instance.Write(_message);
         });
 
         public static void LoggerWrite(string message)

@@ -15,39 +15,39 @@ namespace MulTyPlayerClient.Classes.ConsoleLog
 
         private static void OnTyProcessExited()
         {
-            ModelController.SFXPlayer.PlaySound(SFX.MenuCancel);
+            SFXPlayer.PlaySound(SFX.MenuCancel);
             string msg = "Ty the Tasmanian Tiger has exited, ";
 
             if (SettingsHandler.Settings.AutoRestartTyOnCrash)
             {
-                ModelController.LoggerInstance.Write(msg + "attempting to re-launch the game...");
+                Logger.Instance.Write(msg + "attempting to re-launch the game...");
             }
             else
             {
                 ModelController.Lobby.CanLaunchGame = SettingsHandler.HasValidExePath() && SteamHelper.IsLoggedOn();
-                ModelController.LoggerInstance.Write(msg + "please re-open the game to continue.");
+                Logger.Instance.Write(msg + "please re-open the game to continue.");
             }
         }
 
         private static void OnTyProcessFound()
         {
             ModelController.Lobby.CanLaunchGame = false;
-            ModelController.SFXPlayer.PlaySound(SFX.MenuAccept);
-            ModelController.LoggerInstance.Write("Found game process, you're in!");
+            SFXPlayer.PlaySound(SFX.MenuAccept);
+            Logger.Instance.Write("Found game process, you're in!");
         }
 
         private static void OnTyProcessLaunched()
         {
             ModelController.Lobby.CanLaunchGame = false;
-            ModelController.SFXPlayer.PlaySound(SFX.MenuAccept);
-            ModelController.LoggerInstance.Write("Launched game successfully, you're in!");
+            SFXPlayer.PlaySound(SFX.MenuAccept);
+            Logger.Instance.Write("Launched game successfully, you're in!");
         }
 
         private static void OnTyProcessLaunchFailed()
         {
             ModelController.Lobby.CanLaunchGame = SettingsHandler.HasValidExePath() && SteamHelper.IsLoggedOn();
-            ModelController.SFXPlayer.PlaySound(SFX.PlayerDisconnect);
-            ModelController.LoggerInstance.Write("Failed to restart Ty automatically, please manually open the game.");
+            SFXPlayer.PlaySound(SFX.PlayerDisconnect);
+            Logger.Instance.Write("Failed to restart Ty automatically, please manually open the game.");
         }
     }
 }

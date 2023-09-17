@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace MulTyPlayerClient
 {
@@ -17,9 +19,19 @@ namespace MulTyPlayerClient
         Race10,
     }
 
-    public class SFXPlayer
+    public static class SFXPlayer
     {
-        readonly static Dictionary<SFX, Uri> sounds = new Dictionary<SFX, Uri>()
+        public static void Init()
+        {
+            mediaPlayers = new();
+
+            foreach (var kvPair in sfxResources)
+            {
+                AddSound(kvPair.Key, kvPair.Value, false);
+            }
+        }
+
+        readonly static Dictionary<SFX, Uri> sfxResources = new Dictionary<SFX, Uri>()
         {
             {SFX.PlayerConnect,      new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/PlayerConnect.wav") },
             {SFX.PlayerDisconnect,   new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/PlayerDisconnect.wav") },
@@ -31,25 +43,65 @@ namespace MulTyPlayerClient
             {SFX.Race10,             new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Race10.wav") },
         };
 
-        MediaPlayer player = new() { Volume = 0.15 };
+        static Dictionary<SFX, MediaPlayer> mediaPlayers;
 
-        public void PlaySound(SFX sfxName)
+        public static void PlaySound(SFX sfxName)
         {
-            Application.Current.Dispatcher.BeginInvoke(() =>
+            if (mediaPlayers.TryGetValue(sfxName, out MediaPlayer player))
             {
-                player.MediaEnded += (o, e) => player.Close();
-                player.Open(sounds[sfxName]);
-                player.Play();
-            });
+                player.Dispatcher.Invoke(() =>
+                {
+                    player.Stop();
+                    player.Play();
+                });
+            }
         }
 
-
-        public void Stop()
+        public static void StopAll()
         {
-            Application.Current.Dispatcher.BeginInvoke(() =>
+            foreach (var player in mediaPlayers.Values)
+            {
+                player.Dispatcher.Invoke(player.Stop);
+            }
+        }
+
+        public static void StopSound(SFX sfxName)
+        {
+            if (mediaPlayers.TryGetValue(sfxName, out MediaPlayer player))
+            {
+                player.Dispatcher.Invoke(player.Stop);
+            }
+        }
+
+        private static void AddSound(SFX sfxName, Uri uri, bool overrideOldSFX=false)
+        {
+            if (overrideOldSFX)
+            {
+                //If overriding this sfxType, remove the old sound
+                               
+            }
+            else if (mediaPlayers.ContainsKey(sfxName))
+            {
+                //If not overriding and mediaplayer already contains the sfx, exit
+                return;
+            }
+            MediaPlayer mp = new();
+            mp.Open(uri);
+            mp.Volume = 0.15f;
+            mediaPlayers.Add(sfxName, mp);
+        }
+
+        //Returns true if sound successfully removed
+        //False if not
+        private static bool RemoveSound(SFX sfxName)
+        {
+            if (mediaPlayers.TryGetValue(sfxName, out MediaPlayer player))
             {
                 player.Stop();
-            });            
+                player.Close();
+                return mediaPlayers.Remove(sfxName);
+            }
+            return false;
         }
     }
 }
