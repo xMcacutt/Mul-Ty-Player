@@ -140,7 +140,9 @@ namespace MulTyPlayerClient
             process.Dispose();
             process.Refresh();
             if (SettingsHandler.Settings.AutoRestartTyOnCrash)
-                TryLaunchGame();            
+            {
+                TryLaunchGame();
+            }
         }
 
         private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
