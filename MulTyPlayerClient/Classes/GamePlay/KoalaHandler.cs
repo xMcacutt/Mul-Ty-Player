@@ -65,6 +65,10 @@ namespace MulTyPlayerClient
             Client.HKoala.SetCoordAddrs();
             Client.HSync.SetMemAddrs();
             Client.HSync.RequestSync();
+            if (playerKoalaTransforms.ContainsKey((int)k))
+            {
+                playerKoalaTransforms.Remove((int)k);
+            }
             playerKoalaTransforms.Add((int)k, new TransformSnapshotPair());
         }
 
