@@ -20,6 +20,7 @@ namespace MulTyPlayerClient
         public static void AddPlayer(Koala koala, string name, ushort clientID, bool isHost)
         {
             string koalaName = Koalas.GetInfo[koala].Name;
+            Players.Remove(clientID);
             Players.Add(clientID, new Player(koala, name, clientID, isHost, false));
             PlayerInfo player = new(clientID, name, koalaName);
             Application.Current.Dispatcher.BeginInvoke(

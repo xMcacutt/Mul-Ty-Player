@@ -96,9 +96,7 @@ namespace MulTyPlayerClient
             ModelController.Login.ConnectionAttemptSuccessful = true;
             ModelController.Login.ConnectionAttemptCompleted = true;
             IsConnected = true;
-            HSync.SetMemAddrs();
             HLevel.DoLevelSetup();
-            HSync.RequestSync();
         }
 
         private static void Disconnected(object sender, Riptide.DisconnectedEventArgs e)
