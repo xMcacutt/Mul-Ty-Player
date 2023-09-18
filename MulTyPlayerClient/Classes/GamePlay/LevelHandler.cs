@@ -38,7 +38,7 @@ namespace MulTyPlayerClient
             HSync.RequestSync();
             HSync.ProtectLeaderboard();
             HKoala.SetBaseAddress();
-            HKoala.SetCoordAddrs();
+            HKoala.SetCoordinateAddresses();
             if (lData.HasKoalas)
                 ObjectiveCountSet();
             OnLevelChange?.Invoke(currentLevelId);

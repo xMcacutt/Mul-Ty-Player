@@ -5,46 +5,50 @@ using System.Diagnostics;
 namespace MulTyPlayerClient.Classes.GamePlay
 {
     
-    struct TransformSnapshot
+    struct PositionSnapshot
     {
-        public float[] Transform;
+        public float[] Position;
         public DateTime Timestamp;
 
-        public TransformSnapshot()
+        public PositionSnapshot()
         {
-            Transform = new float[KoalaTransform.TRANSFORM_MEMBER_COUNT];
+            Position = new float[3];
             Timestamp = DateTime.MinValue;
         }
 
-        public TransformSnapshot(float[] transform)
+        public PositionSnapshot(float[] transform)
         {
-            Transform = transform;
+            Position = new float[3];
+            Position[0] = transform[0];
+            Position[1] = transform[1];
+            Position[2] = transform[2];
+
             Timestamp = DateTime.Now;
         }
     }
 
     class KoalaTransform
     {
-        public const int TRANSFORM_MEMBER_COUNT = 6;
-
-        public TransformSnapshot Old;
-        public TransformSnapshot New;
-        public float[] ResultTransform;
+        public PositionSnapshot Old;
+        public PositionSnapshot New;
+        public float[] Position;
+        public float[] Rotation;
 
         public KoalaTransform()
         {
-            Old = new TransformSnapshot();
-            New = new TransformSnapshot();
-            ResultTransform = new float[6];
+            Old = new PositionSnapshot();
+            New = new PositionSnapshot();
+            Position = new float[3];
+            Rotation = new float[3];
         }
 
-        public void Update(TransformSnapshot newTS)
+        public void UpdatePosition(PositionSnapshot ps)
         {
             Old = New;
-            New = newTS;
+            New = ps;
         }
 
-        public float[] GetTransform(KoalaInterpolationMode mode)
+        public float[] GetPosition(KoalaInterpolationMode mode)
         {
             switch (mode)
             {
@@ -52,7 +56,7 @@ namespace MulTyPlayerClient.Classes.GamePlay
                     {
                         //Do nothing, write coords as received
                         //Performant, reliable, but looks stuttery
-                        return New.Transform;
+                        return New.Position;
                     }
                 case KoalaInterpolationMode.Interpolate:
                     {
@@ -60,9 +64,9 @@ namespace MulTyPlayerClient.Classes.GamePlay
                         // Stops once the last transform has been reached with no further packets received
                         // Looks smoother, but costs cpu, and adds latency to movement (~20-30ms)
                         Interpolation.LerpFloatsNonAllocClamped(
-                            Old.Transform, Old.Timestamp,
-                            New.Transform, New.Timestamp,
-                            ResultTransform, TRANSFORM_MEMBER_COUNT);
+                            Old.Position, Old.Timestamp,
+                            New.Position, New.Timestamp,
+                            Position, 3);
                         break;
                     }
                 case KoalaInterpolationMode.Extrapolate:
@@ -72,9 +76,9 @@ namespace MulTyPlayerClient.Classes.GamePlay
                         // Looks smoother, but costs cpu, and adds latency to movement (~20-30ms)
                         // May be better than interpolate for players with shaky connections                        
                         Interpolation.LerpFloatsNonAlloc(
-                            Old.Transform, Old.Timestamp,
-                            New.Transform, New.Timestamp,
-                            ResultTransform, TRANSFORM_MEMBER_COUNT);
+                            Old.Position, Old.Timestamp,
+                            New.Position, New.Timestamp,
+                            Position, 3);
                         break;
                     }
                 case KoalaInterpolationMode.Predictive:
@@ -83,19 +87,23 @@ namespace MulTyPlayerClient.Classes.GamePlay
                         // Smoother than none, no latency, but costs cpu
                         // Could be unpredictable/innaccurate with shaky connections
                         Interpolation.PredictFloatsNonAlloc(
-                            Old.Transform, Old.Timestamp,
-                            New.Transform, New.Timestamp,
-                            ResultTransform, TRANSFORM_MEMBER_COUNT);
+                            Old.Position, Old.Timestamp,
+                            New.Position, New.Timestamp,
+                            Position, 3);
                         break;
                     }
             }
-            return ResultTransform;
+            return Position;
         }
 
-        public static string DebugTransform(float[] transform)
+        public float[] GetRotation()
         {
-            return $"(x: {transform[0]}, y: {transform[1]}, z: {transform[2]}, pitch: {transform[3]}, yaw: {transform[4]}, roll: {transform[5]})";
+            return Rotation;
+        }
 
+        internal void UpdateRotation(float[] rotation)
+        {
+            Rotation = rotation;
         }
     }
 }

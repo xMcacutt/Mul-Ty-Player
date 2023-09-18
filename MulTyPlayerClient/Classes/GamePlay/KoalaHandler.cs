@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Xml;
 
@@ -21,7 +22,7 @@ namespace MulTyPlayerClient
         static GameStateHandler HGameState => Client.HGameState;
         static LevelHandler HLevel => Client.HLevel;
 
-        static KoalaInterpolationMode interpolationMode = KoalaInterpolationMode.Interpolate;
+        static KoalaInterpolationMode interpolationMode = KoalaInterpolationMode.None;
         static bool readyToWriteTransformData = false;
 
         public struct KoalaTransformPtrs
@@ -50,7 +51,7 @@ namespace MulTyPlayerClient
             bool isHost = message.GetBool();
             Koala k = Enum.Parse<Koala>(koalaName, true);
             PlayerHandler.AddPlayer(k, playerName, clientID, isHost);
-            Client.HKoala.SetCoordAddrs();
+            Client.HKoala.SetCoordinateAddresses();
             Client.HSync.SetMemAddrs();
             Client.HSync.RequestSync();
             playerKoalaTransforms.Remove((int)k);
@@ -71,7 +72,7 @@ namespace MulTyPlayerClient
             _baseKoalaAddress = PointerCalculations.GetPointerAddress(0x26B070, new int[] { 0x0 });
         }
 
-        public void SetCoordAddrs()
+        public void SetCoordinateAddresses()
         {
             readyToWriteTransformData = false;
             //KOALAS ARE STRUCTURED DIFFERENTLY IN STUMP AND SNOW SO MODIFIER AND OFFSET ARE NECESSARY
@@ -99,6 +100,8 @@ namespace MulTyPlayerClient
                 koalaTransforms[koalaID].Visibility = _baseKoalaAddress + 0x44 + koalaOffset;
             }
 
+            MakeVisible();
+
             if (!SettingsHandler.Settings.DoKoalaCollision)
                 RemoveCollision();
 
@@ -116,7 +119,8 @@ namespace MulTyPlayerClient
         public void CheckTA()
         {
             ProcessHandler.TryRead(_bTimeAttackAddress, out int inTimeAttack, true);
-            if (inTimeAttack == 1) MakeVisible();
+            if (inTimeAttack == 1)
+                MakeVisible();
         }
         
         public void MakeVisible()
@@ -175,7 +179,10 @@ namespace MulTyPlayerClient
             float[] transform = message.GetFloats();
             //Debug.WriteLine($"Handle coordinates: {KoalaTransform.DebugTransform(transform)}");
             //Debug.WriteLine($"Before updating coordinates: {KoalaTransform.DebugTransform(playerKoalaTransforms[koalaID].New.Transform)}");
-            playerKoalaTransforms[koalaID].Update(new(transform));
+            KoalaTransform kt = playerKoalaTransforms[koalaID];
+            PositionSnapshot ps = new PositionSnapshot(transform[0..3]);
+            kt.UpdatePosition(ps);
+            kt.UpdateRotation(transform[3..6]);
             //Debug.WriteLine($"After updating coordinates: {KoalaTransform.DebugTransform(playerKoalaTransforms[koalaID].New.Transform)}");
         }
 
@@ -186,26 +193,41 @@ namespace MulTyPlayerClient
             {
                 foreach (int koalaID in playerKoalaTransforms.Keys)
                 {
-                    var transform = playerKoalaTransforms[koalaID].GetTransform(interpolationMode);
-                    //Debug.WriteLine($"Rendering koala {koalaID}\t|\t{KoalaTransform.DebugTransform(transform)}");
-                    WriteCoordinateData(koalaID, transform);
+                    var ts = playerKoalaTransforms[koalaID];
+
+                    var position = ts.GetPosition(interpolationMode);
+                    WritePositionToMemory(koalaID, position);
+
+                    var rotation = ts.GetRotation();
+                    WriteRotationToMemory(koalaID, rotation);
                 }
                 Thread.Sleep(kRenderSleepTime);
-            }
-            
+            }            
+        }
+
+        private static void WritePositionToMemory(int koalaID, float[] position)
+        {
+            KoalaTransformPtrs ktp = Client.HKoala.koalaTransforms[koalaID];
+            ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(position[0]));
+            ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(position[1]));
+            ProcessHandler.WriteData(ktp.Z, BitConverter.GetBytes(position[2]));
+        }
+
+        private static void WriteRotationToMemory(int koalaID, float[] rotation)
+        {
+            KoalaTransformPtrs ktp = Client.HKoala.koalaTransforms[koalaID];
+
+            ProcessHandler.WriteData(ktp.Pitch, BitConverter.GetBytes(rotation[0]));
+            ProcessHandler.WriteData(ktp.Yaw, BitConverter.GetBytes(rotation[1]));
+            ProcessHandler.WriteData(ktp.Roll, BitConverter.GetBytes(rotation[2]));
         }
 
         private static void WriteCoordinateData(int koalaID, float[] coordinates)
         {
             KoalaTransformPtrs ktp = Client.HKoala.koalaTransforms[koalaID];
 
-            ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(coordinates[0]));
-            ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(coordinates[1]));
-            ProcessHandler.WriteData(ktp.Z, BitConverter.GetBytes(coordinates[2]));
-
-            ProcessHandler.WriteData(ktp.Pitch, BitConverter.GetBytes(coordinates[3]));
-            ProcessHandler.WriteData(ktp.Yaw, BitConverter.GetBytes(coordinates[4]));
-            ProcessHandler.WriteData(ktp.Roll, BitConverter.GetBytes(coordinates[5]));
+            WritePositionToMemory(koalaID, coordinates[0..3]);
+            WriteRotationToMemory(koalaID, coordinates[3..6]);
         }
 
         internal static KoalaInterpolationMode GetInterpolationMode()

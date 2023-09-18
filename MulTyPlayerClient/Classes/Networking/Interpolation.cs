@@ -43,15 +43,6 @@ namespace MulTyPlayerClient.Classes.Networking
 
         public static void LerpFloatsNonAllocClamped(float[] f1, DateTime dt1, float[] f2, DateTime dt2, float[] result, int size)
         {
-            bool fulldebug = false;
-
-            if (fulldebug)
-            {
-                Debug.WriteLine($"Old: {KoalaTransform.DebugTransform(f1)}");
-                Debug.WriteLine($"New: {KoalaTransform.DebugTransform(f2)}");
-                Debug.WriteLine($"Adjusted: {KoalaTransform.DebugTransform(result)}");
-            }
-
             double dtGap = (dt2 - dt1).TotalMilliseconds;
             double dtNow = (DateTime.Now - dt2).TotalMilliseconds;
             float t = (float)(dtNow / dtGap);
