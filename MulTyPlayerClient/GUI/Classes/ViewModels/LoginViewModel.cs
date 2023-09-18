@@ -23,18 +23,17 @@ namespace MulTyPlayerClient.GUI.ViewModels
         public bool ConnectionAttemptSuccessful { get; set; }
         public bool ConnectionAttemptCompleted  { get; set; }
 
-        private LoginModel model;
+        private static LoginModel Login => ModelController.Login;
 
         public LoginViewModel()
         {
-            model = ModelController.Login;
-            ConnectingAddress = model.GetIP();
-            Name = model.GetName();
-            Pass = model.GetPass();
+            ConnectingAddress = Login.GetIP();
+            Name = Login.GetName();
+            Pass = Login.GetPass();
             ConnectCommand = new RelayCommand(TryConnect);
 
-            model.OnLoginFailed += Model_OnLoginFailed;
-            model.OnLoginSuccess += Model_OnLoginSuccess;
+            Login.OnLoginFailed += Model_OnLoginFailed;
+            Login.OnLoginSuccess += Model_OnLoginSuccess;
             
         }
 
@@ -43,7 +42,7 @@ namespace MulTyPlayerClient.GUI.ViewModels
             ConnectButtonEnabled = false;
             Debug.WriteLine("Connecting address: " + ConnectingAddress);
             Debug.WriteLine("Pass: " + Pass);
-            model.Connect(ConnectingAddress, Name, Pass);
+            Login.Connect(ConnectingAddress, Name, Pass);
         }
 
         private void Model_OnLoginSuccess()
@@ -64,7 +63,7 @@ namespace MulTyPlayerClient.GUI.ViewModels
 
         public void OnEntered()
         {
-            model.SetName();
+            Login.SetName();
             ConnectButtonEnabled = true;
         }
 

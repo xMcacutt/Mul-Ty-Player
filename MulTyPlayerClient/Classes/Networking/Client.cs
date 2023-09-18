@@ -1,4 +1,5 @@
-﻿using MulTyPlayerClient.GUI;
+﻿using MulTyPlayerClient.Classes.Networking;
+using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
 using Riptide;
 using Riptide.Utils;
@@ -68,8 +69,6 @@ namespace MulTyPlayerClient
             _loop.Start();
         }
 
-        
-
         private static void InitHandlers()
         {
             HLevel = new LevelHandler();
@@ -130,7 +129,16 @@ namespace MulTyPlayerClient
 
         private static void ConnectionFailed(object sender, ConnectionFailedEventArgs eventArgs)
         {
-            Debug.WriteLine("ERROR: Riptide connection failed.\nReason:" + eventArgs.Message.GetString());
+            string reason;
+            if (eventArgs != null && eventArgs.Message != null)
+            {
+                reason = eventArgs.Message.GetString();
+            }
+            else
+            {
+                reason = "Unknown";
+            }
+            Debug.WriteLine($"ERROR: Riptide connection failed. Reason: {reason}");             
             cts.Cancel();
             ModelController.Login.ConnectionAttemptSuccessful = false;
             ModelController.Login.ConnectionAttemptCompleted = true;
@@ -148,7 +156,7 @@ namespace MulTyPlayerClient
         {
             while (!cts.Token.IsCancellationRequested)
             {
-                if (IsConnected && TyProcess.FindProcess() && KoalaSelected)
+                if (TyProcess.FindProcess() && KoalaSelected)
                 {
                     try
                     {
@@ -160,6 +168,7 @@ namespace MulTyPlayerClient
                             HKoala.CheckTA();
                         }
                         HHero.SendCoordinates();
+                        KoalaHandler.RenderKoalas();
                     }
                     catch (TyClosedException e)
                     {
@@ -175,7 +184,6 @@ namespace MulTyPlayerClient
                     }
                 }
                 _client.Update();
-                Thread.Sleep(MS_PER_TICK);
             }
         }
 

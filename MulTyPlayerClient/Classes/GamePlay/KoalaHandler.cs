@@ -1,21 +1,27 @@
-﻿using MulTyPlayerClient.Classes.Networking;
+﻿using MulTyPlayerClient.Classes.GamePlay;
+using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
 using Riptide;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+using System.Threading;
+using System.Xml;
 
 namespace MulTyPlayerClient
 {
     internal class KoalaHandler
     {
         public KoalaTransformPtrs[] koalaTransforms;
-        
+        const int KOALA_RENDERS_PER_TICK = 3;
+
+
         static GameStateHandler HGameState => Client.HGameState;
         static LevelHandler HLevel => Client.HLevel;
 
-        static InterpolationMode interpolationMode = InterpolationMode.None;
+        static KoalaInterpolationMode interpolationMode = KoalaInterpolationMode.Interpolate;
         static bool readyToWriteTransformData = false;
 
         public struct KoalaTransformPtrs
@@ -23,29 +29,11 @@ namespace MulTyPlayerClient
             public int X, Y, Z, Pitch, Yaw, Roll, Collision, Visibility;
         }
 
-        struct TransformSnapshot
-        {
-            public float[] Transform;
-            public DateTime Timestamp;
-
-            public TransformSnapshot(float[] kt, DateTime dt)
-            {
-                Transform = kt;
-                Timestamp = dt;
-            }
-        }
-
-        struct TransformSnapshotPair
-        {
-            public TransformSnapshot Old;
-            public TransformSnapshot New;
-        }
-
         static int _bTimeAttackAddress = 0x28AB84;
         static int _baseKoalaAddress;
 
         //                      koala id
-        private static Dictionary<int, TransformSnapshotPair> playerKoalaTransforms = new();
+        private static Dictionary<int, KoalaTransform> playerKoalaTransforms = new();
 
         public KoalaHandler()
         {
@@ -65,11 +53,8 @@ namespace MulTyPlayerClient
             Client.HKoala.SetCoordAddrs();
             Client.HSync.SetMemAddrs();
             Client.HSync.RequestSync();
-            if (playerKoalaTransforms.ContainsKey((int)k))
-            {
-                playerKoalaTransforms.Remove((int)k);
-            }
-            playerKoalaTransforms.Add((int)k, new TransformSnapshotPair());
+            playerKoalaTransforms.Remove((int)k);
+            playerKoalaTransforms.Add((int)k, new KoalaTransform());
         }
 
         public void CreateKoalaAddressArray()
@@ -188,69 +173,26 @@ namespace MulTyPlayerClient
                 return;
 
             float[] transform = message.GetFloats();
-
-            if (interpolationMode == InterpolationMode.None)
-            {
-                //Do nothing, write coords as received
-                WriteCoordinateData(koalaID, transform);
-            }
-            else
-            {
-                //Writes to the transform array in-place
-                InterpolateKoalaTransforms(koalaID, transform); 
-            }            
+            //Debug.WriteLine($"Handle coordinates: {KoalaTransform.DebugTransform(transform)}");
+            //Debug.WriteLine($"Before updating coordinates: {KoalaTransform.DebugTransform(playerKoalaTransforms[koalaID].New.Transform)}");
+            playerKoalaTransforms[koalaID].Update(new(transform));
+            //Debug.WriteLine($"After updating coordinates: {KoalaTransform.DebugTransform(playerKoalaTransforms[koalaID].New.Transform)}");
         }
 
-        private static void InterpolateKoalaTransforms(int koalaID, float[] incomingTransform)
+        public static void RenderKoalas()
         {
-            TransformSnapshot newTS = new(incomingTransform, DateTime.Now);
-            var pair = playerKoalaTransforms[koalaID];
-            pair.Old = pair.New;
-            pair.New = newTS;
-
-            switch (interpolationMode)
+            int kRenderSleepTime = (int)((float)Client.MS_PER_TICK / KOALA_RENDERS_PER_TICK);
+            for (int i = 1; i < KOALA_RENDERS_PER_TICK; i++)
             {
-                case InterpolationMode.None:
-                    {
-                        //Do nothing, write coords as received
-                        //Performant, reliable, but looks stuttery
-                        return;
-                    }
-                case InterpolationMode.Interpolate:
-                    {
-                        // Lerp between the second last transform and the last transform received, based on how much time has passed.
-                        // Stops once the last transform has been reached with no further packets received
-                        // Looks smoother, but costs cpu, and adds latency to movement (~20-30ms)
-                        Interpolation.LerpFloatsNonAllocClamped(
-                            pair.Old.Transform, pair.Old.Timestamp,
-                            pair.New.Transform, pair.New.Timestamp,
-                            incomingTransform, 6);
-                        break;
-                    }
-                case InterpolationMode.Extrapolate:
-                    {
-                        // Lerp between the second last transform and the last transform received, based on how much time has passed.
-                        // Does not stop upon reaching the latest transform, attempts to extrapolate further
-                        // Looks smoother, but costs cpu, and adds latency to movement (~20-30ms)
-                        // May be better than interpolate for players with shaky connections
-                        Interpolation.LerpFloatsNonAlloc(
-                            pair.Old.Transform, pair.Old.Timestamp,
-                            pair.New.Transform, pair.New.Timestamp,
-                            incomingTransform, 6);
-                        break;
-                    }
-                case InterpolationMode.Predictive:
-                    {
-                        // Predict and extrapolate the koalas movement based on the last two transforms received
-                        // Smoother than none, no latency, but costs cpu
-                        // Could be unpredictable/innaccurate with shaky connections
-                        Interpolation.PredictFloatsNonAlloc(
-                            pair.Old.Transform, pair.Old.Timestamp,
-                            pair.New.Transform, pair.New.Timestamp,
-                            incomingTransform, 6);
-                        break;
-                    }
+                foreach (int koalaID in playerKoalaTransforms.Keys)
+                {
+                    var transform = playerKoalaTransforms[koalaID].GetTransform(interpolationMode);
+                    //Debug.WriteLine($"Rendering koala {koalaID}\t|\t{KoalaTransform.DebugTransform(transform)}");
+                    WriteCoordinateData(koalaID, transform);
+                }
+                Thread.Sleep(kRenderSleepTime);
             }
+            
         }
 
         private static void WriteCoordinateData(int koalaID, float[] coordinates)
@@ -264,6 +206,11 @@ namespace MulTyPlayerClient
             ProcessHandler.WriteData(ktp.Pitch, BitConverter.GetBytes(coordinates[3]));
             ProcessHandler.WriteData(ktp.Yaw, BitConverter.GetBytes(coordinates[4]));
             ProcessHandler.WriteData(ktp.Roll, BitConverter.GetBytes(coordinates[5]));
+        }
+
+        internal static KoalaInterpolationMode GetInterpolationMode()
+        {
+            return interpolationMode;
         }
     }
 }

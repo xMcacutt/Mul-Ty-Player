@@ -40,10 +40,6 @@ namespace MulTyPlayerClient
             _fileName = "MTP-Log " + _initTime;
             if (!Directory.Exists("./Logs/")) Directory.CreateDirectory("./Logs/");
             _filePath = "./Logs/" + _fileName + ".mtpl";
-            using (var fileStream = File.Create(_filePath))
-            {
-                fileStream.Close();
-            }
             string[] initText = { "Mul-Ty-Player Log File", "Created " + DateTime.Now.ToString() };
             File.AppendAllLines(_filePath, initText);
         }
@@ -51,32 +47,24 @@ namespace MulTyPlayerClient
         public void Write(string message)
         {
             if (_filePath == null)
+                return;
+
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                CreateLogFile();
-            }
-            if (SettingsHandler.Settings.CreateLogFile)
+                Log.Add(message);
+                if (Log.Count > _maxLogMessageCount)
+                    Log.RemoveAt(0);
+                OnLogWrite?.Invoke(message);
+            });
+
+            try
             {
-                try
-                {
-                    using FileStream fileStream = new(_filePath, FileMode.Append, FileAccess.Write, FileShare.Read);
-                    using StreamWriter writer = new(fileStream);
-                    writer.WriteLine(message);
-                }
-                catch (Exception ex)
-                {
-                    // Handle the exception here
-                    Debug.WriteLine($"Error writing to log file: {ex.Message}");
-                }
+                File.AppendAllText(_filePath, message);
             }
-            Application.Current.Dispatcher.BeginInvoke(
-                DispatcherPriority.Background,
-                    () => {
-                        Log.Add(message);
-                        if (Log.Count > _maxLogMessageCount)
-                            Log.RemoveAt(0);
-                        OnLogWrite?.Invoke(message);
-                        Debug.WriteLine("writing log msg");
-                    });
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error writing to log file: {ex.Message}");
+            }
         }
 
         public void WriteDebug(string message)

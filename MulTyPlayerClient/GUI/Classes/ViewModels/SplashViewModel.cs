@@ -12,12 +12,11 @@ namespace MulTyPlayerClient.GUI.ViewModels
         public Visibility LaunchGameButtonVisibility { get; set; }
         public bool EnableLaunchGameButton { get; set; }
 
-        private SplashModel model;
+        private static SplashModel Splash => ModelController.Splash;
 
         public SplashViewModel()
         {
-            model = ModelController.Splash;
-            model.OnStateChange += DisplayMessage;
+            Splash.OnStateChange += DisplayMessage;
         }
 
         private void DisplayMessage(SplashModel.SplashState state)
@@ -50,7 +49,7 @@ namespace MulTyPlayerClient.GUI.ViewModels
         private void DisplayMessage_TyNotFound()
         {
             LaunchGameButtonVisibility = SettingsHandler.HasValidExePath() ? Visibility.Visible : Visibility.Hidden;
-            EnableLaunchGameButton = model.ShouldEnableLaunchGameButton();
+            EnableLaunchGameButton = Splash.ShouldEnableLaunchGameButton();
             MessageText = "Mul-Ty-Player could not be found.\nPlease open the game to continue.";
         }
 

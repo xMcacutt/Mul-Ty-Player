@@ -33,7 +33,7 @@
                       Style="{StaticResource ComicTextCheck}"
                       Margin="10,10,0,10"
                       IsChecked="{Binding DoKoalaCollision}"/>
-            
+
             <CheckBox Content="Auto-Restart Ty?"
                       Style="{StaticResource ComicTextCheck}"
                       Margin="10,10,0,10"

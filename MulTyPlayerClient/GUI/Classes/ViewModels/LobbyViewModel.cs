@@ -13,9 +13,10 @@ namespace MulTyPlayerClient.GUI.ViewModels
         {
             get
             {
-                return model.PlayerInfoList;
+                return Lobby.PlayerInfoList;
             }
-            set{ model.PlayerInfoList = value; }
+            set{
+                Lobby.PlayerInfoList = value; }
         }
 
         public ObservableCollection<string> ChatMessages {get; set;}
@@ -36,24 +37,21 @@ namespace MulTyPlayerClient.GUI.ViewModels
         public string LaunchGameText { get; set; } = "Launch Game";
         public bool IsLaunchGameButtonEnabled {get; set;}
 
-        private LobbyModel model;
+        private static LobbyModel Lobby => ModelController.Lobby;
 
         public LobbyViewModel()
         {
             ChatMessages = new ObservableCollection<string>();
             SetCopyLogMessagesToChat(copyLogMessagesToChat);
-            model = ModelController.Lobby;            
             ManageInputCommand = new RelayCommand(ManageInput);
             LogoutCommand = new RelayCommand(Logout);
 
-            model.IsOnMenuChanged += Model_IsOnMenuChanged;
-            model.IsReadyChanged += Model_IsReadyChanged;
-            model.CanLaunchGameChanged += Model_CanLaunchGameChanged;
+            Lobby.IsOnMenuChanged += Model_IsOnMenuChanged;
+            Lobby.IsReadyChanged += Model_IsReadyChanged;
+            Lobby.CanLaunchGameChanged += Model_CanLaunchGameChanged;
             Countdown.OnCountdownBegan += OnCountdownBegan;
             Countdown.OnCountdownAborted += OnCountdownEnded;
             Countdown.OnCountdownFinished += OnCountdownEnded;
-
-            
         }
 
         public void ManageInput()
@@ -65,13 +63,13 @@ namespace MulTyPlayerClient.GUI.ViewModels
         private void Logout()
         {
             Client._client.Disconnect();
-            model.Logout();
+            Lobby.Logout();
         }
 
         public void OnEntered()
         {
-            model.UpdateReadyStatus();
-            model.UpdateHostIcon();
+            Lobby.UpdateReadyStatus();
+            Lobby.UpdateHostIcon();
             Input = "";
         }
 

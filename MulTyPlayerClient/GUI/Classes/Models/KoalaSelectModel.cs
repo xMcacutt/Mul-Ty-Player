@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MulTyPlayerClient.GUI.Views;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Data;
@@ -20,7 +21,7 @@ namespace MulTyPlayerClient.GUI.Models
         public event Action OnProceedToLobby;
 
         public KoalaSelectModel()
-        {
+        {            
             Boonie = new(Koala.Boonie);
             Dubbo = new(Koala.Dubbo);
             Elizabeth = new(Koala.Elizabeth);
@@ -29,8 +30,7 @@ namespace MulTyPlayerClient.GUI.Models
             Kiki = new(Koala.Kiki);
             Mim = new(Koala.Mim);
             Snugs = new(Koala.Snugs);
-            Client.HPlayer = new PlayerHandler();
-            Client.HKoala = new KoalaHandler();
+            MakeAllAvailable();
         }
 
         public async void KoalaClicked(Koala koala)

@@ -17,22 +17,20 @@ namespace MulTyPlayerClient.GUI.ViewModels
 
         public bool BlockKoalaSelect { get; set; }
 
-        KoalaSelectModel model;
+        private static KoalaSelectModel KoalaSelect => ModelController.KoalaSelect;
 
         public KoalaSelectViewModel()
         {
-            model = ModelController.KoalaSelect;
-            model.MakeAllAvailable();
-            model.OnKoalaSelected += delegate { BlockKoalaSelect = true; };
-            model.OnProceedToLobby += delegate { BlockKoalaSelect = false; };
-            Boonie = new (model.Boonie);
-            Mim = new (model.Mim);
-            Gummy = new (model.Gummy);
-            Snugs = new (model.Snugs);
-            Katie = new (model.Katie);
-            Kiki = new (model.Kiki);
-            Elizabeth = new (model.Elizabeth);
-            Dubbo = new (model.Dubbo);
+            KoalaSelect.OnKoalaSelected += delegate { BlockKoalaSelect = true; };
+            KoalaSelect.OnProceedToLobby += delegate { BlockKoalaSelect = false; };
+            Boonie = new (KoalaSelect.Boonie);
+            Mim = new (KoalaSelect.Mim);
+            Gummy = new (KoalaSelect.Gummy);
+            Snugs = new (KoalaSelect.Snugs);
+            Katie = new (KoalaSelect.Katie);
+            Kiki = new (KoalaSelect.Kiki);
+            Elizabeth = new (KoalaSelect.Elizabeth);
+            Dubbo = new (KoalaSelect.Dubbo);
         }
 
         public void OnEntered()
