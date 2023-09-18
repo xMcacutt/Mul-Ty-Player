@@ -10,10 +10,7 @@ namespace MulTyPlayerClient.GUI
         private MainViewModel mainViewModel;
         public MainWindow()
         {
-            SettingsHandler.Setup();
-            SFXPlayer.Init();
-            _ = new Logger(200);
-            ModelController.InstantiateModels();
+            
             mainViewModel = new MainViewModel();
             DataContext = mainViewModel;
             InitializeComponent();

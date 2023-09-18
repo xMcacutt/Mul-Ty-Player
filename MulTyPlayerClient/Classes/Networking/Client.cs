@@ -3,6 +3,7 @@ using MulTyPlayerClient.GUI.Models;
 using Riptide;
 using Riptide.Utils;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
@@ -28,10 +29,7 @@ namespace MulTyPlayerClient
         public static LevelHandler HLevel;
         public static SyncHandler HSync;
 
-        public static CancellationTokenSource ClientThreadToken;
-
-        public static EventHandler<ConnectionFailedEventArgs> connectionFailedHandler = delegate { ConnectionFailed(); };
-        public static EventHandler<ConnectionFailedEventArgs> connectionFailedReconnectHandler = delegate { AutoReconnect.ConnectionFailed(); };
+        public static CancellationTokenSource cts;
 
         public const int MS_PER_TICK = 20;
 
@@ -45,17 +43,18 @@ namespace MulTyPlayerClient
 
             InitRiptide();
 
-            ClientThreadToken = new CancellationTokenSource();
+            cts = new CancellationTokenSource();
 
             Message authentication = Message.Create();
             authentication.AddString(_pass);
             if (!_ip.Contains(':'))
                 _ip += ":" + SettingsHandler.Settings.Port;
 
-            PlayerHandler.Players.Clear();
-            
-            _client.Connect(_ip, 5, 0, authentication);
-
+            bool attempt = _client.Connect(_ip, 5, 0, authentication);
+            if (!attempt)
+            {
+                ConnectionAttemptFailed();
+            }
             ModelController.KoalaSelect.OnProceedToLobby += () =>
             {
                 KoalaSelected = true;
@@ -69,6 +68,8 @@ namespace MulTyPlayerClient
             _loop.Start();
         }
 
+        
+
         private static void InitHandlers()
         {
             HLevel = new LevelHandler();
@@ -78,21 +79,21 @@ namespace MulTyPlayerClient
             HKoala = new KoalaHandler();
             HCommand = new CommandHandler();
             HPlayer = new PlayerHandler();
+            PlayerHandler.Players.Clear();
         }
 
         private static void InitRiptide()
         {
             RiptideLogger.Initialize(Logger.Instance.Write, true);
             _client = new Riptide.Client();
-            _client.Connected += (s, e) => OnRiptideConnected();
+            _client.Connected += OnRiptideConnected;
             _client.Disconnected += Disconnected;
-            _client.ConnectionFailed -= connectionFailedReconnectHandler;
-            connectionFailedHandler = (s, e) => ConnectionFailed();
-            _client.ConnectionFailed += connectionFailedHandler;            
+            _client.ConnectionFailed += ConnectionFailed;
         }
 
-        private static void OnRiptideConnected()
-        {            
+        private static void OnRiptideConnected(object sender, EventArgs e)
+        {
+            Debug.WriteLine("Riptide connected successfully.\n" + e.ToString());
             ModelController.Login.ConnectionAttemptSuccessful = true;
             ModelController.Login.ConnectionAttemptCompleted = true;
             IsConnected = true;
@@ -102,7 +103,7 @@ namespace MulTyPlayerClient
 
         private static void Disconnected(object sender, Riptide.DisconnectedEventArgs e)
         {
-            ClientThreadToken.Cancel();
+            cts.Cancel();
             IsConnected = false;
             ModelController.KoalaSelect.MakeAllAvailable();
             Application.Current.Dispatcher.BeginInvoke(
@@ -127,16 +128,25 @@ namespace MulTyPlayerClient
                 });
         }
 
-        private static void ConnectionFailed()
-        {            
-            ClientThreadToken.Cancel();
+        private static void ConnectionFailed(object sender, ConnectionFailedEventArgs eventArgs)
+        {
+            Debug.WriteLine("ERROR: Riptide connection failed.\nReason:" + eventArgs.Message.GetString());
+            cts.Cancel();
+            ModelController.Login.ConnectionAttemptSuccessful = false;
+            ModelController.Login.ConnectionAttemptCompleted = true;
+        }
+
+        private static void ConnectionAttemptFailed()
+        {
+            Debug.WriteLine("ERROR: Riptide connection failed.\nReason:" + "An attempt to connect was not made. Most likely an invalid IP address.");
+            cts.Cancel();
             ModelController.Login.ConnectionAttemptSuccessful = false;
             ModelController.Login.ConnectionAttemptCompleted = true;
         }
 
         private static void ClientLoop()
         {
-            while (!ClientThreadToken.Token.IsCancellationRequested)
+            while (!cts.Token.IsCancellationRequested)
             {
                 if (IsConnected && TyProcess.FindProcess() && KoalaSelected)
                 {

@@ -74,6 +74,7 @@ namespace MulTyPlayerClient.GUI.Models
             Client.Start(ip, name, pass);
             while (!ConnectionAttemptCompleted)
             {
+
             }
         }
 

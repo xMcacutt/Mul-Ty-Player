@@ -1,4 +1,6 @@
 ﻿using MulTyPlayerClient.GUI;
+using MulTyPlayerClient.GUI.Models;
+using System.Runtime.Versioning;
 using System.Windows;
 
 namespace MulTyPlayerClient
@@ -14,6 +16,10 @@ namespace MulTyPlayerClient
         {
             base.OnStartup(e);
             WindowHandler.InitializeWindows();
+            SettingsHandler.Setup();
+            SFXPlayer.Init();
+            _ = new Logger(200);
+            ModelController.InstantiateModels();
             new MainWindow().Show();
         }
     }

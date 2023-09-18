@@ -17,8 +17,10 @@ namespace MulTyPlayerClient.GUI.ViewModels
             }
             set{ model.PlayerInfoList = value; }
         }
-        
-        public ObservableCollection<string> ChatMessages => Logger.Instance.Log;
+
+        public ObservableCollection<string> ChatMessages {get; set;}
+        private bool copyLogMessagesToChat = true;
+
 
         public ICommand ManageInputCommand { get; set; }
         public ICommand LogoutCommand { get; set; }
@@ -38,6 +40,8 @@ namespace MulTyPlayerClient.GUI.ViewModels
 
         public LobbyViewModel()
         {
+            ChatMessages = new ObservableCollection<string>();
+            SetCopyLogMessagesToChat(copyLogMessagesToChat);
             model = ModelController.Lobby;            
             ManageInputCommand = new RelayCommand(ManageInput);
             LogoutCommand = new RelayCommand(Logout);
@@ -48,6 +52,8 @@ namespace MulTyPlayerClient.GUI.ViewModels
             Countdown.OnCountdownBegan += OnCountdownBegan;
             Countdown.OnCountdownAborted += OnCountdownEnded;
             Countdown.OnCountdownFinished += OnCountdownEnded;
+
+            
         }
 
         public void ManageInput()
@@ -72,6 +78,15 @@ namespace MulTyPlayerClient.GUI.ViewModels
         public void OnExited()
         {
             Input = "";
+        }
+
+        public void SetCopyLogMessagesToChat(bool value)
+        {
+            copyLogMessagesToChat = value;
+            if (copyLogMessagesToChat)
+                Logger.OnLogWrite += ChatMessages.Add;
+            else
+                Logger.OnLogWrite -= ChatMessages.Add;
         }
 
         private void Model_IsOnMenuChanged(bool value)

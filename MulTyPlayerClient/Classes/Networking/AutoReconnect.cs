@@ -10,7 +10,7 @@ namespace MulTyPlayerClient
         public static void ConnectionFailed()
         {
             Client.IsConnected = false;
-            Client.ClientThreadToken.Cancel();
+            Client.cts.Cancel();
             ModelController.KoalaSelect.MakeAllAvailable();
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
