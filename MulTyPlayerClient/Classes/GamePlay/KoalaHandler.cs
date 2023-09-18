@@ -84,7 +84,6 @@ namespace MulTyPlayerClient
 
             foreach (Player player in PlayerHandler.Players.Values)
             {
-                Logger.Instance.Write("WRITING KOALA ADDRESS FOR PLAYER: " + player.Name);
                 int koalaID = (int)player.Koala;
                 int koalaOffset = 0x518 * modifier * koalaID + offset;
 

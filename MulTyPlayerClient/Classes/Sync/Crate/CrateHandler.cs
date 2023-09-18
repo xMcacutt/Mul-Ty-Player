@@ -64,14 +64,14 @@ namespace MulTyPlayerClient
             CounterAddress = PointerCalculations.GetPointerAddress(0x0028A8E8, new int[] { 0x390 });
             ProcessHandler.WriteData(CounterAddress, new byte[] { 0, 0, 0, 0 }, "Setting crate anim counter to 0");
             LiveObjectAddress = 
-                Client.HLevel.CurrentLevelId == 10 ?
+                Client.HLevel.CurrentLevelId == Levels.OutbackSafari.Id ?
                 PointerCalculations.GetPointerAddress(0x255190, new int[] { 0x0 }) :
                 PointerCalculations.GetPointerAddress(0x254CB8, new int[] { 0x0 });
         }
 
         public override void CheckObserverChanged()
         {
-            if (Levels.GetLevelData(Client.HLevel.CurrentLevelId).IsMainStage)
+            if (!Levels.GetLevelData(Client.HLevel.CurrentLevelId).IsMainStage)
                 return;
 
             ObserverState = ReadObserver(CounterAddress, CounterByteLength);

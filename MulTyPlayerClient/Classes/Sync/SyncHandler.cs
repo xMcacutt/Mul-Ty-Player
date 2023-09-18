@@ -46,14 +46,14 @@ namespace MulTyPlayerClient
 
         public void SetCurrentData(bool inMainStage)
         {
-            if (inMainStage)
-            {
-                HCrate.SetCurrentData();
-                HCog.SetCurrentData();
-                HBilby.SetCurrentData();
-                HThEg.SetCurrentData();
-                HOpal.SetCurrentData();
-            }
+            if (!inMainStage)
+                return;
+
+            HCrate.SetCurrentData();
+            HCog.SetCurrentData();
+            HBilby.SetCurrentData();
+            HThEg.SetCurrentData();
+            HOpal.SetCurrentData();
         }
 
         public void RequestSync()
