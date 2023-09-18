@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using MulTyPlayerClient.GUI.Models;
+using MulTyPlayerClient.GUI.ViewModels;
+using System.Windows;
 
 namespace MulTyPlayerClient.GUI.Views
 {

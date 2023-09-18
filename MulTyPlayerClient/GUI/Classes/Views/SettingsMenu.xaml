@@ -7,11 +7,12 @@
         mc:Ignorable="d"
         Closing="Window_Closing"
         Title="SettingsMenu" Height="175" Width="250" ResizeMode="NoResize"
+        DataContext="{StaticResource SettingsViewModel}"
         d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/GUI/SlapstickFont.xaml" />
+                <ResourceDictionary Source="/GUI/SlapstickFont.xaml"/>
                 <ResourceDictionary Source="/GUI/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

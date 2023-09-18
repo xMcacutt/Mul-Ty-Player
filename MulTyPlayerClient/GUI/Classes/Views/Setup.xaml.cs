@@ -12,6 +12,7 @@ namespace MulTyPlayerClient.GUI.Views
         public Setup()
         {
             InitializeComponent();
+            DataContext = ModelController.Setup;
         }
 
         private void TyFolderBrowseButton_Click(object sender, RoutedEventArgs e)
