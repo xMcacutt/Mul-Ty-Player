@@ -155,6 +155,12 @@ namespace MulTyPlayerClient
         {
             while (!cts.Token.IsCancellationRequested)
             {
+#if DEBUG
+                //DateTime frameCommence = DateTime.Now;
+                //Logger.WriteDebug("Tick began.");
+                //DateTime readTime = DateTime.Now;
+                //double read_dt = 0.0;
+#endif
                 if (TyProcess.FindProcess() && KoalaSelected)
                 {
                     try
@@ -167,7 +173,11 @@ namespace MulTyPlayerClient
                             HKoala.CheckTA();
                         }
                         HHero.SendCoordinates();
-
+#if DEBUG
+                        //readTime = DateTime.Now;
+                        //read_dt = (readTime - frameCommence).TotalMilliseconds;
+                        //Logger.WriteDebug($"Finished reading. Elapsed time: {read_dt}ms. Beginning koala render.");
+#endif
                         Task renderAsync = PlayerReplication.RenderKoalas(MS_PER_TICK);
                         Task.WaitAny(Task.Delay(MS_PER_TICK), renderAsync);
                     }
@@ -185,7 +195,13 @@ namespace MulTyPlayerClient
                     }
                 }
                 _client.Update();
-                
+#if DEBUG
+                //DateTime tickFinished = DateTime.Now;
+                //double render_dt = (tickFinished - readTime).TotalMilliseconds;
+                //double totalTime = render_dt + read_dt;
+                //Logger.WriteDebug($"Finished koala render. Elapsed time for koala render: {render_dt}ms");
+                //Logger.WriteDebug($"Total elapsed time this tick: {totalTime}ms");
+#endif
             }
         }
 
