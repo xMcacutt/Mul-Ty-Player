@@ -14,7 +14,7 @@ namespace MulTyPlayerClient.Classes.Networking
     using KoalaID = System.Int32;
     internal static class PlayerReplication
     {
-        public readonly static KoalaInterpolationMode InterpolationMode = KoalaInterpolationMode.None;
+        public readonly static KoalaInterpolationMode InterpolationMode = KoalaInterpolationMode.Interpolate;
 
         const int RENDER_CALLS_PER_CLIENT_TICK = 4;
         const int KRENDER_SLEEP_TIME = (int)((float)Client.MS_PER_TICK / RENDER_CALLS_PER_CLIENT_TICK);
@@ -27,23 +27,19 @@ namespace MulTyPlayerClient.Classes.Networking
             playerTransforms = new();
         }
 
-        public static async void RenderKoalas()
+        public static void RenderKoalas()
         {
-            Task render = Task.Run(() =>
+            if (InterpolationMode == KoalaInterpolationMode.None)
             {
-                for (int i = 0; i < RENDER_CALLS_PER_CLIENT_TICK; i++)
-                {
-                    RenderTick();
-                    Thread.Sleep(KRENDER_SLEEP_TIME);
-                }
-            });
-            try
-            {
-                await render;
+                RenderTick();
+                Thread.Sleep(Client.MS_PER_TICK);
+                return;
             }
-            catch (Exception e)
+
+            for (int i = 0; i < RENDER_CALLS_PER_CLIENT_TICK; i++)
             {
-                Logger.WriteDebug($"Render process failed:\n{e}");
+                RenderTick();
+                Thread.Sleep(KRENDER_SLEEP_TIME);
             }
         }
 
