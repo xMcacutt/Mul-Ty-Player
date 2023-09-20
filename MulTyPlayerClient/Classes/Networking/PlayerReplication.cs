@@ -59,16 +59,20 @@ namespace MulTyPlayerClient.Classes.Networking
         {
             receivedSnapshotData.Remove(koalaID);
             receivedSnapshotData.Add(koalaID, new());
+            playerTransforms.Remove(koalaID);
+            playerTransforms.Add(koalaID, new());
         }
 
         public static void RemovePlayer(KoalaID koalaID)
         {
             receivedSnapshotData.Remove(koalaID);
+            playerTransforms.Remove(koalaID);
         }
 
         public static void ClearPlayers()
         {
             receivedSnapshotData.Clear();
+            playerTransforms.Clear();
         }
         #endregion
 

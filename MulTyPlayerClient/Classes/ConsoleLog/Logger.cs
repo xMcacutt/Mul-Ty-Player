@@ -34,7 +34,7 @@ namespace MulTyPlayerClient
             try
             {
                 _writer = File.AppendText(_filePath);
-                _writer.WriteLine("Mul-Ty-Player Log File\nCreated: {_initTime}");
+                _writer.WriteLine($"Mul-Ty-Player Log File\nCreated: {_initTime}");
             }
             catch (Exception ex)
             {
@@ -65,11 +65,11 @@ namespace MulTyPlayerClient
             }
         }
 
-        public static void WriteDebug(string message, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = null)
+        public static void WriteDebug(string message, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "", [CallerFilePath] string callerFilePath = "")
         {
 #if DEBUG
             Write("[DEBUG]: " + message);
-            DevLog.WriteLine(message, lineNumber, caller);
+            DevLog.WriteLine(message, lineNumber, memberName, callerFilePath);
 #endif
         }
 

@@ -29,7 +29,7 @@ namespace MulTyPlayerClient.Classes.ConsoleLog
 #endif
         }
 
-        public static void WriteLine(string message, [CallerLineNumber] int callerLineNumber = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "")
+        public static void WriteLine(string message, int callerLineNumber, string callerMemberName, string callerFilePath)
         {
 #if DEBUG
             string timestamp = DateTime.Now.ToString("h:mm:ss");
@@ -40,7 +40,7 @@ namespace MulTyPlayerClient.Classes.ConsoleLog
 
         public static void Close()
         {
-            _writer?.Flush();
+            _writer.Flush();
             _writer?.Close();
         }
     }
