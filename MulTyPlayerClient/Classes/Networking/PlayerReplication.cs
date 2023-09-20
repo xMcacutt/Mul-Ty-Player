@@ -62,8 +62,12 @@ namespace MulTyPlayerClient.Classes.Networking
 
         public static void RenderTick()
         {
-            UpdateTransforms();
-            WritePlayersTransformData();            
+            foreach (KoalaID koalaID in receivedSnapshotData.Keys)
+            {
+                Transform t = UpdateTransform(koalaID);
+                WriteTransformData(koalaID, t);
+            }
+                       
         }
 
         #region AddRemovePlayers
@@ -88,30 +92,24 @@ namespace MulTyPlayerClient.Classes.Networking
         }
         #endregion
 
-        static void UpdateTransforms()
+        static Transform UpdateTransform(KoalaID koalaID)
         {
-            foreach (KoalaID koalaID in receivedSnapshotData.Keys)
-            {
-                var snapshots = receivedSnapshotData[koalaID];
-                playerTransforms[koalaID].Position = Interpolation.LerpPosition(snapshots, InterpolationMode);
-                playerTransforms[koalaID].Rotation = snapshots.New.Transform.Rotation;
-            }
+            var snapshots = receivedSnapshotData[koalaID];
+            playerTransforms[koalaID].Position = Interpolation.LerpPosition(snapshots, InterpolationMode);
+            playerTransforms[koalaID].Rotation = snapshots.New.Transform.Rotation;
+            return playerTransforms[koalaID];
         }
         
-        static void WritePlayersTransformData()
+        static void WriteTransformData(KoalaID koalaID, Transform transform)
         {
-            foreach (KoalaID koalaID in receivedSnapshotData.Keys)
-            {
-                KoalaHandler.KoalaTransformAddresses ktp = KoalaHandler.TransformAddresses[koalaID];
-                Transform transform = playerTransforms[koalaID];
+            KoalaHandler.KoalaTransformAddresses ktp = KoalaHandler.TransformAddresses[koalaID];
 
-                ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(transform.Position.X));
-                ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(transform.Position.Y));
-                ProcessHandler.WriteData(ktp.Z, BitConverter.GetBytes(transform.Position.Z));
-                ProcessHandler.WriteData(ktp.Pitch, BitConverter.GetBytes(transform.Rotation.Pitch));
-                ProcessHandler.WriteData(ktp.Yaw, BitConverter.GetBytes(transform.Rotation.Yaw));
-                ProcessHandler.WriteData(ktp.Roll, BitConverter.GetBytes(transform.Rotation.Roll));
-            }
+            ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(transform.Position.X));
+            ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(transform.Position.Y));
+            ProcessHandler.WriteData(ktp.Z, BitConverter.GetBytes(transform.Position.Z));
+            ProcessHandler.WriteData(ktp.Pitch, BitConverter.GetBytes(transform.Rotation.Pitch));
+            ProcessHandler.WriteData(ktp.Yaw, BitConverter.GetBytes(transform.Rotation.Yaw));
+            ProcessHandler.WriteData(ktp.Roll, BitConverter.GetBytes(transform.Rotation.Roll));
         }
 
         internal static void UpdatePlayerSnapshotData(KoalaID koalaID, float[] transform)
