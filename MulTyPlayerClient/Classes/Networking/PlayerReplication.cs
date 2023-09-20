@@ -29,12 +29,12 @@ namespace MulTyPlayerClient.Classes.Networking
 
         public static async void RenderKoalas()
         {
-            Task render = Task.Run(async () =>
+            Task render = Task.Run(() =>
             {
                 for (int i = 0; i < RENDER_CALLS_PER_CLIENT_TICK; i++)
                 {
                     RenderTick();
-                    await Task.Delay(KRENDER_SLEEP_TIME);
+                    Thread.Sleep(KRENDER_SLEEP_TIME);
                 }
             });
             try
@@ -45,7 +45,6 @@ namespace MulTyPlayerClient.Classes.Networking
             {
                 Logger.WriteDebug($"Render process failed:\n{e}");
             }
-
         }
 
         public static void RenderTick()

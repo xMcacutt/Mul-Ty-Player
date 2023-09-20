@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Threading;
 using MulTyPlayerClient.GUI.Models;
 using Riptide;
+using MulTyPlayerClient.Classes.Networking;
 
 namespace MulTyPlayerClient
 {
@@ -30,6 +31,7 @@ namespace MulTyPlayerClient
                 });
             ModelController.KoalaSelect.SetAvailability(koala, false);
             SFXPlayer.PlaySound(SFX.PlayerConnect);
+            PlayerReplication.AddPlayer((int)koala);
         }
 
         //Adds yourself to playerInfo
@@ -56,6 +58,7 @@ namespace MulTyPlayerClient
         public static void RemovePlayer(ushort id)
         {
             ModelController.KoalaSelect.SetAvailability(Players[id].Koala, true);
+            PlayerReplication.RemovePlayer((int)Players[id].Koala);
             Players.Remove(id);
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,

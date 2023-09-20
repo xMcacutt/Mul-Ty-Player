@@ -46,7 +46,6 @@ namespace MulTyPlayerClient
             PlayerHandler.AddPlayer(k, playerName, clientID, isHost);
             Client.HKoala.SetCoordinateAddresses();
             Client.HLevel.DoLevelSetup();
-            PlayerReplication.AddPlayer((int)k);
         }
 
         public void CreateKoalaAddressArray()
