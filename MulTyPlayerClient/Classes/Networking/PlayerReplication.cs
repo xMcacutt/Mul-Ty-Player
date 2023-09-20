@@ -2,6 +2,7 @@
 using MulTyPlayerClient.Classes.GamePlay;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
@@ -16,10 +17,12 @@ namespace MulTyPlayerClient.Classes.Networking
     {
         public readonly static KoalaInterpolationMode InterpolationMode = KoalaInterpolationMode.Interpolate;
 
-        const int RENDER_CALLS_PER_CLIENT_TICK = 4;
-        const int KRENDER_SLEEP_TIME = (int)((float)Client.MS_PER_TICK / RENDER_CALLS_PER_CLIENT_TICK);
+        const int RENDER_CALLS_PER_CLIENT_TICK = 8;
+        const int KRENDER_SLEEP_TIME = (int)((float)Client.MS_PER_TICK / RENDER_CALLS_PER_CLIENT_TICK) - 1;
         static Dictionary<KoalaID, Transform> playerTransforms;
         static Dictionary<KoalaID, TransformSnapshots> receivedSnapshotData;
+
+        static CancellationTokenSource renderTokenSource;
 
         static PlayerReplication()
         {
@@ -27,20 +30,34 @@ namespace MulTyPlayerClient.Classes.Networking
             playerTransforms = new();
         }
 
-        public static void RenderKoalas()
+        public static Task RenderKoalas(int maxTimeMilliseconds)
         {
             if (InterpolationMode == KoalaInterpolationMode.None)
             {
                 RenderTick();
                 Thread.Sleep(Client.MS_PER_TICK);
-                return;
+                return Task.CompletedTask;
             }
-
-            for (int i = 0; i < RENDER_CALLS_PER_CLIENT_TICK; i++)
+            renderTokenSource = new CancellationTokenSource();
+            var renderToken = renderTokenSource.Token;
+            Task render = Task.Run(() =>
             {
-                RenderTick();
-                Thread.Sleep(KRENDER_SLEEP_TIME);
-            }
+                //Debug.WriteLine("RENDERING!");
+                for (int i = 0; i < RENDER_CALLS_PER_CLIENT_TICK; i++)
+                {
+                    RenderTick();
+                    Thread.Sleep(KRENDER_SLEEP_TIME);
+                }
+            }, renderToken);
+            Task renderAsync = render.WaitAsync(renderToken);
+            renderTokenSource.CancelAfter(maxTimeMilliseconds);
+            return renderAsync;
+        }
+
+        public static void CancelRender()
+        {
+            renderTokenSource?.Cancel();
+            renderTokenSource?.Dispose();
         }
 
         public static void RenderTick()
@@ -77,6 +94,7 @@ namespace MulTyPlayerClient.Classes.Networking
             {
                 var snapshots = receivedSnapshotData[koalaID];
                 playerTransforms[koalaID].Position = Interpolation.LerpPosition(snapshots, InterpolationMode);
+                playerTransforms[koalaID].Rotation = snapshots.New.Transform.Rotation;
             }
         }
         

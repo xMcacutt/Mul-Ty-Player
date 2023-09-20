@@ -6,6 +6,7 @@ using Riptide.Utils;
 using System;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -166,7 +167,9 @@ namespace MulTyPlayerClient
                             HKoala.CheckTA();
                         }
                         HHero.SendCoordinates();
-                        PlayerReplication.RenderKoalas();
+
+                        Task renderAsync = PlayerReplication.RenderKoalas(MS_PER_TICK);
+                        Task.WaitAny(Task.Delay(MS_PER_TICK), renderAsync);
                     }
                     catch (TyClosedException e)
                     {
@@ -182,6 +185,7 @@ namespace MulTyPlayerClient
                     }
                 }
                 _client.Update();
+                
             }
         }
 
