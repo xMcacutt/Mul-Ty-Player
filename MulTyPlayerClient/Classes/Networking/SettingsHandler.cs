@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MulTyPlayerClient.GUI.Models;
+using Newtonsoft.Json;
 using Riptide;
 using System.Collections.Generic;
 using System.IO;
@@ -74,5 +75,12 @@ namespace MulTyPlayerClient
         }
 
         public static bool HasValidExePath() => Settings.MulTyPlayerFolderPath != "" && Settings.MulTyPlayerFolderPath != null;
+
+        public static void SaveSettingsFromSettingsMenu()
+        {
+            Settings.AutoRestartTyOnCrash = ModelController.Settings.AutoRestartTy;
+            Settings.DoKoalaCollision = ModelController.Settings.DoKoalaCollision;
+            Save();
+        }
     }
 }

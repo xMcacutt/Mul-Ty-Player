@@ -43,7 +43,6 @@ namespace MulTyPlayerClient.GUI.Models
             PlayerHandler.AnnounceSelection(Koalas.GetInfo[koala].Name, Client.Name, isHost);
             await Task.Delay(2500);
             GetEntry(koala).SetAvailability(false);
-            CollectionViewSource.GetDefaultView(Logger.Instance.Log).Refresh();
             OnProceedToLobby?.Invoke();
         }
 

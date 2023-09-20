@@ -11,6 +11,5 @@
         public bool AutoLaunchTyOnStartup { get; set; }
         public bool AutoRestartTyOnCrash { get; set; }
         public string MulTyPlayerFolderPath { get; set; }
-        public byte KoalaInterpolationMode { get; set; }
     }
 }

@@ -83,7 +83,7 @@ namespace MulTyPlayerClient
 
         private static void InitRiptide()
         {
-            RiptideLogger.Initialize(Logger.Instance.Write, true);
+            RiptideLogger.Initialize(Logger.Write, true);
             _client = new Riptide.Client();
             _client.Connected += OnRiptideConnected;
             _client.Disconnected += Disconnected;
@@ -111,7 +111,7 @@ namespace MulTyPlayerClient
 
             if (e.Reason == DisconnectReason.TimedOut && SettingsHandler.Settings.AttemptReconnect)
             {
-                Logger.Instance.Write("Initiating reconnection attempt.");
+                Logger.Write("Initiating reconnection attempt.");
                 InitRiptide();
                 Message authentication = Message.Create();
                 authentication.AddString(_pass);
@@ -122,7 +122,6 @@ namespace MulTyPlayerClient
                 DispatcherPriority.Background,
                 () => {
                     WindowHandler.SettingsWindow.Hide();
-                    Logger.Instance.Log.Clear();
                 });
         }
 
@@ -167,19 +166,19 @@ namespace MulTyPlayerClient
                             HKoala.CheckTA();
                         }
                         HHero.SendCoordinates();
-                        KoalaHandler.RenderKoalas();
+                        PlayerReplication.RenderKoalas();
                     }
                     catch (TyClosedException e)
                     {
-                        Logger.Instance.Write("TyClosedException:\n" + e.ToString());
+                        Logger.Write("TyClosedException:\n" + e.ToString());
                     }
                     catch (TyProcessException e)
                     {
-                        Logger.Instance.Write("TyProcessException:\n" + e.ToString());
+                        Logger.Write("TyProcessException:\n" + e.ToString());
                     }
                     catch (Exception e)
                     {
-                        Logger.Instance.Write(e.ToString());
+                        Logger.Write(e.ToString());
                     }
                 }
                 _client.Update();
@@ -189,7 +188,7 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.ConsoleSend)]
         public static void ConsoleSend(Message message)
         {
-            Logger.Instance.Write(message.GetString());
+            Logger.Write(message.GetString());
         }
 
         [MessageHandler((ushort)MessageID.Disconnect)]

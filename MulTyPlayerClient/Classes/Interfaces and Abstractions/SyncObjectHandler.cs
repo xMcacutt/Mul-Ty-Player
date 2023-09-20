@@ -83,7 +83,7 @@ namespace MulTyPlayerClient
                     }
                     if (GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] != CheckState)
                     {
-                        //BasicIoC.Logger.Instance.Write(Name + " number " + iLive + " collected.");
+                        //BasicIoC.Logger.Write(Name + " number " + iLive + " collected.");
                         GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] = (byte)CheckState;
                         Client.HSync.SendDataToServer(iLive, iSave, Client.HLevel.CurrentLevelId, Name);
                     }

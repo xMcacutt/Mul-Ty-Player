@@ -26,7 +26,7 @@ namespace MulTyPlayerClient.GUI.Views
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            ModelController.Settings.Setup();
+            ModelController.Settings.SetCheckboxesFromSettings();
             WindowHandler.SettingsWindow.Show();
         }
 

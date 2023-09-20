@@ -15,26 +15,19 @@ namespace MulTyPlayerClient
 {
     internal class KoalaHandler
     {
-        public KoalaTransformPtrs[] koalaTransforms;
-        const int KOALA_RENDERS_PER_TICK = 3;
-
-
         static GameStateHandler HGameState => Client.HGameState;
         static LevelHandler HLevel => Client.HLevel;
-
-        static KoalaInterpolationMode interpolationMode = KoalaInterpolationMode.None;
+        
         static bool readyToWriteTransformData = false;
 
-        public struct KoalaTransformPtrs
+        public struct KoalaTransformAddresses
         {
             public int X, Y, Z, Pitch, Yaw, Roll, Collision, Visibility;
         }
+        public static KoalaTransformAddresses[] TransformAddresses {get; private set;}
 
         static int _bTimeAttackAddress = 0x28AB84;
         static int _baseKoalaAddress;
-
-        //                      koala id
-        private static Dictionary<int, KoalaTransform> playerKoalaTransforms = new();
 
         public KoalaHandler()
         {
@@ -53,16 +46,15 @@ namespace MulTyPlayerClient
             PlayerHandler.AddPlayer(k, playerName, clientID, isHost);
             Client.HKoala.SetCoordinateAddresses();
             Client.HLevel.DoLevelSetup();
-            playerKoalaTransforms.Remove((int)k);
-            playerKoalaTransforms.Add((int)k, new KoalaTransform());
+            PlayerReplication.AddPlayer((int)k);
         }
 
         public void CreateKoalaAddressArray()
         {
-            koalaTransforms = new KoalaTransformPtrs[8];
+            TransformAddresses = new KoalaTransformAddresses[8];
             for (int i = 0; i < 8; i++)
             {
-                koalaTransforms[i] = new KoalaTransformPtrs();
+                TransformAddresses[i] = new KoalaTransformAddresses();
             }
         }
 
@@ -87,15 +79,15 @@ namespace MulTyPlayerClient
                 int koalaID = (int)player.Koala;
                 int koalaOffset = 0x518 * modifier * koalaID + offset;
 
-                koalaTransforms[koalaID] = new KoalaTransformPtrs();
-                koalaTransforms[koalaID].X = _baseKoalaAddress + 0x2A4 + koalaOffset;
-                koalaTransforms[koalaID].Y = _baseKoalaAddress + 0x2A8 + koalaOffset;
-                koalaTransforms[koalaID].Z = _baseKoalaAddress + 0x2AC + koalaOffset;
-                koalaTransforms[koalaID].Pitch = _baseKoalaAddress + 0x2B4 + koalaOffset;
-                koalaTransforms[koalaID].Yaw = _baseKoalaAddress + 0x2B8 + koalaOffset;
-                koalaTransforms[koalaID].Roll = _baseKoalaAddress + 0x2BC + koalaOffset;
-                koalaTransforms[koalaID].Collision = _baseKoalaAddress + 0x298 + koalaOffset;
-                koalaTransforms[koalaID].Visibility = _baseKoalaAddress + 0x44 + koalaOffset;
+                TransformAddresses[koalaID] = new KoalaTransformAddresses();
+                TransformAddresses[koalaID].X = _baseKoalaAddress + 0x2A4 + koalaOffset;
+                TransformAddresses[koalaID].Y = _baseKoalaAddress + 0x2A8 + koalaOffset;
+                TransformAddresses[koalaID].Z = _baseKoalaAddress + 0x2AC + koalaOffset;
+                TransformAddresses[koalaID].Pitch = _baseKoalaAddress + 0x2B4 + koalaOffset;
+                TransformAddresses[koalaID].Yaw = _baseKoalaAddress + 0x2B8 + koalaOffset;
+                TransformAddresses[koalaID].Roll = _baseKoalaAddress + 0x2BC + koalaOffset;
+                TransformAddresses[koalaID].Collision = _baseKoalaAddress + 0x298 + koalaOffset;
+                TransformAddresses[koalaID].Visibility = _baseKoalaAddress + 0x44 + koalaOffset;
             }
 
             MakeVisible();
@@ -110,7 +102,7 @@ namespace MulTyPlayerClient
         {
             for (int i = 0; i < 8; i++)
             {
-                ProcessHandler.WriteData(koalaTransforms[i].Collision, new byte[] { 0 }, "Removing collision");
+                ProcessHandler.WriteData(TransformAddresses[i].Collision, new byte[] { 0 }, "Removing collision");
             }
         }
 
@@ -125,7 +117,7 @@ namespace MulTyPlayerClient
         {
             for (int i = 0; i < 8; i++)
             {
-                ProcessHandler.WriteData(koalaTransforms[i].Visibility, new byte[] { 1 }, "Making players visible");
+                ProcessHandler.WriteData(TransformAddresses[i].Visibility, new byte[] { 1 }, "Making players visible");
             }
         }
 
@@ -176,61 +168,11 @@ namespace MulTyPlayerClient
 
             float[] transform = message.GetFloats();
             //Debug.WriteLine($"Handle coordinates: {KoalaTransform.DebugTransform(transform)}");
-            //Debug.WriteLine($"Before updating coordinates: {KoalaTransform.DebugTransform(playerKoalaTransforms[koalaID].New.Transform)}");
-            KoalaTransform kt = playerKoalaTransforms[koalaID];
-            PositionSnapshot ps = new PositionSnapshot(transform[0..3]);
-            kt.UpdatePosition(ps);
-            kt.UpdateRotation(transform[3..6]);
-            //Debug.WriteLine($"After updating coordinates: {KoalaTransform.DebugTransform(playerKoalaTransforms[koalaID].New.Transform)}");
+            //Debug.WriteLine($"Before updating coordinates: {KoalaTransform.DebugTransform(playerTransformAddresses[koalaID].New.Transform)}");
+            PlayerReplication.UpdatePlayerSnapshotData(koalaID, transform);
+            //Debug.WriteLine($"After updating coordinates: {KoalaTransform.DebugTransform(playerTransformAddresses[koalaID].New.Transform)}");
         }
 
-        public static void RenderKoalas()
-        {
-            int kRenderSleepTime = (int)((float)Client.MS_PER_TICK / KOALA_RENDERS_PER_TICK);
-            for (int i = 1; i < KOALA_RENDERS_PER_TICK; i++)
-            {
-                foreach (int koalaID in playerKoalaTransforms.Keys)
-                {
-                    var ts = playerKoalaTransforms[koalaID];
-
-                    var position = ts.GetPosition(interpolationMode);
-                    WritePositionToMemory(koalaID, position);
-
-                    var rotation = ts.GetRotation();
-                    WriteRotationToMemory(koalaID, rotation);
-                }
-                Thread.Sleep(kRenderSleepTime);
-            }            
-        }
-
-        private static void WritePositionToMemory(int koalaID, float[] position)
-        {
-            KoalaTransformPtrs ktp = Client.HKoala.koalaTransforms[koalaID];
-            ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(position[0]));
-            ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(position[1]));
-            ProcessHandler.WriteData(ktp.Z, BitConverter.GetBytes(position[2]));
-        }
-
-        private static void WriteRotationToMemory(int koalaID, float[] rotation)
-        {
-            KoalaTransformPtrs ktp = Client.HKoala.koalaTransforms[koalaID];
-
-            ProcessHandler.WriteData(ktp.Pitch, BitConverter.GetBytes(rotation[0]));
-            ProcessHandler.WriteData(ktp.Yaw, BitConverter.GetBytes(rotation[1]));
-            ProcessHandler.WriteData(ktp.Roll, BitConverter.GetBytes(rotation[2]));
-        }
-
-        private static void WriteCoordinateData(int koalaID, float[] coordinates)
-        {
-            KoalaTransformPtrs ktp = Client.HKoala.koalaTransforms[koalaID];
-
-            WritePositionToMemory(koalaID, coordinates[0..3]);
-            WriteRotationToMemory(koalaID, coordinates[3..6]);
-        }
-
-        internal static KoalaInterpolationMode GetInterpolationMode()
-        {
-            return interpolationMode;
-        }
+        
     }
 }

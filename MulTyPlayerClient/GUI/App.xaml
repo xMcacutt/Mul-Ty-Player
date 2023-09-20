@@ -22,8 +22,6 @@
         <DataTemplate DataType="{x:Type viewmodels:LobbyViewModel}">
             <views:Lobby/>
         </DataTemplate>
-
-        <viewmodels:SettingsViewModel x:Key="SettingsViewModel"/>
     </Application.Resources>
     
 </Application>

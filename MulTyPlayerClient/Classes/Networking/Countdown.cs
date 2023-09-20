@@ -51,7 +51,7 @@ namespace MulTyPlayerClient.Classes
                         abortToken.ThrowIfCancellationRequested();
                     }
                     
-                    Logger.Instance.Write(i.ToString());
+                    Logger.Write(i.ToString());
                     if (i == 3)
                     {
                         SFXPlayer.StopAll();
@@ -60,7 +60,7 @@ namespace MulTyPlayerClient.Classes
                     }
                     Task.Delay(1000).Wait();
                 }                
-                Logger.Instance.Write("Go!");
+                Logger.Write("Go!");
             }, abortToken);
 
             try
@@ -70,7 +70,7 @@ namespace MulTyPlayerClient.Classes
             }
             catch (OperationCanceledException cancel)
             {
-                Logger.Instance.Write("Countdown aborted.");
+                Logger.Write("Countdown aborted.");
             }
             finally
             {

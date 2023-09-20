@@ -75,13 +75,13 @@ namespace MulTyPlayerClient
 
             if (processes.Length == 0)
             {
-                //BasicIoC.Logger.Instance.WriteDebug("Found no processes");
+                //BasicIoC.Logger.WriteDebug("Found no processes");
                 return false;
             }
             else if (processes.Length > 1)
             {
                 //Multiple found
-                Logger.Instance.WriteDebug($"WARNING: Multiple ({processes.Length}) instances of Mul-Ty-Player are open, can and will cause fuckery.");
+                Logger.WriteDebug($"WARNING: Multiple ({processes.Length}) instances of Mul-Ty-Player are open, can and will cause fuckery.");
 
                 //Use first non-exiting process
                 bool setProcess = false;
@@ -113,7 +113,7 @@ namespace MulTyPlayerClient
 
         private static void PullProcessData()
         {
-            Logger.Instance.WriteDebug("Got process, pulling data");
+            Logger.WriteDebug("Got process, pulling data");
             process.EnableRaisingEvents = true;
             process.Exited += OnExit;
             handle = OpenProcess(0x1F0FFF, false, process.Id);
@@ -132,7 +132,7 @@ namespace MulTyPlayerClient
 
         private static void OnExit(object o, EventArgs e)
         {
-            Logger.Instance.WriteDebug("Process exited");
+            Logger.WriteDebug("Process exited");
             OnTyProcessExited?.Invoke();
             IsRunning = false;
             process.Close();
@@ -147,12 +147,12 @@ namespace MulTyPlayerClient
 
         private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
-            Logger.Instance.WriteDebug($"Output data received: {e.Data}");
+            Logger.WriteDebug($"Output data received: {e.Data}");
         }
 
         private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
-            Logger.Instance.WriteDebug($"Error data received: {e.Data}");
+            Logger.WriteDebug($"Error data received: {e.Data}");
         }
 
         public static void CloseHandle()
@@ -165,7 +165,7 @@ namespace MulTyPlayerClient
 
             if (!successfullyClosed)
             {
-                Logger.Instance.WriteDebug("Handle was not successfully closed!!!");
+                Logger.WriteDebug("Handle was not successfully closed!!!");
                 //oh well
             }
         }

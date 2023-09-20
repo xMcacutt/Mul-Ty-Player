@@ -1,20 +1,20 @@
 ﻿using MulTyPlayerClient.Classes.GamePlay;
 using System;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 
 namespace MulTyPlayerClient.Classes.Networking
 {
     public static class Interpolation
     {
-        //Given two floats and their respective timestamps, predict what the float should be now
-        //bTime should be AFTER aTime, otherwise it will produce the opposite result
-        public static float PredictFloat(float a, DateTime aTime, float b, DateTime bTime)
+        public static float[] PredictFloats(float[] f1, DateTime dt1, float[] f2, DateTime dt2, int size)
         {
-            double vel = (b - a) / bTime.Subtract(aTime).TotalMilliseconds;
-            return (float)(b + (vel * DateTime.Now.Subtract(bTime).TotalMilliseconds));
+            float[] result = new float[size];
+            PredictFloatsNonAlloc(f1, dt1, f2, dt2, ref result, size);
+            return result;
         }
 
-        public static void PredictFloatsNonAlloc(float[] f1, DateTime aTime, float[] f2, DateTime bTime, float[] result, int size)
+        public static void PredictFloatsNonAlloc(float[] f1, DateTime aTime, float[] f2, DateTime bTime, ref float[] result, int size)
         {
             double timeSinceB = DateTime.Now.Subtract(bTime).TotalMilliseconds;
             double timeBetween = bTime.Subtract(aTime).TotalMilliseconds;
@@ -25,7 +25,14 @@ namespace MulTyPlayerClient.Classes.Networking
             }
         }
 
-        public static void LerpFloatsNonAlloc(float[] f1, DateTime dt1, float[] f2, DateTime dt2, float[] result, int size)
+        public static float[] LerpFloats(float[] f1, DateTime dt1, float[] f2, DateTime dt2, int size)
+        {
+            float[] result = new float[size];
+            LerpFloatsNonAlloc(f1, dt1, f2 , dt2, ref result, size);
+            return result;
+        }
+
+        public static void LerpFloatsNonAlloc(float[] f1, DateTime dt1, float[] f2, DateTime dt2, ref float[] result, int size)
         {
             double dtGap = (dt2 - dt1).TotalMilliseconds;
             double dtNow = (DateTime.Now - dt2).TotalMilliseconds;
@@ -41,7 +48,52 @@ namespace MulTyPlayerClient.Classes.Networking
             }
         }
 
-        public static void LerpFloatsNonAllocClamped(float[] f1, DateTime dt1, float[] f2, DateTime dt2, float[] result, int size)
+        public static Position LerpPosition(TransformSnapshots ts, KoalaInterpolationMode mode)
+        {
+            float[] pos = new float[3];
+            switch (mode)
+            {
+                case KoalaInterpolationMode.None:
+                    {
+                        pos = ts.New.Transform.Position.AsFloats();
+                        break;
+                    }
+                case KoalaInterpolationMode.Interpolate:
+                    {
+                        pos = LerpFloatsClamped(
+                                ts.Old.Transform.Position.AsFloats(), ts.Old.Timestamp,
+                                ts.New.Transform.Position.AsFloats(), ts.New.Timestamp,
+                                3);
+                        break;
+                    }
+                case KoalaInterpolationMode.Extrapolate:
+                    {
+                        pos = LerpFloats(
+                                ts.Old.Transform.Position.AsFloats(), ts.Old.Timestamp,
+                                ts.New.Transform.Position.AsFloats(), ts.New.Timestamp,
+                                3);
+                        break;
+                    }
+                case KoalaInterpolationMode.Predictive:
+                    {
+                        pos = PredictFloats(
+                                ts.Old.Transform.Position.AsFloats(), ts.Old.Timestamp,
+                                ts.New.Transform.Position.AsFloats(), ts.New.Timestamp,
+                                3);
+                        break;
+                    }
+            }
+            return new Position(pos);
+        }
+
+        public static float[] LerpFloatsClamped(float[] f1, DateTime timestamp1, float[] f2, DateTime timestamp2, int size)
+        {
+            float[] result = new float[size];
+            LerpFloatsNonAllocClamped(f1, timestamp1, f2, timestamp2, ref result, size);
+            return result;
+        }
+
+        public static void LerpFloatsNonAllocClamped(float[] f1, DateTime dt1, float[] f2, DateTime dt2, ref float[] result, int size)
         {
             double dtGap = (dt2 - dt1).TotalMilliseconds;
             double dtNow = (DateTime.Now - dt2).TotalMilliseconds;
@@ -68,13 +120,30 @@ namespace MulTyPlayerClient.Classes.Networking
         {
             return f1 * (1 - t) + f2 * t;
         }
+
+        
     }
 
     public enum KoalaInterpolationMode
     {
+        //Do nothing, write coords as received
+        //Performant, reliable, but looks stuttery
         None,
+
+        // Lerp between the second last transform and the last transform received, based on how much time has passed.
+        // Stops once the last transform has been reached with no further packets received
+        // Looks smoother, but costs cpu, and adds latency to movement (~20-30ms)
         Interpolate,
+
+        // Lerp between the second last transform and the last transform received, based on how much time has passed.
+        // Does not stop upon reaching the latest transform, attempts to extrapolate further
+        // Looks smoother, but costs cpu, and adds latency to movement (~20-30ms)
+        // May be better than interpolate for players with shaky connections   
         Extrapolate,
+
+        // Predict and extrapolate the koalas movement based on the last two transforms received
+        // Smoother than none, no latency, but costs cpu
+        // Could be unpredictable/innaccurate with shaky connections
         Predictive
     }
 }

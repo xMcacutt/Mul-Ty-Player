@@ -6,19 +6,12 @@ namespace MulTyPlayerClient.GUI.ViewModels
     public class SettingsViewModel
     {
         public bool DoKoalaCollision { get; set; }
-
         public bool AutoRestartTy { get; set; }
 
-        public void Setup()
+        public void SetCheckboxesFromSettings()
         {
             DoKoalaCollision = SettingsHandler.Settings.DoKoalaCollision;
             AutoRestartTy = SettingsHandler.Settings.AutoRestartTyOnCrash;
-        }
-
-        public void Save()
-        {
-            SettingsHandler.Settings.AutoRestartTyOnCrash = AutoRestartTy;
-            SettingsHandler.Settings.DoKoalaCollision = DoKoalaCollision;
         }
     }
 }

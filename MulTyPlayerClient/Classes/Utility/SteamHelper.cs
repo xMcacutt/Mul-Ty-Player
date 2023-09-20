@@ -24,7 +24,7 @@ namespace MulTyPlayerClient.Classes.Utility
                 }
                 catch (Exception e)
                 {
-                    Logger.Instance.Write("Error: SteamAPI initialization failed\n" + e.ToString());
+                    Logger.Write("Error: SteamAPI initialization failed\n" + e.ToString());
                 }
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using MulTyPlayerClient.GUI.Models;
 
 namespace MulTyPlayerClient
@@ -31,7 +32,7 @@ namespace MulTyPlayerClient
                 bool success = WriteData(address, bytes);
                 string message = BitConverter.ToString(bytes) + " to 0x" + address.ToString("X") + " For: " + writeIndicator;
                 string logMsg = (success ? "Successfully wrote " : "Failed to write") + message;
-                Logger.Instance.Write(logMsg);
+                Logger.Write(logMsg);
             }
 
             try
@@ -41,7 +42,7 @@ namespace MulTyPlayerClient
             }
             catch (Exception ex)
             {
-                Logger.Instance.Write($"Error writing data: {ex}");
+                Logger.Write($"Error writing data: {ex}");
                 throw new TyProcessException("ProcessHandler.WriteData()", ex);
             }
         }
@@ -54,9 +55,29 @@ namespace MulTyPlayerClient
             }
             catch (Exception ex)
             {
-                Logger.Instance.Write($"Error writing data: {ex}");
+                Logger.Write($"Error writing data: {ex}");
             }
             return false;
+        }
+
+        public static async Task<bool> WriteDataAsync(int address, byte[] bytes)
+        {
+            Task<bool> t = Task.Run(() =>
+            {
+                Debug.WriteLine("ASYNC: Before return");
+                return WriteProcessMemory(TyProcess.Handle, address, bytes, bytes.Length, out nint bytesWritten);
+            });
+            Debug.WriteLine("ASYNC: Before try");
+            try
+            {
+                Debug.WriteLine("ASYNC: Before await");
+                await t;
+            }
+            catch (Exception ex)
+            {
+                Logger.Write($"Error writing data: {ex}");
+            }
+            return t.Result;
         }
 
         //Do not check if the process is running (for now),
@@ -72,14 +93,14 @@ namespace MulTyPlayerClient
                     //string s = GetCallStackAsString();
                     if(addBase) address = TyProcess.BaseAddress + address;
                     nuint nSize = (nuint)sizeof(T), nRead;
-                    //BasicIoC.Logger.Instance.Write(address.ToString() + " " + s);
+                    //BasicIoC.Logger.Write(address.ToString() + " " + s);
                     return ReadProcessMemory(TyProcess.Handle, (void*)address, pResult, nSize, &nRead)
                         && nRead == nSize;
                 }
             }
             catch(Exception ex)
             {
-                Logger.Instance.Write(ex.ToString());
+                Logger.Write(ex.ToString());
                 result = default;
                 throw new TyProcessException("ProcessHandler.TryRead()", ex);
             }

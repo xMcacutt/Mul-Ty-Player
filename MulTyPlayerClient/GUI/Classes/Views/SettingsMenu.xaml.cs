@@ -14,7 +14,7 @@ namespace MulTyPlayerClient.GUI.Views
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             WindowHandler.SettingsWindow.Hide();
-            SettingsHandler.Save();
+            SettingsHandler.SaveSettingsFromSettingsMenu();
             e.Cancel = true;
         }
     }

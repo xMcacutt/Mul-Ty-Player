@@ -18,9 +18,12 @@ namespace MulTyPlayerClient
             WindowHandler.InitializeWindows();
             SettingsHandler.Setup();
             SFXPlayer.Init();
-            _ = new Logger(200);
             ModelController.InstantiateModels();
-            new MainWindow().Show();
+            mw = new MainWindow();
+            mw.Show();
+            mw.Activate();
         }
+
+        MainWindow mw;
     }
 }

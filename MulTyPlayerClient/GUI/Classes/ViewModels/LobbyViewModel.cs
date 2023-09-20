@@ -20,8 +20,6 @@ namespace MulTyPlayerClient.GUI.ViewModels
         }
 
         public ObservableCollection<string> ChatMessages {get; set;}
-        private bool copyLogMessagesToChat = true;
-
 
         public ICommand ManageInputCommand { get; set; }
         public ICommand LogoutCommand { get; set; }
@@ -42,7 +40,6 @@ namespace MulTyPlayerClient.GUI.ViewModels
         public LobbyViewModel()
         {
             ChatMessages = new ObservableCollection<string>();
-            SetCopyLogMessagesToChat(copyLogMessagesToChat);
             ManageInputCommand = new RelayCommand(ManageInput);
             LogoutCommand = new RelayCommand(Logout);
 
@@ -52,6 +49,14 @@ namespace MulTyPlayerClient.GUI.ViewModels
             Countdown.OnCountdownBegan += OnCountdownBegan;
             Countdown.OnCountdownAborted += OnCountdownEnded;
             Countdown.OnCountdownFinished += OnCountdownEnded;
+
+            Logger.OnLogWrite += ChatMessages.Add;
+
+            //i dont know what this does but i think matt said it was important. idk why.
+            ModelController.KoalaSelect.OnKoalaSelected += (k) =>
+            {
+                System.Windows.Data.CollectionViewSource.GetDefaultView(ChatMessages).Refresh();
+            };
         }
 
         public void ManageInput()
@@ -69,22 +74,14 @@ namespace MulTyPlayerClient.GUI.ViewModels
         public void OnEntered()
         {
             Lobby.UpdateReadyStatus();
-            Lobby.UpdateHostIcon();
+            Lobby.UpdateHostIcon();            
             Input = "";
         }
 
         public void OnExited()
         {
+            ChatMessages.Clear();
             Input = "";
-        }
-
-        public void SetCopyLogMessagesToChat(bool value)
-        {
-            copyLogMessagesToChat = value;
-            if (copyLogMessagesToChat)
-                Logger.OnLogWrite += ChatMessages.Add;
-            else
-                Logger.OnLogWrite -= ChatMessages.Add;
         }
 
         private void Model_IsOnMenuChanged(bool value)

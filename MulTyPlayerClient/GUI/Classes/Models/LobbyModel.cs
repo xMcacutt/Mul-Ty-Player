@@ -82,7 +82,7 @@ namespace MulTyPlayerClient.GUI.Models
                 Client.HCommand.ParseCommand(input);
             }
             else
-                Logger.Instance.Write(input);
+                Logger.Write(input);
         }
 
         public bool TryGetPlayerInfo(ushort clientID, out PlayerInfo playerInfo)

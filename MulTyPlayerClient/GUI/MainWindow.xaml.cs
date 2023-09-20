@@ -1,4 +1,5 @@
-﻿using MulTyPlayerClient.Classes.Utility;
+﻿using MulTyPlayerClient.Classes.ConsoleLog;
+using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI.Models;
 using MulTyPlayerClient.GUI.ViewModels;
 using System.Windows;
@@ -29,6 +30,7 @@ namespace MulTyPlayerClient.GUI
             }
             TyProcess.CloseHandle();
             SteamHelper.Shutdown();
+            Logger.Close();
         }
     }
 }
