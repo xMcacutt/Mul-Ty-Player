@@ -17,6 +17,7 @@ namespace MulTyPlayerClient
         MenuCancel,
         Race321,
         Race10,
+        RaceAbort
     }
 
     public static class SFXPlayer
@@ -41,6 +42,7 @@ namespace MulTyPlayerClient
             {SFX.MenuCancel,         new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/MenuCancel.wav") },
             {SFX.Race321,            new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Race321.wav") },
             {SFX.Race10,             new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Race10.wav") },
+            {SFX.RaceAbort,          new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/RaceAbort.wav") }
         };
 
         static Dictionary<SFX, MediaPlayer> mediaPlayers;

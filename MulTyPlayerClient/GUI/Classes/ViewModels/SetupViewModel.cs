@@ -2,7 +2,9 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.IO.Pipes;
 using System.Net.Http;
+using System.Text;
 
 namespace MulTyPlayerClient.GUI.ViewModels
 {
@@ -62,6 +64,18 @@ namespace MulTyPlayerClient.GUI.ViewModels
                         var bytesWritten = destinationStream.Position;
                         var progressPercentage = (double)bytesWritten / totalBytes * 100;
                         worker.ReportProgress((int)progressPercentage, $"Copying file {file}: {(int)progressPercentage}%");
+                    }
+                    destinationStream.Close();
+                    if(file == "TY.exe")
+                    {
+                        int versionStringOffset = 0x2024F8;
+                        //VERSIONING IS CHANGED WHEN THE RKV PATCH_PC IS UPDATED AND FOLLOWS DAY MONTH YEAR AS DDMM.YY
+                        //ALSO INCREMENT RKV VERSION NUMBER
+                        var replacement = Encoding.ASCII.GetBytes("MTP2311.23 RKV3");
+                        using FileStream fileStream = new(destinationFilePath, FileMode.Open, FileAccess.Write);
+                        fileStream.Seek(versionStringOffset, SeekOrigin.Begin);
+                        using BinaryWriter binaryWriter = new(fileStream);
+                        binaryWriter.Write(replacement);
                     }
                 }
             }

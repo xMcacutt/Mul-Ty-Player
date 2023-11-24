@@ -41,7 +41,6 @@ namespace MulTyPlayerClient
 
         public override void Sync(int null1, byte[] null2, byte[] saveData)
         {
-            Logger.WriteDebug("Got frosty: " + saveData[5]);
             int attributeAmount = 21;
 
             SaveSync.Sync(0, saveData);

@@ -15,10 +15,10 @@ namespace MulTyPlayerClient
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            WindowHandler.InitializeWindows();
             SettingsHandler.Setup();
-            SFXPlayer.Init();
             ModelController.InstantiateModels();
+            WindowHandler.InitializeWindows();
+            SFXPlayer.Init();
             mw = new MainWindow();
             mw.Show();
             mw.Activate();

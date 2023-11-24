@@ -13,26 +13,24 @@ In just a few minutes, you can be exploring snowy mountains, swimming through sh
 
 ![Boonie](/Boonie.png)
 
-2.2.2 has been released!!!!
+3.0.0 IS HERE!!!
 
-This update is a huge improvement to the memory usage as well as fixing a sound playing memory leak.
-Check the changelog below for more details.
-
-2.0.0 Update:
-
-ElusiveFluffy (Kana) jumped on board to bring us a brand new GUI to make Mul-Ty-Player foolproof.
+Over the six months, progress on MTP has been a lot slower but another complete restructuring thanks to Tinsel has gotten us huge performance improvements
+as well as a ton of bug fixes and helpful new features.
 
 ![ClientGUI](/ClientGUIDemo.png)
 
-The rkv patcher is no more. Now, you can install the patch in less than a minute, directly from the client app.
+Install the patch in less than a minute, directly from the client app.
 
 ![Patcher](/PatcherDemo.png)
 
-Finally, you can also select which koala you want to play as.
+Select which koala you want to play as.
 
 ![Koala Selection](/KoalaSelectionPreviewImage.png)
 
 Before installing, make sure you remove all pre-2.0.0 versions of Mul-Ty-Player from your computer, including the game files.
+
+If you're installing from MTP2.X.X, remove the contents of your MTP game files and rerun the setup as described below.
 
 You can remove the applications from the "Add or Remove Programs" section of your control panel.
 
@@ -82,20 +80,26 @@ With your port forwarding rule set up, people can now join your server using you
 ## Changelog
 
 ### New Features
-- New GUI.
-- Ready up system and countdown.
-- Player list in client app.
-- Integrated install into client app.
-- Auto reconnect on network time out.
-- No disconnect if game crashes.
-- Functional password system.
-- Choose which koala to play as.
+- GUI mostly functions in a single window now so no more swapping windows.
+- New Launch Game button added to splash screen and main GUI.
+- Countdown abort system fully functional.
+- Rainbow Scale syncing.
+- Semi-functional interpolation system.
+- Koalas now appear in Outback Safari.
+- Optional auto restart Ty on crash.
+- Huge memory management optimisations.
 - Crash stability. No more constant crashing.
-- Desync issues fixed.
-- Faster code.
+- Rang syncing issues fixed.
 - K O A L A
 
 ### Bug Fixes
+
+#### 3.0.0
+- Rang syncing on reconnect
+- Koala's show up in outback
+- Connect button and read button always reset on countdown cancel
+- Fixed sounds not playing
+- Fixed issue with player coordinates being sent more than necessary
 
 #### 2.2.2
 - Fixed sounds not playing
@@ -171,9 +175,9 @@ You can also leave feedback for future updates in my DMs on Discord Mcacutt#5671
 ## Acknowledgements
 
  - [ElusiveFluffy (Kana Miyoshi)](https://github.com/ElusiveFluffy)
+ - [Tinsel](https://github.com/ConnorDaytonaHolmes)
  - [Riptide Networking](https://github.com/RiptideNetworking/Riptide)
  - [Facepunch.Steamworks.Net](https://wiki.facepunch.com/steamworks/)
- - [Modding Team From Speedrunning Discord](https://discord.gg/ENTV72BWru)
  - [Kanesthename for Artwork](https://www.deviantart.com/kanesthename/art/Ty-The-Tasmanian-Tiger-Logo-Recreation-Render-271468546)
  - SilentKuudere and SirLaurenceNZ for stopping me from going mad and helping me to test.
  - GPT for learning with me and occasionally giving me useful code.

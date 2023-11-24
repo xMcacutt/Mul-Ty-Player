@@ -8,7 +8,6 @@ namespace MulTyPlayerClient.GUI.Models
         public static LoginModel Login {get; private set;}
         public static KoalaSelectModel KoalaSelect {get; private set;}
         public static LobbyModel Lobby {get; private set;}
-
         public static SettingsViewModel Settings {get; private set;}
         public static SetupViewModel Setup {get; private set;}
 

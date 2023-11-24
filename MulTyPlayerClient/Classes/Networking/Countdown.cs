@@ -85,6 +85,7 @@ namespace MulTyPlayerClient.Classes
         {
             SFXPlayer.StopSound(SFX.Race10);
             SFXPlayer.StopSound(SFX.Race321);
+            SFXPlayer.PlaySound(SFX.RaceAbort);
             abortTokenSource.Cancel();
             OnCountdownAborted?.Invoke();
         }
