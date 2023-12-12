@@ -12,7 +12,7 @@ namespace MulTyPlayerClient
 
         public bool IsAtMainMenuOrLoading()
         {
-            ProcessHandler.TryRead(LOADING_SCREEN_STATE_ADDRESS, out bool result, true);
+            ProcessHandler.TryRead(LOADING_SCREEN_STATE_ADDRESS, out bool result, true, "GameStateHandler::IsAtMainMenuOrLoading()");
             bool loading = !result;            
             if (wasLoadingLastFrame && !loading)
             {
@@ -24,7 +24,7 @@ namespace MulTyPlayerClient
 
         public bool IsAtMainMenu()
         {
-            ProcessHandler.TryRead(MAIN_MENU_STATE_ADDRESS, out bool result, true);
+            ProcessHandler.TryRead(MAIN_MENU_STATE_ADDRESS, out bool result, true, "GameStateHandler::IsAtMainMenu()");
             bool onMenu = !result;
             NotifyLobbyOfMenu(onMenu);
             return onMenu;            

@@ -55,7 +55,7 @@ namespace MulTyPlayerClient
 
         public virtual int ReadObserver(int address, int size)
         {
-            ProcessHandler.TryRead(address, out int result, CounterAddressStatic);
+            ProcessHandler.TryRead(address, out int result, CounterAddressStatic, "SyncObjectHandler::ReadObserver()");
             if (size == 1)
             {
                 result = BitConverter.GetBytes(result)[0];
@@ -79,7 +79,7 @@ namespace MulTyPlayerClient
                     if (SeparateID) 
                     {
                         int address = LiveObjectAddress + (iLive * LiveSync.ObjectLength) + IDOffset;
-                        ProcessHandler.TryRead(address, out iSave, false);
+                        ProcessHandler.TryRead(address, out iSave, false, "SyncObjectHandler::CheckObserverChanged()");
                     }
                     if (GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] != CheckState)
                     {

@@ -25,7 +25,7 @@ namespace MulTyPlayerClient
             int dataAmount = 12;
             for (int i = 0; i < dataAmount; i++)
             {
-                ProcessHandler.TryRead(CounterAddress + i, out byte dataState, false);
+                ProcessHandler.TryRead(CounterAddress + i, out byte dataState, false, "RCHandler::CheckObserverChanged()");
                 if (dataState == 1 && GlobalObjectData[i] == 0)
                 {
                     GlobalObjectData[i] = 1;

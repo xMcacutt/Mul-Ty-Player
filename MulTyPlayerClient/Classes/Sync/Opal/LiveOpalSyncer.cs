@@ -24,7 +24,7 @@ namespace MulTyPlayerClient
             int address = HOpal.NonCrateOpalsAddress;
             for (int i = 0; i < 300 - crateOpalsInLevel; i++)
             {
-                ProcessHandler.TryRead(address + 0x78 + (0x114 * i), out currentOpals[i], false);
+                ProcessHandler.TryRead(address + 0x78 + (0x114 * i), out currentOpals[i], false, "LiveOpalSyncer::ReadData() {1}");
             }
 
             // If there are no crate opals in the level, return the current opals array
@@ -34,7 +34,7 @@ namespace MulTyPlayerClient
             address = HOpal.CrateOpalsAddress;
             for (int i = 0; i < crateOpalsInLevel; i++)
             {
-                ProcessHandler.TryRead(address + 0x78 + (0x114 * i), out currentOpals[300 - crateOpalsInLevel + i], false);
+                ProcessHandler.TryRead(address + 0x78 + (0x114 * i), out currentOpals[300 - crateOpalsInLevel + i], false, "LiveOpalSyncer::ReadData() {2}");
             }
 
             return currentOpals;
@@ -53,13 +53,13 @@ namespace MulTyPlayerClient
             {
                 int nonCrateOpalsInCurrentLevel = 300 - crateOpalsInCurrentLevel;
                 address = HOpal.CrateOpalsAddress + 0x78 + (0x114 * (index - nonCrateOpalsInCurrentLevel));
-                ProcessHandler.TryRead(address, out HOpal.CurrentObjectData[index], false);
+                ProcessHandler.TryRead(address, out HOpal.CurrentObjectData[index], false, "LiveOpalSyncer::Collect() {1}");
                 if (HOpal.CurrentObjectData[index] >= 3) return;
                 ProcessHandler.WriteData(HOpal.CrateOpalsAddress + 0x78 + (0x114 * (index - nonCrateOpalsInCurrentLevel)), BitConverter.GetBytes(3), $"Collecting opal {index}");
                 return;
             }
             address = baseAddress + 0x78 + (0x114 * index);
-            ProcessHandler.TryRead(address, out HOpal.CurrentObjectData[index], false);
+            ProcessHandler.TryRead(address, out HOpal.CurrentObjectData[index], false, "LiveOpalSyncer::Collect() {1}");
             if (HOpal.CurrentObjectData[index] >= 3) return;
             ProcessHandler.WriteData(address, BitConverter.GetBytes(3), $"Collecting opal {index}");
         }

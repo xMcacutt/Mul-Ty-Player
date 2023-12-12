@@ -28,8 +28,8 @@ namespace MulTyPlayerClient
         {
             for (int i = 0; i < 3; i++)
             {
-                ProcessHandler.TryRead(positionAddress + sizeof(float) * i, out currentPositionRotation[i], true);
-                ProcessHandler.TryRead(rotationAddress + sizeof(float) * i, out currentPositionRotation[i+3], true);
+                ProcessHandler.TryRead(positionAddress + sizeof(float) * i, out currentPositionRotation[i], true, "HeroHandler::GetTyPosRot() {position}");
+                ProcessHandler.TryRead(rotationAddress + sizeof(float) * i, out currentPositionRotation[i+3], true, "HeroHandler::GetTyPosRot() {rotation}");
             }
         }
 

@@ -133,6 +133,10 @@ namespace MulTyPlayerClient
         private static void OnExit(object o, EventArgs e)
         {
             Logger.WriteDebug($"Process exited: {process.ExitCode}");
+            if (ProcessHandler.LogMostRecentMemoryIOInfoOnProcessExit)
+            {
+                Logger.WriteDebug($"Last Memory IO operation: {ProcessHandler.MostRecentIOIndicator}");
+            }
             OnTyProcessExited?.Invoke();
             IsRunning = false;
             process.Close();

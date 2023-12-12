@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using MulTyPlayerClient.GUI.Models;
 
 namespace MulTyPlayerClient
 {
@@ -10,6 +9,8 @@ namespace MulTyPlayerClient
     {   
         public static bool MemoryWriteDebugLogging = false;
         public static bool MemoryReadDebugLogging = false;
+        public static string MostRecentIOIndicator = "None";
+        public static bool LogMostRecentMemoryIOInfoOnProcessExit = true;
 
         [DllImport("kernel32.dll")]
         internal static unsafe extern bool ReadProcessMemory(
@@ -27,6 +28,10 @@ namespace MulTyPlayerClient
         //may restructure in future
         public static bool WriteData(int address, byte[] bytes, string writeIndicator)
         {
+            if (LogMostRecentMemoryIOInfoOnProcessExit)
+            {
+                MostRecentIOIndicator = writeIndicator;
+            }
             if (MemoryWriteDebugLogging)
             {
                 bool success = WriteData(address, bytes);
@@ -35,16 +40,9 @@ namespace MulTyPlayerClient
                 Logger.Write(logMsg);
                 return success;
             }
-
-            try
+            else
             {
-                bool success = WriteProcessMemory(TyProcess.Handle, address, bytes, bytes.Length, out nint bytesWritten);
-                return success;
-            }
-            catch (Exception ex)
-            {
-                Logger.Write($"Error writing data: {ex}");
-                throw new TyProcessException("ProcessHandler.WriteData()", ex);
+                return WriteData(address, bytes);
             }
         }
 
@@ -81,11 +79,31 @@ namespace MulTyPlayerClient
             return t.Result;
         }
 
+
+        public static unsafe bool TryRead<T>(nint address, out T result, bool addBase, string readIndicator) where T : unmanaged
+        {
+            if (LogMostRecentMemoryIOInfoOnProcessExit)
+            {
+                MostRecentIOIndicator = readIndicator;
+            }
+            if (MemoryReadDebugLogging)
+            {
+                bool success = TryRead(address, out result, addBase);
+                string message = "Reading from 0x" + address.ToString("X") + " For: " + readIndicator;
+                string logMsg = (success ? "Successfully wrote " : "Failed to write") + message;
+                Logger.Write(logMsg);
+                return success;
+            }
+            else
+            {
+                return TryRead(address, out result, addBase);
+            }
+        }
+        
         //Do not check if the process is running (for now),
         //throwing this exception allows up to exit the client loop
         //may restructure in future
-        public static unsafe bool TryRead<T>(nint address, out T result, bool addBase)
-        where T : unmanaged
+        private static unsafe bool TryRead<T>(nint address, out T result, bool addBase) where T : unmanaged
         {
             try
             {

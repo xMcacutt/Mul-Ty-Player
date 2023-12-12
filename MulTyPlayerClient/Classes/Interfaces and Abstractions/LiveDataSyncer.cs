@@ -33,7 +33,7 @@ namespace MulTyPlayerClient
             int address = HSyncObject.LiveObjectAddress;
             for (int i = 0; i < HSyncObject.ObjectAmount; i++)
             {
-                ProcessHandler.TryRead(address + StateOffset + (ObjectLength * i), out currentData[i], false);
+                ProcessHandler.TryRead(address + StateOffset + (ObjectLength * i), out currentData[i], false, "LiveDataSyncer::ReadData()");
             }
             return currentData;
         }

@@ -17,11 +17,11 @@ namespace MulTyPlayerClient
             int crateAddress = HSyncObject.LiveObjectAddress + (index * ObjectLength);
             ProcessHandler.WriteData(crateAddress + 0x48, new byte[] {0}, "Setting crate collision to false");
             ProcessHandler.WriteData(crateAddress + 0x114, new byte[] {0}, "Setting crate visibility to false");
-            ProcessHandler.TryRead(crateAddress + 0x178, out byte opalCount, false);
+            ProcessHandler.TryRead(crateAddress + 0x178, out byte opalCount, false, "LiveCrateSyncer::Collect() {1}");
             for (int i = 0; i < opalCount; i++)
             {
-                ProcessHandler.TryRead(crateAddress + 0x150 + (4 * i), out IntPtr opalAddress, false);
-                ProcessHandler.TryRead(opalAddress + 0x78, out byte opalState, false);
+                ProcessHandler.TryRead(crateAddress + 0x150 + (4 * i), out IntPtr opalAddress, false, "LiveCrateSyncer::Collect() {2}");
+                ProcessHandler.TryRead(opalAddress + 0x78, out byte opalState, false, "LiveCrateSyncer::Collect() {3}");
                 if (opalState == 0)
                 {
                     ProcessHandler.WriteData((int)(opalAddress + 0x78), BitConverter.GetBytes(1), $"Spawning opal from crate {i} / {opalCount}");
@@ -44,7 +44,7 @@ namespace MulTyPlayerClient
             int address = HSyncObject.LiveObjectAddress;
             for (int i = 0; i < currentData.Length; i++)
             {
-                ProcessHandler.TryRead(address + StateOffset + (ObjectLength * i), out currentData[i], false);
+                ProcessHandler.TryRead(address + StateOffset + (ObjectLength * i), out currentData[i], false, "LiveCrateSyncer::ReadData()");
             }
             return currentData;
         }

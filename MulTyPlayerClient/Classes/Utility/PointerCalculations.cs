@@ -13,7 +13,7 @@ namespace MulTyPlayerClient
             for (int i = 0; i < offsets.Length; i++)
             {
                 bool addBase = i == 0;
-                ProcessHandler.TryRead(addr, out IntPtr nextAddress, addBase);
+                ProcessHandler.TryRead(addr, out IntPtr nextAddress, addBase, "PoinerCalculations::GetPointerAddress()");
                 addr = nextAddress + offsets[i];
             }
             if (extraOffset == 0)

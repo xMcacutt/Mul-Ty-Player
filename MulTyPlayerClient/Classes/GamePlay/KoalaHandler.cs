@@ -107,7 +107,7 @@ namespace MulTyPlayerClient
 
         public void CheckTA()
         {
-            ProcessHandler.TryRead(_bTimeAttackAddress, out int inTimeAttack, true);
+            ProcessHandler.TryRead(_bTimeAttackAddress, out int inTimeAttack, true, "KoalaHandler::CheckTA()");
             if (inTimeAttack == 1)
                 MakeVisible();
         }

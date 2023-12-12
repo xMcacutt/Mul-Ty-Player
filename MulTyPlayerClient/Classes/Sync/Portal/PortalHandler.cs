@@ -55,7 +55,7 @@ namespace MulTyPlayerClient
             for (int i = 0; i < 7; i++)
             {
                 //CHECKS IF THE PORTAL SHOULD BE ACTIVE BECAUSE THE LEVEL HAS BEEN ENTERED ALREADY
-                ProcessHandler.TryRead(SyncHandler.SaveDataBaseAddress + (0x70 * FlakyPortals[i]), out byte portalSaveDataState, false);
+                ProcessHandler.TryRead(SyncHandler.SaveDataBaseAddress + (0x70 * FlakyPortals[i]), out byte portalSaveDataState, false, "PortalHandler::ReadObserver() 1");
                 if (portalSaveDataState > 0 || PortalsActive[FlakyPortals[i]] > 0)
                 {
                     PortalsActive[FlakyPortals[i]] = 1;
@@ -66,7 +66,7 @@ namespace MulTyPlayerClient
                 {
                     //ORDER OF PORTALS IS IRRITATING SO I JUST MADE A LIST OF THEM
                     int orderedIndex = Array.IndexOf(LivePortalOrder, FlakyPortals[i]);
-                    ProcessHandler.TryRead(address + (LiveSync.ObjectLength * orderedIndex), out byte portalLiveDataState, false);
+                    ProcessHandler.TryRead(address + (LiveSync.ObjectLength * orderedIndex), out byte portalLiveDataState, false, "PortalHandler::ReadObserver() 2");
                     if (portalLiveDataState == 2)
                     {
                         PortalsActive[FlakyPortals[i]] = 1;

@@ -17,7 +17,7 @@
             int bitIndex = index % 8;
 
             int address = SyncHandler.SaveDataBaseAddress + SaveDataOffset + byteIndex;
-            ProcessHandler.TryRead(address, out byte b, false);
+            ProcessHandler.TryRead(address, out byte b, false, "SaveRainbowScaleSyncer::Save()");
             b |= (byte)(1 << bitIndex);
             ProcessHandler.WriteData(address, new byte[] { b }, "Setting new rainbow scale save data byte value");
         }

@@ -29,7 +29,7 @@ namespace MulTyPlayerClient
                 return;
 
             int address = HRainbowScale.LiveObjectAddress + StateOffset + (ObjectLength * index);
-            ProcessHandler.TryRead(address, out HRainbowScale.CurrentObjectData[index], false);
+            ProcessHandler.TryRead(address, out HRainbowScale.CurrentObjectData[index], false, "LiveRainbowScaleSyncer::Collect()");
 
             if (HRainbowScale.CurrentObjectData[index] >= 3)
                 return;

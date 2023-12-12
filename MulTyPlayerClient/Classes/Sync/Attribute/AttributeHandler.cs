@@ -24,7 +24,7 @@ namespace MulTyPlayerClient
             int attributeAmount = 21;
             for (int i = 0; i < attributeAmount; i++)
             {
-                ProcessHandler.TryRead(CounterAddress + i, out byte result, false);
+                ProcessHandler.TryRead(CounterAddress + i, out byte result, false, "AttributeHandler::CheckObserverChanged()");
                 if (result == 1 && GlobalObjectData[i] == 0)
                 {
                     GlobalObjectData[i] = 1;
