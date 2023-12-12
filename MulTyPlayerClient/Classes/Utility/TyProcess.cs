@@ -132,7 +132,7 @@ namespace MulTyPlayerClient
 
         private static void OnExit(object o, EventArgs e)
         {
-            Logger.WriteDebug("Process exited");
+            Logger.WriteDebug($"Process exited: {process.ExitCode}");
             OnTyProcessExited?.Invoke();
             IsRunning = false;
             process.Close();

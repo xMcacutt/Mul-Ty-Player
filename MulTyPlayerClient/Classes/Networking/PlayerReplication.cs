@@ -30,16 +30,18 @@ namespace MulTyPlayerClient.Classes.Networking
             playerTransforms = new();
         }
 
-        public static Task RenderKoalas(int maxTimeMilliseconds)
+        public static void RenderKoalas(int maxTimeMilliseconds)
         {
             if (InterpolationMode == KoalaInterpolationMode.None)
             {
                 RenderTick();
                 Thread.Sleep(Client.MS_PER_TICK);
-                return Task.CompletedTask;
+                return;
             }
+
             renderTokenSource = new CancellationTokenSource();
             var renderToken = renderTokenSource.Token;
+            renderTokenSource.CancelAfter(maxTimeMilliseconds);
             Task render = Task.Run(() =>
             {
                 //Debug.WriteLine("RENDERING!");
@@ -49,9 +51,6 @@ namespace MulTyPlayerClient.Classes.Networking
                     Thread.Sleep(KRENDER_SLEEP_TIME);
                 }
             }, renderToken);
-            Task renderAsync = render.WaitAsync(renderToken);
-            renderTokenSource.CancelAfter(maxTimeMilliseconds);
-            return renderAsync;
         }
 
         public static void CancelRender()
@@ -64,10 +63,12 @@ namespace MulTyPlayerClient.Classes.Networking
         {
             foreach (KoalaID koalaID in receivedSnapshotData.Keys)
             {
-                Transform t = UpdateTransform(koalaID);
-                WriteTransformData(koalaID, t);
-            }
-                       
+                if (!Client.HGameState.IsAtMainMenuOrLoading())
+                {
+                    Transform t = UpdateTransform(koalaID);
+                    WriteTransformData(koalaID, t);
+                }
+            }                       
         }
 
         #region AddRemovePlayers

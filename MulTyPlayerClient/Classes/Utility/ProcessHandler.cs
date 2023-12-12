@@ -33,6 +33,7 @@ namespace MulTyPlayerClient
                 string message = BitConverter.ToString(bytes) + " to 0x" + address.ToString("X") + " For: " + writeIndicator;
                 string logMsg = (success ? "Successfully wrote " : "Failed to write") + message;
                 Logger.Write(logMsg);
+                return success;
             }
 
             try

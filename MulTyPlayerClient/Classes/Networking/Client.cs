@@ -178,8 +178,8 @@ namespace MulTyPlayerClient
                         //read_dt = (readTime - frameCommence).TotalMilliseconds;
                         //Logger.WriteDebug($"Finished reading. Elapsed time: {read_dt}ms. Beginning koala render.");
 #endif
-                        Task renderAsync = PlayerReplication.RenderKoalas(MS_PER_TICK);
-                        Task.WaitAny(Task.Delay(MS_PER_TICK), renderAsync);
+                        // Writes all received player coordinates into koala positions in memory
+                        PlayerReplication.RenderKoalas(MS_PER_TICK);
                     }
                     catch (TyClosedException e)
                     {
