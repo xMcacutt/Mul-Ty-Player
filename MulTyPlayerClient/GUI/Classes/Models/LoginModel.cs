@@ -8,6 +8,7 @@ using System.Linq;
 using System.Media;
 using System.Text;
 using System.Windows;
+using Steamworks;
 
 namespace MulTyPlayerClient.GUI.Models
 {
@@ -20,11 +21,6 @@ namespace MulTyPlayerClient.GUI.Models
         public bool ConnectionAttemptSuccessful = false;
 
         private List<ServerListing> _serverList;
-
-        public LoginModel()
-        {
-            Setup();
-        }
 
         string ip, name, pass;
 
@@ -78,7 +74,7 @@ namespace MulTyPlayerClient.GUI.Models
             }
         }
 
-        private void Setup()
+        public void Setup()
         {
             SetName();
 

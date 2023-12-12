@@ -39,7 +39,6 @@ namespace MulTyPlayerClient.GUI.Models
             bool canAutoLaunchGame =
                 SettingsHandler.Settings.AutoLaunchTyOnStartup
                 && SettingsHandler.HasValidExePath()
-                && SteamHelper.IsLoggedOn()
                 && TyProcess.CanLaunchGame;
 
             if (canAutoLaunchGame)

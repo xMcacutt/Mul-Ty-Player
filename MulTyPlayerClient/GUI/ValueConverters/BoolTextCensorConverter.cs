@@ -11,7 +11,7 @@ namespace MulTyPlayerClient.GUI
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return new Regex("\\s|\\S").Replace(value.ToString(), "*");
+            return value != null ? new Regex("\\s|\\S").Replace(value.ToString(), "*") : "";
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

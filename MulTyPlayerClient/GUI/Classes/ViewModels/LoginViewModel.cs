@@ -27,14 +27,9 @@ namespace MulTyPlayerClient.GUI.ViewModels
 
         public LoginViewModel()
         {
-            ConnectingAddress = Login.GetIP();
-            Name = Login.GetName();
-            Pass = Login.GetPass();
             ConnectCommand = new RelayCommand(TryConnect);
-
             Login.OnLoginFailed += Model_OnLoginFailed;
             Login.OnLoginSuccess += Model_OnLoginSuccess;
-            
         }
 
         private void TryConnect()
@@ -56,14 +51,12 @@ namespace MulTyPlayerClient.GUI.ViewModels
             ConnectButtonEnabled = true;
         }
 
-        private void Model_EnableLoginButton()
-        {
-            ConnectButtonEnabled = true;
-        }
-
         public void OnEntered()
         {
-            Login.SetName();
+            Login.Setup();
+            ConnectingAddress = Login.GetIP();
+            Name = Login.GetName();
+            Pass = Login.GetPass();
             ConnectButtonEnabled = true;
         }
 
