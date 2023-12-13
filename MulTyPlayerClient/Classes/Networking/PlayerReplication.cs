@@ -103,6 +103,9 @@ namespace MulTyPlayerClient.Classes.Networking
         
         static void WriteTransformData(KoalaID koalaID, Transform transform)
         {
+            if (transform.LevelID != Client.HLevel.CurrentLevelId)
+                return;
+
             KoalaHandler.KoalaTransformAddresses ktp = KoalaHandler.TransformAddresses[koalaID];
 
             ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(transform.Position.X));

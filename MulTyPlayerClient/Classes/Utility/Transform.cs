@@ -76,19 +76,20 @@ namespace MulTyPlayerClient.Classes.GamePlay
     {
         public Position Position;
         public Rotation Rotation;
+        public int LevelID;
 
-        public Transform(Position Position, Rotation Rotation)
+        public Transform(Position Position, Rotation Rotation, int LevelID)
         {
-            this.Position = Position; this.Rotation = Rotation;
+            this.Position = Position; this.Rotation = Rotation; this.LevelID = LevelID;
         }
-        public Transform(float[] transform) : this(new Position(transform[0..3]), new Rotation(transform[3..6])) { }
-        public Transform() : this(new Position(), new Rotation()) { }
+        public Transform(float[] transform, int levelid) : this(new Position(transform[0..3]), new Rotation(transform[3..6]), levelid) { }
+        public Transform() : this(new Position(), new Rotation(), 0) { }
     }
 
     public record struct TransformSnapshot(Transform Transform, DateTime Timestamp)
     {
         public TransformSnapshot(Transform transform) : this(transform, DateTime.Now) { }
-        public TransformSnapshot(float[] transform) : this(new(transform), DateTime.Now) { }
+        public TransformSnapshot(float[] transform, int levelid) : this(new(transform, levelid), DateTime.Now) { }
         public TransformSnapshot() : this(new Transform(), DateTime.Now) { }
     }
 
