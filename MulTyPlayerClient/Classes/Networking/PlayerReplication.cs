@@ -98,6 +98,7 @@ namespace MulTyPlayerClient.Classes.Networking
             var snapshots = receivedSnapshotData[koalaID];
             playerTransforms[koalaID].Position = Interpolation.LerpPosition(snapshots, InterpolationMode);
             playerTransforms[koalaID].Rotation = snapshots.New.Transform.Rotation;
+            playerTransforms[koalaID].LevelID = snapshots.New.Transform.LevelID;
             return playerTransforms[koalaID];
         }
         
@@ -116,9 +117,9 @@ namespace MulTyPlayerClient.Classes.Networking
             ProcessHandler.WriteData(ktp.Roll, BitConverter.GetBytes(transform.Rotation.Roll));
         }
 
-        internal static void UpdatePlayerSnapshotData(KoalaID koalaID, float[] transform)
+        internal static void UpdatePlayerSnapshotData(KoalaID koalaID, float[] transform, int levelID)
         {
-            receivedSnapshotData[koalaID].Update(new(transform));
+            receivedSnapshotData[koalaID].Update(new(transform, levelID));
         }
     }
 }
