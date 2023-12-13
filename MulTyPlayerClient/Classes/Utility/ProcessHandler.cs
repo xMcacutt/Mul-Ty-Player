@@ -148,5 +148,12 @@ namespace MulTyPlayerClient
             }
             return callStack;
         }
+
+        public static void CheckAddress<T>(int addr, T value, string indicator) where T : unmanaged
+        {
+            TryRead(addr, out T test, false, indicator);
+            if (test.Equals(value)) return;
+            throw new Exception(indicator);
+        }
     }
 }

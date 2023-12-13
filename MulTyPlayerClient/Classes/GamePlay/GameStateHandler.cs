@@ -27,7 +27,7 @@ namespace MulTyPlayerClient
             ProcessHandler.TryRead(MAIN_MENU_STATE_ADDRESS, out bool result, true, "GameStateHandler::IsAtMainMenu()");
             bool onMenu = !result;
             NotifyLobbyOfMenu(onMenu);
-            return onMenu;            
+            return onMenu;
         }
 
         private void NotifyLobbyOfMenu(bool onMenu)

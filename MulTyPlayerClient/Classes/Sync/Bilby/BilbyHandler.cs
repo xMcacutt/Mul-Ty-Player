@@ -36,6 +36,8 @@ namespace MulTyPlayerClient
         public  override void SetMemAddrs()
         {
             LiveObjectAddress = PointerCalculations.GetPointerAddress(0x27D608, new int[] { 0x0, 0x0 });
+            int testAddr = PointerCalculations.GetPointerAddress(0x27D608, new int[] { 0x0, 0x64, 0 });
+            ProcessHandler.CheckAddress(testAddr, 1601463137, "Bilby base address check");
         }
     }
 }

@@ -35,6 +35,7 @@ namespace MulTyPlayerClient
         {
             CounterAddress = PointerCalculations.GetPointerAddress(0x00288730, new int[] { 0xD });
             LiveObjectAddress = PointerCalculations.GetPointerAddress(0x270280, new int[] { 0x0 });
+            ProcessHandler.CheckAddress(LiveObjectAddress, 17341304, "TE base address check");
         }
     }
 }

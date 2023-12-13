@@ -36,7 +36,7 @@ namespace MulTyPlayerClient
 
         public override void SetMemAddrs()
         {
-            CounterAddress = SyncHandler.SaveDataBaseAddress + 0xAA4;
+            CounterAddress = SyncHandler.SaveDataBaseAddress + 0xAA4; 
         }
 
         public override void Sync(int null1, byte[] null2, byte[] saveData)

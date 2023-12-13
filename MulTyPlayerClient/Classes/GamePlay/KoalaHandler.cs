@@ -60,6 +60,7 @@ namespace MulTyPlayerClient
         public void SetBaseAddress()
         {
             _baseKoalaAddress = PointerCalculations.GetPointerAddress(0x26B070, new int[] { 0x0 });
+            ProcessHandler.CheckAddress(_baseKoalaAddress, 17327608, "Koalas base address check");
         }
 
         public void SetCoordinateAddresses()

@@ -97,6 +97,7 @@ namespace MulTyPlayerClient
         public  override void SetMemAddrs()
         {
             LiveObjectAddress = PointerCalculations.GetPointerAddress(0x267408, new int[] { 0x0 });
+            ProcessHandler.CheckAddress(LiveObjectAddress, 17321904, "Portal base address check");
         }
     }
 }

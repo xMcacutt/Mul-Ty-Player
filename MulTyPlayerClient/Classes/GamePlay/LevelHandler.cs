@@ -21,7 +21,6 @@ namespace MulTyPlayerClient
                 if (currentLevelId != value)
                 {
                     currentLevelId = value;
-                    //OnLevelChange?.Invoke(currentLevelId);
                     DoLevelSetup();
                 }
             }
