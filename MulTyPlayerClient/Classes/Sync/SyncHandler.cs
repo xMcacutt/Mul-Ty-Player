@@ -38,7 +38,6 @@ namespace MulTyPlayerClient
 
         public void SetMemAddrs()
         {
-            if (Client.HGameState.IsAtMainMenuOrLoading()) return;
             SaveDataBaseAddress = PointerCalculations.GetPointerAddress(0x288730, new int[] { 0x10 });
             HAttribute.SetMemAddrs();
             if (Client.HLevel.CurrentLevelId == Levels.RainbowCliffs.Id)

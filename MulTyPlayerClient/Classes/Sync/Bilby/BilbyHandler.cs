@@ -17,8 +17,8 @@ namespace MulTyPlayerClient
             CounterAddress = 0x2651AC;
             CounterAddressStatic = true;
             CounterByteLength = 1;
-            PreviousObjectData = new byte[ObjectAmount];
-            CurrentObjectData = new byte[ObjectAmount];
+            PreviousObjectData = new byte[] {1, 1, 1, 1, 1};
+            CurrentObjectData = new byte[] {1, 1, 1, 1, 1};
             LiveSync = new LiveBilbySyncer(this);
             SaveSync = new SaveBilbySyncer();
             SetSyncClasses(LiveSync, SaveSync);
@@ -30,7 +30,7 @@ namespace MulTyPlayerClient
 
         public override bool CheckObserverCondition(byte previousState, byte currentState)
         {
-            return (previousState != 2 && currentState == 2);
+            return (previousState == 1 && currentState != 1);
         }
 
         public  override void SetMemAddrs()

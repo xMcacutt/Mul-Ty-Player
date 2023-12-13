@@ -15,7 +15,7 @@ namespace MulTyPlayerClient
 
         public override void Collect(int index)
         {
-            if (HSyncObject.CurrentObjectData[index] >= 3) return;
+            if (HSyncObject.CurrentObjectData[index] != 1) return;
             if (Client.HGameState.IsAtMainMenuOrLoading()) return;
             ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + (ObjectLength * index), new byte[] {HSyncObject.WriteState}, "Collecting bilby");
             if (!SeparateCollisionByte) return;

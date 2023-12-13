@@ -66,7 +66,7 @@ namespace MulTyPlayerClient
                 Client.HLevel.CurrentLevelId == Levels.OutbackSafari.Id ?
                 PointerCalculations.GetPointerAddress(0x255190, new int[] { 0x0 }) :
                 PointerCalculations.GetPointerAddress(0x254CB8, new int[] { 0x0 });
-            ProcessHandler.CheckAddress(LiveObjectAddress, 17281140, "Crate base address check");
+            ProcessHandler.CheckAddress(LiveObjectAddress, (ushort)(17281140&0xFFFF), "Crate base address check");
         }
 
         public override void CheckObserverChanged()

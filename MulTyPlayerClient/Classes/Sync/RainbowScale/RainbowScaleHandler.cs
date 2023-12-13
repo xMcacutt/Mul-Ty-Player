@@ -35,7 +35,7 @@
         public override void SetMemAddrs()
         {
             LiveObjectAddress = PointerCalculations.GetPointerAddress(GEM_PTR_LIST_BASE_ADDRESS, new int[] {0x0, 0x0});
-            ProcessHandler.CheckAddress(LiveObjectAddress, 17326560, "RS base address check");
+            ProcessHandler.CheckAddress(LiveObjectAddress, (short)25056, "RS base address check");
         }
 
         public override bool CheckObserverCondition(byte previousState, byte currentState)

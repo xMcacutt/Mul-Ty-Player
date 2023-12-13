@@ -38,7 +38,7 @@ namespace MulTyPlayerClient
         {
             NonCrateOpalsAddress = PointerCalculations.GetPointerAddress(GEM_PTR_LIST_BASE_ADDRESS, new int[] {0x0, 0x0});
             CrateOpalsAddress = PointerCalculations.GetPointerAddress(GEM_PTR_LIST_BASE_ADDRESS, new int[] {0x4AC, 0x0});
-            ProcessHandler.CheckAddress(NonCrateOpalsAddress, 17326560, "Opal base address check");
+            ProcessHandler.CheckAddress(NonCrateOpalsAddress, (ushort)(17326560&0xFFFF), "Opal base address check");
         }
 
         public override bool CheckObserverCondition(byte previousState, byte currentState)
