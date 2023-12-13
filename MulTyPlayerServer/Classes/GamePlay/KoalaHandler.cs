@@ -22,16 +22,17 @@ namespace MulTyPlayerServer
             ushort clientID = message.GetUShort();
             bool isHost = message.GetBool();
             PlayerHandler.AddPlayer(koalaName, playerName, clientID, isHost);
-            AnnounceKoalaAssigned(koalaName, playerName, clientID, isHost, fromClientId, true);
+            AnnounceKoalaAssigned(koalaName, playerName, clientID, isHost, false, fromClientId, true);
         }
 
-        private static void AnnounceKoalaAssigned(string koalaName, string playerName, ushort clientID, bool isHost, ushort fromToClientId, bool bSendToAll)
+        private static void AnnounceKoalaAssigned(string koalaName, string playerName, ushort clientID, bool isHost, bool isReady, ushort fromToClientId, bool bSendToAll)
         {
             Message announcement = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
             announcement.AddString(koalaName);
             announcement.AddString(playerName);
             announcement.AddUShort(clientID);
             announcement.AddBool(isHost);
+            announcement.AddBool(isReady);
             if (bSendToAll)
             {
                 Server._Server.SendToAll(announcement, fromToClientId);
@@ -42,7 +43,8 @@ namespace MulTyPlayerServer
 
         public static void SendKoalaAvailability(ushort recipient)
         {
-            foreach(Player player in PlayerHandler.Players.Values) AnnounceKoalaAssigned(player.Koala.KoalaName, player.Name, player.ClientID, player.IsHost, recipient, false);
+            foreach(Player player in PlayerHandler.Players.Values)
+                AnnounceKoalaAssigned(player.Koala.KoalaName, player.Name, player.ClientID, player.IsHost, player.IsReady, recipient, false);
         }
 
         public void ReturnKoala(Player player)
