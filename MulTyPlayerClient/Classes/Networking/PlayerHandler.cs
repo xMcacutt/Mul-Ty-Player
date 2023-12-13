@@ -18,11 +18,11 @@ namespace MulTyPlayerClient
         }
 
         //Adds other player to players & playerInfo
-        public static void AddPlayer(Koala koala, string name, ushort clientID, bool isHost)
+        public static void AddPlayer(Koala koala, string name, ushort clientID, bool isHost, bool isReady)
         {
             string koalaName = Koalas.GetInfo[koala].Name;
             Players.Remove(clientID);
-            Players.Add(clientID, new Player(koala, name, clientID, isHost, false));
+            Players.Add(clientID, new Player(koala, name, clientID, isHost, isReady));
             PlayerInfo player = new(clientID, name, koalaName);
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
@@ -35,13 +35,14 @@ namespace MulTyPlayerClient
         }
 
         //Adds yourself to playerInfo
-        public static void AnnounceSelection(string koalaName, string name, bool isHost)
+        public static void AnnounceSelection(string koalaName, string name, bool isHost, bool isReady = false)
         {
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
             message.AddString(koalaName);
             message.AddString(name);
             message.AddUShort(Client._client.Id);
             message.AddBool(isHost);
+            message.AddBool(isReady);
             PlayerInfo player = new(Client._client.Id, name, koalaName);
             ModelController.Lobby.PlayerInfoList.Add(player);
             Client._client.Send(message);

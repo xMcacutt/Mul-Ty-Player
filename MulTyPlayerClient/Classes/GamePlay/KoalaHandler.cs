@@ -41,8 +41,9 @@ namespace MulTyPlayerClient
             string playerName = message.GetString();
             ushort clientID = message.GetUShort();
             bool isHost = message.GetBool();
+            bool isReady = message.GetBool();
             Koala k = Enum.Parse<Koala>(koalaName, true);
-            PlayerHandler.AddPlayer(k, playerName, clientID, isHost);
+            PlayerHandler.AddPlayer(k, playerName, clientID, isHost, isReady);
             Client.HSync.RequestSync();
         }
 
