@@ -73,6 +73,7 @@ namespace MulTyPlayerClient.GUI.ViewModels
 
         public void OnEntered()
         {
+            IsReadyButtonEnabled = Client.HGameState.IsAtMainMenu();
             Lobby.UpdateReadyStatus();
             Lobby.UpdateHostIcon();            
             Input = "";
