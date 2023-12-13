@@ -11,41 +11,38 @@ namespace MulTyPlayerClient
 
         public int CurrentLevelId
         {
-            get
-            {
-                return currentLevelId;
-            }
-
+            get => currentLevelId;
             set
             {
                 if (currentLevelId != value)
                 {
                     currentLevelId = value;
-                    DoLevelSetup();
+                    CurrentLevelData = Levels.GetLevelData(value);
                 }
             }
         }
         private int currentLevelId;
 
         public Action<int> OnLevelChange = delegate { };
+
+        public LevelData CurrentLevelData;
         
         public void DoLevelSetup()
         {
-            LevelData lData = Levels.GetLevelData(currentLevelId);
-            HSync.SetCurrentData(lData.IsMainStage);
+            GetCurrentLevel();
+            HSync.SetCurrentData(CurrentLevelData.IsMainStage);
             HSync.SetMemAddrs();
             HSync.RequestSync();
             HSync.ProtectLeaderboard();
             HKoala.SetBaseAddress();
             HKoala.SetCoordinateAddresses();
-            if (lData.HasKoalas)
+            if (CurrentLevelData.HasKoalas)
                 ObjectiveCountSet();
             OnLevelChange?.Invoke(currentLevelId);
         }
 
         public void GetCurrentLevel()
         {
-            if (ModelController.Lobby.IsOnMenu) return;
             ProcessHandler.TryRead(0x280594, out int levelId, true, "LevelHandler::GetCurrentLevel()");
 
             if (ModelController.Lobby.TryGetPlayerInfo(Client._client.Id, out PlayerInfo playerInfo))

@@ -1,5 +1,6 @@
 ﻿using Riptide;
 using System.Collections.Generic;
+using Microsoft.Diagnostics.Tracing.Parsers.MicrosoftWindowsWPF;
 
 namespace MulTyPlayerClient
 {
@@ -37,10 +38,22 @@ namespace MulTyPlayerClient
 
         public void SetMemAddrs()
         {
-            foreach(SyncObjectHandler syncObject in SyncObjects.Values)
+            if (Client.HGameState.IsAtMainMenuOrLoading()) return;
+            SaveDataBaseAddress = PointerCalculations.GetPointerAddress(0x288730, new int[] { 0x10 });
+            HAttribute.SetMemAddrs();
+            if (Client.HLevel.CurrentLevelId == Levels.RainbowCliffs.Id)
             {
-                SaveDataBaseAddress = PointerCalculations.GetPointerAddress(0x288730, new int[] { 0x10 });
-                syncObject.SetMemAddrs();
+                HCliffs.SetMemAddrs();
+                HRainbowScale.SetMemAddrs();
+                HPortal.SetMemAddrs();
+            }
+            if (Client.HLevel.CurrentLevelData.IsMainStage)
+            {
+                HOpal.SetMemAddrs();
+                HCrate.SetMemAddrs();
+                HThEg.SetMemAddrs();
+                HBilby.SetMemAddrs();
+                HCog.SetMemAddrs();
             }
         }
 
@@ -48,7 +61,6 @@ namespace MulTyPlayerClient
         {
             if (!inMainStage)
                 return;
-
             HCrate.SetCurrentData();
             HCog.SetCurrentData();
             HBilby.SetCurrentData();

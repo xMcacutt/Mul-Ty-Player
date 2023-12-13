@@ -31,7 +31,6 @@ namespace MulTyPlayerClient
 
         public KoalaHandler()
         {
-            SetBaseAddress();
             CreateKoalaAddressArray();
         }
 
@@ -44,8 +43,7 @@ namespace MulTyPlayerClient
             bool isHost = message.GetBool();
             Koala k = Enum.Parse<Koala>(koalaName, true);
             PlayerHandler.AddPlayer(k, playerName, clientID, isHost);
-            Client.HKoala.SetCoordinateAddresses();
-            Client.HLevel.DoLevelSetup();
+            Client.HSync.RequestSync();
         }
 
         public void CreateKoalaAddressArray()
@@ -74,11 +72,9 @@ namespace MulTyPlayerClient
             if(_baseKoalaAddress == 0)
                 SetBaseAddress();
 
-            foreach (Player player in PlayerHandler.Players.Values)
+            for(int koalaID = 0; koalaID < 8; koalaID++)
             {
-                int koalaID = (int)player.Koala;
                 int koalaOffset = 0x518 * modifier * koalaID + offset;
-
                 TransformAddresses[koalaID] = new KoalaTransformAddresses();
                 TransformAddresses[koalaID].X = _baseKoalaAddress + 0x2A4 + koalaOffset;
                 TransformAddresses[koalaID].Y = _baseKoalaAddress + 0x2A8 + koalaOffset;

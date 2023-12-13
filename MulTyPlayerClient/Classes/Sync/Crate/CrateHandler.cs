@@ -9,7 +9,6 @@ namespace MulTyPlayerClient
             Name = "Crate";
             WriteState = 0;
             CheckState = 0;
-            SetMemAddrs();
             CounterAddress = PointerCalculations.GetPointerAddress(0x0028A8E8, new int[] { 0x390 });
             CounterAddressStatic = false;
             CounterByteLength = 4;
