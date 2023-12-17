@@ -18,6 +18,7 @@ namespace MulTyPlayerServer
         public static CrateSyncer SCrate;
         public static RCSyncer SCliffs;
         public static RainbowScaleSyncer SRainbowScale;
+        public static FrameSyncer SFrame;
 
         public SyncHandler()
         {
@@ -32,6 +33,7 @@ namespace MulTyPlayerServer
                 { "Crate", SCrate = new CrateSyncer() },
                 { "RC", SCliffs = new RCSyncer() },
                 { "RainbowScale", SRainbowScale = new RainbowScaleSyncer() },
+                { "Frame", SFrame = new FrameSyncer() },
             };
         }
 

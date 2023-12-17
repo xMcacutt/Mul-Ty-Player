@@ -17,6 +17,7 @@ namespace MulTyPlayerClient
         public static bool DoPortalSyncing;
         public static bool DoCliffsSyncing;
         public static bool DoRainbowScaleSyncing;
+        public static bool DoFrameSyncing;
 
         public static Dictionary<string, bool> SyncSettings;
         public static Settings Settings { get; private set; }
@@ -39,6 +40,7 @@ namespace MulTyPlayerClient
                 {"RC", false},
                 {"Attribute", false},
                 {"RainbowScale", false },
+                {"Frame", false},
             };
         }
 
@@ -71,6 +73,11 @@ namespace MulTyPlayerClient
             {
                 DoRainbowScaleSyncing = b[7];
                 SyncSettings["RainbowScale"] = DoRainbowScaleSyncing;
+            }
+            if (b.Length > 8)
+            {
+                DoFrameSyncing = b[8];
+                SyncSettings["Frame"] = DoFrameSyncing;
             }
         }
 

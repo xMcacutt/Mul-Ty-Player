@@ -30,7 +30,7 @@ namespace MulTyPlayerClient
         public void DoLevelSetup()
         {
             GetCurrentLevel();
-            HSync.SetCurrentData(CurrentLevelData.IsMainStage);
+            HSync.SetCurrentData(CurrentLevelData.IsMainStage, CurrentLevelData.FrameCount != 0);
             HSync.SetMemAddrs();
             HSync.RequestSync();
             HSync.ProtectLeaderboard();

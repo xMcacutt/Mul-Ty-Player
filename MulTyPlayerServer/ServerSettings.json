@@ -9,5 +9,6 @@
   "DoSyncPortals": true,
   "DoSyncCliffs": true,
   "DoSyncCrate": true,
-  "DoSyncScale": true
+  "DoSyncScale": true,
+  "DoSyncFrames": true
 }

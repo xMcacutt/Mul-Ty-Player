@@ -124,29 +124,26 @@ namespace MulTyPlayerClient
                 throw new TyProcessException("ProcessHandler.TryRead()", ex);
             }
         }
-
-        private static string GetCallStackAsString()
+        
+        public static unsafe bool TryReadBytes(nint address, out byte[] buffer, int length, bool addBase)
         {
-            StackTrace stackTrace = new();
-
-            // Get the frames in the call stack
-            StackFrame[] stackFrames = stackTrace.GetFrames();
-
-            // Format the call stack as a string
-            string callStack = "";
-            foreach (StackFrame frame in stackFrames)
+            try
             {
-                if (frame.GetMethod() != null)
+                buffer = new byte[length];
+                if (addBase) address = TyProcess.BaseAddress + address;
+
+                fixed (byte* pBuffer = buffer)
                 {
-                    callStack += frame.GetMethod().Name + " -> ";
+                    nuint nRead;
+                    return ReadProcessMemory(TyProcess.Handle, (void*)address, pBuffer, (nuint)length, &nRead)
+                           && nRead == (nuint)length;
                 }
             }
-            // Remove the last "-> " from the callStack string
-            if (callStack.EndsWith(" -> "))
+            catch (Exception ex)
             {
-                callStack = callStack[..^4];
+                Logger.Write(ex.ToString());
+                throw new TyProcessException("ProcessHandler.TryRead()", ex);
             }
-            return callStack;
         }
 
         public static void CheckAddress<T>(int addr, T value, string indicator) where T : unmanaged

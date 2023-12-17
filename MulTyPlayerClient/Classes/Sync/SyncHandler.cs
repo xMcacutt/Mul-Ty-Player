@@ -17,6 +17,7 @@ namespace MulTyPlayerClient
         public static CrateHandler HCrate;
         public static RCHandler HCliffs;
         public static RSHandler HRainbowScale;
+        public static FrameHandler HFrame;
 
         public static int SaveDataBaseAddress;
 
@@ -33,6 +34,7 @@ namespace MulTyPlayerClient
                 { "Crate", HCrate = new() },
                 { "RC", HCliffs = new() },
                 { "RainbowScale", HRainbowScale = new() },
+                { "Frame", HFrame = new()}
             };
         }
 
@@ -40,6 +42,7 @@ namespace MulTyPlayerClient
         {
             SaveDataBaseAddress = PointerCalculations.GetPointerAddress(0x288730, new int[] { 0x10 });
             HAttribute.SetMemAddrs();
+            HFrame.SetMemAddrs();
             if (Client.HLevel.CurrentLevelId == Levels.RainbowCliffs.Id)
             {
                 HCliffs.SetMemAddrs();
@@ -56,8 +59,10 @@ namespace MulTyPlayerClient
             }
         }
 
-        public void SetCurrentData(bool inMainStage)
+        public void SetCurrentData(bool inMainStage, bool hasFrames)
         {
+            if (hasFrames)
+                HFrame.SetCurrentData();
             if (!inMainStage)
                 return;
             HCrate.SetCurrentData();
