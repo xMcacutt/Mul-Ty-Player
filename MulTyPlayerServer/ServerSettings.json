@@ -10,5 +10,5 @@
   "DoSyncCliffs": true,
   "DoSyncCrate": true,
   "DoSyncScale": true,
-  "DoSyncFrames": true
+  "DoSyncFrame": true
 }

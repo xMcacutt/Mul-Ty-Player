@@ -1,4 +1,6 @@
-﻿namespace MulTyPlayerClient
+﻿using System.Collections.Generic;
+
+namespace MulTyPlayerClient
 {
     internal class LiveFrameSyncer : LiveDataSyncer
     {
@@ -10,16 +12,19 @@
             HSyncObject = HFrame;
         }
         
-        public (int, byte)[] ReadData()
+        public Dictionary<int, byte> ReadData()
         {
             int framesInLevel = Levels.GetLevelData(HLevel.CurrentLevelId).FrameCount;
-            (int, byte)[] currentFrames = new (int, byte)[framesInLevel];
+            Dictionary<int, byte> currentFrames = new();
 
             int address = HFrame.FrameAddress;
+            int index;
+            byte state;
             for (int i = 0; i < framesInLevel; i++)
             {
-                ProcessHandler.TryRead(address + 0x84, out currentFrames[i].Item1, false, "LiveFrameSyncer::ReadData() {0}");
-                ProcessHandler.TryRead(address + 0x8A, out currentFrames[i].Item2, false, "LiveFrameSyncer::ReadData() {1}");
+                ProcessHandler.TryRead(address + 0x84, out index, false, "LiveFrameSyncer::ReadData() {0}");
+                ProcessHandler.TryRead(address + 0x8A, out state, false, "LiveFrameSyncer::ReadData() {1}");
+                currentFrames.Add(index, state);
                 ProcessHandler.TryRead(address + 0x30, out address, false, "LiveFrameSyncer::ReadData() {2}");
             }
             return currentFrames;
@@ -27,9 +32,8 @@
 
         public override void Collect(int index)
         {
-            if (HFrame.CurrentObjectData[index].Item2 == 1) return;
+            if (HFrame.CurrentObjectData[index] == 1) return;
             if (Client.HGameState.IsAtMainMenuOrLoading()) return;
-            int framesInCurrentLevel = Levels.GetLevelData(HLevel.CurrentLevelId).FrameCount;
             int address = HFrame.FrameAddress;
             for (int i = 0; i < index; i++)
             {

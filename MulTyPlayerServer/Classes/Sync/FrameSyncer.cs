@@ -9,7 +9,7 @@ namespace MulTyPlayerServer
         
         public FrameSyncer()
         {
-            Name = "Crate";
+            Name = "Frame";
             CheckState = 0;
             FrameSaveData = new byte[0x2E]; 
             GlobalObjectData = new()

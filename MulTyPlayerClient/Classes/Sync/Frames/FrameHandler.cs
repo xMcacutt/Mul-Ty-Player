@@ -12,8 +12,8 @@ namespace MulTyPlayerClient
         public byte[] ObserverState;
         public byte[] PreviousObserverState;
         public byte[] NullState;
-        public (int, byte)[] CurrentObjectData;
-        public (int, byte)[] PreviousObjectData;
+        public Dictionary<int, byte> FrameData;
+        
         public FrameHandler()
         {
             Name = "Frame";
@@ -48,14 +48,15 @@ namespace MulTyPlayerClient
             ObserverState = ReadObserver(CounterAddress, CounterByteLength);
             if (PreviousObserverState.SequenceEqual(ObserverState) || ObserverState.All(b => b == 0)) return;
             Array.Copy(ObserverState, PreviousObserverState, 0x2E);
-            CurrentObjectData = (LiveSync as LiveFrameSyncer).ReadData();
+            FrameData = (LiveSync as LiveFrameSyncer)?.ReadData();
+            if (FrameData != null) CurrentObjectData = FrameData.Values.ToArray();
             for (int iLive = 0; iLive < CurrentObjectData.Length; iLive++)
             {
-                if (!CheckObserverCondition(PreviousObjectData[iLive].Item2, CurrentObjectData[iLive].Item2)) continue;
+                if (!CheckObserverCondition(PreviousObjectData[iLive], CurrentObjectData[iLive])) continue;
                 
                 //FRAME IS COLLECTED
-                PreviousObjectData[iLive] = CurrentObjectData[iLive] = (CurrentObjectData[iLive].Item1, WriteState);
-                var iSave = CurrentObjectData[iLive].Item1;
+                PreviousObjectData[iLive] = CurrentObjectData[iLive] = WriteState;
+                var iSave = CurrentObjectData[iLive];
                 if (GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] == CheckState) continue;
                 
                 //BasicIoC.Logger.Write(Name + " number " + iLive + " collected.");
@@ -78,8 +79,8 @@ namespace MulTyPlayerClient
             if(Client.HLevel.CurrentLevelId == level)
             {
                 LiveSync.Sync(liveData, ObjectAmount, CheckState);
-                PreviousObjectData = PreviousObjectData.Zip(liveData, (tuple, value) => (tuple.Item1, Item2: value)).ToArray();
-                CurrentObjectData = CurrentObjectData.Zip(liveData, (tuple, value) => (tuple.Item1, Item2: value)).ToArray();
+                PreviousObjectData = liveData;
+                CurrentObjectData = liveData;
             }
         }
 
