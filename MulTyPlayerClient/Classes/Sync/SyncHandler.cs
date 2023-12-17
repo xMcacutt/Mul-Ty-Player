@@ -122,7 +122,7 @@ namespace MulTyPlayerClient
             if (SettingsHandler.DoRangSyncing) HAttribute.CheckObserverChanged();
             if (SettingsHandler.DoPortalSyncing) HPortal.CheckObserverChanged();
             if (SettingsHandler.DoCliffsSyncing) HCliffs.CheckObserverChanged();
-
+            if (SettingsHandler.DoFrameSyncing) HFrame.CheckObserverChanged();
             if (SettingsHandler.DoRainbowScaleSyncing && Client.HLevel.CurrentLevelId == Levels.RainbowCliffs.Id) HRainbowScale.CheckObserverChanged();
         }
     }

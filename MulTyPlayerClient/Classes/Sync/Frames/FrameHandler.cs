@@ -12,7 +12,7 @@ namespace MulTyPlayerClient
         public byte[] ObserverState;
         public byte[] PreviousObserverState;
         public byte[] NullState;
-        public Dictionary<int, byte> FrameData;
+        public (int, byte)[] FrameData;
         
         public FrameHandler()
         {
@@ -49,7 +49,7 @@ namespace MulTyPlayerClient
             if (PreviousObserverState.SequenceEqual(ObserverState) || ObserverState.All(b => b == 0)) return;
             Array.Copy(ObserverState, PreviousObserverState, 0x2E);
             FrameData = (LiveSync as LiveFrameSyncer)?.ReadData();
-            if (FrameData != null) CurrentObjectData = FrameData.Values.ToArray();
+            if (FrameData != null) CurrentObjectData = FrameData.Select(x => x.Item2).ToArray();
             for (int iLive = 0; iLive < CurrentObjectData.Length; iLive++)
             {
                 if (!CheckObserverCondition(PreviousObjectData[iLive], CurrentObjectData[iLive])) continue;
@@ -59,7 +59,7 @@ namespace MulTyPlayerClient
                 var iSave = CurrentObjectData[iLive];
                 if (GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] == CheckState) continue;
                 
-                //BasicIoC.Logger.Write(Name + " number " + iLive + " collected.");
+                Logger.Write(Name + " number " + iLive + " collected.");
                 GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] = (byte)CheckState;
                 Client.HSync.SendDataToServer(iLive, iSave, Client.HLevel.CurrentLevelId, Name);
             }
@@ -87,7 +87,7 @@ namespace MulTyPlayerClient
         public override void SetMemAddrs()
         {
             FrameAddress = PointerCalculations.GetPointerAddress(0x274D24, new int[] {0x1C4, 0x0});
-            CounterAddress = SyncHandler.SaveDataBaseAddress + 0xAD2;
+            CounterAddress = SyncHandler.SaveDataBaseAddress + 0xAC2;
             ProcessHandler.CheckAddress(FrameAddress, (ushort)28276, "Frame base address check");
         }
         

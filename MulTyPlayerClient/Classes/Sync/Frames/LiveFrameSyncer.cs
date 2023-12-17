@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MulTyPlayerClient
+﻿namespace MulTyPlayerClient
 {
     internal class LiveFrameSyncer : LiveDataSyncer
     {
@@ -12,19 +10,16 @@ namespace MulTyPlayerClient
             HSyncObject = HFrame;
         }
         
-        public Dictionary<int, byte> ReadData()
+        public (int, byte)[] ReadData()
         {
             int framesInLevel = Levels.GetLevelData(HLevel.CurrentLevelId).FrameCount;
-            Dictionary<int, byte> currentFrames = new();
+            (int, byte)[] currentFrames = new (int, byte)[framesInLevel];
 
             int address = HFrame.FrameAddress;
-            int index;
-            byte state;
             for (int i = 0; i < framesInLevel; i++)
             {
-                ProcessHandler.TryRead(address + 0x84, out index, false, "LiveFrameSyncer::ReadData() {0}");
-                ProcessHandler.TryRead(address + 0x8A, out state, false, "LiveFrameSyncer::ReadData() {1}");
-                currentFrames.Add(index, state);
+                ProcessHandler.TryRead(address + 0x84, out currentFrames[i].Item1, false, "LiveFrameSyncer::ReadData() {0}");
+                ProcessHandler.TryRead(address + 0x8A, out currentFrames[i].Item2, false, "LiveFrameSyncer::ReadData() {1}");
                 ProcessHandler.TryRead(address + 0x30, out address, false, "LiveFrameSyncer::ReadData() {2}");
             }
             return currentFrames;
