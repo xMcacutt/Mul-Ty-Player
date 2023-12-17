@@ -30,6 +30,7 @@ namespace MulTyPlayerClient
             GlobalObjectData = new Dictionary<int, byte[]>();
             foreach (LevelData ld in Levels.MainStages)
             {
+                if (ld.Id == 10) continue;
                 GlobalObjectData.Add(ld.Id, new byte[ld.FrameCount]);
             }
             GlobalObjectData.Add(Levels.RainbowCliffs.Id, new byte[Levels.RainbowCliffs.FrameCount]);
@@ -59,7 +60,7 @@ namespace MulTyPlayerClient
                 var iSave = CurrentObjectData[iLive];
                 if (GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] == CheckState) continue;
                 
-                Logger.Write(Name + " number " + iLive + " collected.");
+                //Logger.Write(Name + " number " + iLive + " collected.");
                 GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] = (byte)CheckState;
                 Client.HSync.SendDataToServer(iLive, iSave, Client.HLevel.CurrentLevelId, Name);
             }

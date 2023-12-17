@@ -79,7 +79,7 @@ With your port forwarding rule set up, people can now join your server using you
 
 ## Changelog
 
-### New Features
+### New Features v3
 - GUI mostly functions in a single window now so no more swapping windows.
 - New Launch Game button added to splash screen and main GUI.
 - Countdown abort system fully functional.
@@ -92,7 +92,24 @@ With your port forwarding rule set up, people can now join your server using you
 - Rang syncing issues fixed.
 - K O A L A
 
+#### 3.1.0
+- Stopwatch syncing added
+- Pickup frame syncing added (WIP will be ready for 3.2.0)
+- Sync button added to lobby toolbar
+
 ### Bug Fixes
+
+#### 3.1.0
+- Splash screen text moved to avoid overlap
+- Steam overlay no longer appears inside controls
+- Countdown ready button is no longer set to enabled on first join when in level
+- Countdown ready status of all other players is correct on join
+- Koala coordinates no longer being written if in same level
+- Level setup is only occurring at correct times
+- Memory addresses are being set per level depending on level data types
+- Debugging code added to help diagnose and fix memory corruption crashing
+- Bilby state check corrected to fix random desync
+- Login text box font changed to a monospace to fix type spacing issue
 
 #### 3.0.0
 - Rang syncing on reconnect

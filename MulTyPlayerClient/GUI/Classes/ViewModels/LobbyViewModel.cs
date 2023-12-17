@@ -35,6 +35,9 @@ namespace MulTyPlayerClient.GUI.ViewModels
         public string LaunchGameText { get; set; } = "Launch Game";
         public bool IsLaunchGameButtonEnabled {get; set;}
 
+        public string SyncText { get; set; } = "Sync";
+        public bool IsSyncButtonEnabled { get; set; } = true;
+
         private static LobbyModel Lobby => ModelController.Lobby;
 
         public LobbyViewModel()

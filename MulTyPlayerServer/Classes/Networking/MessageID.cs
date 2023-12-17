@@ -19,6 +19,7 @@
         AnnounceDisconnect,
         P2PMessage,
         Ready,
-        Countdown
+        Countdown,
+        StopWatch
     }
 }

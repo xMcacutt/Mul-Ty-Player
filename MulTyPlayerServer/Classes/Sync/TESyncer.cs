@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Riptide;
 
 namespace MulTyPlayerServer.Classes.Sync
 {
@@ -18,6 +19,20 @@ namespace MulTyPlayerServer.Classes.Sync
                 GlobalObjectSaveData.Add(i, Enumerable.Repeat((byte)1, 10).ToArray());
                 GlobalObjectCounts.Add(i, 0);
             }
+        }
+        
+        public override void HandleServerUpdate(int iLive, int iSave, int level, ushort originalSender)
+        {
+            if (!GlobalObjectData.ContainsKey(level)) return;
+            //Console.WriteLine("Sending " + Name + " LiveNumber: " + iLive + " SaveNumber: " + iSave + " For Level: " + level);
+            GlobalObjectData[level][iLive] = (byte)CheckState;
+            GlobalObjectSaveData[level][iSave] = (byte)CheckState;
+            GlobalObjectCounts[level] = GlobalObjectData[level].Count(i => i == CheckState);
+            SendUpdatedData(iLive, iSave, level, originalSender);
+            if (iSave != 3) return;
+            var stopWatchActivateMessage = Message.Create(MessageSendMode.Reliable, MessageID.StopWatch);
+            stopWatchActivateMessage.AddInt(level);
+            Server._Server.SendToAll(stopWatchActivateMessage, originalSender);
         }
     }
 }

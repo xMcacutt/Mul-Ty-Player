@@ -46,5 +46,11 @@ namespace MulTyPlayerClient.GUI.Views
         {
             TyProcess.TryLaunchGame();
         }
+
+        private void RequestSyncButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.HSync.RequestSync();
+            Logger.Write("Sync request sent to server.");
+        }
     }
 }

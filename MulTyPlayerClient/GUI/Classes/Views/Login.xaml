@@ -109,10 +109,11 @@
                 <TextBlock Text="{Binding ConnectingAddress, 
                                   Mode=OneWay, 
                                   Converter={local:BoolTextCensorConverter}}"
+                           Style="{StaticResource RubikBlock}"
                            IsHitTestVisible="False"
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Center"
-                           Padding="5 0 0 0"
+                           Padding="10 0 0 0"
                            FontSize="20"
                            Height="30"
                            Visibility="{Binding HideAddress, 
@@ -150,14 +151,15 @@
                 <TextBlock Text="{Binding Pass, 
                                   Mode=OneWay,
                                   Converter={local:BoolTextCensorConverter}}"
+                           Style="{StaticResource RubikBlock}"
                            IsHitTestVisible="False"
-                           Padding="5 0 0 0"
+                           Padding="10 0 0 0"
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Center"
                            FontSize="20"
                            Visibility="{Binding HidePass, 
-                                        Converter={local:BooleanToVisibilityConverter},
-                                        ConverterParameter=True}"/>
+                           Converter={local:BooleanToVisibilityConverter},
+                           ConverterParameter=True}"/>
             </Grid>
 
             <Grid>
@@ -190,9 +192,10 @@
                 <TextBlock Text="{Binding Name, 
                                   Mode=OneWay, 
                                   Converter={local:BoolTextCensorConverter}}"
+                           Style="{StaticResource RubikBlock}"
                            IsHitTestVisible="False"
                            HorizontalAlignment="Left"
-                           Padding="5 0 0 0"
+                           Padding="10 0 0 0"
                            VerticalAlignment="Center"
                            FontSize="20"
                            Visibility="{Binding HideName, 

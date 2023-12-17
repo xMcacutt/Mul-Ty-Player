@@ -24,6 +24,14 @@
             }
             return currentFrames;
         }
+        
+        public override void Sync(byte[] bytes, int amount, int checkState)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                if (bytes[i] == checkState) Collect(i);
+            }
+        }
 
         public override void Collect(int index)
         {
@@ -34,7 +42,7 @@
             {
                 ProcessHandler.TryRead(address + 0x30, out address, false, "LiveFrameSyncer::Collect {0}");
             }
-            ProcessHandler.WriteData(address + 0x8B, new byte[] { 0x1 }, "LiveFrameSyncer::Collected {1}");
+            ProcessHandler.WriteData(address + 0x88, new byte[] { 0x0, 0x1, 0x0, 0x1 }, "LiveFrameSyncer::Collected {1}");
         }
     }
 }

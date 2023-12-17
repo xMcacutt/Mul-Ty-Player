@@ -271,6 +271,21 @@
                         </Button.Resources>
                         <TextBlock Padding="10" Style="{StaticResource ComicText}" FontSize="20" VerticalAlignment="Center" Text="{Binding LaunchGameText}"/>
                     </Button>
+                    <Button x:Name="RequestSyncButton" Margin="3"
+                            BorderBrush="{x:Null}"
+                            Click="RequestSyncButton_Click"
+                            Background="#FFDDDDDD"
+                            HorizontalAlignment="Left"
+                            Width="Auto"
+                            IsEnabled="{Binding IsSyncButtonEnabled}"
+                            Template="{StaticResource ButtonTemplate}">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="15"/>
+                            </Style>
+                        </Button.Resources>
+                        <TextBlock Padding="10" Style="{StaticResource ComicText}" FontSize="20" VerticalAlignment="Center" Text="{Binding SyncText}"/>
+                    </Button>
                 </StackPanel>
 
                 <Button x:Name="DisconnectButton" Margin="3"

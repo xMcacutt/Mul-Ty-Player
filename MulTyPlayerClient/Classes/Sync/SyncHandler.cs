@@ -42,7 +42,8 @@ namespace MulTyPlayerClient
         {
             SaveDataBaseAddress = PointerCalculations.GetPointerAddress(0x288730, new int[] { 0x10 });
             HAttribute.SetMemAddrs();
-            HFrame.SetMemAddrs();
+            if (Levels.GetLevelData(Client.HLevel.CurrentLevelId).FrameCount != 0) 
+                HFrame.SetMemAddrs();
             if (Client.HLevel.CurrentLevelId == Levels.RainbowCliffs.Id)
             {
                 HCliffs.SetMemAddrs();
@@ -100,6 +101,15 @@ namespace MulTyPlayerClient
         {
             SyncMessage syncMessage = SyncMessage.Create(iLive, iSave, level, type);
             Client._client.Send(SyncMessage.Encode(syncMessage));
+        }
+
+        [MessageHandler((ushort)MessageID.StopWatch)]
+        private static void HandleStopWatchActivate(Message message)
+        {
+            var level = message.GetInt();
+            if (Client.HLevel.CurrentLevelData.Id != level || Client.HGameState.IsAtMainMenuOrLoading()) return;
+            var address = PointerCalculations.GetPointerAddress(0x270420, new int[] { 0x68 });
+            ProcessHandler.WriteData(address, new byte[] { 0x2 });
         }
 
         public void ProtectLeaderboard()
