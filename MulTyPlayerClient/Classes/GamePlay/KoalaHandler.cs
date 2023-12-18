@@ -22,7 +22,7 @@ namespace MulTyPlayerClient
 
         public struct KoalaTransformAddresses
         {
-            public int X, Y, Z, Pitch, Yaw, Roll, Collision, Visibility;
+            public int X, Y, Z, Pitch, Yaw, Roll, Collision, Visibility, Scale;
         }
         public static KoalaTransformAddresses[] TransformAddresses {get; private set;}
 
@@ -85,8 +85,10 @@ namespace MulTyPlayerClient
                 TransformAddresses[koalaID].Roll = _baseKoalaAddress + 0x2BC + koalaOffset;
                 TransformAddresses[koalaID].Collision = _baseKoalaAddress + 0x298 + koalaOffset;
                 TransformAddresses[koalaID].Visibility = _baseKoalaAddress + 0x44 + koalaOffset;
+                TransformAddresses[koalaID].Scale = _baseKoalaAddress + 0x60 + koalaOffset;
             }
 
+            IncreaseScale(2.0f);
             MakeVisible();
 
             if (!SettingsHandler.Settings.DoKoalaCollision)
@@ -115,6 +117,16 @@ namespace MulTyPlayerClient
             for (int i = 0; i < 8; i++)
             {
                 ProcessHandler.WriteData(TransformAddresses[i].Visibility, new byte[] { 1 }, "Making players visible");
+            }
+        }
+
+        public void IncreaseScale(float scaleFactor)
+        {
+            if (scaleFactor < 0.5f) scaleFactor = 0.5f;
+            if (scaleFactor > 3) scaleFactor = 3;
+            for (int i = 0; i < 8; i++)
+            {
+                ProcessHandler.WriteData(TransformAddresses[i].Scale, BitConverter.GetBytes(scaleFactor), "Scaling koalas");
             }
         }
 
