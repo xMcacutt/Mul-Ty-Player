@@ -150,7 +150,7 @@ namespace MulTyPlayerClient
         {
             TryRead(addr, out T test, false, indicator);
             if (test.Equals(value)) return;
-            throw new Exception(indicator);
+            Logger.Write(indicator);
         }
     }
 }

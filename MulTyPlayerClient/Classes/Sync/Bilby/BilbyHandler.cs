@@ -20,7 +20,7 @@ namespace MulTyPlayerClient
             PreviousObjectData = new byte[] {1, 1, 1, 1, 1};
             CurrentObjectData = new byte[] {1, 1, 1, 1, 1};
             LiveSync = new LiveBilbySyncer(this);
-            SaveSync = new SaveBilbySyncer();
+            SaveSync = new SaveBilbySyncer(this);
             SetSyncClasses(LiveSync, SaveSync);
             GlobalObjectData = new Dictionary<int, byte[]>();
 

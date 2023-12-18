@@ -19,5 +19,15 @@ namespace MulTyPlayerServer
                 GlobalObjectCounts.Add(i, 0);
             }
         }
+        
+        public virtual void HandleServerUpdate(int iLive, int iSave, int level, ushort originalSender)
+        {
+            if (!GlobalObjectData.Keys.Contains(level)) return;
+            //Console.WriteLine("Sending " + Name + " LiveNumber: " + iLive + " SaveNumber: " + iSave + " For Level: " + level);
+            GlobalObjectData[level][iLive] = (byte)CheckState;
+            GlobalObjectCounts[level] = GlobalObjectData[level].Count(i => i == CheckState);
+            GlobalObjectSaveData[level][iSave] = GlobalObjectCounts[level] == 5 ? (byte)5 : (byte)1;
+            SendUpdatedData(iLive, iSave, level, originalSender);
+        }
     }
 }

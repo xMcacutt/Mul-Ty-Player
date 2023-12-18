@@ -140,10 +140,7 @@ namespace MulTyPlayerClient
                     playerInfo.Level = "M/L";
                     return;
                 }
-                else
-                {
-                    playerInfo.Level = Levels.GetLevelData(level).Code;
-                }
+                playerInfo.Level = Levels.GetLevelData(level).Code;
             }
 
             //Return if player is on the main menu or loading screen,

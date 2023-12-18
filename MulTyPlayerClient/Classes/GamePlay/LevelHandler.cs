@@ -33,9 +33,16 @@ namespace MulTyPlayerClient
             HSync.SetCurrentData(CurrentLevelData.IsMainStage, CurrentLevelData.FrameCount != 0);
             HSync.SetMemAddrs();
             HSync.RequestSync();
+            if (SettingsHandler.DoTESyncing &&
+                HSync.SyncObjects["TE"].GlobalObjectData.ContainsKey(currentLevelId) &&
+                HSync.SyncObjects["TE"].GlobalObjectData[CurrentLevelId][3] == 5)
+                HSync.ShowStopwatch();
             HSync.ProtectLeaderboard();
-            HKoala.SetBaseAddress();
-            HKoala.SetCoordinateAddresses();
+            if (CurrentLevelData.Id != 16)
+            {
+                HKoala.SetBaseAddress();
+                HKoala.SetCoordinateAddresses();
+            }
             if (CurrentLevelData.HasKoalas)
                 ObjectiveCountSet();
             OnLevelChange?.Invoke(currentLevelId);

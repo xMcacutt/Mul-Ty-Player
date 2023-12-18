@@ -240,13 +240,14 @@ namespace MulTyPlayerClient
             {14, RexMarksTheSpot },
             {15, FluffysFjord },
 
-            {20, CassPass },
-            {17, CassCrest },
-            {23, FinalBattle },
             {16, EndGame },
-
+            {17, CassCrest },
+            
+            {20, CassPass },
             {21, BonusWorld1 },
             {22, BonusWorld2 },
+            {23, FinalBattle },
+
         };
 
         public static readonly LevelData[] MainStages = new[]

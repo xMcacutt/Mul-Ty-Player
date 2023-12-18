@@ -108,6 +108,11 @@ namespace MulTyPlayerClient
         {
             var level = message.GetInt();
             if (Client.HLevel.CurrentLevelData.Id != level || Client.HGameState.IsAtMainMenuOrLoading()) return;
+            Client.HSync.ShowStopwatch();
+        }
+
+        public void ShowStopwatch()
+        {
             var address = PointerCalculations.GetPointerAddress(0x270420, new int[] { 0x68 });
             ProcessHandler.WriteData(address, new byte[] { 0x2 });
         }

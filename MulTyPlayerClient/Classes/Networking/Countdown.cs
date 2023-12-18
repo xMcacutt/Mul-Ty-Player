@@ -38,6 +38,7 @@ namespace MulTyPlayerClient.Classes
                 abortToken.ThrowIfCancellationRequested();
                 OnCountdownBegan?.Invoke();
                 SFXPlayer.StopAll();
+                Client.HSync = new SyncHandler();
                 SFXPlayer.PlaySound(SFX.Race10);
                 for (int i = 10; i > 0; i--)
                 {
@@ -56,7 +57,6 @@ namespace MulTyPlayerClient.Classes
                     {
                         SFXPlayer.StopAll();
                         SFXPlayer.PlaySound(SFX.Race321);
-                        Client.HSync = new SyncHandler();
                     }
                     Task.Delay(1000).Wait();
                 }                

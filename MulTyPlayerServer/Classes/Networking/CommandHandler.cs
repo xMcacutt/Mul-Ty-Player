@@ -182,7 +182,7 @@ namespace MulTyPlayerServer
                 {
                     entry.Value.IsReady = false;
                 }
-                Program.HSync = new();
+                Program.HSync = new SyncHandler();
                 Server.SendMessageToClients("All clients are ready, starting countdown", true);
                 Message countdownStart = Message.Create(MessageSendMode.Reliable, MessageID.Countdown);
                 Server._Server.SendToAll(countdownStart);
