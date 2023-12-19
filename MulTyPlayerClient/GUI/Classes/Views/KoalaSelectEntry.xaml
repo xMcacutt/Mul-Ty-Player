@@ -52,11 +52,6 @@
     </Grid>
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/GUI/SlapstickFont.xaml"/>
-                <ResourceDictionary Source="/GUI/Styles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <ResourceDictionary Source="/GUI/TyStyles.xaml"/>
     </UserControl.Resources>
 </UserControl>

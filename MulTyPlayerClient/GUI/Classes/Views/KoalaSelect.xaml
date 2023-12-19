@@ -52,15 +52,11 @@
                 IsHitTestVisible="{Binding BlockKoalaSelect}"/>
 
     </Grid>
+    
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/GUI/SlapstickFont.xaml"/>
-                <ResourceDictionary Source="/GUI/Styles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <ResourceDictionary Source="/GUI/TyStyles.xaml"/>
     </UserControl.Resources>
-        <UserControl.Background>
-            <ImageBrush ImageSource="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.jpg" Stretch="UniformToFill"/>
-        </UserControl.Background>
+    <UserControl.Background>
+        <ImageBrush ImageSource="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.jpg" Stretch="UniformToFill"/>
+    </UserControl.Background>
 </UserControl>

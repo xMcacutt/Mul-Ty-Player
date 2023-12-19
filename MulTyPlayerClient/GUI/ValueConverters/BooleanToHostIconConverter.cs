@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using MulTyPlayerClient.GUI.Controls;
 
 namespace MulTyPlayerClient.GUI
 {
@@ -10,17 +11,12 @@ namespace MulTyPlayerClient.GUI
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is bool isHost && isHost)
+            if (value is bool and true)
             {
                 // Return an icon that represents the host
-                Uri uri = new(@"pack://siteoforigin:,,,/GUI/Icons/Icons.xaml");
-                ResourceDictionary resourceDict = new ResourceDictionary() { Source = uri };
-                DrawingGroup verifiedDrawingGroup = resourceDict["verified_black_24dpDrawingGroup"] as DrawingGroup;
-                if (verifiedDrawingGroup != null)
-                {
-                    return new DrawingImage(verifiedDrawingGroup);
-                }
-                else return null;
+                var ico = new Icon();
+                ico.Code = "\uf521";
+                return ico;
             }
             else
             {

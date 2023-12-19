@@ -3,6 +3,8 @@ using Newtonsoft.Json;
 using Riptide;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows;
+using MulTyPlayerClient.GUI;
 
 namespace MulTyPlayerClient
 {
@@ -27,7 +29,9 @@ namespace MulTyPlayerClient
             //MAIN SETTINGS
             string json = File.ReadAllText("./ClientSettings.json");
             Settings = JsonConvert.DeserializeObject<Settings>(json);
-
+            
+            (Application.Current.Resources["AppColors"] as Colors)?.SetColors(Settings.DarkLobbyTheme);
+            
             //SYNC SETTINGS
             SyncSettings = new()
             {

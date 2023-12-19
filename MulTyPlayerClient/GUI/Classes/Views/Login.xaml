@@ -10,12 +10,7 @@
         Width="800"
         d:DataContext ="{d:DesignInstance Type=viewmodels:LoginViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/GUI/SlapstickFont.xaml"/>
-                <ResourceDictionary Source="/GUI/Styles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <ResourceDictionary Source="/GUI/TyStyles.xaml"/>
     </UserControl.Resources>
     
     <StackPanel Margin="10">
@@ -253,6 +248,7 @@
                 Command="{Binding ConnectCommand}"
                 IsEnabled="{Binding ConnectButtonEnabled}"/>
     </StackPanel>
+    
     <UserControl.Background>
         <ImageBrush x:Name="bgImage" ImageSource="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.jpg"/>
     </UserControl.Background>

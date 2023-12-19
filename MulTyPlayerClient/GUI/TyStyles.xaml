@@ -1,86 +1,61 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:MulTyPlayerClient.GUI.Controls">
 
-    <!--TextBox-->
-    <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
-    <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
-    <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
-    
-    <Style TargetType="{x:Type TextBox}" x:Key="PlaceholderTextStyle">
-        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource TextBox.Static.Border}"/>
-        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
-        <Setter Property="HorizontalContentAlignment" Value="Left"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-        <Setter Property="AllowDrop" Value="true"/>
-        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
-        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
-        
+    <!-- ICON -->
+    <Style TargetType="{x:Type controls:Icon}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type TextBoxBase}">
-                    <Grid>
-                        
-                        <Border x:Name="border" 
+                <ControlTemplate TargetType="{x:Type controls:Icon}">
+                    <TextBlock Text="{TemplateBinding Code}"
+                               FontFamily="Fonts/#Font Awesome 6 Free Solid"
+                               Margin="0, 5"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontSize="{TemplateBinding Size}"
+                               Foreground="{TemplateBinding Foreground}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!-- MONOSPACED FONT BLOCK -->
+    <Style TargetType="TextBlock" x:Key="RubikBlock">
+        <Setter Property="TextElement.FontFamily" Value="Fonts/#Rubik Mono One"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+    </Style>
+    
+    <!-- TY STYLE TEXT BOX -->
+    <Style x:Key="TyTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="TextElement.FontFamily" Value="Fonts/#Rubik Mono One"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="border" 
                             Background="{TemplateBinding Background}" 
                             BorderBrush="{TemplateBinding BorderBrush}" 
                             BorderThickness="{TemplateBinding BorderThickness}" 
                             SnapsToDevicePixels="True">
-                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
-                        </Border>
-                        
-                        <TextBlock IsHitTestVisible="False"
-                                   Text="{TemplateBinding Tag}"
-                                   x:Name="placeholder"
-                                   FontFamily="{TemplateBinding FontFamily}"
-                                   Padding="2 0"
-                                   Margin="{TemplateBinding Margin}"
-                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                   Foreground="#5f5d5b"
-                                   FontSize="{TemplateBinding FontSize}"
-                                   >
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-
-                        </TextBlock>
-                    </Grid>
-                    
+                        <ScrollViewer x:Name="PART_ContentHost" 
+                                      Focusable="false" 
+                                      HorizontalScrollBarVisibility="Hidden" 
+                                      VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            <Setter Property="Opacity" TargetName="border" Value="1"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="White"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="true">
-                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="#DDDDDD"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
-                    
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        
-        <Style.Triggers>
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
-                    <Condition Property="IsSelectionActive" Value="false"/>
-                </MultiTrigger.Conditions>
-                <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
-            </MultiTrigger>
-        </Style.Triggers>
     </Style>
 
     <Style x:Key="ComicText" TargetType="TextBlock">
@@ -88,13 +63,11 @@
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="Foreground" Value="Black"/>
     </Style>
-
     <Style x:Key="ComicTextCheck" TargetType="CheckBox">
         <Setter Property="FontFamily" Value="Fonts/#SF Slapstick Comic"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="Foreground" Value="Black"/>
     </Style>
-
 
     <!--Buttons-->
     <LinearGradientBrush x:Key="ButtonGradient" EndPoint="0.5,1" StartPoint="0.5,0">
@@ -113,17 +86,9 @@
     </LinearGradientBrush>
 
     <Style TargetType="{x:Type Button}" x:Key="SelectButton">
-        <Style.Resources>
-            <ResourceDictionary>
-                <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="/GUI/SlapstickFont.xaml"/>
-                </ResourceDictionary.MergedDictionaries>
-            </ResourceDictionary>
-        </Style.Resources>
         <Setter Property="Background" Value="{StaticResource ButtonGradient}"/>
         <Setter Property="FontSize" Value="25"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -149,44 +114,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    <Style TargetType="{x:Type Button}" x:Key="InstallButton">
-        <Style.Resources>
-            <ResourceDictionary>
-                <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="/GUI/SlapstickFont.xaml"/>
-                </ResourceDictionary.MergedDictionaries>
-            </ResourceDictionary>
-        </Style.Resources>
-        <Setter Property="Background" Value="Black"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Background="{TemplateBinding Background}"
-                            CornerRadius="5">
-                        <TextBlock x:Name="installButtonText" 
-                                   Text="{TemplateBinding Tag}"
-                                   Margin="10,0,10,0"
-                                   FontSize="{TemplateBinding FontSize}"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Foreground" TargetName="installButtonText" Value="#FFFFFF0F"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Background" Value="White"/>
-                            <Setter Property="Foreground" TargetName="installButtonText" Value="White"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-
+    
     <!--CheckBox-->
     <Style x:Key="FocusVisual">
         <Setter Property="Control.Template">
@@ -235,7 +163,7 @@
                                    VerticalAlignment="Center"
                                    Source="{DynamicResource visibility_light_black_24dpDrawingImage}"/>
                         </Border>
-                        <ContentPresenter x:Name="contentPresenter" Grid.Column="1" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="HasContent" Value="true">

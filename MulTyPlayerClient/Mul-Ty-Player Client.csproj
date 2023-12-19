@@ -99,8 +99,8 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="GUI\Fonts\SF Slapstick Comic.ttf" />
-    <None Remove="GUI\Fonts\RubikMonoOneRegular-6pqq.ttf" />
     <Resource Include="GUI\Fonts\RubikMonoOneRegular-6pqq.ttf" />
+    <Resource Include="GUI\Fonts\Font Awesome 6 Free-Solid-900.otf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Facepunch.Steamworks.Win32">
@@ -215,9 +215,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="fe_999_icon_koalakid.ico" />
-    <Content Include="GUI\Icons\Icons.xaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="GUI\KoalaSelectionAssets\Dark\Boonie.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -7,7 +7,8 @@
         xmlns:viewmodels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=viewmodels:SetupViewModel}"
-        Title="Setup" Height="275" Width="300" ResizeMode="NoResize" Closing="Window_Closing">
+        Title="Setup" Height="275" Width="300" ResizeMode="NoResize" 
+        Closing="Window_Closing">
     <Window.Resources>
         <ResourceDictionary>
             <local:StringsToBooleanConverter x:Key="StringsToBooleanConverter" />
@@ -75,8 +76,7 @@
                 </Setter>
             </Style>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/GUI/SlapstickFont.xaml"/>
-                <ResourceDictionary Source="/GUI/Styles.xaml"/>
+                <ResourceDictionary Source="/GUI/TyStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>

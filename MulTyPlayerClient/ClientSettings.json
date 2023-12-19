@@ -7,5 +7,6 @@
   "AttemptReconnect": true,
   "AutoRestartTyOnCrash": true,
   "MulTyPlayerFolderPath": "",
-  "AutoLaunchTyOnStartup": false
+  "AutoLaunchTyOnStartup": false,
+  "DarkLobbyTheme": true
 }
