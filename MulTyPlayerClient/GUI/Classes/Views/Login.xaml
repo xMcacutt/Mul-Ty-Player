@@ -17,74 +17,44 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid x:Name="MainGrid" Margin="10">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.3*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="0.3*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.25*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!--Title-->
+    
+    <StackPanel Margin="10">
+        
         <TextBlock x:Name="TextTitle" 
                    Grid.ColumnSpan="3" 
                    Text="Connect To Host" 
-                   VerticalAlignment="Top" 
-                   FontSize="30">
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Bottom"
+                   Margin="0, 50, 0, 10"
+                   FontSize="45">
             <TextBlock.Effect>
                 <DropShadowEffect BlurRadius="0" 
                                   Direction="315" 
                                   ShadowDepth="2"/>
             </TextBlock.Effect>
         </TextBlock>
-
-        <!--Labels-->
-        <StackPanel Grid.Row="1" Margin="0, 0, 15, 0">
-
+        
+        <StackPanel HorizontalAlignment="Center" 
+                    Margin="0, 10" 
+                    Orientation="Horizontal">
             <TextBlock x:Name="labelHostIP" 
                        Text="Host IP" 
                        HorizontalAlignment="Right"
-                       FontSize="22"
-                       Margin="0, 1, 0, 1">
-                <TextBlock.Effect>
-                    <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
-                </TextBlock.Effect>
-            </TextBlock>
-
-            <TextBlock x:Name="labelPass" 
-                       Text="Pass" 
-                       HorizontalAlignment="Right"
-                       FontSize="22"
-                       Margin="0, 1, 0, 1">
+                       VerticalAlignment="Center"
+                       FontSize="25"
+                       Width="90">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
                 </TextBlock.Effect>
             </TextBlock>
             
-            <TextBlock x:Name="labelName" 
-                       Text="Name" 
-                       HorizontalAlignment="Right"
-                       FontSize="22"
-                       Margin="0, 1, 0, 1">
-                <TextBlock.Effect>
-                    <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
-                </TextBlock.Effect>
-            </TextBlock>
-            
-        </StackPanel>
-
-        <!--Textboxes and connect button-->
-        <StackPanel Grid.Row="1"
-                    Grid.Column="1">
-
             <Grid>
                 <TextBox x:Name="fieldHostIP" 
                          HorizontalContentAlignment="Left" 
                          Text="{Binding ConnectingAddress, UpdateSourceTrigger=PropertyChanged}" 
-                         FontSize="20"
+                         FontSize="25"
+                         Height="40"
+                         Width="350"
                          Padding="5 0 0 0"
                          HorizontalAlignment="Stretch" 
                          VerticalContentAlignment="Center" 
@@ -113,23 +83,50 @@
                            IsHitTestVisible="False"
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Center"
-                           Padding="10 0 0 0"
-                           FontSize="20"
+                           Margin="0, 8, 0, -8"
+                           Padding="8 0 0 0"
+                           FontSize="25"
                            Height="30"
                            Visibility="{Binding HideAddress, 
                                         Converter={local:BooleanToVisibilityConverter},
                                         ConverterParameter=True}"/>
             </Grid>
-
+            
+            <CheckBox HorizontalAlignment="Left" 
+                      VerticalAlignment="Center"
+                      Background="{x:Null}" 
+                      BorderBrush="{x:Null}"
+                      Width="40"
+                      Margin="10, 0, 0, 0"
+                      Style="{StaticResource VisibilityCheckBox}"
+                      IsChecked="{Binding HideAddress}"/>
+        </StackPanel>
+        
+        
+        <StackPanel HorizontalAlignment="Center" 
+                    Margin="0, 10" 
+                    Orientation="Horizontal">
+            <TextBlock x:Name="labelPass" 
+                       Text="Pass" 
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       FontSize="25"
+                       Width="90">
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
+                </TextBlock.Effect>
+            </TextBlock>
+            
             <Grid>
                 <TextBox x:Name="fieldPass" 
                          HorizontalContentAlignment="Left" 
                          Text="{Binding Pass, UpdateSourceTrigger=PropertyChanged}" 
-                         FontSize="20" 
-                         Height="30"
+                         FontSize="25"
+                         Height="40"
+                         Width="350"
                          Padding="5 0 0 0"
                          HorizontalAlignment="Stretch" 
-                         VerticalContentAlignment="Center"
+                         VerticalContentAlignment="Center" 
                          BorderThickness="2" 
                          BorderBrush="{x:Null}">
                     <TextBox.Background>
@@ -149,25 +146,53 @@
                     </TextBox.Style>
                 </TextBox>
                 <TextBlock Text="{Binding Pass, 
-                                  Mode=OneWay,
+                                  Mode=OneWay, 
                                   Converter={local:BoolTextCensorConverter}}"
                            Style="{StaticResource RubikBlock}"
                            IsHitTestVisible="False"
-                           Padding="10 0 0 0"
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Center"
-                           FontSize="20"
+                           Padding="8 0 0 0"
+                           Margin="0, 8, 0, -8"
+                           FontSize="25"
+                           Height="30"
                            Visibility="{Binding HidePass, 
-                           Converter={local:BooleanToVisibilityConverter},
-                           ConverterParameter=True}"/>
+                                        Converter={local:BooleanToVisibilityConverter},
+                                        ConverterParameter=True}"/>
             </Grid>
-
+            
+            <CheckBox HorizontalAlignment="Left" 
+                      VerticalAlignment="Center"
+                      Background="{x:Null}" 
+                      BorderBrush="{x:Null}"
+                      Width="40"
+                      Margin="10, 0, 0, 0"
+                      Style="{StaticResource VisibilityCheckBox}"
+                      IsChecked="{Binding HidePass}"/>
+        </StackPanel>
+        
+        
+        <StackPanel HorizontalAlignment="Center" 
+                    Margin="0, 10" 
+                    Orientation="Horizontal">
+            <TextBlock x:Name="labelName" 
+                       Text="Name" 
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       FontSize="25"
+                       Width="90">
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2"/>
+                </TextBlock.Effect>
+            </TextBlock>
+            
             <Grid>
                 <TextBox x:Name="fieldName" 
                          HorizontalContentAlignment="Left"
                          Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
-                         FontSize="20" 
-                         Height="30"
+                         FontSize="25" 
+                         Height="40"
+                         Width="350"
                          HorizontalAlignment="Stretch" 
                          VerticalContentAlignment="Center" 
                          BorderThickness="2"
@@ -194,63 +219,40 @@
                                   Converter={local:BoolTextCensorConverter}}"
                            Style="{StaticResource RubikBlock}"
                            IsHitTestVisible="False"
-                           HorizontalAlignment="Left"
-                           Padding="10 0 0 0"
+                           HorizontalAlignment="Stretch"
                            VerticalAlignment="Center"
-                           FontSize="20"
+                           Padding="8 0 0 0"
+                           Margin="0, 8, 0, -8"
+                           FontSize="25"
+                           Height="30"
                            Visibility="{Binding HideName, 
                                         Converter={local:BooleanToVisibilityConverter},
                                         ConverterParameter=True}"/>
             </Grid>
-
-            
-            
-            <Button x:Name="buttonConnect" 
-                    HorizontalAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Width="200"
-                    Height="40"
-                    BorderBrush="{x:Null}"
-                    Margin="0 30"
-                    Content="Connect"
-                    Style="{StaticResource SelectButton}"
-                    Command="{Binding ConnectCommand}"
-                    IsEnabled="{Binding ConnectButtonEnabled}"/>
-        </StackPanel>
-
-        <!--Eye button-->
-        <StackPanel Grid.Row="1"
-                    Grid.Column="2"
-                    Margin="0 0">
             
             <CheckBox HorizontalAlignment="Left" 
+                      VerticalAlignment="Center"
                       Background="{x:Null}" 
                       BorderBrush="{x:Null}"
-                      Width="30"
-                      Margin="10 0"
-                      Style="{StaticResource VisibilityCheckBox}"
-                      IsChecked="{Binding HideAddress}"/>
-
-            <CheckBox HorizontalAlignment="Left" 
-                      Background="{x:Null}" 
-                      BorderBrush="{x:Null}"
-                      Width="30"
-                      Margin="10 0"
-                      Style="{StaticResource VisibilityCheckBox}"
-                      IsChecked="{Binding HidePass}"/>
-
-            <CheckBox HorizontalAlignment="Left" 
-                      Background="{x:Null}" 
-                      BorderBrush="{x:Null}"
-                      Width="30"
-                      Margin="10 0"
+                      Width="40"
+                      Margin="10, 0, 0, 0"
                       Style="{StaticResource VisibilityCheckBox}"
                       IsChecked="{Binding HideName}"/>
-
         </StackPanel>
-
-    </Grid>
-
+        
+        
+        <Button x:Name="buttonConnect" 
+                HorizontalAlignment="Center"
+                VerticalContentAlignment="Center"
+                Width="200"
+                Height="40"
+                BorderBrush="{x:Null}"
+                Margin="0 15"
+                Content="Connect"
+                Style="{StaticResource SelectButton}"
+                Command="{Binding ConnectCommand}"
+                IsEnabled="{Binding ConnectButtonEnabled}"/>
+    </StackPanel>
     <UserControl.Background>
         <ImageBrush x:Name="bgImage" ImageSource="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.jpg"/>
     </UserControl.Background>
