@@ -88,7 +88,9 @@ namespace MulTyPlayerClient
                 TransformAddresses[koalaID].Scale = _baseKoalaAddress + 0x60 + koalaOffset;
             }
 
-            IncreaseScale(2.0f);
+            float outbackMultiplier = 1.0f;
+            if(HLevel.CurrentLevelId == 10) outbackMultiplier = 2.0f;
+            IncreaseScale(1.5f * outbackMultiplier);
             MakeVisible();
 
             if (!SettingsHandler.Settings.DoKoalaCollision)
@@ -124,9 +126,14 @@ namespace MulTyPlayerClient
         {
             if (scaleFactor < 0.5f) scaleFactor = 0.5f;
             if (scaleFactor > 3) scaleFactor = 3;
+            const float snugsMultiplier = 1.075f;
+            const float katieMultiplier = 0.825f;
             for (int i = 0; i < 8; i++)
             {
-                ProcessHandler.WriteData(TransformAddresses[i].Scale, BitConverter.GetBytes(scaleFactor), "Scaling koalas");
+                var tempScaleFactor = scaleFactor;
+                if (i == 0) tempScaleFactor = scaleFactor * katieMultiplier;
+                if (i == 3) tempScaleFactor = scaleFactor * snugsMultiplier;
+                ProcessHandler.WriteData(TransformAddresses[i].Scale, BitConverter.GetBytes(tempScaleFactor), "Scaling koalas");
             }
         }
 

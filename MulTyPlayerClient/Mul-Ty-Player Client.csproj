@@ -123,7 +123,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="GUI\KoalaSelectionAssets\Background.mp4">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="GUI\KoalaSelectionAssets\Icons\Boonie.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

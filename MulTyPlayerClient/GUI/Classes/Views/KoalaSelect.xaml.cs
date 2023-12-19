@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace MulTyPlayerClient.GUI.Views
 {
@@ -10,6 +12,19 @@ namespace MulTyPlayerClient.GUI.Views
         public KoalaSelect()
         {
             InitializeComponent();
+            backgroundVideo.Visibility = Visibility.Hidden;
+            backgroundVideo.Play();
+        }
+
+        private void BackgroundVideo_OnMediaEnded(object sender, RoutedEventArgs e)
+        {
+            backgroundVideo.Position = TimeSpan.Zero;
+            backgroundVideo.Play();
+        }
+
+        private void BackgroundVideo_OnMediaOpened(object sender, RoutedEventArgs e)
+        {
+            backgroundVideo.Visibility = Visibility.Visible;
         }
     }
 }
