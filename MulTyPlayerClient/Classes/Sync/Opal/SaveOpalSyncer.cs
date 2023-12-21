@@ -1,35 +1,25 @@
-﻿namespace MulTyPlayerClient
+﻿namespace MulTyPlayerClient;
+
+internal class SaveOpalSyncer : SaveDataSyncer
 {
-    internal class SaveOpalSyncer : SaveDataSyncer
+    public override void Save(int index, int? level)
     {
+        var crateOpals = Levels.GetLevelData((int)level).CrateOpalCount;
+        var newIndex = index > 299 - crateOpals ? 300 - crateOpals + (299 - index) : index;
 
-        public SaveOpalSyncer()
-        {
-        }
+        var byteIndex = newIndex / 8 + 1;
+        var bitIndex = newIndex % 8;
 
-        public override void Save(int index, int? level)
-        {
-            int crateOpals = Levels.GetLevelData((int)level).CrateOpalCount;
-            int newIndex = index > (299 - crateOpals) ? 300 - crateOpals + (299 - index) : index;
+        var address = SyncHandler.SaveDataBaseAddress + 0x70 * (int)level + byteIndex;
+        ProcessHandler.TryRead(address, out byte b, false, "SaveOpalSyncer::Save()");
+        b |= (byte)(1 << bitIndex);
+        ProcessHandler.WriteData(address, new[] { b }, "Setting new opal save data byte value");
+    }
 
-            int byteIndex = (newIndex / 8) + 1;
-            int bitIndex = newIndex % 8;
-
-            int address = (SyncHandler.SaveDataBaseAddress + (0x70 * (int)level) + byteIndex);
-            ProcessHandler.TryRead(address, out byte b, false, "SaveOpalSyncer::Save()");
-            b |= (byte)(1 << bitIndex);
-            ProcessHandler.WriteData(address, new byte[] {b}, "Setting new opal save data byte value");
-        }
-
-        public override void Sync(int level, byte[] data)
-        {
-            for(int i = 0; i < data.Length; i++)
-            {
-                if (data[i] == 1 && SyncHandler.HOpal.GlobalObjectData[level][i] != 5)
-                {
-                    Save(i, level);
-                }
-            }
-        }
+    public override void Sync(int level, byte[] data)
+    {
+        for (var i = 0; i < data.Length; i++)
+            if (data[i] == 1 && SyncHandler.HOpal.GlobalObjectData[level][i] != 5)
+                Save(i, level);
     }
 }

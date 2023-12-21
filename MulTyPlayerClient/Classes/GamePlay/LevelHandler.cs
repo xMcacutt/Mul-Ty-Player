@@ -1,77 +1,74 @@
-﻿using MulTyPlayerClient.GUI;
+﻿using System;
 using MulTyPlayerClient.GUI.Models;
-using System;
 
-namespace MulTyPlayerClient
+namespace MulTyPlayerClient;
+
+internal class LevelHandler
 {
-    internal class LevelHandler
+    public LevelData CurrentLevelData;
+    private int currentLevelId;
+
+    public Action<int> OnLevelChange = delegate { };
+    private static KoalaHandler HKoala => Client.HKoala;
+    private static SyncHandler HSync => Client.HSync;
+
+    public int CurrentLevelId
     {
-        static KoalaHandler HKoala => Client.HKoala;
-        static SyncHandler HSync => Client.HSync;
-
-        public int CurrentLevelId
+        get => currentLevelId;
+        set
         {
-            get => currentLevelId;
-            set
+            if (currentLevelId != value)
             {
-                if (currentLevelId != value)
-                {
-                    currentLevelId = value;
-                    CurrentLevelData = Levels.GetLevelData(value);
-                }
+                currentLevelId = value;
+                CurrentLevelData = Levels.GetLevelData(value);
             }
         }
-        private int currentLevelId;
+    }
 
-        public Action<int> OnLevelChange = delegate { };
-
-        public LevelData CurrentLevelData;
-        
-        public void DoLevelSetup()
+    public void DoLevelSetup()
+    {
+        GetCurrentLevel();
+        HSync.SetCurrentData(CurrentLevelData.IsMainStage, CurrentLevelData.FrameCount != 0);
+        HSync.SetMemAddrs();
+        HSync.RequestSync();
+        if (SettingsHandler.DoTESyncing &&
+            HSync.SyncObjects["TE"].GlobalObjectData.ContainsKey(currentLevelId) &&
+            HSync.SyncObjects["TE"].GlobalObjectData[CurrentLevelId][3] == 5)
+            HSync.ShowStopwatch();
+        HSync.ProtectLeaderboard();
+        if (CurrentLevelData.Id != 16)
         {
-            GetCurrentLevel();
-            HSync.SetCurrentData(CurrentLevelData.IsMainStage, CurrentLevelData.FrameCount != 0);
-            HSync.SetMemAddrs();
-            HSync.RequestSync();
-            if (SettingsHandler.DoTESyncing &&
-                HSync.SyncObjects["TE"].GlobalObjectData.ContainsKey(currentLevelId) &&
-                HSync.SyncObjects["TE"].GlobalObjectData[CurrentLevelId][3] == 5)
-                HSync.ShowStopwatch();
-            HSync.ProtectLeaderboard();
-            if (CurrentLevelData.Id != 16)
-            {
-                HKoala.SetBaseAddress();
-                HKoala.SetCoordinateAddresses();
-            }
-            if (CurrentLevelData.HasKoalas)
-                ObjectiveCountSet();
-            OnLevelChange?.Invoke(currentLevelId);
+            HKoala.SetBaseAddress();
+            HKoala.SetCoordinateAddresses();
         }
 
-        public void GetCurrentLevel()
-        {
-            ProcessHandler.TryRead(0x280594, out int levelId, true, "LevelHandler::GetCurrentLevel()");
+        if (CurrentLevelData.HasKoalas)
+            ObjectiveCountSet();
+        OnLevelChange?.Invoke(currentLevelId);
+    }
 
-            if (ModelController.Lobby.TryGetPlayerInfo(Client._client.Id, out PlayerInfo playerInfo))
-            {
-                playerInfo.Level = Levels.GetLevelData(levelId).Code;
-            }
-            CurrentLevelId = levelId;
-        }
+    public void GetCurrentLevel()
+    {
+        ProcessHandler.TryRead(0x280594, out int levelId, true, "LevelHandler::GetCurrentLevel()");
 
-        public static void ObjectiveCountSet() 
+        if (ModelController.Lobby.TryGetPlayerInfo(Client._client.Id, out var playerInfo))
+            playerInfo.Level = Levels.GetLevelData(levelId).Code;
+        CurrentLevelId = levelId;
+    }
+
+    public static void ObjectiveCountSet()
+    {
+        var currentCountMax = 16;
+        while (currentCountMax != 8)
         {
-            int currentCountMax = 16;
-            while(currentCountMax != 8)
+            var objectiveCounterAddr = PointerCalculations.GetPointerAddress(0x26A4B0, new[] { 0x6E });
+            ProcessHandler.TryRead(objectiveCounterAddr, out byte result, false, "LevelHandler::ObjectiveCountSet()");
+            currentCountMax = result;
+            if (currentCountMax == 16)
             {
-                int objectiveCounterAddr = PointerCalculations.GetPointerAddress(0x26A4B0, new int[] { 0x6E });
-                ProcessHandler.TryRead(objectiveCounterAddr, out byte result, false, "LevelHandler::ObjectiveCountSet()");
-                currentCountMax = result;
-                if (currentCountMax == 16)
-                {
-                    ProcessHandler.WriteData(objectiveCounterAddr, BitConverter.GetBytes(8), "Setting koala objective koala count");
-                    currentCountMax = 8;
-                }
+                ProcessHandler.WriteData(objectiveCounterAddr, BitConverter.GetBytes(8),
+                    "Setting koala objective koala count");
+                currentCountMax = 8;
             }
         }
     }

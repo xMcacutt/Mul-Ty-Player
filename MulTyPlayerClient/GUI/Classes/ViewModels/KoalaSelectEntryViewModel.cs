@@ -1,68 +1,68 @@
-﻿using MulTyPlayerClient.GUI.Models;
-using System;
+﻿using System;
 using System.Windows;
+using MulTyPlayerClient.GUI.Models;
 using PropertyChanged;
 
-namespace MulTyPlayerClient.GUI.ViewModels
+namespace MulTyPlayerClient.GUI.ViewModels;
+
+[AddINotifyPropertyChangedInterface]
+public class KoalaSelectEntryViewModel
 {
-    [AddINotifyPropertyChangedInterface]
-    public class KoalaSelectEntryViewModel
+    public KoalaSelectEntryModel kseModel;
+
+    public KoalaSelectEntryViewModel(KoalaSelectEntryModel kseModel)
     {
-        public string KoalaName { get; set; }
+        this.kseModel = kseModel;
+        this.kseModel.OnAvailabilityChanged += SetAvailability;
+        KoalaName = kseModel.KoalaInfo.Name;
+        IsAvailable = kseModel.IsAvailable;
+        LightSource = kseModel.LightPortraitSource;
+        DarkSource = kseModel.DarkPortraitSource;
+        TakenSource = kseModel.TakenPortraitSource;
+        SelectedSource = kseModel.SelectedAnimationSource;
+        SetPortraitVisibility();
+    }
 
-        public bool IsHovered { get; set; }
-        public bool IsAvailable { get; set; } = true;
+    //for design-time preview
+    public KoalaSelectEntryViewModel() : this(new KoalaSelectEntryModel(Koala.Boonie))
+    {
+    }
 
-        public Visibility LightPortraitVisibility { get; set; }
-        public Visibility DarkPortraitVisibility { get; set; }
-        public Visibility TakenPortraitVisibility { get; set; }
+    public string KoalaName { get; set; }
 
-        public Uri LightSource { get; set; }
-        public Uri DarkSource { get; set; }
-        public Uri TakenSource { get; set; }
-        public Uri SelectedSource { get; set; }
+    public bool IsHovered { get; set; }
+    public bool IsAvailable { get; set; } = true;
 
-        public KoalaSelectEntryModel kseModel;
+    public Visibility LightPortraitVisibility { get; set; }
+    public Visibility DarkPortraitVisibility { get; set; }
+    public Visibility TakenPortraitVisibility { get; set; }
 
-        public KoalaSelectEntryViewModel(KoalaSelectEntryModel kseModel)
-        {
-            this.kseModel = kseModel;
-            this.kseModel.OnAvailabilityChanged += SetAvailability;
-            KoalaName = kseModel.KoalaInfo.Name;
-            IsAvailable = kseModel.IsAvailable;
-            LightSource = kseModel.LightPortraitSource;
-            DarkSource = kseModel.DarkPortraitSource;
-            TakenSource = kseModel.TakenPortraitSource;
-            SelectedSource = kseModel.SelectedAnimationSource;
-            SetPortraitVisibility();
-        }
+    public Uri LightSource { get; set; }
+    public Uri DarkSource { get; set; }
+    public Uri TakenSource { get; set; }
+    public Uri SelectedSource { get; set; }
 
-        //for design-time preview
-        public KoalaSelectEntryViewModel() : this(new(Koala.Boonie)) { }
+    public void SetHovered(bool newValue)
+    {
+        IsHovered = newValue;
+        SetPortraitVisibility();
+    }
 
-        public void SetHovered(bool newValue)
-        {
-            IsHovered = newValue;
-            SetPortraitVisibility();
-        }
+    private void SetAvailability(bool newValue)
+    {
+        IsAvailable = newValue;
+        SetPortraitVisibility();
+    }
 
-        private void SetAvailability(bool newValue)
-        {
-            IsAvailable = newValue;
-            SetPortraitVisibility();
-        }
+    public void OnClicked()
+    {
+        ModelController.KoalaSelect.KoalaClicked(kseModel.KoalaInfo.Koala);
+    }
 
-        public void OnClicked()
-        {
-            ModelController.KoalaSelect.KoalaClicked(kseModel.KoalaInfo.Koala);
-        }
-
-        private void SetPortraitVisibility()
-        {
-            LightPortraitVisibility = (IsAvailable && IsHovered) ? Visibility.Visible : Visibility.Hidden;
-            DarkPortraitVisibility = (IsAvailable && !IsHovered) ? Visibility.Visible : Visibility.Hidden;
-            TakenPortraitVisibility = (!IsAvailable) ? Visibility.Visible : Visibility.Hidden;
-        }
-        
+    private void SetPortraitVisibility()
+    {
+        LightPortraitVisibility = IsAvailable && IsHovered ? Visibility.Visible : Visibility.Hidden;
+        DarkPortraitVisibility = IsAvailable && !IsHovered ? Visibility.Visible : Visibility.Hidden;
+        TakenPortraitVisibility = !IsAvailable ? Visibility.Visible : Visibility.Hidden;
     }
 }

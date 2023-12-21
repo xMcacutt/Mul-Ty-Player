@@ -1,45 +1,44 @@
-﻿using Riptide;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Riptide;
 
-namespace MulTyPlayerServer
+namespace MulTyPlayerServer;
+
+internal class PlayerHandler
 {
-    internal class PlayerHandler
+    public static Dictionary<ushort, Player> Players = new();
+
+    public PlayerHandler()
     {
-        public static Dictionary<ushort, Player> Players = new();
+        Players = new Dictionary<ushort, Player>();
+    }
 
-        public PlayerHandler()
-        {
-            Players = new();
-        }
+    public static void AddPlayer(string koalaName, string name, ushort clientID, bool isHost)
+    {
+        Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
+        Players.Add(clientID, new Player(koala, name, clientID, isHost, false, true));
+    }
 
-        public static void AddPlayer(string koalaName, string name, ushort clientID, bool isHost)
-        {
-            Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
-            Players.Add(clientID, new Player(koala, name, clientID, isHost, false, true));
-        }
+    public static void RemovePlayer(ushort id)
+    {
+        Players.Remove(id);
+    }
 
-        public static void RemovePlayer(ushort id)
-        {
-            Players.Remove(id);
-        }
+    public static void AnnounceDisconnect(ushort id)
+    {
+        var message = Message.Create(MessageSendMode.Reliable, (ushort)MessageID.AnnounceDisconnect);
+        message.AddUShort(id);
+        Server._Server.SendToAll(message);
+    }
 
-        public static void AnnounceDisconnect(ushort id)
+    [MessageHandler((ushort)MessageID.PlayerInfo)]
+    private static void HandleGettingCoordinates(ushort fromClientId, Message message)
+    {
+        if (Players.TryGetValue(fromClientId, out var player))
         {
-            Message message = Message.Create(MessageSendMode.Reliable, (ushort)MessageID.AnnounceDisconnect);
-            message.AddUShort(id);
-            Server._Server.SendToAll(message);
-        }
-
-        [MessageHandler((ushort)MessageID.PlayerInfo)]
-        private static void HandleGettingCoordinates(ushort fromClientId, Message message)
-        {
-            if (Players.TryGetValue(fromClientId, out Player player))
-            {
-                player.OnMenu = message.GetBool();
-                player.CurrentLevel = message.GetInt();
-                player.Coordinates = message.GetFloats();
-            }
+            player.OnMenu = message.GetBool();
+            player.CurrentLevel = message.GetInt();
+            player.Coordinates = message.GetFloats();
         }
     }
 }

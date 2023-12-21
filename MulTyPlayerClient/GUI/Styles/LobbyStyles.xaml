@@ -2,76 +2,75 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:gui="clr-namespace:MulTyPlayerClient.GUI">
     <ResourceDictionary.MergedDictionaries>
-        <gui:Colors/>
+        <gui:Colors />
     </ResourceDictionary.MergedDictionaries>
-    
+
     <LinearGradientBrush x:Key="BackGradient" EndPoint="0.5,1" StartPoint="0.5,0">
-        <GradientStop Color="{DynamicResource AltBackColor}"/>
-        <GradientStop Color="{DynamicResource MainBackColor}" Offset="1"/>
+        <GradientStop Color="{DynamicResource AltBackColor}" />
+        <GradientStop Color="{DynamicResource MainBackColor}" Offset="1" />
     </LinearGradientBrush>
-    
+
+    <Style x:Key="ScrollBarThumb" TargetType="Thumb">
+        <Setter Property="Background" Value="{DynamicResource MainBack}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="2.5" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="ScrollBar">
-        <Setter Property="Background" Value="{DynamicResource SpecialBack}"/>
-        <Setter Property="Foreground" Value="{DynamicResource MainBack}"/>
-        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="{DynamicResource SpecialBack}" />
+        <Setter Property="Foreground" Value="{DynamicResource MainBack}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Margin" Value="0 10" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ScrollBar">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <RepeatButton Command="ScrollBar.LineUpCommand" 
-                                      Margin="0,2,0,0"
-                                      Content="&#x25B2;" 
-                                      BorderThickness="0"
-                                      Foreground="{DynamicResource MainBack}" 
-                                      Grid.Row="0"/>
-                        <Border Grid.Row="1" BorderThickness="0" Background="{DynamicResource SpecialBack}">
-                            <Track x:Name="PART_Track">
-                                <Track.DecreaseRepeatButton>
-                                    <RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0"/>
-                                </Track.DecreaseRepeatButton>
+                        <Border Width="10" Grid.Row="1" CornerRadius="5" BorderThickness="0"
+                                Background="{DynamicResource SpecialBack}">
+                            <Track x:Name="PART_Track" IsDirectionReversed="True">
                                 <Track.Thumb>
-                                    <Thumb Style="{DynamicResource ScrollBarThumbVertical}" />
+                                    <Thumb Style="{StaticResource ScrollBarThumb}" />
                                 </Track.Thumb>
-                                <Track.IncreaseRepeatButton>
-                                    <RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0"/>
-                                </Track.IncreaseRepeatButton>
                             </Track>
                         </Border>
-                        <RepeatButton Command="ScrollBar.LineDownCommand"
-                                      Margin="0,0,0,2"
-                                      Content="&#x25BC;"
-                                      BorderThickness="0"
-                                      Foreground="{DynamicResource MainBack}" 
-                                      Grid.Row="2"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <!--DataGrid-->
     <Style TargetType="DataGrid" x:Key="DataGridStyle">
-        <Setter Property="HeadersVisibility" Value="None"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="GridLinesVisibility" Value="None"/>
-        <Setter Property="Foreground" Value="{DynamicResource MainText}"/>
-        <Setter Property="AlternatingRowBackground" Value="Transparent"/>
-        <Setter Property="CanUserResizeColumns" Value="False"/>
-        <Setter Property="CanUserResizeRows" Value="False"/>
-        <Setter Property="CanUserReorderColumns" Value="False"/>
-        <Setter Property="AutoGenerateColumns" Value="False"/>
-        <Setter Property="IsReadOnly" Value="True"/>
-        <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="HeadersVisibility" Value="None" />
+        <Setter Property="GridLinesVisibility" Value="None" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource MainText}" />
+        <Setter Property="AlternatingRowBackground" Value="Transparent" />
+        <Setter Property="CanUserResizeColumns" Value="False" />
+        <Setter Property="CanUserResizeRows" Value="False" />
+        <Setter Property="CanUserReorderColumns" Value="False" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="HorizontalScrollBarVisibility" Value="Hidden" />
     </Style>
     <Style TargetType="DataGridRow">
-        <Setter Property="Height" Value="30" />
+        <Setter Property="Height" Value="35" />
         <Style.Triggers>
             <Trigger Property="ItemsControl.AlternationIndex" Value="0">
                 <Setter Property="Background" Value="{DynamicResource AltBack}" />
@@ -79,16 +78,16 @@
         </Style.Triggers>
     </Style>
     <Style TargetType="{x:Type DataGridCell}">
-        <Setter Property="BorderBrush" Value="Transparent"></Setter>
+        <Setter Property="BorderBrush" Value="Transparent" />
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="{DynamicResource AltAccent}"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="Foreground" Value="{DynamicResource MainText}"/>
+                <Setter Property="Background" Value="{DynamicResource AltAccent}" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Foreground" Value="{DynamicResource MainText}" />
             </Trigger>
         </Style.Triggers>
     </Style>
-    
+
     <!--LobbyButton-->
     <Style TargetType="Button" x:Key="LobbyButton">
         <Setter Property="Background" Value="{DynamicResource MainBack}" />
@@ -101,8 +100,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Name="Border" 
-                            CornerRadius="0" 
+                    <Border Name="Border"
+                            CornerRadius="0"
                             BorderThickness="0"
                             Background="{DynamicResource MainBack}">
                         <ContentPresenter Margin="2"
@@ -140,31 +139,32 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    
+
     <!--TextBox-->
-    <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
-    <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
-    <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
+    <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3" />
+    <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA" />
+    <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5" />
     <Style TargetType="{x:Type TextBox}" x:Key="PlaceholderTextStyle">
-        <Setter Property="Background" Value="{DynamicResource AltBack}"/>
-        <Setter Property="Foreground" Value="{DynamicResource MainText}"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
-        <Setter Property="HorizontalContentAlignment" Value="Left"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-        <Setter Property="AllowDrop" Value="False"/>
-        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+        <Setter Property="Background" Value="{DynamicResource AltBack}" />
+        <Setter Property="Foreground" Value="{DynamicResource MainText}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="AllowDrop" Value="False" />
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBoxBase}">
                     <Grid>
-                        <Border x:Name="border" 
-                            Background="{TemplateBinding Background}" 
-                            BorderBrush="{TemplateBinding BorderBrush}" 
-                            BorderThickness="{TemplateBinding BorderThickness}" 
-                            SnapsToDevicePixels="True">
-                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false"
+                                          HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
                         </Border>
                         <TextBlock IsHitTestVisible="False"
                                    Text="{TemplateBinding Tag}"
@@ -180,7 +180,9 @@
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                        <DataTrigger
+                                            Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}"
+                                            Value="">
                                             <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -190,68 +192,69 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            <Setter Property="Opacity" TargetName="border" Value="0.56" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource MainAccent}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource MainAccent}" />
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="true">
-                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource MainAccent}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource MainAccent}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        
+
         <Style.Triggers>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
-                    <Condition Property="IsSelectionActive" Value="false"/>
+                    <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true" />
+                    <Condition Property="IsSelectionActive" Value="false" />
                 </MultiTrigger.Conditions>
-                <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                <Setter Property="SelectionBrush"
+                        Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>
-    
+
     <Style x:Key="ComicTextMain" TargetType="TextBlock">
-        <Setter Property="TextElement.FontFamily" Value="../Fonts/#SF Slapstick Comic"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="Foreground" Value="{DynamicResource MainText}"/>
+        <Setter Property="TextElement.FontFamily" Value="../Fonts/#SF Slapstick Comic" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Foreground" Value="{DynamicResource MainText}" />
     </Style>
     <Style x:Key="ComicTextInverted" TargetType="TextBlock">
-        <Setter Property="TextElement.FontFamily" Value="../Fonts/#SF Slapstick Comic"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="Foreground" Value="{DynamicResource InvertedText}"/>
+        <Setter Property="TextElement.FontFamily" Value="../Fonts/#SF Slapstick Comic" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Foreground" Value="{DynamicResource InvertedText}" />
     </Style>
-    
+
     <Style TargetType="{x:Type Button}" x:Key="InstallButton">
-        <Setter Property="Background" Value="Black"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Background" Value="Black" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border Background="{TemplateBinding Background}"
                             CornerRadius="5">
-                        <TextBlock x:Name="installButtonText" 
+                        <TextBlock x:Name="installButtonText"
                                    Text="{TemplateBinding Tag}"
                                    Margin="10,0,10,0"
-                                   FontSize="{TemplateBinding FontSize}"/>
+                                   FontSize="{TemplateBinding FontSize}" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Foreground" TargetName="installButtonText" Value="#FFFFFF0F"/>
+                            <Setter Property="Foreground" TargetName="installButtonText" Value="#FFFFFF0F" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Background" Value="White"/>
-                            <Setter Property="Foreground" TargetName="installButtonText" Value="White"/>
+                            <Setter Property="Background" Value="White" />
+                            <Setter Property="Foreground" TargetName="installButtonText" Value="White" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
+
 </ResourceDictionary>

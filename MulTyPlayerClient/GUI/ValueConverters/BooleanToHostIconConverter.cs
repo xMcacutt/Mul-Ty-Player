@@ -1,31 +1,22 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media;
-using MulTyPlayerClient.GUI.Controls;
 
-namespace MulTyPlayerClient.GUI
+namespace MulTyPlayerClient.GUI;
+
+public class BooleanToHostIconConverter : IValueConverter
 {
-    public class BooleanToHostIconConverter : IValueConverter
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is bool and true)
-            {
-                // Return an icon that represents the host
-                return "\uf521";
-            }
-            else
-            {
-                // Return null if the player is not the host
-                return null;
-            }
-        }
+        if (value is bool and true)
+            // Return an icon that represents the host
+            return "\uf521";
+        // Return null if the player is not the host
+        return null;
+    }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -1,59 +1,49 @@
-﻿using MulTyPlayerClient.GUI.Models;
-using System;
+﻿using System;
 using System.Globalization;
 using System.IO;
 using System.Windows.Data;
+using MulTyPlayerClient.GUI.Models;
 
-namespace MulTyPlayerClient.GUI
+namespace MulTyPlayerClient.GUI;
+
+public class StringsToBooleanConverter : IMultiValueConverter
 {
-    public class StringsToBooleanConverter : IMultiValueConverter
+    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-        {
-            // Check that both values are not null or empty strings
-            string tyPath = values[0] as string;
-            string mtpPath = values[1] as string;
-            if (!string.IsNullOrEmpty(tyPath) && !string.IsNullOrEmpty(mtpPath))
-            {
-                // Check that the paths are valid folders
-                if (System.IO.Directory.Exists(tyPath) && System.IO.Directory.Exists(mtpPath) && CheckTyFolder(tyPath) && CheckMTPPath(mtpPath))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool CheckMTPPath(string mtpPath)
-        {
-            if(Directory.GetFiles(mtpPath).Length == 0) { return true; }
-            if(File.Exists(System.IO.Path.Combine(mtpPath, "Patch_PC.rkv"))) { return true; }
-            return false;
-        }
-
-        private bool CheckTyFolder(string tyPath)
-        {
-            int i = 0;
-            foreach (string fileName in ModelController.Setup.TyFileNames)
-            {
-                string filePath = System.IO.Path.Combine(tyPath, fileName);
-                FileInfo fileInfo = new FileInfo(filePath);
-                int index = Array.IndexOf(ModelController.Setup.TyFileNames, fileName);
-                if (fileInfo.Exists)
-                {
-                    i++;
-                }
-            }
-            if (i == ModelController.Setup.TyFileNames.Length)
-            {
+        // Check that both values are not null or empty strings
+        var tyPath = values[0] as string;
+        var mtpPath = values[1] as string;
+        if (!string.IsNullOrEmpty(tyPath) && !string.IsNullOrEmpty(mtpPath))
+            // Check that the paths are valid folders
+            if (Directory.Exists(tyPath) && Directory.Exists(mtpPath) && CheckTyFolder(tyPath) && CheckMTPPath(mtpPath))
                 return true;
-            }
-            return false;
+        return false;
+    }
+
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+
+    private bool CheckMTPPath(string mtpPath)
+    {
+        if (Directory.GetFiles(mtpPath).Length == 0) return true;
+        if (File.Exists(Path.Combine(mtpPath, "Patch_PC.rkv"))) return true;
+        return false;
+    }
+
+    private bool CheckTyFolder(string tyPath)
+    {
+        var i = 0;
+        foreach (var fileName in ModelController.Setup.TyFileNames)
+        {
+            var filePath = Path.Combine(tyPath, fileName);
+            var fileInfo = new FileInfo(filePath);
+            var index = Array.IndexOf(ModelController.Setup.TyFileNames, fileName);
+            if (fileInfo.Exists) i++;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+        if (i == ModelController.Setup.TyFileNames.Length) return true;
+        return false;
     }
 }

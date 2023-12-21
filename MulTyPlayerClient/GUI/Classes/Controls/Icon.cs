@@ -7,11 +7,6 @@ namespace MulTyPlayerClient.GUI.Controls;
 
 public class Icon : Control
 {
-    static Icon()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(Icon), new FrameworkPropertyMetadata(typeof(Icon)));
-    }
-
     public static readonly DependencyProperty SizeProperty =
         DependencyProperty.Register(nameof(Size), typeof(double), typeof(Icon), new PropertyMetadata(12.0));
 
@@ -20,22 +15,27 @@ public class Icon : Control
 
     public static readonly DependencyProperty ForegroundProperty =
         TextElement.ForegroundProperty.AddOwner(typeof(Icon));
-    
+
+    static Icon()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(Icon), new FrameworkPropertyMetadata(typeof(Icon)));
+    }
+
     public double Size
     {
         get => (double)GetValue(SizeProperty);
-        set { SetValue(SizeProperty, value); }
+        set => SetValue(SizeProperty, value);
     }
 
     public string Code
     {
         get => (string)GetValue(CodeProperty);
-        set { SetValue(CodeProperty, value); }
+        set => SetValue(CodeProperty, value);
     }
 
     public Brush Foreground
     {
         get => (Brush)GetValue(ForegroundProperty);
-        set { SetValue(ForegroundProperty, value); }
+        set => SetValue(ForegroundProperty, value);
     }
 }

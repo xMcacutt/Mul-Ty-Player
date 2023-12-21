@@ -1,97 +1,89 @@
-﻿using MulTyPlayerClient.Classes.Utility;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Threading;
+using MulTyPlayerClient.Classes.Utility;
 
-namespace MulTyPlayerClient.GUI.Models
+namespace MulTyPlayerClient.GUI.Models;
+
+public class SplashModel
 {
-    public class SplashModel
+    public enum SplashState
     {
-        public event Action OnComplete;
-        public event Action<SplashState> OnStateChange;
+        TyFound,
+        TyNotFound,
+        TyLaunched,
+        TyFailedToLaunch
+    }
 
-        public SplashModel()
-        {            
-            var backgroundWorker = new BackgroundWorker();
-            backgroundWorker.DoWork += (s, e) => GetProcessSequence();
-            backgroundWorker.RunWorkerCompleted += (s, e) =>
-            {
-                OnComplete?.Invoke();
-            };
-            backgroundWorker.RunWorkerAsync();
-        }
+    public SplashModel()
+    {
+        var backgroundWorker = new BackgroundWorker();
+        backgroundWorker.DoWork += (s, e) => GetProcessSequence();
+        backgroundWorker.RunWorkerCompleted += (s, e) => { OnComplete?.Invoke(); };
+        backgroundWorker.RunWorkerAsync();
+    }
 
-        private void GetProcessSequence()
-        {
-            Thread.Sleep(2000);
+    public event Action OnComplete;
+    public event Action<SplashState> OnStateChange;
 
-            bool existingProcess = TyProcess.FindProcess();
-            //if process already exists, OnTyProcessFound is called, do nothing else
-            if (existingProcess)
-            {
-                OnStateChange?.Invoke(SplashState.TyFound);
-                return;
-            }
+    private void GetProcessSequence()
+    {
+        Thread.Sleep(2000);
 
-            TyProcess.OnTyProcessLaunched += TyLaunched;
-            TyProcess.OnTyProcessLaunchFailed += TyFailedToLaunch;
-
-            bool canAutoLaunchGame =
-                SettingsHandler.Settings.AutoLaunchTyOnStartup
-                && SettingsHandler.HasValidExePath()
-                && TyProcess.CanLaunchGame;
-
-            if (canAutoLaunchGame)
-            {
-                TyProcess.TryLaunchGame();
-            }
-            else
-            {
-                TyNotFound();
-            }
-
-            TyProcess.OnTyProcessLaunched -= TyLaunched;
-            TyProcess.OnTyProcessLaunchFailed -= TyFailedToLaunch;
-            TyProcess.OnTyProcessFound += TyFound;
-
-            //If there was no process AND failed to launch the game,
-            //Periodically search for the process until its found
-            //Enable the launch button if conditions are met
-            while (!TyProcess.FindProcess())
-            {
-                Thread.Sleep(250);
-            }
-            TyProcess.OnTyProcessFound -= TyFound;
-        }
-
-        public bool ShouldEnableLaunchGameButton()
-        {
-            return SettingsHandler.HasValidExePath() && TyProcess.CanLaunchGame && SteamHelper.IsLoggedOn();
-        }
-
-        public enum SplashState
-        {
-            TyFound,
-            TyNotFound,
-            TyLaunched,
-            TyFailedToLaunch
-        }
-
-        private void TyFound()
+        var existingProcess = TyProcess.FindProcess();
+        //if process already exists, OnTyProcessFound is called, do nothing else
+        if (existingProcess)
         {
             OnStateChange?.Invoke(SplashState.TyFound);
+            return;
         }
-        private void TyNotFound()
-        {
-            OnStateChange?.Invoke(SplashState.TyNotFound);
-        }
-        private void TyLaunched()
-        {
-            OnStateChange?.Invoke(SplashState.TyLaunched);
-        }
-        private void TyFailedToLaunch()
-        {
-            OnStateChange?.Invoke(SplashState.TyFailedToLaunch);
-        }
+
+        TyProcess.OnTyProcessLaunched += TyLaunched;
+        TyProcess.OnTyProcessLaunchFailed += TyFailedToLaunch;
+
+        var canAutoLaunchGame =
+            SettingsHandler.Settings.AutoLaunchTyOnStartup
+            && SettingsHandler.HasValidExePath()
+            && TyProcess.CanLaunchGame;
+
+        if (canAutoLaunchGame)
+            TyProcess.TryLaunchGame();
+        else
+            TyNotFound();
+
+        TyProcess.OnTyProcessLaunched -= TyLaunched;
+        TyProcess.OnTyProcessLaunchFailed -= TyFailedToLaunch;
+        TyProcess.OnTyProcessFound += TyFound;
+
+        //If there was no process AND failed to launch the game,
+        //Periodically search for the process until its found
+        //Enable the launch button if conditions are met
+        while (!TyProcess.FindProcess()) Thread.Sleep(250);
+        TyProcess.OnTyProcessFound -= TyFound;
+    }
+
+    public bool ShouldEnableLaunchGameButton()
+    {
+        return SettingsHandler.HasValidExePath() && TyProcess.CanLaunchGame && SteamHelper.IsLoggedOn();
+    }
+
+    private void TyFound()
+    {
+        OnStateChange?.Invoke(SplashState.TyFound);
+    }
+
+    private void TyNotFound()
+    {
+        OnStateChange?.Invoke(SplashState.TyNotFound);
+    }
+
+    private void TyLaunched()
+    {
+        OnStateChange?.Invoke(SplashState.TyLaunched);
+    }
+
+    private void TyFailedToLaunch()
+    {
+        OnStateChange?.Invoke(SplashState.TyFailedToLaunch);
     }
 }

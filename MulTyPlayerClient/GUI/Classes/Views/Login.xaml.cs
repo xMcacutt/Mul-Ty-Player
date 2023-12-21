@@ -1,16 +1,14 @@
 ﻿using System.Windows.Controls;
 
+namespace MulTyPlayerClient.GUI.Views;
 
-namespace MulTyPlayerClient.GUI.Views
+/// <summary>
+///     Interaction logic for Login.xaml
+/// </summary>
+public partial class Login : UserControl
 {
-    /// <summary>
-    /// Interaction logic for Login.xaml
-    /// </summary>
-    public partial class Login : UserControl
+    public Login()
     {
-        public Login()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

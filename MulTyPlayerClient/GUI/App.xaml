@@ -8,40 +8,41 @@
 
     <Application.Resources>
         <ResourceDictionary>
+            <ResourceDictionary Source="Classes/Controls/KoalaIcons.xaml" x:Key="KoalaIcons" />
             <ResourceDictionary.MergedDictionaries>
-                <gui:Icons/>
-                
+                <gui:Icons />
+
                 <ResourceDictionary>
-                    <gui:Colors x:Key="AppColors"/>
+                    <gui:Colors x:Key="AppColors" />
                 </ResourceDictionary>
-                
-                <ResourceDictionary Source="Styles/ValueConverters.xaml"/>
-                <ResourceDictionary Source="Styles/GlobalStyles.xaml"/>
-                <ResourceDictionary Source="Styles/TyStyles.xaml"/>
-                <ResourceDictionary Source="Styles/LobbyStyles.xaml"/>
-                
+
+                <ResourceDictionary Source="Styles/ValueConverters.xaml" />
+                <ResourceDictionary Source="Styles/GlobalStyles.xaml" />
+                <ResourceDictionary Source="Styles/TyStyles.xaml" />
+                <ResourceDictionary Source="Styles/LobbyStyles.xaml" />
+
                 <ResourceDictionary>
                     <DataTemplate DataType="{x:Type viewmodels:SplashViewModel}">
-                        <views:Splash/>
+                        <views:Splash />
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
-                        <views:Login/>
+                        <views:Login />
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:KoalaSelectViewModel}">
-                        <views:KoalaSelect/>
+                        <views:KoalaSelect />
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:KoalaSelectEntryViewModel}">
-                        <views:KoalaSelectEntry/>
+                        <views:KoalaSelectEntry />
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:LobbyViewModel}">
-                        <views:Lobby/>
+                        <views:Lobby />
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:SettingsViewModel}">
-                        <views:SettingsMenu/>
+                        <views:SettingsMenu />
                     </DataTemplate>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
-    
+
 </Application>

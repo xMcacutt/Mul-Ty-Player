@@ -1,34 +1,33 @@
-﻿using MulTyPlayerClient.GUI.ViewModels;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using MulTyPlayerClient.GUI.ViewModels;
 
-namespace MulTyPlayerClient.GUI.Views
+namespace MulTyPlayerClient.GUI.Views;
+
+public partial class KoalaSelectEntry : UserControl
 {
-    public partial class KoalaSelectEntry : UserControl
+    public KoalaSelectEntry()
     {
-        public KoalaSelectEntry()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        protected void KoalaEntry_OnMouseOverChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            (DataContext as KoalaSelectEntryViewModel).SetHovered((bool)e.NewValue);
-        }
+    protected void KoalaEntry_OnMouseOverChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        (DataContext as KoalaSelectEntryViewModel).SetHovered((bool)e.NewValue);
+    }
 
-        protected void KoalaEntry_OnClicked(object sender, MouseButtonEventArgs e)
+    protected void KoalaEntry_OnClicked(object sender, MouseButtonEventArgs e)
+    {
+        if (DataContext is KoalaSelectEntryViewModel vm)
         {
-            if (DataContext is KoalaSelectEntryViewModel vm)
-            {
-                if (!vm.IsAvailable)
-                    return;
-                SelectedAnimation.Position = TimeSpan.Zero;
-                SelectedAnimation.Visibility = Visibility.Visible;
-                SelectedAnimation.Play();
-                vm.OnClicked();
-            }
+            if (!vm.IsAvailable)
+                return;
+            SelectedAnimation.Position = TimeSpan.Zero;
+            SelectedAnimation.Visibility = Visibility.Visible;
+            SelectedAnimation.Play();
+            vm.OnClicked();
         }
     }
 }

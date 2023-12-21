@@ -1,8 +1,7 @@
-﻿namespace MulTyPlayerClient.GUI.ViewModels
+﻿namespace MulTyPlayerClient.GUI.ViewModels;
+
+public interface IViewModel
 {
-    public interface IViewModel
-    {
-        public void OnEntered();
-        public void OnExited();
-    }
+    public void OnEntered();
+    public void OnExited();
 }

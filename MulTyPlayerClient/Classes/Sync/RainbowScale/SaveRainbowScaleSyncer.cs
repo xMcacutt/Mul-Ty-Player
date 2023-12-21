@@ -1,38 +1,33 @@
-﻿namespace MulTyPlayerClient
+﻿namespace MulTyPlayerClient;
+
+internal class SaveRSSyncer : SaveDataSyncer
 {
-    internal class SaveRSSyncer : SaveDataSyncer
+    public SaveRSSyncer()
     {
-        public SaveRSSyncer()
-        {
-            SaveDataOffset = 0x11;
-            SaveWriteValue = 1;
-        }
+        SaveDataOffset = 0x11;
+        SaveWriteValue = 1;
+    }
 
-        public override void Save(int index, int? level)
-        {
-            if (level != Levels.RainbowCliffs.Id)
-                return;
+    public override void Save(int index, int? level)
+    {
+        if (level != Levels.RainbowCliffs.Id)
+            return;
 
-            int byteIndex = (index / 8) + 1;
-            int bitIndex = index % 8;
+        var byteIndex = index / 8 + 1;
+        var bitIndex = index % 8;
 
-            int address = SyncHandler.SaveDataBaseAddress + SaveDataOffset + byteIndex;
-            ProcessHandler.TryRead(address, out byte b, false, "SaveRainbowScaleSyncer::Save()");
-            b |= (byte)(1 << bitIndex);
-            ProcessHandler.WriteData(address, new byte[] { b }, "Setting new rainbow scale save data byte value");
-        }
+        var address = SyncHandler.SaveDataBaseAddress + SaveDataOffset + byteIndex;
+        ProcessHandler.TryRead(address, out byte b, false, "SaveRainbowScaleSyncer::Save()");
+        b |= (byte)(1 << bitIndex);
+        ProcessHandler.WriteData(address, new[] { b }, "Setting new rainbow scale save data byte value");
+    }
 
-        public override void Sync(int level, byte[] data)
-        {
-            if (level != Levels.RainbowCliffs.Id)
-                return;
-            for (int i = 0; i < data.Length; i++)
-            {
-                if (data[i] == 1 && SyncHandler.HRainbowScale.GlobalObjectData[0][i] != 5)
-                {
-                    Save(i, level);
-                }
-            }
-        }
+    public override void Sync(int level, byte[] data)
+    {
+        if (level != Levels.RainbowCliffs.Id)
+            return;
+        for (var i = 0; i < data.Length; i++)
+            if (data[i] == 1 && SyncHandler.HRainbowScale.GlobalObjectData[0][i] != 5)
+                Save(i, level);
     }
 }

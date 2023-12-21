@@ -1,28 +1,23 @@
 ﻿using PropertyChanged;
-using System;
-using System.Windows.Media.Imaging;
 
-namespace MulTyPlayerClient.GUI
+namespace MulTyPlayerClient.GUI;
+
+[AddINotifyPropertyChangedInterface]
+public class PlayerInfo
 {
-    [AddINotifyPropertyChangedInterface]
-    public class PlayerInfo
+    public PlayerInfo(ushort clientID, string playerName, string koalaName)
     {
-        public ushort ClientID { get; set; }
-        public BitmapImage KoalaIcon { get; set; }
-        public string PlayerName { get; set; }
-        public bool IsHost { get; set; }
-        public bool IsReady { get; set; }
-        public string Level { get; set; }
-
-        public PlayerInfo(ushort clientID, string playerName, string koalaName) 
-        {
-            ClientID = clientID;
-            PlayerName = playerName;
-            var koalaIconPath = $"pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Icons/{koalaName}.png";
-            KoalaIcon = new BitmapImage(new Uri(koalaIconPath));
-            KoalaIcon.Freeze();
-            IsHost = PlayerHandler.Players[clientID].IsHost;
-            IsReady = PlayerHandler.Players[clientID].IsReady;
-        }
+        ClientID = clientID;
+        PlayerName = playerName;
+        KoalaName = koalaName;
+        IsHost = PlayerHandler.Players[clientID].IsHost;
+        IsReady = PlayerHandler.Players[clientID].IsReady;
     }
+
+    public ushort ClientID { get; set; }
+    public string KoalaName { get; set; }
+    public string PlayerName { get; set; }
+    public bool IsHost { get; set; }
+    public bool IsReady { get; set; }
+    public string Level { get; set; }
 }

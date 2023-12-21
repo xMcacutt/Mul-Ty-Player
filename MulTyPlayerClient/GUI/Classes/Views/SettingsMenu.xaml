@@ -13,26 +13,25 @@
 
     <Grid Margin="10,10,10,10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
 
         </Grid.RowDefinitions>
 
         <TextBlock Style="{StaticResource ComicText}"
                    Text="Client Settings"
-                   FontSize="30"
-                   HorizontalAlignment="Center"/>
+                   FontSize="30" />
 
         <StackPanel Grid.Row="1">
             <CheckBox Content="Do Koala Collision?"
                       Style="{StaticResource ComicTextCheck}"
                       Margin="10,10,0,10"
-                      IsChecked="{Binding DoKoalaCollision, Mode=TwoWay}"/>
+                      IsChecked="{Binding DoKoalaCollision, Mode=TwoWay}" />
 
             <CheckBox Content="Auto-Restart Ty?"
                       Style="{StaticResource ComicTextCheck}"
                       Margin="10,10,0,10"
-                      IsChecked="{Binding AutoRestartTy, Mode=TwoWay}"/>
+                      IsChecked="{Binding AutoRestartTy, Mode=TwoWay}" />
         </StackPanel>
     </Grid>
 </Window>

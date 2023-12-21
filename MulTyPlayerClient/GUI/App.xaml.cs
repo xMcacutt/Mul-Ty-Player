@@ -1,29 +1,27 @@
-﻿using MulTyPlayerClient.GUI;
+﻿using System.Windows;
+using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
-using System.Runtime.Versioning;
-using System.Windows;
 
-namespace MulTyPlayerClient
+namespace MulTyPlayerClient;
+
+public partial class App : Application
 {
-    public partial class App : Application
+    private MainWindow mw;
+
+    public App()
     {
-        public App()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-            SettingsHandler.Setup();
-            ModelController.InstantiateModels();
-            WindowHandler.InitializeWindows();
-            SFXPlayer.Init();
-            mw = new MainWindow();
-            mw.Show();
-            mw.Activate();
-        }
-
-        MainWindow mw;
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+        SettingsHandler.Setup();
+        ModelController.InstantiateModels();
+        WindowHandler.InitializeWindows();
+        SFXPlayer.Init();
+        mw = new MainWindow();
+        mw.Show();
+        mw.Activate();
     }
 }

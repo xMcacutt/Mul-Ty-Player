@@ -1,13 +1,12 @@
-﻿namespace MulTyPlayerClient
+﻿namespace MulTyPlayerClient;
+
+internal class LiveCogSyncer : LiveDataSyncer
 {
-    internal class LiveCogSyncer : LiveDataSyncer
+    public LiveCogSyncer(CogHandler hCog)
     {
-        public LiveCogSyncer(CogHandler hCog)
-        {
-            HSyncObject = hCog;
-            StateOffset = 0xC4;
-            SeparateCollisionByte = false;
-            ObjectLength = 0x144;
-        }
+        HSyncObject = hCog;
+        StateOffset = 0xC4;
+        SeparateCollisionByte = false;
+        ObjectLength = 0x144;
     }
 }

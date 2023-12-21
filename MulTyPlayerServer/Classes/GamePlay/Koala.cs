@@ -1,14 +1,13 @@
-﻿namespace MulTyPlayerServer
-{
-    internal class Koala
-    { 
-        public string KoalaName;
-        public int KoalaID;
+﻿namespace MulTyPlayerServer;
 
-        public Koala(string koalaName, int koalaID)
-        {
-            KoalaName = koalaName;
-            KoalaID = koalaID;
-        }
+internal class Koala
+{
+    public int KoalaID;
+    public string KoalaName;
+
+    public Koala(string koalaName, int koalaID)
+    {
+        KoalaName = koalaName;
+        KoalaID = koalaID;
     }
 }

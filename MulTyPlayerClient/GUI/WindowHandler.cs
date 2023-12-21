@@ -1,16 +1,15 @@
 ﻿using MulTyPlayerClient.GUI.Views;
 
-namespace MulTyPlayerClient.GUI
-{
-    internal class WindowHandler
-    {
-        public static SettingsMenu SettingsWindow;
-        public static Setup SetupWindow;
+namespace MulTyPlayerClient.GUI;
 
-        public static void InitializeWindows()
-        {
-            SettingsWindow = new();
-            SetupWindow = new();
-        }
+internal class WindowHandler
+{
+    public static SettingsMenu SettingsWindow;
+    public static Setup SetupWindow;
+
+    public static void InitializeWindows()
+    {
+        SettingsWindow = new SettingsMenu();
+        SetupWindow = new Setup();
     }
 }

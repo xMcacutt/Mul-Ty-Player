@@ -1,57 +1,57 @@
-﻿using MulTyPlayerClient.GUI.Models;
+﻿using System;
+using MulTyPlayerClient.GUI.Models;
 using PropertyChanged;
-using System;
 
-namespace MulTyPlayerClient.GUI.ViewModels
+namespace MulTyPlayerClient.GUI.ViewModels;
+
+[AddINotifyPropertyChangedInterface]
+public class MainViewModel
 {
-    [AddINotifyPropertyChangedInterface]
-    public class MainViewModel
+    private readonly KoalaSelectViewModel koalaSelectViewModel;
+    private IViewModel lastViewModel;
+    private readonly LobbyViewModel lobbyViewModel;
+    private readonly LoginViewModel loginViewModel;
+
+    private readonly SplashViewModel splashViewModel;
+
+    public MainViewModel()
     {
-        public IViewModel CurrentViewModel { get; set; }
-        private IViewModel lastViewModel;
+        splashViewModel = new SplashViewModel();
+        loginViewModel = new LoginViewModel();
+        koalaSelectViewModel = new KoalaSelectViewModel();
+        lobbyViewModel = new LobbyViewModel();
 
-        private SplashViewModel splashViewModel;
-        private LoginViewModel loginViewModel;
-        private KoalaSelectViewModel koalaSelectViewModel;
-        private LobbyViewModel lobbyViewModel;
+        lastViewModel = splashViewModel;
+        CurrentViewModel = splashViewModel;
 
-        public MainViewModel()
-        {
-            splashViewModel = new SplashViewModel();
-            loginViewModel = new LoginViewModel();
-            koalaSelectViewModel = new KoalaSelectViewModel();
-            lobbyViewModel = new LobbyViewModel();
-
-            lastViewModel = splashViewModel;
-            CurrentViewModel = splashViewModel;
-
-            ModelController.Splash.OnComplete += () => GoToView(View.Login);
-            ModelController.Login.OnLoginSuccess += () => GoToView(View.KoalaSelect);
-            ModelController.KoalaSelect.OnProceedToLobby += () => GoToView(View.Lobby);
-            ModelController.Lobby.OnLogout += () => GoToView(View.Login);
-        }
-
-        public void GoToView(View view)
-        {
-            lastViewModel = CurrentViewModel;
-            CurrentViewModel = view switch
-            {
-                View.Splash => splashViewModel,
-                View.Login => loginViewModel,
-                View.KoalaSelect => koalaSelectViewModel,
-                View.Lobby => lobbyViewModel,
-                _ => throw new NotImplementedException($"Tried to switch to unsupported view: {view}"),
-            };
-            lastViewModel.OnExited();
-            CurrentViewModel.OnEntered();
-        }
+        ModelController.Splash.OnComplete += () => GoToView(View.Login);
+        ModelController.Login.OnLoginSuccess += () => GoToView(View.KoalaSelect);
+        ModelController.KoalaSelect.OnProceedToLobby += () => GoToView(View.Lobby);
+        ModelController.Lobby.OnLogout += () => GoToView(View.Login);
     }
 
-    public enum View
+    public IViewModel CurrentViewModel { get; set; }
+
+    public void GoToView(View view)
     {
-        Splash,
-        Login,
-        KoalaSelect,
-        Lobby,
+        lastViewModel = CurrentViewModel;
+        CurrentViewModel = view switch
+        {
+            View.Splash => splashViewModel,
+            View.Login => loginViewModel,
+            View.KoalaSelect => koalaSelectViewModel,
+            View.Lobby => lobbyViewModel,
+            _ => throw new NotImplementedException($"Tried to switch to unsupported view: {view}")
+        };
+        lastViewModel.OnExited();
+        CurrentViewModel.OnEntered();
     }
+}
+
+public enum View
+{
+    Splash,
+    Login,
+    KoalaSelect,
+    Lobby
 }

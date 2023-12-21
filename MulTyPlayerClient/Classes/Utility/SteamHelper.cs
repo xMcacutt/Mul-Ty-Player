@@ -1,56 +1,46 @@
-﻿using MulTyPlayerClient.GUI.Models;
+﻿using System;
 using Steamworks;
-using System;
 
-namespace MulTyPlayerClient.Classes.Utility
+namespace MulTyPlayerClient.Classes.Utility;
+
+internal static class SteamHelper
 {
-    internal static class SteamHelper
+    public const int TY_APP_ID = 411960;
+
+    public static bool Initialized => SteamClient.IsValid;
+
+    public static void Init()
     {
-        public const int TY_APP_ID = 411960;
-
-        public static bool Initialized { get => SteamClient.IsValid; }
-
-        public static void Init()
+        if (Initialized)
+            return;
+        try
         {
-            if (Initialized)
-            {
-                return;
-            }
-            else
-            {
-                try
-                {
-                    SteamClient.Init(TY_APP_ID);
-                }
-                catch (Exception e)
-                {
-                    Logger.Write("Error: SteamAPI initialization failed\n" + e.ToString());
-                }
-            }
+            SteamClient.Init(TY_APP_ID);
         }
-        
-        public static bool IsLoggedOn()
+        catch (Exception e)
         {
-            if (Initialized)
-                return SteamClient.IsLoggedOn;
-            return false;
+            Logger.Write("Error: SteamAPI initialization failed\n" + e);
         }
+    }
 
-        public static string GetSteamName()
-        {
-            string userName = null;
-            Init();
+    public static bool IsLoggedOn()
+    {
+        if (Initialized)
+            return SteamClient.IsLoggedOn;
+        return false;
+    }
 
-            if (IsLoggedOn())
-            {
-                userName = SteamClient.Name;
-            }            
-            return userName;
-        }
+    public static string GetSteamName()
+    {
+        string userName = null;
+        Init();
 
-        public static void Shutdown()
-        {
-            SteamClient.Shutdown();
-        }
+        if (IsLoggedOn()) userName = SteamClient.Name;
+        return userName;
+    }
+
+    public static void Shutdown()
+    {
+        SteamClient.Shutdown();
     }
 }

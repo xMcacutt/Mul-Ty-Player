@@ -1,11 +1,10 @@
-﻿namespace MulTyPlayerClient
+﻿namespace MulTyPlayerClient;
+
+internal class SaveCogSyncer : SaveDataSyncer
 {
-    internal class SaveCogSyncer : SaveDataSyncer
+    public SaveCogSyncer()
     {
-        public SaveCogSyncer()
-        {
-            SaveDataOffset = 0x30;
-            SaveWriteValue = 1;
-        }
+        SaveDataOffset = 0x30;
+        SaveWriteValue = 1;
     }
 }

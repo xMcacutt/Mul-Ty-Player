@@ -7,53 +7,59 @@
         xmlns:viewmodels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=viewmodels:SetupViewModel}"
-        Title="Setup" Height="275" Width="300" ResizeMode="NoResize" 
+        Title="Setup" Height="275" Width="300" ResizeMode="NoResize"
         Closing="Window_Closing">
     <Window.Resources>
         <ResourceDictionary>
             <local:StringsToBooleanConverter x:Key="StringsToBooleanConverter" />
-            <SolidColorBrush x:Key="ProgressBar.Progress" Color="#FF06B025"/>
-            <SolidColorBrush x:Key="ProgressBar.Background" Color="#FFE6E6E6"/>
-            <SolidColorBrush x:Key="ProgressBar.Border" Color="#FFBCBCBC"/>
+            <SolidColorBrush x:Key="ProgressBar.Progress" Color="#FF06B025" />
+            <SolidColorBrush x:Key="ProgressBar.Background" Color="#FFE6E6E6" />
+            <SolidColorBrush x:Key="ProgressBar.Border" Color="#FFBCBCBC" />
             <Style x:Key="ProgressBarStyle" TargetType="{x:Type ProgressBar}">
-                <Setter Property="Foreground" Value="{StaticResource ProgressBar.Progress}"/>
-                <Setter Property="Background" Value="{StaticResource ProgressBar.Background}"/>
-                <Setter Property="BorderBrush" Value="{StaticResource ProgressBar.Border}"/>
-                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Foreground" Value="{StaticResource ProgressBar.Progress}" />
+                <Setter Property="Background" Value="{StaticResource ProgressBar.Background}" />
+                <Setter Property="BorderBrush" Value="{StaticResource ProgressBar.Border}" />
+                <Setter Property="BorderThickness" Value="1" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ProgressBar}">
                             <Grid x:Name="TemplateRoot">
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup x:Name="CommonStates">
-                                        <VisualState x:Name="Determinate"/>
+                                        <VisualState x:Name="Determinate" />
                                         <VisualState x:Name="Indeterminate">
                                             <Storyboard RepeatBehavior="Forever">
-                                                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Animation" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
-                                                    <EasingDoubleKeyFrame KeyTime="0" Value="0.25"/>
-                                                    <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0.25"/>
-                                                    <EasingDoubleKeyFrame KeyTime="0:0:2" Value="0.25"/>
+                                                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Animation"
+                                                                               Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                                                    <EasingDoubleKeyFrame KeyTime="0" Value="0.25" />
+                                                    <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0.25" />
+                                                    <EasingDoubleKeyFrame KeyTime="0:0:2" Value="0.25" />
                                                 </DoubleAnimationUsingKeyFrames>
-                                                <PointAnimationUsingKeyFrames Storyboard.TargetName="Animation" Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)">
-                                                    <EasingPointKeyFrame KeyTime="0" Value="-0.5,0.5"/>
-                                                    <EasingPointKeyFrame KeyTime="0:0:1" Value="0.5,0.5"/>
-                                                    <EasingPointKeyFrame KeyTime="0:0:2" Value="1.5,0.5"/>
+                                                <PointAnimationUsingKeyFrames Storyboard.TargetName="Animation"
+                                                                              Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)">
+                                                    <EasingPointKeyFrame KeyTime="0" Value="-0.5,0.5" />
+                                                    <EasingPointKeyFrame KeyTime="0:0:1" Value="0.5,0.5" />
+                                                    <EasingPointKeyFrame KeyTime="0:0:2" Value="1.5,0.5" />
                                                 </PointAnimationUsingKeyFrames>
                                             </Storyboard>
                                         </VisualState>
                                     </VisualStateGroup>
                                 </VisualStateManager.VisualStateGroups>
-                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="5"/>
+                                <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        Background="{TemplateBinding Background}" CornerRadius="5" />
                                 <Rectangle x:Name="PART_Track" />
                                 <Grid x:Name="PART_Indicator" ClipToBounds="true" HorizontalAlignment="Left">
-                                    <Rectangle x:Name="Indicator" Fill="{TemplateBinding Foreground}" RadiusX="5" RadiusY="5"/>
-                                    <Rectangle x:Name="Animation" Fill="{TemplateBinding Foreground}" RenderTransformOrigin="0.5,0.5" RadiusX="5" RadiusY="5">
+                                    <Rectangle x:Name="Indicator" Fill="{TemplateBinding Foreground}" RadiusX="5"
+                                               RadiusY="5" />
+                                    <Rectangle x:Name="Animation" Fill="{TemplateBinding Foreground}"
+                                               RenderTransformOrigin="0.5,0.5" RadiusX="5" RadiusY="5">
                                         <Rectangle.RenderTransform>
                                             <TransformGroup>
-                                                <ScaleTransform/>
-                                                <SkewTransform/>
-                                                <RotateTransform/>
-                                                <TranslateTransform/>
+                                                <ScaleTransform />
+                                                <SkewTransform />
+                                                <RotateTransform />
+                                                <TranslateTransform />
                                             </TransformGroup>
                                         </Rectangle.RenderTransform>
                                     </Rectangle>
@@ -63,12 +69,12 @@
                                 <Trigger Property="Orientation" Value="Vertical">
                                     <Setter Property="LayoutTransform" TargetName="TemplateRoot">
                                         <Setter.Value>
-                                            <RotateTransform Angle="-90"/>
+                                            <RotateTransform Angle="-90" />
                                         </Setter.Value>
                                     </Setter>
                                 </Trigger>
                                 <Trigger Property="IsIndeterminate" Value="true">
-                                    <Setter Property="Visibility" TargetName="Indicator" Value="Collapsed"/>
+                                    <Setter Property="Visibility" TargetName="Indicator" Value="Collapsed" />
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -79,27 +85,26 @@
     </Window.Resources>
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
-        
-            <TextBlock Grid.Row="0"
-                       Style="{StaticResource ComicText}" 
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       FontSize="28"
-                       Margin="0,0,0,0"
-                       Text="Mul-Ty-Player Setup" />
+
+
+        <TextBlock Grid.Row="0"
+                   Style="{StaticResource ComicText}"
+                   VerticalAlignment="Center"
+                   FontSize="28"
+                   Margin="0,0,0,0"
+                   Text="Mul-Ty-Player Setup" />
 
         <StackPanel Grid.Row="1">
-            <TextBlock Style="{StaticResource ComicText}" 
+            <TextBlock Style="{StaticResource ComicText}"
                        VerticalAlignment="Top"
                        HorizontalAlignment="Left"
                        FontSize="14"
@@ -115,20 +120,21 @@
                          Foreground="Black"
                          Text="{Binding TyPath}"
                          Width="230"
-                         Height="15"/>
+                         Height="15" />
 
                 <Button VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         Width="20"
                         Click="TyFolderBrowseButton_Click"
                         Height="15">
-                    <TextBlock Text="..." FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black"/>
+                    <TextBlock Text="..." FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center"
+                               Foreground="Black" />
                 </Button>
             </StackPanel>
         </StackPanel>
 
         <StackPanel Grid.Row="3">
-            <TextBlock Style="{StaticResource ComicText}" 
+            <TextBlock Style="{StaticResource ComicText}"
                        VerticalAlignment="Top"
                        HorizontalAlignment="Left"
                        FontSize="14"
@@ -144,34 +150,35 @@
                          Foreground="Black"
                          Text="{Binding MTPPath}"
                          Width="230"
-                         Height="15"/>
+                         Height="15" />
 
                 <Button VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         Width="20"
                         Click="MTPFolderBrowseButton_Click"
                         Height="15">
-                    <TextBlock Text="..." FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black"/>
+                    <TextBlock Text="..." FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center"
+                               Foreground="Black" />
                 </Button>
             </StackPanel>
 
-            <TextBlock Style="{StaticResource ComicText}" 
+            <TextBlock Style="{StaticResource ComicText}"
                        VerticalAlignment="Top"
                        HorizontalAlignment="Left"
                        FontSize="12"
                        Margin="15,0,0,0"
-                       Text="First Time? Select A New Empty Folder"/>
+                       Text="First Time? Select A New Empty Folder" />
         </StackPanel>
 
-        <Button Style="{StaticResource InstallButton}" 
-                Grid.Row="5" 
+        <Button Style="{StaticResource InstallButton}"
+                Grid.Row="5"
                 Width="90"
                 Click="InstallButton_Click"
                 Tag="Install Patch">
             <Button.IsEnabled>
                 <MultiBinding Converter="{StaticResource StringsToBooleanConverter}">
-                    <Binding Path="TyPath"/>
-                    <Binding Path="MTPPath"/>
+                    <Binding Path="TyPath" />
+                    <Binding Path="MTPPath" />
                 </MultiBinding>
             </Button.IsEnabled>
         </Button>
@@ -179,34 +186,31 @@
 
         <StackPanel Grid.Row="7">
 
-            <TextBlock Style="{StaticResource ComicText}" 
+            <TextBlock Style="{StaticResource ComicText}"
                        VerticalAlignment="Top"
-                       HorizontalAlignment="Center"
                        FontSize="12"
                        Margin="0,0,0,0"
-                       Text="Folders must be selected and valid to run."/>
+                       Text="Folders must be selected and valid to run." />
 
-            <ProgressBar Style="{DynamicResource ProgressBarStyle}" 
+            <ProgressBar Style="{DynamicResource ProgressBarStyle}"
                          Value="{Binding ProgressPercentage}"
                          Height="20"
                          Width="250"
                          Background="#00000000">
                 <ProgressBar.Foreground>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#a23e0d" Offset="1"/>
-                        <GradientStop Color="#f3a12d" Offset="0"/>
+                        <GradientStop Color="#a23e0d" Offset="1" />
+                        <GradientStop Color="#f3a12d" Offset="0" />
                     </LinearGradientBrush>
                 </ProgressBar.Foreground>
             </ProgressBar>
 
 
-
-            <TextBlock Style="{StaticResource ComicText}" 
+            <TextBlock Style="{StaticResource ComicText}"
                        VerticalAlignment="Top"
-                       HorizontalAlignment="Center"
                        FontSize="12"
                        Margin="0,0,0,0"
-                       Text="{Binding ProgressText}"/>
+                       Text="{Binding ProgressText}" />
 
         </StackPanel>
     </Grid>

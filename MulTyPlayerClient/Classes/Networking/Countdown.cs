@@ -1,98 +1,88 @@
-﻿using Microsoft.Diagnostics.Tracing.Parsers.MicrosoftWindowsWPF;
-using MulTyPlayerClient.GUI.Models;
-using Riptide;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MulTyPlayerClient.GUI.Models;
+using Riptide;
 
-namespace MulTyPlayerClient.Classes
+namespace MulTyPlayerClient.Classes;
+
+public class Countdown
 {
-    public class Countdown
+    private static CancellationTokenSource abortTokenSource = new();
+
+    public static bool InProgress { get; private set; }
+
+    public static event Action OnCountdownBegan;
+    public static event Action OnCountdownAborted;
+    public static event Action OnCountdownFinished;
+
+    [MessageHandler((ushort)MessageID.Countdown)]
+    public static async void StartCountdown(Message message)
     {
-        public static event Action OnCountdownBegan;
-        public static event Action OnCountdownAborted;
-        public static event Action OnCountdownFinished;
+        abortTokenSource = new CancellationTokenSource();
+        var abortToken = abortTokenSource.Token;
 
-        public static bool InProgress { get { return inProgress; } }
-        private static bool inProgress = false;
+        foreach (var entry in PlayerHandler.Players) entry.Value.IsReady = false;
+        ModelController.Lobby.IsReady = false;
+        ModelController.Lobby.UpdateReadyStatus();
+        ModelController.Lobby.OnLogout += Abort;
 
-        private static CancellationTokenSource abortTokenSource = new();
-
-        [MessageHandler((ushort)MessageID.Countdown)]
-        public static async void StartCountdown(Message message)
+        var countdown = Task.Run(() =>
         {
-            abortTokenSource = new CancellationTokenSource();
-            CancellationToken abortToken = abortTokenSource.Token;
-
-            foreach(var entry in PlayerHandler.Players)
+            abortToken.ThrowIfCancellationRequested();
+            OnCountdownBegan?.Invoke();
+            SFXPlayer.StopAll();
+            Client.HSync = new SyncHandler();
+            SFXPlayer.PlaySound(SFX.Race10);
+            for (var i = 10; i > 0; i--)
             {
-                entry.Value.IsReady = false;
-            }
-            ModelController.Lobby.IsReady = false;
-            ModelController.Lobby.UpdateReadyStatus();
-            ModelController.Lobby.OnLogout += Abort;
+                if (CheckAnyPlayerOnMainMenu()) Abort();
 
-            var countdown = Task.Run(() =>
-            {
-                abortToken.ThrowIfCancellationRequested();
-                OnCountdownBegan?.Invoke();
-                SFXPlayer.StopAll();
-                Client.HSync = new SyncHandler();
-                SFXPlayer.PlaySound(SFX.Race10);
-                for (int i = 10; i > 0; i--)
+                if (abortToken.IsCancellationRequested) abortToken.ThrowIfCancellationRequested();
+
+                Logger.Write(i.ToString());
+                if (i == 3)
                 {
-                    if (CheckAnyPlayerOnMainMenu())
-                    {
-                        Abort();
-                    }
+                    SFXPlayer.StopAll();
+                    SFXPlayer.PlaySound(SFX.Race321);
+                }
 
-                    if (abortToken.IsCancellationRequested)
-                    {                        
-                        abortToken.ThrowIfCancellationRequested();
-                    }
-                    
-                    Logger.Write(i.ToString());
-                    if (i == 3)
-                    {
-                        SFXPlayer.StopAll();
-                        SFXPlayer.PlaySound(SFX.Race321);
-                    }
-                    Task.Delay(1000).Wait();
-                }                
-                Logger.Write("Go!");
-            }, abortToken);
+                Task.Delay(1000).Wait();
+            }
 
-            try
-            {
-                await countdown;
-                OnCountdownFinished?.Invoke();
-            }
-            catch (OperationCanceledException cancel)
-            {
-                Logger.Write("Countdown aborted.");
-            }
-            finally
-            {
-                abortTokenSource.Dispose();
-                ModelController.Lobby.IsReady = true;
-                ModelController.Lobby.OnLogout -= Abort;
-                inProgress = false;
-            }
-        }
+            Logger.Write("Go!");
+        }, abortToken);
 
-        private static void Abort()
+        try
         {
-            SFXPlayer.StopSound(SFX.Race10);
-            SFXPlayer.StopSound(SFX.Race321);
-            SFXPlayer.PlaySound(SFX.RaceAbort);
-            abortTokenSource.Cancel();
-            OnCountdownAborted?.Invoke();
+            await countdown;
+            OnCountdownFinished?.Invoke();
         }
-
-        private static bool CheckAnyPlayerOnMainMenu()
+        catch (OperationCanceledException cancel)
         {
-            return !Client.HGameState.IsAtMainMenu() || ModelController.Lobby.PlayerInfoList.Any(p => p.Level != "M/L");
+            Logger.Write("Countdown aborted.");
         }
+        finally
+        {
+            abortTokenSource.Dispose();
+            ModelController.Lobby.IsReady = true;
+            ModelController.Lobby.OnLogout -= Abort;
+            InProgress = false;
+        }
+    }
+
+    private static void Abort()
+    {
+        SFXPlayer.StopSound(SFX.Race10);
+        SFXPlayer.StopSound(SFX.Race321);
+        SFXPlayer.PlaySound(SFX.RaceAbort);
+        abortTokenSource.Cancel();
+        OnCountdownAborted?.Invoke();
+    }
+
+    private static bool CheckAnyPlayerOnMainMenu()
+    {
+        return !Client.HGameState.IsAtMainMenu() || ModelController.Lobby.PlayerInfoList.Any(p => p.Level != "M/L");
     }
 }
