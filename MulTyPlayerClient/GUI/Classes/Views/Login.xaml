@@ -9,18 +9,16 @@
         Height="450"
         Width="800"
         d:DataContext ="{d:DesignInstance Type=viewmodels:LoginViewModel, IsDesignTimeCreatable=True}">
-    <UserControl.Resources>
-        <ResourceDictionary Source="/GUI/TyStyles.xaml"/>
-    </UserControl.Resources>
     
     <StackPanel Margin="10">
         
         <TextBlock x:Name="TextTitle" 
-                   Grid.ColumnSpan="3" 
                    Text="Connect To Host" 
                    HorizontalAlignment="Center"
                    VerticalAlignment="Bottom"
                    Margin="0, 50, 0, 10"
+                   Style="{StaticResource ComicText}"
+                   Foreground="White"
                    FontSize="45">
             <TextBlock.Effect>
                 <DropShadowEffect BlurRadius="0" 
@@ -32,8 +30,10 @@
         <StackPanel HorizontalAlignment="Center" 
                     Margin="0, 10" 
                     Orientation="Horizontal">
-            <TextBlock x:Name="labelHostIP" 
+            <TextBlock x:Name="LabelHostIp" 
                        Text="Host IP" 
+                       Style="{StaticResource ComicText}"
+                       Foreground="White"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Center"
                        FontSize="25"
@@ -44,7 +44,7 @@
             </TextBlock>
             
             <Grid>
-                <TextBox x:Name="fieldHostIP" 
+                <TextBox x:Name="FieldHostIp" 
                          HorizontalContentAlignment="Left" 
                          Text="{Binding ConnectingAddress, UpdateSourceTrigger=PropertyChanged}" 
                          FontSize="25"
@@ -73,7 +73,7 @@
                 </TextBox>
                 <TextBlock Text="{Binding ConnectingAddress, 
                                   Mode=OneWay, 
-                                  Converter={local:BoolTextCensorConverter}}"
+                                  Converter={StaticResource BoolTextCensorConverter}}"
                            Style="{StaticResource RubikBlock}"
                            IsHitTestVisible="False"
                            HorizontalAlignment="Stretch"
@@ -83,7 +83,7 @@
                            FontSize="25"
                            Height="30"
                            Visibility="{Binding HideAddress, 
-                                        Converter={local:BooleanToVisibilityConverter},
+                                        Converter={StaticResource BooleanToVisibilityConverter},
                                         ConverterParameter=True}"/>
             </Grid>
             
@@ -92,6 +92,7 @@
                       Background="{x:Null}" 
                       BorderBrush="{x:Null}"
                       Width="40"
+                      Opacity="0.4"
                       Margin="10, 0, 0, 0"
                       Style="{StaticResource VisibilityCheckBox}"
                       IsChecked="{Binding HideAddress}"/>
@@ -101,8 +102,10 @@
         <StackPanel HorizontalAlignment="Center" 
                     Margin="0, 10" 
                     Orientation="Horizontal">
-            <TextBlock x:Name="labelPass" 
+            <TextBlock x:Name="LabelPass" 
                        Text="Pass" 
+                       Style="{StaticResource ComicText}"
+                       Foreground="White"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Center"
                        FontSize="25"
@@ -113,7 +116,7 @@
             </TextBlock>
             
             <Grid>
-                <TextBox x:Name="fieldPass" 
+                <TextBox x:Name="FieldPass" 
                          HorizontalContentAlignment="Left" 
                          Text="{Binding Pass, UpdateSourceTrigger=PropertyChanged}" 
                          FontSize="25"
@@ -142,7 +145,7 @@
                 </TextBox>
                 <TextBlock Text="{Binding Pass, 
                                   Mode=OneWay, 
-                                  Converter={local:BoolTextCensorConverter}}"
+                                  Converter={StaticResource BoolTextCensorConverter}}"
                            Style="{StaticResource RubikBlock}"
                            IsHitTestVisible="False"
                            HorizontalAlignment="Stretch"
@@ -152,7 +155,7 @@
                            FontSize="25"
                            Height="30"
                            Visibility="{Binding HidePass, 
-                                        Converter={local:BooleanToVisibilityConverter},
+                                        Converter={StaticResource BooleanToVisibilityConverter},
                                         ConverterParameter=True}"/>
             </Grid>
             
@@ -161,6 +164,7 @@
                       Background="{x:Null}" 
                       BorderBrush="{x:Null}"
                       Width="40"
+                      Opacity="0.4"
                       Margin="10, 0, 0, 0"
                       Style="{StaticResource VisibilityCheckBox}"
                       IsChecked="{Binding HidePass}"/>
@@ -170,8 +174,10 @@
         <StackPanel HorizontalAlignment="Center" 
                     Margin="0, 10" 
                     Orientation="Horizontal">
-            <TextBlock x:Name="labelName" 
+            <TextBlock x:Name="LabelName" 
                        Text="Name" 
+                       Style="{StaticResource ComicText}"
+                       Foreground="White"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Center"
                        FontSize="25"
@@ -182,7 +188,7 @@
             </TextBlock>
             
             <Grid>
-                <TextBox x:Name="fieldName" 
+                <TextBox x:Name="FieldName" 
                          HorizontalContentAlignment="Left"
                          Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                          FontSize="25" 
@@ -211,7 +217,7 @@
                 </TextBox>
                 <TextBlock Text="{Binding Name, 
                                   Mode=OneWay, 
-                                  Converter={local:BoolTextCensorConverter}}"
+                                  Converter={StaticResource BoolTextCensorConverter}}"
                            Style="{StaticResource RubikBlock}"
                            IsHitTestVisible="False"
                            HorizontalAlignment="Stretch"
@@ -221,7 +227,7 @@
                            FontSize="25"
                            Height="30"
                            Visibility="{Binding HideName, 
-                                        Converter={local:BooleanToVisibilityConverter},
+                                        Converter={StaticResource BooleanToVisibilityConverter},
                                         ConverterParameter=True}"/>
             </Grid>
             
@@ -230,18 +236,16 @@
                       Background="{x:Null}" 
                       BorderBrush="{x:Null}"
                       Width="40"
+                      Opacity="0.4"
                       Margin="10, 0, 0, 0"
                       Style="{StaticResource VisibilityCheckBox}"
                       IsChecked="{Binding HideName}"/>
         </StackPanel>
         
-        
-        <Button x:Name="buttonConnect" 
+        <Button x:Name="ButtonConnect" 
                 HorizontalAlignment="Center"
-                VerticalContentAlignment="Center"
-                Width="200"
-                Height="40"
-                BorderBrush="{x:Null}"
+                Width="175"
+                Height="45"
                 Margin="0 15"
                 Content="Connect"
                 Style="{StaticResource SelectButton}"
@@ -250,6 +254,6 @@
     </StackPanel>
     
     <UserControl.Background>
-        <ImageBrush x:Name="bgImage" ImageSource="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.jpg"/>
+        <ImageBrush x:Name="BgImage" ImageSource="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.jpg"/>
     </UserControl.Background>
 </UserControl>

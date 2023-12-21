@@ -3,11 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:local="clr-namespace:MulTyPlayerClient.GUI.Views"
         xmlns:viewmodels ="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
         mc:Ignorable="d"
-        Height="210"
+        Height="200"
         Width="170"
         d:DataContext ="{d:DesignInstance Type=viewmodels:KoalaSelectEntryViewModel, IsDesignTimeCreatable=True}">
     <Grid>
@@ -42,7 +40,9 @@
             </Grid>
         </Border>
             <TextBlock Text="{Binding KoalaName}"
-                   FontSize="25">
+                       Style="{StaticResource ComicText}"
+                       Foreground="White"
+                       FontSize="23">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="3"/>
                 </TextBlock.Effect>
@@ -50,8 +50,5 @@
         
     </StackPanel>
     </Grid>
-
-    <UserControl.Resources>
-        <ResourceDictionary Source="/GUI/TyStyles.xaml"/>
-    </UserControl.Resources>
+    
 </UserControl>

@@ -9,6 +9,7 @@ public class Icons : ResourceDictionary
         this["IcoSettings"] = "\uf013";
         this["IcoDelete"] = "\uf1f8";
         this["IcoExit"] = "\uf090";
+        this["IcoClose"] = "\uf00d";
         this["IcoTools"] = "\uf7d9";
         this["IcoHelp"] = "\u003f";
         this["IcoEdit"] = "\uf303";
@@ -28,5 +29,8 @@ public class Icons : ResourceDictionary
         this["IcoGame"] = "\uf11b";
         this["IcoSend"] = "\uf1d8";
         this["IcoHost"] = "\uf521";
+        this["IcoVisible"] = "\uf06e";
+        this["IcoInvisible"] = "\uf070";
+        this["IcoGift"] = "\uf06b";
     }
 }

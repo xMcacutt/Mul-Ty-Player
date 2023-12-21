@@ -91,6 +91,16 @@
   <ItemGroup>
     <Page Remove="GUI\App.xaml" />
     <Page Remove="GUI\Icons\Icons.xaml" />
+    <Page Update="GUI\Styles\LobbyStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <XamlRuntime>Wpf</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\Styles\TyStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <XamlRuntime>Wpf</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="GUI\App.xaml">
@@ -287,7 +297,7 @@
     <Content Include="GUI\KoalaSelectionAssets\mp4\Snugs.mp4">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\fe_999_icon_koalakid.ico" />
+    <Resource Include="Resources\fe_999_icon_koalakid.ico" />
     <Content Include="Resources\RiptideNetworking.dll" />
     <Content Include="Resources\RiptideNetworking.xml" />
   </ItemGroup>

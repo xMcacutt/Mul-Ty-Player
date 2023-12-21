@@ -176,6 +176,7 @@ namespace MulTyPlayerClient
         [MessageHandler((ushort)MessageID.HostChange)]
         public static void HostChange(Message message)
         {
+            foreach (var key in PlayerHandler.Players.Keys) PlayerHandler.Players[key].IsHost = false;
             PlayerHandler.Players[message.GetUShort()].IsHost = true;
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,

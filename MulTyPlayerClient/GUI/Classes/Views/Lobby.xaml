@@ -8,72 +8,74 @@
         xmlns:controls="clr-namespace:MulTyPlayerClient.GUI.Controls"
         mc:Ignorable="d"
         Height="450" Width="800" FontSize="10" BorderBrush="Black"
-        d:DataContext="{d:DesignInstance Type=viewmodels:LobbyViewModel}">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/GUI/TyStyles.xaml"/>
-                <ResourceDictionary>
-                    <local:BooleanToHostIconConverter x:Key="BooleanToHostIconConverter" />
-                    <local:ReadyCharConverter x:Key="ReadyCharConverter" />
-                    <local:SubstringConverter x:Key="SubstringConverter" />
-                    <local:LevelNameConverter x:Key="LevelNameConverter" />
-                </ResourceDictionary>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-    
+        Background="{DynamicResource MainBack}"
+        d:DataContext="{d:DesignInstance Type=viewmodels:LobbyViewModel}"
+        PreviewMouseDown="Lobby_OnPreviewMouseDown">
     
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1.6*"/>
-            <ColumnDefinition Width="0.2*"/>
+            <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="3.2*"/>
         </Grid.ColumnDefinitions>
 
         <!--Left side pannel-->
         <Grid Margin="0, 0, 0, 0">
-
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.4*"/>
+                <RowDefinition Height="0.5*"/>
                 <RowDefinition Height="4.6*"/>
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0"
-                       Style="{StaticResource ComicText}" 
+                       Style="{StaticResource ComicTextMain}" 
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        FontSize="28"
-                       Margin="0,0,0,0"
-                       Padding="0"
-                       Text="Connected Koalas" />
-            <DataGrid
-                Grid.Row="1"
-                CellStyle="{StaticResource CellPadding}"
-                AutoGenerateColumns="False"
-                GridLinesVisibility="Horizontal"
-                Name="PlayerInfo"
-                HeadersVisibility="None" 
-                Background="Transparent"
-                BorderThickness="0"
-                Margin="2"
-                ScrollViewer.CanContentScroll="False"
-                ItemsSource="{Binding PlayerInfoList}">
+                       Text="Connected Koalas"/>
+            <Popup Grid.Row="0" x:Name="GiveHostPopup" 
+                   Placement="Bottom"
+                   Width="85"
+                   Height="30">
+                <Border VerticalAlignment="Center" BorderThickness="0" Background="{DynamicResource MainBack}">
+                    <Button Style="{StaticResource LobbyButton}" 
+                            Click="GiveHost_OnClick"
+                            Width="Auto"
+                            Margin="0"
+                            Height="35">
+                        <StackPanel Orientation="Horizontal">
+                            <controls:Icon
+                                Code="{DynamicResource IcoGift}" 
+                                Foreground="{DynamicResource MainAccent}" 
+                                Size="15"
+                                Margin="0, 0, 10, 0"/>
+                            <TextBlock VerticalAlignment="Center" Text="Give Host?"/>
+                        </StackPanel>
+                    </Button>
+                </Border>
+            </Popup>    
+            <DataGrid Name="PlayerInfo"
+                      MouseRightButtonDown="UIElement_OnMouseRightButtonDown"
+                      Style="{StaticResource DataGridStyle}"
+                      Grid.Row="1"
+                      IsReadOnly="True"
+                      HorizontalContentAlignment="Stretch"
+                      ItemsSource="{Binding PlayerInfoList}">
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Client ID" Width="Auto">
+                    <DataGridTemplateColumn Header="Client ID" Width="*" CanUserResize="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Style="{StaticResource ComicText}" 
                                            VerticalAlignment="Center"
-                                           FontSize="16"
+                                           FontSize="14"
+                                           IsHitTestVisible="False"
                                            Padding="3">
-                                        <Run Text="ID: " />
-                                        <Run Text="{Binding ClientID}" />
+                                    <Run Text="ID: " />
+                                    <Run Text="{Binding ClientID}"/>
                                 </TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Koala Icon" Width="30" CanUserResize="False">
+                    <DataGridTemplateColumn Header="Koala Icon" Width="0.5*" CanUserResize="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Image Width="20" 
@@ -84,7 +86,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Player Name" Width="Auto">
+                    <DataGridTemplateColumn Header="Player Name" Width="1.5*" CanUserResize="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Style="{StaticResource ComicText}" 
@@ -96,18 +98,19 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Host Status" Width="30">
+                    <DataGridTemplateColumn Header="Host Status" Width="0.5*" CanUserResize="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Width="20" 
-                                       Margin="0"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Source="{Binding IsHost, Converter={StaticResource BooleanToHostIconConverter}}" />
+                                <controls:Icon Size="10"
+                                               Foreground="{DynamicResource MainAccent}"
+                                               Margin="0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Code="{Binding IsHost, Converter={StaticResource BooleanToHostIconConverter}}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Level" Width="Auto">
+                    <DataGridTemplateColumn Header="Level" Width="*" CanUserResize="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Style="{StaticResource ComicText}" 
@@ -119,14 +122,15 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Ready Status" Width="Auto">
+                    <DataGridTemplateColumn Header="Ready Status" Width="0.5*" CanUserResize="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Style="{StaticResource ComicText}"
-                                        VerticalAlignment="Center"
-                                        FontSize="16"
-                                        Padding="3"
-                                        Text="{Binding IsReady, Converter={StaticResource ReadyCharConverter}}"/>
+                                <controls:Icon Size="10"
+                                               Foreground="{DynamicResource MainAccent}"
+                                               Margin="0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Code="{Binding IsReady, Converter={StaticResource BooleanToReadyIconConverter}}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -134,104 +138,103 @@
             </DataGrid>
         </Grid>
         
-        <Rectangle Fill="Black" Width="1" HorizontalAlignment="Center" Grid.Column="1"></Rectangle>
-        
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="60"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Height="45" Orientation="Horizontal">
-                <Button x:Name="SettingsButton" 
-                        Margin="7, 3, 3, 3"
-                        BorderBrush="{x:Null}"
-                        Click="SettingsButton_Click"
-                        Background="#FFDDDDDD"
-                        Width="45"
-                        ToolTip="Settings"
-                        Template="{StaticResource ButtonTemplate}">
-                    <controls:Icon Margin="5,0" Foreground="Black" Code="{DynamicResource IcoSettings}" Size="24"/>
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="15"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
+            <StackPanel Grid.Row="0">
                 
-                <Button x:Name="ReadyButton"
-                        Margin="3"
-                        BorderBrush="{x:Null}"
-                        Click="ReadyButton_Click"
-                        Background="#FFDDDDDD"
-                        ToolTip="Ready"
-                        Width="45"
-                        IsEnabled="{Binding IsReadyButtonEnabled}"
-                        Template="{StaticResource ButtonTemplate}">
-                    <controls:Icon Margin="5,0" Foreground="Black" Code="{DynamicResource IcoReady}" Size="24"/>
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="15"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-                
-                <Button x:Name="LaunchGameButton"
-                        Margin="3"
-                        BorderBrush="{x:Null}"
-                        Click="LaunchGameButton_Click"
-                        Background="#FFDDDDDD"
-                        ToolTip="Launch Game"
-                        Width="45"
-                        IsEnabled="{Binding IsLaunchGameButtonEnabled}"
-                        Template="{StaticResource ButtonTemplate}">
-                    <controls:Icon Margin="5,0" Foreground="Black" Code="{DynamicResource IcoGame}" Size="24"/>
-                    <Button.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="15"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-                
-                <Button x:Name="RequestSyncButton"
-                        Margin="3"
-                        BorderBrush="{x:Null}"
-                        Click="RequestSyncButton_Click"
-                        Background="#FFDDDDDD"
-                        ToolTip="Request Sync"
-                        Width="45"
-                        IsEnabled="{Binding IsSyncButtonEnabled}"
-                        Template="{StaticResource ButtonTemplate}">
-                    <controls:Icon Margin="5,0" Foreground="Black" Code="{DynamicResource IcoRefresh}" Size="24"/>
-                    <Button.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="15"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-                
-                <Separator Background="Transparent" Width="230"></Separator>
-                
-                <Button x:Name="DisconnectButton" Margin="3"
-                        BorderBrush="{x:Null}" 
-                        Background="#FFDDDDDD"
-                        ToolTip="Disconnect"
-                        Width="45"
-                        Template="{StaticResource ButtonTemplate}"
-                        Command="{Binding LogoutCommand}">
-                    <controls:Icon Margin="5,0" Foreground="Black" Code="{DynamicResource IcoExit}" Size="24"/>
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="15"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
+                <Grid VerticalAlignment="Top" Height="55">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <Button x:Name="SettingsButton" 
+                                Margin="0 0 2 0"
+                                Click="SettingsButton_Click"
+                                Width="55"
+                                ToolTip="Settings"
+                                Style="{StaticResource LobbyButton}">
+                            <controls:Icon Margin="5,0" Code="{DynamicResource IcoSettings}" Size="24"/>
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        
+                        <Button x:Name="ReadyButton"
+                                Margin="2 0"
+                                Click="ReadyButton_Click"
+                                ToolTip="Ready"
+                                Width="55"
+                                IsEnabled="{Binding IsReadyButtonEnabled}"
+                                Style="{StaticResource LobbyButton}">
+                            <controls:Icon Margin="5,0" Code="{DynamicResource IcoReady}" Size="24"/>
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        
+                        <Button x:Name="LaunchGameButton"
+                                Margin="2 0"
+                                Click="LaunchGameButton_Click"
+                                ToolTip="Launch Game"
+                                Width="55"
+                                IsEnabled="{Binding IsLaunchGameButtonEnabled}"
+                                Style="{StaticResource LobbyButton}">
+                            <controls:Icon Margin="5,0" Code="{DynamicResource IcoGame}" Size="24"/>
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        
+                        <Button x:Name="RequestSyncButton"
+                                Margin="2 0"
+                                Click="RequestSyncButton_Click"
+                                ToolTip="Request Sync"
+                                Width="55"
+                                IsEnabled="{Binding IsSyncButtonEnabled}"
+                                Style="{StaticResource LobbyButton}">
+                            <controls:Icon Margin="5,0" Code="{DynamicResource IcoRefresh}" Size="24"/>
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </StackPanel>
+                    
+                    <Button Grid.Column="1" x:Name="DisconnectButton" 
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            ToolTip="Disconnect"
+                            Width="55"
+                            Style="{StaticResource LobbyButton}"
+                            Command="{Binding LogoutCommand}">
+                        <controls:Icon Margin="5,0" Code="{DynamicResource IcoExit}" Size="24"/>
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </Grid>
+                <Separator Width="500" Foreground="{DynamicResource SpecialBack}"/>
             </StackPanel>
             
-            <ScrollViewer Grid.Row="1"
-                          Margin="0 10 0 0"
-                          HorizontalScrollBarVisibility="Disabled"
+            
+            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled"
                           RenderTransformOrigin="0.5,0.5"
+                          Margin="0 5 0 0"
+                          Background="{StaticResource BackGradient}"
                           PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
                 <ScrollViewer.RenderTransform>
                     <ScaleTransform ScaleY="-1"/>
@@ -241,11 +244,12 @@
                               RenderTransformOrigin="0.5,0.5">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0 2">
+                            <Grid Margin="0  2 5 2">
                                 <TextBlock Text="{Binding}"
                                            TextWrapping="Wrap"
+                                           Foreground="{DynamicResource MainText}"
                                            FontFamily="Cascadia Code"
-                                           FontSize="9"
+                                           FontSize="12"
                                            TextAlignment="Right">
                                 </TextBlock>
                             </Grid>
@@ -261,21 +265,20 @@
                 </ItemsControl>
             </ScrollViewer>
             
-            <Grid Grid.Row="2" Margin="0,10,0,0" Height="30">
+            <Grid Grid.Row="2" Margin="0,5,0,0" Height="30">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.9*"/>
                     <ColumnDefinition Width="0.1*"/>
                 </Grid.ColumnDefinitions>
                 <!--Tag only works as a placeholder text because of a custom style-->
                 <TextBox Grid.Column="0"
+                         x:Name="TextBoxInput" 
                          Padding="4, 0"
-                         VerticalContentAlignment="Center"
                          FontFamily="Cascadia Code" 
-                         FontSize="12" 
+                         FontSize="14" 
+                         Foreground="{DynamicResource MainText}"
                          Cursor="IBeam"
-                         ClipToBounds="False"
                          BorderThickness="0"
-                         x:Name="TextboxInput" 
                          KeyDown="TextboxInput_KeyDown"
                          Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Tag=" Type /help or see help.mtps file for commands"
@@ -284,15 +287,14 @@
                 <Button Grid.Column="1" 
                         VerticalAlignment="Stretch" 
                         HorizontalAlignment="Stretch"
-                        BorderThickness="0"
+                        Margin="0"
                         Command="{Binding ManageInputCommand}"
-                        Template="{StaticResource ButtonTemplate}"
+                        Style="{StaticResource LobbyButton}"
                         Width="50">
-                    <controls:Icon Margin="5,0" Foreground="Black" Code="{DynamicResource IcoSend}" Size="16"/>
+                    <controls:Icon Margin="5,0" Code="{DynamicResource IcoSend}" Size="14"/>
                 </Button>
             </Grid>
         </Grid>
-        
     </Grid>
-
+    
 </UserControl>

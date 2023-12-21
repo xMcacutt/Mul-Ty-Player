@@ -2,6 +2,7 @@
 using System.Linq;
 using System.IO;
 using System;
+using System.Collections.Generic;
 
 namespace MulTyPlayerServer
 {
@@ -145,8 +146,15 @@ namespace MulTyPlayerServer
             Server._Server.Send(hRequest, fromClientId);
         }
 
+        [MessageHandler((ushort)MessageID.GiftHost)]
+        public static void GiftHost(ushort fromClientId, Message message)
+        {
+            SetNewHost(message.GetUShort());
+        }
+
         public static void SetNewHost(ushort newHost)
         {
+            foreach (var key in PlayerHandler.Players.Keys) PlayerHandler.Players[key].IsHost = false;
             PlayerHandler.Players[newHost].IsHost = true;
             Message notifyHostChange = Message.Create(MessageSendMode.Reliable, MessageID.HostChange);
             notifyHostChange.AddUShort(newHost);

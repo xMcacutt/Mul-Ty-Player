@@ -11,49 +11,49 @@
     
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.1*"/>
-            <RowDefinition Height="0.6*"/>
+            <RowDefinition Height="0.075*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="0.3*"/>
-            <RowDefinition Height="0.05*"/>
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal">
-            <Button Grid.Row="0" 
-                    x:Name="Setup" 
+            <Button x:Name="Setup" 
                     Click="Setup_Click"
-                    HorizontalAlignment="Left" 
-                    BorderBrush="{x:Null}"
                     FontSize="19"
+                    Width="100"
                     Margin="3.5 3.5"
                     Style="{StaticResource SelectButton}"
                     Content="Setup"/>
-            <TextBlock Grid.Column="1" 
-                       x:Name="SetupText"
-                       HorizontalAlignment="Left" 
+            <TextBlock x:Name="SetupText"
+                       Text="← First Time?"
+                       Style="{StaticResource ComicText}"
+                       Foreground="White"
                        FontSize="20" 
                        Padding="5,0,0,0" 
-                       VerticalAlignment="Center"
-                       Text="← First Time?"/>
+                       VerticalAlignment="Center"/>
         </StackPanel>
         
         <StackPanel x:Name="TitleStack" 
+                    Margin="0,30,0,0"
                     Grid.Row="1" 
                     HorizontalAlignment="Center" 
-                    VerticalAlignment="Top"
-                    Margin="0,15,0,0" 
-                    Grid.RowSpan="2">
+                    VerticalAlignment="Top">
             <TextBlock x:Name="WelcomeToMessage" 
-                       FontSize="80" 
                        Text="Welcome To" 
-                       HorizontalAlignment="Left"
-                       Margin="0,0, 0,-10">
+                       Style="{StaticResource ComicText}"
+                       Foreground="White"
+                       FontSize="60" 
+                       HorizontalAlignment="Center"
+                       Margin="0,0, 300,-10">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="5"/>
                 </TextBlock.Effect>
             </TextBlock>
             <TextBlock x:Name="MtpTitle" 
-                       FontSize="120" 
                        Text="Mul-Ty-Player" 
+                       Style="{StaticResource ComicText}"
+                       Foreground="White"
+                       FontSize="120" 
                        HorizontalAlignment="Center"
                        Margin="0,-20,0,0">
                 <TextBlock.Effect>
@@ -64,10 +64,12 @@
 
         <StackPanel Grid.Row="2">
             <TextBlock x:Name="MessageText" 
-                       FontSize="30" 
+                       Text="{Binding MessageText}"
+                       Style="{StaticResource ComicText}"
+                       Foreground="White"
+                       FontSize="28" 
                        HorizontalAlignment="Center" 
-                       TextWrapping="Wrap" 
-                       Text="{Binding MessageText}">
+                       TextWrapping="Wrap">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="3"/>
                 </TextBlock.Effect>
@@ -79,7 +81,7 @@
                     VerticalAlignment="Top" 
                     BorderBrush="{x:Null}"
                     Style="{StaticResource SelectButton}"
-                    Content="Launch Game" Grid.Column="1" Grid.Row="2" Width="250" Height="40"
+                    Content="Launch Game" Width="175" Height="45"
                     IsEnabled = "{Binding EnableLaunchGameButton}"
                     Visibility = "{Binding LaunchGameButtonVisibility}" Margin="0,10,0,0" />
         </StackPanel>

@@ -14,9 +14,7 @@ namespace MulTyPlayerClient.GUI
             if (value is bool and true)
             {
                 // Return an icon that represents the host
-                var ico = new Icon();
-                ico.Code = "\uf521";
-                return ico;
+                return "\uf521";
             }
             else
             {

@@ -20,6 +20,7 @@
         P2PMessage,
         Ready,
         Countdown,
-        StopWatch
+        StopWatch,
+        GiftHost
     }
 }

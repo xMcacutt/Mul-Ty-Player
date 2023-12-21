@@ -9,6 +9,17 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <gui:Icons/>
+                
+                <ResourceDictionary>
+                    <gui:Colors x:Key="AppColors"/>
+                </ResourceDictionary>
+                
+                <ResourceDictionary Source="Styles/ValueConverters.xaml"/>
+                <ResourceDictionary Source="Styles/GlobalStyles.xaml"/>
+                <ResourceDictionary Source="Styles/TyStyles.xaml"/>
+                <ResourceDictionary Source="Styles/LobbyStyles.xaml"/>
+                
                 <ResourceDictionary>
                     <DataTemplate DataType="{x:Type viewmodels:SplashViewModel}">
                         <views:Splash/>
@@ -29,14 +40,6 @@
                         <views:SettingsMenu/>
                     </DataTemplate>
                 </ResourceDictionary>
-                
-                <gui:Icons/>
-                
-                <ResourceDictionary>
-                    <gui:Colors x:Key="AppColors"/>
-                </ResourceDictionary>
-                
-                <ResourceDictionary Source="TyStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

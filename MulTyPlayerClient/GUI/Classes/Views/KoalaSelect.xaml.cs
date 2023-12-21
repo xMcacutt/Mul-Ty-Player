@@ -12,19 +12,19 @@ namespace MulTyPlayerClient.GUI.Views
         public KoalaSelect()
         {
             InitializeComponent();
-            backgroundVideo.Visibility = Visibility.Hidden;
-            backgroundVideo.Play();
+            BackgroundVideo.Visibility = Visibility.Hidden;
+            BackgroundVideo.Play();
         }
 
         private void BackgroundVideo_OnMediaEnded(object sender, RoutedEventArgs e)
         {
-            backgroundVideo.Position = TimeSpan.Zero;
-            backgroundVideo.Play();
+            BackgroundVideo.Position = TimeSpan.Zero;
+            BackgroundVideo.Play();
         }
 
         private void BackgroundVideo_OnMediaOpened(object sender, RoutedEventArgs e)
         {
-            backgroundVideo.Visibility = Visibility.Visible;
+            BackgroundVideo.Visibility = Visibility.Visible;
         }
     }
 }

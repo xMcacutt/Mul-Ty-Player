@@ -4,13 +4,13 @@ using System.Windows.Data;
 
 namespace MulTyPlayerClient.GUI
 {
-    public class ReadyCharConverter : IValueConverter
+    public class BooleanToReadyIconConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is bool isReady && isReady)
             {
-                return "R!";
+                return "\uf11e";
             }
 
             return string.Empty;

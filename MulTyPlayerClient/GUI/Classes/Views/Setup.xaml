@@ -75,9 +75,6 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/GUI/TyStyles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
     <Grid Margin="10">

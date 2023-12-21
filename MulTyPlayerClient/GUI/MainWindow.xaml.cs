@@ -3,6 +3,7 @@ using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI.Models;
 using MulTyPlayerClient.GUI.ViewModels;
 using System.Windows;
+using System.Windows.Input;
 
 namespace MulTyPlayerClient.GUI
 {
@@ -31,6 +32,14 @@ namespace MulTyPlayerClient.GUI
             TyProcess.CloseHandle();
             SteamHelper.Shutdown();
             Logger.Close();
+        }
+
+        private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
         }
     }
 }
