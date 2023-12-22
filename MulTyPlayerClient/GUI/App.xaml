@@ -4,23 +4,21 @@
              xmlns:viewmodels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
              xmlns:views="clr-namespace:MulTyPlayerClient.GUI.Views"
              xmlns:gui="clr-namespace:MulTyPlayerClient.GUI"
+             xmlns:themes="clr-namespace:MulTyPlayerClient.GUI.Themes"
              ShutdownMode="OnMainWindowClose">
 
     <Application.Resources>
         <ResourceDictionary>
+            <gui:Colors x:Key="AppColors"/>
             <ResourceDictionary Source="Classes/Controls/KoalaIcons.xaml" x:Key="KoalaIcons" />
             <ResourceDictionary.MergedDictionaries>
-                <gui:Icons />
-
-                <ResourceDictionary>
-                    <gui:Colors x:Key="AppColors" />
-                </ResourceDictionary>
-
+                <gui:Icons/>
                 <ResourceDictionary Source="Styles/ValueConverters.xaml" />
                 <ResourceDictionary Source="Styles/GlobalStyles.xaml" />
                 <ResourceDictionary Source="Styles/TyStyles.xaml" />
                 <ResourceDictionary Source="Styles/LobbyStyles.xaml" />
-
+                <ResourceDictionary Source="Styles/SettingsStyles.xaml"/>
+                
                 <ResourceDictionary>
                     <DataTemplate DataType="{x:Type viewmodels:SplashViewModel}">
                         <views:Splash />

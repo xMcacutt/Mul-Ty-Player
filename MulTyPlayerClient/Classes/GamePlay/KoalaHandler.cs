@@ -74,7 +74,7 @@ internal class KoalaHandler
 
         var outbackMultiplier = 1.0f;
         if (HLevel.CurrentLevelId == 10) outbackMultiplier = 2.0f;
-        IncreaseScale(1.5f * outbackMultiplier);
+        ScaleKoalas(1.5f * outbackMultiplier);
         MakeVisible();
 
         if (!SettingsHandler.Settings.DoKoalaCollision)
@@ -102,7 +102,7 @@ internal class KoalaHandler
             ProcessHandler.WriteData(TransformAddresses[i].Visibility, new byte[] { 1 }, "Making players visible");
     }
 
-    public void IncreaseScale(float scaleFactor)
+    public void ScaleKoalas(float scaleFactor)
     {
         if (scaleFactor < 0.5f) scaleFactor = 0.5f;
         if (scaleFactor > 3) scaleFactor = 3;

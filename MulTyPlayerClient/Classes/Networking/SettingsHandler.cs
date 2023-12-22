@@ -29,9 +29,9 @@ internal static class SettingsHandler
         //MAIN SETTINGS
         var json = File.ReadAllText("./ClientSettings.json");
         Settings = JsonConvert.DeserializeObject<Settings>(json);
-
-        (Application.Current.Resources["AppColors"] as Colors)?.SetColors(Settings.DarkMode);
-
+        
+        App.AppColors.SetColors(Settings.Theme);
+        
         //SYNC SETTINGS
         SyncSettings = new Dictionary<string, bool>
         {

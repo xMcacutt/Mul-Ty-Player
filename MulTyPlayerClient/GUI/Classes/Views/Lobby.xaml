@@ -5,9 +5,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewmodels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
              xmlns:controls="clr-namespace:MulTyPlayerClient.GUI.Controls"
+             xmlns:client="clr-namespace:MulTyPlayerClient"
              mc:Ignorable="d"
              Height="450" Width="800" FontSize="10" BorderBrush="Black"
-             Background="{DynamicResource MainBack}"
+             Background="{Binding MainBack, Source={x:Static client:App.AppColors}}"
              d:DataContext="{d:DesignInstance Type=viewmodels:LobbyViewModel}"
              PreviewMouseDown="Lobby_OnPreviewMouseDown">
 
@@ -35,7 +36,7 @@
                    Placement="Bottom"
                    Width="85"
                    Height="30">
-                <Border VerticalAlignment="Center" BorderThickness="0" Background="{DynamicResource MainBack}">
+                <Border VerticalAlignment="Center" BorderThickness="0" Background="{Binding MainBack, Source={x:Static client:App.AppColors}}">
                     <Button Style="{StaticResource LobbyButton}"
                             Click="GiveHost_OnClick"
                             Width="Auto"
@@ -44,7 +45,7 @@
                         <StackPanel Orientation="Horizontal">
                             <controls:Icon
                                 Code="{DynamicResource IcoGift}"
-                                Foreground="{DynamicResource MainAccent}"
+                                Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
                                 Size="15"
                                 Margin="0, 0, 10, 0" />
                             <TextBlock VerticalAlignment="Center" Text="Give Host?" />
@@ -98,7 +99,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <controls:Icon Size="10"
-                                               Foreground="{DynamicResource MainAccent}"
+                                               Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
                                                Margin="0"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center"
@@ -122,7 +123,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <controls:Icon Size="10"
-                                               Foreground="{DynamicResource MainAccent}"
+                                               Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
                                                Margin="0"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center"
@@ -223,7 +224,7 @@
                         </Button.Resources>
                     </Button>
                 </Grid>
-                <Separator Width="500" Foreground="{DynamicResource SpecialBack}" />
+                <Separator Width="500" Foreground="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" />
             </StackPanel>
 
 
@@ -243,7 +244,7 @@
                             <Grid Margin="0  2 5 2">
                                 <TextBlock Text="{Binding}"
                                            TextWrapping="Wrap"
-                                           Foreground="{DynamicResource MainText}"
+                                           Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"
                                            FontFamily="Cascadia Code"
                                            FontSize="12"
                                            TextAlignment="Right" />

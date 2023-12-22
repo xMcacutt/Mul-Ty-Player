@@ -11,7 +11,7 @@ internal class Settings
     public bool AutoLaunchTyOnStartup { get; set; }
     public bool AutoRestartTyOnCrash { get; set; }
     public string MulTyPlayerFolderPath { get; set; }
-    public bool DarkMode { get; set; }
+    public string Theme { get; set; }
     public float KoalaScale { get; set; }
     public string InterpolationMode { get; set; }
     public bool DoCollectibleTracking { get; set; }

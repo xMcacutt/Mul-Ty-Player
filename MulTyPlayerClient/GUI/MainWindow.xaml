@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:controls="clr-namespace:MulTyPlayerClient.GUI.Controls"
+        xmlns:client="clr-namespace:MulTyPlayerClient"
         mc:Ignorable="d"
         ResizeMode="NoResize"
         Closing="Window_Closing"
@@ -18,7 +19,7 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid MouseDown="UIElement_OnMouseDown" Background="{DynamicResource MainBack}">
+        <Grid MouseDown="UIElement_OnMouseDown" Background="{Binding MainBack, Source={x:Static client:App.AppColors}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -28,12 +29,12 @@
             <Image VerticalAlignment="Center" Margin="10,0"
                    Source="pack://application:,,,/Resources/fe_999_icon_koalakid.ico" Width="20" />
 
-            <TextBlock Grid.Column="1" Foreground="{DynamicResource MainText}" FontSize="14" VerticalAlignment="Center"
+            <TextBlock Grid.Column="1" Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}" FontSize="14" VerticalAlignment="Center"
                        Text="Mul-Ty-Player Client" />
 
             <StackPanel VerticalAlignment="Stretch" Grid.Column="2" Orientation="Horizontal">
                 <Button Width="40" Style="{StaticResource MenuStripMinButton}">
-                    <controls:Icon Foreground="{DynamicResource AltText}" Code="{DynamicResource IcoMin}" />
+                    <controls:Icon Foreground="{Binding AltText, Source={x:Static client:App.AppColors}}" Code="{DynamicResource IcoMin}" />
                 </Button>
                 <Button Width="40" Style="{StaticResource MenuStripCloseButton}">
                     <controls:Icon Code="{DynamicResource IcoClose}" />

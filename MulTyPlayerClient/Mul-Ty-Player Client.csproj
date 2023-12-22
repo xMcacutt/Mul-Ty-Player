@@ -87,10 +87,16 @@
         <None Remove="GUI\KoalaSelectionAssets\mp4\Snugs.mp4"/>
         <None Remove="Resources\Facepunch.Steamworks.Win32.dll"/>
         <None Remove="Resources\steam_api.dll"/>
+        <None Update="GUI\Themes\Light.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="GUI\Themes\Dark.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
-        <Page Remove="GUI\App.xaml"/>
-        <Page Remove="GUI\Icons\Icons.xaml"/>
+        <Page Remove="GUI\App.xaml" />
+        <Page Remove="GUI\Icons\Icons.xaml" />
         <Page Update="GUI\Styles\LobbyStyles.xaml">
             <Generator>MSBuild:Compile</Generator>
             <XamlRuntime>Wpf</XamlRuntime>
@@ -108,9 +114,9 @@
         </ApplicationDefinition>
     </ItemGroup>
     <ItemGroup>
-        <Resource Include="GUI\Fonts\SF Slapstick Comic.ttf"/>
-        <Resource Include="GUI\Fonts\RubikMonoOneRegular-6pqq.ttf"/>
-        <Resource Include="GUI\Fonts\Font Awesome 6 Free-Solid-900.otf"/>
+        <Resource Include="GUI\Fonts\SF Slapstick Comic.ttf" />
+        <Resource Include="GUI\Fonts\RubikMonoOneRegular-6pqq.ttf" />
+        <Resource Include="GUI\Fonts\Font Awesome 6 Free-Solid-900.otf" />
     </ItemGroup>
     <ItemGroup>
         <Reference Include="Facepunch.Steamworks.Win32">
@@ -200,7 +206,7 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-        <Content Include="fe_999_icon_koalakid.ico"/>
+        <Content Include="fe_999_icon_koalakid.ico" />
         <Content Include="GUI\KoalaSelectionAssets\Dark\Boonie.jpg">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
@@ -273,9 +279,9 @@
         <Content Include="GUI\KoalaSelectionAssets\mp4\Snugs.mp4">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Resource Include="Resources\fe_999_icon_koalakid.ico"/>
-        <Content Include="Resources\RiptideNetworking.dll"/>
-        <Content Include="Resources\RiptideNetworking.xml"/>
+        <Resource Include="Resources\fe_999_icon_koalakid.ico" />
+        <Content Include="Resources\RiptideNetworking.dll" />
+        <Content Include="Resources\RiptideNetworking.xml" />
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="Facepunch.Steamworks.Win32.dll">

@@ -1,4 +1,8 @@
-﻿using MulTyPlayerClient.Classes.Networking;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using MulTyPlayerClient.Classes.Networking;
 using PropertyChanged;
 
 namespace MulTyPlayerClient.GUI.ViewModels;
@@ -8,8 +12,11 @@ public class SettingsViewModel
 {
     
     // CLIENT SETTINGS
+    public string Theme { get; set; }
+    
+    public ObservableCollection<string> Themes { get; set; }
+    
     public bool AutoRestartTy { get; set; }
-    public bool DarkMode { get; set; }
     public bool DoCollectibleTracking { get; set; }
     public bool DoGetSteamName { get; set; }
     public string DefaultName { get; set; }
@@ -19,7 +26,9 @@ public class SettingsViewModel
     // GAMEPLAY SETTINGS
     public bool DoKoalaCollision { get; set; }
     public float KoalaScale { get; set; }
-    public string KoalaInterpolationMode { get; set; }
+    public string InterpolationMode { get; set; }
+    
+    public ObservableCollection<string> InterpolationModes { get; set; }
     
     // DEVELOPER SETTINGS
     public bool DoOutputLogs { get; set; }
@@ -27,8 +36,17 @@ public class SettingsViewModel
 
     public void SetPropertiesFromSettings()
     {
+        Themes = new ObservableCollection<string>();
+        foreach (var theme in Directory.GetFiles("./GUI/Themes").Where(x =>
+                     Path.GetExtension(x).Equals(".json", StringComparison.CurrentCultureIgnoreCase)))
+            Themes.Add(Path.GetFileNameWithoutExtension(theme));
+
+        InterpolationModes = new ObservableCollection<string>();
+        foreach (var mode in Enum.GetNames(typeof(KoalaInterpolationMode)))
+            InterpolationModes.Add(mode);
+        
         AutoRestartTy = SettingsHandler.Settings.AutoRestartTyOnCrash;
-        DarkMode = SettingsHandler.Settings.DarkMode;
+        Theme = SettingsHandler.Settings.Theme;
         DoCollectibleTracking = SettingsHandler.Settings.DoCollectibleTracking;
         DoGetSteamName = SettingsHandler.Settings.DoGetSteamName;
         DefaultName = SettingsHandler.Settings.DefaultName;
@@ -37,7 +55,7 @@ public class SettingsViewModel
         
         DoKoalaCollision = SettingsHandler.Settings.DoKoalaCollision;
         KoalaScale = SettingsHandler.Settings.KoalaScale;
-        KoalaInterpolationMode = SettingsHandler.Settings.InterpolationMode;
+        InterpolationMode = SettingsHandler.Settings.InterpolationMode;
 
         DoOutputLogs = SettingsHandler.Settings.CreateLogFile;
         DefaultPort = SettingsHandler.Settings.Port;

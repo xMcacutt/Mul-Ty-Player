@@ -8,5 +8,5 @@
   "AutoRestartTyOnCrash": true,
   "MulTyPlayerFolderPath": "",
   "AutoLaunchTyOnStartup": false,
-  "DarkLobbyTheme": true
+  "Theme": "Dark"
 }

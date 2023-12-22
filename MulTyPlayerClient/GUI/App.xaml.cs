@@ -7,9 +7,11 @@ namespace MulTyPlayerClient;
 public partial class App : Application
 {
     private MainWindow mw;
+    public static Colors AppColors;
 
     public App()
     {
+        AppColors = new Colors();
         InitializeComponent();
     }
 

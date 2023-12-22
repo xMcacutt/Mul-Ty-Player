@@ -1,62 +1,58 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.IO;
+using System.Windows;
 using System.Windows.Media;
+using MulTyPlayerClient.GUI.Themes;
+using Newtonsoft.Json;
+using PropertyChanged;
 
 namespace MulTyPlayerClient.GUI;
 
-public class Colors : ResourceDictionary
+[AddINotifyPropertyChangedInterface]
+public class Colors
 {
-    public static Color MainBackColor;
-    public static Color AltBackColor;
-    public static Color SpecialBackColor;
-    public static Color MainTextColor;
-    public static Color AltTextColor;
-    public static Color InvertedTextColor;
-    public static Color MainAccentColor;
-    public static Color AltAccentColor;
-
+    public SolidColorBrush MainBack { get; set; }
+    public SolidColorBrush AltBack {get; set;}
+    public SolidColorBrush SpecialBack {get; set;}
+    public SolidColorBrush MainText {get; set;}
+    public SolidColorBrush AltText {get; set;}
+    public SolidColorBrush InvertedText {get; set;}
+    public SolidColorBrush MainAccent {get; set;}
+    public SolidColorBrush AltAccent {get; set;}
+    public Color MainBackColor {get; set;}
+    public Color AltBackColor {get; set;}
+    public Color SpecialBackColor {get; set;}
+    public Color MainTextColor {get; set;}
+    public Color AltTextColor {get; set;}
+    public Color InvertedTextColor {get; set;}
+    public Color MainAccentColor {get; set;}
+    public Color AltAccentColor {get; set;}
+        
     public Colors()
     {
-        SetColors(true);
+        SetColors("Dark");
     }
 
-    public void SetColors(bool darkTheme)
+    public void SetColors(string theme)
     {
-        Clear();
-
-        MainBackColor = darkTheme ? Color.FromArgb(0xff, 0x21, 0x24, 0x26) : Color.FromArgb(0xff, 0xee, 0xeb, 0xe9);
-
-        AltBackColor = darkTheme ? Color.FromArgb(0xff, 0x34, 0x36, 0x38) : Color.FromArgb(0xff, 0xd6, 0xd9, 0xdc);
-
-        SpecialBackColor = darkTheme ? Color.FromArgb(0xff, 0x4C, 0x4E, 0x50) : Color.FromArgb(0xff, 0xcf, 0xcf, 0xcf);
-
-        MainTextColor = darkTheme ? Color.FromArgb(0xff, 0xff, 0xff, 0xff) : Color.FromArgb(0xff, 0x00, 0x00, 0x00);
-
-        AltTextColor = darkTheme ? Color.FromArgb(0xff, 0x99, 0x99, 0x99) : Color.FromArgb(0xff, 0x44, 0x44, 0x44);
-
-        InvertedTextColor = darkTheme ? Color.FromArgb(0xff, 0x00, 0x00, 0x00) : Color.FromArgb(0xff, 0xff, 0xff, 0xff);
-
-        MainAccentColor = darkTheme ? Color.FromArgb(0xff, 0xe7, 0x99, 0x41) : Color.FromArgb(0xff, 0x18, 0x66, 0xbe);
-
-        AltAccentColor = darkTheme ? Color.FromArgb(0xff, 0x29, 0x60, 0x9f) : Color.FromArgb(0xff, 0xf7, 0xa9, 0x71);
-
-        AddColors();
-    }
-
-    private void AddColors()
-    {
-        Add("MainBack", MainBackColor);
-        Add("AltBack", AltBackColor);
-        Add("SpecialBack", SpecialBackColor);
-        Add("MainText", MainTextColor);
-        Add("AltText", AltTextColor);
-        Add("InvertedText", InvertedTextColor);
-        Add("MainAccent", MainAccentColor);
-        Add("AltAccent", AltAccentColor);
-    }
-
-    private void Add(string key, object value)
-    {
-        this[key] = new SolidColorBrush((Color)value);
-        this[key + "Color"] = value;
+        var json = File.ReadAllText($"GUI/Themes/{theme}.json");
+        var scheme = JsonConvert.DeserializeObject<ColorScheme>(json);
+        MainBackColor = (Color)ColorConverter.ConvertFromString(scheme.MainBackColor)!;
+        AltBackColor = (Color)ColorConverter.ConvertFromString(scheme.AltBackColor)!;
+        SpecialBackColor = (Color)ColorConverter.ConvertFromString(scheme.SpecialBackColor)!;
+        MainTextColor = (Color)ColorConverter.ConvertFromString(scheme.MainTextColor)!;
+        AltTextColor = (Color)ColorConverter.ConvertFromString(scheme.AltTextColor)!;
+        InvertedTextColor = (Color)ColorConverter.ConvertFromString(scheme.InvertedTextColor)!;
+        MainAccentColor = (Color)ColorConverter.ConvertFromString(scheme.MainAccentColor)!;
+        AltAccentColor = (Color)ColorConverter.ConvertFromString(scheme.AltAccentColor)!;
+        
+        MainBack = new SolidColorBrush(MainBackColor);
+        AltBack = new SolidColorBrush(AltBackColor);
+        SpecialBack = new SolidColorBrush(SpecialBackColor);
+        MainText = new SolidColorBrush(MainTextColor);
+        AltText = new SolidColorBrush(AltTextColor);
+        InvertedText = new SolidColorBrush(InvertedTextColor);
+        MainAccent = new SolidColorBrush(MainAccentColor);
+        AltAccent = new SolidColorBrush(AltAccentColor);
     }
 }

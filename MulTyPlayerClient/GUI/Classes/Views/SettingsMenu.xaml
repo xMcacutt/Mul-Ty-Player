@@ -5,9 +5,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
+        xmlns:controls="clr-namespace:MulTyPlayerClient.GUI.Controls"
+        xmlns:client="clr-namespace:MulTyPlayerClient"
         mc:Ignorable="d"
         Closing="Window_Closing"
-        Title="SettingsMenu" Height="175" Width="250" ResizeMode="NoResize"
+        Background="{Binding MainBack, Source={x:Static client:App.AppColors}}"
+        SizeToContent="Height"
+        Title="SettingsMenu" 
+        Width="400" 
+        ResizeMode="NoResize" 
+        WindowStyle="None"
+        Topmost="True"
         DataContext="{Binding Source={x:Static models:ModelController.Settings}}"
         d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}">
 
@@ -15,23 +23,124 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-
         </Grid.RowDefinitions>
 
-        <TextBlock Style="{StaticResource ComicText}"
+        <TextBlock MouseDown="UIElement_OnMouseDown" Style="{StaticResource ComicText}"
+                   Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"
                    Text="Client Settings"
-                   FontSize="30" />
-
+                   FontSize="45" 
+                   Margin="0 0 0 10"/>
+        
+        <!--Main Stack Panel-->
         <StackPanel Grid.Row="1">
-            <CheckBox Content="Do Koala Collision?"
-                      Style="{StaticResource ComicTextCheck}"
-                      Margin="10,10,0,10"
-                      IsChecked="{Binding DoKoalaCollision, Mode=TwoWay}" />
-
-            <CheckBox Content="Auto-Restart Ty?"
-                      Style="{StaticResource ComicTextCheck}"
-                      Margin="10,10,0,10"
-                      IsChecked="{Binding AutoRestartTy, Mode=TwoWay}" />
+            <!--Client Settings Item Stack Panel-->
+            <Button Click="ClientDropDownButton_OnClick" Style="{StaticResource SettingsButtonStyle}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <controls:Icon Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" Code="{DynamicResource IcoHome}"/>
+                    <TextBlock Text="Client"/>
+                    <controls:Icon/>
+                </StackPanel>
+            </Button>
+            
+            <!--Client Settings Panel Stack Panel-->
+            <StackPanel Height="0" x:Name="ClientStackPanel">
+                <StackPanel Margin="10">
+                    <Label Content="Theme"/>
+                    <ComboBox ItemsSource="{Binding Themes}" 
+                              SelectedItem="{Binding Theme}" 
+                              Style="{StaticResource SettingsComboBoxStyle}"/>
+                    
+                    <CheckBox IsChecked="{Binding AutoLaunchTyOnStartup}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Auto Launch Ty On App Start"/>
+                    
+                    <CheckBox IsChecked="{Binding AutoRestartTy}" 
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Auto Restart Ty On Crash"/>
+                    
+                    <CheckBox IsChecked="{Binding AttemptReconnect}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Attempt Reconnect On Timeout"/>
+                    
+                    <CheckBox IsChecked="{Binding DoCollectibleTracking}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Output Collectible Data"/>
+                    
+                    <CheckBox IsChecked="{Binding DoGetSteamName}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Get Name From Steam"
+                              Name="GetSteamNameCheckBox"/>
+                    
+                    <Grid Visibility="{Binding ElementName=GetSteamNameCheckBox, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="Default Name"
+                               Style="{StaticResource SettingsLabelStyle}"/>
+                        <TextBox Grid.Row="1" Text="{Binding DefaultName}"
+                                 Style="{StaticResource SettingsTextBoxStyle}"/>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+            
+            
+            <!--Game Settings Item Stack Panel-->
+            <Button Click="GameDropDownButton_OnClick" Style="{StaticResource SettingsButtonStyle}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <controls:Icon Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" Code="{DynamicResource IcoGame}"/>
+                    <TextBlock Text="Gameplay"/>
+                    <controls:Icon/>
+                </StackPanel>
+            </Button>
+            
+            <!--Game Settings Panel Stack Panel-->
+            <StackPanel Height="0" x:Name="GameStackPanel">
+                <StackPanel Margin="10">
+                    <Label Content="Koala Scale"/>
+                    <Slider Minimum="0.5" 
+                            Maximum="3" 
+                            TickFrequency="0.5" 
+                            TickPlacement="BottomRight" 
+                            Orientation="Horizontal"
+                            Value="{Binding KoalaScale}"/>
+                    
+                    <Label Content="Interpolation Mode"/>
+                    <ComboBox ItemsSource="{Binding InterpolationModes}"
+                              SelectedItem="{Binding InterpolationMode}"
+                              Style="{StaticResource SettingsComboBoxStyle}"/>
+                    
+                    <CheckBox IsChecked="{Binding DoKoalaCollision}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Koalas Have Collision"/>
+                </StackPanel>
+            </StackPanel>
+            
+            
+            <!--Dev Settings Item Stack Panel-->
+            <Button Click="DevDropDownButton_OnClick" Style="{StaticResource SettingsButtonStyle}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <controls:Icon Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" Code="{DynamicResource IcoTools}"/>
+                    <TextBlock Text="Developer"/>
+                    <controls:Icon/>
+                </StackPanel>
+            </Button>
+            
+            <!--Dev Settings Panel Stack Panel-->
+            <StackPanel Height="0" x:Name="DevStackPanel">
+                <StackPanel Margin="10">
+                    <CheckBox IsChecked="{Binding DoOutputLogs}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Output mtpl Logs"/>
+                    
+                    <Label Content="Default Port"/>
+                    <TextBox Text="{Binding DefaultPort}"
+                             PreviewTextInput="UIElement_OnPreviewTextInput"
+                             Style="{StaticResource SettingsTextBoxStyle}"/>
+                </StackPanel>
+            </StackPanel>
+            
+            
         </StackPanel>
     </Grid>
 </Window>

@@ -1,17 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:gui="clr-namespace:MulTyPlayerClient.GUI">
-    <ResourceDictionary.MergedDictionaries>
-        <gui:Colors />
-    </ResourceDictionary.MergedDictionaries>
-
+                    xmlns:gui="clr-namespace:MulTyPlayerClient.GUI"
+                    xmlns:client="clr-namespace:MulTyPlayerClient">
     <LinearGradientBrush x:Key="BackGradient" EndPoint="0.5,1" StartPoint="0.5,0">
-        <GradientStop Color="{DynamicResource AltBackColor}" />
-        <GradientStop Color="{DynamicResource MainBackColor}" Offset="1" />
+        <GradientStop Color="{Binding AltBackColor, Source={x:Static client:App.AppColors}}" />
+        <GradientStop Color="{Binding MainBackColor, Source={x:Static client:App.AppColors}}" Offset="1" />
     </LinearGradientBrush>
 
     <Style x:Key="ScrollBarThumb" TargetType="Thumb">
-        <Setter Property="Background" Value="{DynamicResource MainBack}" />
+        <Setter Property="Background" Value="{Binding MainBack, Source={x:Static client:App.AppColors}}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Margin" Value="2" />
         <Setter Property="Template">
@@ -26,8 +23,8 @@
         </Setter>
     </Style>
     <Style TargetType="ScrollBar">
-        <Setter Property="Background" Value="{DynamicResource SpecialBack}" />
-        <Setter Property="Foreground" Value="{DynamicResource MainBack}" />
+        <Setter Property="Background" Value="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" />
+        <Setter Property="Foreground" Value="{Binding MainBack, Source={x:Static client:App.AppColors}}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Margin" Value="0 10" />
         <Setter Property="Template">
@@ -40,7 +37,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Border Width="10" Grid.Row="1" CornerRadius="5" BorderThickness="0"
-                                Background="{DynamicResource SpecialBack}">
+                                Background="{Binding SpecialBack, Source={x:Static client:App.AppColors}}">
                             <Track x:Name="PART_Track" IsDirectionReversed="True">
                                 <Track.Thumb>
                                     <Thumb Style="{StaticResource ScrollBarThumb}" />
@@ -60,7 +57,7 @@
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="{DynamicResource MainText}" />
+        <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
         <Setter Property="AlternatingRowBackground" Value="Transparent" />
         <Setter Property="CanUserResizeColumns" Value="False" />
         <Setter Property="CanUserResizeRows" Value="False" />
@@ -73,7 +70,7 @@
         <Setter Property="Height" Value="35" />
         <Style.Triggers>
             <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                <Setter Property="Background" Value="{DynamicResource AltBack}" />
+                <Setter Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -81,17 +78,17 @@
         <Setter Property="BorderBrush" Value="Transparent" />
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="{DynamicResource AltAccent}" />
+                <Setter Property="Background" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
                 <Setter Property="BorderThickness" Value="0" />
-                <Setter Property="Foreground" Value="{DynamicResource MainText}" />
+                <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
             </Trigger>
         </Style.Triggers>
     </Style>
 
     <!--LobbyButton-->
     <Style TargetType="Button" x:Key="LobbyButton">
-        <Setter Property="Background" Value="{DynamicResource MainBack}" />
-        <Setter Property="Foreground" Value="{DynamicResource MainAccent}" />
+        <Setter Property="Background" Value="{Binding MainBack, Source={x:Static client:App.AppColors}}" />
+        <Setter Property="Foreground" Value="{Binding MainAccent, Source={x:Static client:App.AppColors}}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Padding" Value="5,5" />
         <Setter Property="Cursor" Value="Hand" />
@@ -103,7 +100,7 @@
                     <Border Name="Border"
                             CornerRadius="0"
                             BorderThickness="0"
-                            Background="{DynamicResource MainBack}">
+                            Background="{Binding MainBack, Source={x:Static client:App.AppColors}}">
                         <ContentPresenter Margin="2"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
@@ -114,11 +111,11 @@
                         <Trigger Property="IsDefaulted" Value="true" />
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter TargetName="Border"
-                                    Property="Background" Value="{DynamicResource AltBack}" />
+                                    Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="true">
                             <Setter TargetName="Border"
-                                    Property="Background" Value="{DynamicResource SpecialBack}" />
+                                    Property="Background" Value="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter TargetName="Border"
@@ -130,12 +127,12 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource SpecialBack}" />
+                <Setter Property="Foreground" Value="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" />
                 <Setter Property="Background" Value="Transparent" />
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource AltAccent}" />
-                <Setter Property="Background" Value="{DynamicResource AltAccent}" />
+                <Setter Property="BorderBrush" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
+                <Setter Property="Background" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -145,8 +142,8 @@
     <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA" />
     <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5" />
     <Style TargetType="{x:Type TextBox}" x:Key="PlaceholderTextStyle">
-        <Setter Property="Background" Value="{DynamicResource AltBack}" />
-        <Setter Property="Foreground" Value="{DynamicResource MainText}" />
+        <Setter Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
+        <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -195,10 +192,10 @@
                             <Setter Property="Opacity" TargetName="border" Value="0.56" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource MainAccent}" />
+                            <Setter Property="BorderBrush" TargetName="border" Value="{Binding MainAccent, Source={x:Static client:App.AppColors}}" />
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="true">
-                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource MainAccent}" />
+                            <Setter Property="BorderBrush" TargetName="border" Value="{Binding MainAccent, Source={x:Static client:App.AppColors}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -220,12 +217,12 @@
     <Style x:Key="ComicTextMain" TargetType="TextBlock">
         <Setter Property="TextElement.FontFamily" Value="../Fonts/#SF Slapstick Comic" />
         <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="Foreground" Value="{DynamicResource MainText}" />
+        <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
     </Style>
     <Style x:Key="ComicTextInverted" TargetType="TextBlock">
         <Setter Property="TextElement.FontFamily" Value="../Fonts/#SF Slapstick Comic" />
         <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="Foreground" Value="{DynamicResource InvertedText}" />
+        <Setter Property="Foreground" Value="{Binding InvertedText, Source={x:Static client:App.AppColors}}" />
     </Style>
 
     <Style TargetType="{x:Type Button}" x:Key="InstallButton">
