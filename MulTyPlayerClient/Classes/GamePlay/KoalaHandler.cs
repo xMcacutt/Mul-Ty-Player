@@ -74,7 +74,7 @@ internal class KoalaHandler
 
         var outbackMultiplier = 1.0f;
         if (HLevel.CurrentLevelId == 10) outbackMultiplier = 2.0f;
-        ScaleKoalas(1.5f * outbackMultiplier);
+        ScaleKoalas(SettingsHandler.Settings.KoalaScale * outbackMultiplier);
         MakeVisible();
 
         if (!SettingsHandler.Settings.DoKoalaCollision)

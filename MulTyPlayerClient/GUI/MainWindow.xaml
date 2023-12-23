@@ -12,7 +12,7 @@
         Closed="Window_Closed"
         WindowStyle="None"
         Title="Mul-Ty-Player Client"
-        BorderBrush="{Binding AltBack, Source={x:Static client:App.AppColors}}"
+        BorderBrush="{Binding SpecialBack, Source={x:Static client:App.AppColors}}"
         BorderThickness="1"
         SizeToContent="WidthAndHeight">
 
@@ -35,10 +35,14 @@
                        Text="Mul-Ty-Player Client" />
 
             <StackPanel VerticalAlignment="Stretch" Grid.Column="2" Orientation="Horizontal">
-                <Button Width="40" Style="{StaticResource MenuStripMinButton}">
+                <Button Click="MinimizeButton_OnClick"
+                        Width="40" 
+                        Style="{StaticResource MenuStripMinButton}">
                     <controls:Icon Foreground="{Binding AltText, Source={x:Static client:App.AppColors}}" Code="{DynamicResource IcoMin}" />
                 </Button>
-                <Button Width="40" Style="{StaticResource MenuStripCloseButton}">
+                <Button Click="CloseButton_OnClick"
+                        Width="40" 
+                        Style="{StaticResource MenuStripCloseButton}">
                     <controls:Icon Code="{DynamicResource IcoClose}" />
                 </Button>
             </StackPanel>

@@ -9,7 +9,6 @@ internal class WindowHandler
 
     public static void InitializeWindows()
     {
-        SettingsWindow = new SettingsMenu();
         SetupWindow = new Setup();
     }
 }

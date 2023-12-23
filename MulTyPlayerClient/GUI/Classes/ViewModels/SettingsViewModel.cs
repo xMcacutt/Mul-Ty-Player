@@ -32,7 +32,7 @@ public class SettingsViewModel
     
     // DEVELOPER SETTINGS
     public bool DoOutputLogs { get; set; }
-    public int DefaultPort { get; set; }
+    public ushort DefaultPort { get; set; }
 
     public void SetPropertiesFromSettings()
     {
@@ -59,5 +59,27 @@ public class SettingsViewModel
 
         DoOutputLogs = SettingsHandler.Settings.CreateLogFile;
         DefaultPort = SettingsHandler.Settings.Port;
+    }
+
+    public void SavePropertiesBackToSettings()
+    {
+        SettingsHandler.Settings.AutoRestartTyOnCrash = AutoRestartTy;
+        SettingsHandler.Settings.Theme = Theme;
+        SettingsHandler.Settings.DoCollectibleTracking = DoCollectibleTracking;
+        SettingsHandler.Settings.DoGetSteamName = DoGetSteamName;
+        SettingsHandler.Settings.DefaultName = DefaultName;
+        SettingsHandler.Settings.AttemptReconnect = AttemptReconnect;
+        SettingsHandler.Settings.AutoLaunchTyOnStartup = AutoLaunchTyOnStartup;
+        
+        SettingsHandler.Settings.DoKoalaCollision = DoKoalaCollision;
+        SettingsHandler.Settings.KoalaScale = KoalaScale;
+        SettingsHandler.Settings.InterpolationMode = InterpolationMode;
+
+        SettingsHandler.Settings.CreateLogFile = DoOutputLogs;
+        SettingsHandler.Settings.Port = DefaultPort;
+        
+        SettingsHandler.Save();
+
+        App.AppColors.SetColors(SettingsHandler.Settings.Theme);
     }
 }

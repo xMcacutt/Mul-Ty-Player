@@ -43,6 +43,7 @@
 
             <Grid>
                 <TextBox x:Name="FieldHostIp"
+                         PreviewKeyDown="FieldHostIp_OnPreviewKeyDown"
                          HorizontalContentAlignment="Left"
                          Text="{Binding ConnectingAddress, UpdateSourceTrigger=PropertyChanged}"
                          FontSize="25"

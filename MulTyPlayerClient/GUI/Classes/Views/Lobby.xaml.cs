@@ -30,8 +30,9 @@ public partial class Lobby : UserControl
 
     private void SettingsButton_Click(object sender, RoutedEventArgs e)
     {
+        WindowHandler.SettingsWindow = new SettingsMenu();
         ModelController.Settings.SetPropertiesFromSettings();
-        WindowHandler.SettingsWindow.Show();
+        WindowHandler.SettingsWindow.ShowDialog();
     }
 
     private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)

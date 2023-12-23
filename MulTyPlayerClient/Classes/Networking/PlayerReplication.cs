@@ -12,7 +12,7 @@ internal static class PlayerReplication
 {
     private const int RENDER_CALLS_PER_CLIENT_TICK = 8;
     private const int KRENDER_SLEEP_TIME = (int)((float)Client.MS_PER_TICK / RENDER_CALLS_PER_CLIENT_TICK) - 1;
-    public static readonly KoalaInterpolationMode InterpolationMode = KoalaInterpolationMode.None;
+    public static KoalaInterpolationMode InterpolationMode = (KoalaInterpolationMode)Enum.Parse(typeof(KoalaInterpolationMode), SettingsHandler.Settings.InterpolationMode);
     private static readonly Dictionary<KoalaID, Transform> playerTransforms;
     private static readonly Dictionary<KoalaID, TransformSnapshots> receivedSnapshotData;
 

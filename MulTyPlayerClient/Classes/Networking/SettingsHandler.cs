@@ -90,11 +90,5 @@ internal static class SettingsHandler
     {
         return Settings.MulTyPlayerFolderPath != "" && Settings.MulTyPlayerFolderPath != null;
     }
-
-    public static void SaveSettingsFromSettingsMenu()
-    {
-        Settings.AutoRestartTyOnCrash = ModelController.Settings.AutoRestartTy;
-        Settings.DoKoalaCollision = ModelController.Settings.DoKoalaCollision;
-        Save();
-    }
+    
 }

@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Input;
 using MulTyPlayerClient.GUI.Models;
 using Ookii.Dialogs.Wpf;
 
@@ -33,6 +35,13 @@ public partial class Setup : Window
     private void MTPFolderBrowseButton_Click(object sender, RoutedEventArgs e)
     {
         var dialog = new VistaFolderBrowserDialog();
+        dialog.SelectedPaths = Array.Empty<string>();
+        dialog.Multiselect = false;
+        dialog.UseDescriptionForTitle = false;
+        dialog.ShowNewFolderButton = false;
+        dialog.SelectedPath = null;
+        dialog.RootFolder = Environment.SpecialFolder.Desktop;
+        dialog.Description = null;
         dialog.Description = "Select Ty the Tasmanian Tiger Folder.";
         dialog.ShowNewFolderButton = true;
         dialog.SelectedPath = ModelController.Setup.MTPPath ?? dialog.SelectedPath;
@@ -46,6 +55,7 @@ public partial class Setup : Window
 
     private void InstallButton_Click(object sender, RoutedEventArgs e)
     {
+        InstallProgressBar.Visibility = Visibility.Visible;
         ModelController.Setup.Install();
     }
 
@@ -53,5 +63,16 @@ public partial class Setup : Window
     {
         e.Cancel = true;
         WindowHandler.SetupWindow.Hide();
+    }
+
+    private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Pressed) DragMove();    
+    }
+
+    private void ExitButton_Click(object sender, RoutedEventArgs e)
+    {
+        DialogResult = false;
+        Close();
     }
 }

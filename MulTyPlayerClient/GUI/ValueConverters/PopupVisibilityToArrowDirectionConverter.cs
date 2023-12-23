@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace MulTyPlayerClient.GUI;
 
-public class PopupHeightToArrowDirectionConverter : IValueConverter
+public class PopupVisibilityToArrowDirectionConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if ((double)value == 0)
-        {
-            return "\uf0d7";
-        }
-        return "\uf0d8";
+        return (Visibility)value == Visibility.Visible ? "\uf0d8" : "\uf0d7";
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

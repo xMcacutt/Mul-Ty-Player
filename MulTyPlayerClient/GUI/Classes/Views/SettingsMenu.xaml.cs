@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
+using MulTyPlayerClient.GUI.ViewModels;
 
 namespace MulTyPlayerClient.GUI.Views;
 
@@ -15,13 +17,6 @@ public partial class SettingsMenu : Window
         InitializeComponent();
     }
 
-    private void Window_Closing(object sender, CancelEventArgs e)
-    {
-        WindowHandler.SettingsWindow.Hide();
-        SettingsHandler.SaveSettingsFromSettingsMenu();
-        e.Cancel = true;
-    }
-
     private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.LeftButton == MouseButtonState.Pressed) DragMove();
@@ -29,67 +24,107 @@ public partial class SettingsMenu : Window
 
     private void UIElement_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
     {
-        // Use regular expression to allow only numeric input
-        var regex = NumericRegex();
-        e.Handled = regex.IsMatch(e.Text);
-    }
+        var regex = new Regex("^[0-9]+$");
 
-    [GeneratedRegex("[^0-9]+")]
-    private static partial Regex NumericRegex();
+        if (!regex.IsMatch(e.Text))
+        {
+            e.Handled = true;
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(PortTextBox.Text))
+        {
+            if (uint.TryParse(PortTextBox.Text + e.Text, out uint portValue))
+            {
+                e.Handled = portValue > ushort.MaxValue;
+            }
+            else
+            {
+                // Handle the case where the input is not a valid uint (e.g., non-numeric characters).
+                e.Handled = true;
+                return;
+            }
+        }
+    }
 
     private void ClientDropDownButton_OnClick(object sender, RoutedEventArgs e)
     {
-        AnimateCloseDropdown(ref GameStackPanel);
-        AnimateCloseDropdown(ref DevStackPanel);
-        AnimateDropdown(ref ClientStackPanel);
+        AnimateCloseDropdown(GameStackPanel);
+        AnimateCloseDropdown(DevStackPanel);
+        AnimateDropdown(ClientStackPanel);
     }
     
     private void DevDropDownButton_OnClick(object sender, RoutedEventArgs e)
     {
-        AnimateCloseDropdown(ref GameStackPanel);
-        AnimateCloseDropdown(ref ClientStackPanel);
-        AnimateDropdown(ref DevStackPanel);
+        AnimateCloseDropdown(GameStackPanel);
+        AnimateCloseDropdown(ClientStackPanel);
+        AnimateDropdown(DevStackPanel);
     }
     
     private void GameDropDownButton_OnClick(object sender, RoutedEventArgs e)
     {
-        AnimateCloseDropdown(ref DevStackPanel);
-        AnimateCloseDropdown(ref ClientStackPanel);
-        AnimateDropdown(ref GameStackPanel);
+        AnimateCloseDropdown(DevStackPanel);
+        AnimateCloseDropdown(ClientStackPanel);
+        AnimateDropdown(GameStackPanel);
     }
 
-    private void AnimateCloseDropdown(ref StackPanel dropDown)
+    private void AnimateCloseDropdown(StackPanel dropDown)
     {
-        if (dropDown.Height == 0) return;
+        if (dropDown.Height == 0 || dropDown.Visibility == Visibility.Collapsed) return;
         var animation = new DoubleAnimation
         {
-            From = dropDown.Height,
+            From = dropDown.ActualHeight,
             To = 0,
             Duration = TimeSpan.FromSeconds(0.3) // You can adjust the duration
         };
+        animation.Completed += (s, e) =>
+        {
+            dropDown.Visibility = Visibility.Collapsed;
+        };
         dropDown.BeginAnimation(HeightProperty, animation);
     }
 
-    private void AnimateDropdown(ref StackPanel dropDown)
+    private void AnimateDropdown(StackPanel dropDown)
     {
-        double from;
-        double to;
-        if (dropDown.Height == 0)
+        DoubleAnimation anim = new DoubleAnimation();
+        anim.FillBehavior = FillBehavior.Stop;
+        anim.Duration = TimeSpan.FromSeconds(0.3);
+
+        if (dropDown.Visibility == Visibility.Collapsed)
         {
-            from = 0;
-            to = dropDown.ActualHeight;
+            dropDown.Visibility = Visibility.Visible;
+
+            // Use Dispatcher to defer setting the From and To properties until the layout is updated
+            dropDown.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                anim.From = 0;
+                anim.To = dropDown.ActualHeight;
+                dropDown.BeginAnimation(HeightProperty, anim);
+            }));
         }
         else
         {
-            from = dropDown.Height;
-            to = 0;
+            anim.From = dropDown.ActualHeight;
+            anim.To = 0;
+            anim.Completed += (s, e) =>
+            {
+                dropDown.Visibility = Visibility.Collapsed;
+            };
+
+            dropDown.BeginAnimation(HeightProperty, anim);
         }
-        var animation = new DoubleAnimation
-        {
-            From = from,
-            To = to,
-            Duration = TimeSpan.FromSeconds(0.3) // You can adjust the duration
-        };
-        dropDown.BeginAnimation(HeightProperty, animation);
+    }
+
+    private void SaveButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        ((SettingsViewModel)DataContext).SavePropertiesBackToSettings();
+        DialogResult = true;
+        Close();
+    }
+
+    private void CancelButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        DialogResult = false;
+        Close();
     }
 }

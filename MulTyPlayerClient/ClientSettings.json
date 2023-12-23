@@ -8,5 +8,7 @@
   "AutoRestartTyOnCrash": true,
   "MulTyPlayerFolderPath": "",
   "AutoLaunchTyOnStartup": false,
+  "KoalaScale": 1.5,
+  "InterpolationMode" : "None",
   "Theme": "Dark"
 }
