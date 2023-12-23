@@ -12,6 +12,8 @@
         Closed="Window_Closed"
         WindowStyle="None"
         Title="Mul-Ty-Player Client"
+        BorderBrush="{Binding AltBack, Source={x:Static client:App.AppColors}}"
+        BorderThickness="1"
         SizeToContent="WidthAndHeight">
 
     <Grid>

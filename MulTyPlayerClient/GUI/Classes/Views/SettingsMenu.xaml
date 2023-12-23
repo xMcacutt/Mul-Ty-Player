@@ -7,9 +7,12 @@
         xmlns:viewmodels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
         xmlns:controls="clr-namespace:MulTyPlayerClient.GUI.Controls"
         xmlns:client="clr-namespace:MulTyPlayerClient"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d"
         Closing="Window_Closing"
         Background="{Binding MainBack, Source={x:Static client:App.AppColors}}"
+        BorderBrush="{Binding AltBack, Source={x:Static client:App.AppColors}}"
+        BorderThickness="1"
         SizeToContent="Height"
         Title="SettingsMenu" 
         Width="400" 
@@ -19,56 +22,78 @@
         DataContext="{Binding Source={x:Static models:ModelController.Settings}}"
         d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}">
 
-    <Grid Margin="10,10,10,10">
+    <Grid Margin="15,10,15,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock MouseDown="UIElement_OnMouseDown" Style="{StaticResource ComicText}"
-                   Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"
-                   Text="Client Settings"
-                   FontSize="45" 
-                   Margin="0 0 0 10"/>
+        <StackPanel Grid.Row="0" 
+                    MouseDown="UIElement_OnMouseDown" 
+                    Background="Transparent"
+                    IsHitTestVisible="True">
+            <TextBlock Style="{StaticResource ComicText}"
+                       Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"
+                       Text="Settings"
+                       FontSize="45" 
+                       Margin="0 0 0 10"/>
+            <Separator Style="{StaticResource SettingsSepStyle}"/>
+        </StackPanel>
         
         <!--Main Stack Panel-->
         <StackPanel Grid.Row="1">
             <!--Client Settings Item Stack Panel-->
             <Button Click="ClientDropDownButton_OnClick" Style="{StaticResource SettingsButtonStyle}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
-                <StackPanel Orientation="Horizontal">
-                    <controls:Icon Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" Code="{DynamicResource IcoHome}"/>
-                    <TextBlock Text="Client"/>
-                    <controls:Icon/>
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="35"/>
+                    </Grid.ColumnDefinitions>
+                    <controls:Icon Grid.Column="0"
+                                   Size="25"
+                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" 
+                                   Code="{DynamicResource IcoHome}"/>
+                    <TextBlock Grid.Column="1" 
+                               Text="Client"
+                               Style="{StaticResource SettingsTextStyle}"
+                               FontSize="24"
+                               Margin="15 0"/>
+                    <controls:Icon Grid.Column="2" 
+                                   Foreground="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" 
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Size="20"
+                                   Code="{Binding ElementName=ClientStackPanel, Path=Height, Converter={StaticResource PopupHeightToArrowDirectionConverter}}"/>         </Grid>
             </Button>
-            
             <!--Client Settings Panel Stack Panel-->
             <StackPanel Height="0" x:Name="ClientStackPanel">
                 <StackPanel Margin="10">
-                    <Label Content="Theme"/>
+                    <Label Content="Theme"
+                           Style="{StaticResource SettingsLabelStyle}"/>
                     <ComboBox ItemsSource="{Binding Themes}" 
                               SelectedItem="{Binding Theme}" 
                               Style="{StaticResource SettingsComboBoxStyle}"/>
                     
                     <CheckBox IsChecked="{Binding AutoLaunchTyOnStartup}"
                               Style="{StaticResource SettingsCheckBoxStyle}"
-                              Content="Auto Launch Ty On App Start"/>
+                              Content="Auto Launch Ty"/>
                     
                     <CheckBox IsChecked="{Binding AutoRestartTy}" 
                               Style="{StaticResource SettingsCheckBoxStyle}"
-                              Content="Auto Restart Ty On Crash"/>
+                              Content="Auto Restart Ty"/>
                     
                     <CheckBox IsChecked="{Binding AttemptReconnect}"
                               Style="{StaticResource SettingsCheckBoxStyle}"
-                              Content="Attempt Reconnect On Timeout"/>
+                              Content="Attempt Reconnect"/>
                     
                     <CheckBox IsChecked="{Binding DoCollectibleTracking}"
                               Style="{StaticResource SettingsCheckBoxStyle}"
-                              Content="Output Collectible Data"/>
+                              Content="Track Collectibles"/>
                     
                     <CheckBox IsChecked="{Binding DoGetSteamName}"
                               Style="{StaticResource SettingsCheckBoxStyle}"
-                              Content="Get Name From Steam"
+                              Content="Use Steam Name"
                               Name="GetSteamNameCheckBox"/>
                     
                     <Grid Visibility="{Binding ElementName=GetSteamNameCheckBox, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -83,47 +108,82 @@
                     </Grid>
                 </StackPanel>
             </StackPanel>
-            
+            <Separator Style="{StaticResource SettingsSepStyle}"/>
             
             <!--Game Settings Item Stack Panel-->
             <Button Click="GameDropDownButton_OnClick" Style="{StaticResource SettingsButtonStyle}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
-                <StackPanel Orientation="Horizontal">
-                    <controls:Icon Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" Code="{DynamicResource IcoGame}"/>
-                    <TextBlock Text="Gameplay"/>
-                    <controls:Icon/>
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="35"/>
+                    </Grid.ColumnDefinitions>
+                    <controls:Icon Grid.Column="0"
+                                   Size="25"
+                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" 
+                                   Code="{DynamicResource IcoGame}"/>
+                    <TextBlock Grid.Column="1" 
+                               Text="Gameplay"
+                               Style="{StaticResource SettingsTextStyle}"
+                               FontSize="24"
+                               Margin="15 0"/>
+                    <controls:Icon Grid.Column="2" 
+                                   Foreground="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" 
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Size="20"
+                                   Code="{Binding ElementName=GameStackPanel, Path=Height, Converter={StaticResource PopupHeightToArrowDirectionConverter}}"/>
+                </Grid>
             </Button>
-            
             <!--Game Settings Panel Stack Panel-->
             <StackPanel Height="0" x:Name="GameStackPanel">
                 <StackPanel Margin="10">
-                    <Label Content="Koala Scale"/>
+                    <Label Content="Koala Scale" 
+                           Style="{StaticResource SettingsLabelStyle}"/>
                     <Slider Minimum="0.5" 
                             Maximum="3" 
                             TickFrequency="0.5" 
                             TickPlacement="BottomRight" 
                             Orientation="Horizontal"
-                            Value="{Binding KoalaScale}"/>
+                            Value="{Binding KoalaScale}"
+                            Style="{StaticResource SettingsSliderStyle}"/>
                     
-                    <Label Content="Interpolation Mode"/>
+                    <Label Content="Interpolation Mode" 
+                           Style="{StaticResource SettingsLabelStyle}"/>
                     <ComboBox ItemsSource="{Binding InterpolationModes}"
                               SelectedItem="{Binding InterpolationMode}"
                               Style="{StaticResource SettingsComboBoxStyle}"/>
                     
                     <CheckBox IsChecked="{Binding DoKoalaCollision}"
                               Style="{StaticResource SettingsCheckBoxStyle}"
-                              Content="Koalas Have Collision"/>
+                              Content="Collide Koalas"/>
                 </StackPanel>
             </StackPanel>
-            
+            <Separator Style="{StaticResource SettingsSepStyle}"/>
             
             <!--Dev Settings Item Stack Panel-->
             <Button Click="DevDropDownButton_OnClick" Style="{StaticResource SettingsButtonStyle}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
-                <StackPanel Orientation="Horizontal">
-                    <controls:Icon Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" Code="{DynamicResource IcoTools}"/>
-                    <TextBlock Text="Developer"/>
-                    <controls:Icon/>
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="35"/>
+                    </Grid.ColumnDefinitions>
+                    <controls:Icon Grid.Column="0"
+                                   Size="25"
+                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" 
+                                   Code="{DynamicResource IcoTools}"/>
+                    <TextBlock Grid.Column="1" Text="Developer"
+                               Style="{StaticResource SettingsTextStyle}"
+                               FontSize="24"
+                               Margin="15 0"/>
+                    <controls:Icon Grid.Column="2" 
+                                   Foreground="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" 
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Size="20"
+                                   Code="{Binding ElementName=DevStackPanel, Path=Height, Converter={StaticResource PopupHeightToArrowDirectionConverter}}"/>
+                </Grid>
             </Button>
             
             <!--Dev Settings Panel Stack Panel-->
@@ -131,16 +191,35 @@
                 <StackPanel Margin="10">
                     <CheckBox IsChecked="{Binding DoOutputLogs}"
                               Style="{StaticResource SettingsCheckBoxStyle}"
-                              Content="Output mtpl Logs"/>
+                              Content="Output Logs"/>
                     
-                    <Label Content="Default Port"/>
+                    <Label Content="Default Port" 
+                           Style="{StaticResource SettingsLabelStyle}"/>
                     <TextBox Text="{Binding DefaultPort}"
                              PreviewTextInput="UIElement_OnPreviewTextInput"
                              Style="{StaticResource SettingsTextBoxStyle}"/>
                 </StackPanel>
             </StackPanel>
+            <Separator Style="{StaticResource SettingsSepStyle}"/>
             
-            
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Center" 
+                        Height="40"
+                        Margin="0 10 0 0">
+                <Button Style="{StaticResource LobbyButton}" 
+                        Width="100">
+                    <controls:Icon Code="{DynamicResource IcoUndo}"
+                                   Size="20"
+                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" />
+                </Button>
+                <Rectangle Fill="Transparent" Width="50"/>
+                <Button Style="{StaticResource LobbyButton}" 
+                        Width="100">
+                    <controls:Icon Code="{DynamicResource IcoSave}"
+                                   Size="20"
+                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" />
+                </Button>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
