@@ -81,5 +81,6 @@ public class SettingsViewModel
         SettingsHandler.Save();
 
         App.AppColors.SetColors(SettingsHandler.Settings.Theme);
+        Client.HKoala.ScaleKoalas();
     }
 }

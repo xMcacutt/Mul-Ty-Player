@@ -71,10 +71,8 @@ internal class KoalaHandler
             TransformAddresses[koalaID].Visibility = _baseKoalaAddress + 0x44 + koalaOffset;
             TransformAddresses[koalaID].Scale = _baseKoalaAddress + 0x60 + koalaOffset;
         }
-
-        var outbackMultiplier = 1.0f;
-        if (HLevel.CurrentLevelId == 10) outbackMultiplier = 2.0f;
-        ScaleKoalas(SettingsHandler.Settings.KoalaScale * outbackMultiplier);
+        
+        ScaleKoalas();
         MakeVisible();
 
         if (!SettingsHandler.Settings.DoKoalaCollision)
@@ -102,8 +100,11 @@ internal class KoalaHandler
             ProcessHandler.WriteData(TransformAddresses[i].Visibility, new byte[] { 1 }, "Making players visible");
     }
 
-    public void ScaleKoalas(float scaleFactor)
+    public void ScaleKoalas()
     {
+        var outbackMultiplier = 1.0f;
+        if (HLevel.CurrentLevelId == 10) outbackMultiplier = 2.0f;
+        var scaleFactor = SettingsHandler.Settings.KoalaScale * outbackMultiplier;
         if (scaleFactor < 0.5f) scaleFactor = 0.5f;
         if (scaleFactor > 3) scaleFactor = 3;
         const float snugsMultiplier = 1.075f;

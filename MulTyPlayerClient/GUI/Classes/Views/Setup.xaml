@@ -17,7 +17,6 @@
         BorderThickness="1"
         SizeToContent="WidthAndHeight"
         Closing="Window_Closing">
-    
     <StackPanel Margin="15">
         <Grid MouseDown="UIElement_OnMouseDown" Background="Transparent">
             <TextBlock Style="{StaticResource SettingsTextStyle}"
