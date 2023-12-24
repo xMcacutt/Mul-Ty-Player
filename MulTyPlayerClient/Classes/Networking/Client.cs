@@ -55,8 +55,8 @@ internal class Client
         ModelController.KoalaSelect.OnProceedToLobby += () => { KoalaSelected = true; };
         ModelController.Lobby.OnLogout += () => { KoalaSelected = false; };
 
-        Thread _loop = new(ClientLoop);
-        _loop.Start();
+        Thread loop = new(ClientLoop);
+        loop.Start();
     }
 
     private static void InitHandlers()

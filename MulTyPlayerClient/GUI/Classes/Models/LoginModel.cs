@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using MulTyPlayerClient.Classes.Utility;
 
@@ -26,32 +27,8 @@ public class LoginModel
         this.ip = ip;
         this.name = name;
         this.pass = pass;
-        var backgroundWorker = new BackgroundWorker();
-        backgroundWorker.DoWork += (s, e) => AttemptConnection();
-        backgroundWorker.RunWorkerCompleted += (s, e) =>
-        {
-            if (e.Error != null)
-            {
-                Logger.Write(e.Error.ToString());
-                LoginFailed();
-                return;
-            }
-            if (e.Cancelled)
-            {
-                LoginFailed();
-                return;
-            }
-            if (ConnectionAttemptSuccessful)
-            {
-                SaveDetails();
-                OnLoginSuccess?.Invoke();
-            }
-            else
-            {
-                LoginFailed();
-            }
-        };
-        backgroundWorker.RunWorkerAsync();
+        Thread connect = new(AttemptConnection);
+        connect.Start();
     }
 
     public string GetIP()
@@ -71,12 +48,31 @@ public class LoginModel
 
     private void AttemptConnection()
     {
-        ConnectionAttemptCompleted = false;
-        Client.Start(ip, name, pass);
-        while (!ConnectionAttemptCompleted)
+        try
         {
+            ConnectionAttemptCompleted = false;
+            Client.Start(ip, name, pass);
+            while (!ConnectionAttemptCompleted)
+            {
+            }
+        }
+        catch(Exception e)
+        {
+            Logger.Write(e.Message);
+            LoginFailed();
+            return;
+        }
+        if (ConnectionAttemptSuccessful)
+        {
+            SaveDetails();
+            OnLoginSuccess?.Invoke();
+        }
+        else
+        {
+            LoginFailed();
         }
     }
+    
 
     public void Setup()
     {

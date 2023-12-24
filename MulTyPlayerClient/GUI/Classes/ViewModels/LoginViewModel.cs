@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MulTyPlayerClient.GUI.Models;
@@ -55,7 +56,6 @@ public class LoginViewModel : IViewModel
 
     private void Model_OnLoginSuccess()
     {
-        //display some message about successful login idk
     }
 
     private async void Model_OnLoginFailed()

@@ -12,18 +12,18 @@ public partial class KoalaSelect : UserControl
     public KoalaSelect()
     {
         InitializeComponent();
-        BackgroundVideo.Visibility = Visibility.Hidden;
-        BackgroundVideo.Play();
+        //BackgroundVideo.Visibility = Visibility.Hidden;
+        //BackgroundVideo.Play();
     }
 
     private void BackgroundVideo_OnMediaEnded(object sender, RoutedEventArgs e)
     {
-        BackgroundVideo.Position = TimeSpan.Zero;
-        BackgroundVideo.Play();
+        //BackgroundVideo.Position = TimeSpan.Zero;
+        //BackgroundVideo.Play();
     }
 
     private void BackgroundVideo_OnMediaOpened(object sender, RoutedEventArgs e)
     {
-        BackgroundVideo.Visibility = Visibility.Visible;
+        //BackgroundVideo.Visibility = Visibility.Visible;
     }
 }

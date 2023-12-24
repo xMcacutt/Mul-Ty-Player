@@ -9,12 +9,12 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:KoalaSelectViewModel}">
     <Grid>
         <!--Background video-->
-        <MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.mp4"
+        <!--<MediaElement Source="pack://siteoforigin:,,,/GUI/KoalaSelectionAssets/Background.mp4"
                       MediaOpened="BackgroundVideo_OnMediaOpened"
                       MediaEnded="BackgroundVideo_OnMediaEnded"
                       LoadedBehavior="Manual"
                       x:Name="BackgroundVideo"
-                      Stretch="UniformToFill" />
+                      Stretch="UniformToFill" />-->
         <StackPanel>
             <TextBlock Text="Select Your Koala"
                        Style="{StaticResource ComicText}"

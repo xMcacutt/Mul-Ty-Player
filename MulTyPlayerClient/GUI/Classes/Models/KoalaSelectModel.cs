@@ -39,7 +39,7 @@ public class KoalaSelectModel
         SFXPlayer.PlaySound(SFX.PlayerConnect);
         OnKoalaSelected?.Invoke(koala);
         PlayerHandler.AnnounceSelection(Koalas.GetInfo[koala].Name, Client.Name, isHost);
-        await Task.Delay(2500);
+        await Task.Delay(2125);
         GetEntry(koala).SetAvailability(false);
         OnProceedToLobby?.Invoke();
     }
