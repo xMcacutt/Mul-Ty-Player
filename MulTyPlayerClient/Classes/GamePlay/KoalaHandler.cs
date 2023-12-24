@@ -76,15 +76,16 @@ internal class KoalaHandler
         MakeVisible();
 
         if (!SettingsHandler.Settings.DoKoalaCollision)
-            RemoveCollision();
+            SetCollision();
 
         readyToWriteTransformData = true;
     }
 
-    public void RemoveCollision()
+    public void SetCollision()
     {
+        var col = SettingsHandler.Settings.DoKoalaCollision ? (byte)1 : (byte)0;
         for (var i = 0; i < 8; i++)
-            ProcessHandler.WriteData(TransformAddresses[i].Collision, new byte[] { 0 }, "Removing collision");
+            ProcessHandler.WriteData(TransformAddresses[i].Collision, new byte[] { col }, "Removing collision");
     }
 
     public void CheckTA()

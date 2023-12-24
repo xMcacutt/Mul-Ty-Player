@@ -143,7 +143,7 @@
                        Style="{StaticResource SettingsLabelStyle}"/>
                 <Slider Minimum="0.5" 
                         Maximum="3" 
-                        TickFrequency="0.5" 
+                        TickFrequency="0.25" 
                         TickPlacement="BottomRight" 
                         Orientation="Horizontal"
                         Value="{Binding KoalaScale}"

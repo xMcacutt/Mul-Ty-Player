@@ -23,11 +23,6 @@ public class KoalaSelectEntryViewModel
         SetPortraitVisibility();
     }
 
-    //for design-time preview
-    public KoalaSelectEntryViewModel() : this(new KoalaSelectEntryModel(Koala.Boonie))
-    {
-    }
-
     public string KoalaName { get; set; }
 
     public bool IsHovered { get; set; }

@@ -18,7 +18,7 @@ public partial class Login : UserControl
     {
         if (e.Key == Key.Enter)
         {
-            ((LoginViewModel)DataContext).ConnectCommand.Execute(e);
+            //((LoginViewModel)DataContext).ConnectCommand.Execute(e);
         }
     }
 }

@@ -78,7 +78,7 @@
 
     <Style x:Key="SliderThumbStyle" TargetType="{x:Type Thumb}">
         <Setter Property="Height" Value="30" />
-        <Setter Property="Width" Value="30" />
+        <Setter Property="Width" Value="50" />
         <Setter Property="Foreground" Value="{Binding MainAccent, Source={x:Static client:App.AppColors}}"/>
         <Setter Property="Template">
             <Setter.Value>

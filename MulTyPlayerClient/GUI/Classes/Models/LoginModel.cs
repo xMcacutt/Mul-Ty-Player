@@ -27,7 +27,6 @@ public class LoginModel
         this.name = name;
         this.pass = pass;
         var backgroundWorker = new BackgroundWorker();
-
         backgroundWorker.DoWork += (s, e) => AttemptConnection();
         backgroundWorker.RunWorkerCompleted += (s, e) =>
         {
@@ -37,13 +36,11 @@ public class LoginModel
                 LoginFailed();
                 return;
             }
-
             if (e.Cancelled)
             {
                 LoginFailed();
                 return;
             }
-
             if (ConnectionAttemptSuccessful)
             {
                 SaveDetails();
