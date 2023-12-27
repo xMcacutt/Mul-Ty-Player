@@ -1,0 +1,101 @@
+﻿<Window x:Class="Mul_Ty_Player_Updater.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Mul_Ty_Player_Updater"
+        xmlns:controls="clr-namespace:Mul_Ty_Player_Updater.Controls"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        Background="{Binding MainBack, Source={x:Static local:App.AppColors}}"
+        Title="MainWindow" Height="450" Width="800" AllowsTransparency="True">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0" MouseDown="UIElement_OnMouseDown" Background="{Binding MainBack, Source={x:Static local:App.AppColors}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Image VerticalAlignment="Center" Margin="10,0"
+                   Source="pack://application:,,,/Resources/updaterico.ico" Width="30" />
+
+            <TextBlock Grid.Column="1" Foreground="{Binding MainText, Source={x:Static local:App.AppColors}}" FontSize="14" VerticalAlignment="Center"
+                       Text="Mul-Ty-Player Updater" />
+
+            <StackPanel VerticalAlignment="Stretch" Grid.Column="2" Orientation="Horizontal">
+                <Button Click="MinimizeButton_OnClick"
+                        Width="40" 
+                        Style="{StaticResource MenuStripMinButton}">
+                    <controls:Icon Foreground="{Binding AltText, Source={x:Static local:App.AppColors}}" Code="{DynamicResource IcoMin}" />
+                </Button>
+                <Button Click="CloseButton_OnClick"
+                        Width="40" 
+                        Style="{StaticResource MenuStripCloseButton}">
+                    <controls:Icon Code="{DynamicResource IcoClose}" />
+                </Button>
+            </StackPanel>
+        </Grid>
+        
+        <Image Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="250" Margin="0 60 0 0" Opacity="0.7" Source="pack://application:,,,/Resources/kikitransparent.png" ></Image>
+        <StackPanel Grid.Row="1" Margin="10">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <controls:Icon Code="{DynamicResource IcoRefresh}"
+                               Foreground="{Binding MainAccent, Source={x:Static local:App.AppColors}}"
+                               Size="30"
+                               VerticalAlignment="Center"/>
+                <TextBlock Style="{StaticResource SettingsTextStyle}"
+                           Text="Updater"
+                           FontSize="35"
+                           VerticalAlignment="Center"
+                           Margin="15 0"/>
+            </StackPanel>
+            <Separator Style="{StaticResource SettingsSepStyle}" Margin="0 5"/>
+            <Button Style="{StaticResource LobbyButton}" 
+                    Margin="5"
+                    Click="InstallButton_Click">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <controls:Icon Code="{DynamicResource IcoSave}"
+                                   Foreground="{Binding MainAccent, Source={x:Static local:App.AppColors}}"
+                                   Size="30"
+                                   VerticalAlignment="Center"/>
+                    <TextBlock Text="Install"
+                               Style="{StaticResource SettingsTextStyle}"
+                               FontSize="25"
+                               Margin="10"/>
+                </StackPanel>
+            </Button>
+            <Button Style="{StaticResource LobbyButton}" Margin="5">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <controls:Icon Code="{DynamicResource IcoRefresh}"
+                                   Foreground="{Binding MainAccent, Source={x:Static local:App.AppColors}}"
+                                   Size="30"
+                                   VerticalAlignment="Center"/>
+                    <TextBlock Text="Update"
+                               Style="{StaticResource SettingsTextStyle}"
+                               FontSize="25"
+                               Margin="10"/>
+                </StackPanel>
+            </Button>
+            <Button Style="{StaticResource LobbyButton}" Margin="5">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <controls:Icon Code="{DynamicResource IcoTools}"
+                                   Foreground="{Binding MainAccent, Source={x:Static local:App.AppColors}}"
+                                   Size="30"
+                                   VerticalAlignment="Center"/>
+                    <TextBlock Text="Setup"
+                               Style="{StaticResource SettingsTextStyle}"
+                               FontSize="25"
+                               Margin="10"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+        </Grid>
+</Window>

@@ -1,0 +1,10 @@
+﻿{
+  "UpdateClient": true,
+  "UpdateServer": false,
+  "UpdateRKV": true,
+  "ClientDir": "",
+  "ServerDir": "",
+  "GameDir": "",
+  "FixedMagnets": true,
+  "Version": "3.2.0"
+}

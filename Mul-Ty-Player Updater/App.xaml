@@ -1,0 +1,18 @@
+﻿<Application x:Class="Mul_Ty_Player_Updater.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Mul_Ty_Player_Updater"
+             StartupUri="Views/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <local:Colors x:Key="AppColors"/>
+            <ResourceDictionary.MergedDictionaries>
+                <local:Icons/>
+                <ResourceDictionary Source="Styles/ValueConverters.xaml"/>
+                <ResourceDictionary Source="Styles/LobbyStyles.xaml"/>
+                <ResourceDictionary Source="Styles/GlobalStyles.xaml" />
+                <ResourceDictionary Source="Styles/SettingsStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

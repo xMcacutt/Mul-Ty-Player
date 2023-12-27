@@ -1,0 +1,201 @@
+﻿<Window x:Class="Mul_Ty_Player_Updater.Views.InstallView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:vm="clr-namespace:Mul_Ty_Player_Updater.ViewModels"
+        xmlns:controls="clr-namespace:Mul_Ty_Player_Updater.Controls"
+        xmlns:updater="clr-namespace:Mul_Ty_Player_Updater"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        SizeToContent="Height"
+        ResizeMode="NoResize"
+        Background="{Binding AltBack, Source={x:Static updater:App.AppColors}}"
+        Title="InstallView" Height="Auto" Width="400">
+    <Window.DataContext>
+        <vm:InstallViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0" MouseDown="UIElement_OnMouseDown" Background="{Binding MainBack, Source={x:Static updater:App.AppColors}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Column="0" Foreground="{Binding MainText, Source={x:Static updater:App.AppColors}}" FontSize="14" VerticalAlignment="Center"
+                       Text="Installation" />
+            <Button Grid.Column="1" 
+                    HorizontalAlignment="Right"
+                    Click="CloseButton_OnClick"
+                    Width="40" 
+                    Style="{StaticResource MenuStripCloseButton}">
+                <controls:Icon Code="{DynamicResource IcoClose}" />
+            </Button>
+        </Grid>
+        
+        <Border Grid.Row="1" 
+                Margin="10"
+                Background="{Binding MainBack, Source={x:Static updater:App.AppColors}}"
+                BorderThickness="0">
+            <StackPanel Margin="10" >
+                <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
+                          Content="Install Client"
+                          IsChecked="{Binding InstallClient}"/>
+                
+                <StackPanel Visibility="{Binding InstallClient, 
+                            Converter={StaticResource BooleanToVisibilityConverter}, 
+                            ConverterParameter=True}">
+                    <Label Style="{StaticResource SettingsLabelStyle}"
+                           Content="Client Install Path"/>
+                    <StackPanel Margin="0 0 0 10" 
+                                Orientation="Horizontal" 
+                                HorizontalAlignment="Center">
+                        <TextBox Style="{StaticResource SettingsTextBoxStyle}"
+                                 Text="{Binding ClientPath}"
+                                 Margin="0"
+                                 Name="ClientPathBox"
+                                 Width="340"/>
+
+                        <Button Style="{StaticResource LobbyButton}"
+                                Margin="0"
+                                Click="ClientFolderBrowseButton_Click">
+                            <TextBlock Text="..." 
+                                       Style="{StaticResource SettingsTextStyle}"
+                                       FontSize="10"
+                                       FontFamily="Cascadia Code"
+                                       HorizontalAlignment="Center"/>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+                
+                <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
+                          Content="Install Server"
+                          IsChecked="{Binding InstallServer}"/>
+                
+                <StackPanel Visibility="{Binding InstallServer, 
+                            Converter={StaticResource BooleanToVisibilityConverter}, 
+                            ConverterParameter=True}">
+                    <Label Style="{StaticResource SettingsLabelStyle}"
+                           Content="Server Install Path"/>
+                    <StackPanel Margin="0 0 0 10" 
+                                Orientation="Horizontal" 
+                                HorizontalAlignment="Center" >
+                        <TextBox Style="{StaticResource SettingsTextBoxStyle}"
+                                 Text="{Binding ServerPath}"
+                                 Margin="0"
+                                 Name="ServerPathBox"
+                                 Width="340"/>
+
+                        <Button Style="{StaticResource LobbyButton}"
+                                Margin="0"
+                                Click="ServerFolderBrowseButton_Click">
+                            <TextBlock Text="..." 
+                                       Style="{StaticResource SettingsTextStyle}"
+                                       FontSize="10"
+                                       FontFamily="Cascadia Code"
+                                       HorizontalAlignment="Center"/>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+                
+                <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
+                          Content="Install Game Files"
+                          IsChecked="{Binding InstallGameFiles}"/>
+                
+                <StackPanel Visibility="{Binding InstallGameFiles, 
+                            Converter={StaticResource BooleanToVisibilityConverter}, 
+                            ConverterParameter=True}">
+                    <Label Style="{StaticResource SettingsLabelStyle}"
+                           Content="Original Game Path"/>
+                    <StackPanel Margin="0 0 0 10" 
+                                Orientation="Horizontal" 
+                                HorizontalAlignment="Center">
+                        <TextBox Style="{StaticResource SettingsTextBoxStyle}"
+                                 Text="{Binding TyPath}"
+                                 Name="TyPathBox"
+                                 Margin="0"
+                                 Width="340"/>
+
+                        <Button Style="{StaticResource LobbyButton}"
+                                Margin="0"
+                                Click="TyFolderBrowseButton_Click">
+                            <TextBlock Text="..." 
+                                       Style="{StaticResource SettingsTextStyle}"
+                                       FontSize="10"
+                                       FontFamily="Cascadia Code"
+                                       HorizontalAlignment="Center"/>
+                        </Button>
+                    </StackPanel>
+                    
+                    <Label Style="{StaticResource SettingsLabelStyle}"
+                           Content="MTP Game Install Path"/>
+                    <StackPanel Margin="0 0 0 10" 
+                                Orientation="Horizontal" 
+                                HorizontalAlignment="Center">
+                        <TextBox Style="{StaticResource SettingsTextBoxStyle}"
+                                 Text="{Binding MTPPath}"
+                                 Margin="0"
+                                 Name="MTPPathBox"
+                                 Width="340"/>
+
+                        <Button Style="{StaticResource LobbyButton}"
+                                Margin="0"
+                                Click="MTPFolderBrowseButton_Click">
+                            <TextBlock Text="..." 
+                                       Style="{StaticResource SettingsTextStyle}"
+                                       FontSize="10"
+                                       FontFamily="Cascadia Code"
+                                       HorizontalAlignment="Center"/>
+                        </Button>
+                    </StackPanel>
+                    
+                    <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Remove Magnet Randomization"
+                              IsChecked="{Binding RemoveMagnetRandom}"/>
+                </StackPanel>
+                
+                
+                <Button Style="{StaticResource LobbyButton}"
+                        Width="150"
+                        Margin="0 10"
+                        Click="Install_Click"
+                        Name="InstallButton">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource InstallCheckConverter}">
+                            <Binding Path="InstallClient"/>
+                            <Binding Path="ClientPath"/>
+                            <Binding Path="InstallServer"/>
+                            <Binding Path="ServerPath"/>
+                            <Binding Path="InstallGameFiles"/>
+                            <Binding Path="TyPath"/>
+                            <Binding Path="MTPPath"/>
+                            <Binding Path="Installing"/>
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">
+                        <controls:Icon Code="{DynamicResource IcoSave}"
+                                       Size="20"
+                                       Margin="0 0 10 0"
+                                       VerticalAlignment="Center"/>
+                        <TextBlock Style="{StaticResource SettingsTextStyle}"
+                                   Text="Install"
+                                   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+                    </StackPanel>
+                </Button>
+                <StackPanel Name="ProgressPanel"
+                            Visibility="{Binding Installing, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}">
+                    <ProgressBar Style="{StaticResource ProgressBarStyle}"
+                                 Value="{Binding Progress}"
+                                 Height="25"/>
+                    <TextBlock Style="{StaticResource SettingsTextStyle}"
+                               Text="{Binding ProgressMessage}"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
