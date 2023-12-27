@@ -66,10 +66,14 @@ public partial class InstallView : Window
 
     private void Install_Click(object sender, RoutedEventArgs e)
     {
-        if (DataContext is InstallViewModel vm)
-        {
-            vm.Installing = true;
-            vm.Install();
-        }
+        if (DataContext is not InstallViewModel vm) return;
+        vm.Installing = true;
+        vm.InstallCompleted += ViewModel_InstallCompleted;
+        vm.Install();
+    }
+
+    private void ViewModel_InstallCompleted(object? sender, object e)
+    {
+        DialogResult = true;
     }
 }

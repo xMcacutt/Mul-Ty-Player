@@ -46,5 +46,17 @@ namespace Mul_Ty_Player_Updater
             var installDialog = new InstallView();
             installDialog.ShowDialog();
         }
+
+        private void SetupButton_Click(object sender, RoutedEventArgs e)
+        {
+            var setupDialog = new SetupView();
+            setupDialog.ShowDialog();
+        }
+
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            var updateDialog = new UpdateView();
+            updateDialog.ShowDialog();
+        }
     }
 }

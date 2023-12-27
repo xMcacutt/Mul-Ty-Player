@@ -6,8 +6,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Windows;
+using System.Windows.Forms;
+using Mul_Ty_Player_Updater.Views;
 using Octokit;
 using PropertyChanged;
+using Application = System.Windows.Application;
 using FileMode = System.IO.FileMode;
 
 namespace Mul_Ty_Player_Updater.ViewModels;
@@ -23,10 +26,13 @@ public class InstallViewModel
     public bool InstallGameFiles { get; set; }
     public string TyPath { get; set; }
     public string MTPPath { get; set; }
+    public string Version { get; set; }
     public bool RemoveMagnetRandom { get; set; }
     public float Progress { get; set; }
     public string? ProgressMessage { get; set; }
     public bool Installing { get; set; }
+    public bool Success { get; set; }
+    public event EventHandler InstallCompleted; 
 
     private BackgroundWorker worker;
     
@@ -60,6 +66,9 @@ public class InstallViewModel
 
     public void Install()
     {
+        Success = false;
+        Progress = 0;
+        ProgressMessage = "Initializing install.";
         worker = new BackgroundWorker();
         worker.WorkerReportsProgress = true;
         worker.DoWork += InstallWorker_DoWork;
@@ -71,7 +80,22 @@ public class InstallViewModel
     private void InstallWorker_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
     {
         ProgressMessage = e.Result?.ToString();
+        if (Success)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                NewMessageBox newMessageBox = new NewMessageBox(
+                    "Mul-Ty-Player was installed successfully!\n" +
+                    "Settings have been saved for future updates.\n" +
+                    "You can change these in Setup.\n", "\uf058");
+                newMessageBox.ShowDialog();
+            });
+            Installing = false;
+            SaveSettings();
+            InstallCompleted.Invoke(this, null!);
+        }
         Installing = false;
+
     }
 
     private void InstallWorker_ProgressChanged(object? sender, ProgressChangedEventArgs e)
@@ -84,10 +108,11 @@ public class InstallViewModel
     {
         try
         {
+            var github = new GitHubClient(new ProductHeaderValue("Mul-Ty-Player"));
+            var latestRelease = github.Repository.Release.GetLatest("xMcacutt", "MTPUpdateTest").Result;
+            Version = latestRelease.TagName.Replace("v", "");
             if (InstallServer || InstallClient)
             {
-                var github = new GitHubClient(new ProductHeaderValue("Mul-Ty-Player"));
-                var latestRelease = github.Repository.Release.GetLatest("xMcacutt", "Nul-Ty-Player").Result;
                 if (InstallClient)
                     CopyClientFiles(latestRelease);
                 if (InstallServer)
@@ -95,15 +120,20 @@ public class InstallViewModel
             }
             if (InstallGameFiles)
             {
-                CopyTyFiles();
+                CopyTyFiles(latestRelease.TagName);
                 CopyPatch();
             }
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.Message, "Mul-Ty-Player could not be installed.");
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                NewMessageBox newMessageBox = new NewMessageBox("Mul-Ty-Player could not be installed:\n" + ex.Message, "\uf071");
+                newMessageBox.ShowDialog();
+            });
             return;
         }
+        Success = true;
         e.Result = "Mul-Ty-Player was successfully installed.";
     }
 
@@ -112,7 +142,7 @@ public class InstallViewModel
         var clientDirPath = Path.Combine(MTPPath, "Client");
         Directory.CreateDirectory(clientDirPath);
         var zipPath = Path.Combine(clientDirPath, "Client.zip");
-        var asset = latest.Assets.FirstOrDefault(asset => asset.Name == "Mul-Ty-Player Client.zip");
+        var asset = latest.Assets.FirstOrDefault(asset => asset.Name == "Mul-Ty-Player.Client.zip");
         if (asset == null) throw new Exception();
         HttpClient client = new();
         var uri = new Uri(asset.BrowserDownloadUrl);
@@ -122,7 +152,7 @@ public class InstallViewModel
         var totalBytes = response.Content.Headers.ContentLength;
         using FileStream fileStream = new(zipPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
         var buffer = new byte[4096];
-        var bytesRead = default(int);
+        int bytesRead;
         var bytesWritten = 0L;
         do
         {
@@ -134,9 +164,10 @@ public class InstallViewModel
             var progressPercentage = bytesWritten * 100d / totalBytes.Value;
             worker.ReportProgress((int)progressPercentage, $"Downloading Client Files: {(int)progressPercentage}%");
         } while (bytesRead > 0);
-
+        fileStream.Close();
         using var archive = ZipFile.OpenRead(zipPath);
         archive.ExtractToDirectory(clientDirPath);
+        archive.Dispose();
         File.Delete(zipPath);
     }
 
@@ -145,7 +176,7 @@ public class InstallViewModel
         var serverDirPath = Path.Combine(MTPPath, "Server");
         Directory.CreateDirectory(serverDirPath);
         var zipPath = Path.Combine(serverDirPath, "Server.Zip");
-        var asset = latest.Assets.FirstOrDefault(asset => asset.Name == "Mul-Ty-Player Server.zip");
+        var asset = latest.Assets.FirstOrDefault(asset => asset.Name == "Mul-Ty-Player.Server.zip");
         if (asset == null) throw new Exception();
         HttpClient client = new();
         var uri = new Uri(asset.BrowserDownloadUrl);
@@ -155,7 +186,7 @@ public class InstallViewModel
         var totalBytes = response.Content.Headers.ContentLength;
         using FileStream fileStream = new(zipPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
         var buffer = new byte[4096];
-        var bytesRead = default(int);
+        int bytesRead;
         var bytesWritten = 0L;
         do
         {
@@ -167,13 +198,13 @@ public class InstallViewModel
             var progressPercentage = bytesWritten * 100d / totalBytes.Value;
             worker.ReportProgress((int)progressPercentage, $"Downloading Server Files: {(int)progressPercentage}%");
         } while (bytesRead > 0);
-
+        fileStream.Close();
         using var archive = ZipFile.OpenRead(zipPath);
         archive.ExtractToDirectory(serverDirPath);
         File.Delete(zipPath);
     }
 
-    private void CopyTyFiles()
+    private void CopyTyFiles(string version)
     {
         var gameDirPath = Path.Combine(MTPPath, "Game");
         Directory.CreateDirectory(gameDirPath);
@@ -202,14 +233,21 @@ public class InstallViewModel
                 
             if (file != "TY.exe") continue;
                 
-            const int versionStringOffset = 0x2024F8;
-            const string version = "";
-            const string versionString = "MTP v" + version;
-            var replacement = Encoding.ASCII.GetBytes(versionString);
+            //VERSION ON TITLE SCREEN
             using FileStream fileStream = new(destinationFilePath, FileMode.Open, FileAccess.Write);
-            fileStream.Seek(versionStringOffset, SeekOrigin.Begin);
+            fileStream.Seek(0x2024F8, SeekOrigin.Begin);
             using BinaryWriter binaryWriter = new(fileStream);
+            var versionString = "MTP " + version + " ";
+            var replacement = Encoding.ASCII.GetBytes(versionString);
             binaryWriter.Write(replacement);
+            
+            //MAGNET PATCH
+            var magnetData = RemoveMagnetRandom ? TyData.MagnetBytesFixed : TyData.MagnetBytesOrigin;
+            foreach (var entry in magnetData)
+            {
+                fileStream.Seek(entry.Key, SeekOrigin.Begin);
+                binaryWriter.Write(entry.Value);
+            }
         }
     }
 
@@ -238,5 +276,19 @@ public class InstallViewModel
             var progressPercentage = bytesWritten * 100d / totalBytes.Value;
             worker.ReportProgress((int)progressPercentage, $"Downloading Patch: {(int)progressPercentage}%");
         } while (bytesRead > 0);
+    }
+
+    private void SaveSettings()
+    {
+        if (SettingsHandler.Settings == null) return;
+        SettingsHandler.Settings.UpdateClient = InstallClient;
+        SettingsHandler.Settings.UpdateServer = InstallServer;
+        SettingsHandler.Settings.UpdateRKV = InstallGameFiles;
+        SettingsHandler.Settings.ClientDir = ClientPath;
+        SettingsHandler.Settings.ServerDir = ServerPath;
+        SettingsHandler.Settings.GameDir = MTPPath;
+        SettingsHandler.Settings.FixedMagnets = RemoveMagnetRandom;
+        SettingsHandler.Settings.Version = Version;
+        SettingsHandler.SaveSettings();
     }
 }

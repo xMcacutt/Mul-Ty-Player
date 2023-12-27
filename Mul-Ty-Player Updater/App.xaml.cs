@@ -18,6 +18,7 @@ namespace Mul_Ty_Player_Updater
         
         public App()
         {
+            var settingsHandler = new SettingsHandler();
             AppColors = new Colors();
         }
     }

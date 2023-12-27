@@ -59,4 +59,11 @@
       <Resource Include="Resources\updaterico.ico" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Settings.json" />
+      <Content Include="Settings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>

@@ -72,7 +72,9 @@
                                Margin="10"/>
                 </StackPanel>
             </Button>
-            <Button Style="{StaticResource LobbyButton}" Margin="5">
+            <Button Style="{StaticResource LobbyButton}" 
+                    Margin="5"
+                    Click="UpdateButton_Click">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <controls:Icon Code="{DynamicResource IcoRefresh}"
                                    Foreground="{Binding MainAccent, Source={x:Static local:App.AppColors}}"
@@ -84,7 +86,9 @@
                                Margin="10"/>
                 </StackPanel>
             </Button>
-            <Button Style="{StaticResource LobbyButton}" Margin="5">
+            <Button Style="{StaticResource LobbyButton}" 
+                    Margin="5"
+                    Click="SetupButton_Click">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <controls:Icon Code="{DynamicResource IcoTools}"
                                    Foreground="{Binding MainAccent, Source={x:Static local:App.AppColors}}"
