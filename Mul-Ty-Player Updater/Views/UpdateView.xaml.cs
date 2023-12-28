@@ -13,7 +13,15 @@ public partial class UpdateView : Window
 
     private void UpdateView_OnRendered(object? sender, EventArgs e)
     {
+        if (DataContext is not UpdateViewModel vm) return;
+        vm.UpdateCompleted += VmOnUpdateCompleted;
+        vm.GetUpdate();
+    }
+
+    private void VmOnUpdateCompleted(object? sender, object e)
+    {
         if (DataContext is UpdateViewModel vm)
-            vm.GetUpdate();
+            vm.UpdateCompleted -= VmOnUpdateCompleted;
+        DialogResult = true;
     }
 }

@@ -111,13 +111,10 @@ public class InstallViewModel
             var github = new GitHubClient(new ProductHeaderValue("Mul-Ty-Player"));
             var latestRelease = github.Repository.Release.GetLatest("xMcacutt", "MTPUpdateTest").Result;
             Version = latestRelease.TagName.Replace("v", "");
-            if (InstallServer || InstallClient)
-            {
-                if (InstallClient)
-                    CopyClientFiles(latestRelease);
-                if (InstallServer)
-                    CopyServerFiles(latestRelease);
-            }
+            if (InstallClient)
+                CopyClientFiles(latestRelease);
+            if (InstallServer)
+                CopyServerFiles(latestRelease);
             if (InstallGameFiles)
             {
                 CopyTyFiles(latestRelease.TagName);
@@ -139,7 +136,7 @@ public class InstallViewModel
 
     private void CopyClientFiles(Release latest)
     {
-        var clientDirPath = Path.Combine(MTPPath, "Client");
+        var clientDirPath = Path.Combine(ClientPath, "Client");
         Directory.CreateDirectory(clientDirPath);
         var zipPath = Path.Combine(clientDirPath, "Client.zip");
         var asset = latest.Assets.FirstOrDefault(asset => asset.Name == "Mul-Ty-Player.Client.zip");
@@ -173,7 +170,7 @@ public class InstallViewModel
 
     private void CopyServerFiles(Release latest)
     {
-        var serverDirPath = Path.Combine(MTPPath, "Server");
+        var serverDirPath = Path.Combine(ServerPath, "Server");
         Directory.CreateDirectory(serverDirPath);
         var zipPath = Path.Combine(serverDirPath, "Server.Zip");
         var asset = latest.Assets.FirstOrDefault(asset => asset.Name == "Mul-Ty-Player.Server.zip");
@@ -284,9 +281,9 @@ public class InstallViewModel
         SettingsHandler.Settings.UpdateClient = InstallClient;
         SettingsHandler.Settings.UpdateServer = InstallServer;
         SettingsHandler.Settings.UpdateRKV = InstallGameFiles;
-        SettingsHandler.Settings.ClientDir = ClientPath;
-        SettingsHandler.Settings.ServerDir = ServerPath;
-        SettingsHandler.Settings.GameDir = MTPPath;
+        SettingsHandler.Settings.ClientDir = Path.Combine(ClientPath, "Client");
+        SettingsHandler.Settings.ServerDir = Path.Combine(ServerPath, "Server");
+        SettingsHandler.Settings.GameDir = Path.Combine(MTPPath, "Game");
         SettingsHandler.Settings.FixedMagnets = RemoveMagnetRandom;
         SettingsHandler.Settings.Version = Version;
         SettingsHandler.SaveSettings();

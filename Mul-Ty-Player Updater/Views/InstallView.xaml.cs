@@ -74,6 +74,8 @@ public partial class InstallView : Window
 
     private void ViewModel_InstallCompleted(object? sender, object e)
     {
+        if (DataContext is InstallViewModel vm)
+            vm.InstallCompleted -= ViewModel_InstallCompleted;
         DialogResult = true;
     }
 }

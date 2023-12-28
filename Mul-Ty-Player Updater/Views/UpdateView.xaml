@@ -31,11 +31,13 @@
                        HorizontalAlignment="Right"
                        Margin="0 0 10 0"
                        Visibility="{Binding VersionVisibility}"/>
-            <ProgressBar Style="{StaticResource ProgressBarStyle}"
-                         Value="{Binding Progress}"
-                         Height="20"/>
-            <TextBlock Style="{StaticResource SettingsTextStyle}"
-                       Text="{Binding ProgressMessage}"/>
+            <StackPanel Visibility="{Binding ProgressVisibility}">
+                <ProgressBar Style="{StaticResource ProgressBarStyle}"
+                             Value="{Binding Progress}"
+                             Height="20"/>
+                <TextBlock Style="{StaticResource SettingsTextStyle}"
+                           Text="{Binding ProgressMessage}"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
