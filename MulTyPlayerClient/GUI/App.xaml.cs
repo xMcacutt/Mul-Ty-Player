@@ -8,6 +8,7 @@ public partial class App : Application
 {
     private MainWindow mw;
     public static Colors AppColors;
+    public static Window SettingsWindow;
 
     public App()
     {
@@ -20,7 +21,6 @@ public partial class App : Application
         base.OnStartup(e);
         SettingsHandler.Setup();
         ModelController.InstantiateModels();
-        WindowHandler.InitializeWindows();
         SFXPlayer.Init();
         mw = new MainWindow();
         mw.Show();

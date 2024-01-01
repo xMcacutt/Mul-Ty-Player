@@ -22,11 +22,10 @@ public class LobbyModel
     {
         if (string.IsNullOrWhiteSpace(input))
             return;
-
         if (input.StartsWith('/'))
             Client.HCommand.ParseCommand(input);
         else
-            Logger.Write(input);
+            Client.HCommand.ParseCommand("/msg " + input);
     }
 
     public bool TryGetPlayerInfo(ushort clientID, out PlayerInfo playerInfo)

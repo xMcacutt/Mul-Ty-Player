@@ -111,7 +111,7 @@ internal class Client
 
         Application.Current.Dispatcher.BeginInvoke(
             DispatcherPriority.Background,
-            () => { if(WindowHandler.SettingsWindow is not null) WindowHandler.SettingsWindow.Hide(); });
+            () => { if(App.SettingsWindow is not null) App.SettingsWindow.Hide(); });
     }
 
     private static void ConnectionFailed(object sender, ConnectionFailedEventArgs eventArgs)

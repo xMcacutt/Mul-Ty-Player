@@ -282,6 +282,15 @@
         <Resource Include="Resources\fe_999_icon_koalakid.ico" />
         <Content Include="Resources\RiptideNetworking.dll" />
         <Content Include="Resources\RiptideNetworking.xml" />
+        <None Remove="Collectible Tracking\Resources\Bilby.png" />
+        <None Remove="Collectible Tracking\Resources\Cog.png" />
+        <None Remove="Collectible Tracking\Resources\Frame.png" />
+        <None Remove="Collectible Tracking\Resources\KOMIKAHB.ttf" />
+        <None Remove="Collectible Tracking\Resources\Opal.png" />
+        <None Remove="Collectible Tracking\Resources\Rang.png" />
+        <None Remove="Collectible Tracking\Resources\Tali.png" />
+        <None Remove="Collectible Tracking\Resources\TE.png" />
+        <None Remove="Collectible Tracking\Collectibles.html" />
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="Facepunch.Steamworks.Win32.dll">
@@ -292,13 +301,15 @@
         </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="BenchmarkDotNet" Version="0.13.5"/>
-        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39"/>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
-        <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1"/>
-        <PackageReference Include="PropertyChanged.Fody" Version="4.1.0"/>
-        <PackageReference Include="SharpVectors.Reloaded" Version="1.8.1"/>
-        <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0"/>
+        <PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
+        <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+        <PackageReference Include="SharpVectors.Reloaded" Version="1.8.1" />
+        <PackageReference Include="SQLite" Version="3.13.0" />
+        <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+        <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Properties\Resources.Designer.cs">

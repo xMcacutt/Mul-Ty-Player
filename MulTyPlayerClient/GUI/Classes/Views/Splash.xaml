@@ -16,23 +16,6 @@
             <RowDefinition Height="0.3*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal">
-            <Button x:Name="Setup"
-                    Click="Setup_Click"
-                    FontSize="19"
-                    Width="100"
-                    Margin="3.5 3.5"
-                    Style="{StaticResource SelectButton}"
-                    Content="Setup" />
-            <TextBlock x:Name="SetupText"
-                       Text="← First Time?"
-                       Style="{StaticResource ComicText}"
-                       Foreground="White"
-                       FontSize="20"
-                       Padding="5,0,0,0"
-                       VerticalAlignment="Center" />
-        </StackPanel>
-
         <StackPanel x:Name="TitleStack"
                     Margin="0,30,0,0"
                     Grid.Row="1"

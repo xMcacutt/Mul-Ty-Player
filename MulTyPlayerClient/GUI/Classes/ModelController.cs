@@ -9,7 +9,6 @@ public static class ModelController
     public static KoalaSelectModel KoalaSelect { get; private set; }
     public static LobbyModel Lobby { get; private set; }
     public static SettingsViewModel Settings { get; private set; }
-    public static SetupViewModel Setup { get; private set; }
 
     public static void InstantiateModels()
     {
@@ -19,6 +18,5 @@ public static class ModelController
         Login = new LoginModel();
         KoalaSelect = new KoalaSelectModel();
         Lobby = new LobbyModel();
-        Setup = new SetupViewModel();
     }
 }

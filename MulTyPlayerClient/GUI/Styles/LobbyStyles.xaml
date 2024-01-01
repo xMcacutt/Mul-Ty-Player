@@ -171,7 +171,7 @@
                                    Margin="{TemplateBinding Margin}"
                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                   Foreground="{DynamicResource MidText}"
+                                   Foreground="{Binding AltText, Source={x:Static client:App.AppColors}}"
                                    FontSize="{TemplateBinding FontSize}">
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">

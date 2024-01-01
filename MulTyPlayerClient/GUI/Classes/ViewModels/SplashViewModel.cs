@@ -8,6 +8,8 @@ namespace MulTyPlayerClient.GUI.ViewModels;
 [AddINotifyPropertyChangedInterface]
 public class SplashViewModel : IViewModel
 {
+    private static SplashModel Splash => ModelController.Splash;
+    
     public SplashViewModel()
     {
         Splash.OnStateChange += DisplayMessage;
@@ -17,7 +19,6 @@ public class SplashViewModel : IViewModel
     public Visibility LaunchGameButtonVisibility { get; set; }
     public bool EnableLaunchGameButton { get; set; }
 
-    private static SplashModel Splash => ModelController.Splash;
 
     public void OnEntered()
     {

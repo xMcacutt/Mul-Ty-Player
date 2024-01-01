@@ -7,7 +7,6 @@
     <gui:BoolTextCensorConverter x:Key="BoolTextCensorConverter" />
     <gui:LevelNameConverter x:Key="LevelNameConverter" />
     <gui:BooleanToReadyIconConverter x:Key="BooleanToReadyIconConverter" />
-    <gui:StringsToBooleanConverter x:Key="StringsToBooleanConverter" />
     <gui:KoalaNameToIconConverter x:Key="KoalaNameToIconConverter" />
     <gui:PopupVisibilityToArrowDirectionConverter x:Key="PopupVisibilityToArrowDirectionConverter"/>
 </ResourceDictionary>
