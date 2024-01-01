@@ -1,4 +1,4 @@
-﻿namespace MulTyPlayerClient;
+﻿namespace MulTyPlayer;
 
 public enum MessageID : ushort
 {
@@ -21,5 +21,7 @@ public enum MessageID : ushort
     Ready,
     Countdown,
     StopWatch,
-    GiftHost
+    GiftHost,
+    ForceLevel,
+    SetLevelLock
 }

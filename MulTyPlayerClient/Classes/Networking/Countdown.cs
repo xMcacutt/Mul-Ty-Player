@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MulTyPlayer;
 using MulTyPlayerClient.GUI.Models;
 using Riptide;
 

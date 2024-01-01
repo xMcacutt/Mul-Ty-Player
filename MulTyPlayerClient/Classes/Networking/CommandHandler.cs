@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
+using MulTyPlayer;
 using MulTyPlayerClient.GUI.Models;
 using Riptide;
 
@@ -20,7 +21,8 @@ internal class CommandHandler
             "resetsync",
             "kick",
             "password",
-            "clist"
+            "clist",
+            "levellock"
         };
     }
 
@@ -128,6 +130,15 @@ internal class CommandHandler
         Application.Current.Dispatcher.BeginInvoke(
             DispatcherPriority.Background,
             new Action(ModelController.Lobby.UpdateReadyStatus));
+    }
+
+
+    [MessageHandler((ushort)MessageID.SetLevelLock)]
+    public static void SetLevelLock(Message message)
+    {
+        SettingsHandler.DoLevelLock = message.GetBool();
+        var result = SettingsHandler.DoLevelLock ? "Level lock has been activated" : "Level lock has been disabled";
+        Logger.Write("Level lock ");
     }
 
     public void SetReady()

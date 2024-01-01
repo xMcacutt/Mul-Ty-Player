@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;

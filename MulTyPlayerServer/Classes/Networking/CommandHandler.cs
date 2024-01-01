@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using MulTyPlayer;
 using Riptide;
 
 namespace MulTyPlayerServer;
@@ -73,11 +74,25 @@ internal class CommandHandler
                 Server.RestartServer();
                 return null;
             }
+            case "levellock":
+            {
+                if (args.Length == 0 || bool.Parse(args[0])) return "Usage: /levellock [true/false]";
+                SettingsHandler.DoLevelLock = bool.Parse(args[0]);
+                SetLevelLock(SettingsHandler.DoLevelLock);
+                return SettingsHandler.DoLevelLock ? "Level lock is now active." : "Level lock has been disabled.";
+            }
             default:
             {
                 return $"/{command} is not a command. Try /help for a list of commands";
             }
         }
+    }
+
+    private static void SetLevelLock(bool value)
+    {
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.SetLevelLock);
+        message.AddBool(value);
+        Server._Server.SendToAll(message);
     }
 
     private static void ResetSync()

@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using MulTyPlayer;
 using MulTyPlayerClient.GUI.Models;
 using Riptide;
 

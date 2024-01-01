@@ -1,4 +1,5 @@
 ﻿using System;
+using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.GUI.Models;
 using Riptide;

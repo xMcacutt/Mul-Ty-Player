@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MulTyPlayer;
 using Riptide;
 
 namespace MulTyPlayerClient;
@@ -135,7 +136,11 @@ internal class SyncHandler
         if (SettingsHandler.DoCogSyncing) HCog.CheckObserverChanged();
         if (SettingsHandler.DoBilbySyncing) HBilby.CheckObserverChanged();
         if (SettingsHandler.DoRangSyncing) HAttribute.CheckObserverChanged();
-        if (SettingsHandler.DoPortalSyncing) HPortal.CheckObserverChanged();
+        if (SettingsHandler.DoLevelLock)
+        {
+
+        }
+        else if (SettingsHandler.DoPortalSyncing) HPortal.CheckObserverChanged();
         if (SettingsHandler.DoCliffsSyncing) HCliffs.CheckObserverChanged();
         if (SettingsHandler.DoFrameSyncing) HFrame.CheckObserverChanged();
         if (SettingsHandler.DoRainbowScaleSyncing && Client.HLevel.CurrentLevelId == Levels.RainbowCliffs.Id)

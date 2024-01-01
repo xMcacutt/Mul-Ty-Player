@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using MulTyPlayer;
 using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
 using Newtonsoft.Json;
@@ -20,6 +21,8 @@ internal static class SettingsHandler
     public static bool DoCliffsSyncing;
     public static bool DoRainbowScaleSyncing;
     public static bool DoFrameSyncing;
+
+    public static bool DoLevelLock;
 
     public static Dictionary<string, bool> SyncSettings;
     public static Settings Settings { get; private set; }
@@ -83,6 +86,11 @@ internal static class SettingsHandler
         {
             DoFrameSyncing = b[8];
             SyncSettings["Frame"] = DoFrameSyncing;
+        }
+
+        if (b.Length > 9)
+        {
+            DoLevelLock = b[9];
         }
     }
 
