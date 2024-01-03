@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MulTyPlayer;
+using MulTyPlayerClient.LevelLock;
 using Riptide;
 
 namespace MulTyPlayerClient;
@@ -16,6 +17,7 @@ internal class SyncHandler
     public static RCHandler HCliffs;
     public static RSHandler HRainbowScale;
     public static FrameHandler HFrame;
+    public LevelLockHandler HLevelLock;
 
     public static int SaveDataBaseAddress;
     public Dictionary<string, SyncObjectHandler> SyncObjects;
@@ -35,6 +37,7 @@ internal class SyncHandler
             { "RainbowScale", HRainbowScale = new RSHandler() },
             { "Frame", HFrame = new FrameHandler() }
         };
+        HLevelLock = new LevelLockHandler();
     }
 
     public void SetMemAddrs()
@@ -131,15 +134,11 @@ internal class SyncHandler
             HOpal.CheckObserverChanged();
             HCrate.CheckObserverChanged();
         }
-
         if (SettingsHandler.DoTESyncing) HThEg.CheckObserverChanged();
         if (SettingsHandler.DoCogSyncing) HCog.CheckObserverChanged();
         if (SettingsHandler.DoBilbySyncing) HBilby.CheckObserverChanged();
         if (SettingsHandler.DoRangSyncing) HAttribute.CheckObserverChanged();
-        if (SettingsHandler.DoLevelLock)
-        {
-
-        }
+        if (SettingsHandler.DoLevelLock) HLevelLock.CheckEntry();
         else if (SettingsHandler.DoPortalSyncing) HPortal.CheckObserverChanged();
         if (SettingsHandler.DoCliffsSyncing) HCliffs.CheckObserverChanged();
         if (SettingsHandler.DoFrameSyncing) HFrame.CheckObserverChanged();

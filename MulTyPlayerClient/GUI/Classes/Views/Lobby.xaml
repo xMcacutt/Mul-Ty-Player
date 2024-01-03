@@ -38,7 +38,7 @@
                    Height="30">
                 <Border VerticalAlignment="Center" BorderThickness="0" Background="{Binding MainBack, Source={x:Static client:App.AppColors}}">
                     <Button Style="{StaticResource LobbyButton}"
-                            Click="GiveHost_OnClick"
+                            PreviewMouseLeftButtonDown="GiveHost_OnClick"
                             Width="Auto"
                             Margin="0"
                             Height="35">

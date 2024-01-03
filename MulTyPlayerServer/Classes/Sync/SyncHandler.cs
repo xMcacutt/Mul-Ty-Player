@@ -36,6 +36,8 @@ internal class SyncHandler
             { "RainbowScale", SRainbowScale = new RainbowScaleSyncer() },
             { "Frame", SFrame = new FrameSyncer() }
         };
+        LevelLockHandler.ActiveLevel = 0;
+        LevelLockHandler.CompletedLevels = new List<int>();
     }
 
     public static void SendResetSyncMessage()

@@ -22,6 +22,8 @@ public enum MessageID : ushort
     Countdown,
     StopWatch,
     GiftHost,
-    ForceLevel,
-    SetLevelLock
+    SetLevelLock,
+    LL_LevelEntered,
+    LL_LevelCompleted,
+    LL_Sync
 }

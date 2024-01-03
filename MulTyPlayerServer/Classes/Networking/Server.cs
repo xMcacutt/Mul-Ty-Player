@@ -3,6 +3,7 @@ using System.Threading;
 using Riptide;
 using Riptide.Utils;
 using MulTyPlayer;
+using MulTyPlayerServer.Classes.Sync;
 
 namespace MulTyPlayerServer;
 
@@ -37,6 +38,9 @@ internal class Server
         {
             _Server.Update();
             if (PlayerHandler.Players.Count != 0)
+            {
+                if (SettingsHandler.DoLevelLock)
+                    LevelLockHandler.CheckLevelComplete();
                 foreach (var player in PlayerHandler.Players.Values)
                 {
                     if (player.CurrentLevel != player.PreviousLevel)
@@ -48,7 +52,7 @@ internal class Server
                     SendCoordinatesToAll(player.ClientID, player.Koala.KoalaName, player.CurrentLevel,
                         player.Coordinates, player.OnMenu);
                 }
-
+            }
             Thread.Sleep(MS_PER_TICK);
         }
 

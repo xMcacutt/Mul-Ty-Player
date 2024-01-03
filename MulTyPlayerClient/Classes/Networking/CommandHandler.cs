@@ -138,7 +138,7 @@ internal class CommandHandler
     {
         SettingsHandler.DoLevelLock = message.GetBool();
         var result = SettingsHandler.DoLevelLock ? "Level lock has been activated" : "Level lock has been disabled";
-        Logger.Write("Level lock ");
+        Logger.Write(result);
     }
 
     public void SetReady()

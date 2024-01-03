@@ -78,7 +78,7 @@ public partial class Lobby : UserControl
     {
         // Check if the mouse is over the button or popup
         return element != null &&
-               element == GiveHostPopup;
+               (element == GiveHostPopup);
     }
 
     private void UIElement_OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)

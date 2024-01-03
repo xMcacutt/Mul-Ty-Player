@@ -76,9 +76,19 @@ internal class CommandHandler
             }
             case "levellock":
             {
-                if (args.Length == 0 || bool.Parse(args[0])) return "Usage: /levellock [true/false]";
-                SettingsHandler.DoLevelLock = bool.Parse(args[0]);
-                SetLevelLock(SettingsHandler.DoLevelLock);
+                if (!SettingsHandler.SyncSettings["TE"] || !SettingsHandler.SyncSettings["Cog"] || !SettingsHandler.SyncSettings["Attribute"])
+                    return "Error: Server not set up for Level Lock mode. ThunderEgg, Cog, and Attribute syncing must be enabled.";
+                
+                if (args.Length == 0) return "Usage: /levellock [true/false]";
+                
+                if (string.Equals(args[0], "true", StringComparison.CurrentCultureIgnoreCase))
+                    SettingsHandler.DoLevelLock = true;
+                else if (string.Equals(args[0], "false", StringComparison.CurrentCultureIgnoreCase))
+                    SettingsHandler.DoLevelLock = false;
+                else 
+                    return "Usage: /levellock [true/false]";
+                
+                SetLevelLock(SettingsHandler.DoLevelLock, PlayerHandler.Players.FirstOrDefault(x => x.Value.IsHost).Key);
                 return SettingsHandler.DoLevelLock ? "Level lock is now active." : "Level lock has been disabled.";
             }
             default:
@@ -88,11 +98,11 @@ internal class CommandHandler
         }
     }
 
-    private static void SetLevelLock(bool value)
+    private static void SetLevelLock(bool value, ushort from)
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.SetLevelLock);
         message.AddBool(value);
-        Server._Server.SendToAll(message);
+        Server._Server.SendToAll(message, from);
     }
 
     private static void ResetSync()
