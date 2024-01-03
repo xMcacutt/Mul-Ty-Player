@@ -152,14 +152,6 @@ internal class CommandHandler
             new Action(ModelController.Lobby.UpdateReadyStatus));
     }
 
-    public void SetReady(ushort client)
-    {
-        PlayerHandler.Players[client].IsReady = !PlayerHandler.Players[client].IsReady;
-        Application.Current.Dispatcher.BeginInvoke(
-            DispatcherPriority.Background,
-            new Action(ModelController.Lobby.UpdateReadyStatus));
-    }
-
     [MessageHandler((ushort)MessageID.ReqHost)]
     public static void RequestHostResponse(Message message)
     {

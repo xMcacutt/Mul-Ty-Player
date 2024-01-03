@@ -68,13 +68,13 @@ public class LevelLockHandler
     {
         if (Client.HLevel.CurrentLevelId != 0)
             return;
-        foreach (var portalIndex in Portals)
+        foreach (var level in Portals)
         {
-            ProcessHandler.TryRead(Client.HSync.SyncObjects["Portal"].LiveObjectAddress + 0x9C + 0xB0 * portalIndex,
+            ProcessHandler.TryRead(Client.HSync.SyncObjects["Portal"].LiveObjectAddress + 0x9C + 0xB0 * LivePortalOrder[level],
                 out byte result, false, "LevelLockHandler: SetPortalStates() 1");
-            if ((PortalStates[portalIndex] && result > 0) || (!PortalStates[portalIndex] && result == 0)) return;
-            ProcessHandler.WriteData(Client.HSync.SyncObjects["Portal"].LiveObjectAddress + 0x9C + 0xB0 * portalIndex,
-                BitConverter.GetBytes(PortalStates[portalIndex]), "LevelLockHandler: SetPortalStates() 2");
+            if ((PortalStates[level] && result > 0) || (!PortalStates[level] && result == 0)) return;
+            ProcessHandler.WriteData(Client.HSync.SyncObjects["Portal"].LiveObjectAddress + 0x9C + 0xB0 * LivePortalOrder[level],
+                BitConverter.GetBytes(PortalStates[level]), "LevelLockHandler: SetPortalStates() 2");
         }
     }
 
@@ -84,11 +84,9 @@ public class LevelLockHandler
         foreach (var level in Portals)
         {
             if (OldLevelsEntredCount[level] > 0) continue;
-            
             var address = SyncHandler.SaveDataBaseAddress + 0x70 * level;
-            ProcessHandler.TryRead(address, out int count, false, "LevelLockHandler: CheckEntry()");
+            ProcessHandler.TryRead(address, out byte count, false, "LevelLockHandler: CheckEntry()");
             CurrentLevelsEntredCount[level] = count;
-            
             if(OldLevelsEntredCount[level] == 0 && CurrentLevelsEntredCount[level] > 0)
                 InformEntry(level);
             

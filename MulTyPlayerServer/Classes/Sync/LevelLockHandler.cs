@@ -18,7 +18,7 @@ public static class LevelLockHandler
     public static void ClientEnteredLevel(ushort fromClientId, Message message)
     {
         var level = message.GetInt();
-        if (CompletedLevels.Contains(level) || !CompletedLevels.Contains(ActiveLevel)) 
+        if (CompletedLevels.Contains(level) || (!CompletedLevels.Contains(ActiveLevel) && ActiveLevel != 0)) 
             return;
         ActiveLevel = level;
         InformEntry(level);
