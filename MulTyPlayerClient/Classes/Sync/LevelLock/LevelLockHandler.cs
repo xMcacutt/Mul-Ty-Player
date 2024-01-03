@@ -19,6 +19,9 @@ public class LevelLockHandler
     public LevelLockHandler()
     {
         PortalStates = new Dictionary<int, bool>();
+        CurrentLevelsEntredCount = new Dictionary<int, int>();
+        OldLevelsEntredCount = new Dictionary<int, int>();
+        InvisPortals = new List<int>();
         foreach (var portal in Portals)
         {
             CurrentLevelsEntredCount.Add(portal, 0);
