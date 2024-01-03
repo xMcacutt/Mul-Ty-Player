@@ -40,18 +40,23 @@ public static class LevelLockHandler
         Server._Server.SendToAll(message);
     }
 
-    public static void CheckLevelComplete()
+    public static void UpdateCheck()
     {
         if (CompletedLevels.Contains(ActiveLevel) || ActiveLevel == 0) return;
-        var result = true;
-        if (NormalCompletionLevels.Contains(ActiveLevel))
-            result = SyncHandler.SThEg.GlobalObjectCounts[ActiveLevel] == 8 && SyncHandler.SCog.GlobalObjectCounts[ActiveLevel] == 10;
-        else if (BossLevels.Contains(ActiveLevel))
-            result = SyncHandler.SAttribute.GlobalObjectSaveData[16 + Array.IndexOf(BossLevels, ActiveLevel)] == 1;
-        
-        if (!result) return;
+        if (!CheckLevelComplete()) return;
         CompletedLevels.Add(ActiveLevel);
         var message = Message.Create(MessageSendMode.Reliable, MessageID.LL_LevelCompleted);
         Server._Server.SendToAll(message);
+    }
+
+    private static bool CheckLevelComplete()
+    {
+        if (NormalCompletionLevels.Contains(ActiveLevel))
+        {
+            return SyncHandler.SThEg.GlobalObjectCounts[ActiveLevel] == 8 && SyncHandler.SCog.GlobalObjectCounts[ActiveLevel] == 10;
+        }
+        if (BossLevels.Contains(ActiveLevel))
+            return SyncHandler.SAttribute.GlobalObjectSaveData[16 + Array.IndexOf(BossLevels, ActiveLevel)] == 1;
+        return true;
     }
 }

@@ -73,6 +73,7 @@ public class LevelLockHandler
             ProcessHandler.TryRead(Client.HSync.SyncObjects["Portal"].LiveObjectAddress + 0x9C + 0xB0 * LivePortalOrder[level],
                 out byte result, false, "LevelLockHandler: SetPortalStates() 1");
             if ((PortalStates[level] && result > 0) || (!PortalStates[level] && result == 0)) return;
+            Console.WriteLine("yes");
             ProcessHandler.WriteData(Client.HSync.SyncObjects["Portal"].LiveObjectAddress + 0x9C + 0xB0 * LivePortalOrder[level],
                 BitConverter.GetBytes(PortalStates[level]), "LevelLockHandler: SetPortalStates() 2");
         }
@@ -89,7 +90,6 @@ public class LevelLockHandler
             CurrentLevelsEntredCount[level] = count;
             if(OldLevelsEntredCount[level] == 0 && CurrentLevelsEntredCount[level] > 0)
                 InformEntry(level);
-            
             OldLevelsEntredCount[level] = CurrentLevelsEntredCount[level];
         }
     }

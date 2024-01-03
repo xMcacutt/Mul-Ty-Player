@@ -40,7 +40,7 @@ internal class Server
             if (PlayerHandler.Players.Count != 0)
             {
                 if (SettingsHandler.DoLevelLock)
-                    LevelLockHandler.CheckLevelComplete();
+                    LevelLockHandler.UpdateCheck();
                 foreach (var player in PlayerHandler.Players.Values)
                 {
                     if (player.CurrentLevel != player.PreviousLevel)

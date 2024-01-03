@@ -87,6 +87,7 @@ internal class Client
         ModelController.Login.ConnectionAttemptSuccessful = true;
         ModelController.Login.ConnectionAttemptCompleted = true;
         IsConnected = true;
+        HSync.HLevelLock.RequestData();
         if (HGameState.IsAtMainMenuOrLoading()) return;
         HLevel.DoLevelSetup();
     }
