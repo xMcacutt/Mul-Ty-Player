@@ -19,6 +19,7 @@ internal class SyncHandler
     public static RCSyncer SCliffs;
     public static RainbowScaleSyncer SRainbowScale;
     public static FrameSyncer SFrame;
+    public static InvisiCrateSyncer SInvisiCrate;
     public Dictionary<string, Syncer> Syncers;
 
     public SyncHandler()
@@ -34,7 +35,8 @@ internal class SyncHandler
             { "Crate", SCrate = new CrateSyncer() },
             { "RC", SCliffs = new RCSyncer() },
             { "RainbowScale", SRainbowScale = new RainbowScaleSyncer() },
-            { "Frame", SFrame = new FrameSyncer() }
+            { "Frame", SFrame = new FrameSyncer() },
+            { "InvisiCrate", SInvisiCrate = new InvisiCrateSyncer() }
         };
         LevelLockHandler.ActiveLevel = 0;
         LevelLockHandler.CompletedLevels = new List<int>();

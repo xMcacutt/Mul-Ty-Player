@@ -17,6 +17,7 @@ internal class SyncHandler
     public static RCHandler HCliffs;
     public static RSHandler HRainbowScale;
     public static FrameHandler HFrame;
+    public static InvisiCrateHandler HInvisiCrate;
     public LevelLockHandler HLevelLock;
 
     public static int SaveDataBaseAddress;
@@ -35,7 +36,8 @@ internal class SyncHandler
             { "Crate", HCrate = new CrateHandler() },
             { "RC", HCliffs = new RCHandler() },
             { "RainbowScale", HRainbowScale = new RSHandler() },
-            { "Frame", HFrame = new FrameHandler() }
+            { "Frame", HFrame = new FrameHandler() },
+            { "InvisiCrate", HInvisiCrate = new InvisiCrateHandler() }
         };
         HLevelLock = new LevelLockHandler();
     }
@@ -45,7 +47,10 @@ internal class SyncHandler
         SaveDataBaseAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0x10 });
         HAttribute.SetMemAddrs();
         if (Levels.GetLevelData(Client.HLevel.CurrentLevelId).FrameCount != 0)
+        {
             HFrame.SetMemAddrs();
+            HInvisiCrate.SetMemAddrs();
+        }
         if (Client.HLevel.CurrentLevelId == Levels.RainbowCliffs.Id)
         {
             HCliffs.SetMemAddrs();
@@ -141,7 +146,11 @@ internal class SyncHandler
         if (SettingsHandler.DoLevelLock) HLevelLock.CheckEntry();
         else if (SettingsHandler.DoPortalSyncing) HPortal.CheckObserverChanged();
         if (SettingsHandler.DoCliffsSyncing) HCliffs.CheckObserverChanged();
-        if (SettingsHandler.DoFrameSyncing) HFrame.CheckObserverChanged();
+        if (SettingsHandler.DoFrameSyncing && (Levels.GetLevelData(Client.HLevel.CurrentLevelId).IsMainStage || Client.HLevel.CurrentLevelId == 0))
+        {
+            HFrame.CheckObserverChanged();
+            HInvisiCrate.CheckObserverChanged();
+        }
         if (SettingsHandler.DoRainbowScaleSyncing && Client.HLevel.CurrentLevelId == Levels.RainbowCliffs.Id)
             HRainbowScale.CheckObserverChanged();
     }
