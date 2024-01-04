@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -27,6 +28,7 @@ public partial class KoalaSelectEntry : UserControl
             SelectedAnimation.Position = TimeSpan.Zero;
             SelectedAnimation.Visibility = Visibility.Visible;
             SelectedAnimation.Play();
+            Thread.Sleep(200);
             vm.OnClicked();
         }
     }

@@ -31,7 +31,6 @@
                            Visibility="{Binding LightPortraitVisibility}"
                            MouseUp="KoalaEntry_OnClicked" />
 
-
                     <MediaElement Source="{Binding SelectedSource}"
                                   LoadedBehavior="Manual"
                                   x:Name="SelectedAnimation"
