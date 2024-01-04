@@ -47,7 +47,8 @@ internal static class SettingsHandler
             { "RC", false },
             { "Attribute", false },
             { "RainbowScale", false },
-            { "Frame", false }
+            { "Frame", false },
+            { "InvisiCrate", false }
         };
     }
 
@@ -86,6 +87,7 @@ internal static class SettingsHandler
         {
             DoFrameSyncing = b[8];
             SyncSettings["Frame"] = DoFrameSyncing;
+            SyncSettings["InvisiCrate"] = DoFrameSyncing;
         }
 
         if (b.Length > 9)

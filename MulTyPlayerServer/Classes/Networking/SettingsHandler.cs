@@ -39,7 +39,8 @@ internal class SettingsHandler
             { "Portal", Settings.DoSyncPortals },
             { "RC", Settings.DoSyncCliffs },
             { "RainbowScale", Settings.DoSyncScale },
-            { "Frame", Settings.DoSyncFrame }
+            { "Frame", Settings.DoSyncFrame },
+            { "InvisiCrate", Settings.DoSyncFrame }
         };
     }
 
