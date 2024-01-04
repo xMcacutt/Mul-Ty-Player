@@ -143,6 +143,6 @@ internal class ProcessHandler
     {
         TryRead(addr, out T test, false, indicator);
         if (test.Equals(value)) return;
-        Logger.Write(indicator);
+        Logger.Write(indicator + " " + test);
     }
 }

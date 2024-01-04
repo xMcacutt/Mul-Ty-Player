@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MulTyPlayerClient;
@@ -28,7 +29,7 @@ internal class InvisiCrateHandler : SyncObjectHandler
             { 13, Enumerable.Repeat((byte)1, 29).ToArray() },
             { 14, Enumerable.Repeat((byte)1, 18).ToArray() }
         };
-        LiveSync = new LiveCrateSyncer(this);
+        LiveSync = new LiveInvisiCrateSyncer(this);
         SetSyncClasses(LiveSync);
     }
 
@@ -63,7 +64,7 @@ internal class InvisiCrateHandler : SyncObjectHandler
     {
         CounterAddress = PointerCalculations.GetPointerAddress(0x28A8E8, new[] { 0x390 });
         LiveObjectAddress = PointerCalculations.GetPointerAddress(0x254DB0, new[] { 0x0 });
-        ProcessHandler.CheckAddress(LiveObjectAddress, 0x98B0, "Crate base address check");
+        ProcessHandler.CheckAddress(LiveObjectAddress, (ushort)0xB098, "Crate base address check");
     }
 
     public override void CheckObserverChanged()
@@ -80,6 +81,7 @@ internal class InvisiCrateHandler : SyncObjectHandler
         CurrentObjectData = LiveSync.ReadData();
         var crateCount = Levels.GetLevelData(Client.HLevel.CurrentLevelId).FrameCount;
         for (var iLive = 0; iLive < crateCount; iLive++)
+        {
             if (CheckObserverCondition(PreviousObjectData[iLive], CurrentObjectData[iLive]))
             {
                 PreviousObjectData[iLive] = CurrentObjectData[iLive] = WriteState;
@@ -89,5 +91,6 @@ internal class InvisiCrateHandler : SyncObjectHandler
                     Client.HSync.SendDataToServer(iLive, iLive, Client.HLevel.CurrentLevelId, Name);
                 }
             }
+        }
     }
 }
