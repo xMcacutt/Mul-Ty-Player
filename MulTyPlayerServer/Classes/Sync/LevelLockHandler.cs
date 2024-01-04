@@ -18,8 +18,10 @@ public static class LevelLockHandler
     public static void ClientEnteredLevel(ushort fromClientId, Message message)
     {
         var level = message.GetInt();
+        //Console.WriteLine("Player entered level " + level);
         if (CompletedLevels.Contains(level) || (!CompletedLevels.Contains(ActiveLevel) && ActiveLevel != 0)) 
             return;
+        //Console.WriteLine("Active level changed to " + level);
         ActiveLevel = level;
         InformEntry(level);
     }
@@ -44,6 +46,7 @@ public static class LevelLockHandler
     {
         if (CompletedLevels.Contains(ActiveLevel) || ActiveLevel == 0) return;
         if (!CheckLevelComplete()) return;
+        //Console.WriteLine("Level complete " + ActiveLevel);
         CompletedLevels.Add(ActiveLevel);
         var message = Message.Create(MessageSendMode.Reliable, MessageID.LL_LevelCompleted);
         Server._Server.SendToAll(message);

@@ -88,8 +88,8 @@ internal class CommandHandler
                 else 
                     return "Usage: /levellock [true/false]";
                 
-                SetLevelLock(SettingsHandler.DoLevelLock, PlayerHandler.Players.FirstOrDefault(x => x.Value.IsHost).Key);
-                return SettingsHandler.DoLevelLock ? "Level lock is now active." : "Level lock has been disabled.";
+                SetLevelLock(SettingsHandler.DoLevelLock);
+                return "";
             }
             default:
             {
@@ -98,11 +98,11 @@ internal class CommandHandler
         }
     }
 
-    private static void SetLevelLock(bool value, ushort from)
+    private static void SetLevelLock(bool value)
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.SetLevelLock);
         message.AddBool(value);
-        Server._Server.SendToAll(message, from);
+        Server._Server.SendToAll(message);
     }
 
     private static void ResetSync()
