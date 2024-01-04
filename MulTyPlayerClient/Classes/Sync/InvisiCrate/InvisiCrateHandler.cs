@@ -42,7 +42,7 @@ internal class InvisiCrateHandler : SyncObjectHandler
 
     public override void Sync(int level, byte[] liveData, byte[] saveData)
     {
-        var crateCount = Levels.GetLevelData(level).CrateCount;
+        var crateCount = Levels.GetLevelData(level).FrameCount;
         for (var i = 0; i < crateCount; i++)
             if (liveData[i] == 0 && GlobalObjectData[level][i] == 1)
                 GlobalObjectData[level][i] = 0;
