@@ -86,10 +86,6 @@
                           Style="{StaticResource SettingsCheckBoxStyle}"
                           Content="Attempt Reconnect"/>
                 
-                <CheckBox IsChecked="{Binding DoCollectibleTracking}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Track Collectibles"/>
-                
                 <CheckBox IsChecked="{Binding DoGetSteamName}"
                           Style="{StaticResource SettingsCheckBoxStyle}"
                           Content="Use Steam Name"
@@ -153,6 +149,7 @@
                        Style="{StaticResource SettingsLabelStyle}"/>
                 <ComboBox ItemsSource="{Binding InterpolationModes}"
                           SelectedItem="{Binding InterpolationMode}"
+                          IsEnabled="False"
                           Style="{StaticResource SettingsComboBoxStyle}"/>
                 
                 <CheckBox IsChecked="{Binding DoKoalaCollision}"

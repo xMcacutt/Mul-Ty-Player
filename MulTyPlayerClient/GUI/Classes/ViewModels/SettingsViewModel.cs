@@ -47,7 +47,6 @@ public class SettingsViewModel
         
         AutoRestartTy = SettingsHandler.Settings.AutoRestartTyOnCrash;
         Theme = SettingsHandler.Settings.Theme;
-        DoCollectibleTracking = SettingsHandler.Settings.DoCollectibleTracking;
         DoGetSteamName = SettingsHandler.Settings.DoGetSteamName;
         DefaultName = SettingsHandler.Settings.DefaultName;
         AttemptReconnect = SettingsHandler.Settings.AttemptReconnect;
@@ -65,7 +64,6 @@ public class SettingsViewModel
     {
         SettingsHandler.Settings.AutoRestartTyOnCrash = AutoRestartTy;
         SettingsHandler.Settings.Theme = Theme;
-        SettingsHandler.Settings.DoCollectibleTracking = DoCollectibleTracking;
         SettingsHandler.Settings.DoGetSteamName = DoGetSteamName;
         SettingsHandler.Settings.DefaultName = DefaultName;
         SettingsHandler.Settings.AttemptReconnect = AttemptReconnect;
