@@ -17,6 +17,7 @@ public class LevelLockHandler
     public Dictionary<int, int> CurrentLevelsEntredCount;
     public Dictionary<int, int> OldLevelsEntredCount;
     public List<int> InvisPortals;
+    public bool _bossPortalsActive;
     
     public LevelLockHandler()
     {
@@ -70,6 +71,7 @@ public class LevelLockHandler
             ProcessHandler.WriteData(triggerAddress + BossTriggerIndices[iterator] * 0xB8 + 0x8C, new byte[] { 0x1 }, "LevelLockHandler: Enable() 1");
             iterator++;
         }
+        _bossPortalsActive = true;
     }
     
     public void DisableAllPortals(int except)
@@ -77,9 +79,9 @@ public class LevelLockHandler
         //Console.WriteLine("Disabled all except " + except);
         foreach (var key in PortalStates.Keys.ToList())
         {
-            PortalStates[key] = key == except;
-            Logger.Write(PortalStates[key].ToString());
+            PortalStates[key] = key == except; 
         }
+        _bossPortalsActive = false;
     }
 
     public void SetPortalStatesInGame()
@@ -100,7 +102,7 @@ public class LevelLockHandler
         {
             ProcessHandler.TryRead(triggerAddress + BossTriggerIndices[iterator] * 0xB8 + 0x8C, out byte result, false, "LevelLockHandler: SetPortalStates() 3");
             if ((result == 1 && PortalStates[level]) || result == 0 && !PortalStates[level]) continue;
-            var b = PortalStates[level] ? (byte)0x1 : (byte)0x0;
+            var b = PortalStates[level] || _bossPortalsActive ? (byte)0x1 : (byte)0x0;
             ProcessHandler.WriteData(triggerAddress + BossTriggerIndices[iterator] * 0xB8 + 0x8C, new byte[] { b }, "LevelLockHandler: SetPortalStates() 4");
             iterator++;
         }

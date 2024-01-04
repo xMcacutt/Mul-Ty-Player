@@ -11,7 +11,7 @@ public static class LevelLockHandler
 {
     public static int ActiveLevel { get; set; }
     private static readonly int[] NormalCompletionLevels = new[] { 4, 5, 6, 8, 9, 10, 12, 13, 14 };
-    private static readonly int[] BossLevels = new[] { 7, 15, 19, 20, 23 };
+    private static readonly int[] BossLevels = new[] { 7, 19, 15, 20, 23 };
     public static List<int> CompletedLevels { get; set; }
 
     [MessageHandler((ushort)MessageID.LL_LevelEntered)]
@@ -55,11 +55,12 @@ public static class LevelLockHandler
     private static bool CheckLevelComplete()
     {
         if (NormalCompletionLevels.Contains(ActiveLevel))
-        {
             return SyncHandler.SThEg.GlobalObjectCounts[ActiveLevel] == 8 && SyncHandler.SCog.GlobalObjectCounts[ActiveLevel] == 10;
-        }
         if (BossLevels.Contains(ActiveLevel))
-            return SyncHandler.SAttribute.GlobalObjectSaveData[16 + Array.IndexOf(BossLevels, ActiveLevel)] == 1;
+        {
+            Console.WriteLine(SyncHandler.SAttribute.GlobalObjectSaveData[16 + Array.IndexOf(BossLevels, ActiveLevel)]);
+            return SyncHandler.SAttribute.GlobalObjectSaveData[16 + Array.IndexOf(BossLevels, ActiveLevel)] == 1;   
+        }
         return true;
     }
 }
