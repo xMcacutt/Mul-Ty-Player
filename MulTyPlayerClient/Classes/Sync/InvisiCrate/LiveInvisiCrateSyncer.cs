@@ -7,7 +7,7 @@ internal class LiveInvisiCrateSyncer : LiveDataSyncer
     public LiveInvisiCrateSyncer(SyncObjectHandler hInvisiCrate)
     {
         HSyncObject = hInvisiCrate;
-        StateOffset = 0x124;
+        StateOffset = 0x114;
         ObjectLength = 0x1DC;
     }
 
@@ -35,6 +35,7 @@ internal class LiveInvisiCrateSyncer : LiveDataSyncer
         var crateCount = Levels.GetLevelData(Client.HLevel.CurrentLevelId).FrameCount;
         var currentData = new byte[crateCount];
         var address = HSyncObject.LiveObjectAddress;
+        Console.WriteLine(address);
         for (var i = 0; i < currentData.Length; i++)
             ProcessHandler.TryRead(address + StateOffset + ObjectLength * i, out currentData[i], false,
                 "LiveCrateSyncer::ReadData()");

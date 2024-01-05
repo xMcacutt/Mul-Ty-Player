@@ -84,9 +84,11 @@ internal class InvisiCrateHandler : SyncObjectHandler
         {
             if (CheckObserverCondition(PreviousObjectData[iLive], CurrentObjectData[iLive]))
             {
+                Console.WriteLine($"2");
                 PreviousObjectData[iLive] = CurrentObjectData[iLive] = WriteState;
                 if (GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] != CheckState)
                 {
+                    Console.WriteLine("3");
                     GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] = (byte)CheckState;
                     Client.HSync.SendDataToServer(iLive, iLive, Client.HLevel.CurrentLevelId, Name);
                 }
