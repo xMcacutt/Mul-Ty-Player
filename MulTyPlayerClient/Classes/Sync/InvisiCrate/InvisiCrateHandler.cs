@@ -9,8 +9,8 @@ internal class InvisiCrateHandler : SyncObjectHandler
     public InvisiCrateHandler()
     {
         Name = "InvisiCrate";
-        WriteState = 0;
-        CheckState = 0;
+        WriteState = 2;
+        CheckState = 2;
         CounterAddress = PointerCalculations.GetPointerAddress(0x0028A8E8, new[] { 0x390 });
         CounterAddressStatic = false;
         CounterByteLength = 4;
@@ -57,7 +57,7 @@ internal class InvisiCrateHandler : SyncObjectHandler
 
     public override bool CheckObserverCondition(byte previousState, byte currentState)
     {
-        return previousState == 1 && currentState == 0;
+        return previousState == 1 && currentState == 2;
     }
 
     public override void SetMemAddrs()
@@ -69,7 +69,7 @@ internal class InvisiCrateHandler : SyncObjectHandler
 
     public override void CheckObserverChanged()
     {
-        if (!Levels.GetLevelData(Client.HLevel.CurrentLevelId).IsMainStage && Client.HLevel.CurrentLevelId != 0)
+        if (Levels.GetLevelData(Client.HLevel.CurrentLevelId).FrameCount == 0)
             return;
 
         ObserverState = ReadObserver(CounterAddress, CounterByteLength);

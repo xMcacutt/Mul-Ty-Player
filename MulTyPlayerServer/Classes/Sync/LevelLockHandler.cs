@@ -57,10 +57,7 @@ public static class LevelLockHandler
         if (NormalCompletionLevels.Contains(ActiveLevel))
             return SyncHandler.SThEg.GlobalObjectCounts[ActiveLevel] == 8 && SyncHandler.SCog.GlobalObjectCounts[ActiveLevel] == 10;
         if (BossLevels.Contains(ActiveLevel))
-        {
-            Console.WriteLine(SyncHandler.SAttribute.GlobalObjectSaveData[16 + Array.IndexOf(BossLevels, ActiveLevel)]);
             return SyncHandler.SAttribute.GlobalObjectSaveData[16 + Array.IndexOf(BossLevels, ActiveLevel)] == 1;   
-        }
         return true;
     }
 }
