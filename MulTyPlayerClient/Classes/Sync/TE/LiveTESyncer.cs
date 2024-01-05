@@ -1,4 +1,8 @@
-﻿namespace MulTyPlayerClient;
+﻿using System.Windows.Markup;
+using MulTyPlayer;
+using Riptide;
+
+namespace MulTyPlayerClient;
 
 internal class LiveTESyncer : LiveDataSyncer
 {
@@ -15,5 +19,13 @@ internal class LiveTESyncer : LiveDataSyncer
         if (HSyncObject.CurrentObjectData[index] != 0) return;
         ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + ObjectLength * index, new byte[] { 1 },
             "Spawning TE");
+    }
+
+    [MessageHandler((ushort)MessageID.SpawnBilbyTE)]
+    public static void HandleBilbyTE(Message message)
+    {
+        if (Client.HLevel.CurrentLevelId != message.GetInt()) 
+            return;
+        (Client.HSync.SyncObjects["TE"].LiveSync as LiveTESyncer)?.Spawn(1);
     }
 }

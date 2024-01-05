@@ -12,7 +12,7 @@ internal class FrameSyncer : Syncer
     public FrameSyncer()
     {
         Name = "Frame";
-        CheckState = 0;
+        CheckState = 1;
         FrameSaveData = new byte[0x2E];
         GlobalObjectData = new Dictionary<int, byte[]>
         {

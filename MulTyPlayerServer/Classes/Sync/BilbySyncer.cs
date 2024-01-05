@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MulTyPlayer;
+using Riptide;
 
 namespace MulTyPlayerServer;
 
@@ -26,7 +28,16 @@ internal class BilbySyncer : Syncer
         //Console.WriteLine("Sending " + Name + " LiveNumber: " + iLive + " SaveNumber: " + iSave + " For Level: " + level);
         GlobalObjectData[level][iLive] = (byte)CheckState;
         GlobalObjectCounts[level] = GlobalObjectData[level].Count(i => i == CheckState);
-        GlobalObjectSaveData[level][iSave] = GlobalObjectCounts[level] == 5 ? (byte)5 : (byte)1;
+        GlobalObjectSaveData[level][iSave] = GlobalObjectCounts[level] == 5 ? (byte)3 : (byte)1;
+        if (GlobalObjectCounts[level] == 5 && SettingsHandler.Settings.DoSyncTEs)
+            SendTESpawnMessage(level, originalSender);
         SendUpdatedData(iLive, iSave, level, originalSender);
+    }
+
+    private void SendTESpawnMessage(int level, ushort originalSender)
+    {
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.SpawnBilbyTE);
+        message.AddInt(level);
+        Server._Server.SendToAll(message, originalSender);
     }
 }

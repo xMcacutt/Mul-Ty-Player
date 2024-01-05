@@ -25,5 +25,6 @@ public enum MessageID : ushort
     SetLevelLock,
     LL_LevelEntered,
     LL_LevelCompleted,
-    LL_Sync
+    LL_Sync,
+    SpawnBilbyTE
 }

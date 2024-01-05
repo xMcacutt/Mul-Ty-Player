@@ -1,4 +1,6 @@
-﻿namespace MulTyPlayerClient;
+﻿using System;
+
+namespace MulTyPlayerClient;
 
 internal class LiveFrameSyncer : LiveDataSyncer
 {
@@ -31,14 +33,18 @@ internal class LiveFrameSyncer : LiveDataSyncer
     public override void Sync(byte[] bytes, int amount, int checkState)
     {
         for (var i = 0; i < amount; i++)
+        {
             if (bytes[i] == checkState)
+            {
                 Collect(i);
+            }
+        }
     }
 
     public override void Collect(int index)
     {
-        if (HFrame.CurrentObjectData[index] == 1) return;
         if (Client.HGameState.IsAtMainMenuOrLoading()) return;
+        Console.WriteLine("y");
         var address = HFrame.FrameAddress;
         for (var i = 0; i < index; i++)
             ProcessHandler.TryRead(address + 0x30, out address, false, "LiveFrameSyncer::Collect {0}");

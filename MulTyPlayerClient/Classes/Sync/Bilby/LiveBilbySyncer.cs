@@ -20,9 +20,6 @@ internal class LiveBilbySyncer : LiveDataSyncer
         if (Client.HGameState.IsAtMainMenuOrLoading()) return;
         ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + ObjectLength * index,
             new[] { HSyncObject.WriteState }, "Collecting bilby");
-        if (HSyncObject.GlobalObjectData[Client.HLevel.CurrentLevelId].All(x => x == 0) &&
-            Client.HSync.SyncObjects["TE"].GlobalObjectData[Client.HLevel.CurrentLevelId][1] == 0)
-            (Client.HSync.SyncObjects["TE"].LiveSync as LiveTESyncer)?.Spawn(1);
         if (!SeparateCollisionByte) return;
         ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + CollisionOffset + ObjectLength * index,
             BitConverter.GetBytes(0), "Setting bilby cage collision to off pt 1");

@@ -10,7 +10,7 @@ internal class InvisiCrateSyncer : Syncer
     public InvisiCrateSyncer()
     {
         Name = "InvisiCrate";
-        CheckState = 0;
+        CheckState = 2;
         GlobalObjectData = new Dictionary<int, byte[]>
         {
             { 0, Enumerable.Repeat((byte)1, 9).ToArray()},

@@ -23,6 +23,8 @@ internal class FrameHandler : SyncObjectHandler
         CounterByteLength = 0x2E;
         ObserverState = new byte[0x2E];
         PreviousObserverState = new byte[0x2E];
+        PreviousObjectData = new byte[200];
+        CurrentObjectData = new byte[200];
         LiveSync = new LiveFrameSyncer(this);
         SaveSync = new SaveFrameSyncer();
         SetSyncClasses(LiveSync, SaveSync);
@@ -74,12 +76,13 @@ internal class FrameHandler : SyncObjectHandler
             return;
         }
 
-        for (var i = 0; i < ObjectAmount; i++)
+        var objectAmount = Levels.GetLevelData(level).FrameCount;
+        for (var i = 0; i < objectAmount; i++)
             if (liveData[i] == CheckState && GlobalObjectData[level][i] != CheckState)
                 GlobalObjectData[level][i] = WriteState;
         if (Client.HLevel.CurrentLevelId == level)
         {
-            LiveSync.Sync(liveData, ObjectAmount, CheckState);
+            LiveSync.Sync(liveData, objectAmount, CheckState);
             PreviousObjectData = liveData;
             CurrentObjectData = liveData;
         }

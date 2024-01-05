@@ -17,7 +17,7 @@ internal class SaveBilbySyncer : SaveDataSyncer
     {
         byte writeState = 1;
         if (HBilby.GlobalObjectData[(int)level].All(x => x == 0))
-            writeState = 5;
+            writeState = 3;
         var address = (int)(SyncHandler.SaveDataBaseAddress + SaveDataOffset + 0x70 * level + iSave);
         ProcessHandler.WriteData(address, new[] { writeState }, "Saving collectible to save data");
     }

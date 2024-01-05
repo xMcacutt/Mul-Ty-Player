@@ -35,7 +35,7 @@ internal class InvisiCrateHandler : SyncObjectHandler
 
     public override void HandleClientUpdate(int iLive, int iSave, int level)
     {
-        if (GlobalObjectData[level][iLive] == 0) return;
+        if (GlobalObjectData[level][iLive] == 2) return;
         GlobalObjectData[level][iLive] = (byte)CheckState;
         if (level != Client.HLevel.CurrentLevelId) return;
         LiveSync.Collect(iLive);
@@ -45,7 +45,7 @@ internal class InvisiCrateHandler : SyncObjectHandler
     {
         var crateCount = Levels.GetLevelData(level).FrameCount;
         for (var i = 0; i < crateCount; i++)
-            if (liveData[i] == 0 && GlobalObjectData[level][i] == 1)
+            if (liveData[i] == 2 && GlobalObjectData[level][i] == 1)
                 GlobalObjectData[level][i] = 0;
         if (Client.HLevel.CurrentLevelId == level)
         {
@@ -84,11 +84,9 @@ internal class InvisiCrateHandler : SyncObjectHandler
         {
             if (CheckObserverCondition(PreviousObjectData[iLive], CurrentObjectData[iLive]))
             {
-                Console.WriteLine($"2");
                 PreviousObjectData[iLive] = CurrentObjectData[iLive] = WriteState;
                 if (GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] != CheckState)
                 {
-                    Console.WriteLine("3");
                     GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] = (byte)CheckState;
                     Client.HSync.SendDataToServer(iLive, iLive, Client.HLevel.CurrentLevelId, Name);
                 }
