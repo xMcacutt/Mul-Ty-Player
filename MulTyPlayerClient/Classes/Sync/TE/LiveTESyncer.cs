@@ -22,7 +22,7 @@ internal class LiveTESyncer : LiveDataSyncer
             ProcessHandler.TryRead(HSyncObject.LiveObjectAddress + HSyncObject.IDOffset + ObjectLength * i,
                 out int result, false, "TE Id Read");
             if (result != 1) continue;
-            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + ObjectLength * index, new byte[] { 1 },
+            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + ObjectLength * i, new byte[] { 1 },
                 "Spawning TE");
             return;
 
