@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MulTyPlayer;
 using Riptide;
@@ -22,12 +23,13 @@ internal class BilbySyncer : Syncer
         }
     }
 
-    public virtual void HandleServerUpdate(int iLive, int iSave, int level, ushort originalSender)
+    public override void HandleServerUpdate(int iLive, int iSave, int level, ushort originalSender)
     {
         if (!GlobalObjectData.Keys.Contains(level)) return;
         //Console.WriteLine("Sending " + Name + " LiveNumber: " + iLive + " SaveNumber: " + iSave + " For Level: " + level);
         GlobalObjectData[level][iLive] = (byte)CheckState;
         GlobalObjectCounts[level] = GlobalObjectData[level].Count(i => i == CheckState);
+        Console.WriteLine(GlobalObjectCounts[level]);
         GlobalObjectSaveData[level][iSave] = GlobalObjectCounts[level] == 5 ? (byte)3 : (byte)1;
         if (GlobalObjectCounts[level] == 5 && SettingsHandler.Settings.DoSyncTEs)
             SendTESpawnMessage(level, originalSender);

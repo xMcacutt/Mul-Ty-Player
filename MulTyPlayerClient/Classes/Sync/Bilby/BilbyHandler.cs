@@ -27,6 +27,18 @@ internal class BilbyHandler : SyncObjectHandler
         foreach (var ld in Levels.MainStages)
             GlobalObjectData.Add(ld.Id, Enumerable.Repeat((byte)1, ObjectAmount).ToArray());
     }
+    
+    public override void Sync(int level, byte[] liveData, byte[] saveData)
+    {
+        SaveSync.Sync(level, saveData);     
+        for (var i = 0; i < ObjectAmount; i++)
+            if (liveData[i] == CheckState && GlobalObjectData[level][i] != CheckState)
+                GlobalObjectData[level][i] = WriteState;
+        if (Client.HLevel.CurrentLevelId != level) return;
+        LiveSync.Sync(liveData, ObjectAmount, CheckState);
+        PreviousObjectData = liveData;
+        CurrentObjectData = liveData;
+    }
 
     public override bool CheckObserverCondition(byte previousState, byte currentState)
     {
