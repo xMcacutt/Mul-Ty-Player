@@ -16,7 +16,7 @@ internal class LiveTESyncer : LiveDataSyncer
 
     public void Spawn(int index)
     {
-        if (HSyncObject.CurrentObjectData[index] != 0) return;
+        if (HSyncObject.CurrentObjectData[index] == 5) return;
         ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + ObjectLength * index, new byte[] { 1 },
             "Spawning TE");
     }

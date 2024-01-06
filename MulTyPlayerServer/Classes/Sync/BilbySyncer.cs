@@ -18,7 +18,7 @@ internal class BilbySyncer : Syncer
         foreach (var i in SyncHandler.MainStages)
         {
             GlobalObjectData.Add(i, Enumerable.Repeat((byte)1, 5).ToArray());
-            GlobalObjectSaveData.Add(i, Enumerable.Repeat((byte)1, 5).ToArray());
+            GlobalObjectSaveData.Add(i, Enumerable.Repeat((byte)0, 5).ToArray());
             GlobalObjectCounts.Add(i, 0);
         }
     }
@@ -26,7 +26,7 @@ internal class BilbySyncer : Syncer
     public override void HandleServerUpdate(int iLive, int iSave, int level, ushort originalSender)
     {
         if (!GlobalObjectData.Keys.Contains(level)) return;
-        //Console.WriteLine("Sending " + Name + " LiveNumber: " + iLive + " SaveNumber: " + iSave + " For Level: " + level);
+        Console.WriteLine("Sending " + Name + " LiveNumber: " + iLive + " SaveNumber: " + iSave + " For Level: " + level);
         GlobalObjectData[level][iLive] = (byte)CheckState;
         GlobalObjectCounts[level] = GlobalObjectData[level].Count(i => i == CheckState);
         Console.WriteLine(GlobalObjectCounts[level]);
