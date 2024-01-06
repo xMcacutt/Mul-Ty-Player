@@ -17,8 +17,17 @@ internal class LiveTESyncer : LiveDataSyncer
     public void Spawn(int index)
     {
         if (HSyncObject.CurrentObjectData[index] == 5) return;
-        ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + ObjectLength * index, new byte[] { 1 },
-            "Spawning TE");
+        for (var i = 0; i < 8; i++)
+        {
+            ProcessHandler.TryRead(HSyncObject.LiveObjectAddress + HSyncObject.IDOffset + ObjectLength * i,
+                out int result, false, "TE Id Read");
+            if (result != 1) continue;
+            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + ObjectLength * index, new byte[] { 1 },
+                "Spawning TE");
+            return;
+
+        }
+        
     }
 
     [MessageHandler((ushort)MessageID.SpawnBilbyTE)]
