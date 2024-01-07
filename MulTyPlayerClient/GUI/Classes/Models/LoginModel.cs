@@ -109,6 +109,7 @@ public class LoginModel
 
     private void SaveDetails()
     {
+        foreach (var x in _serverList) x.ActiveDefault = false;
         //Save the currently connected server details to serverlist
         if (!_serverList.Where(x => x.IP == ip).Any())
         {
@@ -142,10 +143,10 @@ public class LoginModel
         foreach (var server in file)
         {
             var entry = server.Split(' ');
-            _serverList.Add(new ServerListing(entry[0], entry[1], false));
+            _serverList.Add(new ServerListing(entry[0], entry[1], entry.Length == 3));
         }
 
-        SetDetailsFromServer(_serverList.FirstOrDefault(local));
+        SetDetailsFromServer(_serverList.FirstOrDefault(x => x.ActiveDefault, local));
     }
 
     private void SetDetailsFromServer(ServerListing server)

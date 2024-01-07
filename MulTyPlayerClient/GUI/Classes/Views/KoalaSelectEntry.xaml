@@ -34,6 +34,7 @@
                     <MediaElement Source="{Binding SelectedSource}"
                                   LoadedBehavior="Manual"
                                   x:Name="SelectedAnimation"
+                                  MediaOpened="SelectedAnimation_OnLoaded"
                                   Visibility="Collapsed" />
                 </Grid>
             </Border>
