@@ -153,7 +153,7 @@ internal class KoalaHandler
             return;
 
         //If the received player has finished the game, return
-        if (level == Levels.EndGame.Id)
+        if (level == Levels.EndGame.Id || level != Client.HLevel.CurrentLevelId)
             return;
 
         var transform = message.GetFloats();

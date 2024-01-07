@@ -74,6 +74,7 @@ internal static class PlayerReplication
 
     private static void WriteTransformData(KoalaID koalaID, Transform transform)
     {
+        Logger.Write($"{transform.Position.X}, {transform.Position.Y}, {transform.Position.Z}, {transform.LevelID}");
         if (transform.LevelID != Client.HLevel.CurrentLevelId)
             return;
 
