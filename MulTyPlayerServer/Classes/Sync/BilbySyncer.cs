@@ -27,7 +27,7 @@ internal class BilbySyncer : Syncer
     {
         if (!GlobalObjectData.Keys.Contains(level)) return;
         //Console.WriteLine("Sending " + Name + " LiveNumber: " + iLive + " SaveNumber: " + iSave + " For Level: " + level);
-        if (GlobalObjectCounts[level] == 4 && GlobalObjectData[level][iLive] == CheckState)
+        if (GlobalObjectCounts[level] == 4 && GlobalObjectData[level][iLive] == 1)
         {
             GlobalObjectSaveData[level][iSave] = 3;
             GlobalObjectCounts[level] = 5;

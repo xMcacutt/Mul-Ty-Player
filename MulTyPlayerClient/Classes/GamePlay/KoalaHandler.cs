@@ -137,15 +137,7 @@ internal class KoalaHandler
 
         //Set the incoming players current level code
         if (ModelController.Lobby.TryGetPlayerInfo(clientID, out var playerInfo))
-        {
-            if (onMenu)
-            {
-                playerInfo.Level = "M/L";
-                return;
-            }
-
-            playerInfo.Level = Levels.GetLevelData(level).Code;
-        }
+            playerInfo.Level = onMenu ? "M/L" : Levels.GetLevelData(level).Code;
 
         //Return if player is on the main menu or loading screen,
         //No need to set coords
@@ -160,7 +152,7 @@ internal class KoalaHandler
             Koalas.GetInfo[p.Koala].Name == koalaName)
             return;
 
-        //If the received player is on a different level, or has finished the game, return
+        //If the received player has finished the game, return
         if (level == Levels.EndGame.Id)
             return;
 
