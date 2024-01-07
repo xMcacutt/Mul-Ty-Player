@@ -26,20 +26,16 @@ internal class BilbySyncer : Syncer
     public override void HandleServerUpdate(int iLive, int iSave, int level, ushort originalSender)
     {
         if (!GlobalObjectData.Keys.Contains(level)) return;
-        Console.WriteLine("Sending " + Name + " LiveNumber: " + iLive + " SaveNumber: " + iSave + " For Level: " + level);
+        //Console.WriteLine("Sending " + Name + " LiveNumber: " + iLive + " SaveNumber: " + iSave + " For Level: " + level);
+        if (GlobalObjectCounts[level] == 4 && GlobalObjectData[level][iLive] == CheckState)
+        {
+            GlobalObjectSaveData[level][iSave] = 3;
+            GlobalObjectCounts[level] = 5;
+            return;
+        }
+        GlobalObjectSaveData[level][iSave] = 1;
         GlobalObjectData[level][iLive] = (byte)CheckState;
         GlobalObjectCounts[level] = GlobalObjectData[level].Count(i => i == CheckState);
-        Console.WriteLine(GlobalObjectCounts[level]);
-        GlobalObjectSaveData[level][iSave] = GlobalObjectCounts[level] == 5 ? (byte)3 : (byte)1;
-        if (GlobalObjectCounts[level] == 5 && SettingsHandler.Settings.DoSyncTEs)
-            SendTESpawnMessage(level, originalSender);
         SendUpdatedData(iLive, iSave, level, originalSender);
-    }
-
-    private void SendTESpawnMessage(int level, ushort originalSender)
-    {
-        var message = Message.Create(MessageSendMode.Reliable, MessageID.SpawnBilbyTE);
-        message.AddInt(level);
-        Server._Server.SendToAll(message, originalSender);
     }
 }
