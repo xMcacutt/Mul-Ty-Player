@@ -15,59 +15,47 @@ Boss Cass together as your favourite koalas.
 
 ![Boonie](/Boonie.png)
 
-3.0.0 IS HERE!!!
+3.2.0 has been released. There's plenty of big changes for existing users.
+Please read through the following information for re-installation instructions.
 
-Over the six months, progress on MTP has been a lot slower but another complete restructuring thanks to Tinsel has
-gotten us huge performance improvements
-as well as a ton of bug fixes and helpful new features.
+We have a brand new Dark Theme UI update.
 
-![ClientGUI](/ClientGUIDemo.png)
+![ClientGUI](/GitImages/Lobby.png)
 
-Install the patch in less than a minute, directly from the client app.
+A new settings window with plenty of options for extra comfort and customization.
 
-![Patcher](/PatcherDemo.png)
+![Settings](/GitImages/Settings.png)
 
 Select which koala you want to play as.
 
-![Koala Selection](/KoalaSelectionPreviewImage.png)
+![Koala Selection](/GitImages/Koala Select.png)
 
-Before installing, make sure you remove all pre-2.0.0 versions of Mul-Ty-Player from your computer, including the game
+Finally, to make the whole update process for the future, a dedicated updater app
+has been created using Octokit to search for updates on github and install them without
+having to visit this site again.
+
+![Updater](/GitImages/Updater Main.png)
+
+Before installing, make sure you remove all pre 3.2.0 versions of Mul-Ty-Player from your computer, including the game
 files.
-
-If you're installing from MTP2.X.X, remove the contents of your MTP game files and rerun the setup as described below.
 
 You can remove the applications from the "Add or Remove Programs" section of your control panel.
 
 To remove the game files, delete the "Mul-Ty-Player" folder from your game directory.
 
-WARNING! Until further notice, if you do not see the install patch button on selecting your Ty and Mul-Ty-Player folders
-in the patcher, you will need to do a clean reinstall of your clean Ty game files.
+To install Mul-Ty-Player, go to the releases page and download the "Mul-Ty-Player Updater" application.
 
-To install Mul-Ty-Player, go to the releases page and download the "Mul-Ty-Player 2.0.0 Installer.msi".
+Extract the files and run the application. You'll need to install the files
+on your first use. After that, you can update your files simply by using the update button.
+If you move any of your files or want to change your update settings, you can use the setup window.
 
-Next, run the installer to get the client and server applications.
+![Installer](/GitImages/Installer.png)
 
 The server application is only necessary if you wish to host sessions.
 
 Avoid installing the client and server in protected locations such as Program Files.
 
-The Mul-Ty-Player CLIENT should now be installed and ready to run.
-
-### Installing Additional Files
-
-Right click on "Mul-Ty-Player Client.exe" and select "Run as administrator".
-
-In the top left of the splash screen, click the setup button.
-
-Select your original, clean, Ty the Tasmanian Tiger folder. This is the folder that contains the game files.
-
-Select your Mul-Ty-Player folder. This is the folder that contains the game files.
-*If you don't have a Mul-Ty-Player folder yet, you can create and select an empty folder anywhere on your computer.*
-
-Click "Install Patch" and wait for the installation to complete.
-
-If the "Install Patch" button doesn't appear, ensure that the original game folder is a clean copy of the game and that
-the destination folder is empty or contains a version of Mul-Ty-Player 2.0.0+
+Mul-Ty-Player should now be installed and ready to run.
 
 ### Port Forwarding For Server Hosts.
 
@@ -86,7 +74,7 @@ With your port forwarding rule set up, people can now join your server using you
 
 ## Changelog
 
-### New Features v3
+### New Features v3.0.0
 
 - GUI mostly functions in a single window now so no more swapping windows.
 - New Launch Game button added to splash screen and main GUI.
@@ -106,7 +94,29 @@ With your port forwarding rule set up, people can now join your server using you
 - Pickup frame syncing added (WIP will be ready for 3.2.0)
 - Sync button added to lobby toolbar
 
+#### 3.2.0
+
+- Level Lock mode has been added for speedrunners. Use "/levellock true" to activate it.
+- Pickup Frame syncing is completed
+- Gift host option added by right clicking a player in the list
+- Icon system upgraded
+- Koala icons upgraded
+- Settings window massively redesigned
+- Dark / Light UI themes
+- Auto Updater application repalces installer and RKV patcher
+- /tp and /where commands added
+- Option to scale koalas to be closer to Ty's size added
+- All UI heavily restructured and made prettier
+- New [collectible tracker](https://github.com/xMcacutt/Ty1-Collectible-Tracker) app created
+![ColTrack](/GitImages/ColTrack.png)
+
 ### Bug Fixes
+
+#### 3.2.0
+- Bilby softlock if player collects fifth bilby without TE fixed.
+- Koala selection black flicker fixed
+- Auto-Reconnect disabled pending fix
+- Server list saving bug fixed
 
 #### 3.1.0
 
@@ -219,6 +229,5 @@ You can also leave feedback for future updates in my DMs on Discord Mcacutt#5671
 - [Tinsel](https://github.com/ConnorDaytonaHolmes)
 - [Riptide Networking](https://github.com/RiptideNetworking/Riptide)
 - [Facepunch.Steamworks.Net](https://wiki.facepunch.com/steamworks/)
-- [Kanesthename for Artwork](https://www.deviantart.com/kanesthename/art/Ty-The-Tasmanian-Tiger-Logo-Recreation-Render-271468546)
 - SilentKuudere and SirLaurenceNZ for stopping me from going mad and helping me to test.
 - GPT for learning with me and occasionally giving me useful code.

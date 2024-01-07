@@ -42,7 +42,7 @@ public class UpdateViewModel
     public void GetUpdate()
     {
         var github = new GitHubClient(new ProductHeaderValue("Mul-Ty-Player"));
-        var latestRelease = github.Repository.Release.GetLatest("xMcacutt", "MTPUpdateTest").Result;
+        var latestRelease = github.Repository.Release.GetLatest("xMcacutt", "Mul-Ty-Player").Result;
         if (VersionIsMoreRecent(SettingsHandler.Settings.Version, latestRelease.TagName.Replace("v", "")))
         {
             Message = "Update available, installing now...";
