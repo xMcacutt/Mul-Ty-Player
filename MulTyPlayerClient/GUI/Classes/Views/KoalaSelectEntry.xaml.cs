@@ -3,6 +3,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using MulTyPlayerClient.GUI.ViewModels;
 
 namespace MulTyPlayerClient.GUI.Views;
@@ -31,9 +32,16 @@ public partial class KoalaSelectEntry : UserControl
         }
     }
 
-    private void SelectedAnimation_OnLoaded(object sender, RoutedEventArgs e)
+    private void SelectedAnimation_OnMediaEnabled(object sender, RoutedEventArgs e)
     {
         if (DataContext is not KoalaSelectEntryViewModel vm || !vm.IsAvailable) return;
         vm.OnClicked();
+    }
+    
+    protected void OnSourceInitialized(EventArgs e)
+    {
+        var hwndSource = PresentationSource.FromVisual(this) as HwndSource;
+        var hwndTarget = hwndSource?.CompositionTarget;
+        if (hwndTarget != null) hwndTarget.RenderMode = RenderMode.SoftwareOnly;
     }
 }

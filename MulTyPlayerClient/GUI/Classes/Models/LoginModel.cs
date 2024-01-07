@@ -73,7 +73,6 @@ public class LoginModel
         }
     }
     
-
     public void Setup()
     {
         SetName();

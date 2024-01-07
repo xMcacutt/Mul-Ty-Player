@@ -48,7 +48,6 @@ internal class Server
                         HKoala.ReturnKoala(player);
                         player.PreviousLevel = player.CurrentLevel;
                     }
-
                     SendCoordinatesToAll(player.ClientID, player.Koala.KoalaName, player.CurrentLevel,
                         player.Coordinates, player.OnMenu);
                 }

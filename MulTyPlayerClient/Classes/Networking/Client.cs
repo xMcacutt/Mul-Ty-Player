@@ -7,6 +7,7 @@ using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
+using MulTyPlayerClient.GUI.Views;
 using Riptide;
 using Riptide.Utils;
 
@@ -22,6 +23,7 @@ internal class Client
     private static string _pass;
     public static string Name;
     public static Koala OldKoala;
+    public static bool IsReconnect = false;
 
     public static KoalaHandler HKoala;
     public static PlayerHandler HPlayer;
@@ -87,6 +89,18 @@ internal class Client
         ModelController.Login.ConnectionAttemptSuccessful = true;
         ModelController.Login.ConnectionAttemptCompleted = true;
         IsConnected = true;
+        /*
+        if (IsReconnect)
+        {
+            Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+                () =>
+                {
+                    ModelController.KoalaSelect.KoalaClicked(OldKoala);
+                });
+            IsReconnect = false;
+        }
+        */
         HSync.HLevelLock.RequestData();
         if (HGameState.IsAtMainMenuOrLoading()) return;
         HLevel.DoLevelSetup();
@@ -101,19 +115,38 @@ internal class Client
             DispatcherPriority.Background,
             new Action(ModelController.Lobby.ResetPlayerList));
         SFXPlayer.PlaySound(SFX.PlayerDisconnect);
-
+        
+        /*
         if (e.Reason == DisconnectReason.TimedOut && SettingsHandler.Settings.AttemptReconnect)
         {
+            IsReconnect = true;
             Logger.Write("Initiating reconnection attempt.");
             InitRiptide();
             var authentication = Message.Create();
             authentication.AddString(_pass);
-            _client.Connect(_ip, 5, 0, authentication);
+            HKoala = new KoalaHandler();
+            HPlayer = new PlayerHandler();
+            var attempt = _client.Connect(_ip, 5, 0, authentication);
+            if (attempt)
+            {
+                cts = new CancellationTokenSource();
+                Thread loop = new(ClientLoop);
+                loop.Start();
+                return;
+            }
         }
+        */
 
+        IsReconnect = false;
         Application.Current.Dispatcher.BeginInvoke(
             DispatcherPriority.Background,
-            () => { if(App.SettingsWindow is not null) App.SettingsWindow.Hide(); });
+            () =>
+            {
+                if(App.SettingsWindow is not null) 
+                    App.SettingsWindow.Hide(); 
+                ModelController.Lobby.Logout();
+            });
+        
     }
 
     private static void ConnectionFailed(object sender, ConnectionFailedEventArgs eventArgs)
