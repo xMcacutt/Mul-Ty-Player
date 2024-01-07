@@ -55,6 +55,16 @@ internal class CommandHandler
                 RequestHost();
                 break;
             }
+            case "where":
+            {
+                if (args.Length > 1)
+                {
+                    Logger.Write("Usage: /where (CLIENTID - OPTIONAL)");
+                    break;
+                }
+                Where(args);
+                break;
+            }
             case "tp":
             {
                 if (args.Length == 0 || args.Length == 2 || args.Length > 3)
@@ -114,6 +124,43 @@ internal class CommandHandler
         }
     }
 
+    private void Where(string[] args)
+    {
+        if (Client.HGameState.IsAtMainMenuOrLoading())
+        {
+            Logger.Write("Cannot get location on main menu or load screen.");
+        }
+
+        if (args.Length == 1)
+        {
+            if (!ushort.TryParse(args[0], out _))
+            {
+                Logger.Write("The id given is not valid");
+            }
+
+            if (!PlayerHandler.Players.ContainsKey(ushort.Parse(args[0])))
+            {
+                Logger.Write("The client id specified is not a player.");
+                return;
+            }
+
+            if (ushort.Parse(args[0]) == Client._client.Id)
+            {
+                Logger.Write("Use /where with no argument for your own location");
+                return;
+            }
+            var player = PlayerHandler.Players[ushort.Parse(args[0])];
+            var koalaId = Koalas.GetInfo[player.Koala].Id;
+            var transform = PlayerReplication.PlayerTransforms[koalaId];
+            Logger.Write($"{player.Name} is in {Levels.GetLevelData(transform.LevelID).Code} at {transform.Position.X}, {transform.Position.Y}, {transform.Position.Z}");
+            return;
+        }
+
+        var coords = Client.HHero.GetCurrentPosRot();
+        Logger.Write($"You are at {coords[0]}, {coords[1]}, {coords[2]}");
+
+    }
+
     private void Teleport(string[] args)
     {
         if (Client.HGameState.IsAtMainMenuOrLoading())
@@ -122,9 +169,18 @@ internal class CommandHandler
         }
         if (args.Length == 1)
         {
-            if (!ushort.TryParse(args[0], out _) || !PlayerHandler.Players.ContainsKey(ushort.Parse(args[0])))
+            if (!ushort.TryParse(args[0], out _))
             {
-                Logger.Write("The client id specified is not valid.");
+                Logger.Write("The id given is not valid");
+            }
+            if (!PlayerHandler.Players.ContainsKey(ushort.Parse(args[0])))
+            {
+                Logger.Write("The client id specified is not a player.");
+                return;
+            }
+            if (ushort.Parse(args[0]) == Client._client.Id)
+            {
+                Logger.Write("You can't teleport to yourself silly!");
                 return;
             }
             var player = PlayerHandler.Players[ushort.Parse(args[0])];
@@ -138,7 +194,6 @@ internal class CommandHandler
             Client.HHero.WritePosition(transform.Position.X, transform.Position.Y, transform.Position.Z);
             return;
         }
-
         if (args.Length == 3)
         {
             foreach (var arg in args)
@@ -158,7 +213,6 @@ internal class CommandHandler
                     return;
                 }
             }
-
             var coords = new float[3];
             var currentPosRot = Client.HHero.GetCurrentPosRot();
             for (var i = 0; i < 3; i++)
