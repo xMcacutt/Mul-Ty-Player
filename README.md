@@ -28,13 +28,13 @@ A new settings window with plenty of options for extra comfort and customization
 
 Select which koala you want to play as.
 
-![Koala Selection](/GitImages/Koala Select.png)
+![Koala Selection](/GitImages/Koala%20Select.png)
 
 Finally, to make the whole update process for the future, a dedicated updater app
 has been created using Octokit to search for updates on github and install them without
 having to visit this site again.
 
-![Updater](/GitImages/Updater Main.png)
+![Updater](/GitImages/Updater%20Main.png)
 
 Before installing, make sure you remove all pre 3.2.0 versions of Mul-Ty-Player from your computer, including the game
 files.
