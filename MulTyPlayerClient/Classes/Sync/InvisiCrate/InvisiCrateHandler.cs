@@ -80,8 +80,8 @@ internal class InvisiCrateHandler : SyncObjectHandler
         PreviousObserverState = ObserverState;
         CurrentObjectData = LiveSync.ReadData();
         var crateCount = Levels.GetLevelData(Client.HLevel.CurrentLevelId).FrameCount;
+        if (PreviousObjectData.Length != crateCount) return;
         for (var iLive = 0; iLive < crateCount; iLive++)
-        {
             if (CheckObserverCondition(PreviousObjectData[iLive], CurrentObjectData[iLive]))
             {
                 PreviousObjectData[iLive] = CurrentObjectData[iLive] = WriteState;
@@ -91,6 +91,5 @@ internal class InvisiCrateHandler : SyncObjectHandler
                     Client.HSync.SendDataToServer(iLive, iLive, Client.HLevel.CurrentLevelId, Name);
                 }
             }
-        }
     }
 }
