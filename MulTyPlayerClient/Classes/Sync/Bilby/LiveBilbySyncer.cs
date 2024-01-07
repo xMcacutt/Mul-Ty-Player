@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using MulTyPlayer;
+using Riptide;
 
 namespace MulTyPlayerClient;
 
@@ -25,5 +27,24 @@ internal class LiveBilbySyncer : LiveDataSyncer
             BitConverter.GetBytes(0), "Setting bilby cage collision to off pt 1");
         ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + 0x31 + ObjectLength * index, new byte[] { 0, 1 },
             "Setting bilby cage collision to off pt 2");
+    }
+
+    [MessageHandler((ushort)MessageID.DespawnAllBilbies)]
+    public static void DespawnBilbies(Message message)
+    {
+        if (Client.HLevel.CurrentLevelId != message.GetInt() || Client.HGameState.IsAtMainMenuOrLoading()) return;
+        (Client.HSync.SyncObjects["Bilby"].LiveSync as LiveBilbySyncer).CollectAll();
+    }
+    public void CollectAll()
+    {
+        for (var i = 0; i < 5; i++)
+        {
+            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + ObjectLength * i,
+                new[] { HSyncObject.WriteState }, "Collecting bilby");
+            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + CollisionOffset + ObjectLength * i,
+                BitConverter.GetBytes(0), "Setting bilby cage collision to off pt 1");
+            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + 0x31 + ObjectLength * i, new byte[] { 0, 1 },
+                "Setting bilby cage collision to off pt 2");
+        }
     }
 }

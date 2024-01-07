@@ -26,5 +26,5 @@ public enum MessageID : ushort
     LL_LevelEntered,
     LL_LevelCompleted,
     LL_Sync,
-    SpawnBilbyTE
+    DespawnAllBilbies
 }
