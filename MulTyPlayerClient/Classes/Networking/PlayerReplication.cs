@@ -13,7 +13,7 @@ internal static class PlayerReplication
     private const int RENDER_CALLS_PER_CLIENT_TICK = 8;
     private const int KRENDER_SLEEP_TIME = (int)((float)Client.MS_PER_TICK / RENDER_CALLS_PER_CLIENT_TICK) - 1;
     public static KoalaInterpolationMode InterpolationMode = (KoalaInterpolationMode)Enum.Parse(typeof(KoalaInterpolationMode), SettingsHandler.Settings.InterpolationMode);
-    private static readonly Dictionary<KoalaID, Transform> playerTransforms;
+    public static readonly Dictionary<KoalaID, Transform> PlayerTransforms;
     private static readonly Dictionary<KoalaID, TransformSnapshots> receivedSnapshotData;
 
     private static CancellationTokenSource renderTokenSource;
@@ -21,7 +21,7 @@ internal static class PlayerReplication
     static PlayerReplication()
     {
         receivedSnapshotData = new Dictionary<int, TransformSnapshots>();
-        playerTransforms = new Dictionary<int, Transform>();
+        PlayerTransforms = new Dictionary<int, Transform>();
     }
 
     public static void RenderKoalas(int maxTimeMilliseconds)
@@ -66,10 +66,10 @@ internal static class PlayerReplication
     private static Transform UpdateTransform(KoalaID koalaID)
     {
         var snapshots = receivedSnapshotData[koalaID];
-        playerTransforms[koalaID].Position = Interpolation.LerpPosition(snapshots, InterpolationMode);
-        playerTransforms[koalaID].Rotation = snapshots.New.Transform.Rotation;
-        playerTransforms[koalaID].LevelID = snapshots.New.Transform.LevelID;
-        return playerTransforms[koalaID];
+        PlayerTransforms[koalaID].Position = Interpolation.LerpPosition(snapshots, InterpolationMode);
+        PlayerTransforms[koalaID].Rotation = snapshots.New.Transform.Rotation;
+        PlayerTransforms[koalaID].LevelID = snapshots.New.Transform.LevelID;
+        return PlayerTransforms[koalaID];
     }
 
     private static void WriteTransformData(KoalaID koalaID, Transform transform)
@@ -98,20 +98,20 @@ internal static class PlayerReplication
     {
         receivedSnapshotData.Remove(koalaID);
         receivedSnapshotData.Add(koalaID, new TransformSnapshots());
-        playerTransforms.Remove(koalaID);
-        playerTransforms.Add(koalaID, new Transform());
+        PlayerTransforms.Remove(koalaID);
+        PlayerTransforms.Add(koalaID, new Transform());
     }
 
     public static void RemovePlayer(KoalaID koalaID)
     {
         receivedSnapshotData.Remove(koalaID);
-        playerTransforms.Remove(koalaID);
+        PlayerTransforms.Remove(koalaID);
     }
 
     public static void ClearPlayers()
     {
         receivedSnapshotData.Clear();
-        playerTransforms.Clear();
+        PlayerTransforms.Clear();
     }
 
     #endregion

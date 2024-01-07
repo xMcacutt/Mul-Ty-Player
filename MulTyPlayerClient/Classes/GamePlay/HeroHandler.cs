@@ -1,4 +1,6 @@
-﻿using MulTyPlayer;
+﻿using System;
+using System.Linq;
+using MulTyPlayer;
 using Riptide;
 
 namespace MulTyPlayerClient;
@@ -34,6 +36,21 @@ public class HeroHandler
             ProcessHandler.TryRead(rotationAddress + sizeof(float) * i, out currentPositionRotation[i + 3], true,
                 "HeroHandler::GetTyPosRot() {rotation}");
         }
+    }
+
+    public float[] GetCurrentPosRot()
+    {
+        return currentPositionRotation;
+    }
+    
+    public void WritePosition(float x, float y, float z)
+    {
+        var bytes = BitConverter.GetBytes(x)
+            .Concat(BitConverter.GetBytes(y))
+            .Concat(BitConverter.GetBytes(z))
+            .ToArray();
+        Logger.Write($"Teleported to {x}, {y}, {z}");
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + positionAddress, bytes);
     }
 
     public void CheckOutbackSafari(int levelId)

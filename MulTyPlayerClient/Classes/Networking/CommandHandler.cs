@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using MulTyPlayer;
+using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.GUI.Models;
 using Riptide;
 
@@ -54,6 +55,16 @@ internal class CommandHandler
                 RequestHost();
                 break;
             }
+            case "tp":
+            {
+                if (args.Length == 0 || args.Length == 2 || args.Length > 3)
+                {
+                    Logger.Write("Usage: /tp [COORDS/CLIENTID]\nThe client must be in the same level.");
+                    break;
+                }
+                Teleport(args);
+                break;
+            }
             case "ready":
             {
                 SetReady();
@@ -100,6 +111,68 @@ internal class CommandHandler
                 Logger.Write($"/{command} is not a command. Try /help for a list of commands");
                 break;
             }
+        }
+    }
+
+    private void Teleport(string[] args)
+    {
+        if (Client.HGameState.IsAtMainMenuOrLoading())
+        {
+            Logger.Write("Cannot teleport on main menu or load screen.");
+        }
+        if (args.Length == 1)
+        {
+            if (!ushort.TryParse(args[0], out _) || !PlayerHandler.Players.ContainsKey(ushort.Parse(args[0])))
+            {
+                Logger.Write("The client id specified is not valid.");
+                return;
+            }
+            var player = PlayerHandler.Players[ushort.Parse(args[0])];
+            var koalaId = Koalas.GetInfo[player.Koala].Id;
+            var transform = PlayerReplication.PlayerTransforms[koalaId];
+            if (transform.LevelID != Client.HLevel.CurrentLevelId)
+            {
+                Logger.Write("Cannot teleport to player in a different level");
+                return;
+            }
+            Client.HHero.WritePosition(transform.Position.X, transform.Position.Y, transform.Position.Z);
+            return;
+        }
+
+        if (args.Length == 3)
+        {
+            foreach (var arg in args)
+            {
+                if (arg.StartsWith("~"))
+                {
+                    if (arg != "~" && !float.TryParse(arg.Skip(1).ToArray(), out _))
+                    {
+                        Logger.Write(arg);
+                        Logger.Write("Coordinates specified are not valid");
+                        return;
+                    }
+                }
+                else if (!float.TryParse(arg, out _))
+                {
+                    Logger.Write("Coordinates specified are not valid");
+                    return;
+                }
+            }
+
+            var coords = new float[3];
+            var currentPosRot = Client.HHero.GetCurrentPosRot();
+            for (var i = 0; i < 3; i++)
+            {
+                if (args[i] == "~")
+                {
+                    coords[i] = currentPosRot[i];
+                    continue;
+                }
+                coords[i] = args[i].StartsWith("~") ? 
+                    currentPosRot[i] + float.Parse(args[i].Skip(1).ToArray()) : 
+                    float.Parse(args[i]);
+            }
+            Client.HHero.WritePosition(coords[0], coords[1], coords[2]);
         }
     }
 
