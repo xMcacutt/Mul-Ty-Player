@@ -7,7 +7,7 @@ namespace MulTyPlayerClient;
 
 internal class ProcessHandler
 {
-    public static bool MemoryWriteDebugLogging = false;
+    public static bool MemoryWriteDebugLogging = true;
     public static bool MemoryReadDebugLogging = false;
     public static string MostRecentIOIndicator = "None";
     public static bool LogMostRecentMemoryIOInfoOnProcessExit = true;

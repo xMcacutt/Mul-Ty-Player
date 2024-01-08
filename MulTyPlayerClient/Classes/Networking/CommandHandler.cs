@@ -166,12 +166,14 @@ internal class CommandHandler
         if (Client.HGameState.IsAtMainMenuOrLoading())
         {
             Logger.Write("Cannot teleport on main menu or load screen.");
+            return;
         }
         if (args.Length == 1)
         {
             if (!ushort.TryParse(args[0], out _))
             {
                 Logger.Write("The id given is not valid");
+                return;
             }
             if (!PlayerHandler.Players.ContainsKey(ushort.Parse(args[0])))
             {

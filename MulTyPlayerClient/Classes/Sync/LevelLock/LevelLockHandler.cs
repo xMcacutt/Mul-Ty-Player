@@ -64,6 +64,8 @@ public class LevelLockHandler
         {
             PortalStates[key] = !InvisPortals.Contains(key);
         }
+        _bossPortalsActive = true;
+        if (Client.HLevel.CurrentLevelId != 0) return;
         var triggerAddress = PointerCalculations.GetPointerAddress(0x26DBD8, new int[] { 0x0 });
         var iterator = 0;
         foreach (var level in BossLevelsWithTriggers)
@@ -71,7 +73,6 @@ public class LevelLockHandler
             ProcessHandler.WriteData(triggerAddress + BossTriggerIndices[iterator] * 0xB8 + 0x8C, new byte[] { 0x1 }, "LevelLockHandler: Enable() 1");
             iterator++;
         }
-        _bossPortalsActive = true;
     }
     
     public void DisableAllPortals(int except)
