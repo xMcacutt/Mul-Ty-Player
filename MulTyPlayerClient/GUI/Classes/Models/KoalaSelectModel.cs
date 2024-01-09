@@ -31,7 +31,7 @@ public class KoalaSelectModel
     public event Action<Koala> OnKoalaSelected;
     public event Action OnProceedToLobby;
 
-    public async void KoalaClicked(Koala koala)
+    public async void KoalaClicked(Koala koala, bool proceedToLobby)
     {
         Client.OldKoala = koala;
         var isHost = !CommandHandler.HostExists();
@@ -39,9 +39,15 @@ public class KoalaSelectModel
         SFXPlayer.PlaySound(SFX.PlayerConnect);
         OnKoalaSelected?.Invoke(koala);
         PlayerHandler.AnnounceSelection(Koalas.GetInfo[koala].Name, Client.Name, isHost);
-        await Task.Delay(2125);
+        if (proceedToLobby)
+        {
+            await Task.Delay(2125);
+        }
         GetEntry(koala).SetAvailability(false);
-        OnProceedToLobby?.Invoke();
+        if (proceedToLobby)
+        {
+            OnProceedToLobby?.Invoke();
+        }
     }
 
     public bool IsKoalaAvailable(Koala koala)

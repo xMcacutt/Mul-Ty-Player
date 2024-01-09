@@ -51,7 +51,7 @@ public class KoalaSelectEntryViewModel
 
     public void OnClicked()
     {
-        ModelController.KoalaSelect.KoalaClicked(kseModel.KoalaInfo.Koala);
+        ModelController.KoalaSelect.KoalaClicked(kseModel.KoalaInfo.Koala, true);
     }
 
     private void SetPortraitVisibility()

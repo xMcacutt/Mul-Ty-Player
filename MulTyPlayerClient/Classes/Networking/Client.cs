@@ -58,7 +58,7 @@ internal class Client
         ModelController.KoalaSelect.OnProceedToLobby += () => { KoalaSelected = true; };
         ModelController.Lobby.OnLogout += () => { KoalaSelected = false; };
 
-        Thread loop = new(ClientLoop);
+        Thread loop = new(() => ClientLoop(cts.Token));
         loop.Start();
     }
 
@@ -89,18 +89,17 @@ internal class Client
         ModelController.Login.ConnectionAttemptSuccessful = true;
         ModelController.Login.ConnectionAttemptCompleted = true;
         IsConnected = true;
-        /*
         if (IsReconnect)
         {
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                 () =>
                 {
-                    ModelController.KoalaSelect.KoalaClicked(OldKoala);
+                    ModelController.KoalaSelect.KoalaClicked(OldKoala, false);
                 });
+            KoalaSelected = true;
             IsReconnect = false;
         }
-        */
         HSync.HLevelLock.RequestData();
         if (HGameState.IsAtMainMenuOrLoading()) return;
         HLevel.DoLevelSetup();
@@ -109,14 +108,13 @@ internal class Client
     private static void Disconnected(object sender, DisconnectedEventArgs e)
     {
         cts.Cancel();
+        KoalaSelected = false;
         IsConnected = false;
         ModelController.KoalaSelect.MakeAllAvailable();
         Application.Current.Dispatcher.BeginInvoke(
             DispatcherPriority.Background,
             new Action(ModelController.Lobby.ResetPlayerList));
         SFXPlayer.PlaySound(SFX.PlayerDisconnect);
-        
-        /*
         if (e.Reason == DisconnectReason.TimedOut && SettingsHandler.Settings.AttemptReconnect)
         {
             IsReconnect = true;
@@ -130,13 +128,11 @@ internal class Client
             if (attempt)
             {
                 cts = new CancellationTokenSource();
-                Thread loop = new(ClientLoop);
+                Thread loop = new(() => ClientLoop(cts.Token));
                 loop.Start();
                 return;
             }
         }
-        */
-
         IsReconnect = false;
         Application.Current.Dispatcher.BeginInvoke(
             DispatcherPriority.Background,
@@ -146,7 +142,6 @@ internal class Client
                     App.SettingsWindow.Hide(); 
                 ModelController.Lobby.Logout();
             });
-        
     }
 
     private static void ConnectionFailed(object sender, ConnectionFailedEventArgs eventArgs)
@@ -160,6 +155,15 @@ internal class Client
         cts.Cancel();
         ModelController.Login.ConnectionAttemptSuccessful = false;
         ModelController.Login.ConnectionAttemptCompleted = true;
+        IsReconnect = false;
+        Application.Current.Dispatcher.BeginInvoke(
+            DispatcherPriority.Background,
+            () =>
+            {
+                if(App.SettingsWindow is not null) 
+                    App.SettingsWindow.Hide(); 
+                ModelController.Lobby.Logout();
+            });
     }
 
     private static void ConnectionAttemptFailed()
@@ -171,16 +175,10 @@ internal class Client
         ModelController.Login.ConnectionAttemptCompleted = true;
     }
 
-    private static void ClientLoop()
+    private static void ClientLoop(CancellationToken ct)
     {
-        while (!cts.Token.IsCancellationRequested)
+        while (!ct.IsCancellationRequested)
         {
-#if DEBUG
-            //DateTime frameCommence = DateTime.Now;
-            //Logger.WriteDebug("Tick began.");
-            //DateTime readTime = DateTime.Now;
-            //double read_dt = 0.0;
-#endif
             if (TyProcess.FindProcess() && KoalaSelected)
                 try
                 {
@@ -191,13 +189,7 @@ internal class Client
                         HHero.GetTyPosRot();
                         HKoala.CheckTA();
                     }
-
                     HHero.SendCoordinates();
-#if DEBUG
-                    //readTime = DateTime.Now;
-                    //read_dt = (readTime - frameCommence).TotalMilliseconds;
-                    //Logger.WriteDebug($"Finished reading. Elapsed time: {read_dt}ms. Beginning koala render.");
-#endif
                     // Writes all received player coordinates into koala positions in memory
                     PlayerReplication.RenderKoalas(MS_PER_TICK);
                 }
@@ -213,15 +205,7 @@ internal class Client
                 {
                     Logger.Write(e.ToString());
                 }
-
             _client.Update();
-#if DEBUG
-            //DateTime tickFinished = DateTime.Now;
-            //double render_dt = (tickFinished - readTime).TotalMilliseconds;
-            //double totalTime = render_dt + read_dt;
-            //Logger.WriteDebug($"Finished koala render. Elapsed time for koala render: {render_dt}ms");
-            //Logger.WriteDebug($"Total elapsed time this tick: {totalTime}ms");
-#endif
         }
     }
 
