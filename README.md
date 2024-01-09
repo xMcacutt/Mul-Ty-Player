@@ -1,10 +1,10 @@
-![Mul-Ty-Player](/Multyplayer%20logo.png)
+![Mul-Ty-Player](/GitImages/Multyplayer%20logo.png)
 
 # Mul-Ty-Player
 
 ## About
 
-![Liz](/Liz.png)
+![Liz](/GitImages/Liz.png)
 
 Mul-Ty-Player breathes new life into Ty the Tasmanian Tiger, allowing you to play online with your friends.
 
@@ -13,7 +13,7 @@ Boss Cass together as your favourite koalas.
 
 ## Update & Installation
 
-![Boonie](/Boonie.png)
+![Boonie](/GitImages/Boonie.png)
 
 3.2.0 has been released. There's plenty of big changes for existing users.
 Please read through the following information for re-installation instructions.
