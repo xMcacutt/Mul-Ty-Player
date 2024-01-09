@@ -3,16 +3,13 @@ name: Release
 on:
   workflow_dispatch:
     inputs:
-      manual_trigger:
-        description: 'Manually trigger the workflow'
-        default: 'true'
       release_version:
         description: 'Specify the release version'
         required: true
 
 jobs:
   publish:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     
     steps:
       - name: Checkout Repository
