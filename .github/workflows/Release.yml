@@ -23,9 +23,9 @@ jobs:
       - name: Build and Publish Projects
         run: |
           for project in "Mul-Ty-Player Client" "Mul-Ty-Player Server CLI" "Mul-Ty-Player Updater"; do
-            dotnet restore $project
-            dotnet build $project --configuration Release
-            dotnet publish $project --configuration Release -o publish/$project
+            dotnet restore "$project"
+            dotnet build "$project" --configuration Release
+            dotnet publish "$project" --configuration Release -o publish/$project
           done
 
       - name: Zip Published Projects
