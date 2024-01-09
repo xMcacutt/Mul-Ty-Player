@@ -149,7 +149,6 @@
                        Style="{StaticResource SettingsLabelStyle}"/>
                 <ComboBox ItemsSource="{Binding InterpolationModes}"
                           SelectedItem="{Binding InterpolationMode}"
-                          IsEnabled="False"
                           Style="{StaticResource SettingsComboBoxStyle}"/>
                 
                 <CheckBox IsChecked="{Binding DoKoalaCollision}"

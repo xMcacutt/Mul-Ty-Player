@@ -36,15 +36,27 @@ internal static class PlayerReplication
         renderTokenSource = new CancellationTokenSource();
         var renderToken = renderTokenSource.Token;
         renderTokenSource.CancelAfter(maxTimeMilliseconds);
-        var render = Task.Run(() =>
+
+        var renderTimer = new Timer(RenderTimerCallback, renderToken, 0, KRENDER_SLEEP_TIME);
+
+        try
         {
-            //Debug.WriteLine("RENDERING!");
-            for (var i = 0; i < RENDER_CALLS_PER_CLIENT_TICK; i++)
-            {
-                RenderTick();
-                Thread.Sleep(KRENDER_SLEEP_TIME);
-            }
-        }, renderToken);
+            renderToken.WaitHandle.WaitOne(); // Wait until canceled
+        }
+        finally
+        {
+            renderTimer.Dispose();
+        }
+    }
+
+    private static void RenderTimerCallback(object state)
+    {
+        var cancellationToken = (CancellationToken)state;
+
+        for (var i = 0; i < RENDER_CALLS_PER_CLIENT_TICK; i++)
+        {
+            RenderTick();
+        }
     }
 
     public static void CancelRender()
