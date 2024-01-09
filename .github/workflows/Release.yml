@@ -1,0 +1,53 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      manual_trigger:
+        description: 'Manually trigger the workflow'
+        default: 'true'
+      release_version:
+        description: 'Specify the release version'
+        required: true
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '7.0'  # Change this to your desired .NET version
+
+      - name: Build and Publish Projects
+        run: |
+          for project in "Mul-Ty-Player Client" "Mul-Ty-Player Server CLI" "Mul-Ty-Player Updater"; do
+            dotnet restore $project
+            dotnet build $project --configuration Release
+            dotnet publish $project --configuration Release -o publish/$project
+          done
+
+      - name: Zip Published Projects
+        run: |
+          for project in "Mul-Ty-Player Client" "Mul-Ty-Player Server" "Mul-Ty-Player Updater"; do
+            zip -r "/Publish/$project/$project.zip" -j "Publish/$project/"
+          done
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.release_version }}
+          release_name: Release ${{ github.event.inputs.release_version }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Zipped Projects
+        uses: actions/upload-artifact@v2
+        with:
+          name: projects
+          path: ./Publish/**/*.zip
