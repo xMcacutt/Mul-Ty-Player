@@ -1,0 +1,14 @@
+﻿{
+  "Password": "XXXXX",
+  "Port": 8750,
+  "DoSyncTEs": true,
+  "DoSyncCogs": true,
+  "DoSyncBilbies": true,
+  "DoSyncRangs": true,
+  "DoSyncOpals": true,
+  "DoSyncPortals": true,
+  "DoSyncCliffs": true,
+  "DoSyncCrate": true,
+  "DoSyncScale": true,
+  "DoSyncFrame": true
+}

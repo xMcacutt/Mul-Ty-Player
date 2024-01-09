@@ -1,0 +1,14 @@
+﻿{
+  "DoGetSteamName": true,
+  "DefaultName": null,
+  "Port": 8750,
+  "DoKoalaCollision": false,
+  "CreateLogFile": true,
+  "AttemptReconnect": true,
+  "AutoRestartTyOnCrash": true,
+  "MulTyPlayerFolderPath": "",
+  "AutoLaunchTyOnStartup": false,
+  "KoalaScale": 1.5,
+  "InterpolationMode" : "None",
+  "Theme": "Dark"
+}

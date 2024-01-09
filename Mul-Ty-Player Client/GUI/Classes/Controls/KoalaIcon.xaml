@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="MulTyPlayerClient.GUI.Controls.KoalaIcon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="20" d:DesignWidth="20">
+    <Grid Margin="0 0 2 0">
+        <Ellipse x:Name="Circle" Width="20" Height="20" Stroke="Transparent">
+            <Ellipse.Fill>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Offset="0"
+                                  Color="{Binding GradientStartColor, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                    <GradientStop Offset="1"
+                                  Color="{Binding GradientEndColor, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                </LinearGradientBrush>
+            </Ellipse.Fill>
+            <Ellipse.Effect>
+                <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2" />
+            </Ellipse.Effect>
+        </Ellipse>
+
+        <TextBlock x:Name="TextBlock" Text="{Binding Letter, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   Style="{DynamicResource ComicText}"
+                   Foreground="White"
+                   FontSize="21"
+                   Margin="0 0 1 3"
+                   VerticalAlignment="Center">
+            <TextBlock.Effect>
+                <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2" />
+            </TextBlock.Effect>
+        </TextBlock>
+    </Grid>
+</UserControl>
