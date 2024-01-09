@@ -22,12 +22,12 @@ jobs:
 
       - name: Build and Publish Projects
         run: |
-          projects=("Mul-Ty-Player Client" "Mul-Ty-Player Server CLI" "Mul-Ty-Player Updater")
+          projects=("Mul-Ty-Player Client" "Mul-Ty-Player Server" "Mul-Ty-Player Updater")
           
           for project in "${projects[@]}"; do
-            dotnet restore "$project"
-            dotnet build "$project" --configuration Release
-            dotnet publish "$project" --configuration Release -o "publish/$project"
+            dotnet restore "$project/$project.csproj"
+            dotnet build "$project/$project.csproj" --configuration Release
+            dotnet publish "$project/$project.csproj" --configuration Release -o "publish/$project"
           done
 
       - name: Zip Published Projects
