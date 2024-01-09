@@ -27,7 +27,7 @@ jobs:
           foreach ($project in $projects) {
           dotnet restore "$project/$project.csproj"
           dotnet build "$project/$project.csproj" --configuration Release
-          dotnet publish "$project/$project.csproj" --configuration Release -o "publish/$project"
+          dotnet publish "$project/$project.csproj" --configuration Release -o "publish/$project" -r win-x86 --self-contained true -p:PublishSingleFile=true
           }
 
       - name: Zip Published Projects
