@@ -25,10 +25,17 @@ public partial class MainWindow : Window
 
     private void Window_Closing(object sender, CancelEventArgs e)
     {
-        if (Client._client != null && Client._client.IsConnected) Client._client.Disconnect();
-        TyProcess.CloseHandle();
-        SteamHelper.Shutdown();
-        Logger.Close();
+        try
+        {
+            if (Client._client != null && Client._client.IsConnected) Client._client.Disconnect();
+            TyProcess.CloseHandle();
+            SteamHelper.Shutdown();
+            Logger.Close();
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+        }
     }
 
     private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
