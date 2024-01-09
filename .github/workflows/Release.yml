@@ -3,16 +3,13 @@ name: Release
 on:
   workflow_dispatch:
     inputs:
-      manual_trigger:
-        description: 'Manually trigger the workflow'
-        default: 'true'
       release_version:
         description: 'Specify the release version'
         required: true
 
 jobs:
   publish:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     
     steps:
       - name: Checkout Repository
@@ -25,16 +22,20 @@ jobs:
 
       - name: Build and Publish Projects
         run: |
-          for project in "Mul-Ty-Player Client" "Mul-Ty-Player Server CLI" "Mul-Ty-Player Updater"; do
-            dotnet restore $project
-            dotnet build $project --configuration Release
-            dotnet publish $project --configuration Release -o publish/$project
+          projects=("Mul-Ty-Player Client" "Mul-Ty-Player Server CLI" "Mul-Ty-Player Updater")
+          
+          for project in "${projects[@]}"; do
+            dotnet restore "$project"
+            dotnet build "$project" --configuration Release
+            dotnet publish "$project" --configuration Release -o "publish/$project"
           done
 
       - name: Zip Published Projects
         run: |
-          for project in "Mul-Ty-Player Client" "Mul-Ty-Player Server" "Mul-Ty-Player Updater"; do
-            zip -r "/Publish/$project/$project.zip" -j "Publish/$project/"
+          projects=("Mul-Ty-Player Client" "Mul-Ty-Player Server" "Mul-Ty-Player Updater")
+          
+          for project in "${projects[@]}"; do
+            zip -r "Publish/$project.zip" -j "Publish/$project/"
           done
 
       - name: Create Release
