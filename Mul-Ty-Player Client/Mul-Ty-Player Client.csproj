@@ -206,9 +206,6 @@
         <None Update="GUI\Sounds\RaceStart.wav">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="help.mtps">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
         <None Update="list.servers">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>

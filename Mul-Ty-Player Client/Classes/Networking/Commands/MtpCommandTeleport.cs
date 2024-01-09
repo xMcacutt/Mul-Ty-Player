@@ -44,7 +44,7 @@ public class MtpCommandTeleport : Command
             RunTeleport(args[0]);
     }
 
-    public void RunTeleport(string x, string y, string z)
+    private void RunTeleport(string x, string y, string z)
     {
         var inCoords = new string[] { x, y, z };
         var outCoords = new float[3];
@@ -70,7 +70,7 @@ public class MtpCommandTeleport : Command
         Client.HHero.WritePosition(outCoords[0], outCoords[1], outCoords[2]);
     }
 
-    public void RunTeleport(string toClient)
+    private void RunTeleport(string toClient)
     {
         if (!ushort.TryParse(toClient, out var clientId))
         {

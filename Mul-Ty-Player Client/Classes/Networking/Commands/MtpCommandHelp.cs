@@ -31,13 +31,13 @@ public class MtpCommandHelp : Command
             RunHelp(args[0]);
     }
 
-    public void RunHelp()
+    private void RunHelp()
     {
         foreach(var command in Client.HCommand.Commands.Where(x => x.Value.Name == x.Key))
             command.Value.PrintHelp();
     }
 
-    public void RunHelp(string commandName)
+    private void RunHelp(string commandName)
     {
         if (!Client.HCommand.Commands.TryGetValue(commandName, out var command))
         {

@@ -273,9 +273,9 @@
                          FontFamily="Cascadia Code"
                          FontSize="14"
                          Cursor="IBeam"
-                         KeyDown="TextboxInput_KeyDown"
+                         PreviewKeyDown="TextboxInput_KeyDown"
                          Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Tag=" Type /help or see help.mtps file for commands"
+                         Tag=" Type /help or /help &lt;command> for commands"
                          Style="{StaticResource PlaceholderTextStyle}" />
 
                 <Button Grid.Column="1"

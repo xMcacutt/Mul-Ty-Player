@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -22,10 +23,18 @@ public partial class Lobby : UserControl
 
     private void TextboxInput_KeyDown(object sender, KeyEventArgs e)
     {
-        if (e.Key == Key.Return && e.IsDown)
+        switch (e.Key)
         {
-            LobbyModel.ProcessInput(TextBoxInput.Text);
-            TextBoxInput.Text = "";
+            case Key.Return:
+                LobbyModel.ProcessInput(TextBoxInput.Text);
+                TextBoxInput.Text = "";
+                break;
+            case Key.Up or Key.Down:
+                var recallText = LobbyModel.ProcessRecall(e.Key == Key.Up);
+                if (e.Key == Key.Up && string.IsNullOrWhiteSpace(recallText))
+                    break;
+                TextBoxInput.Text = recallText;
+                break;
         }
     }
 

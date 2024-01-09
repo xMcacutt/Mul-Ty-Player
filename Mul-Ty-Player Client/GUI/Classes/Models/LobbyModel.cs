@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Controls;
+using MulTyPlayerClient;
+using System.Windows.Input;
 
 namespace MulTyPlayerClient.GUI.Models;
 
@@ -22,10 +25,31 @@ public class LobbyModel
     {
         if (string.IsNullOrWhiteSpace(input))
             return;
-        if (input.StartsWith('/'))
-            Client.HCommand.ParseCommand(input);
+        for (var i = 0; i < Client.HCommand.UndoCalls.Count; i++)
+        {
+            var call = Client.HCommand.UndoCalls.Pop();
+            Client.HCommand.Calls.Push(call);
+        }
+        Client.HCommand.ParseCommand(input);
+    }
+    
+    public static string ProcessRecall(bool up)
+    {
+        var recall = "";
+        if (up)
+        {
+            Client.HCommand.Calls.TryPop(out recall);
+            if(!string.IsNullOrEmpty(recall))
+                Client.HCommand.UndoCalls.Push(recall);
+        }
         else
-            Client.HCommand.ParseCommand("/msg " + input);
+        {
+            Client.HCommand.UndoCalls.TryPop(out recall);
+            if(!string.IsNullOrEmpty(recall)) 
+                Client.HCommand.Calls.Push(recall);
+            Client.HCommand.UndoCalls.TryPeek(out recall);
+        }
+        return recall;
     }
 
     public bool TryGetPlayerInfo(ushort clientID, out PlayerInfo playerInfo)
