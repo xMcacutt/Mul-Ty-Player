@@ -247,7 +247,7 @@
                                            Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"
                                            FontFamily="Cascadia Code"
                                            FontSize="12"
-                                           TextAlignment="Right" />
+                                           TextAlignment="Left" />
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

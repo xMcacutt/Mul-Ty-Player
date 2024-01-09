@@ -10,7 +10,7 @@ using MulTyPlayerClient.GUI.Models;
 using Riptide;
 
 namespace MulTyPlayerClient;
-
+/*
 internal class CommandHandler
 {
     public List<string> hostCommands;
@@ -238,10 +238,7 @@ internal class CommandHandler
         Client._client.Send(message);
     }
 
-    public static bool HostExists()
-    {
-        return PlayerHandler.Players.Values.Any(p => p.IsHost);
-    }
+    
 
     private static void SendMessage(string text, ushort? toClientId)
     {
@@ -270,16 +267,7 @@ internal class CommandHandler
         Logger.Write(result);
     }
 
-    public void SetReady()
-    {
-        PlayerHandler.Players[Client._client.Id].IsReady = !PlayerHandler.Players[Client._client.Id].IsReady;
-        var message = Message.Create(MessageSendMode.Reliable, MessageID.Ready);
-        message.AddBool(PlayerHandler.Players[Client._client.Id].IsReady);
-        Client._client.Send(message);
-        Application.Current.Dispatcher.BeginInvoke(
-            DispatcherPriority.Background,
-            new Action(ModelController.Lobby.UpdateReadyStatus));
-    }
+
 
     [MessageHandler((ushort)MessageID.ReqHost)]
     public static void RequestHostResponse(Message message)
@@ -336,4 +324,4 @@ internal class CommandHandler
     {
         Logger.Write(message.GetString());
     }
-}
+}*/

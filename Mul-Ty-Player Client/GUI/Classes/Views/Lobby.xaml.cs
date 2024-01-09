@@ -45,7 +45,7 @@ public partial class Lobby : UserControl
 
     private void ReadyButton_Click(object sender, RoutedEventArgs e)
     {
-        Client.HCommand.SetReady();
+        Client.HPlayer.SetReady();
     }
 
     private void LaunchGameButton_Click(object sender, RoutedEventArgs e)

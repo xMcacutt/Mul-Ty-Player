@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using MulTyPlayer;
@@ -80,5 +82,21 @@ internal class PlayerHandler
     public static bool TryGetLocalPlayer(out Player player)
     {
         return Players.TryGetValue(Client._client.Id, out player);
+    }
+    
+    public static bool HostExists()
+    {
+        return PlayerHandler.Players.Values.Any(p => p.IsHost);
+    }
+    
+    public void SetReady()
+    {
+        Players[Client._client.Id].IsReady = !PlayerHandler.Players[Client._client.Id].IsReady;
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.Ready);
+        message.AddBool(Players[Client._client.Id].IsReady);
+        Client._client.Send(message);
+        Application.Current.Dispatcher.BeginInvoke(
+            DispatcherPriority.Background,
+            new Action(ModelController.Lobby.UpdateReadyStatus));
     }
 }
