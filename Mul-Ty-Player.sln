@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mul-Ty-Player Client", "MulTyPlayerClient\Mul-Ty-Player Client.csproj", "{949DCE2F-61FB-46B8-B18D-C96842EF7A9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mul-Ty-Player Client", "Mul-Ty-Player Client\Mul-Ty-Player Client.csproj", "{949DCE2F-61FB-46B8-B18D-C96842EF7A9F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mul-Ty-Player Server CLI", "MulTyPlayerServer\Mul-Ty-Player Server CLI.csproj", "{8FC2F74F-3012-4187-A11E-A02D395533FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mul-Ty-Player Server", "Mul-Ty-Player Server\Mul-Ty-Player Server.csproj", "{8FC2F74F-3012-4187-A11E-A02D395533FE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AC07365F-39B3-43EE-B08B-AEDAAE322F2A}"
 	ProjectSection(SolutionItems) = preProject
