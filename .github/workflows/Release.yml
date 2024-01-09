@@ -22,21 +22,21 @@ jobs:
 
       - name: Build and Publish Projects
         run: |
-          projects=("Mul-Ty-Player Client", "Mul-Ty-Player Server", "Mul-Ty-Player Updater")
+          $projects = @("Mul-Ty-Player Client", "Mul-Ty-Player Server", "Mul-Ty-Player Updater")
           
-          for project in "${projects[@]}"; do
-            dotnet restore "$project/$project.csproj"
-            dotnet build "$project/$project.csproj" --configuration Release
-            dotnet publish "$project/$project.csproj" --configuration Release -o "publish/$project"
-          done
+          foreach ($project in $projects) {
+          dotnet restore "$project/$project.csproj"
+          dotnet build "$project/$project.csproj" --configuration Release
+          dotnet publish "$project/$project.csproj" --configuration Release -o "publish/$project"
+          }
 
       - name: Zip Published Projects
         run: |
-          projects=("Mul-Ty-Player Client", "Mul-Ty-Player Server", "Mul-Ty-Player Updater")
+          $projects = @("Mul-Ty-Player Client", "Mul-Ty-Player Server", "Mul-Ty-Player Updater")
           
-          for project in "${projects[@]}"; do
-            zip -r "Publish/$project.zip" -j "Publish/$project/"
-          done
+          foreach ($project in $projects) {
+            Compress-Archive -Path "publish/$project/*" -DestinationPath "publish/$project.zip"
+          }
 
       - name: Create Release
         id: create_release
@@ -44,6 +44,7 @@ jobs:
         with:
           tag_name: ${{ github.event.inputs.release_version }}
           release_name: Release ${{ github.event.inputs.release_version }}
+          latest: true
           draft: false
           prerelease: false
 
@@ -51,4 +52,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: projects
-          path: ./Publish/**/*.zip
+          path: ./publish/**/*.zip
