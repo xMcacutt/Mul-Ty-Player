@@ -32,6 +32,9 @@
         <DebugType>full</DebugType>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="RiptideNetworking">
+          <HintPath>Resources\RiptideNetworking.dll</HintPath>
+        </Reference>
         <Reference Include="RiptideNetworking, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
             <SpecificVersion>False</SpecificVersion>
             <HintPath>..\..\TyMultiplayerCLI\TyMultiplayerCLI\Resources\RiptideNetworking.dll</HintPath>
