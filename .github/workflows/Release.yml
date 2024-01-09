@@ -22,7 +22,7 @@ jobs:
 
       - name: Build and Publish Projects
         run: |
-          projects=("Mul-Ty-Player Client" "Mul-Ty-Player Server" "Mul-Ty-Player Updater")
+          projects=("Mul-Ty-Player Client", "Mul-Ty-Player Server", "Mul-Ty-Player Updater")
           
           for project in "${projects[@]}"; do
             dotnet restore "$project/$project.csproj"
@@ -32,7 +32,7 @@ jobs:
 
       - name: Zip Published Projects
         run: |
-          projects=("Mul-Ty-Player Client" "Mul-Ty-Player Server" "Mul-Ty-Player Updater")
+          projects=("Mul-Ty-Player Client", "Mul-Ty-Player Server", "Mul-Ty-Player Updater")
           
           for project in "${projects[@]}"; do
             zip -r "Publish/$project.zip" -j "Publish/$project/"
