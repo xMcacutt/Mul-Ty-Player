@@ -95,6 +95,13 @@ internal class SyncHandler
         if (SettingsHandler.SyncSettings[type])
             Client.HSync.SyncObjects[type].Sync(message.GetInt(), message.GetBytes(), message.GetBytes());
     }
+    
+    [MessageHandler((ushort)MessageID.ResetSync)]
+    private static void HandleSyncReset(Message message)
+    {
+        Logger.Write("Synchronisations have been reset to new game state.");
+        Client.HSync = new SyncHandler();
+    }
 
     [MessageHandler((ushort)MessageID.ClientDataUpdate)]
     private static void HandleClientDataUpdate(Message message)

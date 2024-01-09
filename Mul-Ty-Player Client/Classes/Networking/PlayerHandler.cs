@@ -91,7 +91,7 @@ internal class PlayerHandler
     
     public void SetReady()
     {
-        Players[Client._client.Id].IsReady = !PlayerHandler.Players[Client._client.Id].IsReady;
+        Players[Client._client.Id].IsReady = !Players[Client._client.Id].IsReady;
         var message = Message.Create(MessageSendMode.Reliable, MessageID.Ready);
         message.AddBool(Players[Client._client.Id].IsReady);
         Client._client.Send(message);
@@ -99,4 +99,14 @@ internal class PlayerHandler
             DispatcherPriority.Background,
             new Action(ModelController.Lobby.UpdateReadyStatus));
     }
+    
+    [MessageHandler((ushort)MessageID.Ready)]
+    public static void PeerReady(Message message)
+    {
+        Players[message.GetUShort()].IsReady = message.GetBool();
+        Application.Current.Dispatcher.BeginInvoke(
+            DispatcherPriority.Background,
+            new Action(ModelController.Lobby.UpdateReadyStatus));
+    }
+    
 }

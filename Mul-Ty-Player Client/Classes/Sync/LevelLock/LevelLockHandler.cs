@@ -148,4 +148,12 @@ public class LevelLockHandler
         //Console.WriteLine("Level completed");
         Client.HSync.HLevelLock.EnableAllCurrentPortals();
     }
+    
+    [MessageHandler((ushort)MessageID.SetLevelLock)]
+    public static void SetLevelLock(Message message)
+    {
+        SettingsHandler.DoLevelLock = message.GetBool();
+        var result = SettingsHandler.DoLevelLock ? "Level lock has been activated" : "Level lock has been disabled";
+        Logger.Write(result);
+    }
 }
