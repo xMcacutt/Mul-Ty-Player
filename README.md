@@ -110,6 +110,12 @@ With your port forwarding rule set up, people can now join your server using you
 - New [collectible tracker](https://github.com/xMcacutt/Ty1-Collectible-Tracker) app created
 ![ColTrack](/GitImages/ColTrack.png)
 
+#### 3.2.2
+- Command system overhaul
+- New command info using /help
+- New password reset setting for public servers to avoid lockouts
+- Command recall (navigate previously called commands)
+
 ### Bug Fixes
 
 #### 3.2.1
