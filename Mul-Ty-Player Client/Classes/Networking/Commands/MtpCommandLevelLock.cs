@@ -1,6 +1,45 @@
-﻿namespace MulTyPlayerClient;
+﻿using System;
+using System.Collections.Generic;
+using MulTyPlayer;
+using Riptide;
 
-public class MtpCommandLevelLock
+namespace MulTyPlayerClient;
+
+public class MtpCommandLevelLock : Command
 {
+    public MtpCommandLevelLock()
+    {
+        Name = "levellock";
+        Aliases = new List<string> { "ll" };
+        HostOnly = true;
+        Usages = new List<string> { "/levellock <true/false>" };
+        Description = "Activate / Deactivate Level Lock mode.";
+        ArgDescriptions = new Dictionary<string, string>
+        {
+            {"<true/false>", "Whether Level Lock mode should be turned on or off."}
+        };
+    }
     
+    public override void InitExecute(string[] args)
+    {
+        if (args.Length != 1)
+        {
+            SuggestHelp();
+            return;
+        }
+        var doLevelLock = args[0] == "true" ? true : (args[0] == "false" ? false : (bool?)null);
+        if (doLevelLock == null)
+        {
+            SuggestHelp();
+            return;
+        }
+        RunLevelLock((bool)doLevelLock);
+    }
+
+    private void RunLevelLock(bool value)
+    {
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.SetLevelLock);
+        message.AddBool(value);
+        Client._client.Send(message);
+    }
 }

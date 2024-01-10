@@ -1,6 +1,7 @@
 ﻿{
   "Password": "XXXXX",
   "Port": 8750,
+  "ResetPasswordOnEmpty": true,
   "DoSyncTEs": true,
   "DoSyncCogs": true,
   "DoSyncBilbies": true,

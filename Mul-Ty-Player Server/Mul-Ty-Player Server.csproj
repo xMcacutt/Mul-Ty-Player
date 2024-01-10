@@ -41,9 +41,6 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <None Update="help.mtps">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
         <None Update="ServerSettings.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>

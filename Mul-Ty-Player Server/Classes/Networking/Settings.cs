@@ -4,6 +4,7 @@ internal class Settings
 {
     public string Password { get; set; }
     public ushort Port { get; set; }
+    public bool ResetPasswordOnEmpty { get; set; }
     public bool DoSyncTEs { get; set; }
     public bool DoSyncCogs { get; set; }
     public bool DoSyncBilbies { get; set; }

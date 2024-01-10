@@ -2,7 +2,6 @@
 
 public enum MessageID : ushort
 {
-    Connected,
     PlayerInfo,
     KoalaCoordinates,
     ConsoleSend,
@@ -14,7 +13,6 @@ public enum MessageID : ushort
     SyncSettings,
     ReqHost,
     HostChange,
-    HostCommand,
     KoalaSelected,
     AnnounceDisconnect,
     P2PMessage,
@@ -26,5 +24,8 @@ public enum MessageID : ushort
     LL_LevelEntered,
     LL_LevelCompleted,
     LL_Sync,
-    DespawnAllBilbies
+    DespawnAllBilbies,
+    Kick,
+    GetPassword,
+    SetPassword
 }

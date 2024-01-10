@@ -1,4 +1,5 @@
 ﻿using MulTyPlayer;
+using MulTyPlayerServer.Classes.Networking.Commands;
 using Riptide;
 
 namespace MulTyPlayerServer;
@@ -46,7 +47,7 @@ internal class KoalaHandler
         if (bSendToAll)
         {
             Server._Server.SendToAll(announcement, fromToClientId);
-            Server.SendMessageToClients($"{playerName} (Client{fromToClientId}) selected {koalaName}", true);
+            PeerMessageHandler.SendMessageToClients($"{playerName} (Client{fromToClientId}) selected {koalaName}", true);
         }
         else
         {

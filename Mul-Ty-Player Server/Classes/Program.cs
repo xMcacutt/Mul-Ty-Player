@@ -1,4 +1,5 @@
 ﻿using System;
+using MulTyPlayerServer.Classes.Networking.Commands;
 
 namespace MulTyPlayerServer;
 
@@ -40,7 +41,7 @@ internal class Program
         var command = Console.ReadLine();
         while (command != "/stop")
         {
-            Console.WriteLine(CommandHandler.ParseCommand(command));
+            Console.WriteLine(HCommand.ParseCommand(command));
             if (command != "/restart")
                 command = Console.ReadLine();
             else
