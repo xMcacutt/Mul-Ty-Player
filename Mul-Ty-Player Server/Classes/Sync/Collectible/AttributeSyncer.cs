@@ -30,7 +30,7 @@ internal class AttributeSyncer : Syncer
 
     public override void Sync(ushort clientID)
     {
-        var message = Message.Create(MessageSendMode.Reliable, MessageID.ReqSync);
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.ReqCollectibleSync);
         message.AddString(Name);
         message.AddInt(0);
         message.AddBytes(new byte[1]);

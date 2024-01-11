@@ -44,7 +44,7 @@ internal class FrameSyncer : Syncer
     {
         foreach (var level in GlobalObjectData.Keys)
         {
-            var message = Message.Create(MessageSendMode.Reliable, MessageID.ReqSync);
+            var message = Message.Create(MessageSendMode.Reliable, MessageID.ReqCollectibleSync);
             message.AddString(Name);
             message.AddInt(level);
             message.AddBytes(GlobalObjectData[level]);
@@ -52,7 +52,7 @@ internal class FrameSyncer : Syncer
             Server._Server.Send(message, player);
         }
 
-        var saveDataMessage = Message.Create(MessageSendMode.Reliable, MessageID.ReqSync);
+        var saveDataMessage = Message.Create(MessageSendMode.Reliable, MessageID.ReqCollectibleSync);
         saveDataMessage.AddString(Name);
         saveDataMessage.AddInt(373);
         saveDataMessage.AddBytes(Array.Empty<byte>());

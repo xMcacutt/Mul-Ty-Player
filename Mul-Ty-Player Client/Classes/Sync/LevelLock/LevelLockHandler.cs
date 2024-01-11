@@ -66,11 +66,10 @@ public class LevelLockHandler
         }
         _bossPortalsActive = true;
         if (Client.HLevel.CurrentLevelId != 0) return;
-        var triggerAddress = PointerCalculations.GetPointerAddress(0x26DBD8, new int[] { 0x0 });
         var iterator = 0;
         foreach (var level in BossLevelsWithTriggers)
         {
-            ProcessHandler.WriteData(triggerAddress + BossTriggerIndices[iterator] * 0xB8 + 0x8C, new byte[] { 0x1 }, "LevelLockHandler: Enable() 1");
+            Client.HSync.HTrigger.SetTriggerActivity(BossTriggerIndices[iterator], true);
             iterator++;
         }
     }
@@ -97,14 +96,13 @@ public class LevelLockHandler
             var b = PortalStates[level] ? (byte)0x1 : (byte)0x3;
             ProcessHandler.WriteData(Client.HSync.SyncObjects["Portal"].LiveObjectAddress + 0x9C + 0xB0 * Array.IndexOf(LivePortalOrder, level), new byte[] {b}, "LevelLockHandler: SetPortalStates() 2");
         }
-        var triggerAddress = PointerCalculations.GetPointerAddress(0x26DBD8, new int[] { 0x0 });
         var iterator = 0;
         foreach (var level in BossLevelsWithTriggers)
         {
-            ProcessHandler.TryRead(triggerAddress + BossTriggerIndices[iterator] * 0xB8 + 0x8C, out byte result, false, "LevelLockHandler: SetPortalStates() 3");
+            var result = Client.HSync.HTrigger.GetTriggerActivity(BossTriggerIndices[iterator]);
             if ((result == 1 && PortalStates[level]) || result == 0 && !PortalStates[level]) continue;
-            var b = PortalStates[level] || _bossPortalsActive ? (byte)0x1 : (byte)0x0;
-            ProcessHandler.WriteData(triggerAddress + BossTriggerIndices[iterator] * 0xB8 + 0x8C, new byte[] { b }, "LevelLockHandler: SetPortalStates() 4");
+            var b = PortalStates[level] || _bossPortalsActive;
+            Client.HSync.HTrigger.SetTriggerActivity(BossTriggerIndices[iterator], b);
             iterator++;
         }
     }

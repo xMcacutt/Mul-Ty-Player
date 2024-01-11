@@ -48,7 +48,7 @@ internal class SyncHandler
         Server._Server.SendToAll(message);
     }
 
-    [MessageHandler((ushort)MessageID.ReqSync)]
+    [MessageHandler((ushort)MessageID.ReqCollectibleSync)]
     private static void HandleSyncRequest(ushort fromClientId, Message message)
     {
         foreach (var s in Program.HSync.Syncers.Keys)
@@ -56,7 +56,7 @@ internal class SyncHandler
                 Program.HSync.Syncers[s].Sync(fromClientId);
     }
 
-    [MessageHandler((ushort)MessageID.ServerDataUpdate)]
+    [MessageHandler((ushort)MessageID.ServerCollectibleDataUpdate)]
     private static void HandleServerDataUpdate(ushort fromClientId, Message message)
     {
         var syncMessage = SyncMessage.Decode(message);

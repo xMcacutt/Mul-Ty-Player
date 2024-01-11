@@ -8,6 +8,7 @@ using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
 using MulTyPlayerClient.GUI.Views;
+using MulTyPlayerClient.Objectives;
 using Riptide;
 using Riptide.Utils;
 
@@ -32,6 +33,7 @@ internal class Client
     public static HeroHandler HHero;
     public static LevelHandler HLevel;
     public static SyncHandler HSync;
+    public static ObjectiveHandler HObjective;
 
     public static CancellationTokenSource cts;
     public static bool Relaunching => TyProcess.LaunchingGame;
@@ -71,6 +73,7 @@ internal class Client
         HKoala = new KoalaHandler();
         HCommand = new CommandHandler();
         HPlayer = new PlayerHandler();
+        HObjective = new ObjectiveHandler();
         PlayerHandler.Players.Clear();
     }
 
@@ -186,6 +189,8 @@ internal class Client
                     {
                         HLevel.GetCurrentLevel();
                         HSync.CheckEnabledObservers();
+                        if (SettingsHandler.DoTESyncing)
+                            HObjective.RunChecks();
                         HHero.GetTyPosRot();
                         HKoala.CheckTA();
                     }

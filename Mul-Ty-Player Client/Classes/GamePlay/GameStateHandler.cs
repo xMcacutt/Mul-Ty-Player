@@ -40,4 +40,11 @@ public class GameStateHandler
         if (onMenu && ModelController.Lobby.TryGetPlayerInfo(Client._client.Id, out var playerInfo))
             playerInfo.Level = "M/L";
     }
+    
+    
+    public void ProtectLeaderboard()
+    {
+        var address = SyncHandler.SaveDataBaseAddress + 0xB07;
+        ProcessHandler.WriteData(address, new byte[] { 1 }, "Protecting leaderboard");
+    }
 }

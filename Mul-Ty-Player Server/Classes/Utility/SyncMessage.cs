@@ -25,7 +25,7 @@ internal class SyncMessage
 
     public static Message Encode(SyncMessage syncMessage)
     {
-        var message = Message.Create(MessageSendMode.Reliable, MessageID.ClientDataUpdate);
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.ClientCollectibleDataUpdate);
         message.AddInt(syncMessage.iLive);
         message.AddInt(syncMessage.iSave);
         message.AddInt(syncMessage.level);

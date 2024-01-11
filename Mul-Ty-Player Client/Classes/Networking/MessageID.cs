@@ -5,11 +5,11 @@ public enum MessageID : ushort
     PlayerInfo,
     KoalaCoordinates,
     ConsoleSend,
-    ServerDataUpdate,
-    ClientDataUpdate,
+    ServerCollectibleDataUpdate,
+    ClientCollectibleDataUpdate,
     Disconnect,
     ResetSync,
-    ReqSync,
+    ReqCollectibleSync,
     SyncSettings,
     ReqHost,
     HostChange,
@@ -27,5 +27,8 @@ public enum MessageID : ushort
     DespawnAllBilbies,
     Kick,
     GetPassword,
-    SetPassword
+    SetPassword,
+    ObjectiveObjectActivated,
+    ObjectiveStateChanged,
+    ReqObjectiveSync
 }

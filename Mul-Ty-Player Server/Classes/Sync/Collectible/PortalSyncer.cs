@@ -27,7 +27,7 @@ internal class PortalSyncer : Syncer
 
     public override void Sync(ushort player)
     {
-        var message = Message.Create(MessageSendMode.Reliable, MessageID.ReqSync);
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.ReqCollectibleSync);
         message.AddString(Name);
         message.AddInt(0);
         message.AddBytes(ActivePortals.Values.ToArray());

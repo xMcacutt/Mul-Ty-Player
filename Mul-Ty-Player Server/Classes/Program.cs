@@ -1,5 +1,6 @@
 ﻿using System;
 using MulTyPlayerServer.Classes.Networking.Commands;
+using MulTyPlayerServer.Sync.Objective;
 
 namespace MulTyPlayerServer;
 
@@ -9,6 +10,7 @@ internal class Program
     public static SyncHandler HSync;
     public static CommandHandler HCommand;
     public static PlayerHandler HPlayer;
+    public static ObjectiveHandler HObjective;
     public static string _inputStr;
 
     private static void Main()
@@ -35,6 +37,7 @@ internal class Program
         HKoala = new KoalaHandler();
         HCommand = new CommandHandler();
         HPlayer = new PlayerHandler();
+        HObjective = new ObjectiveHandler();
         Console.WriteLine(
             "Welcome to Mul-Ty-Player.\nThis is the server application. \nPort forward to allow connections.\n");
 

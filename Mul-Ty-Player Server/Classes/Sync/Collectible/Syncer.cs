@@ -34,7 +34,7 @@ internal abstract class Syncer
     {
         foreach (var level in GlobalObjectData.Keys)
         {
-            var message = Message.Create(MessageSendMode.Reliable, MessageID.ReqSync);
+            var message = Message.Create(MessageSendMode.Reliable, MessageID.ReqCollectibleSync);
             message.AddString(Name);
             message.AddInt(level);
             message.AddBytes(GlobalObjectData[level]);

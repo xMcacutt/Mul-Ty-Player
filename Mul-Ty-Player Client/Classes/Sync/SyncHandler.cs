@@ -19,6 +19,7 @@ internal class SyncHandler
     public static FrameHandler HFrame;
     public static InvisiCrateHandler HInvisiCrate;
     public LevelLockHandler HLevelLock;
+    public TriggerHandler HTrigger;
 
     public static int SaveDataBaseAddress;
     public Dictionary<string, SyncObjectHandler> SyncObjects;
@@ -40,11 +41,13 @@ internal class SyncHandler
             { "InvisiCrate", HInvisiCrate = new InvisiCrateHandler() }
         };
         HLevelLock = new LevelLockHandler();
+        HTrigger = new TriggerHandler();
     }
 
     public void SetMemAddrs()
     {
         SaveDataBaseAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0x10 });
+        HTrigger.SetMemAddrs();
         HAttribute.SetMemAddrs();
         if (Levels.GetLevelData(Client.HLevel.CurrentLevelId).FrameCount != 0)
         {
@@ -57,7 +60,6 @@ internal class SyncHandler
             HRainbowScale.SetMemAddrs();
             HPortal.SetMemAddrs();
         }
-
         if (Client.HLevel.CurrentLevelData.IsMainStage)
         {
             HOpal.SetMemAddrs();
@@ -83,11 +85,11 @@ internal class SyncHandler
 
     public void RequestSync()
     {
-        var message = Message.Create(MessageSendMode.Reliable, MessageID.ReqSync);
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.ReqCollectibleSync);
         Client._client.Send(message);
     }
 
-    [MessageHandler((ushort)MessageID.ReqSync)]
+    [MessageHandler((ushort)MessageID.ReqCollectibleSync)]
     private static void HandleSyncReqResponse(Message message)
     {
         if (Client.Relaunching) return;
@@ -103,39 +105,19 @@ internal class SyncHandler
         Client.HSync = new SyncHandler();
     }
 
-    [MessageHandler((ushort)MessageID.ClientDataUpdate)]
+    [MessageHandler((ushort)MessageID.ClientCollectibleDataUpdate)]
     private static void HandleClientDataUpdate(Message message)
     {
         if (Client.Relaunching) return;
-        var syncMessage = SyncMessage.Decode(message);
+        var syncMessage = CollectibleSyncMessage.Decode(message);
         Client.HSync.SyncObjects[syncMessage.type]
             .HandleClientUpdate(syncMessage.iLive, syncMessage.iSave, syncMessage.level);
     }
 
     public void SendDataToServer(int iLive, int iSave, int level, string type)
     {
-        var syncMessage = SyncMessage.Create(iLive, iSave, level, type);
-        Client._client.Send(SyncMessage.Encode(syncMessage));
-    }
-
-    [MessageHandler((ushort)MessageID.StopWatch)]
-    private static void HandleStopWatchActivate(Message message)
-    {
-        var level = message.GetInt();
-        if (Client.HLevel.CurrentLevelData.Id != level || Client.HGameState.IsAtMainMenuOrLoading()) return;
-        Client.HSync.ShowStopwatch();
-    }
-
-    public void ShowStopwatch()
-    {
-        var address = PointerCalculations.GetPointerAddress(0x270420, new[] { 0x68 });
-        ProcessHandler.WriteData(address, new byte[] { 0x2 });
-    }
-
-    public void ProtectLeaderboard()
-    {
-        var address = SaveDataBaseAddress + 0xB07;
-        ProcessHandler.WriteData(address, new byte[] { 1 }, "Protecting leaderboard");
+        var syncMessage = CollectibleSyncMessage.Create(iLive, iSave, level, type);
+        Client._client.Send(CollectibleSyncMessage.Encode(syncMessage));
     }
 
     public void CheckEnabledObservers()

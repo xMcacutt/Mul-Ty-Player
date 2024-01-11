@@ -59,5 +59,8 @@
       <Compile Include="..\Mul-Ty-Player Client\Classes\Networking\MessageID.cs">
         <Link>Classes\Networking\MessageID.cs</Link>
       </Compile>
+      <Compile Include="..\Mul-Ty-Player Client\Classes\Sync\Objectives\ObjectiveState.cs">
+        <Link>Classes\Sync\Objective\ObjectiveState.cs</Link>
+      </Compile>
     </ItemGroup>
 </Project>

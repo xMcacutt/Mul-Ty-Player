@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using MulTyPlayer;
+using Riptide;
 
 namespace MulTyPlayerClient;
 
@@ -36,5 +38,19 @@ internal class TEHandler : SyncObjectHandler
         CounterAddress = PointerCalculations.GetPointerAddress(0x00288730, new[] { 0xD });
         LiveObjectAddress = PointerCalculations.GetPointerAddress(0x270280, new[] { 0x0 });
         ProcessHandler.CheckAddress(LiveObjectAddress, (ushort)(17341304 & 0xFFFF), "TE base address check");
+    }
+    
+    [MessageHandler((ushort)MessageID.StopWatch)]
+    private static void HandleStopWatchActivate(Message message)
+    {
+        var level = message.GetInt();
+        if (Client.HLevel.CurrentLevelData.Id != level || Client.HGameState.IsAtMainMenuOrLoading()) return;
+        (Client.HSync.SyncObjects["TE"] as TEHandler)?.ShowStopwatch();
+    }
+
+    public void ShowStopwatch()
+    {
+        var address = PointerCalculations.GetPointerAddress(0x270420, new[] { 0x68 });
+        ProcessHandler.WriteData(address, new byte[] { 0x2 });
     }
 }

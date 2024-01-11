@@ -1,5 +1,6 @@
 ﻿using System;
 using MulTyPlayerClient.GUI.Models;
+using MulTyPlayerClient.Objectives;
 
 namespace MulTyPlayerClient;
 
@@ -11,6 +12,7 @@ internal class LevelHandler
     public Action<int> OnLevelChange = delegate { };
     private static KoalaHandler HKoala => Client.HKoala;
     private static SyncHandler HSync => Client.HSync;
+    private static ObjectiveHandler HObjective => Client.HObjective;
 
     public int CurrentLevelId
     {
@@ -31,17 +33,20 @@ internal class LevelHandler
         HSync.SetCurrentData(CurrentLevelData.IsMainStage, CurrentLevelData.FrameCount != 0);
         HSync.SetMemAddrs();
         HSync.RequestSync();
-        if (SettingsHandler.DoTESyncing &&
-            HSync.SyncObjects["TE"].GlobalObjectData.ContainsKey(currentLevelId) &&
-            HSync.SyncObjects["TE"].GlobalObjectData[CurrentLevelId][3] == 5)
-            HSync.ShowStopwatch();
-        HSync.ProtectLeaderboard();
+        Client.HGameState.ProtectLeaderboard();
+        if (SettingsHandler.DoTESyncing)
+        {
+            HObjective.SetMemAddrs();
+            HObjective.RequestSync();
+            if (HSync.SyncObjects["TE"].GlobalObjectData.ContainsKey(currentLevelId) &&
+                HSync.SyncObjects["TE"].GlobalObjectData[CurrentLevelId][3] == 5)
+                (HSync.SyncObjects["TE"] as TEHandler)?.ShowStopwatch();
+        }
         if (CurrentLevelData.Id != 16)
         {
             HKoala.SetBaseAddress();
             HKoala.SetCoordinateAddresses();
         }
-
         if (CurrentLevelData.HasKoalas)
             ObjectiveCountSet();
         OnLevelChange?.Invoke(currentLevelId);
