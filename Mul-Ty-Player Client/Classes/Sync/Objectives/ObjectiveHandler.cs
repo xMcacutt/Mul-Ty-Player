@@ -45,19 +45,19 @@ public class ObjectiveHandler
     }
 
     [MessageHandler((ushort)MessageID.ObjectiveObjectActivated)]
-    public void HandleObjectActivated(Message message)
+    public static void HandleObjectActivated(Message message)
     {
         var type = message.GetString();
         var index = message.GetInt();
-        Objectives[type].SetObjectActive(index);
+        Client.HObjective.Objectives[type].SetObjectActive(index);
     }
 
     [MessageHandler((ushort)MessageID.ObjectiveStateChanged)]
-    public void HandleStateChanged(Message message)
+    public static void HandleStateChanged(Message message)
     {
         var type = message.GetString();
         var state = (ObjectiveState)message.GetByte();
-        Objectives[type].SetState(state);
+        Client.HObjective.Objectives[type].SetState(state);
     }
     
     public void RequestSync()

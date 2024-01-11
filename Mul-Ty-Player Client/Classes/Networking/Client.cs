@@ -40,26 +40,30 @@ internal class Client
 
     public static void Start(string ip, string name, string pass)
     {
-        InitHandlers();
+        try
+        {
+            InitHandlers();
+            _ip = ip;
+            _pass = pass;
+            Name = name;
 
-        _ip = ip;
-        _pass = pass;
-        Name = name;
+            InitRiptide();
+            cts = new CancellationTokenSource();
 
-        InitRiptide();
-
-        cts = new CancellationTokenSource();
-
-        var authentication = Message.Create();
-        authentication.AddString(_pass);
-        if (!_ip.Contains(':'))
-            _ip += ":" + SettingsHandler.Settings.Port;
-
-        var attempt = _client.Connect(_ip, 5, 0, authentication);
-        if (!attempt) ConnectionAttemptFailed();
-        ModelController.KoalaSelect.OnProceedToLobby += () => { KoalaSelected = true; };
-        ModelController.Lobby.OnLogout += () => { KoalaSelected = false; };
-
+            var authentication = Message.Create();
+            authentication.AddString(_pass);
+            if (!_ip.Contains(':'))
+                _ip += ":" + SettingsHandler.Settings.Port;
+            var attempt = _client.Connect(_ip, 5, 0, authentication);
+            if (!attempt) ConnectionAttemptFailed();
+            ModelController.KoalaSelect.OnProceedToLobby += () => { KoalaSelected = true; };
+            ModelController.Lobby.OnLogout += () => { KoalaSelected = false; };
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
         Thread loop = new(() => ClientLoop(cts.Token));
         loop.Start();
     }
