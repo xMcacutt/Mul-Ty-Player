@@ -10,14 +10,15 @@ namespace MulTyPlayerClient.Objectives;
 
 public class ObjectiveHandler
 {
-    public static BurnerObjective HBurner;
     public Dictionary<string, Objective> Objectives;
 
     public ObjectiveHandler()
     {
         Objectives = new Dictionary<string, Objective>
         {
-            { "Burner", HBurner = new BurnerObjective() }
+            { "Burner", new BurnerObjective(8) },
+            { "SnowKoalaKid", new KoalaKidObjective(9) },
+            { "StumpKoalaKid", new KoalaKidObjective(13) }
         };
     }
 

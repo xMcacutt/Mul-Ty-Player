@@ -7,12 +7,11 @@ namespace MulTyPlayerClient.Objectives;
 
 public class BurnerObjective : Objective
 {
-    public BurnerObjective()
+    public BurnerObjective(int level) : base(level)
     {
         Name = "Burner";
         Count = 8;
         State = ObjectiveState.Inactive;
-        Level = 8;
         ObjectPath = new[] { 0x2681E8, 0x0 };
         ObjectActiveState = 0x2;
         CurrentData = new byte[] {1, 1, 1, 1, 1, 1, 1, 1};
@@ -45,7 +44,7 @@ public class BurnerObjective : Objective
             for (var i = 0; i < Count; i++)
             {
                 //READ EACH BURNER STATE
-                ProcessHandler.TryRead(ObjectAddress + 0x90 + i * 0x70 + 0x6C, out CurrentData[i], false, "Burner: IsActive() 2");
+                ProcessHandler.TryRead(ObjectAddress + 0x90 + i * 0x70 + 0x6C, out CurrentData[i], false, "Burner: IsActive() 3");
                 if (CurrentData[i] != ObjectActiveState || OldData[i] == ObjectActiveState) continue;
                 OldData[i] = CurrentData[i];
                 //SEND MESSAGE TO SERVER
@@ -61,7 +60,7 @@ public class BurnerObjective : Objective
     {
         Client.HSync.HTrigger.CheckSetTrigger(15, false);
         Client.HSync.HTrigger.CheckSetTrigger(19, true);
-        ProcessHandler.TryRead(ObjectAddress + 0x6C, out ushort objectiveState, false, "Burner: IsActive() 1");
+        ProcessHandler.TryRead(ObjectAddress + 0x6C, out ushort objectiveState, false, "Burner: IsReady() 1");
         if (objectiveState == 1)
             AllowTurnIn();
         //CHECK TE STATE FOR COMPLETION
@@ -80,7 +79,7 @@ public class BurnerObjective : Objective
         {
             ProcessHandler.WriteData(ObjectAddress + 0x90 + (0x70 * i) + 0x4C, new byte[] { 0x1 });
             ProcessHandler.TryRead(ObjectAddress + 0x90 + (0x70 * i) + 0x6C, out ushort objectState, false,
-                "Burner: IsActive() 2");
+                "Burner: Activate() 1");
             if (objectState == 0)
                 ProcessHandler.WriteData(ObjectAddress + 0x90 + (0x70 * i) + 0x6C, new byte[] { 0x1 });
         }
@@ -93,7 +92,7 @@ public class BurnerObjective : Objective
         {
             ProcessHandler.WriteData(ObjectAddress + 0x90 + (0x70 * i) + 0x4C, new byte[] { 0x1 });
             ProcessHandler.TryRead(ObjectAddress + 0x90 + (0x70 * i) + 0x6C, out ushort objectState, false,
-                "Burner: IsActive() 2");
+                "Burner: AllowTurnIn() 1");
             if (objectState == 0)
                 ProcessHandler.WriteData(ObjectAddress + 0x90 + (0x70 * i) + 0x6C, new byte[] { 0x2 });
         }
@@ -119,7 +118,6 @@ public class BurnerObjective : Objective
         for (var i = 0; i < Count; i++)
             ProcessHandler.WriteData(ObjectAddress + 0x90 + (0x70 * i) + 0x6C, new byte[] { data[i] });
         OldCount = CurrentCount = data.Count(x => x == ObjectActiveState);
-        Console.WriteLine(CurrentCount);
         UpdateCount();
     }
 }
