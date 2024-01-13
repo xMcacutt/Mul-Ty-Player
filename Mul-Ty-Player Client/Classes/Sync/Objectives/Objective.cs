@@ -108,12 +108,15 @@ public abstract class Objective
 
     protected abstract void Deactivate();
 
+    protected abstract void UpdateCount();
+    
     public void SetObjectActive(int index)
     {
         if (CurrentData[index] == ObjectActiveState)
             return;
         OldData[index] = CurrentData[index] = ObjectActiveState;
         OldCount = CurrentCount = CurrentData.Count(x => x == ObjectActiveState);
+        UpdateCount();
     }
 
     public void SetState(ObjectiveState newState)
@@ -124,11 +127,13 @@ public abstract class Objective
 
     public void SendIndex(int index)
     {
+        Console.WriteLine($"{Name} index number {index} activated.");
         Client.HObjective.SendIndexToServer(index, Name);
     }
 
     public void SendState()
     {
+        Console.WriteLine($"{Name} state changed to {Enum.GetName(typeof(ObjectiveState), State)}");
         Client.HObjective.SendObjectiveStateToServer(State, Name);
     }
 }

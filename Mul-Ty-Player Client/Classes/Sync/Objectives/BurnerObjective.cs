@@ -26,7 +26,6 @@ public class BurnerObjective : Objective
             return;
         //WHEN ACTIVATED SET STATE TO ACTIVE
         State = ObjectiveState.Active;
-        //SEND MESSAGE TO SERVER
         SendState();
     }
 
@@ -54,8 +53,9 @@ public class BurnerObjective : Objective
                 }
             }
         }
-        if (CurrentCount == 8)
-            State = ObjectiveState.ReadyForTurnIn;
+        if (CurrentCount != 8) return;
+        State = ObjectiveState.ReadyForTurnIn;
+        SendState();
     }
 
     protected override void IsReady()
@@ -69,12 +69,14 @@ public class BurnerObjective : Objective
         if (Client.HSync.SyncObjects["TE"].GlobalObjectData[Level][4] != 5)
             return;
         State = ObjectiveState.Complete;
+        SendState();
     }
 
     protected override void Activate()
     {
         //ACTIVATE STATE
         ProcessHandler.WriteData(ObjectAddress + 0x6C, new byte[] { 0x1 });
+        ProcessHandler.WriteData(ObjectAddress + 0x6E, new byte[] { 0x8 });
         for (var i = 0; i < Count; i++)
         {
             ProcessHandler.WriteData(ObjectAddress + 0x90 + (0x70 * i) + 0x4C, new byte[] { 0x1 });
@@ -101,5 +103,10 @@ public class BurnerObjective : Objective
     protected override void Deactivate()
     {
         Client.HSync.HTrigger.CheckSetTrigger(19, false);
+    }
+
+    protected override void UpdateCount()
+    {
+        ProcessHandler.WriteData(ObjectAddress + 0x70, BitConverter.GetBytes(CurrentCount));
     }
 }
