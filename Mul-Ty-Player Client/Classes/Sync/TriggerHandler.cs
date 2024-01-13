@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace MulTyPlayerClient;
 
@@ -18,8 +19,9 @@ public class TriggerHandler
 
     public void SetTriggerActivity(int index, bool value)
     {
-        var addr = _triggerAddress + index * 0xB8 + 0x8C;
-        ProcessHandler.WriteData(addr, BitConverter.GetBytes(value), "TriggerHandler: SetTriggerActivity()");
+        var addr = _triggerAddress + index * 0xB8 + 0x88;
+        ProcessHandler.WriteData(addr, Enumerable.Repeat(BitConverter.GetBytes(value)[0], 3).ToArray(), "TriggerHandler: SetTriggerActivity()");
+        ProcessHandler.WriteData(addr + 4, BitConverter.GetBytes(value), "TriggerHandler: SetTriggerActivity()");
     }
 
     public byte GetTriggerActivity(int index)
