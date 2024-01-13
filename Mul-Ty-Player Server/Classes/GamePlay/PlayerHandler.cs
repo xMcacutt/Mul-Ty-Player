@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MulTyPlayer;
 using MulTyPlayerServer.Classes.Networking.Commands;
+using MulTyPlayerServer.Sync.Objective;
 using Riptide;
 
 namespace MulTyPlayerServer;
@@ -62,6 +63,7 @@ internal class PlayerHandler
         {
             foreach (var entry in Players) entry.Value.IsReady = false;
             Program.HSync = new SyncHandler();
+            Program.HObjective = new ObjectiveHandler();
             PeerMessageHandler.SendMessageToClients("All clients are ready, starting countdown", true);
             var countdownStart = Message.Create(MessageSendMode.Reliable, MessageID.Countdown);
             Server._Server.SendToAll(countdownStart);

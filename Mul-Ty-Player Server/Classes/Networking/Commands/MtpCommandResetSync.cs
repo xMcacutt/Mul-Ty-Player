@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MulTyPlayer;
+using MulTyPlayerServer.Sync.Objective;
 using Riptide;
 
 namespace MulTyPlayerServer.Classes.Networking.Commands;
@@ -26,6 +27,7 @@ public class MtpCommandResetSync : Command
     private static void RunResetSync()
     {
         Program.HSync = new SyncHandler();
+        Program.HObjective = new ObjectiveHandler();
         SyncHandler.SendResetSyncMessage();
     }
 

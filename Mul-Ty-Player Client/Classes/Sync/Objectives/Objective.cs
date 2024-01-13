@@ -51,6 +51,11 @@ public abstract class Objective
     
     public void RunCheck()
     {
+        if (ObjectAddress == 0)
+        {
+            SetMemoryAddress();
+            return;
+        }
         switch (State)
         {
             case ObjectiveState.Inactive:
@@ -109,6 +114,10 @@ public abstract class Objective
     protected abstract void Deactivate();
 
     protected abstract void UpdateCount();
+
+    protected abstract void UpdateObjectState(int index);
+
+    public abstract void Sync(byte[] data);
     
     public void SetObjectActive(int index)
     {

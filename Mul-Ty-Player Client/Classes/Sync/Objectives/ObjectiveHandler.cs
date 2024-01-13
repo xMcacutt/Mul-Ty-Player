@@ -49,6 +49,7 @@ public class ObjectiveHandler
     {
         var type = message.GetString();
         var index = message.GetInt();
+        Console.WriteLine($"Activated {type} number {index}");
         Client.HObjective.Objectives[type].SetObjectActive(index);
     }
 
@@ -57,13 +58,18 @@ public class ObjectiveHandler
     {
         var type = message.GetString();
         var state = (ObjectiveState)message.GetByte();
+        Console.WriteLine($"{type} state changed to {Enum.GetName(typeof(ObjectiveState), state)}");
         Client.HObjective.Objectives[type].SetState(state);
     }
     
     public void RequestSync()
     {
-        var message = Message.Create(MessageSendMode.Reliable, MessageID.ReqObjectiveSync);
-        Client._client.Send(message);
+        if (SettingsHandler.DoTESyncing)
+        {
+            SetMemAddrs();
+            var message = Message.Create(MessageSendMode.Reliable, MessageID.ReqObjectiveSync);
+            Client._client.Send(message);
+        }
     }
 
     [MessageHandler((ushort)MessageID.ReqObjectiveSync)]
@@ -71,8 +77,14 @@ public class ObjectiveHandler
     {
         if (Client.Relaunching) return;
         var type = message.GetString();
-        Client.HObjective.Objectives[type].CurrentData = message.GetBytes();
-        Client.HObjective.Objectives[type].State = (ObjectiveState)message.GetByte();
+        var objects = message.GetBytes();
+        var state = message.GetByte();
+        
+        Array.Copy(objects, Client.HObjective.Objectives[type].OldData, objects.Length);
+        Array.Copy(objects, Client.HObjective.Objectives[type].CurrentData, objects.Length);
+        Client.HObjective.Objectives[type].State = (ObjectiveState)state;
+        if (Client.HLevel.CurrentLevelId == Client.HObjective.Objectives[type].Level)
+            Client.HObjective.Objectives[type].Sync(objects);
     }
     
     public void RunChecks()

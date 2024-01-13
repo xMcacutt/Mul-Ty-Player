@@ -34,14 +34,10 @@ internal class LevelHandler
         HSync.SetMemAddrs();
         HSync.RequestSync();
         Client.HGameState.ProtectLeaderboard();
-        if (SettingsHandler.DoTESyncing)
-        {
-            HObjective.SetMemAddrs();
-            HObjective.RequestSync();
-            if (HSync.SyncObjects["TE"].GlobalObjectData.ContainsKey(currentLevelId) &&
-                HSync.SyncObjects["TE"].GlobalObjectData[CurrentLevelId][3] == 5)
-                (HSync.SyncObjects["TE"] as TEHandler)?.ShowStopwatch();
-        }
+        if (SettingsHandler.DoTESyncing &&
+            HSync.SyncObjects["TE"].GlobalObjectData.ContainsKey(currentLevelId) &&
+            HSync.SyncObjects["TE"].GlobalObjectData[CurrentLevelId][3] == 5)
+            (HSync.SyncObjects["TE"] as TEHandler)?.ShowStopwatch();
         if (CurrentLevelData.Id != 16)
         {
             HKoala.SetBaseAddress();

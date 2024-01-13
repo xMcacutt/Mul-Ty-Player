@@ -87,6 +87,7 @@ internal class SyncHandler
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.ReqCollectibleSync);
         Client._client.Send(message);
+        Client.HObjective.RequestSync();
     }
 
     [MessageHandler((ushort)MessageID.ReqCollectibleSync)]

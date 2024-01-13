@@ -14,6 +14,7 @@ public class BurnerObjective : Objective
         State = ObjectiveState.Inactive;
         Level = 8;
         ObjectPath = new[] { 0x2681E8, 0x0 };
+        ObjectActiveState = 0x2;
         CurrentData = new byte[] {1, 1, 1, 1, 1, 1, 1, 1};
         OldData = new byte[] {1, 1, 1, 1, 1, 1, 1, 1};
     }
@@ -45,12 +46,10 @@ public class BurnerObjective : Objective
             {
                 //READ EACH BURNER STATE
                 ProcessHandler.TryRead(ObjectAddress + 0x90 + i * 0x70 + 0x6C, out CurrentData[i], false, "Burner: IsActive() 2");
-                if (CurrentData[i] == 0x2 && OldData[i] < 2)
-                {
-                    OldData[i] = CurrentData[i];
-                    //SEND MESSAGE TO SERVER
-                    SendIndex(i);
-                }
+                if (CurrentData[i] != ObjectActiveState || OldData[i] == ObjectActiveState) continue;
+                OldData[i] = CurrentData[i];
+                //SEND MESSAGE TO SERVER
+                SendIndex(i);
             }
         }
         if (CurrentCount != 8) return;
@@ -108,5 +107,19 @@ public class BurnerObjective : Objective
     protected override void UpdateCount()
     {
         ProcessHandler.WriteData(ObjectAddress + 0x70, BitConverter.GetBytes(CurrentCount));
+    }
+
+    protected override void UpdateObjectState(int index)
+    {
+        ProcessHandler.WriteData(ObjectAddress + 0x90 + (0x70 * index) + 0x6C, new byte[] { 0x2 });
+    }
+
+    public override void Sync(byte[] data)
+    {
+        for (var i = 0; i < Count; i++)
+            ProcessHandler.WriteData(ObjectAddress + 0x90 + (0x70 * i) + 0x6C, new byte[] { data[i] });
+        OldCount = CurrentCount = data.Count(x => x == ObjectActiveState);
+        Console.WriteLine(CurrentCount);
+        UpdateCount();
     }
 }
