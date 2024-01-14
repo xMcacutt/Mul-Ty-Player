@@ -56,6 +56,7 @@ public class KoalaKidObjective : Objective
         ProcessHandler.TryRead(ObjectAddress + 0x6C, out ushort result, false, "KKO: IsActive() 1");
         if (result == 0x1)
             ProcessHandler.WriteData(ObjectAddress + 0x6C, BitConverter.GetBytes((ushort)0x0));
+        ProcessHandler.WriteData(ObjectAddress + 0x70, new byte[] { 8 });
         //CHECK TE STATE FOR COMPLETION
         if (Client.HSync.SyncObjects["TE"].GlobalObjectData[Level][4] != 5)
             return;
