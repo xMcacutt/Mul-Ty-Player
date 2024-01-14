@@ -18,7 +18,8 @@ public class ObjectiveHandler
         {
             { "Burner", new BurnerObjective(8, "Burner") },
             { "SnowKoalaKid", new KoalaKidObjective(9, "SnowKoalaKid") },
-            { "StumpKoalaKid", new KoalaKidObjective(13, "StumpKoalaKid") }
+            { "StumpKoalaKid", new KoalaKidObjective(13, "StumpKoalaKid") },
+            { "Chest", new ChestObjective(14, "Chest")}
         };
     }
 

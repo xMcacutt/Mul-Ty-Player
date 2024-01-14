@@ -16,10 +16,7 @@ public class KoalaKidObjective : Objective
         OldData = new byte[] {1, 1, 1, 1, 1, 1, 1, 1};
     }
 
-    protected override void IsInactive()
-    {
-        
-    }
+    protected override void IsInactive() { }
 
     protected override void IsActive()
     {

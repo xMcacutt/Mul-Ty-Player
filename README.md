@@ -125,7 +125,7 @@ With your port forwarding rule set up, people can now join your server using you
 ### Bug Fixes
 
 #### 3.2.1
-- Interpolation mode enabled *EXPERIMENTAL
+- Interpolation mode enabled **EXPERIMENTAL**
 - Attempt reconnect on timeout bugs fixed and re-enabled
 - E4 / C4 game crash on Level Lock completion fixed
 - Teleport command client crash fixed
