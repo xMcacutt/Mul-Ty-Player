@@ -90,6 +90,8 @@ public class KoalaKidObjective : Objective
         {
             if (data[i] == 5)
                 ProcessHandler.WriteData(ObjectAddress + 0x90 + (i * 2) * 0x518 + 0x44, new byte[] { 1 });
+            if (data[i] == 1)
+                continue;
             ProcessHandler.WriteData(ObjectAddress + 0x90 + (i * 2) * 0x518 + 0x98, new byte[] { data[i] });
         }
         OldCount = CurrentCount = data.Count(x => x == ObjectActiveState);
