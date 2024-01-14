@@ -29,10 +29,8 @@ public class KoalaKidObjective : Objective
         if (objectiveState == 0)
             ProcessHandler.WriteData(ObjectAddress + 0x6C, BitConverter.GetBytes((ushort)1));
         ProcessHandler.TryRead(ObjectAddress + 0x70, out CurrentCount, false, "KKO: IsActive() 1");
-        Console.WriteLine(CurrentCount);
         if (CurrentCount > OldCount)
         {
-            Console.WriteLine("Count Changed");
             OldCount = CurrentCount;
             for (var i = 0; i < Count; i++)
             {
