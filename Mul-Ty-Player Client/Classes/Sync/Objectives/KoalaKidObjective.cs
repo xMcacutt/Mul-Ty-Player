@@ -23,10 +23,10 @@ public class KoalaKidObjective : Objective
 
     protected override void IsActive()
     {
-        //READ COUNT
-        ProcessHandler.TryRead(ObjectAddress + 0x6C, out ushort objectiveState, false, "Burner: IsActive() 1");
+        ProcessHandler.TryRead(ObjectAddress + 0x6C, out ushort objectiveState, false, "KKO: IsActive() 1");
         if (objectiveState == 0)
             ProcessHandler.WriteData(ObjectAddress + 0x6C, BitConverter.GetBytes((ushort)1));
+        //READ COUNT
         ProcessHandler.TryRead(ObjectAddress + 0x70, out CurrentCount, false, "KKO: IsActive() 1");
         if (CurrentCount > OldCount)
         {
@@ -45,7 +45,6 @@ public class KoalaKidObjective : Objective
         }
         if (CurrentCount != 8) return;
         State = ObjectiveState.ReadyForTurnIn;
-        SendState();
     }
 
     protected override void IsReady()
