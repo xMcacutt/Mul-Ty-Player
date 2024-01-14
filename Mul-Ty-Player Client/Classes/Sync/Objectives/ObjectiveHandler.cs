@@ -50,7 +50,7 @@ public class ObjectiveHandler
     {
         var type = message.GetString();
         var index = message.GetInt();
-        Console.WriteLine($"Activated {type} number {index}");
+        //Console.WriteLine($"Activated {type} number {index}");
         Client.HObjective.Objectives[type].SetObjectActive(index);
     }
 
@@ -59,7 +59,7 @@ public class ObjectiveHandler
     {
         var type = message.GetString();
         var state = (ObjectiveState)message.GetByte();
-        Console.WriteLine($"{type} state changed to {Enum.GetName(typeof(ObjectiveState), state)}");
+        //Console.WriteLine($"{type} state changed to {Enum.GetName(typeof(ObjectiveState), state)}");
         Client.HObjective.Objectives[type].SetState(state);
     }
     
