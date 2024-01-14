@@ -7,7 +7,7 @@ public class ChestObjective : Objective
 {
     private static TriggerHandler HTrigger => Client.HSync.HTrigger;
     private int CurrentChest;
-    private int[] ChestTriggerIndices = { 2, 3, 5, 6, 4, 7 };
+    private static int[] ChestTriggerIndices = new [] { 2, 3, 5, 6, 4, 7 };
     
     public ChestObjective(int level, string name) : base(level, name)
     {
@@ -114,7 +114,7 @@ public enum Chest : int
 
 public class ChestHandler
 {
-    public static int[] ChestObjectIndices = { 4, 0, 1, 2, 3, 5 };
+    public static int[] ChestObjectIndices = new [] { 4, 0, 1, 2, 3, 5 };
 
     public static void CheckSetVisibility(int index, bool value)
     {
