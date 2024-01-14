@@ -116,6 +116,12 @@ With your port forwarding rule set up, people can now join your server using you
 - New password reset setting for public servers to avoid lockouts
 - Command recall (navigate previously called commands)
 
+#### 3.2.3
+- Objective syncing pre-release system
+- Bridge Flame Burner syncing
+- Stump / Snow Koala syncing
+- Shadow patch added to rkv
+
 ### Bug Fixes
 
 #### 3.2.1
