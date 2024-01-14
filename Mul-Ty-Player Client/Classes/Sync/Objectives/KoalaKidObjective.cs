@@ -5,9 +5,8 @@ namespace MulTyPlayerClient.Objectives;
 
 public class KoalaKidObjective : Objective
 {
-    public KoalaKidObjective(int level) : base(level)
+    public KoalaKidObjective(int level, string name) : base(level, name)
     {
-        Name = "SnowKoalaKid";
         Count = 8;
         State = ObjectiveState.Active;
         ObjectPath = new[] { 0x26A4B0, 0x0 };
@@ -56,7 +55,7 @@ public class KoalaKidObjective : Objective
             ProcessHandler.WriteData(ObjectAddress + 0x6C, BitConverter.GetBytes((ushort)0x0));
         ProcessHandler.WriteData(ObjectAddress + 0x70, new byte[] { 8 });
         //CHECK TE STATE FOR COMPLETION
-        if (Client.HSync.SyncObjects["TE"].GlobalObjectData[Level][4] != 5)
+        if (Client.HSync.SyncObjects["TE"].GlobalObjectData[Level][3] != 5)
             return;
         State = ObjectiveState.Complete;
         SendState();

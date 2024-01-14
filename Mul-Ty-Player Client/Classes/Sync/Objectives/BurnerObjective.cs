@@ -7,9 +7,8 @@ namespace MulTyPlayerClient.Objectives;
 
 public class BurnerObjective : Objective
 {
-    public BurnerObjective(int level) : base(level)
+    public BurnerObjective(int level, string name) : base(level, name)
     {
-        Name = "Burner";
         Count = 8;
         State = ObjectiveState.Inactive;
         ObjectPath = new[] { 0x2681E8, 0x0 };

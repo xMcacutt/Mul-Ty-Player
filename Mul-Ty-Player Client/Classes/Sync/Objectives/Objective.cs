@@ -45,8 +45,9 @@ public abstract class Objective
     
     public event EventHandler<ObjectiveStateChangedEventArgs> OnStateChanged;
 
-    protected Objective(int level)
+    protected Objective(int level, string name)
     {
+        Name = name;
         Level = level;
         OnStateChanged += RunAction;
     }

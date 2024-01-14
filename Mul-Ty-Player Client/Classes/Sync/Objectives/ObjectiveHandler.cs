@@ -16,9 +16,9 @@ public class ObjectiveHandler
     {
         Objectives = new Dictionary<string, Objective>
         {
-            { "Burner", new BurnerObjective(8) },
-            { "SnowKoalaKid", new KoalaKidObjective(9) },
-            { "StumpKoalaKid", new KoalaKidObjective(13) }
+            { "Burner", new BurnerObjective(8, "Burner") },
+            { "SnowKoalaKid", new KoalaKidObjective(9, "SnowKoalaKid") },
+            { "StumpKoalaKid", new KoalaKidObjective(13, "StumpKoalaKid") }
         };
     }
 
