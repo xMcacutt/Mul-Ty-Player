@@ -66,18 +66,22 @@ public class KoalaKidObjective : Objective
 
     protected override void UpdateCount()
     {
+        if (Client.HLevel.CurrentLevelId != Level)
+            return;
         ProcessHandler.WriteData(ObjectAddress + 0x70, BitConverter.GetBytes(CurrentCount));
     }
 
     protected override void UpdateObjectState(int index)
     {
+        if (Client.HLevel.CurrentLevelId != Level)
+            return;
         ProcessHandler.WriteData(ObjectAddress + 0x90 + (index * 2) * 0x518 + 0x98, new byte[] { 0x5 });
     }
 
     public override void Sync(byte[] data)
     {
         for (var i = 0; i < Count; i++)
-            ProcessHandler.WriteData(ObjectAddress + 0x90 + (0x70 * i) + 0x6C, new byte[] { data[i] });
+            ProcessHandler.WriteData(ObjectAddress + 0x90 + (i * 2) * 0x518 + 0x98, new byte[] { data[i] });
         OldCount = CurrentCount = data.Count(x => x == ObjectActiveState);
         UpdateCount();
     }

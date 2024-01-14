@@ -105,11 +105,15 @@ public class BurnerObjective : Objective
 
     protected override void UpdateCount()
     {
+        if (Client.HLevel.CurrentLevelId != Level)
+            return;
         ProcessHandler.WriteData(ObjectAddress + 0x70, BitConverter.GetBytes(CurrentCount));
     }
 
     protected override void UpdateObjectState(int index)
     {
+        if (Client.HLevel.CurrentLevelId != Level)
+            return;
         ProcessHandler.WriteData(ObjectAddress + 0x90 + (0x70 * index) + 0x6C, new byte[] { 0x2 });
     }
 
