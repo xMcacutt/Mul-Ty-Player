@@ -28,7 +28,7 @@ public class Objective
     public void SetObjectActivated(int index, ushort from)
     {
         ObjectStates[index] = ActivatedObjectState;
-        Console.WriteLine($"{Name} object number {index} activated");
+        //Console.WriteLine($"{Name} object number {index} activated");
         var message = Message.Create(MessageSendMode.Reliable, MessageID.ObjectiveObjectActivated);
         message.AddString(Name);
         message.AddInt(index);

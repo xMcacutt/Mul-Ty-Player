@@ -51,7 +51,7 @@ public class ObjectiveHandler
     {
         var type = message.GetString();
         var index = message.GetInt();
-        Console.WriteLine($"Activated {type} number {index}");
+        //Console.WriteLine($"Activated {type} number {index}");
         Client.HObjective.Objectives[type].SetObjectActive(index);
     }
 
@@ -60,18 +60,16 @@ public class ObjectiveHandler
     {
         var type = message.GetString();
         var state = (ObjectiveState)message.GetByte();
-        Console.WriteLine($"{type} state changed to {Enum.GetName(typeof(ObjectiveState), state)}");
+        //Console.WriteLine($"{type} state changed to {Enum.GetName(typeof(ObjectiveState), state)}");
         Client.HObjective.Objectives[type].SetState(state);
     }
     
     public void RequestSync()
     {
-        if (SettingsHandler.DoTESyncing)
-        {
-            SetMemAddrs();
-            var message = Message.Create(MessageSendMode.Reliable, MessageID.ReqObjectiveSync);
-            Client._client.Send(message);
-        }
+        if (!SettingsHandler.DoTESyncing || Client.HGameState.IsAtMainMenuOrLoading()) return;
+        SetMemAddrs();
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.ReqObjectiveSync);
+        Client._client.Send(message);
     }
 
     [MessageHandler((ushort)MessageID.ReqObjectiveSync)]

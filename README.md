@@ -15,10 +15,16 @@ Boss Cass together as your favourite koalas.
 
 ![Boonie](/GitImages/Boonie.png)
 
-3.2.0 has been released. There's plenty of big changes for existing users.
-Please read through the following information for re-installation instructions.
+3.3.0 has been released. 
+If you were on a version earlier than v3 read the below instructions for information and installation.
 
-We have a brand new Dark Theme UI update.
+If you have a 3.0+ version installed, simply press the update button in the updater.
+
+This version is the start of objective syncing. Treasure Chests, Koalas, and Flame Burners are all now synced
+between clients. More to come. 
+
+The Lyre shadow bug has also been fixed by permanently disabling shadows in Patch_PC. A flexible option
+is being looked into.
 
 ![ClientGUI](/GitImages/Lobby.png)
 
@@ -121,6 +127,11 @@ With your port forwarding rule set up, people can now join your server using you
 - Bridge Flame Burner syncing
 - Stump / Snow Koala syncing
 - Shadow patch added to rkv
+
+#### 3.3.0
+- Objective syncing polished
+- Treasure chest syncing added
+- UX Updates in progress
 
 ### Bug Fixes
 
