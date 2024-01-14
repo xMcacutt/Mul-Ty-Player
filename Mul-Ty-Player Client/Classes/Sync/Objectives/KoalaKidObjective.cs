@@ -11,6 +11,7 @@ public class KoalaKidObjective : Objective
         Count = 8;
         State = ObjectiveState.Active;
         ObjectPath = new[] { 0x26A4B0, 0x0 };
+        CheckValue = 26304;
         ObjectActiveState = 0x5;
         CurrentData = new byte[] {1, 1, 1, 1, 1, 1, 1, 1};
         OldData = new byte[] {1, 1, 1, 1, 1, 1, 1, 1};

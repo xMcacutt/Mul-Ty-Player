@@ -28,6 +28,7 @@ public abstract class Objective
     public byte[] CurrentData;
     public byte[] OldData;
     public byte ObjectActiveState;
+    public ushort CheckValue;
 
     private ObjectiveState state;
     public ObjectiveState State
@@ -52,7 +53,7 @@ public abstract class Objective
     
     public void RunCheck()
     {
-        if (ObjectAddress == 0)
+        if (!MemoryAddresValid())
         {
             SetMemoryAddress();
             return;
@@ -73,6 +74,12 @@ public abstract class Objective
             default:
                 throw new ArgumentOutOfRangeException();
         }
+    }
+
+    private bool MemoryAddresValid()
+    {
+        ProcessHandler.TryRead(ObjectAddress, out ushort result, false, "MemoryAddressValid()");
+        return result == CheckValue;
     }
 
     private void RunAction(object sender, ObjectiveStateChangedEventArgs e)

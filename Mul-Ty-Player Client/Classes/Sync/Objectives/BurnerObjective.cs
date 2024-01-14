@@ -13,6 +13,7 @@ public class BurnerObjective : Objective
         Count = 8;
         State = ObjectiveState.Inactive;
         ObjectPath = new[] { 0x2681E8, 0x0 };
+        CheckValue = 21704;
         ObjectActiveState = 0x2;
         CurrentData = new byte[] {1, 1, 1, 1, 1, 1, 1, 1};
         OldData = new byte[] {1, 1, 1, 1, 1, 1, 1, 1};
