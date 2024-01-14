@@ -29,7 +29,7 @@ public class KoalaKidObjective : Objective
             {
                 if (CurrentData[i] == 7) continue;
                 //READ EACH KOALA STATE
-                ProcessHandler.TryRead(ObjectAddress + 0x90 + (i * 2) * 0x518 + 0x98, out int result, false,
+                ProcessHandler.TryRead(ObjectAddress + 0x90 + (i * 2 + 1) * 0x518 + 0x98, out int result, false,
                     "KKO: IsActive() 2");
                 if (result <= 2 || OldData[i] > 3)
                     continue;
@@ -68,7 +68,7 @@ public class KoalaKidObjective : Objective
 
     protected override void UpdateObjectState(int index)
     {
-        ProcessHandler.WriteData(ObjectAddress + 0x90 + (index * 2) * 0x518 + 0x98, new byte[] { 0x5 });
+        ProcessHandler.WriteData(ObjectAddress + 0x90 + (index * 2 + 1) * 0x518 + 0x98, new byte[] { 0x5 });
     }
 
     public override void Sync(byte[] data)
