@@ -24,12 +24,14 @@ public class ChestObjective : Objective
     {
         if (HTrigger.GetTriggerActivity(ChestTriggerIndices[(int)Chest.CrabIsland]) == 0)
             return;
+        CurrentData[0] = 1;
         State = ObjectiveState.Active;
         SendState();
     }
 
     protected override void IsActive()
     {
+        CurrentData[0] = 1;
         //SET ACTIVATION TRIGGER TO OFF
         HTrigger.CheckSetTrigger(0, false);
         //GET CURRENT CHEST FROM DATA COUNT
@@ -44,11 +46,11 @@ public class ChestObjective : Objective
         for (var i = 0; i < CurrentChest - 1; i++)
         {
             HTrigger.CheckSetTrigger(ChestTriggerIndices[i], false);
-            ChestHandler.CheckSetVisibility(ChestHandler.ChestObjectIndices[i], true);
+            ChestHandler.CheckSetVisibility(Array.IndexOf(ChestHandler.ChestObjectIndices, i), true);
         }
         //SET CURRENT CHEST TRIGGER AND CHEST VISIBILITY
         HTrigger.CheckSetTrigger(ChestTriggerIndices[CurrentChest], true);
-        ChestHandler.CheckSetVisibility(ChestHandler.ChestObjectIndices[CurrentChest], true);
+        ChestHandler.CheckSetVisibility(Array.IndexOf(ChestHandler.ChestObjectIndices, CurrentChest), true);
         //CHECK NEXT CHEST TRIGGER FOR ACTIVITY
         if (HTrigger.GetTriggerActivity(ChestTriggerIndices[CurrentChest + 1]) == 0)
             return;
@@ -65,11 +67,11 @@ public class ChestObjective : Objective
         for (var i = 0; i < 5; i++)
         {
             HTrigger.CheckSetTrigger(ChestTriggerIndices[i], false);
-            ChestHandler.CheckSetVisibility(ChestHandler.ChestObjectIndices[i], true);
+            ChestHandler.CheckSetVisibility(Array.IndexOf(ChestHandler.ChestObjectIndices, i), true);
         }
         //TURN LAST CHEST AND TRIGGER ON
         HTrigger.CheckSetTrigger(ChestTriggerIndices[5], true);
-        ChestHandler.CheckSetVisibility(ChestHandler.ChestObjectIndices[5], true);
+        ChestHandler.CheckSetVisibility(Array.IndexOf(ChestHandler.ChestObjectIndices, 5), true);
         if (Client.HSync.SyncObjects["TE"].GlobalObjectData[Level][3] != 5)
             return;
         State = ObjectiveState.Complete;
