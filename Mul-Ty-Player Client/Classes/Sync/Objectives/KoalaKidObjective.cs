@@ -16,8 +16,11 @@ public class KoalaKidObjective : Objective
         CurrentData = new byte[] {1, 1, 1, 1, 1, 1, 1, 1};
         OldData = new byte[] {1, 1, 1, 1, 1, 1, 1, 1};
     }
-    
-    protected override void IsInactive() { }
+
+    protected override void IsInactive()
+    {
+        
+    }
 
     protected override void IsActive()
     {
@@ -26,6 +29,7 @@ public class KoalaKidObjective : Objective
         if (objectiveState == 0)
             ProcessHandler.WriteData(ObjectAddress + 0x6C, BitConverter.GetBytes((ushort)1));
         ProcessHandler.TryRead(ObjectAddress + 0x70, out CurrentCount, false, "KKO: IsActive() 1");
+        Console.WriteLine(CurrentCount);
         if (CurrentCount > OldCount)
         {
             Console.WriteLine("Count Changed");
@@ -76,6 +80,7 @@ public class KoalaKidObjective : Objective
     {
         if (Client.HLevel.CurrentLevelId != Level)
             return;
+        ProcessHandler.WriteData(ObjectAddress + 0x90 + (index * 2) * 0x518 + 0x44, new byte[] { 1 });
         ProcessHandler.WriteData(ObjectAddress + 0x90 + (index * 2) * 0x518 + 0x98, new byte[] { 0x5 });
     }
 
@@ -83,8 +88,9 @@ public class KoalaKidObjective : Objective
     {
         for (var i = 0; i < Count; i++)
         {
+            if (data[i] == 5)
+                ProcessHandler.WriteData(ObjectAddress + 0x90 + (i * 2) * 0x518 + 0x44, new byte[] { 1 });
             ProcessHandler.WriteData(ObjectAddress + 0x90 + (i * 2) * 0x518 + 0x98, new byte[] { data[i] });
-            ProcessHandler.WriteData(ObjectAddress + 0x90 + (i * 2) * 0x518 + 0x44, new byte[] { 1 });
         }
         OldCount = CurrentCount = data.Count(x => x == ObjectActiveState);
         UpdateCount();

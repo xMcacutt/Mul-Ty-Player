@@ -15,11 +15,11 @@ public class Objective
     public readonly byte InitialObjectState;
     public readonly byte ActivatedObjectState;
     
-    public Objective(string name, int count, byte initialObjectState, byte activatedObjectState)
+    public Objective(string name, int count, byte initialObjectState, byte activatedObjectState, ObjectiveState initialObjectiveState)
     {
         Name = name;
         Count = count;
-        State = ObjectiveState.Inactive;
+        State = initialObjectiveState;
         InitialObjectState = initialObjectState;
         ActivatedObjectState = activatedObjectState;
         ObjectStates = Enumerable.Repeat(InitialObjectState, Count).ToArray();
