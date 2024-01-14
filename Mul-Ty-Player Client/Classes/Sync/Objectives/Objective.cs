@@ -146,13 +146,13 @@ public abstract class Objective
 
     public void SendIndex(int index)
     {
-        //Console.WriteLine($"{Name} index number {index} activated.");
+        Console.WriteLine($"{Name} index number {index} activated.");
         Client.HObjective.SendIndexToServer(index, Name);
     }
 
     public void SendState()
     {
-        //Console.WriteLine($"{Name} state changed to {Enum.GetName(typeof(ObjectiveState), State)}");
+        Console.WriteLine($"{Name} state changed to {Enum.GetName(typeof(ObjectiveState), State)}");
         Client.HObjective.SendObjectiveStateToServer(State, Name);
     }
 }
