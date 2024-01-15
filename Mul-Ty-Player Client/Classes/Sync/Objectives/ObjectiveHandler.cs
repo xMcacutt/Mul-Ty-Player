@@ -66,7 +66,7 @@ public class ObjectiveHandler
     
     public void RequestSync()
     {
-        if (!SettingsHandler.DoTESyncing || Client.HGameState.IsAtMainMenuOrLoading()) return;
+        if (!SettingsHandler.DoTESyncing) return;
         SetMemAddrs();
         var message = Message.Create(MessageSendMode.Reliable, MessageID.ReqObjectiveSync);
         Client._client.Send(message);

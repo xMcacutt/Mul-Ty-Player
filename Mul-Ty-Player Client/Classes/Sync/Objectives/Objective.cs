@@ -85,7 +85,7 @@ public abstract class Objective
 
     private void RunAction(object sender, ObjectiveStateChangedEventArgs e)
     {
-        if (Client.HLevel.CurrentLevelId != Level || Client.HGameState.IsAtMainMenuOrLoading())
+        if (Client.HLevel.CurrentLevelId != Level)
             return;
         switch (e.NewState)
         {
