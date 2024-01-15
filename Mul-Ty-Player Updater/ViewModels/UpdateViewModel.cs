@@ -125,7 +125,7 @@ public class UpdateViewModel
         try
         {
             var github = new GitHubClient(new ProductHeaderValue("Mul-Ty-Player"));
-            var latestRelease = github.Repository.Release.GetLatest("xMcacutt", "MTPUpdateTest").Result;
+            var latestRelease = github.Repository.Release.GetLatest("xMcacutt", "Mul-Ty-Player").Result;
             Version = latestRelease.TagName.Replace("v", "");
             if (SettingsHandler.Settings.UpdateClient)
                 UpdateClient(latestRelease);
