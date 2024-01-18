@@ -242,12 +242,18 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0  2 5 2">
-                                <TextBlock Text="{Binding}"
-                                           TextWrapping="Wrap"
-                                           Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"
-                                           FontFamily="Cascadia Code"
-                                           FontSize="12"
-                                           TextAlignment="Left" />
+                                <TextBox Text="{Binding Mode=OneWay}"
+                                         IsReadOnly="True"
+                                         TextWrapping="Wrap"
+                                         Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"
+                                         Background="Transparent"
+                                         SelectionBrush="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
+                                         BorderBrush="Transparent"
+                                         BorderThickness="0"
+                                         FontFamily="Cascadia Code"
+                                         FontSize="12"
+                                         HorizontalAlignment="Stretch"
+                                         TextAlignment="Left" />
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

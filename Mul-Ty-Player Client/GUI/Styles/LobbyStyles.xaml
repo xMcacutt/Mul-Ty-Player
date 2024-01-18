@@ -145,6 +145,7 @@
         <Setter Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
         <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
         <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="SelectionBrush" Value="{Binding MainAccent, Source={x:Static client:App.AppColors}}" />
         <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -201,17 +202,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
-        <Style.Triggers>
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true" />
-                    <Condition Property="IsSelectionActive" Value="false" />
-                </MultiTrigger.Conditions>
-                <Setter Property="SelectionBrush"
-                        Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}" />
-            </MultiTrigger>
-        </Style.Triggers>
     </Style>
 
     <Style x:Key="ComicTextMain" TargetType="TextBlock">
