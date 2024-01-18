@@ -116,10 +116,7 @@ public class InstallViewModel
             if (InstallServer)
                 CopyServerFiles(latestRelease);
             if (InstallGameFiles)
-            {
-                CopyTyFiles(latestRelease.TagName);
-                CopyPatch();
-            }
+                CopyTyFiles(latestRelease);
         }
         catch (Exception ex)
         {
@@ -156,10 +153,9 @@ public class InstallViewModel
             bytesRead = contentStream.ReadAsync(buffer, 0, buffer.Length).Result;
             fileStream.WriteAsync(buffer, 0, bytesRead).Wait();
             bytesWritten += bytesRead;
-
             if (!totalBytes.HasValue) continue;
             var progressPercentage = bytesWritten * 100d / totalBytes.Value;
-            worker.ReportProgress((int)progressPercentage, $"Downloading Client Files: {(int)progressPercentage}%");
+            worker.ReportProgress((int)progressPercentage, $"Downloading client files: {(int)progressPercentage}%");
         } while (bytesRead > 0);
         fileStream.Close();
         using var archive = ZipFile.OpenRead(zipPath);
@@ -190,18 +186,18 @@ public class InstallViewModel
             bytesRead = contentStream.ReadAsync(buffer, 0, buffer.Length).Result;
             fileStream.WriteAsync(buffer, 0, bytesRead).Wait();
             bytesWritten += bytesRead;
-
             if (!totalBytes.HasValue) continue;
             var progressPercentage = bytesWritten * 100d / totalBytes.Value;
-            worker.ReportProgress((int)progressPercentage, $"Downloading Server Files: {(int)progressPercentage}%");
+            worker.ReportProgress((int)progressPercentage, $"Downloading server Files: {(int)progressPercentage}%");
         } while (bytesRead > 0);
         fileStream.Close();
         using var archive = ZipFile.OpenRead(zipPath);
         archive.ExtractToDirectory(serverDirPath);
+        archive.Dispose();
         File.Delete(zipPath);
     }
 
-    private void CopyTyFiles(string version)
+    private void CopyTyFiles(Release latestRelease)
     {
         var gameDirPath = Path.Combine(MTPPath, "Game");
         Directory.CreateDirectory(gameDirPath);
@@ -227,14 +223,14 @@ public class InstallViewModel
                 worker.ReportProgress((int)progressPercentage, $"Copying file {file}: {(int)progressPercentage}%");
             }
             destinationStream.Close();
-                
+            
             if (file != "TY.exe") continue;
                 
             //VERSION ON TITLE SCREEN
             using FileStream fileStream = new(destinationFilePath, FileMode.Open, FileAccess.Write);
             fileStream.Seek(0x2024F8, SeekOrigin.Begin);
             using BinaryWriter binaryWriter = new(fileStream);
-            var versionString = "MTP " + version + " ";
+            var versionString = "MTP " + latestRelease.TagName + " ";
             var replacement = Encoding.ASCII.GetBytes(versionString);
             binaryWriter.Write(replacement);
             
@@ -246,22 +242,24 @@ public class InstallViewModel
                 binaryWriter.Write(entry.Value);
             }
         }
+        
+        CopyPatch(latestRelease);
     }
 
-    private void CopyPatch()
+    private void CopyPatch(Release latestRelease)
     {
         var gameDirPath = Path.Combine(MTPPath, "Game");
-        const string url = "https://drive.google.com/u/0/uc?id=1OTudAOfutB458mm2qKqRlX1Hi73h8WQw&export=download&confirm";
+        var asset = latestRelease.Assets.FirstOrDefault(asset => asset.Name == "Patch_PC.rkv");
+        if (asset == null) throw new Exception();
         HttpClient client = new();
-        var uri = new Uri(url);
+        var uri = new Uri(asset.BrowserDownloadUrl);
         var response = client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead).Result;
         response.EnsureSuccessStatusCode();
         using var contentStream = response.Content.ReadAsStreamAsync().Result;
         var totalBytes = response.Content.Headers.ContentLength;
-        var destinationPath = Path.Combine(gameDirPath, "Patch_PC.rkv");
-        using FileStream fileStream = new(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
+        using FileStream fileStream = new(Path.Combine(gameDirPath, "Patch_PC.rkv"), FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
         var buffer = new byte[4096];
-        var bytesRead = default(int);
+        int bytesRead;
         var bytesWritten = 0L;
         do
         {
@@ -271,8 +269,9 @@ public class InstallViewModel
 
             if (!totalBytes.HasValue) continue;
             var progressPercentage = bytesWritten * 100d / totalBytes.Value;
-            worker.ReportProgress((int)progressPercentage, $"Downloading Patch: {(int)progressPercentage}%");
+            worker.ReportProgress((int)progressPercentage, $"Downloading game patch: {(int)progressPercentage}%");
         } while (bytesRead > 0);
+        fileStream.Close();
     }
 
     private void SaveSettings()
