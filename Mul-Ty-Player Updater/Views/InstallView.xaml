@@ -57,7 +57,7 @@
                                 Orientation="Horizontal" 
                                 HorizontalAlignment="Center">
                         <TextBox Style="{StaticResource SettingsTextBoxStyle}"
-                                 Text="{Binding ClientPath}"
+                                 Text="{Binding ClientPath, UpdateSourceTrigger=PropertyChanged}"
                                  Margin="0"
                                  Name="ClientPathBox"
                                  Width="340"/>
@@ -87,7 +87,7 @@
                                 Orientation="Horizontal" 
                                 HorizontalAlignment="Center" >
                         <TextBox Style="{StaticResource SettingsTextBoxStyle}"
-                                 Text="{Binding ServerPath}"
+                                 Text="{Binding ServerPath, UpdateSourceTrigger=PropertyChanged}"
                                  Margin="0"
                                  Name="ServerPathBox"
                                  Width="340"/>
@@ -117,7 +117,7 @@
                                 Orientation="Horizontal" 
                                 HorizontalAlignment="Center">
                         <TextBox Style="{StaticResource SettingsTextBoxStyle}"
-                                 Text="{Binding TyPath}"
+                                 Text="{Binding TyPath, UpdateSourceTrigger=PropertyChanged}"
                                  Name="TyPathBox"
                                  Margin="0"
                                  Width="340"/>
@@ -139,7 +139,7 @@
                                 Orientation="Horizontal" 
                                 HorizontalAlignment="Center">
                         <TextBox Style="{StaticResource SettingsTextBoxStyle}"
-                                 Text="{Binding MTPPath}"
+                                 Text="{Binding MTPPath, UpdateSourceTrigger=PropertyChanged}"
                                  Margin="0"
                                  Name="MTPPathBox"
                                  Width="340"/>

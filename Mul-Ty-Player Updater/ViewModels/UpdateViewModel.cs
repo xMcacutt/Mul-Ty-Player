@@ -71,7 +71,7 @@ public class UpdateViewModel
             {
                 return true; // New version is more recent
             }
-            else if (currentComponents[i] > newComponents[i])
+            if (currentComponents[i] > newComponents[i])
             {
                 return false; // Current version is more recent
             }
