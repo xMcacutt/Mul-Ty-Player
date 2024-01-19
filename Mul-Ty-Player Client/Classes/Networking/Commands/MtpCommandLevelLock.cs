@@ -27,7 +27,10 @@ public class MtpCommandLevelLock : Command
             SuggestHelp();
             return;
         }
-        var doLevelLock = args[0] == "true" ? true : (args[0] == "false" ? false : (bool?)null);
+        var doLevelLock = 
+            string.Equals(args[0], "true", StringComparison.OrdinalIgnoreCase) ? true :
+            string.Equals(args[0], "false", StringComparison.OrdinalIgnoreCase) ? false : 
+            (bool?)null;
         if (doLevelLock == null)
         {
             SuggestHelp();

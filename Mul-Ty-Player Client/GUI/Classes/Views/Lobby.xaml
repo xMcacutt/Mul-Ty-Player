@@ -9,8 +9,7 @@
              mc:Ignorable="d"
              Height="450" Width="800" FontSize="10" BorderBrush="Black"
              Background="{Binding MainBack, Source={x:Static client:App.AppColors}}"
-             d:DataContext="{d:DesignInstance Type=viewmodels:LobbyViewModel}"
-             PreviewMouseDown="Lobby_OnPreviewMouseDown">
+             d:DataContext="{d:DesignInstance Type=viewmodels:LobbyViewModel}">
 
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
@@ -32,33 +31,19 @@
                        HorizontalAlignment="Center"
                        FontSize="28"
                        Text="Connected Koalas" />
-            <Popup Grid.Row="0" x:Name="GiveHostPopup"
-                   Placement="Bottom"
-                   Width="85"
-                   Height="30">
-                <Border VerticalAlignment="Center" BorderThickness="0" Background="{Binding MainBack, Source={x:Static client:App.AppColors}}">
-                    <Button Style="{StaticResource LobbyButton}"
-                            PreviewMouseLeftButtonDown="GiveHost_OnClick"
-                            Width="Auto"
-                            Margin="0"
-                            Height="35">
-                        <StackPanel Orientation="Horizontal">
-                            <controls:Icon
-                                Code="{DynamicResource IcoGift}"
-                                Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
-                                Size="15"
-                                Margin="0, 0, 10, 0" />
-                            <TextBlock VerticalAlignment="Center" Text="Give Host?" />
-                        </StackPanel>
-                    </Button>
-                </Border>
-            </Popup>
             <DataGrid Name="PlayerInfo"
-                      MouseRightButtonDown="UIElement_OnMouseRightButtonDown"
+                      PreviewMouseRightButtonDown="PlayerListItem_OnMouseRightButtonDown"
+                      ContextMenuOpening="DataGrid_OnContextMenuOpening"
                       Style="{StaticResource DataGridStyle}"
                       Grid.Row="1"
                       HorizontalContentAlignment="Stretch"
                       ItemsSource="{Binding PlayerInfoList}">
+                <DataGrid.ContextMenu>
+                    <ContextMenu x:Name="HostDataGridContextMenu" IsEnabled="{Binding IsHostMenuButtonEnabled}">
+                        <controls:CustomMenuItem IconCode="{DynamicResource IcoGift}" Header="Gift Host" Click="GiveHost_OnClick"/>
+                        <controls:CustomMenuItem IconCode="{DynamicResource IcoKick}" Header="Kick" Click="KickPlayer_OnClick"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Client ID" Width="0.4*" CanUserResize="False">
                         <DataGridTemplateColumn.CellTemplate>
@@ -162,7 +147,7 @@
                                 </Style>
                             </Button.Resources>
                         </Button>
-
+                        
                         <Button x:Name="ReadyButton"
                                 Margin="2 0"
                                 Click="ReadyButton_Click"
@@ -206,6 +191,40 @@
                                     <Setter Property="CornerRadius" Value="5" />
                                 </Style>
                             </Button.Resources>
+                        </Button>
+                        
+                        <Button x:Name="HostMenuButton"
+                                Margin="2 0"
+                                Click="HostMenuButton_Click"
+                                ContextMenuOpening="HostMenuButton_OnContextMenuOpening"
+                                ToolTip="Host Menu"
+                                IsEnabled="{Binding IsHostMenuButtonEnabled}"
+                                Width="55"
+                                Style="{StaticResource LobbyButton}">
+                            <controls:Icon Margin="5,0" Code="{DynamicResource IcoHost}" Size="24" />
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="5" />
+                                </Style>
+                            </Button.Resources>
+                            <Button.ContextMenu>
+                                <ContextMenu>
+                                    <controls:CustomMenuItem Header="Level Lock Mode"
+                                                             x:Name="LevelLockToggle"
+                                                             Click="LevelLockToggle_Click"
+                                                             IsCheckable="True"
+                                                             IsChecked="True"/>
+                                    <controls:CustomMenuItem Header="Reset Sync"
+                                                             Click="ResetSync_Click"
+                                                             IconCode="{DynamicResource IcoUndo}"/>
+                                    <controls:CustomMenuItem Header="Password"
+                                                             IconCode="{DynamicResource IcoPassword}">
+                                        <controls:CustomMenuItem Header="Clear Password" 
+                                                                 Click="ClearPassword_Click"
+                                                                 IconCode="{DynamicResource IcoErase}"/>
+                                    </controls:CustomMenuItem>
+                                </ContextMenu>
+                            </Button.ContextMenu>
                         </Button>
                     </StackPanel>
 

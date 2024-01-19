@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:gui="clr-namespace:MulTyPlayerClient.GUI"
-                    xmlns:client="clr-namespace:MulTyPlayerClient">
+                    xmlns:client="clr-namespace:MulTyPlayerClient"
+                    xmlns:controls="clr-namespace:MulTyPlayerClient.GUI.Controls"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
     <LinearGradientBrush x:Key="BackGradient" EndPoint="0.5,1" StartPoint="0.5,0">
         <GradientStop Color="{Binding AltBackColor, Source={x:Static client:App.AppColors}}" />
         <GradientStop Color="{Binding MainBackColor, Source={x:Static client:App.AppColors}}" Offset="1" />
@@ -136,6 +138,104 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    
+    <Style TargetType="{x:Type ContextMenu}">
+        <Setter Property="Background" Value="{Binding MainBack, Source={x:Static client:App.AppColors}}"/>
+        <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}"/>
+        <Setter Property="BorderBrush" Value="{Binding SpecialBack, Source={x:Static client:App.AppColors}}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContextMenu">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                        <ItemsPresenter/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type controls:CustomMenuItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:CustomMenuItem">
+                    <ControlTemplate.Resources>
+                        <SolidColorBrush x:Key="MenuItem.Highlight.Background" Color="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" />
+                        <SolidColorBrush x:Key="Menu.Disabled.Foreground" Color="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
+                    </ControlTemplate.Resources>
+                    <Border x:Name="templateRoot" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid VerticalAlignment="Center" Height="25">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20"/>
+                            </Grid.ColumnDefinitions>
+                            <Rectangle Grid.Column="0"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Fill="{Binding SpecialBack, Source={x:Static client:App.AppColors}}"
+                                       Visibility="{TemplateBinding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"/>
+                            <TextBlock x:Name="Icon"
+                                       Grid.Column="0"
+                                       Text="{TemplateBinding IconCode}"
+                                       VerticalAlignment="Center" 
+                                       FontFamily="../Fonts/#Font Awesome 6 Free Solid"
+                                       Visibility="{TemplateBinding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                       HorizontalAlignment="Center"
+                                       FontSize="15"
+                                       Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"/>
+                            <TextBlock x:Name="CheckIcon"
+                                       Grid.Column="0"
+                                       Text="{DynamicResource IcoCheck}"
+                                       FontFamily="../Fonts/#Font Awesome 6 Free Solid"
+                                       HorizontalAlignment="Center"
+                                       FontSize="15"
+                                       Visibility="{TemplateBinding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"/>
+                            <TextBlock x:Name="Header"
+                                       Grid.Column="1"
+                                       Text="{TemplateBinding Header}"
+                                       FontFamily="Cascadia Code"
+                                       VerticalAlignment="Center"
+                                       Margin="5 0 0 0"
+                                       FontSize="16"
+                                       Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"/>
+                            <TextBlock x:Name="SubMenuIcon"
+                                       Grid.Column="2"
+                                       Visibility="{TemplateBinding HasItems, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"
+                                       Text="{DynamicResource IcoCaretRight}"
+                                       FontFamily="../Fonts/#Font Awesome 6 Free Solid"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="10"
+                                       Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"/>
+                            <Popup x:Name="PART_Popup" Placement="Right" IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="False" Focusable="False" PopupAnimation="Fade">
+                                <Border Background="{Binding MainBack, Source={x:Static client:App.AppColors}}" BorderBrush="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" BorderThickness="1">
+                                    <ItemsPresenter />
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="templateRoot" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="templateRoot" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}"/>
+                        </Trigger>
+                        <Trigger Property="IconCode" Value="{x:Null}">
+                            <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="{StaticResource Menu.Disabled.Foreground}"/>
+                            <Setter Property="TextElement.Foreground" TargetName="CheckIcon" Value="{StaticResource Menu.Disabled.Foreground}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
 
     <!--TextBox-->
     <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3" />

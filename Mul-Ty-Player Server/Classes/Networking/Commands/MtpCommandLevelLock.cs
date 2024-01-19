@@ -43,6 +43,6 @@ public class MtpCommandLevelLock : Command
     [MessageHandler((ushort)MessageID.SetLevelLock)]
     private static void ProxyRunLevelLock(ushort fromClientId, Message message)
     {
-        RunLevelLock(message.GetBool());
+        Console.WriteLine(RunLevelLock(message.GetBool()));
     }
 }

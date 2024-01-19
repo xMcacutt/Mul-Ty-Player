@@ -68,36 +68,11 @@ public partial class Lobby : UserControl
         Logger.Write("Sync request sent to server.");
     }
 
-    private void Lobby_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
-    {
-        // Close the popup if any element outside the menu or button is clicked
-        if (!IsMouseOverDataGrid(e.OriginalSource as DependencyObject)) PlayerInfo.SelectedItem = null;
-
-        if (!IsMouseOverPopup(e.OriginalSource as DependencyObject)) GiveHostPopup.IsOpen = false;
-    }
-
-    private bool IsMouseOverDataGrid(DependencyObject element)
-    {
-        // Check if the mouse is over the button or popup
-        return element != null &&
-               element == PlayerInfo;
-    }
-
-    private bool IsMouseOverPopup(DependencyObject element)
-    {
-        // Check if the mouse is over the button or popup
-        return element != null &&
-               (element == GiveHostPopup);
-    }
-
-    private void UIElement_OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+    private void PlayerListItem_OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
     {
         var row = FindAncestor<DataGridRow>((DependencyObject)e.OriginalSource);
         if (row is null) return;
-        GiveHostPopup.PlacementTarget = row;
         clickedPlayer = row.Item as PlayerInfo;
-        if (PlayerHandler.Players[Client._client.Id].IsHost && !(row.Item as PlayerInfo).IsHost)
-            GiveHostPopup.IsOpen = true;
     }
 
     private static T FindAncestor<T>(DependencyObject current)
@@ -119,5 +94,52 @@ public partial class Lobby : UserControl
         var message = Message.Create(MessageSendMode.Reliable, MessageID.GiftHost);
         message.AddUShort(clickedPlayer.ClientID);
         Client._client.Send(message);
+    }
+
+    private void KickPlayer_OnClick(object sender, RoutedEventArgs routedEventArgs)
+    {
+        Client.HCommand.Commands["kick"].InitExecute(new string[] { clickedPlayer.ClientID.ToString() });
+    }
+
+    private void HostMenuButton_Click(object sender, RoutedEventArgs e)
+    {
+        // Open the context menu on left click
+        if (sender is FrameworkElement element)
+        {
+            element.ContextMenu.IsOpen = true;
+        }
+    }
+
+    private void LevelLockToggle_Click(object sender, RoutedEventArgs e)
+    {
+        var value = SettingsHandler.DoLevelLock ? "False" : "True";
+        Client.HCommand.Commands["levellock"].InitExecute(new string[] { value });
+    }
+
+    private void ClearPassword_Click(object sender, RoutedEventArgs e)
+    {
+        Client.HCommand.Commands["password"].InitExecute(new string[] {"default"});
+
+    }
+
+    private void ResetSync_Click(object sender, RoutedEventArgs e)
+    {
+        Client.HCommand.Commands["resetsync"].InitExecute(Array.Empty<string>());
+    }
+
+    private void DataGrid_OnContextMenuOpening(object sender, RoutedEventArgs e)
+    {
+        if (clickedPlayer.ClientID == Client._client.Id)
+        {
+            e.Handled = true;
+            HostDataGridContextMenu.IsOpen = false;
+            return;
+        }
+        HostDataGridContextMenu.IsOpen = true;
+    }
+
+    private void HostMenuButton_OnContextMenuOpening(object sender, ContextMenuEventArgs e)
+    {
+        LevelLockToggle.IsChecked = SettingsHandler.DoLevelLock;
     }
 }

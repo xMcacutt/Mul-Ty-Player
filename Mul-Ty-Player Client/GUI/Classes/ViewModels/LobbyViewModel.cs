@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Windows.Input;
 using MulTyPlayerClient.Classes;
@@ -18,6 +19,7 @@ public class LobbyViewModel : IViewModel
 
         Lobby.IsOnMenuChanged += Model_IsOnMenuChanged;
         Lobby.IsReadyChanged += Model_IsReadyChanged;
+        Lobby.IsHostChanged += Model_IsHostChanged;
         Lobby.CanLaunchGameChanged += Model_CanLaunchGameChanged;
         Countdown.OnCountdownBegan += OnCountdownBegan;
         Countdown.OnCountdownAborted += OnCountdownEnded;
@@ -46,16 +48,11 @@ public class LobbyViewModel : IViewModel
     public bool IsOnMenu { get; set; }
 
     public string Input { get; set; } = "";
-
-    public string ReadyText { get; set; } = "Ready";
     public bool IsReady { get; set; } = true;
     public bool IsReadyButtonEnabled { get; set; } = true;
-
-    public string LaunchGameText { get; set; } = "Launch Game";
     public bool IsLaunchGameButtonEnabled { get; set; }
-
-    public string SyncText { get; set; } = "Sync";
     public bool IsSyncButtonEnabled { get; set; } = true;
+    public bool IsHostMenuButtonEnabled { get; set; } = false;
 
     private static LobbyModel Lobby => ModelController.Lobby;
 
@@ -99,6 +96,11 @@ public class LobbyViewModel : IViewModel
     private void Model_CanLaunchGameChanged(bool value)
     {
         IsLaunchGameButtonEnabled = value;
+    }
+    
+    private void Model_IsHostChanged(bool value)
+    {
+        IsHostMenuButtonEnabled = value;
     }
 
     private void OnCountdownEnded()

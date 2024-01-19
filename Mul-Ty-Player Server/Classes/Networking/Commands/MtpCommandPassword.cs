@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MulTyPlayer;
 using Riptide;
@@ -46,6 +47,8 @@ public class MtpCommandPassword : Command
     public static void ProxyRunSetPassword(ushort clientId, Message message)
     {
         var pass = message.GetString();
+        if (string.Equals(pass, "default", StringComparison.CurrentCultureIgnoreCase))
+            pass = "xxxxx";
         RunPassword(pass);
         var announcement = Message.Create(MessageSendMode.Reliable, MessageID.SetPassword);
         announcement.AddString(pass);

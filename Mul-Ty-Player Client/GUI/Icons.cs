@@ -33,5 +33,10 @@ public class Icons : ResourceDictionary
         this["IcoInvisible"] = "\uf070";
         this["IcoGift"] = "\uf06b";
         this["IcoHome"] = "\uf015";
+        this["IcoKick"] = "\uf503";
+        this["IcoCheck"] = "\uf00c";
+        this["IcoCaretRight"] = "\uf0da";
+        this["IcoPassword"] = "\uf084";
+        this["IcoErase"] = "\uf12d";
     }
 }

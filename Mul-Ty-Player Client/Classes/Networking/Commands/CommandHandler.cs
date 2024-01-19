@@ -52,7 +52,7 @@ public class CommandHandler
         Logger.Write("[Error] The command entered is not known.\nUse /clist for a list of commands.");
     }
 
-    public void RegisterCommand(Command command)
+    private void RegisterCommand(Command command)
     {
         Commands[command.Name] = command;
         foreach (var alias in command.Aliases)

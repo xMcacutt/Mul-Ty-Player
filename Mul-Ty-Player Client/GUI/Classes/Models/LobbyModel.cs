@@ -81,6 +81,7 @@ public class LobbyModel
     public void UpdateHostIcon()
     {
         foreach (var player in PlayerInfoList) player.IsHost = PlayerHandler.Players[player.ClientID].IsHost;
+        IsHost = PlayerHandler.Players[Client._client.Id].IsHost;
     }
 
     public void Logout()
@@ -147,6 +148,24 @@ public class LobbyModel
     }
 
     private bool isReady;
+
+    #endregion
+    
+    #region IsHost
+
+    public event Action<bool> IsHostChanged;
+
+    public bool IsHost
+    {
+        get => isHost;
+        set
+        {
+            isHost = value;
+            IsHostChanged(isHost);
+        }
+    }
+
+    private bool isHost;
 
     #endregion
 }
