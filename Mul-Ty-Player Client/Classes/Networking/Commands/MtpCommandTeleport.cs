@@ -10,12 +10,13 @@ namespace MulTyPlayerClient;
 
 public class MtpCommandTeleport : Command
 {
+    
     public MtpCommandTeleport()
     {
         Name = "tp";
         Aliases = new List<string> { "teleport", "tele" };
         HostOnly = false;
-        Usages = new List<string> { "/tp <x> <y> <z>", "/tp <clientId>", "/tp <@1> <@2>", "/tp <@1> <x> <y> <z>" };
+        Usages = new List<string> { "/tp <x> <y> <z>", "/tp <clientId>", "/tp <@1> <@2>", "/tp <@1> <x> <y> <z>", "/tp <@1> <posId>", "/tp <posId>" };
         Description = "Teleport to a specific location or other player in the same level.";
         ArgDescriptions = new Dictionary<string, string>
         {
@@ -24,7 +25,8 @@ public class MtpCommandTeleport : Command
             {"<z>", "z-coordinate to teleport to. Relative to current with ~z."},
             {"<clientId>", "client to teleport to."},
             {"<@1>", "Target selector from @a, @r, or clientId"},
-            {"<@2>", "Target selector to @r, or clientId"}
+            {"<@2>", "Target selector to @r, or clientId"},
+            {"<posId>", "Level position identifier @s (start), @e (end)"}
         };
     }
 
@@ -110,9 +112,8 @@ public class MtpCommandTeleport : Command
         for (var i = 0; i < 3; i++)
         {
             var inCoord = inCoords[i];
-            var absCoord = 0f;
             var relCoord = 0f;
-            if ((!float.TryParse(inCoord, out absCoord) && !inCoord.StartsWith("~"))
+            if ((!float.TryParse(inCoord, out var absCoord) && !inCoord.StartsWith("~"))
                 || (inCoord.StartsWith("~") && inCoord != "~" && !float.TryParse(inCoord.Skip(1).ToArray(), out relCoord)))
             {
                 LogError("Coordinates specified are not valid");
@@ -180,6 +181,12 @@ public class MtpCommandTeleport : Command
             case "r" or "R":
                 selector = Selector.RandomPlayer;
                 break;
+            case "s" or "S":
+                selector = Selector.LevelStart;
+                break;
+            case "e" or "E":
+                selector = Selector.LevelEnd;
+                break;
             default:
                 outSelector = null;
                 return false;
@@ -229,7 +236,9 @@ public class MtpCommandTeleport : Command
 public enum Selector : ushort
 {
     AllPlayers,
-    RandomPlayer
+    RandomPlayer,
+    LevelStart,
+    LevelEnd
 }
 
 public enum SelectorType : ushort

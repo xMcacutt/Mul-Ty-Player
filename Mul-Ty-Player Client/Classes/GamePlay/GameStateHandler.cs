@@ -5,15 +5,15 @@ namespace MulTyPlayerClient;
 public class GameStateHandler
 {
     private const int MAIN_MENU_STATE_ADDRESS = 0x286641;
-    private const int LOADING_SCREEN_STATE_ADDRESS = 0x27EBCC;
+    private const int LOADING_SCREEN_STATE_ADDRESS = 0x27EBF0;
 
     private bool wasLoadingLastFrame;
 
     public bool IsAtMainMenuOrLoading()
     {
-        ProcessHandler.TryRead(LOADING_SCREEN_STATE_ADDRESS, out bool result, true,
+        ProcessHandler.TryRead(LOADING_SCREEN_STATE_ADDRESS, out byte result, true,
             "GameStateHandler::IsAtMainMenuOrLoading()");
-        var loading = !result;
+        var loading = result < 1;
         if (wasLoadingLastFrame && !loading) Client.HLevel.DoLevelSetup();
         wasLoadingLastFrame = loading;
         return loading;

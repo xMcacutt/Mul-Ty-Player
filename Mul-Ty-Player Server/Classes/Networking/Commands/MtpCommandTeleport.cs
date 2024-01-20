@@ -10,6 +10,61 @@ namespace MulTyPlayerServer.Classes.Networking.Commands;
 public class MtpCommandTeleport
 {
 
+    private static Dictionary<int, float[]> _levelStarts = new Dictionary<int, float[]>()
+    {
+         {0, new float[] {71f, 2622.9421f, 209f} },
+         {1, new float[] {0, 0, 0} },
+         {2, new float[] {0, 0, 0} },
+         {3, new float[] {0, 0, 0} },
+         {4, new float[] {-3738.3555f, 351.45612f, 7932.4614f} },
+         {5, new float[] {-8940f, -1453.5535f, 7162f} },
+         {6, new float[] {-13646f, 338f, 22715f} },
+         {7, new float[] {-572f, -493.60754f, -59f} },
+         {8, new float[] {-3242f, -610.2542f, 6197f} },
+         {9, new float[] {-467.61282f, -2624.3982f, 191.87332f} },
+        {10, new float[] {-14216.542f, 4800.319f, 16626.096f} },
+        {11, new float[] {0, 0, 0} },
+        {12, new float[] {-4246f, -67.183754f, 1343f} },
+        {13, new float[] {-5499f, -507.01822f, -6951f} },
+        {14, new float[] {-5771f, -1689.4564f, -1658f} },
+        {15, new float[] {0, 0, 0} },
+        {16, new float[] {0, 0, 0} },
+        {17, new float[] {0, 0, 0} },
+        {18, new float[] {0, 0, 0} },
+        {19, new float[] {-7861f, -508.86023f, 434f} },
+        {20, new float[] {0, 0, 0} },
+        {21, new float[] {0, 0, 0} },
+        {22, new float[] {0, 0, 0} }, 
+        {23, new float[] {0, 0, 0} },
+    };
+    private static Dictionary<int, float[]> _levelEnds = new Dictionary<int, float[]>()
+    {
+         {0, new float[] {71f, 2622.9421f, 209f} },
+         {1, new float[] {0, 0, 0} },
+         {2, new float[] {0, 0, 0} },
+         {3, new float[] {0, 0, 0} },
+         {4, new float[] {-8327.423f, 431.42093f, -1255.9796f} },
+         {5, new float[] {-6062.538f, 247.70023f, 7424.3096f} },
+         {6, new float[] {1576.1663f, 5765.201f, -11264.105f} },
+         {7, new float[] {-572f, -493.60754f, -59f} },
+         {8, new float[] {-7023.561f, 192.2511f, -7245.863f} },
+         {9, new float[] {40595.652f, -383.56946f, 3621.8237f} },
+        {10, new float[] {36711.64f, 3709.1973f, -18600.393f} },
+        {11, new float[] {0, 0, 0} },
+        {12, new float[] {-1232.5217f, -1501.8242f, 1479.3169f} },
+        {13, new float[] {-9035.317f, 10568.717f, 17120.656f} },
+        {14, new float[] {-13466.467f, -1694.2596f, -9534.123f} },
+        {15, new float[] {0, 0, 0} },
+        {16, new float[] {0, 0, 0} },
+        {17, new float[] {0, 0, 0} },
+        {18, new float[] {0, 0, 0} },
+        {19, new float[] {-7861f, -508.86023f, 434f} },
+        {20, new float[] {0, 0, 0} },
+        {21, new float[] {0, 0, 0} },
+        {22, new float[] {0, 0, 0} }, 
+        {23, new float[] {0, 0, 0} },
+    };
+    
     private static void Teleport(bool fromIsClientId, ushort from, bool toIsClientId, ushort to, ushort sender)
     {
         var fromPlayer = GetPlayer(fromIsClientId, from, SelectorType.From);
@@ -18,6 +73,18 @@ public class MtpCommandTeleport
             PeerMessageHandler.SendMessageToClient("[ERROR] Teleport failed, could not find player", false, sender);
             return;
         }
+
+        if (!toIsClientId && ((Selector)to == Selector.LevelStart || (Selector)to == Selector.LevelEnd))
+        {
+            if (!fromIsClientId && (Selector)from == Selector.AllPlayers)
+            {
+                foreach (var player in PlayerHandler.Players.Values)
+                {
+                    
+                }
+            }
+        }
+        
         var toPlayer = GetPlayer(toIsClientId, to, SelectorType.To, fromPlayer);
         if (toPlayer is null)
         {
@@ -28,7 +95,7 @@ public class MtpCommandTeleport
         {
             foreach (var player in PlayerHandler.Players.Values.Where(x => x.CurrentLevel == toPlayer.CurrentLevel))
             {
-                if (player.ClientID == fromPlayer.ClientID)
+                if (player.ClientID == toPlayer.ClientID)
                     continue;
                 var allMessage = Message.Create(MessageSendMode.Reliable, MessageID.AdvancedTeleport);
                 allMessage.AddUShort(toPlayer.ClientID);
@@ -37,7 +104,7 @@ public class MtpCommandTeleport
             return;
         }
 
-        if (fromPlayer.ClientID == toPlayer.ClientID && !fromIsClientId && (Selector)from == Selector.RandomPlayer)
+        if (!fromIsClientId && (Selector)from == Selector.RandomPlayer)
         {
             fromPlayer = GetRandomPlayer(SelectorType.To, toPlayer.CurrentLevel, toPlayer.ClientID);
             if (fromPlayer is null)
@@ -49,6 +116,12 @@ public class MtpCommandTeleport
         if (fromPlayer.ClientID == toPlayer.ClientID)
         {
             PeerMessageHandler.SendMessageToClient("[ERROR] Teleport failed, critical error.", false, sender);
+            return;
+        }
+
+        if (fromPlayer.CurrentLevel != toPlayer.CurrentLevel)
+        {
+            PeerMessageHandler.SendMessageToClient("[ERROR] Teleport failed, players in different levels.", false, sender);
             return;
         }
         var message = Message.Create(MessageSendMode.Reliable, MessageID.AdvancedTeleport);
@@ -162,7 +235,9 @@ public class MtpCommandTeleport
 public enum Selector : ushort
 {
     AllPlayers,
-    RandomPlayer
+    RandomPlayer,
+    LevelStart,
+    LevelEnd
 }
 
 public enum SelectorType : ushort
