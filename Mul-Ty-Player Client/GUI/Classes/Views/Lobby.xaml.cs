@@ -34,6 +34,7 @@ public partial class Lobby : UserControl
                 if (e.Key == Key.Up && string.IsNullOrWhiteSpace(recallText))
                     break;
                 TextBoxInput.Text = recallText;
+                TextBoxInput.CaretIndex = TextBoxInput.Text.Length;
                 break;
         }
     }

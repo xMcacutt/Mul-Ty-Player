@@ -11,9 +11,9 @@ public class GameStateHandler
 
     public bool IsAtMainMenuOrLoading()
     {
-        ProcessHandler.TryRead(LOADING_SCREEN_STATE_ADDRESS, out byte result, true,
+        ProcessHandler.TryRead(LOADING_SCREEN_STATE_ADDRESS, out long result, true,
             "GameStateHandler::IsAtMainMenuOrLoading()");
-        var loading = result < 1;
+        var loading = result == 0;
         if (wasLoadingLastFrame && !loading) Client.HLevel.DoLevelSetup();
         wasLoadingLastFrame = loading;
         return loading;

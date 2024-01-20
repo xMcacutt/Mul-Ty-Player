@@ -100,7 +100,6 @@ public class MtpCommandTeleport
             }
             return;
         }
-
         if (!fromIsClientId && (Selector)from == Selector.RandomPlayer)
         {
             fromPlayer = GetRandomPlayer(SelectorType.To, toPlayer.CurrentLevel, toPlayer.ClientID);
