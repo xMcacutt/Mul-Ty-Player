@@ -14,7 +14,8 @@ public enum SFX
     MenuCancel,
     Race321,
     Race10,
-    RaceAbort
+    RaceAbort,
+    LevelComplete
 }
 
 public static class SFXPlayer
@@ -29,7 +30,8 @@ public static class SFXPlayer
         { SFX.MenuCancel, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/MenuCancel.wav") },
         { SFX.Race321, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Race321.wav") },
         { SFX.Race10, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Race10.wav") },
-        { SFX.RaceAbort, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/RaceAbort.wav") }
+        { SFX.RaceAbort, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/RaceAbort.wav") },
+        { SFX.LevelComplete, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/LevelComplete.wav")}
     };
 
     private static Dictionary<SFX, MediaPlayer> mediaPlayers;

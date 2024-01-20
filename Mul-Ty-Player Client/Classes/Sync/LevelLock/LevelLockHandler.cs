@@ -144,6 +144,7 @@ public class LevelLockHandler
     public static void OpenPortals(Message message)
     {
         //Console.WriteLine("Level completed");
+        SFXPlayer.PlaySound(SFX.LevelComplete);
         Client.HSync.HLevelLock.EnableAllCurrentPortals();
     }
     

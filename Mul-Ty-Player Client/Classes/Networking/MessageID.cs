@@ -30,5 +30,6 @@ public enum MessageID : ushort
     SetPassword,
     ObjectiveObjectActivated,
     ObjectiveStateChanged,
-    ReqObjectiveSync
+    ReqObjectiveSync,
+    AdvancedTeleport
 }
