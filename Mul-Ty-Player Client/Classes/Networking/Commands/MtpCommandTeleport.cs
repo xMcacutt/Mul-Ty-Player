@@ -10,7 +10,6 @@ namespace MulTyPlayerClient;
 
 public class MtpCommandTeleport : Command
 {
-    
     public MtpCommandTeleport()
     {
         Name = "tp";
@@ -60,7 +59,9 @@ public class MtpCommandTeleport : Command
         // bool true if value is clientId else false
         // ushort represents selector or clientId
         var from = ParseStringAsSelectorOrId(selectorFrom, SelectorType.From);
-        if (from == null)
+        if (from == null || 
+            (!from.Value.Item1 && 
+             ((Selector)from.Value.Item2 == Selector.LevelEnd || (Selector)from.Value.Item2 == Selector.LevelStart)))
         {
             SuggestHelp();
             return;
@@ -83,7 +84,9 @@ public class MtpCommandTeleport : Command
         // ushort represents selector or clientId
         var from = ParseStringAsSelectorOrId(selectorFrom, SelectorType.From);
         var to = ParseStringAsSelectorOrId(selectorTo, SelectorType.To);
-        if (from == null || to == null)
+        if (from == null || to == null || 
+            (!from.Value.Item1 && 
+             ((Selector)from.Value.Item2 == Selector.LevelEnd || (Selector)from.Value.Item2 == Selector.LevelStart)))
         {
             SuggestHelp();
             return;
@@ -131,25 +134,35 @@ public class MtpCommandTeleport : Command
         return true;
     }
 
-    private void RunTeleport(string toClient)
+    private void RunTeleport(string toString)
     {
-        if (!ushort.TryParse(toClient, out var clientId))
+        var to = ParseStringAsSelectorOrId(toString, SelectorType.To);
+        if (to is null)
         {
-            LogError("The id given is not valid");
+            SuggestHelp();
             return;
         }
-        if (!PlayerHandler.Players.ContainsKey(clientId))
+        if (!to.Value.Item1)
+        {
+            var message = Message.Create(MessageSendMode.Reliable, MessageID.AdvancedTeleport);
+            message.AddBool(false);
+            message.AddBool(true);
+            message.AddUShort(Client._client.Id);
+            message.AddBool(to.Value.Item1);
+            message.AddUShort(to.Value.Item2);
+            Client._client.Send(message);
+            return;
+        }
+        if (!PlayerHandler.Players.TryGetValue(to.Value.Item2, out var player))
         {
             LogError("The client id specified is not a player.");
             return;
         }
-        if (clientId == Client._client.Id)
+        if (to.Value.Item2 == Client._client.Id)
         {
             LogError("You can't teleport to yourself silly!");
             return;
         }
-        
-        var player = PlayerHandler.Players[clientId];
         var koalaId = Koalas.GetInfo[player.Koala].Id;
         var transform = PlayerReplication.PlayerTransforms[koalaId];
         if (transform.LevelID != Client.HLevel.CurrentLevelId)
@@ -191,7 +204,10 @@ public class MtpCommandTeleport : Command
                 outSelector = null;
                 return false;
         }
-        if (selectorType == SelectorType.To && selector == Selector.AllPlayers)
+
+        var fromInValid = selectorType == SelectorType.From && selector is Selector.LevelEnd or Selector.LevelStart;
+        var toInvalid = selectorType == SelectorType.To && selector is Selector.AllPlayers;
+        if (fromInValid || toInvalid)
         {
             outSelector = null;
             return false;
