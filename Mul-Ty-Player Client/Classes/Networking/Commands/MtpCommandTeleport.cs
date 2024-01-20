@@ -205,9 +205,13 @@ public class MtpCommandTeleport : Command
                 Logger.Write("[ERROR] Could not find player.");
                 return;
             }
+            if (Client._client.Id == toPlayer.Id)
+            {
+                Logger.Write("[ERROR] Attempted to teleport to self. Aborting.");
+                return;
+            }
             var koalaId = Koalas.GetInfo[toPlayer.Koala].Id;
-            var transform = PlayerReplication.PlayerTransforms[koalaId];
-            if (transform.LevelID != Client.HLevel.CurrentLevelId)
+            if (!PlayerReplication.PlayerTransforms.TryGetValue(koalaId, out var transform) || transform.LevelID != Client.HLevel.CurrentLevelId)
             {
                 Logger.Write("[ERROR] Cannot teleport to player in a different level");
                 return;
