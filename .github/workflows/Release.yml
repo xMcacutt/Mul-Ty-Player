@@ -1,11 +1,8 @@
 name: Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      release_version:
-        description: 'Specify the release version'
-        required: true
+  release:
+    types: [published]
 
 jobs:
   publish:
@@ -37,16 +34,7 @@ jobs:
             Compress-Archive -Path "publish/$project/*" -DestinationPath "publish/$project.zip"
           }
 
-      - name: Create Release
-        id: create_release
-        uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: ${{ github.event.inputs.release_version }}
-          draft: false
-          prerelease: false
-          files: |
-            "./Publish/Mul-Ty-Player Client.zip"
-            "./Publish/Mul-Ty-Player Server.zip"
-            "./Publish/Mul-Ty-Player Updater.zip"
-            "./Patch_PC.rkv"
+      - name: Add Files
+        id: add_files
+        run: |
+          gh release upload $GITHUB_REF "Publish/Mul-Ty-Player Client.zip" "Publish/Mul-Ty-Player Server.zip" "Publish/Mul-Ty-Player Updater.zip" "Patch_PC.rkv"
