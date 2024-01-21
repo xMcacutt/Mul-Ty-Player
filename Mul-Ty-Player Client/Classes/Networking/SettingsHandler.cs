@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using MulTyPlayer;
+using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
 using Newtonsoft.Json;
@@ -97,16 +98,27 @@ internal static class SettingsHandler
         }
 
         var serverVersion = message.GetString();
-        CheckVersions(Settings.Version, serverVersion);
+        var clientVersion = Settings.Version;
+        switch (VersionHandler.Compare(clientVersion, serverVersion))
+        {
+            case null:
+                Logger.Write("[WARN] Critical error, invalid version format.");
+                break;
+            case VersionResult.NeitherNewer:
+                break;
+            case VersionResult.FirstNewer or VersionResult.SecondNewer:
+                Logger.Write($"[WARN] Client and server versions do not match. c{clientVersion} | v{serverVersion}");
+                break;
+        }
     }
 
-    private static void CheckVersions(string clientVersion, string serverVersion)
+    public static void CheckVersions(string clientVersion, string serverVersion)
     {
         if (Version.TryParse(clientVersion, out var client) && Version.TryParse(serverVersion, out var server))
         {
             var comparisonResult = client.CompareTo(server);
             if (comparisonResult != 0)
-                Logger.Write($"[WARN] Client and server versions do not match. c{clientVersion} | v{serverVersion}");
+                
             return;
         }
         Logger.Write("[WARN] Critical error, invalid version format.");

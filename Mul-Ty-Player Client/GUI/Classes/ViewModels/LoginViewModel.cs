@@ -2,7 +2,9 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI.Models;
+using Octokit;
 using PropertyChanged;
 
 namespace MulTyPlayerClient.GUI.ViewModels;
@@ -15,6 +17,11 @@ public class LoginViewModel : IViewModel
         ConnectCommand = new RelayCommand(TryConnect);
         Login.OnLoginFailed += Model_OnLoginFailed;
         Login.OnLoginSuccess += Model_OnLoginSuccess;
+        var github = new GitHubClient(new ProductHeaderValue("Mul-Ty-Player"));
+        var latestRelease = github.Repository.Release.GetLatest("xMcacutt", "Mul-Ty-Player").Result;
+        var latestVersion = latestRelease.TagName.Replace("v", "");
+        var result = VersionHandler.Compare(SettingsHandler.Settings.Version, latestVersion);
+        UpdateMessageVisible = result is VersionResult.SecondNewer;
     }
 
     public string Name { get; set; }
@@ -32,6 +39,7 @@ public class LoginViewModel : IViewModel
     public bool ConnectionAttemptCompleted { get; set; }
 
     private static LoginModel Login => ModelController.Login;
+    public bool UpdateMessageVisible { get; set; }
 
     public void OnEntered()
     {
