@@ -134,7 +134,7 @@ public class UpdateViewModel
             if (SettingsHandler.Settings.UpdateRKV)
             {
                 PatchExe(latestRelease.TagName);
-                UpdateRKV();
+                UpdateRKV(latestRelease);
             }
         }
         catch (Exception ex)
@@ -274,20 +274,20 @@ public class UpdateViewModel
         }
     }
 
-    private void UpdateRKV()
+    private void UpdateRKV(Release latestRelease)
     {
         var gameDirPath = SettingsHandler.Settings.GameDir;
-        const string url = "https://drive.google.com/u/0/uc?id=1OTudAOfutB458mm2qKqRlX1Hi73h8WQw&export=download&confirm";
+        var asset = latestRelease.Assets.FirstOrDefault(asset => asset.Name == "Patch_PC.rkv");
+        if (asset == null) throw new Exception();
         HttpClient client = new();
-        var uri = new Uri(url);
+        var uri = new Uri(asset.BrowserDownloadUrl);
         var response = client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead).Result;
         response.EnsureSuccessStatusCode();
         using var contentStream = response.Content.ReadAsStreamAsync().Result;
         var totalBytes = response.Content.Headers.ContentLength;
-        var destinationPath = Path.Combine(gameDirPath, "Patch_PC.rkv");
-        using FileStream fileStream = new(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
+        using FileStream fileStream = new(Path.Combine(gameDirPath, "Patch_PC.rkv"), FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
         var buffer = new byte[4096];
-        var bytesRead = default(int);
+        int bytesRead;
         var bytesWritten = 0L;
         do
         {
@@ -297,8 +297,9 @@ public class UpdateViewModel
 
             if (!totalBytes.HasValue) continue;
             var progressPercentage = bytesWritten * 100d / totalBytes.Value;
-            worker.ReportProgress((int)progressPercentage, $"Downloading Patch: {(int)progressPercentage}%");
+            worker.ReportProgress((int)progressPercentage, $"Downloading game patch: {(int)progressPercentage}%");
         } while (bytesRead > 0);
+        fileStream.Close();
     }
     
 }
