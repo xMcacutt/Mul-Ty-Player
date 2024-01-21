@@ -41,4 +41,4 @@ jobs:
         run: |
           echo "Listing available releases:"
           gh release list
-          gh release upload ${{ github.ref }} "Publish/Mul-Ty-Player Client.zip" "Publish/Mul-Ty-Player Server.zip" "Publish/Mul-Ty-Player Updater.zip" "Patch_PC.rkv"
+          gh release upload ${GITHUB_REF#refs/tags/} "Publish/Mul-Ty-Player Client.zip" "Publish/Mul-Ty-Player Server.zip" "Publish/Mul-Ty-Player Updater.zip" "Patch_PC.rkv"
