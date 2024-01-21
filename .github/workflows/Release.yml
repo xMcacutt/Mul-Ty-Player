@@ -37,6 +37,6 @@ jobs:
       - name: Add Files
         id: add_files
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release upload ${{ github.ref }} "Publish/Mul-Ty-Player Client.zip" "Publish/Mul-Ty-Player Server.zip" "Publish/Mul-Ty-Player Updater.zip" "Patch_PC.rkv"
