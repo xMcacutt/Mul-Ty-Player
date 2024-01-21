@@ -18,7 +18,7 @@ Boss Cass together as your favourite koalas.
 3.3.0 has been released. 
 If you were on a version earlier than v3 read the below instructions for information and installation.
 
-If you have a 3.0+ version installed, simply press the update button in the updater.
+If you have a 3.0+ version installed, please delete all client, server, and updater files and reinstall using the new updater.
 
 This version is the start of objective syncing. Treasure Chests, Koalas, and Flame Burners are all now synced
 between clients. More to come. 
@@ -131,9 +131,28 @@ With your port forwarding rule set up, people can now join your server using you
 #### 3.3.0
 - Objective syncing polished
 - Treasure chest syncing added
-- UX Updates in progress
+- Extra teleport options added
+- Host options button added
+- Kick added to host context menu
+- Sound on level complete
+- Sound on time attack open
+- Update message added to client
+- Version comparison added to client
+- Copy paste allowed from console
 
 ### Bug Fixes
+
+#### 3.3.0
+- Koalas are now returned on disconnect / level change
+- Triggers should be fixed in level lock mode
+- Critical desync error from invalid loading byte fixed
+- Text input in lobby caret moved to end of line on command recall
+- Updater RKV moved into project
+- Updater paths fixed
+- Updater server filestream multi access fixed
+- Updater text input boxes update dynamically
+- Github action updated
+- Password now resets on no players connected
 
 #### 3.2.1
 - Interpolation mode enabled **EXPERIMENTAL**
