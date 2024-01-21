@@ -10,6 +10,22 @@ using KoalaID = Int32;
 
 internal static class PlayerReplication
 {
+    private static readonly int[] _defaultKoalaPosX =
+    {
+        250, 0, 0, 0, -2989, -8940, -13646, -572, -3242, -518, -14213, 0, -4246, -5499, -1615, 90, 0, -166, 0, -192,
+        -8845, -82, -82, 10
+    };
+    private static readonly int[] _defaultKoalaPosY =
+    {
+        1700, 0, 0, 0, -500, -2153, -338, -1600, -1309, -4827, 4000, 0, -773, -2708, -1488, -789, 0, -100, 0, -3000, 1000, -1524,
+        -1524, -200
+    };
+    private static readonly int[] _defaultKoalaPosZ =
+    {
+        6400, 0, 0, 0, 8238, 7162, 22715, -59, 6197, 212, 16627, 0, 1343, -6951, 811, 93, 0, -7041, 0, 3264, 17487, 449,
+        449, -250
+    };
+    
     private const int RENDER_CALLS_PER_CLIENT_TICK = 8;
     private const int KRENDER_SLEEP_TIME = (int)((float)Client.MS_PER_TICK / RENDER_CALLS_PER_CLIENT_TICK) - 1;
     public static KoalaInterpolationMode InterpolationMode = (KoalaInterpolationMode)Enum.Parse(typeof(KoalaInterpolationMode), SettingsHandler.Settings.InterpolationMode);
@@ -68,7 +84,7 @@ internal static class PlayerReplication
     public static void RenderTick()
     {
         foreach (var koalaID in receivedSnapshotData.Keys)
-            if (!Client.HGameState.IsAtMainMenuOrLoading() && PlayerTransforms[koalaID].LevelID == Client.HLevel.CurrentLevelId)
+            if (!Client.HGameState.IsAtMainMenuOrLoading())
             {
                 var t = UpdateTransform(koalaID);
                 WriteTransformData(koalaID, t);
@@ -86,10 +102,16 @@ internal static class PlayerReplication
 
     private static void WriteTransformData(KoalaID koalaID, Transform transform)
     {
-        if (transform.LevelID != Client.HLevel.CurrentLevelId)
-            return;
-
         var ktp = KoalaHandler.TransformAddresses[koalaID];
+        
+        if (transform.LevelID != Client.HLevel.CurrentLevelId)
+        {
+            ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(_defaultKoalaPosX[Client.HLevel.CurrentLevelId]));
+            ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(_defaultKoalaPosY[Client.HLevel.CurrentLevelId]));
+            ProcessHandler.WriteData(ktp.Z, BitConverter.GetBytes(_defaultKoalaPosZ[Client.HLevel.CurrentLevelId]));
+            return;
+        }
+
 
         ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(transform.Position.X));
         ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(transform.Position.Y));
