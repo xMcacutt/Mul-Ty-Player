@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using MulTyPlayer;
 using MulTyPlayerClient.GUI.Models;
+using MulTyPlayerClient.GUI.ViewModels;
 using Riptide;
 
 namespace MulTyPlayerClient.GUI.Views;
@@ -130,7 +131,7 @@ public partial class Lobby : UserControl
 
     private void DataGrid_OnContextMenuOpening(object sender, RoutedEventArgs e)
     {
-        if (clickedPlayer.ClientID == Client._client.Id)
+        if (clickedPlayer.ClientID == Client._client.Id || !(DataContext as LobbyViewModel).IsHostMenuButtonEnabled)
         {
             e.Handled = true;
             HostDataGridContextMenu.IsOpen = false;

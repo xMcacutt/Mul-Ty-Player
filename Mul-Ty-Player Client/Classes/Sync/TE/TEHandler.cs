@@ -45,6 +45,7 @@ internal class TEHandler : SyncObjectHandler
     {
         var level = message.GetInt();
         if (Client.HLevel.CurrentLevelData.Id != level || Client.HGameState.IsAtMainMenuOrLoading()) return;
+        SFXPlayer.PlaySound(SFX.TAOpen);
         (Client.HSync.SyncObjects["TE"] as TEHandler)?.ShowStopwatch();
     }
 

@@ -40,6 +40,6 @@ internal class TESyncer : Syncer
         if (iSave != 3) return;
         var stopWatchActivateMessage = Message.Create(MessageSendMode.Reliable, MessageID.StopWatch);
         stopWatchActivateMessage.AddInt(level);
-        Server._Server.SendToAll(stopWatchActivateMessage, originalSender);
+        Server._Server.SendToAll(stopWatchActivateMessage);
     }
 }

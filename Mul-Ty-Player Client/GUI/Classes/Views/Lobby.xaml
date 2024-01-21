@@ -39,7 +39,7 @@
                       HorizontalContentAlignment="Stretch"
                       ItemsSource="{Binding PlayerInfoList}">
                 <DataGrid.ContextMenu>
-                    <ContextMenu x:Name="HostDataGridContextMenu" IsEnabled="{Binding IsHostMenuButtonEnabled}">
+                    <ContextMenu x:Name="HostDataGridContextMenu">
                         <controls:CustomMenuItem IconCode="{DynamicResource IcoGift}" Header="Gift Host" Click="GiveHost_OnClick"/>
                         <controls:CustomMenuItem IconCode="{DynamicResource IcoKick}" Header="Kick" Click="KickPlayer_OnClick"/>
                     </ContextMenu>

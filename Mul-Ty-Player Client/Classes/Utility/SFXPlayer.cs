@@ -15,7 +15,8 @@ public enum SFX
     Race321,
     Race10,
     RaceAbort,
-    LevelComplete
+    LevelComplete,
+    TAOpen
 }
 
 public static class SFXPlayer
@@ -31,7 +32,8 @@ public static class SFXPlayer
         { SFX.Race321, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Race321.wav") },
         { SFX.Race10, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Race10.wav") },
         { SFX.RaceAbort, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/RaceAbort.wav") },
-        { SFX.LevelComplete, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/LevelComplete.wav")}
+        { SFX.LevelComplete, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/LevelComplete.wav")},
+        { SFX.TAOpen, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/TAOpen.wav")}
     };
 
     private static Dictionary<SFX, MediaPlayer> mediaPlayers;
