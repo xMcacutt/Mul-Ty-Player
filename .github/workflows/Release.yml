@@ -46,17 +46,7 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            "publish/Mul-Ty-Player Client.zip"
-            "publish/Mul-Ty-Player Server.zip"
-            "publish/Mul-Ty-Player Updater.zip"
-            "Patch_PC.rkv"
-          
-
-      - name: Upload Release Assets
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          $projects = @("Mul-Ty-Player Client", "Mul-Ty-Player Server", "Mul-Ty-Player Updater")
-          foreach ($project in $projects) {
-            gh release upload ${{ github.event.inputs.release_version }} "publish/$project.zip" --clobber
-          }
+            "./Publish/Mul-Ty-Player Client.zip"
+            "./Publish/Mul-Ty-Player Server.zip"
+            "./Publish/Mul-Ty-Player Updater.zip"
+            "./Patch_PC.rkv"
