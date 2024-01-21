@@ -12,7 +12,8 @@ internal class Settings
     public bool DoSyncOpals { get; set; }
     public bool DoSyncPortals { get; set; }
     public bool DoSyncCliffs { get; set; }
-    public bool DoSyncCrate { get; set; }
     public bool DoSyncScale { get; set; }
     public bool DoSyncFrame { get; set; }
+    
+    public string Version { get; set; }
 }

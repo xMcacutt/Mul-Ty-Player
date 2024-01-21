@@ -14,4 +14,5 @@ internal class Settings
     public string Theme { get; set; }
     public float KoalaScale { get; set; }
     public string InterpolationMode { get; set; }
+    public string Version { get; set; }
 }

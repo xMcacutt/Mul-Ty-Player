@@ -11,5 +11,6 @@
   "DoSyncCliffs": true,
   "DoSyncCrate": true,
   "DoSyncScale": true,
-  "DoSyncFrame": true
+  "DoSyncFrame": true,
+  "Version": "3.3.0"
 }

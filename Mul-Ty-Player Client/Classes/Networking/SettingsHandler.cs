@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using MulTyPlayer;
@@ -94,6 +95,21 @@ internal static class SettingsHandler
         {
             DoLevelLock = b[9];
         }
+
+        var serverVersion = message.GetString();
+        CheckVersions(Settings.Version, serverVersion);
+    }
+
+    private static void CheckVersions(string clientVersion, string serverVersion)
+    {
+        if (Version.TryParse(clientVersion, out var client) && Version.TryParse(serverVersion, out var server))
+        {
+            var comparisonResult = client.CompareTo(server);
+            if (comparisonResult != 0)
+                Logger.Write($"[WARN] Client and server versions do not match. c{clientVersion} | v{serverVersion}");
+            return;
+        }
+        Logger.Write("[WARN] Critical error, invalid version format.");
     }
 
     public static bool HasValidExePath()

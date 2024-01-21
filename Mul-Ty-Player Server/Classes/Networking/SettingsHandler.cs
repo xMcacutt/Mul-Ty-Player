@@ -61,6 +61,7 @@ internal class SettingsHandler
         };
         var message = Message.Create(MessageSendMode.Reliable, MessageID.SyncSettings);
         message.AddBools(b);
+        message.AddString(Settings.Version);
         Server._Server.Send(message, clientId);
     }
 }
