@@ -96,15 +96,8 @@ public class LevelLockHandler
             var b = PortalStates[level] ? (byte)0x1 : (byte)0x3;
             ProcessHandler.WriteData(Client.HSync.SyncObjects["Portal"].LiveObjectAddress + 0x9C + 0xB0 * Array.IndexOf(LivePortalOrder, level), new byte[] {b}, "LevelLockHandler: SetPortalStates() 2");
         }
-        var iterator = 0;
-        foreach (var level in BossLevelsWithTriggers)
-        {
-            var result = Client.HSync.HTrigger.GetTriggerActivity(BossTriggerIndices[iterator]);
-            if ((result == 1 && PortalStates[level]) || result == 0 && !PortalStates[level]) continue;
-            var b = PortalStates[level] || _bossPortalsActive;
-            Client.HSync.HTrigger.SetTriggerActivity(BossTriggerIndices[iterator], b);
-            iterator++;
-        }
+        for (var i = 0; i < BossLevelsWithTriggers.Length; i++)
+            Client.HSync.HTrigger.CheckSetTrigger(BossTriggerIndices[i], PortalStates[BossLevelsWithTriggers[i]] || _bossPortalsActive);
     }
 
     public void CheckEntry()
