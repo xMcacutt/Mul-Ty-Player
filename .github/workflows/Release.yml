@@ -40,5 +40,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Listing available releases:"
+          echo ${{ github.event.release.tag_name }}
           gh release list
-          gh release upload ${GITHUB_REF#refs/tags/} "Publish/Mul-Ty-Player Client.zip" "Publish/Mul-Ty-Player Server.zip" "Publish/Mul-Ty-Player Updater.zip" "Patch_PC.rkv"
+          gh release upload ${{ github.event.release.tag_name }} "Publish/Mul-Ty-Player Client.zip" "Publish/Mul-Ty-Player Server.zip" "Publish/Mul-Ty-Player Updater.zip" "Patch_PC.rkv"
