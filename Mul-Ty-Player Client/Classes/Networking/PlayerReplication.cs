@@ -10,17 +10,17 @@ using KoalaID = Int32;
 
 internal static class PlayerReplication
 {
-    private static readonly int[] _defaultKoalaPosX =
+    private static readonly float[] _defaultKoalaPosX =
     {
         250, 0, 0, 0, -2989, -8940, -13646, -572, -3242, -518, -14213, 0, -4246, -5499, -1615, 90, 0, -166, 0, -192,
         -8845, -82, -82, 10
     };
-    private static readonly int[] _defaultKoalaPosY =
+    private static readonly float[] _defaultKoalaPosY =
     {
         1700, 0, 0, 0, -500, -2153, -338, -1600, -1309, -4827, 4000, 0, -773, -2708, -1488, -789, 0, -100, 0, -3000, 1000, -1524,
         -1524, -200
     };
-    private static readonly int[] _defaultKoalaPosZ =
+    private static readonly float[] _defaultKoalaPosZ =
     {
         6400, 0, 0, 0, 8238, 7162, 22715, -59, 6197, 212, 16627, 0, 1343, -6951, 811, 93, 0, -7041, 0, 3264, 17487, 449,
         449, -250
