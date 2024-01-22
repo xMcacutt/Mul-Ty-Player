@@ -20,7 +20,7 @@ public class VoiceHandler
                 continue;
             if (outgoingPlayer.Coordinates == null)
                 continue;
-            var relay = Message.Create(MessageSendMode.Reliable, MessageID.Voice);
+            var relay = Message.Create(MessageSendMode.Unreliable, MessageID.Voice);
             relay.AddUShort(fromClientId);
             relay.AddBytes(decodedAudioData);
             var incomingClientPos = new Vector3(incomingPlayer.Coordinates[0], incomingPlayer.Coordinates[1], incomingPlayer.Coordinates[2]);
