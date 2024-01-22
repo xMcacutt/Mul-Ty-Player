@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Timers;
 using MulTyPlayer;
 using NAudio.Wave;
 using Riptide;
@@ -15,6 +16,8 @@ public class VoiceHandler
     private const int BitDepth = 16;
     private const int BufferMillis = 5;
     private static Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)> _voices;
+    private static Timer _sendTimer;
+    private static List<byte> _voiceBuffer = new List<byte>();
 
     [MessageHandler((ushort)MessageID.Voice)]
     private static void ReceiveVoiceData(Message message)
@@ -63,10 +66,31 @@ public class VoiceHandler
             WaveFormat = new WaveFormat(SampleRate, BitDepth, 1),
             BufferMilliseconds = BufferMillis 
         };
+        _sendTimer = new Timer(10); // Adjust the interval based on your needs
+        _sendTimer.Elapsed += SendBufferedData;
+        _sendTimer.AutoReset = true;
+        _sendTimer.Start();
         _waveIn.DataAvailable += WaveIn_DataAvailable;
         _waveIn.StartRecording();
     }
-    
+
+    private static void SendBufferedData(object sender, ElapsedEventArgs e)
+    {
+        try
+        {
+            if (_voiceBuffer.Count == 0)
+                return;
+            var message = Message.Create(MessageSendMode.Unreliable, MessageID.Voice);
+            message.AddBytes(_voiceBuffer.ToArray());
+            Client._client.Send(message);
+            _voiceBuffer.Clear();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
     public static void StopCaptureVoice()
     {
         if (_waveIn == null) return;
@@ -79,9 +103,7 @@ public class VoiceHandler
     {
         try
         {
-            var message = Message.Create(MessageSendMode.Unreliable, MessageID.Voice);
-            message.AddBytes(e.Buffer);
-            Client._client.Send(message);
+            _voiceBuffer.AddRange(e.Buffer);
         }
         catch (Exception ex)
         {
