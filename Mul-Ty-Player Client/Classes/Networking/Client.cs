@@ -117,6 +117,7 @@ internal class Client
     {
         cts.Cancel();
         VoiceHandler.StopCaptureVoice();
+        VoiceHandler.ClearVoices();
         KoalaSelected = false;
         IsConnected = false;
         ModelController.KoalaSelect.MakeAllAvailable();

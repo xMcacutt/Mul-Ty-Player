@@ -18,13 +18,14 @@ public class VoiceHandler
     {
         var decodedBytes = message.GetBytes();
         var voiceClient = message.GetUShort();
-        var distance = message.GetFloat();
+        /*var distance = message.GetFloat();*/
         if (!_voices.TryGetValue(voiceClient, out var voiceTool))
             return;
         voiceTool.Item2.AddSamples(decodedBytes, 0, decodedBytes.Length);
-        voiceTool.Item1.Volume = distance >= Range ? 0.0f :
+        /*voiceTool.Item1.Volume = distance >= Range ? 0.0f :
                                  distance == 0 ? 1.0f :
                                  1.0f - distance / Range;
+        */
     }
     
     public static void InitializeVoices()
@@ -45,6 +46,13 @@ public class VoiceHandler
         _voices[clientId].Item1.Dispose();
         _voices[clientId].Item2.ClearBuffer();
         _voices.Remove(clientId);
+    }
+
+    public static void ClearVoices()
+    {
+        foreach (var voice in _voices)
+            RemoveVoice(voice.Key);
+        _voices.Clear();
     }
     
     public static void StartCaptureVoice()
