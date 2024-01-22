@@ -21,6 +21,7 @@ public class VoiceHandler
         /*var distance = message.GetFloat();*/
         if (!_voices.TryGetValue(voiceClient, out var voiceTool))
             return;
+        Console.WriteLine("Adding samples");
         voiceTool.Item2.AddSamples(decodedBytes, 0, decodedBytes.Length);
         /*voiceTool.Item1.Volume = distance >= Range ? 0.0f :
                                  distance == 0 ? 1.0f :
@@ -35,9 +36,10 @@ public class VoiceHandler
 
     public static void AddVoice(ushort clientId)
     {
-        _voices.Add(clientId, (new WaveOut(), new BufferedWaveProvider(new WaveFormat(16000, 16, 1))));
+        _voices.Add(clientId, (new DirectSoundOut(), new BufferedWaveProvider(new WaveFormat(16000, 16, 1))));
         _voices[clientId].Item1.Init(_voices[clientId].Item2);
         _voices[clientId].Item1.Play();
+        Console.WriteLine($"Playing voice {clientId}");
     }
 
     public static void RemoveVoice(ushort clientId)

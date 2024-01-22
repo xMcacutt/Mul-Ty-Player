@@ -187,7 +187,6 @@ internal class Client
 
     private static void ClientLoop(CancellationToken ct)
     {
-        VoiceHandler.StartCaptureVoice();
         while (!ct.IsCancellationRequested)
         {
             if (TyProcess.FindProcess() && KoalaSelected)

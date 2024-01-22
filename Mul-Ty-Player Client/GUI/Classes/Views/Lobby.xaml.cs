@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using MulTyPlayer;
+using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.GUI.Models;
 using MulTyPlayerClient.GUI.ViewModels;
 using Riptide;
@@ -154,9 +155,13 @@ public partial class Lobby : UserControl
         }
     }
 
-    private void MTPAudioToggle_OnClick_Click(object sender, RoutedEventArgs e)
+    private void MTPAudioToggle_Click(object sender, RoutedEventArgs e)
     {
-        throw new NotImplementedException();
+        MTPAudioToggle.IsChecked = !MTPAudioToggle.IsChecked;
+        if (MTPAudioToggle.IsChecked)
+            VoiceHandler.StartCaptureVoice();
+        else
+            VoiceHandler.StopCaptureVoice();
     }
 
     private void Proximity_Click(object sender, RoutedEventArgs e)

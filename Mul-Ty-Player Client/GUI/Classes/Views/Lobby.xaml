@@ -242,7 +242,7 @@
                                 <ContextMenu>
                                     <controls:CustomMenuItem Header="MTP Audio"
                                                              x:Name="MTPAudioToggle"
-                                                             Click="MTPAudioToggle_OnClick_Click"
+                                                             Click="MTPAudioToggle_Click"
                                                              IconCode="{DynamicResource IcoMic}"
                                                              IsCheckable="True"
                                                              IsChecked="False"/>
