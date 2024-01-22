@@ -78,7 +78,6 @@ internal class Client
         HCommand = new CommandHandler();
         HPlayer = new PlayerHandler();
         HObjective = new ObjectiveHandler();
-        VoiceHandler.InitializeVoices();
         PlayerHandler.Players.Clear();
     }
 

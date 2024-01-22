@@ -11,13 +11,16 @@ public class VoiceHandler
 {
     private static WaveInEvent _waveIn;
     private const float Range = 1000f;
+    private const int SampleRate = 11025;
+    private const int BitDepth = 16;
+    private const int BufferMillis = 5;
     private static Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)> _voices;
 
     [MessageHandler((ushort)MessageID.Voice)]
     private static void ReceiveVoiceData(Message message)
     {
-        var decodedBytes = message.GetBytes();
         var voiceClient = message.GetUShort();
+        var decodedBytes = message.GetBytes();
         /*var distance = message.GetFloat();*/
         if (!_voices.TryGetValue(voiceClient, out var voiceTool))
             return;
@@ -28,15 +31,11 @@ public class VoiceHandler
                                  1.0f - distance / Range;
         */
     }
-    
-    public static void InitializeVoices()
-    {
-        _voices = new Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)>();
-    }
 
     public static void AddVoice(ushort clientId)
     {
-        _voices.Add(clientId, (new DirectSoundOut(), new BufferedWaveProvider(new WaveFormat(16000, 16, 1))));
+        _voices ??= new Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)>();
+        _voices.Add(clientId, (new DirectSoundOut(), new BufferedWaveProvider(new WaveFormat(SampleRate, BitDepth, 1))));
         _voices[clientId].Item1.Init(_voices[clientId].Item2);
         _voices[clientId].Item1.Play();
         Console.WriteLine($"Playing voice {clientId}");
@@ -61,8 +60,8 @@ public class VoiceHandler
     {
         _waveIn = new WaveInEvent {
             DeviceNumber = 0,
-            WaveFormat = new WaveFormat(16000, 16, 1),
-            BufferMilliseconds = 10 
+            WaveFormat = new WaveFormat(SampleRate, BitDepth, 1),
+            BufferMilliseconds = BufferMillis 
         };
         _waveIn.DataAvailable += WaveIn_DataAvailable;
         _waveIn.StartRecording();
