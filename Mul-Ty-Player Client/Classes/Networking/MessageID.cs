@@ -31,5 +31,6 @@ public enum MessageID : ushort
     ObjectiveObjectActivated,
     ObjectiveStateChanged,
     ReqObjectiveSync,
-    AdvancedTeleport
+    AdvancedTeleport,
+    Voice
 }

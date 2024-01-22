@@ -21,12 +21,13 @@ internal class PlayerHandler
     }
 
     //Adds other player to players & playerInfo
-    public static void AddPlayer(Koala koala, string name, ushort clientID, bool isHost, bool isReady)
+    public static void AddPlayer(Koala koala, string name, ushort clientId, bool isHost, bool isReady)
     {
         var koalaName = Koalas.GetInfo[koala].Name;
-        Players.Remove(clientID);
-        Players.Add(clientID, new Player(koala, name, clientID, isHost, isReady));
-        PlayerInfo player = new(clientID, name, koalaName);
+        Players.Remove(clientId);
+        Players.Add(clientId, new Player(koala, name, clientId, isHost, isReady));
+        VoiceHandler.AddVoice(clientId);
+        PlayerInfo player = new(clientId, name, koalaName);
         Application.Current.Dispatcher.BeginInvoke(
             DispatcherPriority.Background,
             () => { ModelController.Lobby.PlayerInfoList.Add(player); });
@@ -57,16 +58,17 @@ internal class PlayerHandler
     // so the linq tries to find player where player.id = client.id and fails which throws an exception
     // every frame
 
-    public static void RemovePlayer(ushort id)
+    public static void RemovePlayer(ushort clientId)
     {
-        ModelController.KoalaSelect.SetAvailability(Players[id].Koala, true);
-        PlayerReplication.RemovePlayer((int)Players[id].Koala);
-        Players.Remove(id);
+        ModelController.KoalaSelect.SetAvailability(Players[clientId].Koala, true);
+        PlayerReplication.RemovePlayer((int)Players[clientId].Koala);
+        Players.Remove(clientId);
+        VoiceHandler.RemoveVoice(clientId);
         Application.Current.Dispatcher.BeginInvoke(
             DispatcherPriority.Background,
             () =>
             {
-                if (ModelController.Lobby.TryGetPlayerInfo(id, out var playerInfo))
+                if (ModelController.Lobby.TryGetPlayerInfo(clientId, out var playerInfo))
                     ModelController.Lobby.PlayerInfoList.Remove(playerInfo);
             }
         );

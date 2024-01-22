@@ -38,5 +38,8 @@ public class Icons : ResourceDictionary
         this["IcoCaretRight"] = "\uf0da";
         this["IcoPassword"] = "\uf084";
         this["IcoErase"] = "\uf12d";
+        this["IcoMic"] = "\uf130";
+        this["IcoSound"] = "\uf028";
+        this["IcoProximity"] = "\uf519";
     }
 }

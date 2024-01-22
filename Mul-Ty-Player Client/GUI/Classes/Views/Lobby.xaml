@@ -212,17 +212,43 @@
                                     <controls:CustomMenuItem Header="Level Lock Mode"
                                                              x:Name="LevelLockToggle"
                                                              Click="LevelLockToggle_Click"
-                                                             IsCheckable="True"
-                                                             IsChecked="True"/>
+                                                             IsChecked="False"/>
                                     <controls:CustomMenuItem Header="Reset Sync"
                                                              Click="ResetSync_Click"
                                                              IconCode="{DynamicResource IcoUndo}"/>
                                     <controls:CustomMenuItem Header="Password"
                                                              IconCode="{DynamicResource IcoPassword}">
-                                        <controls:CustomMenuItem Header="Clear Password" 
+                                        <controls:CustomMenuItem Header="Clear Password"
                                                                  Click="ClearPassword_Click"
                                                                  IconCode="{DynamicResource IcoErase}"/>
                                     </controls:CustomMenuItem>
+                                </ContextMenu>
+                            </Button.ContextMenu>
+                        </Button>
+                        
+                         <Button x:Name="VoiceMenuButton"
+                                Margin="2 0"
+                                Click="VoiceMenuButton_Click"
+                                ToolTip="Host Menu"
+                                Width="55"
+                                Style="{StaticResource LobbyButton}">
+                            <controls:Icon Margin="5,0" Code="{DynamicResource IcoSound}" Size="24" />
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="5" />
+                                </Style>
+                            </Button.Resources>
+                            <Button.ContextMenu>
+                                <ContextMenu>
+                                    <controls:CustomMenuItem Header="MTP Audio"
+                                                             x:Name="MTPAudioToggle"
+                                                             Click="MTPAudioToggle_OnClick_Click"
+                                                             IconCode="{DynamicResource IcoMic}"
+                                                             IsCheckable="True"
+                                                             IsChecked="False"/>
+                                    <controls:CustomMenuItem Header="Use Proximity"
+                                                             Click="Proximity_Click"
+                                                             IconCode="{DynamicResource IcoProximity}"/>
                                 </ContextMenu>
                             </Button.ContextMenu>
                         </Button>

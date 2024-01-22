@@ -78,6 +78,7 @@ internal class Client
         HCommand = new CommandHandler();
         HPlayer = new PlayerHandler();
         HObjective = new ObjectiveHandler();
+        VoiceHandler.InitializeVoices();
         PlayerHandler.Players.Clear();
     }
 
@@ -115,6 +116,7 @@ internal class Client
     private static void Disconnected(object sender, DisconnectedEventArgs e)
     {
         cts.Cancel();
+        VoiceHandler.StopCaptureVoice();
         KoalaSelected = false;
         IsConnected = false;
         ModelController.KoalaSelect.MakeAllAvailable();
@@ -184,6 +186,7 @@ internal class Client
 
     private static void ClientLoop(CancellationToken ct)
     {
+        VoiceHandler.StartCaptureVoice();
         while (!ct.IsCancellationRequested)
         {
             if (TyProcess.FindProcess() && KoalaSelected)

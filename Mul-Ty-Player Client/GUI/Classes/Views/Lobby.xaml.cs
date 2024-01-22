@@ -144,4 +144,23 @@ public partial class Lobby : UserControl
     {
         LevelLockToggle.IsChecked = SettingsHandler.DoLevelLock;
     }
+
+    private void VoiceMenuButton_Click(object sender, RoutedEventArgs e)
+    {
+        // Open the context menu on left click
+        if (sender is FrameworkElement element)
+        {
+            element.ContextMenu.IsOpen = true;
+        }
+    }
+
+    private void MTPAudioToggle_OnClick_Click(object sender, RoutedEventArgs e)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void Proximity_Click(object sender, RoutedEventArgs e)
+    {
+        throw new NotImplementedException();
+    }
 }
