@@ -34,7 +34,7 @@ public class VoiceHandler
 
     public static void AddVoice(ushort clientId)
     {
-        _voices.Add(clientId, (new DirectSoundOut(), new BufferedWaveProvider(new WaveFormat(16000, 16, 1))));
+        _voices.Add(clientId, (new WaveOut(), new BufferedWaveProvider(new WaveFormat(16000, 16, 1))));
         _voices[clientId].Item1.Init(_voices[clientId].Item2);
         _voices[clientId].Item1.Play();
     }
