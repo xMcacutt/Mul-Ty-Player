@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Numerics;
 using MulTyPlayer;
 using NAudio.Wave;
@@ -20,7 +22,7 @@ public class VoiceHandler
     private static void ReceiveVoiceData(Message message)
     {
         var voiceClient = message.GetUShort();
-        var decodedBytes = message.GetBytes();
+        var decodedBytes = AudioCompression.Decompress(message.GetBytes());
         /*var distance = message.GetFloat();*/
         if (!_voices.TryGetValue(voiceClient, out var voiceTool))
             return;
@@ -42,7 +44,7 @@ public class VoiceHandler
     public static void AddVoice(ushort clientId)
     {
         _voices ??= new Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)>();
-        _voices.Add(clientId, (new DirectSoundOut(), new BufferedWaveProvider(new Mp3WaveFormat(SampleRate, 1, 100, BitDepth))));
+        _voices.Add(clientId, (new DirectSoundOut(), new BufferedWaveProvider(new WaveFormat(SampleRate, BitDepth, 1))));
         _voices[clientId].Item1.Init(_voices[clientId].Item2);
         _voices[clientId].Item1.Play();
     }
@@ -66,7 +68,7 @@ public class VoiceHandler
     {
         _waveIn = new WaveInEvent {
             DeviceNumber = 0,
-            WaveFormat = new Mp3WaveFormat(SampleRate, 1, 100, BitDepth),
+            WaveFormat = new WaveFormat(SampleRate, BitDepth, 1),
             BufferMilliseconds = BufferMillis 
         };
         _waveIn.DataAvailable += WaveIn_DataAvailable;
@@ -86,12 +88,32 @@ public class VoiceHandler
         try
         {
             var message = Message.Create(MessageSendMode.Unreliable, MessageID.Voice);
-            message.AddBytes(e.Buffer);
+            message.AddBytes(AudioCompression.Compress(e.Buffer));
             Client._client.Send(message);
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
+    }
+}
+
+public static class AudioCompression
+{
+    public static byte[] Compress(byte[] data)
+    {
+        using var memoryStream = new MemoryStream();
+        using (var deflateStream = new DeflateStream(memoryStream, CompressionMode.Compress))
+            deflateStream.Write(data, 0, data.Length);
+        return memoryStream.ToArray();
+    }
+
+    public static byte[] Decompress(byte[] compressedData)
+    {
+        using var memoryStream = new MemoryStream(compressedData);
+        using var deflateStream = new DeflateStream(memoryStream, CompressionMode.Decompress);
+        using var decompressedStream = new MemoryStream();
+        deflateStream.CopyTo(decompressedStream);
+        return decompressedStream.ToArray();
     }
 }
