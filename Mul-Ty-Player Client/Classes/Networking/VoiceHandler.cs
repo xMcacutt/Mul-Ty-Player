@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Numerics;
+using LZ4;
 using MulTyPlayer;
 using NAudio.Wave;
 using Riptide;
@@ -22,8 +23,11 @@ public class VoiceHandler
     private static void ReceiveVoiceData(Message message)
     {
         var voiceClient = message.GetUShort();
-        var decodedBytes = AudioCompression.Decompress(message.GetBytes());
-        /*var distance = message.GetFloat();*/
+        var voiceDataOriginalLength = message.GetInt();
+        var voiceData = message.GetBytes();
+        //var distance = message.GetFloat();
+        var decodedBytes = LZ4Codec.Decode(voiceData, 0, voiceData.Length, (int)voiceDataOriginalLength);
+        _voices ??= new Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)>();
         if (!_voices.TryGetValue(voiceClient, out var voiceTool))
             return;
         Console.WriteLine("Adding samples");
@@ -44,37 +48,43 @@ public class VoiceHandler
     public static void AddVoice(ushort clientId)
     {
         _voices ??= new Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)>();
-        _voices.Add(clientId, (new DirectSoundOut(), new BufferedWaveProvider(new WaveFormat(SampleRate, BitDepth, 1))));
+        _voices.Add(clientId,
+            (new DirectSoundOut(), new BufferedWaveProvider(new WaveFormat(SampleRate, BitDepth, 1))));
         _voices[clientId].Item1.Init(_voices[clientId].Item2);
         _voices[clientId].Item1.Play();
     }
 
     public static void RemoveVoice(ushort clientId)
     {
-        _voices[clientId].Item1.Stop();
-        _voices[clientId].Item1.Dispose();
-        _voices[clientId].Item2.ClearBuffer();
+        _voices ??= new Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)>();
+        if (!_voices.TryGetValue(clientId, out var voice))
+            return;
+        voice.Item1.Stop();
+        voice.Item1.Dispose();
+        voice.Item2.ClearBuffer();
         _voices.Remove(clientId);
     }
 
     public static void ClearVoices()
     {
+        _voices ??= new Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)>();
         foreach (var voice in _voices)
             RemoveVoice(voice.Key);
         _voices.Clear();
     }
-    
+
     public static void StartCaptureVoice()
     {
-        _waveIn = new WaveInEvent {
+        _waveIn = new WaveInEvent
+        {
             DeviceNumber = 0,
             WaveFormat = new WaveFormat(SampleRate, BitDepth, 1),
-            BufferMilliseconds = BufferMillis 
+            BufferMilliseconds = BufferMillis
         };
         _waveIn.DataAvailable += WaveIn_DataAvailable;
         _waveIn.StartRecording();
     }
-    
+
     public static void StopCaptureVoice()
     {
         if (_waveIn == null) return;
@@ -88,32 +98,14 @@ public class VoiceHandler
         try
         {
             var message = Message.Create(MessageSendMode.Unreliable, MessageID.Voice);
-            message.AddBytes(AudioCompression.Compress(e.Buffer));
+            var encodedBytes = LZ4Codec.Encode(e.Buffer, 0, e.Buffer.Length);
+            message.AddBytes(encodedBytes);
+            message.AddInt(e.Buffer.Length);
             Client._client.Send(message);
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
-    }
-}
-
-public static class AudioCompression
-{
-    public static byte[] Compress(byte[] data)
-    {
-        using var memoryStream = new MemoryStream();
-        using (var deflateStream = new DeflateStream(memoryStream, CompressionMode.Compress))
-            deflateStream.Write(data, 0, data.Length);
-        return memoryStream.ToArray();
-    }
-
-    public static byte[] Decompress(byte[] compressedData)
-    {
-        using var memoryStream = new MemoryStream(compressedData);
-        using var deflateStream = new DeflateStream(memoryStream, CompressionMode.Decompress);
-        using var decompressedStream = new MemoryStream();
-        deflateStream.CopyTo(decompressedStream);
-        return decompressedStream.ToArray();
     }
 }
