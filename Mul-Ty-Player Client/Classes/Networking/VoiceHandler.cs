@@ -36,12 +36,14 @@ public class VoiceHandler
             if (level != Client.HLevel.CurrentLevelId)
                 return;
             voiceTool.Item2.AddSamples(decodedBytes, 0, decodedBytes.Length);
+            Console.WriteLine(voiceTool.Item1.Volume);
             voiceTool.Item1.Volume = distance >= Range ? 0.0f :
                                      distance == 0 ? 1.0f :
-                                     1.0f - distance / Range;
+                                     1.0f - (distance / Range);
         }
-        catch
+        catch (Exception ex)
         {
+            Console.WriteLine(ex);
             voiceTool.Item2.ClearBuffer();
         }
     }
