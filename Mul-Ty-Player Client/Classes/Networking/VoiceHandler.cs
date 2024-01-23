@@ -118,10 +118,10 @@ public class Voice
     
     public Voice(WaveFormat waveFormat)
     {
-        WavePlayer = new DirectSoundOut();
+        WavePlayer = new WaveOut();
         WaveProvider = new BufferedWaveProvider(waveFormat);
         WaveProvider.DiscardOnBufferOverflow = true;
         SampleChannel = new SampleChannel(WaveProvider);
-        WavePlayer.Init(WaveProvider);
+        WavePlayer.Init(SampleChannel);
     }
 }
