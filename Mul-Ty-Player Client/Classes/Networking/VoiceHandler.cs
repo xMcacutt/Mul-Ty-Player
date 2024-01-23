@@ -14,7 +14,8 @@ namespace MulTyPlayerClient.Classes.Networking;
 public class VoiceHandler
 {
     private static WaveInEvent _waveIn;
-    private const float Range = 1000f;
+    private const float MaxAttenuatedRange = 2500f;
+    private const float MinAttenuatedRange = 500f;
     private const int SampleRate = 11025;
     private const int BitDepth = 16;
     private const int BufferMillis = 25;
@@ -36,9 +37,9 @@ public class VoiceHandler
         {
             if (level != Client.HLevel.CurrentLevelId)
                 return;
-            voice.SampleChannel.Volume = distance >= Range ? 0.0f :
-                                     distance == 0 ? 1.0f :
-                                     1.0f - (distance / Range);
+            voice.SampleChannel.Volume = distance >= MaxAttenuatedRange ? 0.0f :
+                distance <= MinAttenuatedRange ? 1.0f :
+                1.0f - (distance / MaxAttenuatedRange);
             voice.WaveProvider.AddSamples(decodedBytes, 0, decodedBytes.Length);
         }
         catch (Exception ex)
