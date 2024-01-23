@@ -246,6 +246,8 @@
                                                              IconCode="{DynamicResource IcoMic}"
                                                              IsChecked="False"/>
                                     <controls:CustomMenuItem Header="Use Proximity"
+                                                             x:Name="ProximityToggle"
+                                                             IsCheckable="True"
                                                              Click="Proximity_Click"
                                                              IconCode="{DynamicResource IcoProximity}"/>
                                 </ContextMenu>

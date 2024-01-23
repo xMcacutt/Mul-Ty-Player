@@ -20,7 +20,7 @@ internal class Client
     public static bool IsConnected;
     public static bool KoalaSelected;
     public static Riptide.Client _client;
-    private static string _ip;
+    public static string _ip;
     private static string _pass;
     public static string Name;
     public static Koala OldKoala;

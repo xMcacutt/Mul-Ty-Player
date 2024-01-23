@@ -166,6 +166,6 @@ public partial class Lobby : UserControl
 
     private void Proximity_Click(object sender, RoutedEventArgs e)
     {
-        throw new NotImplementedException();
+        VoiceHandler.DoProximityCheck = ProximityToggle.IsChecked;
     }
 }

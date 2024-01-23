@@ -2,44 +2,45 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Numerics;
 using LZ4;
 using MulTyPlayer;
+using MulTyPlayerClient.Classes.Networking.Voice;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using Riptide;
 
-namespace MulTyPlayerClient.Classes.Networking;
+namespace MulTyPlayerClient;
 
 public class VoiceHandler
 {
     private static WaveInEvent _waveIn;
-    private const float MaxAttenuatedRange = 2500f;
-    private const float MinAttenuatedRange = 500f;
-    private const int SampleRate = 16000;
-    private const int BitDepth = 16;
-    private const int BufferMillis = 25;
+    private const ushort THRESHOLD = 0x2000;
+    public static bool DoProximityCheck;
+    private const float RANGE_UPPER_BOUND = 2500f;
+    private const float RANGE_LOWER_BOUND = 500f;
+    private const int SAMPLE_RATE = 16000;
+    private const int BIT_DEPTH = 16;
+    private const int BUFFER_DURATION = 25;
     private static Dictionary<ushort, Voice> _voices;
-
-    [MessageHandler((ushort)MessageID.Voice)]
-    private static void ReceiveVoiceData(Message message)
+    
+    public static void HandleVoiceData(ushort fromClientId, ulong originalLength, float distance, int level, byte[] data)
     {
-        var voiceClient = message.GetUShort();
-        var voiceDataOriginalLength = message.GetInt();
-        var voiceData = message.GetBytes();
-        var level = message.GetInt();
-        var distance = message.GetFloat();
-        var decodedBytes = LZ4Codec.Decode(voiceData, 0, voiceData.Length, (int)voiceDataOriginalLength);
+        var decodedBytes = LZ4Codec.Decode(data, 0, data.Length, (int)originalLength);
         _voices ??= new Dictionary<ushort, Voice>();
-        if (!_voices.TryGetValue(voiceClient, out var voice))
+        if (!_voices.TryGetValue(fromClientId, out var voice))
             return;
         try
         {
-            if (level != Client.HLevel.CurrentLevelId)
-                return;
-            voice.SampleChannel.Volume = distance >= MaxAttenuatedRange ? 0.0f :
-                distance <= MinAttenuatedRange ? 1.0f :
-                1.0f - (distance / MaxAttenuatedRange);
+            if (DoProximityCheck)
+            {
+                if (level != Client.HLevel.CurrentLevelId)
+                    return;
+                voice.SampleChannel.Volume = distance >= RANGE_UPPER_BOUND ? 0.0f :
+                    distance <= RANGE_LOWER_BOUND ? 1.0f :
+                    1.0f - (distance / RANGE_UPPER_BOUND);
+            }
             voice.WaveProvider.AddSamples(decodedBytes, 0, decodedBytes.Length);
         }
         catch (Exception ex)
@@ -51,7 +52,7 @@ public class VoiceHandler
     public static void AddVoice(ushort clientId)
     {
         _voices ??= new Dictionary<ushort, Voice>();
-        _voices.Add(clientId, new Voice(new WaveFormat(SampleRate, BitDepth, 1)));
+        _voices.Add(clientId, new Voice(new WaveFormat(SAMPLE_RATE, BIT_DEPTH, 1)));
         _voices[clientId].WavePlayer.Play();
     }
 
@@ -79,16 +80,18 @@ public class VoiceHandler
         _waveIn = new WaveInEvent
         {
             DeviceNumber = 0,
-            WaveFormat = new WaveFormat(SampleRate, BitDepth, 1),
-            BufferMilliseconds = BufferMillis
+            WaveFormat = new WaveFormat(SAMPLE_RATE, BIT_DEPTH, 1),
+            BufferMilliseconds = BUFFER_DURATION
         };
         _waveIn.DataAvailable += WaveIn_DataAvailable;
+        VoiceClient.OpenVoiceSocket(Client._ip);
         _waveIn.StartRecording();
     }
 
     public static void StopCaptureVoice()
     {
         if (_waveIn == null) return;
+        VoiceClient.CloseVoiceSocket();
         _waveIn.StopRecording();
         _waveIn.Dispose();
         _waveIn = null;
@@ -98,11 +101,8 @@ public class VoiceHandler
     {
         try
         {
-            var message = Message.Create(MessageSendMode.Unreliable, MessageID.Voice);
             var encodedBytes = LZ4Codec.Encode(e.Buffer, 0, e.Buffer.Length);
-            message.AddBytes(encodedBytes);
-            message.AddInt(e.Buffer.Length);
-            Client._client.Send(message);
+            VoiceClient.SendAudio(encodedBytes, e.Buffer.Length);
         }
         catch (Exception ex)
         {
@@ -111,18 +111,3 @@ public class VoiceHandler
     }
 }
 
-public class Voice
-{
-    public readonly IWavePlayer WavePlayer;
-    public readonly BufferedWaveProvider WaveProvider;
-    public readonly SampleChannel SampleChannel;
-    
-    public Voice(WaveFormat waveFormat)
-    {
-        WavePlayer = new WaveOut();
-        WaveProvider = new BufferedWaveProvider(waveFormat);
-        WaveProvider.DiscardOnBufferOverflow = true;
-        SampleChannel = new SampleChannel(WaveProvider);
-        WavePlayer.Init(SampleChannel);
-    }
-}

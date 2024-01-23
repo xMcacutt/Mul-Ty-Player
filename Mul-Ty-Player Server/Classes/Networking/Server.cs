@@ -22,7 +22,6 @@ internal class Server
     {
         RiptideLogger.Initialize(Console.WriteLine, true);
         _isRunning = true;
-
         new Thread(Loop).Start();
     }
 
@@ -35,6 +34,8 @@ internal class Server
         _Server.ClientConnected += ClientConnected;
         _Server.ClientDisconnected += ClientDisconnected;
 
+        VoiceServer.OpenVoiceServer();
+        
         while (_isRunning)
         {
             _Server.Update();
