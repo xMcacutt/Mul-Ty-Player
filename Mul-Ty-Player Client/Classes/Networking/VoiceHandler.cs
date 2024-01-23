@@ -14,9 +14,9 @@ public class VoiceHandler
 {
     private static WaveInEvent _waveIn;
     private const float Range = 1000f;
-    private const int SampleRate = 8000;
+    private const int SampleRate = 11025;
     private const int BitDepth = 16;
-    private const int BufferMillis = 50;
+    private const int BufferMillis = 25;
     private static Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)> _voices;
 
     [MessageHandler((ushort)MessageID.Voice)]
