@@ -28,7 +28,8 @@ public class VoiceHandler
             var incomingClientPos = new Vector3(incomingPlayer.Coordinates[0], incomingPlayer.Coordinates[1], incomingPlayer.Coordinates[2]);
             var outgoingClientPos = new Vector3(outgoingPlayer.Coordinates[0], outgoingPlayer.Coordinates[1], outgoingPlayer.Coordinates[2]);
             var distance = Vector3.Distance(incomingClientPos, outgoingClientPos);
-            //relay.AddFloat(distance);
+            relay.AddInt(incomingPlayer.CurrentLevel);
+            relay.AddFloat(distance);
             Server._Server.Send(relay, outgoingPlayer.ClientID);
         }
     }

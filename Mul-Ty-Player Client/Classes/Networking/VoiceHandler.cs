@@ -25,24 +25,25 @@ public class VoiceHandler
         var voiceClient = message.GetUShort();
         var voiceDataOriginalLength = message.GetInt();
         var voiceData = message.GetBytes();
-        //var distance = message.GetFloat();
+        var level = message.GetInt();
+        var distance = message.GetFloat();
         var decodedBytes = LZ4Codec.Decode(voiceData, 0, voiceData.Length, (int)voiceDataOriginalLength);
         _voices ??= new Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)>();
         if (!_voices.TryGetValue(voiceClient, out var voiceTool))
             return;
-        Console.WriteLine("Adding samples");
         try
         {
+            if (level != Client.HLevel.CurrentLevelId)
+                return;
             voiceTool.Item2.AddSamples(decodedBytes, 0, decodedBytes.Length);
+            voiceTool.Item1.Volume = distance >= Range ? 0.0f :
+                                     distance == 0 ? 1.0f :
+                                     1.0f - distance / Range;
         }
         catch
         {
             voiceTool.Item2.ClearBuffer();
         }
-        /*voiceTool.Item1.Volume = distance >= Range ? 0.0f :
-                                 distance == 0 ? 1.0f :
-                                 1.0f - distance / Range;
-        */
     }
 
     public static void AddVoice(ushort clientId)
