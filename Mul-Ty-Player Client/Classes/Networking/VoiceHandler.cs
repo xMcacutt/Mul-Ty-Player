@@ -25,7 +25,14 @@ public class VoiceHandler
         if (!_voices.TryGetValue(voiceClient, out var voiceTool))
             return;
         Console.WriteLine("Adding samples");
-        voiceTool.Item2.AddSamples(decodedBytes, 0, decodedBytes.Length);
+        try
+        {
+            voiceTool.Item2.AddSamples(decodedBytes, 0, decodedBytes.Length);
+        }
+        catch
+        {
+            voiceTool.Item2.ClearBuffer();
+        }
         /*voiceTool.Item1.Volume = distance >= Range ? 0.0f :
                                  distance == 0 ? 1.0f :
                                  1.0f - distance / Range;
