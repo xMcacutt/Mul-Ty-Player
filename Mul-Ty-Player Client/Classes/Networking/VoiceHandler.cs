@@ -17,7 +17,7 @@ public class VoiceHandler
     private const int SampleRate = 11025;
     private const int BitDepth = 16;
     private const int BufferMillis = 25;
-    private static Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)> _voices;
+    private static Dictionary<ushort, (IWavePlayer, WaveChannel32)> _voices;
 
     [MessageHandler((ushort)MessageID.Voice)]
     private static void ReceiveVoiceData(Message message)
@@ -28,49 +28,47 @@ public class VoiceHandler
         var level = message.GetInt();
         var distance = message.GetFloat();
         var decodedBytes = LZ4Codec.Decode(voiceData, 0, voiceData.Length, (int)voiceDataOriginalLength);
-        _voices ??= new Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)>();
+        _voices ??= new Dictionary<ushort, (IWavePlayer, WaveChannel32)>();
         if (!_voices.TryGetValue(voiceClient, out var voiceTool))
             return;
         try
         {
             if (level != Client.HLevel.CurrentLevelId)
                 return;
-            voiceTool.Item2.AddSamples(decodedBytes, 0, decodedBytes.Length);
-            Console.WriteLine(voiceTool.Item1.Volume);
-            voiceTool.Item1.Volume = distance >= Range ? 0.0f :
+            voiceTool.Item2.Volume = distance >= Range ? 0.0f :
                                      distance == 0 ? 1.0f :
                                      1.0f - (distance / Range);
+            voiceTool.Item2.Write(decodedBytes, 0, decodedBytes.Length);
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex);
-            voiceTool.Item2.ClearBuffer();
         }
     }
 
     public static void AddVoice(ushort clientId)
     {
-        _voices ??= new Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)>();
-        _voices.Add(clientId,
-            (new DirectSoundOut(), new BufferedWaveProvider(new WaveFormat(SampleRate, BitDepth, 1))));
+        _voices ??= new Dictionary<ushort, (IWavePlayer, WaveChannel32)>();
+        var bufferedWaveProvider = new BufferedWaveProvider(new WaveFormat(SampleRate, BitDepth, 1));
+        var waveChannel32 = new WaveChannel32(new WaveProviderToWaveStream(bufferedWaveProvider));
+        _voices.Add(clientId, (new DirectSoundOut(), waveChannel32));
         _voices[clientId].Item1.Init(_voices[clientId].Item2);
         _voices[clientId].Item1.Play();
     }
 
     public static void RemoveVoice(ushort clientId)
     {
-        _voices ??= new Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)>();
+        _voices ??= new Dictionary<ushort, (IWavePlayer, WaveChannel32)>();
         if (!_voices.TryGetValue(clientId, out var voice))
             return;
         voice.Item1.Stop();
         voice.Item1.Dispose();
-        voice.Item2.ClearBuffer();
         _voices.Remove(clientId);
     }
 
     public static void ClearVoices()
     {
-        _voices ??= new Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)>();
+        _voices ??= new Dictionary<ushort, (IWavePlayer, WaveChannel32)>();
         foreach (var voice in _voices)
             RemoveVoice(voice.Key);
         _voices.Clear();
@@ -110,5 +108,36 @@ public class VoiceHandler
         {
             Console.WriteLine(ex.Message);
         }
+    }
+}
+
+public class WaveProviderToWaveStream : WaveStream
+{
+    private readonly IWaveProvider source;
+    private long position;
+
+    public WaveProviderToWaveStream(IWaveProvider source)
+    {
+        this.source = source;
+    }
+
+    public override WaveFormat WaveFormat => source.WaveFormat;
+
+    /// <summary>
+    /// Don't know the real length of the source, just return a big number
+    /// </summary>
+    public override long Length => int.MaxValue;
+
+    public override long Position
+    {
+        get => position;
+        set => throw new NotImplementedException();
+    }
+
+    public override int Read(byte[] buffer, int offset, int count)
+    {
+        var read = source.Read(buffer, offset, count);
+        position += read;
+        return read;
     }
 }

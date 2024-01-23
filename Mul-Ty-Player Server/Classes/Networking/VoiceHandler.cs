@@ -19,7 +19,7 @@ public class VoiceHandler
         {
             if (incomingPlayer.ClientID == outgoingPlayer.ClientID)
                 continue;
-            if (outgoingPlayer.Coordinates.Length >= 3)
+            if (outgoingPlayer.Coordinates.Length < 3)
                 continue;
             var relay = Message.Create(MessageSendMode.Unreliable, MessageID.Voice);
             relay.AddUShort(fromClientId);
