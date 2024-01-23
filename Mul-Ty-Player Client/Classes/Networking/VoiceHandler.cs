@@ -16,7 +16,7 @@ public class VoiceHandler
     private static WaveInEvent _waveIn;
     private const float MaxAttenuatedRange = 2500f;
     private const float MinAttenuatedRange = 500f;
-    private const int SampleRate = 11025;
+    private const int SampleRate = 16000;
     private const int BitDepth = 16;
     private const int BufferMillis = 25;
     private static Dictionary<ushort, Voice> _voices;
