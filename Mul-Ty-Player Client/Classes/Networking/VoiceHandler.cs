@@ -11,7 +11,7 @@ public class VoiceHandler
 {
     private static WaveInEvent _waveIn;
     private const float Range = 1000f;
-    private const int SampleRate = 2000;
+    private const int SampleRate = 8000;
     private const int BitDepth = 16;
     private const int BufferMillis = 50;
     private static Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)> _voices;
@@ -42,7 +42,7 @@ public class VoiceHandler
     public static void AddVoice(ushort clientId)
     {
         _voices ??= new Dictionary<ushort, (IWavePlayer, BufferedWaveProvider)>();
-        _voices.Add(clientId, (new DirectSoundOut(), new BufferedWaveProvider(new WaveFormat(SampleRate, BitDepth, 1))));
+        _voices.Add(clientId, (new DirectSoundOut(), new BufferedWaveProvider(new Mp3WaveFormat(SampleRate, 1, 100, BitDepth))));
         _voices[clientId].Item1.Init(_voices[clientId].Item2);
         _voices[clientId].Item1.Play();
     }
@@ -66,7 +66,7 @@ public class VoiceHandler
     {
         _waveIn = new WaveInEvent {
             DeviceNumber = 0,
-            WaveFormat = new WaveFormat(SampleRate, BitDepth, 1),
+            WaveFormat = new Mp3WaveFormat(SampleRate, 1, 100, BitDepth),
             BufferMilliseconds = BufferMillis 
         };
         _waveIn.DataAvailable += WaveIn_DataAvailable;
