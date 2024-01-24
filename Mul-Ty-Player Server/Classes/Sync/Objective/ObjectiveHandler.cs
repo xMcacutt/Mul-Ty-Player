@@ -17,6 +17,7 @@ public class ObjectiveHandler
             { "Burner", new Objective("Burner", 8, 1, 2, ObjectiveState.Inactive) },
             { "SnowKoalaKid", new Objective("SnowKoalaKid", 8, 1, 5, ObjectiveState.Active) },
             { "StumpKoalaKid", new Objective("StumpKoalaKid", 8, 1, 5, ObjectiveState.Active) },
+            { "CableCar", new Objective("CableCar", 6, 0, 1, ObjectiveState.Inactive)},
             { "Chest", new Objective("Chest", 6, 0, 1, ObjectiveState.Inactive) }
         };
     }

@@ -19,15 +19,15 @@ public class ObjectiveHandler
             { "Burner", new BurnerObjective(8, "Burner") },
             { "SnowKoalaKid", new KoalaKidObjective(9, "SnowKoalaKid") },
             { "StumpKoalaKid", new KoalaKidObjective(13, "StumpKoalaKid") },
+            { "CableCar", new CableCarObjective(13, "CableCar")},
             { "Chest", new ChestObjective(14, "Chest")}
         };
     }
 
     public void SetMemAddrs()
     {
-        foreach (var objective in Objectives.Values)
-            if (Client.HLevel.CurrentLevelId == objective.Level)
-                objective.SetMemoryAddress();
+        foreach (var objective in Objectives.Values.Where(x => Client.HLevel.CurrentLevelId == x.Level))
+            objective.SetMemoryAddress();
     }
 
     public void SendIndexToServer(int index, string type)
