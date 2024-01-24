@@ -22,9 +22,9 @@ public class VoiceHandler
     public static bool DoProximityCheck;
     private const float RANGE_UPPER_BOUND = 3500f;
     private const float RANGE_LOWER_BOUND = 500f;
-    private const int SAMPLE_RATE = 44100;
+    private const int SAMPLE_RATE = 24000;
     private const int BIT_DEPTH = 16;
-    private const int BUFFER_DURATION = 15;
+    private const int BUFFER_DURATION = 20;
     private static Dictionary<ushort, Voice> _voices;
     
     public static void HandleVoiceData(ushort fromClientId, ulong originalLength, float distance, int level, byte[] data)
