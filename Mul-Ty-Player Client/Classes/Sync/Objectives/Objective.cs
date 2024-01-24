@@ -39,6 +39,7 @@ public abstract class Objective
             if (state == value) return;
             var oldState = state;
             state = value;
+            Console.WriteLine(Name + " " + state);
             OnStateChanged?.Invoke(this, new ObjectiveStateChangedEventArgs(oldState, state));
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MulTyPlayer;
 using MulTyPlayerClient.Objectives;
 using MulTyPlayerServer.Classes;
@@ -48,6 +49,7 @@ public class ObjectiveHandler
     {
         var type = message.GetString();
         var state = message.GetByte();
+        Console.WriteLine(type + " " + state);
         Objectives[type].SetObjectiveState((ObjectiveState)state, fromClientId);
     }
 }

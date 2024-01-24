@@ -14,7 +14,7 @@ public class CableCarObjective : Objective
         Count = 6;
         State = ObjectiveState.Active;
         ObjectPath = new[] { 0x25AAD0, 0x0 };
-        CheckValue = 56264;
+        CheckValue = 61764;
         ObjectActiveState = 0x8;
         CurrentData = new byte[] {0, 0, 0, 0, 0, 0};
         OldData = new byte[] {0, 0, 0, 0, 0, 0};
@@ -24,7 +24,7 @@ public class CableCarObjective : Objective
     {
         var address = PointerCalculations.GetPointerAddress(ObjectivePath[0], new[] { 0x6C });
         ProcessHandler.TryRead(address, out int objectiveActivity, false, "CableCar : IsInactive()");
-        if (objectiveActivity != 0x1)
+        if (objectiveActivity != 1)
             return;
         State = ObjectiveState.Active;
         SendState();
