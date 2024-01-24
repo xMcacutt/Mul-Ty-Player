@@ -18,11 +18,11 @@ public class VoiceHandler
     private static WaveInEvent _waveIn;
     private const ushort THRESHOLD = 0x2000;
     public static bool DoProximityCheck;
-    private const float RANGE_UPPER_BOUND = 2500f;
+    private const float RANGE_UPPER_BOUND = 2000f;
     private const float RANGE_LOWER_BOUND = 500f;
     private const int SAMPLE_RATE = 16000;
     private const int BIT_DEPTH = 16;
-    private const int BUFFER_DURATION = 25;
+    private const int BUFFER_DURATION = 20;
     private static Dictionary<ushort, Voice> _voices;
     
     public static void HandleVoiceData(ushort fromClientId, ulong originalLength, float distance, int level, byte[] data)
@@ -39,7 +39,7 @@ public class VoiceHandler
                     return;
                 voice.SampleChannel.Volume = distance >= RANGE_UPPER_BOUND ? 0.0f :
                     distance <= RANGE_LOWER_BOUND ? 1.0f :
-                    1.0f - (distance / RANGE_UPPER_BOUND);
+                    1.0f - (distance - 500) / RANGE_UPPER_BOUND;
             }
             voice.WaveProvider.AddSamples(decodedBytes, 0, decodedBytes.Length);
         }
