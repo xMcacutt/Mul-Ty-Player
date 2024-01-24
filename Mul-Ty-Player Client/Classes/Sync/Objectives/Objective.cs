@@ -54,7 +54,7 @@ public abstract class Objective
     
     public void RunCheck()
     {
-        if (!MemoryAddresValid())
+        if (!MemoryAddressValid())
         {
             SetMemoryAddress();
             return;
@@ -77,7 +77,7 @@ public abstract class Objective
         }
     }
 
-    private bool MemoryAddresValid()
+    private bool MemoryAddressValid()
     {
         ProcessHandler.TryRead(ObjectAddress, out ushort result, false, "MemoryAddressValid()");
         return result == CheckValue;
