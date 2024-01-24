@@ -39,7 +39,7 @@ public class VoiceHandler
                     return;
                 voice.SampleChannel.Volume = distance >= RANGE_UPPER_BOUND ? 0.0f :
                     distance <= RANGE_LOWER_BOUND ? 1.0f :
-                    1.0f - distance / RANGE_UPPER_BOUND;
+                    1 - (distance - 500) / (RANGE_UPPER_BOUND - 500);
             }
             voice.WaveProvider.AddSamples(decodedBytes, 0, decodedBytes.Length);
         }
