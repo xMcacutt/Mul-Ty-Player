@@ -7,6 +7,8 @@ using System.Numerics;
 using LZ4;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking.Voice;
+using MulTyPlayerClient.GUI;
+using MulTyPlayerClient.GUI.Models;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using Riptide;
@@ -18,7 +20,7 @@ public class VoiceHandler
     private static WaveInEvent _waveIn;
     private const ushort THRESHOLD = 0x2000;
     public static bool DoProximityCheck;
-    private const float RANGE_UPPER_BOUND = 4000f;
+    private const float RANGE_UPPER_BOUND = 3500f;
     private const float RANGE_LOWER_BOUND = 500f;
     private const int SAMPLE_RATE = 44100;
     private const int BIT_DEPTH = 16;
@@ -37,9 +39,14 @@ public class VoiceHandler
             {
                 if (level != Client.HLevel.CurrentLevelId)
                     return;
-                voice.SampleChannel.Volume = distance >= RANGE_UPPER_BOUND ? 0.0f :
-                    distance <= RANGE_LOWER_BOUND ? 1.0f :
-                    1 - (distance - 500) / (RANGE_UPPER_BOUND - 500);
+                var playerInfo = ModelController.Lobby.PlayerInfoList.FirstOrDefault(x => x.ClientID == fromClientId);
+                if (playerInfo != null)
+                {
+                    if (playerInfo.Level != "M/L" || !Client.HGameState.IsAtMainMenu())
+                        voice.SampleChannel.Volume = distance >= RANGE_UPPER_BOUND ? 0.0f :
+                            distance <= RANGE_LOWER_BOUND ? 1.0f :
+                            1.0f - (distance - RANGE_LOWER_BOUND) / (RANGE_UPPER_BOUND - RANGE_LOWER_BOUND);
+                }
             }
             voice.WaveProvider.AddSamples(decodedBytes, 0, decodedBytes.Length);
         }
