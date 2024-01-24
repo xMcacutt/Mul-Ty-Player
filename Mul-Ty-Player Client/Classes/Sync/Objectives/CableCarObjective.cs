@@ -12,7 +12,7 @@ public class CableCarObjective : Objective
     public CableCarObjective(int level, string name) : base(level, name)
     {
         Count = 6;
-        State = ObjectiveState.Active;
+        State = ObjectiveState.Inactive;
         ObjectPath = new[] { 0x25AAD0, 0x0 };
         CheckValue = 61764;
         ObjectActiveState = 0x8;
