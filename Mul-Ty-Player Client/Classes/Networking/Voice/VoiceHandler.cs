@@ -20,8 +20,8 @@ public class VoiceHandler
     private static WaveInEvent _waveIn;
     private const ushort THRESHOLD = 0x2000;
     public static bool DoProximityCheck;
-    private const float RANGE_UPPER_BOUND = 3500f;
-    private const float RANGE_LOWER_BOUND = 500f;
+    private const float RANGE_UPPER_BOUND = 2000f;
+    private const float RANGE_LOWER_BOUND = 200f;
     private const int SAMPLE_RATE = 24000;
     private const int BIT_DEPTH = 16;
     private const int BUFFER_DURATION = 20;
