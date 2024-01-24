@@ -56,8 +56,10 @@ public class CableCarObjective : Objective
                     new byte[] { 0x3, 0x2, 0x0, 0x0, 0x3, 0x0, 0x0, 0x0 });
             }
         }
-        if (CurrentData.All(x => x == 0x1))
-            State = ObjectiveState.ReadyForTurnIn;
+        if (CurrentData.Any(x => x != 0x1))
+            return;
+        State = ObjectiveState.ReadyForTurnIn;
+        SendState();
     }
 
     protected override void IsReady()
