@@ -16,8 +16,8 @@ public class SeahorseObjective : Objective
 
     protected override void IsInactive()
     {
-        ProcessHandler.TryRead(0x260228 + 0x6C, out ushort objectiveActivity, true, "Seahorse: IsInactive()");
-        if (objectiveActivity == 0)
+        ProcessHandler.TryRead(ObjectAddress + 0xB0, out int seahorseActivity, false, "CableCar : IsActive()");
+        if (seahorseActivity != 3)
             return;
         State = ObjectiveState.Active;
         SendState();
