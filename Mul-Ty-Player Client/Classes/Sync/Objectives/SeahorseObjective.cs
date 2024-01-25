@@ -32,7 +32,7 @@ public class SeahorseObjective : Objective
                 continue;
             ProcessHandler.WriteData(ObjectAddress + i * 0x19C + 0xA8, new byte[] { 3 });
             ProcessHandler.TryRead(ObjectAddress + i * 0x19C + 0xB0, out int seahorseOutState, false, "CableCar : IsActive()");
-            if (seahorseOutState == 2)
+            if (seahorseOutState is 2 or 3)
             {
                 CurrentData[i] = 1;
                 if (OldData[i] == 1)
@@ -82,6 +82,7 @@ public class SeahorseObjective : Objective
 
     protected override void UpdateObjectState(int index)
     {
+        CurrentData[index] = 1;
         ProcessHandler.TryRead(ObjectAddress + index * 0x19C + 0xA8, out int seahorseActivity, false, "CableCar : IsActive()");
         if (seahorseActivity == 0x0)
             return;
