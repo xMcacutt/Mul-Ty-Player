@@ -136,11 +136,11 @@ internal class SyncHandler
         if (SettingsHandler.DoLevelLock) HLevelLock.CheckEntry();
         else if (SettingsHandler.DoPortalSyncing) HPortal.CheckObserverChanged();
         if (SettingsHandler.DoCliffsSyncing) HCliffs.CheckObserverChanged();
-        if (SettingsHandler.DoFrameSyncing && (Levels.GetLevelData(Client.HLevel.CurrentLevelId).FrameCount != 0))
+        /*if (SettingsHandler.DoFrameSyncing && (Levels.GetLevelData(Client.HLevel.CurrentLevelId).FrameCount != 0))
         {
             HFrame.CheckObserverChanged();
             HInvisiCrate.CheckObserverChanged();
-        }
+        }*/
         if (SettingsHandler.DoRainbowScaleSyncing && Client.HLevel.CurrentLevelId == Levels.RainbowCliffs.Id)
             HRainbowScale.CheckObserverChanged();
     }
