@@ -185,8 +185,6 @@ public partial class Lobby : UserControl
     private void ChangeRoleToggle_Click(object sender, RoutedEventArgs e)
     {
         Client.HHideSeek.Role = Client.HHideSeek.Role == HSRole.Hider ? HSRole.Seeker : HSRole.Hider;
-        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_RoleChanged);
-        message.AddInt((int)Client.HHideSeek.Role);
     }
 
     private void TimerToggle_Click(object sender, RoutedEventArgs e)

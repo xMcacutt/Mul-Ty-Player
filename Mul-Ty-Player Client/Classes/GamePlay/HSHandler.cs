@@ -47,6 +47,11 @@ public class HSHandler
     }
     public delegate void RoleChangedEventHandler(HSRole newRole);
     public static event RoleChangedEventHandler OnRoleChanged;
+
+    public HSHandler()
+    {
+        OnRoleChanged += AnnounceRoleChanged;
+    }
     
     public void Run()
     {
@@ -68,16 +73,17 @@ public class HSHandler
             {
                 if (!Enum.TryParse(typeof(Koala), player.KoalaName, out var koala))
                     continue;
-                var seekerPos = PlayerReplication.PlayerTransforms[(int)koala].Position;
+                var seeker = PlayerReplication.PlayerTransforms[(int)koala];
+                if (seeker.LevelID != Client.HLevel.CurrentLevelId)
+                    continue;
+                var seekerPos = seeker.Position;
                 var currentPos = Client.HHero.GetCurrentPosRot();
                 var seekerVector = new Vector3(seekerPos.X, seekerPos.Y, seekerPos.Z);
                 var currentVector = new Vector3(currentPos[0], currentPos[1], currentPos[2]);
                 var distance = Vector3.Distance(seekerVector, currentVector);
-                if (distance < 100)
-                {
-                    Client.HHero.Kill();
-                    Client.HHideSeek.Role = HSRole.Seeker;
-                }
+                if (!(distance < 100)) continue;
+                Client.HHero.Kill();
+                Client.HHideSeek.Role = HSRole.Seeker;
             }
         }
 
@@ -85,6 +91,13 @@ public class HSHandler
             return;
         _mode = HSMode.Neutral;
         TimerRunning = false;
+    }
+
+    private void AnnounceRoleChanged(HSRole newRole)
+    {
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_RoleChanged);
+        message.AddInt((int)Client.HHideSeek.Role);
+        Client._client.Send(message);
     }
     
     [MessageHandler((ushort)MessageID.HS_SetHideSeekMode)]
