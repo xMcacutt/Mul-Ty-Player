@@ -102,8 +102,6 @@ public class CableCarObjective : Objective
 
     protected override void UpdateObjectState(int index)
     {
-        if (CurrentData[index] == 1)
-            return;
         ProcessHandler.TryRead(ObjectAddress + RockFrillIndices[index] * 0x438 + 0xA0, out int frillOutState, false, "CableCar : IsActive()");
         if (frillOutState == 0x8)
             return;
@@ -113,6 +111,10 @@ public class CableCarObjective : Objective
     public override void Sync(byte[] data)
     {
         for (var i = 0; i < Count; i++)
+        {
+            if (data[i] != 1 || CurrentData[i] == 1) continue;
             CurrentData[i] = OldData[i] = data[i];
+            UpdateObjectState(i);
+        }
     }
 }

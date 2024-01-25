@@ -1,4 +1,6 @@
-﻿namespace MulTyPlayerClient.Objectives;
+﻿using System.Linq;
+
+namespace MulTyPlayerClient.Objectives;
 
 public class SeahorseObjective : Objective
 {
@@ -23,12 +25,14 @@ public class SeahorseObjective : Objective
 
     protected override void IsActive()
     {
+        Client.HSync.HTrigger.CheckSetTrigger(16, false);
         for (var i = 0; i < Count; i++)
         {
             if (CurrentData[i] == 1)
                 continue;
-            ProcessHandler.TryRead(ObjectAddress + i * 0x19C + 01, out int seahorseOutState, false, "CableCar : IsActive()");
-            if (seahorseOutState == 8)
+            ProcessHandler.WriteData(ObjectAddress + i * 0x19C + 0xA8, new byte[] { 3 });
+            ProcessHandler.TryRead(ObjectAddress + i * 0x19C + 0xB0, out int seahorseOutState, false, "CableCar : IsActive()");
+            if (seahorseOutState == 2)
             {
                 CurrentData[i] = 1;
                 if (OldData[i] == 1)
@@ -37,40 +41,60 @@ public class SeahorseObjective : Objective
                 OldData[i] = 1;
             }
         }
+        if (CurrentData.Any(x => x != 1))
+            return;
+        State = ObjectiveState.ReadyForTurnIn;
+        SendState();
     }
 
     protected override void IsReady()
     {
-        throw new System.NotImplementedException();
+        Client.HSync.HTrigger.CheckSetTrigger(16, false);
+        Client.HSync.HTrigger.CheckSetTrigger(17, true);
+        if (Client.HSync.SyncObjects["TE"].GlobalObjectData[Level][4] != 5)
+            return;
+        State = ObjectiveState.Complete;
     }
 
     protected override void Activate()
     {
-        throw new System.NotImplementedException();
     }
 
     protected override void AllowTurnIn()
     {
-        throw new System.NotImplementedException();
+        for (var i = 0; i < Count; i++)
+        {
+            ProcessHandler.TryRead(ObjectAddress + i * 0x19C + 0xA8, out int seahorseActivity, false,
+                "CableCar : IsReady()");
+            if (seahorseActivity == 0x0)
+                continue;
+            ProcessHandler.WriteData(ObjectAddress + i * 0x19C + 0xA8, new byte[1]);
+        }
     }
 
     protected override void Deactivate()
     {
-        throw new System.NotImplementedException();
     }
 
     protected override void UpdateCount()
     {
-        throw new System.NotImplementedException();
     }
 
     protected override void UpdateObjectState(int index)
     {
-        throw new System.NotImplementedException();
+        ProcessHandler.TryRead(ObjectAddress + index * 0x19C + 0xA8, out int seahorseActivity, false, "CableCar : IsActive()");
+        if (seahorseActivity == 0x0)
+            return;
+        ProcessHandler.WriteData(ObjectAddress + index * 0x19C + 0xA8, new byte[] { 0x0 });
     }
 
     public override void Sync(byte[] data)
     {
-        throw new System.NotImplementedException();
+        for (var i = 0; i < Count; i++)
+        {
+            if (data[i] != 1 || CurrentData[i] == 1) continue;
+            CurrentData[i] = OldData[i] = data[i];
+            UpdateObjectState(i);
+        }
     }
 }

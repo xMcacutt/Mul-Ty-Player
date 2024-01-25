@@ -15,6 +15,7 @@ public class ObjectiveHandler
     {
         Objectives = new Dictionary<string, Objective>
         {
+            { "Seahorse", new Objective("Seahorse", 8, 0, 1, ObjectiveState.Inactive)},
             { "Burner", new Objective("Burner", 8, 1, 2, ObjectiveState.Inactive) },
             { "SnowKoalaKid", new Objective("SnowKoalaKid", 8, 1, 5, ObjectiveState.Active) },
             { "StumpKoalaKid", new Objective("StumpKoalaKid", 8, 1, 5, ObjectiveState.Active) },
