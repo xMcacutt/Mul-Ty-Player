@@ -34,6 +34,7 @@ internal class Client
     public static LevelHandler HLevel;
     public static SyncHandler HSync;
     public static ObjectiveHandler HObjective;
+    public static HSHandler HHideSeek;
 
     public static CancellationTokenSource cts;
     public static bool Relaunching => TyProcess.LaunchingGame;
@@ -78,6 +79,7 @@ internal class Client
         HCommand = new CommandHandler();
         HPlayer = new PlayerHandler();
         HObjective = new ObjectiveHandler();
+        HHideSeek = new HSHandler();
         PlayerHandler.Players.Clear();
     }
 
@@ -193,9 +195,14 @@ internal class Client
                     if (!HGameState.IsAtMainMenuOrLoading())
                     {
                         HLevel.GetCurrentLevel();
-                        HSync.CheckEnabledObservers();
-                        if (SettingsHandler.DoTESyncing)
-                            HObjective.RunChecks();
+                        if (!SettingsHandler.DoHideSeek)
+                        {
+                            HSync.CheckEnabledObservers();
+                            if (SettingsHandler.DoTESyncing)
+                                HObjective.RunChecks();
+                        }
+                        else
+                            HHideSeek.Run();
                         HHero.GetTyPosRot();
                         HKoala.CheckTA();
                     }

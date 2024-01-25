@@ -5,19 +5,22 @@ namespace MulTyPlayerClient.GUI;
 [AddINotifyPropertyChangedInterface]
 public class PlayerInfo
 {
-    public PlayerInfo(ushort clientID, string playerName, string koalaName)
+    public PlayerInfo(ushort clientId, string playerName, string koalaName, HSRole role)
     {
-        ClientID = clientID;
+        ClientId = clientId;
         PlayerName = playerName;
         KoalaName = koalaName;
-        IsHost = PlayerHandler.Players[clientID].IsHost;
-        IsReady = PlayerHandler.Players[clientID].IsReady;
+        Role = role;
+        IsHost = PlayerHandler.Players[clientId].IsHost;
+        IsReady = PlayerHandler.Players[clientId].IsReady;
     }
 
-    public ushort ClientID { get; set; }
+    public ushort ClientId { get; set; }
     public string KoalaName { get; set; }
     public string PlayerName { get; set; }
     public bool IsHost { get; set; }
     public bool IsReady { get; set; }
+    public HSRole Role { get; set; }
     public string Level { get; set; }
 }
+

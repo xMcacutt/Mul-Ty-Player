@@ -32,5 +32,10 @@ public enum MessageID : ushort
     ObjectiveStateChanged,
     ReqObjectiveSync,
     AdvancedTeleport,
-    Voice
+    Voice,
+    HS_SetHideSeekMode,
+    HS_RoleChanged,
+    HS_HideTimerStart,
+    HS_StartSeek,
+    HS_Warning
 }

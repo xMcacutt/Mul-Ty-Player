@@ -21,13 +21,13 @@ internal class PlayerHandler
     }
 
     //Adds other player to players & playerInfo
-    public static void AddPlayer(Koala koala, string name, ushort clientId, bool isHost, bool isReady)
+    public static void AddPlayer(Koala koala, string name, ushort clientId, bool isHost, bool isReady, HSRole role)
     {
         var koalaName = Koalas.GetInfo[koala].Name;
         Players.Remove(clientId);
-        Players.Add(clientId, new Player(koala, name, clientId, isHost, isReady));
+        Players.Add(clientId, new Player(koala, name, clientId, isHost, isReady, role));
         VoiceHandler.AddVoice(clientId);
-        PlayerInfo player = new(clientId, name, koalaName);
+        PlayerInfo player = new(clientId, name, koalaName, role);
         Application.Current.Dispatcher.BeginInvoke(
             DispatcherPriority.Background,
             () => { ModelController.Lobby.PlayerInfoList.Add(player); });
@@ -45,7 +45,7 @@ internal class PlayerHandler
         message.AddUShort(Client._client.Id);
         message.AddBool(isHost);
         message.AddBool(isReady);
-        PlayerInfo player = new(Client._client.Id, name, koalaName);
+        PlayerInfo player = new(Client._client.Id, name, koalaName, HSRole.Hider);
         ModelController.Lobby.PlayerInfoList.Add(player);
         Client._client.Send(message);
         Client.KoalaSelected = true;

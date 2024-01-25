@@ -24,7 +24,29 @@ internal static class SettingsHandler
     public static bool DoRainbowScaleSyncing;
     public static bool DoFrameSyncing;
 
-    public static bool DoLevelLock;
+    private static bool _doLevelLock;
+
+    public static bool DoLevelLock
+    {
+        get => _doLevelLock;
+        set
+        {
+            ModelController.Lobby.IsLevelLockEnabled = value;
+            _doLevelLock = value;
+        }
+    }
+    private static bool _doHideSeek;
+    public static bool DoHideSeek
+    {
+        get => _doHideSeek;
+        set
+        {
+            ModelController.Lobby.IsHideSeekEnabled = value;
+            _doHideSeek = value;
+            if (value)
+                Client.HHideSeek.StartTimerLoop();
+        }
+    }
 
     public static Dictionary<string, bool> SyncSettings;
     public static Settings Settings { get; private set; }
@@ -95,6 +117,11 @@ internal static class SettingsHandler
         if (b.Length > 9)
         {
             DoLevelLock = b[9];
+        }
+
+        if (b.Length > 10)
+        {
+            DoHideSeek = b[10];
         }
 
         var serverVersion = message.GetString();

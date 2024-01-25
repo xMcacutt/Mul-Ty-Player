@@ -16,7 +16,10 @@ public enum SFX
     Race10,
     RaceAbort,
     LevelComplete,
-    TAOpen
+    TAOpen,
+    HS_Warning,
+    HS_HideStart,
+    HS_SeekStart
 }
 
 public static class SFXPlayer
@@ -33,7 +36,10 @@ public static class SFXPlayer
         { SFX.Race10, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Race10.wav") },
         { SFX.RaceAbort, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/RaceAbort.wav") },
         { SFX.LevelComplete, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/LevelComplete.wav")},
-        { SFX.TAOpen, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/TAOpen.wav")}
+        { SFX.TAOpen, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/TAOpen.wav")},
+        { SFX.HS_Warning, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/HS_Warning.wav")},
+        { SFX.HS_HideStart, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/HS_HideStart.wav")},
+        { SFX.HS_SeekStart, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/HS_SeekStart.wav")},
     };
 
     private static Dictionary<SFX, MediaPlayer> mediaPlayers;

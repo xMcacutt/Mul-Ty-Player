@@ -56,7 +56,7 @@ public class LobbyModel
     {
         try
         {
-            playerInfo = PlayerInfoList.First(pInfo => pInfo.ClientID == clientID);
+            playerInfo = PlayerInfoList.First(pInfo => pInfo.ClientId == clientID);
             return true;
         }
         catch
@@ -74,13 +74,13 @@ public class LobbyModel
     public void UpdateReadyStatus()
     {
         foreach (var player in PlayerInfoList)
-            if (PlayerHandler.Players.TryGetValue(player.ClientID, out var value))
+            if (PlayerHandler.Players.TryGetValue(player.ClientId, out var value))
                 player.IsReady = value.IsReady;
     }
 
     public void UpdateHostIcon()
     {
-        foreach (var player in PlayerInfoList) player.IsHost = PlayerHandler.Players[player.ClientID].IsHost;
+        foreach (var player in PlayerInfoList) player.IsHost = PlayerHandler.Players[player.ClientId].IsHost;
         IsHost = PlayerHandler.Players[Client._client.Id].IsHost;
     }
 
@@ -166,6 +166,42 @@ public class LobbyModel
     }
 
     private bool isHost;
+
+    #endregion
+    
+    #region IsHideSeek
+
+    public event Action<bool> IsHideSeekEnabledChanged;
+
+    public bool IsHideSeekEnabled
+    {
+        get => isHideSeekEnabled;
+        set
+        {
+            isHideSeekEnabled = value;
+            IsHideSeekEnabledChanged(isHideSeekEnabled);
+        }
+    }
+
+    private bool isHideSeekEnabled;
+
+    #endregion
+    
+    #region IsHideSeek
+
+    public event Action<bool> IsLevelLockEnabledChanged;
+
+    public bool IsLevelLockEnabled
+    {
+        get => isLevelLockEnabled;
+        set
+        {
+            isLevelLockEnabled = value;
+            IsLevelLockEnabledChanged(isLevelLockEnabled);
+        }
+    }
+
+    private bool isLevelLockEnabled;
 
     #endregion
 }

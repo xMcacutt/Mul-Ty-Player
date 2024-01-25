@@ -9,6 +9,7 @@ using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking.Voice;
 using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
+using NAudio.Codecs;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using Riptide;
@@ -39,7 +40,7 @@ public class VoiceHandler
             {
                 if (level != Client.HLevel.CurrentLevelId)
                     return;
-                var playerInfo = ModelController.Lobby.PlayerInfoList.FirstOrDefault(x => x.ClientID == fromClientId);
+                var playerInfo = ModelController.Lobby.PlayerInfoList.FirstOrDefault(x => x.ClientId == fromClientId);
                 if (playerInfo != null)
                 {
                     if (playerInfo.Level != "M/L" || !Client.HGameState.IsAtMainMenu())

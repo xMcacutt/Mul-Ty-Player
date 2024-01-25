@@ -23,6 +23,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.5*" />
                 <RowDefinition Height="4.6*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0"
@@ -45,7 +46,7 @@
                     </ContextMenu>
                 </DataGrid.ContextMenu>
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Client ID" Width="0.4*" CanUserResize="False">
+                    <DataGridTemplateColumn Header="Client ID" Width="0.3*" CanUserResize="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Style="{StaticResource ComicText}"
@@ -53,11 +54,11 @@
                                            FontSize="14"
                                            IsHitTestVisible="False"
                                            Padding="3"
-                                           Text="{Binding ClientID}" />
+                                           Text="{Binding ClientId}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Koala Icon" Width="0.6*" CanUserResize="False">
+                    <DataGridTemplateColumn Header="Koala Icon" Width="0.5*" CanUserResize="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentControl
@@ -65,7 +66,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Player Name" Width="1.6*" CanUserResize="False">
+                    <DataGridTemplateColumn Header="Player Name" Width="1.5*" CanUserResize="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Style="{StaticResource ComicText}"
@@ -116,8 +117,31 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Role" Width="0.35*" CanUserResize="False" Visibility="{Binding IsHideSeekButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <controls:Icon Size="10"
+                                               Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
+                                               Margin="0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Code="{Binding Role, Converter={StaticResource RoleToIconConverter}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
+            
+            <TextBlock Grid.Row="2"
+                       x:Name="Timer"
+                       Text="{Binding Time}"
+                       Visibility="{Binding IsTimerVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"
+                       FontFamily="Cascadia Code"
+                       FontSize="53"
+                       Margin="2"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"/>
         </Grid>
 
         <Grid Grid.Column="2">
@@ -212,7 +236,8 @@
                                     <controls:CustomMenuItem Header="Level Lock Mode"
                                                              x:Name="LevelLockToggle"
                                                              Click="LevelLockToggle_Click"
-                                                             IsChecked="False"/>
+                                                             IsCheckable="true"
+                                                             IsChecked="{Binding IsLevelLockEnabled}"/>
                                     <controls:CustomMenuItem Header="Reset Sync"
                                                              Click="ResetSync_Click"
                                                              IconCode="{DynamicResource IcoUndo}"/>
@@ -229,7 +254,7 @@
                          <Button x:Name="VoiceMenuButton"
                                 Margin="2 0"
                                 Click="VoiceMenuButton_Click"
-                                ToolTip="Host Menu"
+                                ToolTip="Voice Menu"
                                 Width="55"
                                 Style="{StaticResource LobbyButton}">
                             <controls:Icon Margin="5,0" Code="{DynamicResource IcoSound}" Size="24" />
@@ -250,6 +275,38 @@
                                                              IsCheckable="True"
                                                              Click="Proximity_Click"
                                                              IconCode="{DynamicResource IcoProximity}"/>
+                                </ContextMenu>
+                            </Button.ContextMenu>
+                        </Button>
+                        
+                        <Button x:Name="HideSeekMenuButton"
+                                Margin="2 0"
+                                Click="HideSeekMenuButton_Click"
+                                IsEnabled="{Binding IsHideSeekButtonEnabled}"
+                                ToolTip="Hide &amp; Seek Menu"
+                                Width="55"
+                                Style="{StaticResource LobbyButton}">
+                            <controls:Icon Margin="5,0" Code="{Binding Role, Converter={StaticResource RoleToIconConverter}}" Size="24" />
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="5" />
+                                </Style>
+                            </Button.Resources>
+                            <Button.ContextMenu>
+                                <ContextMenu>
+                                    <controls:CustomMenuItem Header="Change Role"
+                                                             x:Name="RoleToggle"
+                                                             Click="ChangeRoleToggle_Click"
+                                                             IconCode="{Binding Role, Converter={StaticResource RoleToIconConverter}}"/>
+                                    <controls:CustomMenuItem Header="Show / Hide Timer"
+                                                             x:Name="TimerToggle"
+                                                             IsCheckable="True"
+                                                             Click="TimerToggle_Click"
+                                                             IconCode="{DynamicResource IcoStopwatch}"/>
+                                    <controls:CustomMenuItem Header="Reset Time"
+                                                             x:Name="ResetTimer"
+                                                             Click="ResetTimer_OnClick"
+                                                             IconCode="{DynamicResource IcoResetTimer}"/>
                                 </ContextMenu>
                             </Button.ContextMenu>
                         </Button>

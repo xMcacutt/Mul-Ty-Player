@@ -6,15 +6,17 @@ internal class Player
     public bool IsHost;
     public bool IsReady;
     public string Name;
+    public HSRole Role;
+    public Koala Koala;
 
-    public Player(Koala koala, string name, ushort id, bool isHost, bool isReady)
+    public Player(Koala koala, string name, ushort id, bool isHost, bool isReady, HSRole role)
     {
         Koala = koala;
         Name = name;
         Id = id;
         IsHost = isHost;
         IsReady = isReady;
+        Role = role;
     }
 
-    public Koala Koala { get; set; }
 }

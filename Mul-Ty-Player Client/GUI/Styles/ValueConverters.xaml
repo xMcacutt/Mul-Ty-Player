@@ -9,4 +9,5 @@
     <gui:BooleanToReadyIconConverter x:Key="BooleanToReadyIconConverter" />
     <gui:KoalaNameToIconConverter x:Key="KoalaNameToIconConverter" />
     <gui:PopupVisibilityToArrowDirectionConverter x:Key="PopupVisibilityToArrowDirectionConverter"/>
+    <gui:RoleToIconConverter x:Key="RoleToIconConverter"/>
 </ResourceDictionary>

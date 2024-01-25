@@ -9,9 +9,10 @@ internal class Player
     public bool IsReady;
     public string Name;
     public bool OnMenu;
+    public HSRole Role;
     public int PreviousLevel = 99;
 
-    public Player(Koala koala, string name, ushort id, bool isHost, bool isReady, bool onMenu)
+    public Player(Koala koala, string name, ushort id, bool isHost, bool isReady, bool onMenu, HSRole role)
     {
         Koala = koala;
         Name = name;
@@ -20,6 +21,7 @@ internal class Player
         Coordinates = new float[6];
         IsReady = isReady;
         OnMenu = onMenu;
+        Role = role;
     }
 
     public Koala Koala { get; set; }

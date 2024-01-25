@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using MulTyPlayer;
-using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.GUI.Models;
 using MulTyPlayerClient.GUI.ViewModels;
 using Riptide;
@@ -98,13 +98,13 @@ public partial class Lobby : UserControl
     private void GiveHost_OnClick(object sender, RoutedEventArgs e)
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.GiftHost);
-        message.AddUShort(clickedPlayer.ClientID);
+        message.AddUShort(clickedPlayer.ClientId);
         Client._client.Send(message);
     }
 
     private void KickPlayer_OnClick(object sender, RoutedEventArgs routedEventArgs)
     {
-        Client.HCommand.Commands["kick"].InitExecute(new string[] { clickedPlayer.ClientID.ToString() });
+        Client.HCommand.Commands["kick"].InitExecute(new string[] { clickedPlayer.ClientId.ToString() });
     }
 
     private void HostMenuButton_Click(object sender, RoutedEventArgs e)
@@ -135,7 +135,7 @@ public partial class Lobby : UserControl
 
     private void DataGrid_OnContextMenuOpening(object sender, RoutedEventArgs e)
     {
-        if (clickedPlayer.ClientID == Client._client.Id || !(DataContext as LobbyViewModel).IsHostMenuButtonEnabled)
+        if (DataContext is not LobbyViewModel viewModel || clickedPlayer == null || clickedPlayer.ClientId == Client._client.Id || !viewModel.IsHostMenuButtonEnabled)
         {
             e.Handled = true;
             HostDataGridContextMenu.IsOpen = false;
@@ -172,5 +172,30 @@ public partial class Lobby : UserControl
     private void Proximity_Click(object sender, RoutedEventArgs e)
     {
         VoiceHandler.DoProximityCheck = ProximityToggle.IsChecked;
+    }
+
+    private void HideSeekMenuButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is FrameworkElement element)
+        {
+            element.ContextMenu.IsOpen = true;
+        }
+    }
+
+    private void ChangeRoleToggle_Click(object sender, RoutedEventArgs e)
+    {
+        Client.HHideSeek.Role = Client.HHideSeek.Role == HSRole.Hider ? HSRole.Seeker : HSRole.Hider;
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_RoleChanged);
+        message.AddInt((int)Client.HHideSeek.Role);
+    }
+
+    private void TimerToggle_Click(object sender, RoutedEventArgs e)
+    {
+        (DataContext as LobbyViewModel).IsTimerVisible = !(DataContext as LobbyViewModel).IsTimerVisible;
+    }
+
+    private void ResetTimer_OnClick(object sender, RoutedEventArgs e)
+    {
+        Client.HHideSeek.Time = 0;
     }
 }

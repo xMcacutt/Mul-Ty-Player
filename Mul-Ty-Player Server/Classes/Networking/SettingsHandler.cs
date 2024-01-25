@@ -22,12 +22,14 @@ internal class SettingsHandler
     public static Settings Settings { get; private set; }
     
     public static bool DoLevelLock { get; set; }
+    public static bool DoHideSeek { get; set; }
 
     public static void Setup()
     {
         var json = File.ReadAllText("./ServerSettings.json");
         Settings = JsonConvert.DeserializeObject<Settings>(json);
         DoLevelLock = false;
+        DoHideSeek = false;
         SyncSettings = new Dictionary<string, bool>
         {
             { "TE", Settings.DoSyncTEs },
@@ -57,7 +59,8 @@ internal class SettingsHandler
             Settings.DoSyncCliffs,
             Settings.DoSyncScale,
             Settings.DoSyncFrame,
-            DoLevelLock
+            DoLevelLock,
+            DoHideSeek
         };
         var message = Message.Create(MessageSendMode.Reliable, MessageID.SyncSettings);
         message.AddBools(b);

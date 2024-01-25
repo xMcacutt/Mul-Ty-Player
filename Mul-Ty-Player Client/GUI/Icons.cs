@@ -41,5 +41,9 @@ public class Icons : ResourceDictionary
         this["IcoMic"] = "\uf130";
         this["IcoSound"] = "\uf028";
         this["IcoProximity"] = "\uf519";
+        this["IcoHider"] = "\uf21b";
+        this["IcoSeeker"] = "\uf002";
+        this["IcoStopwatch"] = "\uf2f2";
+        this["IcoResetTimer"] = "\uf1da";
     }
 }

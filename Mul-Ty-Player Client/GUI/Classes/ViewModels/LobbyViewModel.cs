@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
 using MulTyPlayerClient.Classes;
@@ -20,18 +21,16 @@ public class LobbyViewModel : IViewModel
         Lobby.IsOnMenuChanged += Model_IsOnMenuChanged;
         Lobby.IsReadyChanged += Model_IsReadyChanged;
         Lobby.IsHostChanged += Model_IsHostChanged;
+        Lobby.IsHideSeekEnabledChanged += Model_IsHideSeekEnabledChanged;
+        Lobby.IsLevelLockEnabledChanged += Model_IsLevelLockEnabledChanged;
         Lobby.CanLaunchGameChanged += Model_CanLaunchGameChanged;
+        HSHandler.OnTimeChanged += Model_TimeChanged;
+        HSHandler.OnRoleChanged += Model_RoleChanged;
         Countdown.OnCountdownBegan += OnCountdownBegan;
         Countdown.OnCountdownAborted += OnCountdownEnded;
         Countdown.OnCountdownFinished += OnCountdownEnded;
 
         Logger.OnLogWrite += ChatMessages.Add;
-
-        //i dont know what this does but i think matt said it was important. idk why.
-        ModelController.KoalaSelect.OnKoalaSelected += k =>
-        {
-            CollectionViewSource.GetDefaultView(ChatMessages).Refresh();
-        };
     }
 
     public ObservableCollection<PlayerInfo> PlayerInfoList
@@ -53,6 +52,11 @@ public class LobbyViewModel : IViewModel
     public bool IsLaunchGameButtonEnabled { get; set; }
     public bool IsSyncButtonEnabled { get; set; } = true;
     public bool IsHostMenuButtonEnabled { get; set; } = false;
+    public bool IsTimerVisible { get; set; } = false;
+    public object IsHideSeekButtonEnabled { get; set; }
+    public object IsLevelLockEnabled { get; set; }
+    public string Time { get; set; } = "00:00:00";
+    public HSRole Role { get; set; } = HSRole.Hider;
 
     private static LobbyModel Lobby => ModelController.Lobby;
 
@@ -85,7 +89,8 @@ public class LobbyViewModel : IViewModel
     private void Model_IsOnMenuChanged(bool value)
     {
         IsOnMenu = value;
-        IsReadyButtonEnabled = IsOnMenu;
+        if (!SettingsHandler.DoHideSeek)
+            IsReadyButtonEnabled = IsOnMenu;
     }
 
     private void Model_IsReadyChanged(bool value)
@@ -101,6 +106,34 @@ public class LobbyViewModel : IViewModel
     private void Model_IsHostChanged(bool value)
     {
         IsHostMenuButtonEnabled = value;
+    }
+
+    private void Model_IsHideSeekEnabledChanged(bool value)
+    {
+        IsHideSeekButtonEnabled = value;
+        IsReadyButtonEnabled = value || IsOnMenu;
+    }
+    
+    private void Model_IsLevelLockEnabledChanged(bool value)
+    {
+        IsLevelLockEnabled = value;
+    }
+
+    private void Model_TimeChanged(int newTime)
+    {
+        TimeSpan timeSpan = TimeSpan.FromSeconds(newTime);
+        Time = $"{(int)timeSpan.TotalHours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+    }
+    
+    private void Model_RoleChanged(HSRole newRole)
+    {
+        if (Client._client == null)
+            return;
+        var playerInfo = PlayerInfoList.FirstOrDefault(x => x.ClientId == Client._client.Id);
+        if (playerInfo == null)
+            return;
+        Role = Role == HSRole.Hider ? HSRole.Seeker : HSRole.Hider;
+        playerInfo.Role = newRole;
     }
 
     private void OnCountdownEnded()

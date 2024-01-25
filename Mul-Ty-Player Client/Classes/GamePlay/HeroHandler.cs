@@ -43,13 +43,14 @@ public class HeroHandler
         return currentPositionRotation;
     }
     
-    public void WritePosition(float x, float y, float z)
+    public void WritePosition(float x, float y, float z, bool log = true)
     {
         var bytes = BitConverter.GetBytes(x)
             .Concat(BitConverter.GetBytes(y))
             .Concat(BitConverter.GetBytes(z))
             .ToArray();
-        Logger.Write($"Teleported to {x}, {y}, {z}");
+        if (log)
+            Logger.Write($"Teleported to {x}, {y}, {z}");
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + positionAddress, bytes);
     }
 
@@ -76,5 +77,10 @@ public class HeroHandler
         message.AddInt(HLevel.CurrentLevelId);
         message.AddFloats(Client.HHero.currentPositionRotation);
         Client._client.Send(message);
+    }
+
+    public void Kill()
+    {
+        
     }
 }

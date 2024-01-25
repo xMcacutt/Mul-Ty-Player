@@ -17,10 +17,10 @@ internal class PlayerHandler
         Players = new Dictionary<ushort, Player>();
     }
 
-    public static void AddPlayer(string koalaName, string name, ushort clientID, bool isHost)
+    public static void AddPlayer(string koalaName, string name, ushort clientID, bool isHost, HSRole role)
     {
         Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
-        Players.Add(clientID, new Player(koala, name, clientID, isHost, false, true));
+        Players.Add(clientID, new Player(koala, name, clientID, isHost, false, true, role));
     }
 
     public static void RemovePlayer(ushort id)
@@ -62,11 +62,28 @@ internal class PlayerHandler
         if (Players.Count(x => x.Value.IsReady) == Server._Server.ClientCount)
         {
             foreach (var entry in Players) entry.Value.IsReady = false;
-            Program.HSync = new SyncHandler();
-            Program.HObjective = new ObjectiveHandler();
-            PeerMessageHandler.SendMessageToClients("All clients are ready, starting countdown", true);
-            var countdownStart = Message.Create(MessageSendMode.Reliable, MessageID.Countdown);
-            Server._Server.SendToAll(countdownStart);
+            if (SettingsHandler.DoHideSeek)
+                StartHideTimer();
+            else
+            {
+                PeerMessageHandler.SendMessageToClients("All clients are ready, starting countdown", true);
+                StartCountdown();
+            }
         }
+    }
+
+    private static void StartHideTimer()
+    {
+        var hideTimerMessage = Message.Create(MessageSendMode.Reliable, MessageID.HS_HideTimerStart);
+        Server._Server.SendToAll(hideTimerMessage);
+        HSHandler.StartHideTimer();
+    }
+
+    private static void StartCountdown()
+    {
+        Program.HSync = new SyncHandler();
+        Program.HObjective = new ObjectiveHandler();
+        var countdownStart = Message.Create(MessageSendMode.Reliable, MessageID.Countdown);
+        Server._Server.SendToAll(countdownStart);
     }
 }

@@ -31,7 +31,7 @@ internal class KoalaHandler
         var isHost = message.GetBool();
         var isReady = message.GetBool();
         var k = Enum.Parse<Koala>(koalaName, true);
-        PlayerHandler.AddPlayer(k, playerName, clientID, isHost, isReady);
+        PlayerHandler.AddPlayer(k, playerName, clientID, isHost, isReady, HSRole.Hider);
         Client.HSync.RequestSync();
     }
 
