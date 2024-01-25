@@ -112,18 +112,6 @@ internal static class SettingsHandler
         }
     }
 
-    public static void CheckVersions(string clientVersion, string serverVersion)
-    {
-        if (Version.TryParse(clientVersion, out var client) && Version.TryParse(serverVersion, out var server))
-        {
-            var comparisonResult = client.CompareTo(server);
-            if (comparisonResult != 0)
-                
-            return;
-        }
-        Logger.Write("[WARN] Critical error, invalid version format.");
-    }
-
     public static bool HasValidExePath()
     {
         return Settings.MulTyPlayerFolderPath != "" && Settings.MulTyPlayerFolderPath != null;

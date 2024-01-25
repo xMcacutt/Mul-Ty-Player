@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -15,6 +16,7 @@ public partial class SettingsMenu : Window
     public SettingsMenu()
     {
         InitializeComponent();
+
     }
 
     private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -22,35 +24,40 @@ public partial class SettingsMenu : Window
         if (e.LeftButton == MouseButtonState.Pressed) DragMove();
     }
 
-    private void UIElement_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+    private void PortTextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
     {
         var regex = new Regex("^[0-9]+$");
-
         if (!regex.IsMatch(e.Text))
         {
             e.Handled = true;
             return;
         }
-
-        if (!string.IsNullOrEmpty(PortTextBox.Text))
+        if (string.IsNullOrEmpty(PortTextBox.Text)) return;
+        
+        if (uint.TryParse(PortTextBox.Text + e.Text, out uint portValue))
+            e.Handled = portValue > ushort.MaxValue;
+        else
+            e.Handled = true;
+        
+    }
+    
+    private void RangeTextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+    {
+        var regex = new Regex("^[0-9]+$");
+        if (!regex.IsMatch(e.Text))
         {
-            if (uint.TryParse(PortTextBox.Text + e.Text, out uint portValue))
-            {
-                e.Handled = portValue > ushort.MaxValue;
-            }
-            else
-            {
-                // Handle the case where the input is not a valid uint (e.g., non-numeric characters).
-                e.Handled = true;
-                return;
-            }
+            e.Handled = true;
+            return;
         }
+        if (string.IsNullOrEmpty(ProximityRangeTextBox.Text)) return;
+        e.Handled = !int.TryParse(ProximityRangeTextBox.Text + e.Text, out _);
     }
 
     private void ClientDropDownButton_OnClick(object sender, RoutedEventArgs e)
     {
         AnimateCloseDropdown(GameStackPanel);
         AnimateCloseDropdown(DevStackPanel);
+        AnimateCloseDropdown(VoiceStackPanel);
         AnimateDropdown(ClientStackPanel);
     }
     
@@ -58,6 +65,7 @@ public partial class SettingsMenu : Window
     {
         AnimateCloseDropdown(GameStackPanel);
         AnimateCloseDropdown(ClientStackPanel);
+        AnimateCloseDropdown(VoiceStackPanel);
         AnimateDropdown(DevStackPanel);
     }
     
@@ -65,7 +73,16 @@ public partial class SettingsMenu : Window
     {
         AnimateCloseDropdown(DevStackPanel);
         AnimateCloseDropdown(ClientStackPanel);
+        AnimateCloseDropdown(VoiceStackPanel);
         AnimateDropdown(GameStackPanel);
+    }
+    
+    private void VoiceDropDownButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        AnimateCloseDropdown(DevStackPanel);
+        AnimateCloseDropdown(ClientStackPanel);
+        AnimateCloseDropdown(GameStackPanel);
+        AnimateDropdown(VoiceStackPanel);
     }
 
     private void AnimateCloseDropdown(StackPanel dropDown)
@@ -126,5 +143,15 @@ public partial class SettingsMenu : Window
     {
         DialogResult = false;
         Close();
+    }
+
+    private void InputDeviceComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        VoiceHandler.UpdateInputDevice(InputDeviceComboBox.SelectedIndex);
+    }
+
+    private void InputDeviceComboBox_OnDropDownOpened(object sender, EventArgs e)
+    {
+        (DataContext as SettingsViewModel)?.UpdateInputDevices();
     }
 }

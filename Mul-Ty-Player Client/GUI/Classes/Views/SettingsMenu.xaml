@@ -157,6 +157,56 @@
             </StackPanel>
             <Separator Style="{StaticResource SettingsSepStyle}"/>
             
+                        <!--Voice Settings Item Stack Panel-->
+            <Button Click="VoiceDropDownButton_OnClick" Style="{StaticResource SettingsButtonStyle}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="35"/>
+                    </Grid.ColumnDefinitions>
+                    <controls:Icon Grid.Column="0"
+                                   Size="25"
+                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" 
+                                   Code="{DynamicResource IcoMic}"/>
+                    <TextBlock Grid.Column="1" Text="Voice"
+                               Style="{StaticResource SettingsTextStyle}"
+                               FontSize="24"
+                               Margin="15 0"/>
+                    <controls:Icon Grid.Column="2" 
+                                   Foreground="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" 
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Size="20"
+                                   Code="{Binding ElementName=VoiceStackPanel, Path=Visibility, Converter={StaticResource PopupVisibilityToArrowDirectionConverter}}"/>
+                </Grid>
+            </Button>
+            
+            <!--Voice Settings Panel Stack Panel-->
+            <StackPanel x:Name="VoiceStackPanel"
+                        Height="Auto"
+                        Visibility="Collapsed">
+                <CheckBox IsChecked="{Binding AutoJoinVoice}"
+                          Style="{StaticResource SettingsCheckBoxStyle}"
+                          Content="Auto Join Voice"/>
+                
+                <Label Content="Input Device" 
+                       Style="{StaticResource SettingsLabelStyle}"/>
+                <ComboBox ItemsSource="{Binding InputDevices}"
+                          Name="InputDeviceComboBox"
+                          DropDownOpened="InputDeviceComboBox_OnDropDownOpened"
+                          SelectionChanged="InputDeviceComboBox_OnSelectionChanged"
+                          Style="{StaticResource SettingsComboBoxStyle}"/>
+                
+                <Label Content="Proximity Range" 
+                       Style="{StaticResource SettingsLabelStyle}"/>
+                <TextBox Text="{Binding ProximityRange}"
+                         Name="ProximityRangeTextBox"
+                         PreviewTextInput="RangeTextBox_OnPreviewTextInput"
+                         Style="{StaticResource SettingsTextBoxStyle}"/>
+            </StackPanel>
+            <Separator Style="{StaticResource SettingsSepStyle}"/>
+            
             <!--Dev Settings Item Stack Panel-->
             <Button Click="DevDropDownButton_OnClick" Style="{StaticResource SettingsButtonStyle}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                 <Grid>
@@ -194,7 +244,7 @@
                        Style="{StaticResource SettingsLabelStyle}"/>
                 <TextBox Text="{Binding DefaultPort}"
                          Name="PortTextBox"
-                         PreviewTextInput="UIElement_OnPreviewTextInput"
+                         PreviewTextInput="PortTextBox_OnPreviewTextInput"
                          Style="{StaticResource SettingsTextBoxStyle}"/>
             </StackPanel>
             <Separator Style="{StaticResource SettingsSepStyle}"/>

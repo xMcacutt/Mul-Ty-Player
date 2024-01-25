@@ -10,6 +10,8 @@
   "AutoLaunchTyOnStartup": false,
   "KoalaScale": 1.5,
   "InterpolationMode" : "None",
+  "AutoJoinVoice": false,
+  "ProximityRange": 2250,
   "Theme": "Dark",
   "Version": "3.3.0"
 }

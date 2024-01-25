@@ -63,7 +63,7 @@ internal class PlayerHandler
         ModelController.KoalaSelect.SetAvailability(Players[clientId].Koala, true);
         PlayerReplication.RemovePlayer((int)Players[clientId].Koala);
         Players.Remove(clientId);
-        VoiceHandler.RemoveVoice(clientId);
+        VoiceHandler.TryRemoveVoice(clientId);
         Application.Current.Dispatcher.BeginInvoke(
             DispatcherPriority.Background,
             () =>
@@ -77,7 +77,9 @@ internal class PlayerHandler
     [MessageHandler((ushort)MessageID.AnnounceDisconnect)]
     public static void PeerDisconnected(Message message)
     {
-        RemovePlayer(message.GetUShort());
+        var clientId = message.GetUShort();
+        RemovePlayer(clientId);
+        VoiceHandler.TryRemoveVoice(clientId);
         SFXPlayer.PlaySound(SFX.PlayerDisconnect);
     }
 

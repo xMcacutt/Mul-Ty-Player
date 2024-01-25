@@ -14,5 +14,7 @@ internal class Settings
     public string Theme { get; set; }
     public float KoalaScale { get; set; }
     public string InterpolationMode { get; set; }
+    public bool AutoJoinVoice { get; set; }
+    public int ProximityRange { get; set; }
     public string Version { get; set; }
 }
