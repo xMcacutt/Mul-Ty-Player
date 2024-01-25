@@ -46,8 +46,10 @@ public class KoalaKidObjective : Objective
 
     protected override void IsReady()
     {
-        Client.HSync.HTrigger.CheckSetTrigger(13, true);
-        Client.HSync.HTrigger.CheckSetTrigger(18, false);
+        var successIndex = Level == 9 ? 13 : 16;
+        var startIndex = Level == 9 ? 18 : 17;
+        Client.HSync.HTrigger.CheckSetTrigger(successIndex, true);
+        Client.HSync.HTrigger.CheckSetTrigger(startIndex, false);
         ProcessHandler.TryRead(ObjectAddress + 0x6C, out ushort result, false, "KKO: IsActive() 1");
         if (result == 0x1)
             ProcessHandler.WriteData(ObjectAddress + 0x6C, BitConverter.GetBytes((ushort)0x0));

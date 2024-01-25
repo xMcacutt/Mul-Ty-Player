@@ -41,6 +41,7 @@ public class ObjectiveHandler
     {
         var type = message.GetString();
         var index = message.GetInt();
+        Console.WriteLine(type + " " + index);
         Objectives[type].SetObjectActivated(index, fromClientId);
     }
     
@@ -49,7 +50,6 @@ public class ObjectiveHandler
     {
         var type = message.GetString();
         var state = message.GetByte();
-        Console.WriteLine(type + " " + state);
         Objectives[type].SetObjectiveState((ObjectiveState)state, fromClientId);
     }
 }
