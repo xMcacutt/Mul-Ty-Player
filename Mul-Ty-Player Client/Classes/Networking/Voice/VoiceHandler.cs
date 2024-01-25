@@ -29,7 +29,7 @@ public class VoiceHandler
     
     public static void HandleVoiceData(ushort fromClientId, ulong originalLength, float distance, int level, byte[] data)
     {
-        var decodedBytes = ProcessVoiceData(LZ4Codec.Decode(data, 0, data.Length, (int)originalLength), 1, THRESHOLD);
+        var decodedBytes = LZ4Codec.Decode(data, 0, data.Length, (int)originalLength);
         _voices ??= new Dictionary<ushort, Voice>();
         if (!_voices.TryGetValue(fromClientId, out var voice))
             return;
