@@ -46,7 +46,7 @@ public class KoalaKidObjective : Objective
 
     protected override void IsReady()
     {
-        var successIndex = Level == 9 ? 13 : 16;
+        var successIndex = Level == 9 ? 14 : 16;
         var startIndex = Level == 9 ? 18 : 17;
         Client.HSync.HTrigger.CheckSetTrigger(successIndex, true);
         Client.HSync.HTrigger.CheckSetTrigger(startIndex, false);

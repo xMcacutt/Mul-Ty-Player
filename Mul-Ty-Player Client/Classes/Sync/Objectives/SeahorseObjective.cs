@@ -10,13 +10,14 @@ public class SeahorseObjective : Objective
         State = ObjectiveState.Inactive;
         ObjectPath = new[] { 0x257A1C, 0x0 };
         CheckValue = 4972;
+        ObjectActiveState = 1;
         CurrentData = new byte[8];
         OldData = new byte[8];
     }
 
     protected override void IsInactive()
     {
-        ProcessHandler.TryRead(ObjectAddress + 0xB0, out int seahorseActivity, false, "CableCar : IsActive()");
+        ProcessHandler.TryRead(ObjectAddress + 0xA8, out int seahorseActivity, false, "CableCar : IsActive()");
         if (seahorseActivity != 3)
             return;
         State = ObjectiveState.Active;
