@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MulTyPlayer;
+using MulTyPlayerServer.Classes.Networking.Commands;
 using Riptide;
 
 namespace MulTyPlayerServer;
@@ -30,6 +31,11 @@ public class HSHandler
     private static void PlayerCaught(ushort fromClientId, Message message)
     {
         var response = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
+        var clientId = message.GetUShort();
+        if (!PlayerHandler.Players.TryGetValue(clientId, out var player))
+            return;
+        var level = player.CurrentLevel;
+        response.AddFloats(MtpCommandTeleport._levelStarts[level]);
         Server._Server.Send(response, message.GetUShort());
     }
     

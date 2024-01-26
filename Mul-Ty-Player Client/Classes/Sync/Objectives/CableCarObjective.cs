@@ -18,6 +18,7 @@ public class CableCarObjective : Objective
         ObjectActiveState = 1;
         CurrentData = new byte[] {0, 0, 0, 0, 0, 0};
         OldData = new byte[] {0, 0, 0, 0, 0, 0};
+        PlaySoundOnGet = true;
     }
 
     protected override void IsInactive()
@@ -102,7 +103,6 @@ public class CableCarObjective : Objective
 
     protected override void UpdateObjectState(int index)
     {
-        CurrentData[index] = 1;
         ProcessHandler.TryRead(ObjectAddress + RockFrillIndices[index] * 0x438 + 0xA0, out int frillOutState, false, "CableCar : IsActive()");
         if (frillOutState == 0x8)
             return;

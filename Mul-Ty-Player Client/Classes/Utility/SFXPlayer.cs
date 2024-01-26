@@ -20,7 +20,8 @@ public enum SFX
     HS_Warning,
     HS_HideStart,
     HS_SeekStart,
-    Punch
+    Punch,
+    Objective
 }
 
 public static class SFXPlayer
@@ -42,6 +43,7 @@ public static class SFXPlayer
         { SFX.HS_HideStart, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/HS_HideStart.wav")},
         { SFX.HS_SeekStart, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/HS_SeekStart.wav")},
         { SFX.Punch, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Punch.wav")},
+        { SFX.Objective, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Objective.wav")},
     };
 
     private static Dictionary<SFX, MediaPlayer> mediaPlayers;

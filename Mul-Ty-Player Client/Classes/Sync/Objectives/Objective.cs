@@ -29,6 +29,7 @@ public abstract class Objective
     public byte[] OldData;
     public byte ObjectActiveState;
     public ushort CheckValue;
+    public bool PlaySoundOnGet;
 
     private ObjectiveState state;
     public ObjectiveState State
@@ -135,6 +136,13 @@ public abstract class Objective
             return;
         OldData[index] = CurrentData[index] = ObjectActiveState;
         OldCount = CurrentCount = CurrentData.Count(x => x == ObjectActiveState);
+        if (Client.HLevel.CurrentLevelId != Level)
+            return;
+        if (PlaySoundOnGet)
+        {
+            SFXPlayer.StopAll();
+            SFXPlayer.PlaySound(SFX.Objective);
+        }
         UpdateObjectState(index);
         UpdateCount();
     }

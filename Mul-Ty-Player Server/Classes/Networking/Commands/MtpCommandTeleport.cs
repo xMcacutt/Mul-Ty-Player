@@ -11,7 +11,7 @@ namespace MulTyPlayerServer.Classes.Networking.Commands;
 public class MtpCommandTeleport
 {
 
-    private static Dictionary<int, float[]> _levelStarts = new Dictionary<int, float[]>()
+    public static Dictionary<int, float[]> _levelStarts = new Dictionary<int, float[]>()
     {
          {0, new float[] {71f, 2622.9421f, 209f} },
          {1, new float[] {0, 0, 0} },

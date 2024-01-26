@@ -16,6 +16,7 @@ public class BurnerObjective : Objective
         ObjectActiveState = 0x2;
         CurrentData = new byte[] {1, 1, 1, 1, 1, 1, 1, 1};
         OldData = new byte[] {1, 1, 1, 1, 1, 1, 1, 1};
+        PlaySoundOnGet = true;
     }
 
     protected override void IsInactive()
@@ -112,8 +113,6 @@ public class BurnerObjective : Objective
 
     protected override void UpdateObjectState(int index)
     {
-        if (Client.HLevel.CurrentLevelId != Level)
-            return;
         ProcessHandler.WriteData(ObjectAddress + 0x90 + (0x70 * index) + 0x6C, new byte[] { 0x2 });
     }
 

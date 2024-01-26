@@ -19,6 +19,7 @@ public class ChestObjective : Objective
         CurrentData = new byte[6];
         CurrentChest = (int)Chest.CrabIsland;
         OldData = new byte[6];
+        PlaySoundOnGet = true;
     }
 
     protected override void IsInactive()
@@ -97,7 +98,6 @@ public class ChestObjective : Objective
 
     protected override void UpdateObjectState(int index)
     {
-        CurrentData[index] = 1;
     }
 
     public override void Sync(byte[] data)

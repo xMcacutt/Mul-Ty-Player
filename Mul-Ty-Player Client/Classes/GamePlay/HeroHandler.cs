@@ -80,9 +80,4 @@ public class HeroHandler
         Client._client.Send(message);
     }
     
-    public void Kill()
-    {
-        
-    }
-    
 }

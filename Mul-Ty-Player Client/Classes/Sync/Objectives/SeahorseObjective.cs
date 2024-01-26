@@ -13,6 +13,7 @@ public class SeahorseObjective : Objective
         ObjectActiveState = 1;
         CurrentData = new byte[8];
         OldData = new byte[8];
+        PlaySoundOnGet = true;
     }
 
     protected override void IsInactive()
@@ -83,7 +84,6 @@ public class SeahorseObjective : Objective
 
     protected override void UpdateObjectState(int index)
     {
-        CurrentData[index] = 1;
         ProcessHandler.TryRead(ObjectAddress + index * 0x19C + 0xA8, out int seahorseActivity, false, "CableCar : IsActive()");
         if (seahorseActivity == 0x0)
             return;

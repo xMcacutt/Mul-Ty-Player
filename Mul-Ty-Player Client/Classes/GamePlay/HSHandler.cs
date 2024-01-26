@@ -119,6 +119,8 @@ public class HSHandler
             return;
         SFXPlayer.PlaySound(SFX.Punch);
         Client.HHideSeek.Role = HSRole.Seeker;
+        var coords = message.GetFloats();
+        Client.HHero.WritePosition(coords[0], coords[1], coords[2]);
     }
 
     private void AnnounceRoleChanged(HSRole newRole)
