@@ -55,43 +55,70 @@ public class HSHandler
     
     public void Run()
     {
-        
+        //HIDE TIME SEEKER
         if (_mode == HSMode.HideTime && Role == HSRole.Seeker)
-        {
-            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EC00, BitConverter.GetBytes((float)0));
-            _camLocked = true;
-            var pos = Client.HHero.GetCurrentPosRot();
-            Client.HHero.WritePosition(pos[0], pos[1], pos[2], false);
-            return;
-        }
+            LockPlayer();
+
+        //SEEK TIME SEEKER
+        if (_mode == HSMode.SeekTime && Role == HSRole.Seeker)
+            RunRadiusCheck();
         
+        //SEEK TIME HIDER
         if (_mode == HSMode.SeekTime && Role == HSRole.Hider)
-        {
             if (!TimerRunning)
                 TimerRunning = true;
-            foreach (var player in ModelController.Lobby.PlayerInfoList.Where(x => x.Role == HSRole.Seeker))
-            {
-                if (!Enum.TryParse(typeof(Koala), player.KoalaName, out var koala))
-                    continue;
-                if (!PlayerReplication.PlayerTransforms.TryGetValue((int)koala, out var seeker))
-                    return;
-                if (seeker.LevelID != Client.HLevel.CurrentLevelId)
-                    continue;
-                var seekerPos = seeker.Position;
-                var currentPos = Client.HHero.GetCurrentPosRot();
-                var seekerVector = new Vector3(seekerPos.X, seekerPos.Y, seekerPos.Z);
-                var currentVector = new Vector3(currentPos[0], currentPos[1], currentPos[2]);
-                var distance = Vector3.Distance(seekerVector, currentVector);
-                if (!(distance < 100)) continue;
-                Client.HHero.Kill();
-                Client.HHideSeek.Role = HSRole.Seeker;
-            }
-        }
-
+        
         if (ModelController.Lobby.PlayerInfoList.Any(x => x.Role == HSRole.Hider))
             return;
         _mode = HSMode.Neutral;
         TimerRunning = false;
+    }
+
+    private void LockPlayer()
+    {
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EC00, BitConverter.GetBytes((float)0));
+        _camLocked = true;
+        var pos = Client.HHero.GetCurrentPosRot();
+        Client.HHero.WritePosition(pos[0], pos[1], pos[2], false);
+    }
+
+    private void RunRadiusCheck()
+    {
+        foreach (var hider in ModelController.Lobby.PlayerInfoList.Where(x => x.Role == HSRole.Hider))
+        {
+            if (!Enum.TryParse(typeof(Koala), hider.KoalaName, out var koala))
+                continue;
+            if (!PlayerReplication.PlayerTransforms.TryGetValue((int)koala, out var hiderTransform))
+                return;
+            if (hiderTransform.LevelID != Client.HLevel.CurrentLevelId)
+                continue;
+            var hiderPos = hiderTransform.Position;
+            var currentPos = Client.HHero.GetCurrentPosRot();
+            var hiderVector = new Vector3(hiderPos.X, hiderPos.Y, hiderPos.Z);
+            var currentVector = new Vector3(currentPos[0], currentPos[1], currentPos[2]);
+            var distance = Vector3.Distance(hiderVector, currentVector);
+            if (distance > 50) continue;
+            HiderCatch(hider.ClientId);
+        }
+    }
+
+    private void HiderCatch(ushort hiderClientId)
+    {
+        Time = int.Max(Time - 15, 0);
+        SFXPlayer.StopAll();
+        SFXPlayer.PlaySound(SFX.Punch);
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
+        message.AddUShort(hiderClientId);
+        Client._client.Send(message);
+    }
+
+    [MessageHandler((ushort)MessageID.HS_Catch)]
+    private static void Caught(Message message)
+    {
+        if (Client.HHideSeek.Role != HSRole.Hider)
+            return;
+        SFXPlayer.PlaySound(SFX.Punch);
+        Client.HHideSeek.Role = HSRole.Seeker;
     }
 
     private void AnnounceRoleChanged(HSRole newRole)
@@ -128,8 +155,8 @@ public class HSHandler
     {
         Client.HHideSeek._mode = HSMode.HideTime;
         foreach (var entry in PlayerHandler.Players) entry.Value.IsReady = false;
-        //ModelController.Lobby.IsReady = false;
-        //ModelController.Lobby.UpdateReadyStatus();
+        ModelController.Lobby.IsReady = false;
+        ModelController.Lobby.UpdateReadyStatus();
         SFXPlayer.PlaySound(SFX.HS_HideStart);
         if (Client.HHideSeek.Role == HSRole.Hider)
             ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EC00, BitConverter.GetBytes((float)750));
@@ -152,11 +179,17 @@ public class HSHandler
     private static void StartSeek(Message message)
     {
         Client.HHideSeek._mode = HSMode.SeekTime;
+        
+        Client.HKoala.ScaleKoalas();
+        
         SFXPlayer.PlaySound(SFX.HS_SeekStart);
+        
         if (Client.HHideSeek.Role == HSRole.Hider)
             Client.HHideSeek.TimerRunning = true;
+        
         if (Client.HHideSeek.Role == HSRole.Seeker)
             ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EC00, BitConverter.GetBytes((float)750));
+        
         Logger.Write(Client.HHideSeek.Role == HSRole.Hider
             ? $"[HIDE AND SEEK] The seekers are coming!"
             : $"[HIDE AND SEEK] Go find them!");

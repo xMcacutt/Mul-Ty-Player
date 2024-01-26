@@ -45,5 +45,6 @@ public class Icons : ResourceDictionary
         this["IcoSeeker"] = "\uf002";
         this["IcoStopwatch"] = "\uf2f2";
         this["IcoResetTimer"] = "\uf1da";
+        this["IcoLock"] = "\uf023";
     }
 }

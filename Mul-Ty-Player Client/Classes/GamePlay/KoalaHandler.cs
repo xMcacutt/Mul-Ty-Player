@@ -106,17 +106,18 @@ internal class KoalaHandler
     {
         var outbackMultiplier = 1.0f;
         if (HLevel.CurrentLevelId == 10) outbackMultiplier = 2.0f;
-        var scaleFactor = SettingsHandler.Settings.KoalaScale * outbackMultiplier;
+        var initialScale = SettingsHandler.DoHideSeek ? 1.75f : SettingsHandler.Settings.KoalaScale;
+        var scaleFactor = initialScale * outbackMultiplier;
         if (scaleFactor < 0.5f) scaleFactor = 0.5f;
         if (scaleFactor > 3) scaleFactor = 3;
-        const float snugsMultiplier = 1.075f;
+        const float snugsMultiplier = 1.0725f;
         const float katieMultiplier = 0.825f;
-        for (var i = 0; i < 8; i++)
+        for (var koalaIndex = 0; koalaIndex < 8; koalaIndex++)
         {
             var tempScaleFactor = scaleFactor;
-            if (i == 0) tempScaleFactor = scaleFactor * katieMultiplier;
-            if (i == 3) tempScaleFactor = scaleFactor * snugsMultiplier;
-            ProcessHandler.WriteData(TransformAddresses[i].Scale, BitConverter.GetBytes(tempScaleFactor),
+            if (koalaIndex == 0) tempScaleFactor = scaleFactor * katieMultiplier;
+            if (koalaIndex == 3) tempScaleFactor = scaleFactor * snugsMultiplier;
+            ProcessHandler.WriteData(TransformAddresses[koalaIndex].Scale, BitConverter.GetBytes(tempScaleFactor),
                 "Scaling koalas");
         }
     }

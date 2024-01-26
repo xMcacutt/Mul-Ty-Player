@@ -37,5 +37,6 @@ public enum MessageID : ushort
     HS_RoleChanged,
     HS_HideTimerStart,
     HS_StartSeek,
-    HS_Warning
+    HS_Warning,
+    HS_Catch
 }

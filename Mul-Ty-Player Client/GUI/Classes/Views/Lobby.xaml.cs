@@ -122,6 +122,12 @@ public partial class Lobby : UserControl
         var value = SettingsHandler.DoLevelLock ? "False" : "True";
         Client.HCommand.Commands["levellock"].InitExecute(new string[] { value });
     }
+    
+    private void HideSeekToggle_Click(object sender, RoutedEventArgs e)
+    {
+        var value = SettingsHandler.DoHideSeek ? "False" : "True";
+        Client.HCommand.Commands["hideseek"].InitExecute(new string[] { value });
+    }
 
     private void ClearPassword_Click(object sender, RoutedEventArgs e)
     {

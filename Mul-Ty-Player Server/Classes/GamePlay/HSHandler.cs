@@ -26,7 +26,12 @@ public class HSHandler
         Server._Server.SendToAll(message, clientId);
     }
 
-
+    [MessageHandler((ushort)MessageID.HS_Catch)]
+    private static void PlayerCaught(ushort fromClientId, Message message)
+    {
+        var response = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
+        Server._Server.Send(response, message.GetUShort());
+    }
     
     public static void StartHideTimer()
     {
@@ -38,7 +43,7 @@ public class HSHandler
     {
         var countdown = Task.Run(() =>
         {
-            for (var i = 60; i > 0; i--)
+            for (var i = 10; i > 0; i--)
             {
                 if (i is 10 or 30 or 60)
                 {

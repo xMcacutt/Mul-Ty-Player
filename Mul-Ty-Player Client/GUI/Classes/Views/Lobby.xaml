@@ -237,8 +237,15 @@
                                     <controls:CustomMenuItem Header="Level Lock Mode"
                                                              x:Name="LevelLockToggle"
                                                              Click="LevelLockToggle_Click"
+                                                             IconCode="{DynamicResource IcoLock}"
                                                              IsCheckable="true"
                                                              IsChecked="{Binding IsLevelLockEnabled}"/>
+                                    <controls:CustomMenuItem Header="Hide &amp; Seek Mode"
+                                                             x:Name="HideSeekToggle"
+                                                             Click="HideSeekToggle_Click"
+                                                             IconCode="{DynamicResource IcoHider}"
+                                                             IsCheckable="true"
+                                                             IsChecked="{Binding IsHideSeekButtonEnabled}"/>
                                     <controls:CustomMenuItem Header="Reset Sync"
                                                              Click="ResetSync_Click"
                                                              IconCode="{DynamicResource IcoUndo}"/>
