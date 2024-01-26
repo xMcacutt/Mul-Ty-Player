@@ -173,15 +173,14 @@
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center"
                                        Fill="{Binding SpecialBack, Source={x:Static client:App.AppColors}}"
-                                       Visibility="{TemplateBinding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"/>
-                            <TextBlock x:Name="Icon"
+                                       Visibility="Hidden"/>
+                            <controls:Icon x:Name="Icon"
                                        Grid.Column="0"
-                                       Text="{TemplateBinding IconCode}"
+                                       Code="{TemplateBinding IconCode}"
                                        VerticalAlignment="Center" 
-                                       FontFamily="../Fonts/#Font Awesome 6 Free Solid"
                                        Visibility="{TemplateBinding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
                                        HorizontalAlignment="Center"
-                                       FontSize="15"
+                                       Size="15"
                                        Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"/>
                             <TextBlock x:Name="CheckIcon"
                                        Grid.Column="0"

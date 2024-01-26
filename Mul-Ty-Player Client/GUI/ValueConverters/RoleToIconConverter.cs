@@ -10,8 +10,8 @@ public class RoleToIconConverter : IValueConverter
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (parameter == null)
-            return (HSRole)value == HSRole.Hider ? "\uf21b" : "\uf002";
-        return (HSRole)value == HSRole.Seeker ? "\uf21b" : "\uf002";
+            return (HSRole)value == HSRole.Hider ? "\uf54b" : "\uf002";
+        return (HSRole)value == HSRole.Seeker ? "\uf54b" : "\uf002";
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

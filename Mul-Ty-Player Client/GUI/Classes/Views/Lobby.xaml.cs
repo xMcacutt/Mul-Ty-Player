@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using MulTyPlayer;
+using MulTyPlayerClient.GUI.Controls;
 using MulTyPlayerClient.GUI.Models;
 using MulTyPlayerClient.GUI.ViewModels;
 using Riptide;
@@ -178,6 +179,7 @@ public partial class Lobby : UserControl
     {
         if (sender is FrameworkElement element)
         {
+            element.ContextMenu.PlacementTarget = element;
             element.ContextMenu.IsOpen = true;
         }
     }
@@ -196,4 +198,5 @@ public partial class Lobby : UserControl
     {
         Client.HHideSeek.Time = 0;
     }
+
 }

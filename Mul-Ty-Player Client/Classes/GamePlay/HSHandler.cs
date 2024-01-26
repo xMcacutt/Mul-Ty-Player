@@ -73,7 +73,8 @@ public class HSHandler
             {
                 if (!Enum.TryParse(typeof(Koala), player.KoalaName, out var koala))
                     continue;
-                var seeker = PlayerReplication.PlayerTransforms[(int)koala];
+                if (!PlayerReplication.PlayerTransforms.TryGetValue((int)koala, out var seeker))
+                    return;
                 if (seeker.LevelID != Client.HLevel.CurrentLevelId)
                     continue;
                 var seekerPos = seeker.Position;
@@ -127,8 +128,8 @@ public class HSHandler
     {
         Client.HHideSeek._mode = HSMode.HideTime;
         foreach (var entry in PlayerHandler.Players) entry.Value.IsReady = false;
-        ModelController.Lobby.IsReady = false;
-        ModelController.Lobby.UpdateReadyStatus();
+        //ModelController.Lobby.IsReady = false;
+        //ModelController.Lobby.UpdateReadyStatus();
         SFXPlayer.PlaySound(SFX.HS_HideStart);
         if (Client.HHideSeek.Role == HSRole.Hider)
             ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EC00, BitConverter.GetBytes((float)750));

@@ -10,8 +10,8 @@ internal class FrameHandler : SyncObjectHandler
     public (int, byte)[] FrameData;
     public int InvisiCrateAddress;
     public byte[] NullState;
-    public byte[] ObserverState;
-    public byte[] PreviousObserverState;
+    public new byte[] ObserverState;
+    public new byte[] PreviousObserverState;
 
     public FrameHandler()
     {
@@ -40,7 +40,7 @@ internal class FrameHandler : SyncObjectHandler
         GlobalObjectData.Add(Levels.BonusWorld2.Id, new byte[Levels.BonusWorld2.FrameCount]);
     }
 
-    public byte[] ReadObserver(int address, int size)
+    public new byte[] ReadObserver(int address, int size)
     {
         ProcessHandler.TryReadBytes(address, out var result, size, false);
         return result;

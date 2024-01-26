@@ -30,13 +30,6 @@ public class GameStateHandler
     private void NotifyLobbyOfMenu(bool onMenu)
     {
         ModelController.Lobby.IsOnMenu = onMenu;
-        if (PlayerHandler.TryGetLocalPlayer(out var player))
-            player.IsReady &= onMenu;
-
-        //Does this really need to be here? Loop over every player every frame just to update the ready icon?
-        //Surely theres a way to update this once WHEN that player ready status changes
-        ModelController.Lobby.UpdateReadyStatus();
-
         if (onMenu && ModelController.Lobby.TryGetPlayerInfo(Client._client.Id, out var playerInfo))
             playerInfo.Level = "M/L";
     }

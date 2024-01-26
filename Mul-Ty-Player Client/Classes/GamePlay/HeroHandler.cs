@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using MulTyPlayer;
 using Riptide;
 
@@ -78,9 +79,10 @@ public class HeroHandler
         message.AddFloats(Client.HHero.currentPositionRotation);
         Client._client.Send(message);
     }
-
+    
     public void Kill()
     {
         
     }
+    
 }

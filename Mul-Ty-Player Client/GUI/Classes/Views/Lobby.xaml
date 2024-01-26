@@ -8,6 +8,7 @@
              xmlns:client="clr-namespace:MulTyPlayerClient"
              mc:Ignorable="d"
              Height="450" Width="800" FontSize="10" BorderBrush="Black"
+             x:Name="LobbyView"
              Background="{Binding MainBack, Source={x:Static client:App.AppColors}}"
              d:DataContext="{d:DesignInstance Type=viewmodels:LobbyViewModel}">
 
@@ -285,6 +286,7 @@
                                 IsEnabled="{Binding IsHideSeekButtonEnabled}"
                                 ToolTip="Hide &amp; Seek Menu"
                                 Width="55"
+                                Tag="{Binding DataContext, ElementName=LobbyView}"
                                 Style="{StaticResource LobbyButton}">
                             <controls:Icon Margin="5,0" Code="{Binding Role, Converter={StaticResource RoleToIconConverter}}" Size="24" />
                             <Button.Resources>
@@ -295,9 +297,8 @@
                             <Button.ContextMenu>
                                 <ContextMenu>
                                     <controls:CustomMenuItem Header="Change Role"
-                                                             x:Name="RoleToggle"
                                                              Click="ChangeRoleToggle_Click"
-                                                             IconCode="{Binding Role, Converter={StaticResource RoleToIconConverter}}"/>
+                                                             IconCode="{Binding PlacementTarget.Tag.Role, RelativeSource={RelativeSource AncestorType=ContextMenu}, Converter={StaticResource RoleToIconConverter}, ConverterParameter=True}"/>
                                     <controls:CustomMenuItem Header="Show / Hide Timer"
                                                              x:Name="TimerToggle"
                                                              IsCheckable="True"
