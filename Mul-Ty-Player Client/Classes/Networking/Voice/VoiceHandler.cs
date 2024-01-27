@@ -4,7 +4,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Numerics;
-using LZ4;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking.Voice;
 using MulTyPlayerClient.GUI;
@@ -12,6 +11,7 @@ using MulTyPlayerClient.GUI.Models;
 using NAudio.Codecs;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
+using OpusDotNet;
 using Riptide;
 
 namespace MulTyPlayerClient;
@@ -23,14 +23,17 @@ public class VoiceHandler
     private static int _inputDeviceIndex;
     private const ushort THRESHOLD = 0x0050;
     private const float RANGE_LOWER_BOUND = 200f;
-    private const int SAMPLE_RATE = 24000;
+    private const int SAMPLE_RATE = 16000;
     private const int BIT_DEPTH = 16;
     private const int BUFFER_DURATION = 20;
     private static Dictionary<ushort, Voice> _voices;
+    private static OpusDecoder _opusDecoder = new OpusDecoder(SAMPLE_RATE, 1);
+    private static OpusEncoder _opusEncoder = new OpusEncoder(Application.VoIP, SAMPLE_RATE, 1);
     
     public static void HandleVoiceData(ushort fromClientId, ulong originalLength, float distance, int level, byte[] data)
     {
-        var decodedBytes = LZ4Codec.Decode(data, 0, data.Length, (int)originalLength);
+        var decodedBytes = new byte[originalLength];
+        _opusDecoder.Decode(data, data.Length, decodedBytes, (int)originalLength);
         _voices ??= new Dictionary<ushort, Voice>();
         if (!_voices.TryGetValue(fromClientId, out var voice))
             return;
@@ -60,6 +63,7 @@ public class VoiceHandler
     public static void AddVoice(ushort clientId)
     {
         _voices ??= new Dictionary<ushort, Voice>();
+        TryRemoveVoice(clientId);
         _voices.Add(clientId, new Voice(new WaveFormat(SAMPLE_RATE, BIT_DEPTH, 1)));
         _voices[clientId].WavePlayer.Play();
     }
@@ -117,7 +121,7 @@ public class VoiceHandler
     {
         try
         {
-            var encodedBytes = LZ4Codec.Encode(e.Buffer, 0, e.Buffer.Length);
+            var encodedBytes = _opusEncoder.Encode(e.Buffer, e.Buffer.Length, out int encodedLength);
             VoiceClient.SendAudio(encodedBytes, e.Buffer.Length);
         }
         catch (Exception ex)
