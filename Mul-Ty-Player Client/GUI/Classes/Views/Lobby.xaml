@@ -40,6 +40,9 @@
                       Grid.Row="1"
                       HorizontalContentAlignment="Stretch"
                       ItemsSource="{Binding PlayerInfoList}">
+                <DataGrid.Resources>
+                    <controls:BindingProxy x:Key="Proxy" Data="{Binding}" />
+                </DataGrid.Resources>
                 <DataGrid.ContextMenu>
                     <ContextMenu x:Name="HostDataGridContextMenu">
                         <controls:CustomMenuItem IconCode="{DynamicResource IcoGift}" Header="Gift Host" Click="GiveHost_OnClick"/>
@@ -118,7 +121,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Role" Width="0.35*" CanUserResize="False" Visibility="{Binding IsHideSeekButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <DataGridTemplateColumn Header="Role" Width="0.35*" CanUserResize="False" Visibility="{Binding Data.IsHideSeekButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Proxy}, ConverterParameter=True}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <controls:Icon Size="10"
@@ -223,6 +226,7 @@
                                 Click="HostMenuButton_Click"
                                 ContextMenuOpening="HostMenuButton_OnContextMenuOpening"
                                 ToolTip="Host Menu"
+                                Tag="{Binding DataContext, ElementName=LobbyView}"
                                 IsEnabled="{Binding IsHostMenuButtonEnabled}"
                                 Width="55"
                                 Style="{StaticResource LobbyButton}">
@@ -238,14 +242,12 @@
                                                              x:Name="LevelLockToggle"
                                                              Click="LevelLockToggle_Click"
                                                              IconCode="{DynamicResource IcoLock}"
-                                                             IsCheckable="true"
-                                                             IsChecked="{Binding IsLevelLockEnabled}"/>
+                                                             IsChecked="{Binding PlacementTarget.Tag.IsLevelLockEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                                     <controls:CustomMenuItem Header="Hide &amp; Seek Mode"
                                                              x:Name="HideSeekToggle"
                                                              Click="HideSeekToggle_Click"
                                                              IconCode="{DynamicResource IcoHider}"
-                                                             IsCheckable="true"
-                                                             IsChecked="{Binding IsHideSeekButtonEnabled}"/>
+                                                             IsChecked="{Binding PlacementTarget.Tag.IsHideSeekButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                                     <controls:CustomMenuItem Header="Reset Sync"
                                                              Click="ResetSync_Click"
                                                              IconCode="{DynamicResource IcoUndo}"/>
@@ -309,6 +311,7 @@
                                     <controls:CustomMenuItem Header="Show / Hide Timer"
                                                              x:Name="TimerToggle"
                                                              IsCheckable="True"
+                                                             IsChecked="{Binding PlacementTarget.Tag.IsTimerVisible, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                                              Click="TimerToggle_Click"
                                                              IconCode="{DynamicResource IcoStopwatch}"/>
                                     <controls:CustomMenuItem Header="Reset Time"

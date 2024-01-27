@@ -111,10 +111,9 @@ public partial class Lobby : UserControl
     private void HostMenuButton_Click(object sender, RoutedEventArgs e)
     {
         // Open the context menu on left click
-        if (sender is FrameworkElement element)
-        {
-            element.ContextMenu.IsOpen = true;
-        }
+        if (sender is not FrameworkElement element) return;
+        element.ContextMenu.PlacementTarget = element;
+        element.ContextMenu.IsOpen = true;
     }
 
     private void LevelLockToggle_Click(object sender, RoutedEventArgs e)
@@ -160,9 +159,7 @@ public partial class Lobby : UserControl
     {
         // Open the context menu on left click
         if (sender is FrameworkElement element)
-        {
             element.ContextMenu.IsOpen = true;
-        }
     }
 
     private void MTPAudioToggle_Click(object sender, RoutedEventArgs e)
@@ -183,11 +180,9 @@ public partial class Lobby : UserControl
 
     private void HideSeekMenuButton_Click(object sender, RoutedEventArgs e)
     {
-        if (sender is FrameworkElement element)
-        {
-            element.ContextMenu.PlacementTarget = element;
-            element.ContextMenu.IsOpen = true;
-        }
+        if (sender is not FrameworkElement element) return;
+        element.ContextMenu.PlacementTarget = element;
+        element.ContextMenu.IsOpen = true;
     }
 
     private void ChangeRoleToggle_Click(object sender, RoutedEventArgs e)
@@ -197,7 +192,7 @@ public partial class Lobby : UserControl
 
     private void TimerToggle_Click(object sender, RoutedEventArgs e)
     {
-        (DataContext as LobbyViewModel).IsTimerVisible = !(DataContext as LobbyViewModel).IsTimerVisible;
+        ModelController.Lobby.IsTimerVisible = !ModelController.Lobby.IsTimerVisible;
     }
 
     private void ResetTimer_OnClick(object sender, RoutedEventArgs e)

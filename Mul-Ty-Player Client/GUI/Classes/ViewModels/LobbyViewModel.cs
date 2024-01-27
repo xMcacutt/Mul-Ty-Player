@@ -21,11 +21,12 @@ public class LobbyViewModel : IViewModel
         Lobby.IsOnMenuChanged += Model_IsOnMenuChanged;
         Lobby.IsReadyChanged += Model_IsReadyChanged;
         Lobby.IsHostChanged += Model_IsHostChanged;
+        Lobby.IsTimerVisibleChanged += Model_IsTimerVisibleChanged;
         Lobby.IsHideSeekEnabledChanged += Model_IsHideSeekEnabledChanged;
         Lobby.IsLevelLockEnabledChanged += Model_IsLevelLockEnabledChanged;
         Lobby.CanLaunchGameChanged += Model_CanLaunchGameChanged;
-        HSHandler.OnTimeChanged += Model_TimeChanged;
         HSHandler.OnRoleChanged += Model_RoleChanged;
+        HSHandler.OnTimeChanged += Model_TimeChanged;
         Countdown.OnCountdownBegan += OnCountdownBegan;
         Countdown.OnCountdownAborted += OnCountdownEnded;
         Countdown.OnCountdownFinished += OnCountdownEnded;
@@ -62,9 +63,10 @@ public class LobbyViewModel : IViewModel
 
     public void OnEntered()
     {
-        IsReadyButtonEnabled = Client.HGameState.IsAtMainMenu();
         Lobby.UpdateReadyStatus();
         Lobby.UpdateHostIcon();
+        Time = "00:00:00";
+        Role = Client.HHideSeek.Role;
         Input = "";
     }
 
@@ -111,6 +113,7 @@ public class LobbyViewModel : IViewModel
     private void Model_IsHideSeekEnabledChanged(bool value)
     {
         IsHideSeekButtonEnabled = value;
+        if (!value) Lobby.IsTimerVisible = false;
         IsReadyButtonEnabled = value || IsOnMenu;
     }
     
@@ -121,8 +124,13 @@ public class LobbyViewModel : IViewModel
 
     private void Model_TimeChanged(int newTime)
     {
-        TimeSpan timeSpan = TimeSpan.FromSeconds(newTime);
+        var timeSpan = TimeSpan.FromSeconds(newTime);
         Time = $"{(int)timeSpan.TotalHours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+    }
+    
+    private void Model_IsTimerVisibleChanged(bool value)
+    {
+        IsTimerVisible = value;
     }
     
     private void Model_RoleChanged(HSRole newRole)

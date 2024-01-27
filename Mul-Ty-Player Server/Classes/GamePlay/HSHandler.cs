@@ -31,12 +31,25 @@ public class HSHandler
     private static void PlayerCaught(ushort fromClientId, Message message)
     {
         var response = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
-        var clientId = message.GetUShort();
-        if (!PlayerHandler.Players.TryGetValue(clientId, out var player))
-            return;
-        var level = player.CurrentLevel;
-        response.AddFloats(MtpCommandTeleport._levelStarts[level]);
-        Server._Server.Send(response, message.GetUShort());
+        var seekerResponsibleId = message.GetUShort();
+        Server._Server.Send(response, seekerResponsibleId);
+    }
+
+    [MessageHandler((ushort)MessageID.HS_Abort)]
+    private static void AbortSession(ushort fromClientId, Message message)
+    {
+        try
+        {
+            abortTokenSource.Cancel();
+        }
+        catch (ObjectDisposedException)
+        {
+            PeerMessageHandler.SendMessageToClient("No Hide & Seek session to abort.", false, fromClientId);
+        }
+        catch (NullReferenceException)
+        {
+            PeerMessageHandler.SendMessageToClient("No Hide & Seek session to abort.", false, fromClientId);
+        }
     }
     
     public static void StartHideTimer()
@@ -45,12 +58,18 @@ public class HSHandler
         hideTimer.Start();
     }
 
+    private static CancellationTokenSource abortTokenSource;
     public static async void RunTimer()
     {
+        abortTokenSource = new CancellationTokenSource();
+        var abortToken = abortTokenSource.Token;
+        
         var countdown = Task.Run(() =>
         {
+            abortToken.ThrowIfCancellationRequested();
             for (var i = 10; i > 0; i--)
             {
+                if (abortToken.IsCancellationRequested) abortToken.ThrowIfCancellationRequested();
                 if (i is 10 or 30 or 60)
                 {
                     var warning = Message.Create(MessageSendMode.Reliable, MessageID.HS_Warning);
@@ -59,10 +78,23 @@ public class HSHandler
                 }
                 Task.Delay(1000).Wait();
             }
-        });
-        await countdown;
-        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_StartSeek);
-        Server._Server.SendToAll(message);
+        }, abortToken);
+        try
+        {
+            await countdown;
+            var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_StartSeek);
+            Server._Server.SendToAll(message);
+        }
+        catch (OperationCanceledException cancel)
+        {
+            Console.WriteLine("Hide & Seek session aborted.");
+            var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Abort);
+            Server._Server.SendToAll(message);
+        }
+        finally
+        {
+            abortTokenSource.Dispose();
+        }
     }
 }
 

@@ -38,5 +38,6 @@ public enum MessageID : ushort
     HS_HideTimerStart,
     HS_StartSeek,
     HS_Warning,
-    HS_Catch
+    HS_Catch,
+    HS_Abort
 }

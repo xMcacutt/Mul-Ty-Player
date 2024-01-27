@@ -204,4 +204,22 @@ public class LobbyModel
     private bool isLevelLockEnabled;
 
     #endregion
+    
+    #region IsTimer
+
+    public event Action<bool> IsTimerVisibleChanged;
+
+    public bool IsTimerVisible
+    {
+        get => isTimerVisible;
+        set
+        {
+            isTimerVisible = value;
+            IsTimerVisibleChanged(isTimerVisible);
+        }
+    }
+
+    private bool isTimerVisible;
+
+    #endregion
 }
