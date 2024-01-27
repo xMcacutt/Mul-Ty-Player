@@ -34,7 +34,7 @@ internal class Server
         _Server.ClientConnected += ClientConnected;
         _Server.ClientDisconnected += ClientDisconnected;
 
-        VoiceServer.OpenVoiceServer();
+        //VoiceServer.OpenVoiceServer();
         
         while (_isRunning)
         {

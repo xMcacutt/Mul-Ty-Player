@@ -29,14 +29,11 @@ public partial class KoalaSelectEntry : UserControl
             SelectedAnimation.Position = TimeSpan.Zero;
             SelectedAnimation.Visibility = Visibility.Visible;
             SelectedAnimation.Play();
+            vm.OnClicked();
         }
     }
 
-    private void SelectedAnimation_OnMediaEnabled(object sender, RoutedEventArgs e)
-    {
-        if (DataContext is not KoalaSelectEntryViewModel vm || !vm.IsAvailable) return;
-        vm.OnClicked();
-    }
+
     
     protected void OnSourceInitialized(EventArgs e)
     {

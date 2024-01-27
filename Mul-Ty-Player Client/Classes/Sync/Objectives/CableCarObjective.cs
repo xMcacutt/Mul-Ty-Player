@@ -57,7 +57,6 @@ public class CableCarObjective : Objective
                     new byte[] { 0x3, 0x2, 0x0, 0x0, 0x3, 0x0, 0x0, 0x0 });
             }
         }
-        Console.WriteLine($"{CurrentData[0].ToString()}, {CurrentData[1].ToString()}, {CurrentData[2].ToString()}, {CurrentData[3].ToString()}, {CurrentData[4].ToString()}, {CurrentData[5].ToString()}");
         if (CurrentData.Any(x => x != 0x1))
             return;
         State = ObjectiveState.ReadyForTurnIn;

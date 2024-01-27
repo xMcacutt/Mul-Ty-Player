@@ -52,7 +52,7 @@ public class ObjectiveHandler
     {
         var type = message.GetString();
         var index = message.GetInt();
-        Console.WriteLine($"Activated {type} number {index}");
+        //Console.WriteLine($"Activated {type} number {index}");
         Client.HObjective.Objectives[type].SetObjectActive(index);
     }
 

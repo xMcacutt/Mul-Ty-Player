@@ -26,7 +26,6 @@ internal class PlayerHandler
         var koalaName = Koalas.GetInfo[koala].Name;
         Players.Remove(clientId);
         Players.Add(clientId, new Player(koala, name, clientId, isHost, isReady, role));
-        VoiceHandler.AddVoice(clientId);
         PlayerInfo player = new(clientId, name, koalaName, role);
         Application.Current.Dispatcher.BeginInvoke(
             DispatcherPriority.Background,

@@ -16,9 +16,11 @@ using Riptide;
 
 namespace MulTyPlayerClient;
 
-public class VoiceHandler
+public static class VoiceHandler
 {
     private static WaveInEvent _waveIn;
+    private static IWavePlayer _waveOut;
+    private static MixingSampleProvider _mixer;
     public static bool DoProximityCheck;
     private static int _inputDeviceIndex;
     private const ushort THRESHOLD = 0x0050;
@@ -26,46 +28,44 @@ public class VoiceHandler
     private const int SAMPLE_RATE = 16000;
     private const int BIT_DEPTH = 16;
     private const int BUFFER_DURATION = 20;
+    private static WaveFormat _format = new WaveFormat(SAMPLE_RATE, BIT_DEPTH, 1);
     private static Dictionary<ushort, Voice> _voices;
     private static OpusDecoder _opusDecoder = new OpusDecoder(SAMPLE_RATE, 1);
     private static OpusEncoder _opusEncoder = new OpusEncoder(Application.VoIP, SAMPLE_RATE, 1);
     
     public static void HandleVoiceData(ushort fromClientId, ulong originalLength, float distance, int level, byte[] data)
     {
-        var decodedBytes = new byte[originalLength];
-        _opusDecoder.Decode(data, data.Length, decodedBytes, (int)originalLength);
+        var decodedBytes = data; //new byte[originalLength];
+        Console.WriteLine(data.Length);
+        //_opusDecoder.Decode(data, data.Length, decodedBytes, (int)originalLength);
+        
         _voices ??= new Dictionary<ushort, Voice>();
         if (!_voices.TryGetValue(fromClientId, out var voice))
-            return;
-        try
+            AddVoice(fromClientId);
+        voice = _voices[fromClientId];
+        
+        if (DoProximityCheck)
         {
-            if (DoProximityCheck)
+            if (level != Client.HLevel.CurrentLevelId)
+                return;
+            var playerInfo = ModelController.Lobby.PlayerInfoList.FirstOrDefault(x => x.ClientId == fromClientId);
+            if (playerInfo != null)
             {
-                if (level != Client.HLevel.CurrentLevelId)
-                    return;
-                var playerInfo = ModelController.Lobby.PlayerInfoList.FirstOrDefault(x => x.ClientId == fromClientId);
-                if (playerInfo != null)
-                {
-                    if (playerInfo.Level != "M/L" || !Client.HGameState.IsAtMainMenu())
-                        voice.SampleChannel.Volume = distance >= SettingsHandler.Settings.ProximityRange ? 0.0f :
-                            distance <= RANGE_LOWER_BOUND ? 1.0f :
-                            1.0f - (distance - RANGE_LOWER_BOUND) / (SettingsHandler.Settings.ProximityRange - RANGE_LOWER_BOUND);
-                }
+                if (playerInfo.Level != "M/L" || !Client.HGameState.IsAtMainMenu())
+                    voice.SampleChannel.Volume = distance >= SettingsHandler.Settings.ProximityRange ? 0.0f :
+                        distance <= RANGE_LOWER_BOUND ? 1.0f :
+                        1.0f - (distance - RANGE_LOWER_BOUND) / (SettingsHandler.Settings.ProximityRange - RANGE_LOWER_BOUND);
             }
-            voice.WaveProvider.AddSamples(decodedBytes, 0, decodedBytes.Length);
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex);
-        }
+        voice.WaveProvider.AddSamples(decodedBytes, 0, decodedBytes.Length);
     }
 
     public static void AddVoice(ushort clientId)
     {
         _voices ??= new Dictionary<ushort, Voice>();
         TryRemoveVoice(clientId);
-        _voices.Add(clientId, new Voice(new WaveFormat(SAMPLE_RATE, BIT_DEPTH, 1)));
-        _voices[clientId].WavePlayer.Play();
+        _voices.Add(clientId, new Voice(_format));
+        _mixer.AddMixerInput(_voices[clientId].SampleChannel);
     }
 
     public static void TryRemoveVoice(ushort clientId)
@@ -73,10 +73,9 @@ public class VoiceHandler
         _voices ??= new Dictionary<ushort, Voice>();
         if (!_voices.TryGetValue(clientId, out var voice))
             return;
-        voice.WavePlayer.Stop();
-        voice.WavePlayer.Dispose();
         voice.WaveProvider.ClearBuffer();
         _voices.Remove(clientId);
+        //_mixer.RemoveMixerInput(_voices[clientId].SampleChannel);
     }
 
     private static void ClearVoices()
@@ -87,17 +86,45 @@ public class VoiceHandler
         _voices.Clear();
     }
 
-    public static void StartCaptureVoice()
+    public static void JoinVoice()
     {
         _waveIn = new WaveInEvent
         {
             DeviceNumber = _inputDeviceIndex,
-            WaveFormat = new WaveFormat(SAMPLE_RATE, BIT_DEPTH, 1),
+            WaveFormat = _format,
             BufferMilliseconds = BUFFER_DURATION
         };
         _waveIn.DataAvailable += WaveIn_DataAvailable;
         VoiceClient.OpenVoiceSocket(Client._ip);
         _waveIn.StartRecording();
+        _mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(SAMPLE_RATE, 1));
+        _waveOut = new WaveOut();
+        _waveOut.Init(_mixer);
+        _waveOut.Play();
+    }
+    
+    public static void LeaveVoice()
+    {
+        if (_waveIn == null) return;
+        VoiceClient.CloseVoiceSocket();
+        _waveIn.StopRecording();
+        _waveIn.Dispose();
+        _waveIn = null;
+        ClearVoices();
+    }
+
+    static void WaveIn_DataAvailable(object sender, WaveInEventArgs e)
+    {
+        try
+        {
+            //var encodedBytes = new byte[e.Buffer.Length];
+            //var encodedLength = _opusEncoder.Encode(e.Buffer, e.Buffer.Length, encodedBytes, e.Buffer.Length);
+            VoiceClient.SendAudio(e.Buffer, e.Buffer.Length);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 
     public static void UpdateInputDevice(int index)
@@ -106,30 +133,7 @@ public class VoiceHandler
         if (_waveIn != null)
             _waveIn.DeviceNumber = index;
     }
-
-    public static void StopCaptureVoice()
-    {
-        if (_waveIn == null) return;
-        VoiceClient.CloseVoiceSocket();
-        ClearVoices();
-        _waveIn.StopRecording();
-        _waveIn.Dispose();
-        _waveIn = null;
-    }
-
-    static void WaveIn_DataAvailable(object sender, WaveInEventArgs e)
-    {
-        try
-        {
-            var encodedBytes = _opusEncoder.Encode(e.Buffer, e.Buffer.Length, out int encodedLength);
-            VoiceClient.SendAudio(encodedBytes, e.Buffer.Length);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-    }
-
+    
     private static byte[] ProcessVoiceData(byte[] inputData, float gain, ushort threshold)
     {
         var ushortCount = inputData.Length / 2;

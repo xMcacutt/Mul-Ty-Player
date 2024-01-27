@@ -51,18 +51,28 @@ public class VoiceClient
 
     private static void Loop()
     {
-        _isListening = true;
-        while (_isListening)
+        try
         {
-            var data = _voiceClient.Receive(ref _endPoint);
-            if (data.Length > 0)
-                ReceiveAudio(data);
+            while (true)
+            {
+                var data = _voiceClient.Receive(ref _endPoint);
+                if (data.Length > 0)
+                    ReceiveAudio(data);
+            }
         }
-        _voiceClient.Close();
+        catch (ObjectDisposedException ex)
+        {
+
+        }
+        catch (SocketException)
+        {
+            
+        }
     }
 
     public static void CloseVoiceSocket()
     {
+        _voiceClient.Close();
         _isListening = false;
     }
 

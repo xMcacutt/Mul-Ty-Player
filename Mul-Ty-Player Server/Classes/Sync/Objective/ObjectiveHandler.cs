@@ -42,7 +42,6 @@ public class ObjectiveHandler
     {
         var type = message.GetString();
         var index = message.GetInt();
-        Console.WriteLine(type + " " + index);
         Objectives[type].SetObjectActivated(index, fromClientId);
     }
     

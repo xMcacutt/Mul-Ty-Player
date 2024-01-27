@@ -98,7 +98,7 @@ internal class Client
         ModelController.Login.ConnectionAttemptSuccessful = true;
         ModelController.Login.ConnectionAttemptCompleted = true;
         IsConnected = true;
-        if (IsReconnect)
+        /*if (IsReconnect)
         {
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
@@ -108,7 +108,7 @@ internal class Client
                 });
             KoalaSelected = true;
             IsReconnect = false;
-        }
+        }*/
         HSync.HLevelLock.RequestData();
         if (HGameState.IsAtMainMenuOrLoading()) return;
         HLevel.DoLevelSetup();
@@ -117,7 +117,7 @@ internal class Client
     private static void Disconnected(object sender, DisconnectedEventArgs e)
     {
         cts.Cancel();
-        VoiceHandler.StopCaptureVoice();
+        VoiceHandler.LeaveVoice();
         KoalaSelected = false;
         IsConnected = false;
         ModelController.KoalaSelect.MakeAllAvailable();

@@ -24,7 +24,7 @@ public partial class Lobby : UserControl
         InitializeComponent();
         if (!SettingsHandler.Settings.AutoJoinVoice) return;
         MTPAudioToggle.IsChecked = true;
-        VoiceHandler.StartCaptureVoice();
+        VoiceHandler.JoinVoice();
     }
 
     private void TextboxInput_KeyDown(object sender, KeyEventArgs e)
@@ -167,10 +167,10 @@ public partial class Lobby : UserControl
         MTPAudioToggle.IsChecked = !MTPAudioToggle.IsChecked;
         if (MTPAudioToggle.IsChecked)
         {
-            VoiceHandler.StartCaptureVoice();
+            VoiceHandler.JoinVoice();
             return;
         } 
-        VoiceHandler.StopCaptureVoice();
+        VoiceHandler.LeaveVoice();
     }
 
     private void Proximity_Click(object sender, RoutedEventArgs e)

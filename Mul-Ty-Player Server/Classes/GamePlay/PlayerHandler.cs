@@ -20,7 +20,7 @@ internal class PlayerHandler
     public static void AddPlayer(string koalaName, string name, ushort clientID, bool isHost, HSRole role)
     {
         Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
-        Players.Add(clientID, new Player(koala, name, clientID, isHost, false, true, role));
+        Players.TryAdd(clientID, new Player(koala, name, clientID, isHost, false, true, role));
     }
 
     public static void RemovePlayer(ushort id)
