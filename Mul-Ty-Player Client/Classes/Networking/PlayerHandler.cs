@@ -34,7 +34,7 @@ internal class PlayerHandler
         SFXPlayer.PlaySound(SFX.PlayerConnect);
         PlayerReplication.AddPlayer((int)koala);
     }
-
+    
     //Adds yourself to playerInfo
     public static void AnnounceSelection(string koalaName, string name, bool isHost, bool isReady = false)
     {
@@ -50,19 +50,11 @@ internal class PlayerHandler
         Client.KoalaSelected = true;
     }
 
-    // Linq error spam come from client loop
-    // client loop calls checkloaded which calls checkmainmenu
-    // which tries to set the local playerinfo level to "M/L"
-    // local player info is not added until we select a koala
-    // so the linq tries to find player where player.id = client.id and fails which throws an exception
-    // every frame
-
     public static void RemovePlayer(ushort clientId)
     {
         ModelController.KoalaSelect.SetAvailability(Players[clientId].Koala, true);
         PlayerReplication.RemovePlayer((int)Players[clientId].Koala);
         Players.Remove(clientId);
-        VoiceHandler.TryRemoveVoice(clientId);
         Application.Current.Dispatcher.BeginInvoke(
             DispatcherPriority.Background,
             () =>

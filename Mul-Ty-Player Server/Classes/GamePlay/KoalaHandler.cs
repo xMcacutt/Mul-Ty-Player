@@ -23,25 +23,25 @@ internal class KoalaHandler
         6400, 0, 0, 0, 8238, 7162, 22715, -59, 6197, 212, 16627, 0, 1343, -6951, 811, 93, 0, -7041, 0, 3264, 17487, 449,
         449, -250
     };
-
+    
     [MessageHandler((ushort)MessageID.KoalaSelected)]
     private static void AssignKoala(ushort fromClientId, Message message)
     {
         var koalaName = message.GetString();
         var playerName = message.GetString();
-        var clientID = message.GetUShort();
+        var clientId = message.GetUShort();
         var isHost = message.GetBool();
-        PlayerHandler.AddPlayer(koalaName, playerName, clientID, isHost, HSRole.Hider);
-        AnnounceKoalaAssigned(koalaName, playerName, clientID, isHost, false, fromClientId, true);
+        PlayerHandler.AddPlayer(koalaName, playerName, clientId, isHost, HSRole.Hider);
+        AnnounceKoalaAssigned(koalaName, playerName, clientId, isHost, false, fromClientId, true);
     }
-
-    private static void AnnounceKoalaAssigned(string koalaName, string playerName, ushort clientID, bool isHost,
+    
+    private static void AnnounceKoalaAssigned(string koalaName, string playerName, ushort clientId, bool isHost,
         bool isReady, ushort fromToClientId, bool bSendToAll)
     {
         var announcement = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
         announcement.AddString(koalaName);
         announcement.AddString(playerName);
-        announcement.AddUShort(clientID);
+        announcement.AddUShort(clientId);
         announcement.AddBool(isHost);
         announcement.AddBool(isReady);
         if (bSendToAll)
@@ -54,7 +54,7 @@ internal class KoalaHandler
             Server._Server.Send(announcement, fromToClientId);
         }
     }
-
+    
     public static void SendKoalaAvailability(ushort recipient)
     {
         foreach (var player in PlayerHandler.Players.Values)
