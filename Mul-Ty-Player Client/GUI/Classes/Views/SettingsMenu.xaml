@@ -155,10 +155,10 @@
                           Style="{StaticResource SettingsCheckBoxStyle}"
                           Content="Collide Koalas"/>
             </StackPanel>
-            <Separator Style="{StaticResource SettingsSepStyle}"/>
+            <Separator Visibility="Collapsed" Style="{StaticResource SettingsSepStyle}"/>
             
                         <!--Voice Settings Item Stack Panel-->
-            <Button Click="VoiceDropDownButton_OnClick" Style="{StaticResource SettingsButtonStyle}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+            <Button Visibility="Collapsed" Click="VoiceDropDownButton_OnClick" Style="{StaticResource SettingsButtonStyle}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="35"/>

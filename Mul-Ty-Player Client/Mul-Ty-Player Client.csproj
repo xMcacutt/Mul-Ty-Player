@@ -136,7 +136,6 @@
     </ItemGroup>
     <ItemGroup>
         <Resource Include="GUI\Fonts\SF Slapstick Comic.ttf" />
-        <Resource Include="GUI\Fonts\RubikMonoOneRegular-6pqq.ttf" />
         <Resource Include="GUI\Fonts\Font Awesome 6 Free-Solid-900.otf" />
         <None Remove="GUI\KoalaSelectionAssets\mp4\Boonie.avi" />
         <None Remove="GUI\KoalaSelectionAssets\mp4\Dubbo.avi" />
@@ -146,6 +145,8 @@
         <None Remove="GUI\KoalaSelectionAssets\mp4\Kiki.avi" />
         <None Remove="GUI\KoalaSelectionAssets\mp4\Mim.avi" />
         <None Remove="GUI\KoalaSelectionAssets\mp4\Snugs.avi" />
+        <None Remove="GUI\Fonts\JAi_____.TTF" />
+        <Resource Include="GUI\Fonts\JAi_____.TTF" />
     </ItemGroup>
     <ItemGroup>
         <Reference Include="Facepunch.Steamworks.Win32">

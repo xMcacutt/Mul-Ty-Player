@@ -52,7 +52,6 @@
 
     <ItemGroup>
       <Resource Include="Fonts\Font Awesome 6 Free-Solid-900.otf" />
-      <Resource Include="Fonts\RubikMonoOneRegular-6pqq.ttf" />
       <Resource Include="Fonts\SF Slapstick Comic.ttf" />
       <None Remove="updaterico.ico" />
       <Resource Include="Resources\kikitransparent.png" />

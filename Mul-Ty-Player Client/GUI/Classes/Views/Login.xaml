@@ -113,8 +113,8 @@
                         IsHitTestVisible="False"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
-                        Margin="0, 8, 0, -8"
                         Padding="8 0 0 0"
+                        Margin="0, 0, 0,0"
                         FontSize="25"
                         Height="30"
                         Visibility="{Binding HideAddress, 
@@ -187,7 +187,7 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
                         Padding="8 0 0 0"
-                        Margin="0, 8, 0, -8"
+                        Margin="0, 0, 0,0"
                         FontSize="25"
                         Height="30"
                         Visibility="{Binding HidePass, 
@@ -260,7 +260,7 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
                         Padding="8 0 0 0"
-                        Margin="0, 8, 0, -8"
+                        Margin="0, 0, 0,0"
                         FontSize="25"
                         Height="30"
                         Visibility="{Binding HideName, 

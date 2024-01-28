@@ -15,7 +15,7 @@ Boss Cass together as your favourite koalas.
 
 ![Boonie](/GitImages/Boonie.png)
 
-3.3.0 has been released. 
+3.4.0 has been released. 
 If you were on a version earlier than v3 read the below instructions for information and installation.
 
 If you have a 3.0+ version installed, please delete all client, server, and updater files and reinstall using the new updater.
@@ -140,7 +140,22 @@ With your port forwarding rule set up, people can now join your server using you
 - Version comparison added to client
 - Copy paste allowed from console
 
+#### 3.4.0
+- Seahorse syncing added
+- Cable car frills syncing added
+- Hide & Seek mode added
+- Objective sounds on collection by other clients
+- Ready status overhaul and fix
+
 ### Bug Fixes
+
+#### 3.4.0
+
+- Level lock toggle fixed
+- Icons incorrect state fixed
+- Invisicrate / frame syncing disabled due to fatal bugs
+- Koala objective syncing hand in fixed
+- Fatal bug relating to objective syncing cross level fixed
 
 #### 3.3.0
 - Koalas are now returned on disconnect / level change

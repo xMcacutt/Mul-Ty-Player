@@ -67,7 +67,7 @@ public class HSHandler
         var countdown = Task.Run(() =>
         {
             abortToken.ThrowIfCancellationRequested();
-            for (var i = 10; i > 0; i--)
+            for (var i = 90; i > 0; i--)
             {
                 if (abortToken.IsCancellationRequested) abortToken.ThrowIfCancellationRequested();
                 if (i is 10 or 30 or 60)

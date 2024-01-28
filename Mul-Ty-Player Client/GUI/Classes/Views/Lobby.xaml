@@ -266,6 +266,7 @@
                                 Click="VoiceMenuButton_Click"
                                 ToolTip="Voice Menu"
                                 Width="55"
+                                Visibility="Collapsed"
                                 Style="{StaticResource LobbyButton}">
                             <controls:Icon Margin="5,0" Code="{DynamicResource IcoSound}" Size="24" />
                             <Button.Resources>

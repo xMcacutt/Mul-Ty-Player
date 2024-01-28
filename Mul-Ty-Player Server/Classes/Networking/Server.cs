@@ -121,5 +121,6 @@ internal class Server
         message.AddInt(level);
         message.AddFloats(coordinates);
         _Server.SendToAll(message, clientID);
+        
     }
 }

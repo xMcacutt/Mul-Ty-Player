@@ -161,8 +161,8 @@ public class HSHandler
         if (Client.HHideSeek.Role == HSRole.Hider)
             ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EC00, BitConverter.GetBytes((float)750));
         Logger.Write(Client.HHideSeek.Role == HSRole.Hider
-            ? "[HIDE AND SEEK] You have 2 minutes to hide!"
-            : "[HIDE AND SEEK] 2 minutes until seeking!");
+            ? "[HIDE AND SEEK] You have 90 seconds to hide!"
+            : "[HIDE AND SEEK] 90 seconds until seeking!");
     }
     
     [MessageHandler((ushort)MessageID.HS_Warning)]

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace MulTyPlayerClient.Objectives;
 
@@ -80,6 +81,8 @@ public class SeahorseObjective : Objective
 
     protected override void UpdateCount()
     {
+        CurrentCount = CurrentData.Count(x => x == ObjectActiveState);
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x260228 + 0x70, BitConverter.GetBytes(CurrentCount));
     }
 
     protected override void UpdateObjectState(int index)
@@ -97,6 +100,7 @@ public class SeahorseObjective : Objective
             if (data[i] != 1 || CurrentData[i] == 1) continue;
             CurrentData[i] = OldData[i] = data[i];
             UpdateObjectState(i);
+            UpdateCount();
         }
     }
 }
