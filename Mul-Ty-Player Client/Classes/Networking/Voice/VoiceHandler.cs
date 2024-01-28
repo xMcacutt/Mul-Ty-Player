@@ -11,7 +11,6 @@ using MulTyPlayerClient.GUI.Models;
 using NAudio.Codecs;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using OpusDotNet;
 using Riptide;
 
 namespace MulTyPlayerClient;
@@ -30,14 +29,11 @@ public static class VoiceHandler
     private const int BUFFER_DURATION = 20;
     private static WaveFormat _format = new WaveFormat(SAMPLE_RATE, BIT_DEPTH, 1);
     private static Dictionary<ushort, Voice> _voices;
-    private static OpusDecoder _opusDecoder = new OpusDecoder(SAMPLE_RATE, 1);
-    private static OpusEncoder _opusEncoder = new OpusEncoder(Application.VoIP, SAMPLE_RATE, 1);
     
     public static void HandleVoiceData(ushort fromClientId, ulong originalLength, float distance, int level, byte[] data)
     {
         var decodedBytes = data; //new byte[originalLength];
         Console.WriteLine(data.Length);
-        //_opusDecoder.Decode(data, data.Length, decodedBytes, (int)originalLength);
         
         _voices ??= new Dictionary<ushort, Voice>();
         if (!_voices.TryGetValue(fromClientId, out var voice))
@@ -118,7 +114,6 @@ public static class VoiceHandler
         try
         {
             //var encodedBytes = new byte[e.Buffer.Length];
-            //var encodedLength = _opusEncoder.Encode(e.Buffer, e.Buffer.Length, encodedBytes, e.Buffer.Length);
             VoiceClient.SendAudio(e.Buffer, e.Buffer.Length);
         }
         catch (Exception ex)
