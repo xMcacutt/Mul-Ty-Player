@@ -153,7 +153,7 @@ With your port forwarding rule set up, people can now join your server using you
 
 - Level lock toggle fixed
 - Icons incorrect state fixed
-- Invisicrate / frame syncing disabled due to fatal bugs
+- Invisicrate / frame syncing somewhat fixed
 - Koala objective syncing hand in fixed
 - Fatal bug relating to objective syncing cross level fixed
 

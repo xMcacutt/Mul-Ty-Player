@@ -48,6 +48,6 @@ internal class LiveFrameSyncer : LiveDataSyncer
         for (var i = 0; i < index; i++)
             ProcessHandler.TryRead(address + 0x30, out address, false, "LiveFrameSyncer::Collect {0}");
         ProcessHandler.WriteData(address + 0x89, new byte[] { 0x1 }, "LiveFrameSyncer::Collect {1}");
-        ProcessHandler.WriteData(address + 0x8A, new byte[] { 0x1 }, "LiveFrameSyncer::Collect {1}");
+        ProcessHandler.WriteData(address + 0x8B, new byte[] { 0x1 }, "LiveFrameSyncer::Collect {1}");
     }
 }

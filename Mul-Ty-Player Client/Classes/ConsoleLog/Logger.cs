@@ -49,7 +49,8 @@ public static class Logger
     {
         Application.Current.Dispatcher.Invoke(() => { OnLogWrite?.Invoke(message); });
 
-        if (_writer is null)
+        // I KNOW THIS IS HORRIBLE BUT THIS MESSAGE IS DOING MY HEAD IN
+        if (_writer is null || message.Contains("The gap between received sequence IDs was very large"))
         {
             Debug.WriteLine("Log writer is null, not writing to log file");
             return;
