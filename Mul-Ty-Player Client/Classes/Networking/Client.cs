@@ -117,7 +117,7 @@ internal class Client
     private static void Disconnected(object sender, DisconnectedEventArgs e)
     {
         cts.Cancel();
-        VoiceHandler.LeaveVoice();
+        //VoiceHandler.LeaveVoice();
         KoalaSelected = false;
         IsConnected = false;
         ModelController.KoalaSelect.MakeAllAvailable();

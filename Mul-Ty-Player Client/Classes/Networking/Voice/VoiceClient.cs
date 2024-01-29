@@ -98,6 +98,6 @@ public class VoiceClient
         var distance = BitConverter.ToSingle(data.Skip(10).Take(4).ToArray());
         var level = BitConverter.ToInt32(data.Skip(14).Take(4).ToArray());
         var audioData = data.Skip(18).ToArray();
-        VoiceHandler.HandleVoiceData(fromClientId, originalLength, distance, level, audioData);
+        //VoiceHandler.HandleVoiceData(fromClientId, originalLength, distance, level, audioData);
     }
 }

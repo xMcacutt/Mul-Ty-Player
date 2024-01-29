@@ -45,7 +45,7 @@ internal class PlayerHandler
         message.AddBool(isHost);
         message.AddBool(isReady);
         message.AddInt((int)role);
-        PlayerInfo player = new(Client._client.Id, name, koalaName, HSRole.Hider);
+        PlayerInfo player = new(Client._client.Id, name, koalaName, role);
         ModelController.Lobby.PlayerInfoList.Add(player);
         Client._client.Send(message);
         Client.KoalaSelected = true;
