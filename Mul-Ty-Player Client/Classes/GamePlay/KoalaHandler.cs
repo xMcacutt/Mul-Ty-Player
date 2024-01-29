@@ -27,11 +27,12 @@ internal class KoalaHandler
     {
         var koalaName = message.GetString();
         var playerName = message.GetString();
-        var clientID = message.GetUShort();
+        var clientId = message.GetUShort();
         var isHost = message.GetBool();
         var isReady = message.GetBool();
+        var role = (HSRole)message.GetInt();
         var k = Enum.Parse<Koala>(koalaName, true);
-        PlayerHandler.AddPlayer(k, playerName, clientID, isHost, isReady, HSRole.Hider);
+        PlayerHandler.AddPlayer(k, playerName, clientId, isHost, isReady, role);
         Client.HSync.RequestSync();
     }
 
@@ -58,19 +59,19 @@ internal class KoalaHandler
         if (_baseKoalaAddress == 0)
             SetBaseAddress();
 
-        for (var koalaID = 0; koalaID < 8; koalaID++)
+        for (var koalaId = 0; koalaId < 8; koalaId++)
         {
-            var koalaOffset = 0x518 * modifier * koalaID + offset;
-            TransformAddresses[koalaID] = new KoalaTransformAddresses();
-            TransformAddresses[koalaID].X = _baseKoalaAddress + 0x2A4 + koalaOffset;
-            TransformAddresses[koalaID].Y = _baseKoalaAddress + 0x2A8 + koalaOffset;
-            TransformAddresses[koalaID].Z = _baseKoalaAddress + 0x2AC + koalaOffset;
-            TransformAddresses[koalaID].Pitch = _baseKoalaAddress + 0x2B4 + koalaOffset;
-            TransformAddresses[koalaID].Yaw = _baseKoalaAddress + 0x2B8 + koalaOffset;
-            TransformAddresses[koalaID].Roll = _baseKoalaAddress + 0x2BC + koalaOffset;
-            TransformAddresses[koalaID].Collision = _baseKoalaAddress + 0x298 + koalaOffset;
-            TransformAddresses[koalaID].Visibility = _baseKoalaAddress + 0x44 + koalaOffset;
-            TransformAddresses[koalaID].Scale = _baseKoalaAddress + 0x60 + koalaOffset;
+            var koalaOffset = 0x518 * modifier * koalaId + offset;
+            TransformAddresses[koalaId] = new KoalaTransformAddresses();
+            TransformAddresses[koalaId].X = _baseKoalaAddress + 0x2A4 + koalaOffset;
+            TransformAddresses[koalaId].Y = _baseKoalaAddress + 0x2A8 + koalaOffset;
+            TransformAddresses[koalaId].Z = _baseKoalaAddress + 0x2AC + koalaOffset;
+            TransformAddresses[koalaId].Pitch = _baseKoalaAddress + 0x2B4 + koalaOffset;
+            TransformAddresses[koalaId].Yaw = _baseKoalaAddress + 0x2B8 + koalaOffset;
+            TransformAddresses[koalaId].Roll = _baseKoalaAddress + 0x2BC + koalaOffset;
+            TransformAddresses[koalaId].Collision = _baseKoalaAddress + 0x298 + koalaOffset;
+            TransformAddresses[koalaId].Visibility = _baseKoalaAddress + 0x44 + koalaOffset;
+            TransformAddresses[koalaId].Scale = _baseKoalaAddress + 0x60 + koalaOffset;
         }
         
         ScaleKoalas();
@@ -130,14 +131,14 @@ internal class KoalaHandler
             return;
         //Debug.WriteLine("Received koala coord");
         var onMenu = message.GetBool();
-        var clientID = message.GetUShort();
+        var clientId = message.GetUShort();
         var koalaName = message.GetString();
         var k = (Koala)Enum.Parse(typeof(Koala), koalaName, true);
-        var koalaID = (int)k;
+        var koalaId = (int)k;
         var level = message.GetInt();
 
         //Set the incoming players current level code
-        if (ModelController.Lobby.TryGetPlayerInfo(clientID, out var playerInfo))
+        if (ModelController.Lobby.TryGetPlayerInfo(clientId, out var playerInfo))
             playerInfo.Level = onMenu ? "M/L" : Levels.GetLevelData(level).Code;
 
         //Return if player is on the main menu or loading screen,
@@ -160,7 +161,7 @@ internal class KoalaHandler
         var transform = message.GetFloats();
         //Debug.WriteLine($"Handle coordinates: {KoalaTransform.DebugTransform(transform)}");
         //Debug.WriteLine($"Before updating coordinates: {KoalaTransform.DebugTransform(playerTransformAddresses[koalaID].New.Transform)}");
-        PlayerReplication.UpdatePlayerSnapshotData(koalaID, transform, level);
+        PlayerReplication.UpdatePlayerSnapshotData(koalaId, transform, level);
         //Debug.WriteLine($"After updating coordinates: {KoalaTransform.DebugTransform(playerTransformAddresses[koalaID].New.Transform)}");
     }
 

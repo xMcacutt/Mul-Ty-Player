@@ -36,7 +36,7 @@ internal class PlayerHandler
     }
     
     //Adds yourself to playerInfo
-    public static void AnnounceSelection(string koalaName, string name, bool isHost, bool isReady = false)
+    public static void AnnounceSelection(string koalaName, string name, bool isHost, bool isReady = false, HSRole role = HSRole.Hider)
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
         message.AddString(koalaName);
@@ -44,6 +44,7 @@ internal class PlayerHandler
         message.AddUShort(Client._client.Id);
         message.AddBool(isHost);
         message.AddBool(isReady);
+        message.AddInt((int)role);
         PlayerInfo player = new(Client._client.Id, name, koalaName, HSRole.Hider);
         ModelController.Lobby.PlayerInfoList.Add(player);
         Client._client.Send(message);
@@ -70,7 +71,7 @@ internal class PlayerHandler
     {
         var clientId = message.GetUShort();
         RemovePlayer(clientId);
-        VoiceHandler.TryRemoveVoice(clientId);
+        //VoiceHandler.TryRemoveVoice(clientId);
         SFXPlayer.PlaySound(SFX.PlayerDisconnect);
     }
 

@@ -152,7 +152,8 @@ public class HSHandler
 
     [MessageHandler((ushort)MessageID.HS_HideTimerStart)]
     private static void HideTimerStart(Message message)
-    {
+    { 
+        Client.HCommand.Commands["tp"].InitExecute(new string[] {"@s"});
         Client.HHideSeek._mode = HSMode.HideTime;
         foreach (var entry in PlayerHandler.Players) entry.Value.IsReady = false;
         ModelController.Lobby.IsReady = false;
