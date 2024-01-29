@@ -98,7 +98,7 @@ public class HSHandler
             var seekerVector = new Vector3(seekerPos.X, seekerPos.Y, seekerPos.Z);
             var currentVector = new Vector3(currentPos[0], currentPos[1], currentPos[2]);
             var distance = Vector3.Distance(seekerVector, currentVector);
-            if (distance > 50) continue;
+            if (distance > 80) continue;
             Caught(seeker.ClientId);
         }
     }
@@ -106,7 +106,7 @@ public class HSHandler
     [MessageHandler((ushort)MessageID.HS_Catch)]
     private static void HiderCatch(Message message)
     {
-        Client.HHideSeek.Time -= 15; //NEEDS TESTING
+        Client.HHideSeek.Time += 15; //NEEDS TESTING
         SFXPlayer.StopAll();
         SFXPlayer.PlaySound(SFX.Punch);
     }
