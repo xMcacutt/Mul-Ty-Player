@@ -66,8 +66,11 @@ public class HSHandler
         {
             if (!_timerRunning)
                 _timerRunning = true;
-            RunRadiusCheck();
+            RunRadiusCheck(HSRole.Hider);
         }
+
+        if (_mode == HSMode.SeekTime && Role == HSRole.Seeker)
+            RunRadiusCheck(HSRole.Seeker);
         
         if (ModelController.Lobby.PlayerInfoList.Any(x => x.Role == HSRole.Hider))
             return;
@@ -85,49 +88,66 @@ public class HSHandler
 
     private void RunRadiusCheck(HSRole role)
     {
-        foreach (var seeker in ModelController.Lobby.PlayerInfoList.Where(x => x.Role != role))
+        foreach (var otherPlayer in ModelController.Lobby.PlayerInfoList.Where(x => x.Role != role))
         {
-            if (!Enum.TryParse(typeof(Koala), seeker.KoalaName, out var koala))
+            if (!Enum.TryParse(typeof(Koala), otherPlayer.KoalaName, out var koala))
                 continue;
-            if (!PlayerReplication.PlayerTransforms.TryGetValue((int)koala, out var seekerTransform))
+            if (!PlayerReplication.PlayerTransforms.TryGetValue((int)koala, out var otherPlayerTransform))
                 continue;
-            if (seekerTransform.LevelID != Client.HLevel.CurrentLevelId)
+            if (otherPlayerTransform.LevelID != Client.HLevel.CurrentLevelId)
                 continue;
-            var seekerPos = seekerTransform.Position;
+            var otherPlayerPos = otherPlayerTransform.Position;
             var currentPos = Client.HHero.GetCurrentPosRot();
-            var seekerVector = new Vector3(seekerPos.X, seekerPos.Y, seekerPos.Z);
+            var otherPlayerVector = new Vector3(otherPlayerPos.X, otherPlayerPos.Y, otherPlayerPos.Z);
             var currentVector = new Vector3(currentPos[0], currentPos[1], currentPos[2]);
-            var distance = Vector3.Distance(seekerVector, currentVector);
+            var distance = Vector3.Distance(otherPlayerVector, currentVector);
             var radiusCheckDistance = Client.HLevel.CurrentLevelId == 10
                 ? SettingsHandler.HSRange * 1.25
                 : SettingsHandler.HSRange;
             if (distance > radiusCheckDistance) continue;
-            Caught(seeker.ClientId);
+            Catch(otherPlayer.ClientId);
         }
     }
 
     [MessageHandler((ushort)MessageID.HS_Catch)]
-    private static void HiderCatch(Message message)
+    private static void CatchConfirmation(Message message)
     {
         Client.HHideSeek.Time += 15; //NEEDS TESTING
         SFXPlayer.StopAll();
         SFXPlayer.PlaySound(SFX.Punch);
     }
 
-    private void Caught(ushort seekerId)
+    private void Catch(ushort id)
     {
-        SFXPlayer.PlaySound(SFX.Punch);
-        Client.HCommand.Commands["tp"].InitExecute(new string[] {"@s"});
-        Role = HSRole.Seeker;
-        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
-        message.AddUShort(seekerId);
-        Client._client.Send(message);
+        if (Role == HSRole.Hider)
+            CaughtBySeeker(id);
+        else
+            CaughtHider(id);
     }
 
     private void AnnounceRoleChanged(HSRole newRole)
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_RoleChanged);
         message.AddInt((int)Client.HHideSeek.Role);
+        Client._client.Send(message);
+    }
+    
+    private void CaughtHider(ushort hiderId)
+    {
+        ChangeRole(hiderId, HSRole.Seeker);   
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
+        message.AddUShort(hiderId);
+        message.AddInt((int)HSRole.Hider);
+        Client._client.Send(message);
+    }
+
+    private void CaughtBySeeker(ushort seekerId)
+    {
+        SFXPlayer.PlaySound(SFX.Punch);
+        Client.HCommand.Commands["tp"].InitExecute(new string[] {"@s"});
+        Role = HSRole.Seeker;
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
+        message.AddUShort(seekerId);
         Client._client.Send(message);
     }
     
@@ -144,6 +164,11 @@ public class HSHandler
     {
         var clientId = message.GetUShort();
         var role = message.GetInt();
+        ChangeRole(clientId, (HSRole)role);
+    }
+
+    private static void ChangeRole(ushort clientId, HSRole role)
+    {
         if (!PlayerHandler.Players.TryGetValue(clientId, out var player))
             return;
         player.Role = (HSRole)role;

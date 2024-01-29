@@ -24,6 +24,8 @@ internal class SettingsHandler
     public static bool DoLevelLock { get; set; }
     public static bool DoHideSeek { get; set; }
 
+    public static float HSRange = 65f;
+
     public static void Setup()
     {
         var json = File.ReadAllText("./ServerSettings.json");
@@ -64,6 +66,7 @@ internal class SettingsHandler
         };
         var message = Message.Create(MessageSendMode.Reliable, MessageID.SyncSettings);
         message.AddBools(b);
+        message.AddFloat(HSRange);
         message.AddString(Settings.Version);
         Server._Server.Send(message, clientId);
     }
