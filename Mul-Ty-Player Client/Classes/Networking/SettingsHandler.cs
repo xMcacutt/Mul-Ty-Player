@@ -48,6 +48,8 @@ internal static class SettingsHandler
         }
     }
 
+    public static float HSRange = 65f;
+
     public static Dictionary<string, bool> SyncSettings;
     public static Settings Settings { get; private set; }
 
@@ -123,6 +125,8 @@ internal static class SettingsHandler
         {
             DoHideSeek = b[10];
         }
+
+        HSRange = message.GetFloat();
 
         var serverVersion = message.GetString();
         var clientVersion = Settings.Version;

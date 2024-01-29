@@ -83,9 +83,9 @@ public class HSHandler
         Client.HHero.WritePosition(pos[0], pos[1], pos[2], false);
     }
 
-    private void RunRadiusCheck()
+    private void RunRadiusCheck(HSRole role)
     {
-        foreach (var seeker in ModelController.Lobby.PlayerInfoList.Where(x => x.Role == HSRole.Seeker))
+        foreach (var seeker in ModelController.Lobby.PlayerInfoList.Where(x => x.Role != role))
         {
             if (!Enum.TryParse(typeof(Koala), seeker.KoalaName, out var koala))
                 continue;
@@ -98,7 +98,10 @@ public class HSHandler
             var seekerVector = new Vector3(seekerPos.X, seekerPos.Y, seekerPos.Z);
             var currentVector = new Vector3(currentPos[0], currentPos[1], currentPos[2]);
             var distance = Vector3.Distance(seekerVector, currentVector);
-            if (distance > 80) continue;
+            var radiusCheckDistance = Client.HLevel.CurrentLevelId == 10
+                ? SettingsHandler.HSRange * 1.25
+                : SettingsHandler.HSRange;
+            if (distance > radiusCheckDistance) continue;
             Caught(seeker.ClientId);
         }
     }
