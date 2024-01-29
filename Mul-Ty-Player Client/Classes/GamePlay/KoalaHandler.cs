@@ -107,7 +107,7 @@ internal class KoalaHandler
     {
         var outbackMultiplier = 1.0f;
         if (HLevel.CurrentLevelId == 10) outbackMultiplier = 2.0f;
-        var initialScale = SettingsHandler.DoHideSeek ? 1.75f : SettingsHandler.Settings.KoalaScale;
+        var initialScale = SettingsHandler.DoHideSeek ? 2.25f : SettingsHandler.Settings.KoalaScale;
         var scaleFactor = initialScale * outbackMultiplier;
         if (scaleFactor < 0.5f) scaleFactor = 0.5f;
         if (scaleFactor > 3) scaleFactor = 3;
