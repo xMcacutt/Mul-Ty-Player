@@ -147,5 +147,11 @@ internal static class SettingsHandler
     {
         return Settings.MulTyPlayerFolderPath != "" && Settings.MulTyPlayerFolderPath != null;
     }
-    
+
+    [MessageHandler((ushort)MessageID.HS_RangeChanged)]
+    private static void HandleRangeChanged(Message message)
+    {
+        HSRange = message.GetFloat();
+        Logger.Write($"Range changed to {HSRange}");
+    }
 }

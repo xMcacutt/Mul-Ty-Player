@@ -28,11 +28,13 @@ public class HSHandler
     }
 
     [MessageHandler((ushort)MessageID.HS_Catch)]
-    private static void PlayerCaught(ushort fromClientId, Message message)
+    private static void HandleCatch(ushort fromClientId, Message message)
     {
+        var otherPlayerId = message.GetUShort();
+        var otherPlayerRole = (HSRole)message.GetInt();
         var response = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
-        var seekerResponsibleId = message.GetUShort();
-        Server._Server.Send(response, seekerResponsibleId);
+        response.AddInt((int)otherPlayerRole);
+        Server._Server.Send(response, otherPlayerId);
     }
 
     [MessageHandler((ushort)MessageID.HS_Abort)]

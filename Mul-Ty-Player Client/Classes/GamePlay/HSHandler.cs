@@ -112,9 +112,20 @@ public class HSHandler
     [MessageHandler((ushort)MessageID.HS_Catch)]
     private static void CatchConfirmation(Message message)
     {
-        Client.HHideSeek.Time += 15; //NEEDS TESTING
-        SFXPlayer.StopAll();
-        SFXPlayer.PlaySound(SFX.Punch);
+        if ((HSRole)message.GetInt() == HSRole.Seeker)
+        {
+            Client.HHideSeek.Time += 15; //NEEDS TESTING
+            SFXPlayer.StopAll();
+            SFXPlayer.PlaySound(SFX.Punch);
+        }
+        else
+        {
+            if (Client.HHideSeek.Role == HSRole.Seeker)
+                return;
+            SFXPlayer.PlaySound(SFX.Punch);
+            Client.HCommand.Commands["tp"].InitExecute(new string[] {"@s"});
+            Client.HHideSeek.Role = HSRole.Seeker;
+        }
     }
 
     private void Catch(ushort id)
@@ -146,12 +157,14 @@ public class HSHandler
         SFXPlayer.PlaySound(SFX.Punch);
         Client.HCommand.Commands["tp"].InitExecute(new string[] {"@s"});
         Role = HSRole.Seeker;
+        
         var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
         message.AddUShort(seekerId);
+        message.AddInt((int)HSRole.Seeker);
         Client._client.Send(message);
     }
     
-    [MessageHandler((ushort)MessageID.HS_SetHideSeekMode)]
+    [MessageHandler((ushort)MessageID.HS_ProxyRunHideSeek)]
     private static void SetHideSeek(Message message)
     {
         SettingsHandler.DoHideSeek = message.GetBool();

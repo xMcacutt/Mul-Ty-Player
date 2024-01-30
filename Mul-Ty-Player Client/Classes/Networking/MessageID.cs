@@ -33,11 +33,12 @@ public enum MessageID : ushort
     ReqObjectiveSync,
     AdvancedTeleport,
     Voice,
-    HS_SetHideSeekMode,
+    HS_ProxyRunHideSeek,
     HS_RoleChanged,
     HS_HideTimerStart,
     HS_StartSeek,
     HS_Warning,
     HS_Catch,
-    HS_Abort
+    HS_Abort,
+    HS_RangeChanged
 }

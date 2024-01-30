@@ -24,7 +24,21 @@ internal class SettingsHandler
     public static bool DoLevelLock { get; set; }
     public static bool DoHideSeek { get; set; }
 
-    public static float HSRange = 65f;
+
+    private static float _hsRange = 65f;
+    public static float HSRange
+    {
+        get => _hsRange;
+        set
+        {
+            if (Math.Abs(_hsRange - value) < 0.01)
+                return;
+            _hsRange = value;
+            var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_RangeChanged);
+            message.AddFloat(value);
+            Server._Server.SendToAll(message);
+        }
+    }
 
     public static void Setup()
     {
