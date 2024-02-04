@@ -23,19 +23,19 @@ public class MtpCommandHideSeek : Command
     
     public override void InitExecute(string[] args)
     {
-        if (args.Length is not 1 or 2)
+        if (args.Length != 1 && args.Length != 2)
         {
             SuggestHelp();
             return;
         }
         if (args.Length is 2)
         {
-            if (!string.Equals(args[1], "range", StringComparison.CurrentCultureIgnoreCase))
+            if (!string.Equals(args[0], "range", StringComparison.CurrentCultureIgnoreCase))
             {
                 SuggestHelp();
                 return;
             }
-            if (float.TryParse(args[2], out var range))
+            if (!float.TryParse(args[1], out var range))
             {
                 LogError("Invalid specified float");
                 return;

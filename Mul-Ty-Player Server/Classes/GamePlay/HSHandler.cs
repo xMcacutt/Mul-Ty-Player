@@ -35,6 +35,13 @@ public class HSHandler
         var response = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
         response.AddInt((int)otherPlayerRole);
         Server._Server.Send(response, otherPlayerId);
+
+        if (otherPlayerRole == HSRole.Seeker) 
+            return;
+
+        var seekerConfirmation = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
+        seekerConfirmation.AddInt((int)HSRole.Seeker);
+        Server._Server.Send(seekerConfirmation, fromClientId);
     }
 
     [MessageHandler((ushort)MessageID.HS_Abort)]
@@ -69,7 +76,7 @@ public class HSHandler
         var countdown = Task.Run(() =>
         {
             abortToken.ThrowIfCancellationRequested();
-            for (var i = 90; i > 0; i--)
+            for (var i = 75; i > 0; i--)
             {
                 if (abortToken.IsCancellationRequested) abortToken.ThrowIfCancellationRequested();
                 if (i is 10 or 30 or 60)

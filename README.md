@@ -147,7 +147,17 @@ With your port forwarding rule set up, people can now join your server using you
 - Objective sounds on collection by other clients
 - Ready status overhaul and fix
 
+#### 3.4.2
+- (HS) Adjustable hit detection range
+- (HS) Seeker speed increased to 10.05 during seek
+- (HS) Seeker & Hider hit detection
+- (HS) Time reduced to 75s for hide
+- (HS) /hs abort added to cancel session
+
 ### Bug Fixes
+
+#### 3.4.2
+- Updater setup menu trigger source set correctly
 
 #### 3.4.0
 

@@ -34,6 +34,7 @@ public class Countdown
             abortToken.ThrowIfCancellationRequested();
             OnCountdownBegan?.Invoke();
             SFXPlayer.StopAll();
+            Client.HHero.SetRunSpeed();
             Client.HSync = new SyncHandler();
             SFXPlayer.PlaySound(SFX.Race10);
             for (var i = 10; i > 0; i--)

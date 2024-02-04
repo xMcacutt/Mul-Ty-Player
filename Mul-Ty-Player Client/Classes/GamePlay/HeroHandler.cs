@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using MulTyPlayer;
@@ -78,6 +79,11 @@ public class HeroHandler
         message.AddInt(HLevel.CurrentLevelId);
         message.AddFloats(Client.HHero.currentPositionRotation);
         Client._client.Send(message);
+    }
+
+    public void SetRunSpeed(float speed = 10.0f)
+    {
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288914), BitConverter.GetBytes(speed));
     }
     
 }

@@ -21,7 +21,7 @@ public class LoginViewModel : IViewModel
         var latestRelease = github.Repository.Release.GetLatest("xMcacutt", "Mul-Ty-Player").Result;
         var latestVersion = latestRelease.TagName.Replace("v", "");
         var result = VersionHandler.Compare(SettingsHandler.Settings.Version, latestVersion);
-        UpdateMessageVisible = result is VersionResult.SecondNewer;
+        UpdateMessageVisible = result == VersionResult.SecondNewer;
     }
 
     public string Name { get; set; }

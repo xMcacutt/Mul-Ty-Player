@@ -70,12 +70,16 @@ public class HSHandler
         }
 
         if (_mode == HSMode.SeekTime && Role == HSRole.Seeker)
+        {
+            Client.HHero.SetRunSpeed(10.05f);
             RunRadiusCheck(HSRole.Seeker);
+        }
         
         if (ModelController.Lobby.PlayerInfoList.Any(x => x.Role == HSRole.Hider))
             return;
         _mode = HSMode.Neutral;
         _timerRunning = false;
+        Client.HHero.SetRunSpeed();
     }
 
     private void LockPlayer()
@@ -170,6 +174,7 @@ public class HSHandler
         SettingsHandler.DoHideSeek = message.GetBool();
         var result = SettingsHandler.DoHideSeek ? "Hide & Seek has been activated" : "Hide & Seek has been disabled";
         Logger.Write(result);
+        Client.HHero.SetRunSpeed();
     }
 
     [MessageHandler((ushort)MessageID.HS_RoleChanged)]
@@ -243,6 +248,7 @@ public class HSHandler
         Client.HHideSeek.Role = HSRole.Seeker;
         Client.HHideSeek._mode = HSMode.Neutral;
         Client.HHideSeek._timerRunning = false;
+        Client.HHero.SetRunSpeed();
         SFXPlayer.PlaySound(SFX.TAOpen);
     }
 
