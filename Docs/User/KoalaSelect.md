@@ -1,8 +1,12 @@
 # Koala Select
 
+---
+
 Once you've logged in, you'll be taken through to a screen where you'll choose your koala. Each koala can only be chosen once so choose wisely. If a koala is taken, it will have a cross through it.
 
 <img title="" src="../Images/Boonie.jpg" alt="Koala Select Blocked" width="205" data-align="center">
+
+---
 
 ## The Koalas
 

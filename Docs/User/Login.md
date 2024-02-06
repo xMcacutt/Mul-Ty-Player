@@ -1,10 +1,16 @@
 # Login
 
+---
+
 Logging into MTP can seem complex but it is a very simple process designed to be fast.
+
+---
 
 ## Average UseCase
 
 For the average user, wanting to connect to the dedicated server with their steam name as their display name, simply press connect and you'll be taken through to the [Koala Select view](./KoalaSelect.md).
+
+---
 
 ## IP
 
@@ -14,9 +20,13 @@ The first box on the login screen is the IP address box. This box must contain a
 12.34.56.78:9876
 ```
 
+---
+
 ## Server Hosting
 
 If you wish to host your own server you'll need to port forward. More information about this was explained on the [user guide document](./UserGuide.md).
+
+---
 
 ## Password
 
@@ -32,9 +42,13 @@ All passwords must be exactly five letters.
 
 Casing is ignored.
 
+---
+
 ## Name
 
 The name field on the login screen is, by default, automatically populated with your steam name. This can be changed in the settings menu in the lobby or by modifying the ClientSettings.json file. If the steam server connection fails to initialize, you will be given a default name UserXXXX where XXXX is replaced with a random number.
+
+---
 
 ## List.Servers
 
@@ -47,6 +61,8 @@ ip pass (*)
 The password is the last password which was used to successfully login to the corresponding IP address and the asterisk represents the active server. The server which is loaded into the box will always be the server with the asterisk by default.
 
 To switch the default server simply remove the asterisk and add it to the line with the IP you want to be used by default.
+
+---
 
 ## Dedicated Servers
 
