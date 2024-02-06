@@ -35,8 +35,8 @@ internal class LevelHandler
         HSync.RequestSync();
         Client.HGameState.ProtectLeaderboard();
         if (SettingsHandler.DoTESyncing &&
-            HSync.SyncObjects["TE"].GlobalObjectData.ContainsKey(currentLevelId) &&
-            HSync.SyncObjects["TE"].GlobalObjectData[CurrentLevelId][3] == 5)
+            HSync.SyncObjects["TE"].GlobalObjectData.ContainsKey(CurrentLevelId) &&
+            (HSync.SyncObjects["TE"].SaveSync as SaveTESyncer)?.GlobalSaveData[CurrentLevelId][3] == 1)
             (HSync.SyncObjects["TE"] as TEHandler)?.ShowStopwatch();
         if (CurrentLevelData.Id != 16)
         {

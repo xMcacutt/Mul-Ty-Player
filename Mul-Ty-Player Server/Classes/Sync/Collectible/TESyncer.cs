@@ -17,7 +17,7 @@ internal class TESyncer : Syncer
         foreach (var i in SyncHandler.MainStages)
         {
             GlobalObjectData.Add(i, Enumerable.Repeat((byte)1, 8).ToArray());
-            GlobalObjectSaveData.Add(i, Enumerable.Repeat((byte)1, 10).ToArray());
+            GlobalObjectSaveData.Add(i, Enumerable.Repeat((byte)1, 8).ToArray());
             GlobalObjectCounts.Add(i, 0);
         }
     }
