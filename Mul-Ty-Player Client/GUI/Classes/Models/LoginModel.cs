@@ -14,36 +14,42 @@ namespace MulTyPlayerClient.GUI.Models;
 public class LoginModel
 {
     private List<ServerListing> _serverList;
-
+    private ServerListing _selectedServer;
+    private string _name;
+    
     public bool ConnectionAttemptCompleted;
     public bool ConnectionAttemptSuccessful = false;
-
-    private string ip, name, pass;
+    
     public event Action OnLoginSuccess;
     public event Action OnLoginFailed;
 
     public void Connect(string ip, string name, string pass)
     {
-        this.ip = ip;
-        this.name = name;
-        this.pass = pass;
+        _selectedServer.IP = ip;
+        _selectedServer.Pass = pass;
+        _name = name;
         Thread connect = new(AttemptConnection);
         connect.Start();
     }
 
-    public string GetIP()
-    {
-        return ip;
-    }
-
     public string GetName()
     {
-        return name;
+        return _name;
     }
 
-    public string GetPass()
+    public ServerListing GetSelectedServer()
     {
-        return pass;
+        return _selectedServer;
+    }
+    
+    public void SetSelectedServer(ServerListing selectedItem)
+    {
+        _selectedServer = selectedItem;
+    }
+
+    public IEnumerable<ServerListing> GetServers()
+    {
+        return _serverList;
     }
 
     private void AttemptConnection()
@@ -51,7 +57,7 @@ public class LoginModel
         try
         {
             ConnectionAttemptCompleted = false;
-            Client.Start(ip, name, pass);
+            Client.Start(_selectedServer.IP, _name, _selectedServer.Pass);
             while (!ConnectionAttemptCompleted)
             {
             }
@@ -83,8 +89,8 @@ public class LoginModel
         }
         else
         {
-            var _fs = File.Create("./list.servers");
-            _fs.Close();
+            var fs = File.Create("./list.servers");
+            fs.Close();
         }
     }
 
@@ -93,34 +99,32 @@ public class LoginModel
         //If steam name retrieval is successful, set that as the name and set the default name in settings
         if (SettingsHandler.Settings.DoGetSteamName)
         {
-            name = SteamHelper.GetSteamName();
-            SettingsHandler.Settings.DefaultName = name;
+            _name = SteamHelper.GetSteamName();
+            SettingsHandler.Settings.DefaultName = _name;
         }
         //If the steam name setting is disabled, use the previously stored default name
         else
         {
-            name = SettingsHandler.Settings.DefaultName;
+            _name = SettingsHandler.Settings.DefaultName;
         }
 
         //If the name is still null, generate a random one
-        if (name == null) name = GenerateRandomUser();
+        if (_name == null) _name = GenerateRandomUser();
     }
 
     private void SaveDetails()
     {
         foreach (var x in _serverList) x.ActiveDefault = false;
-        //Save the currently connected server details to serverlist
-        if (!_serverList.Where(x => x.IP == ip).Any())
+        //Save the currently connected server details to server list
+        if (!_serverList.Any(x => x.IP == _selectedServer.IP))
         {
-            _serverList.Add(new ServerListing(ip, pass, true));
+            _serverList.Add(new ServerListing(_selectedServer.IP, _selectedServer.Pass, true));
+            return;
         }
-        else
-        {
-            _serverList.Where(x => x.IP == ip).First().Pass = pass;
-            _serverList.Where(x => x.IP == ip).First().ActiveDefault = true;
-        }
-
-        //Save serverlist to file
+        _serverList.First(x => x.IP == _selectedServer.IP).Pass = _selectedServer.Pass;
+        _serverList.First(x => x.IP == _selectedServer.IP).ActiveDefault = true;
+    
+        //Save server list to file
         using var fs = File.Create("./list.servers");
         var servers = "";
         foreach (var server in _serverList)
@@ -145,13 +149,7 @@ public class LoginModel
             _serverList.Add(new ServerListing(entry[0], entry[1], entry.Length == 3));
         }
 
-        SetDetailsFromServer(_serverList.FirstOrDefault(x => x.ActiveDefault, local));
-    }
-
-    private void SetDetailsFromServer(ServerListing server)
-    {
-        ip = server.IP;
-        pass = server.Pass;
+        _selectedServer = _serverList.FirstOrDefault(x => x.ActiveDefault, local);
     }
 
     private string GenerateRandomUser()
@@ -167,4 +165,6 @@ public class LoginModel
         MessageBox.Show("Connection failed!\nPlease check IPAddress & Password are correct and server is open.");
         OnLoginFailed?.Invoke();
     }
+
+
 }

@@ -1,15 +1,20 @@
 ﻿namespace MulTyPlayerClient;
 
-internal class ServerListing
+public class ServerListing
 {
-    public bool ActiveDefault;
-    public string IP;
-    public string Pass;
+    public bool ActiveDefault { get; set; }
+    public string IP { get; set; }
+    public string Pass { get; set; }
 
-    public ServerListing(string iP, string pass, bool active)
+    public ServerListing(string ip, string pass, bool active)
     {
-        IP = iP;
+        IP = ip;
         Pass = pass;
         ActiveDefault = active;
+    }
+    
+    public override string ToString()
+    {
+        return IP;
     }
 }

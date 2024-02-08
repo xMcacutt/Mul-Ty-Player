@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -24,6 +25,8 @@ public class LoginViewModel : IViewModel
         UpdateMessageVisible = result == VersionResult.SecondNewer;
     }
 
+    public ObservableCollection<ServerListing> Servers { get; set; }
+    public ServerListing SelectedServer { get; set; }
     public string Name { get; set; }
     public string Pass { get; set; }
     public string ConnectingAddress { get; set; }
@@ -44,9 +47,11 @@ public class LoginViewModel : IViewModel
     public void OnEntered()
     {
         Login.Setup();
-        ConnectingAddress = Login.GetIP();
+        Servers = new ObservableCollection<ServerListing>(Login.GetServers());
+        SelectedServer = Login.GetSelectedServer();
+        ConnectingAddress = SelectedServer.IP;
+        Pass = SelectedServer.Pass;
         Name = Login.GetName();
-        Pass = Login.GetPass();
         ConnectButtonEnabled = true;
     }
 
@@ -70,5 +75,16 @@ public class LoginViewModel : IViewModel
     {
         await Task.Delay(1000);
         ConnectButtonEnabled = true;
+    }
+    
+    public void SelectedServerChanged(object selectedItem)
+    {
+        if (selectedItem is not ServerListing item)
+            return;
+        ModelController.Login.SetSelectedServer(item);
+        SelectedServer = Login.GetSelectedServer();
+        ConnectingAddress = SelectedServer.IP;
+        Pass = SelectedServer.Pass;
+        Name = Login.GetName();
     }
 }

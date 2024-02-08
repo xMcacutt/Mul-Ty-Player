@@ -21,4 +21,10 @@ public partial class Login : UserControl
             //((LoginViewModel)DataContext).ConnectCommand.Execute(e);
         }
     }
+
+    private void FieldHostIp_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (FieldHostIp.SelectedItem != null)
+            (DataContext as LoginViewModel)!.SelectedServerChanged(FieldHostIp.SelectedItem);
+    }
 }

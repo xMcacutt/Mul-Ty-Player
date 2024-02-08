@@ -77,34 +77,45 @@
                 </TextBlock>
 
                 <Grid>
-                    <TextBox x:Name="FieldHostIp"
+                    <ComboBox x:Name="FieldHostIp"
                              PreviewKeyDown="FieldHostIp_OnPreviewKeyDown"
-                             HorizontalContentAlignment="Left"
-                             Text="{Binding ConnectingAddress, UpdateSourceTrigger=PropertyChanged}"
+                             SelectionChanged="FieldHostIp_OnSelectionChanged"
+                             SelectedItem="{Binding SelectedServer}"
+                             ItemsSource="{Binding Servers}"
                              FontSize="25"
+                             IsEditable="True"
                              Height="40"
                              Width="350"
-                             Padding="5 0 0 0"
                              HorizontalAlignment="Stretch"
+                             VerticalAlignment="Center"
+                             HorizontalContentAlignment="Left"
                              VerticalContentAlignment="Center"
                              BorderThickness="2"
                              BorderBrush="{x:Null}">
-                        <TextBox.Background>
+                        <ComboBox.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="#7F6D4500" />
                                 <GradientStop Color="#7F000000" Offset="1" />
                             </LinearGradientBrush>
-                        </TextBox.Background>
-                        <TextBox.Style>
-                            <Style TargetType="TextBox" BasedOn="{StaticResource TyTextBox}">
+                        </ComboBox.Background>
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource TyComboBox}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding HideAddress}" Value="True">
                                         <Setter Property="Foreground" Value="Transparent" />
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding HideAddress}" Value="False">
+                                        <Setter Property="Foreground" Value="White" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </TextBox.Style>
-                    </TextBox>
+                        </ComboBox.Style>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding IP}" Foreground="White" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <TextBlock
                         Text="{Binding ConnectingAddress, 
                                       Mode=OneWay, 
