@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Dynamic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -20,16 +19,16 @@ namespace Mul_Ty_Player_Updater.ViewModels;
 public class UpdateViewModel
 {
     public float Progress { get; set; }
-    public string ProgressMessage { get; set; }
+    public string? ProgressMessage { get; set; }
     public string Message { get; set; }
-    public string Version { get; set; }
+    public string? Version { get; set; }
     public Visibility VersionVisibility { get; set; }
     public Visibility ProgressVisibility { get; set; }
     public bool Success { get; set; }
     
-    private BackgroundWorker worker;
+    private BackgroundWorker? worker;
 
-    public event EventHandler UpdateCompleted; 
+    public event EventHandler? UpdateCompleted; 
     
     public UpdateViewModel()
     {
@@ -156,6 +155,12 @@ public class UpdateViewModel
         
         var oldSettings = File.ReadAllText(Path.Combine(clientDirPath, "ClientSettings.json"));
         
+        var tempDirPath = Path.Combine(Path.GetTempPath(), "MTPClientGUI");
+        Directory.CreateDirectory(tempDirPath);
+        var guiDirPath = Path.Combine(clientDirPath, "GUI");
+        if (Directory.Exists(guiDirPath))
+            CopyDirectory(guiDirPath, tempDirPath, true);
+        
         Directory.Delete(clientDirPath, true);
         Directory.CreateDirectory(clientDirPath);
         var zipPath = Path.Combine(clientDirPath, "Client.zip");
@@ -186,6 +191,12 @@ public class UpdateViewModel
         archive.ExtractToDirectory(clientDirPath);
         archive.Dispose();
         File.Delete(zipPath);
+        
+        if (Directory.Exists(tempDirPath))
+        {
+            CopyDirectory(tempDirPath, Path.Combine(clientDirPath, "GUI"), true);
+            Directory.Delete(tempDirPath, true);
+        }
         
         var newSettings = File.ReadAllText(Path.Combine(clientDirPath, "ClientSettings.json"));
         
@@ -302,4 +313,36 @@ public class UpdateViewModel
         fileStream.Close();
     }
     
+    static void CopyDirectory(string sourceDir, string destinationDir, bool recursive)
+    {
+        // Get information about the source directory
+        var dir = new DirectoryInfo(sourceDir);
+
+        // Check if the source directory exists
+        if (!dir.Exists)
+            throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
+
+        // Cache directories before we start copying
+        DirectoryInfo[] dirs = dir.GetDirectories();
+
+        // Create the destination directory
+        Directory.CreateDirectory(destinationDir);
+
+        // Get the files in the source directory and copy to the destination directory
+        foreach (FileInfo file in dir.GetFiles())
+        {
+            string targetFilePath = Path.Combine(destinationDir, file.Name);
+            file.CopyTo(targetFilePath, true);
+        }
+
+        // If recursive and copying subdirectories, recursively call this method
+        if (recursive)
+        {
+            foreach (DirectoryInfo subDir in dirs)
+            {
+                string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
+                CopyDirectory(subDir.FullName, newDestinationDir, true);
+            }
+        }
+    }
 }
