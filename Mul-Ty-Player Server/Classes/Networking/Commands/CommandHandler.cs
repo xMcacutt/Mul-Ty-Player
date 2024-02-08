@@ -12,6 +12,7 @@ public class CommandHandler
     public CommandHandler()
     {
         RegisterCommand(new MtpCommandCList());
+        RegisterCommand(new MtpCommandCountdown());
         RegisterCommand(new MtpCommandHelp());
         RegisterCommand(new MtpCommandKick());
         RegisterCommand(new MtpCommandLevelLock());

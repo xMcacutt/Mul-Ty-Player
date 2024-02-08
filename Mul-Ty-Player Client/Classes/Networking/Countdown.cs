@@ -19,8 +19,20 @@ public class Countdown
     public static event Action OnCountdownFinished;
 
     [MessageHandler((ushort)MessageID.Countdown)]
-    public static async void StartCountdown(Message message)
+    public static void HandleCountdown(Message message)
     {
+        var param = message.GetString();
+        if (string.Equals(param, "start", StringComparison.CurrentCultureIgnoreCase) && !InProgress)
+            StartCountdown();
+        else if (!InProgress)
+            Logger.Write("[WARN] A countdown abort attempt was made with no countdown running.");    
+        else if (string.Equals(param, "abort", StringComparison.CurrentCultureIgnoreCase))
+            Abort();
+    }
+
+    private static async void StartCountdown()
+    {
+        InProgress = true;
         abortTokenSource = new CancellationTokenSource();
         var abortToken = abortTokenSource.Token;
 

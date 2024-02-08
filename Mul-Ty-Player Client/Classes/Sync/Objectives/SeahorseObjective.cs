@@ -34,6 +34,7 @@ public class SeahorseObjective : Objective
             if (CurrentData[i] == 1)
                 continue;
             ProcessHandler.WriteData(ObjectAddress + i * 0x19C + 0xA8, new byte[] { 3 });
+            ProcessHandler.WriteData(ObjectAddress + i * 0x19C + 0xC0, new byte[] { 1 });
             ProcessHandler.TryRead(ObjectAddress + i * 0x19C + 0xB0, out int seahorseOutState, false, "CableCar : IsActive()");
             if (seahorseOutState is 2 or 3)
             {

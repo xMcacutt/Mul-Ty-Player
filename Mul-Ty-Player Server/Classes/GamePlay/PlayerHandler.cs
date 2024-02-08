@@ -84,6 +84,7 @@ internal class PlayerHandler
         Program.HSync = new SyncHandler();
         Program.HObjective = new ObjectiveHandler();
         var countdownStart = Message.Create(MessageSendMode.Reliable, MessageID.Countdown);
+        countdownStart.AddString("start");
         Server._Server.SendToAll(countdownStart);
     }
 }
