@@ -10,6 +10,12 @@ Fortunately, for those who don't want to do tedious text editing, the MTP client
 
 ---
 
+## Updater Settings
+
+One thing that's important to note is the RemoveMagnetRandomisation setting when installing MTP. This setting removes the randomisation for basket spawns. All fixed functionality of the basket spawns remains such as receiving a life up when all opals are collected or a full pie when on 1 hp but the chance to get a quarter pie or magnet is locked to always give a magnet if this setting is turned on during installation / update. This setting is valid for speedruns on the MTP board and can be toggled by going into the setup menu in the updater and then performing either an update or a full reinstall.
+
+---
+
 ## Server Settings
 
 Since there's a lot less of them, let's go over the server settings first.

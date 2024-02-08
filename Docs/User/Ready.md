@@ -2,7 +2,11 @@
 
 ---
 
-The ready system is designed to get everyone starting speedruns or hide and seek sessions at the same time. When you press the ready button in the [lobby](./LobbyUI.md) or run the [ready command](./Commands/ReadyCommand.md), a flag will appear in the Player Info List notifying all other clients that you are ready. Once everyone is ready, a countdown will run depending on the current mode.
+The ready system is designed to get everyone starting speedruns or hide and seek sessions at the same time. When you press the ready button in the [lobby](./LobbyUI.md) or run the [ready command](./Commands/ReadyCommand.md), a flag will appear in the Player Info List notifying all other clients that you are ready. 
+
+<img src="../Images/Flag.png" title="" alt="" width="50">
+
+Once everyone is ready, a countdown will run depending on the current mode.
 
 ---
 

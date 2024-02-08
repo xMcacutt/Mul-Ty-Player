@@ -76,7 +76,7 @@ There's tonnes of features in the most recent version of MTP. The following is a
 
 - [Ready System](./Ready.md)
 
-- [Syncing](./Syncing.md)
+- [Syncing](./Syncing/Syncing.md)
 
 - [Level Lock Mode](./LevelLock.md)
 
