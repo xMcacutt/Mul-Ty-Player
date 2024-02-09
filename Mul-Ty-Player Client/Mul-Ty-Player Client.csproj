@@ -114,6 +114,15 @@
         <None Update="GUI\Sounds\Objective.wav">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <None Update="GUI\Themes\Ocean.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="GUI\Themes\Cherry.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="GUI\Themes\Grayscale.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
         <Page Remove="GUI\App.xaml" />
