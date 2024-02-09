@@ -39,7 +39,7 @@
                       Style="{StaticResource DataGridStyle}"
                       Grid.Row="1"
                       HorizontalContentAlignment="Stretch"
-                      ItemsSource="{Binding PlayerInfoList}">
+                      ItemsSource="{x:Static client:PlayerHandler.Players}">
                 <DataGrid.Resources>
                     <controls:BindingProxy x:Key="Proxy" Data="{Binding}" />
                 </DataGrid.Resources>
@@ -58,7 +58,7 @@
                                            FontSize="14"
                                            IsHitTestVisible="False"
                                            Padding="3"
-                                           Text="{Binding ClientId}" />
+                                           Text="{Binding Id}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -66,7 +66,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentControl
-                                    Content="{Binding KoalaName, Converter={StaticResource KoalaNameToIconConverter}}" />
+                                    Content="{Binding Koala, Converter={StaticResource KoalaToIconConverter}}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -79,8 +79,8 @@
                                            FontSize="14"
                                            Padding="0"
                                            Margin="2 0 0 0"
-                                           ToolTip="{Binding PlayerName}"
-                                           Text="{Binding PlayerName}"
+                                           ToolTip="{Binding Name}"
+                                           Text="{Binding Name}"
                                            TextTrimming="CharacterEllipsis" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

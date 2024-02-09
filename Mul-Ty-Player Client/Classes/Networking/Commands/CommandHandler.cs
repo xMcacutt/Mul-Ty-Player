@@ -43,7 +43,12 @@ public class CommandHandler
 
         if (Commands.TryGetValue(commandName, out var command))
         {
-            if (command.HostOnly && !PlayerHandler.Players[Client._client.Id].IsHost)
+            if (!PlayerHandler.TryGetPlayer(Client._client.Id, out var self))
+            {
+                Logger.Write("[ERROR] Failed to find self in player list.");
+                return;
+            }
+            if (command.HostOnly && !self.IsHost)
             {
                 Logger.Write("[ERROR] You do not have the privileges to run this command.");
                 return;

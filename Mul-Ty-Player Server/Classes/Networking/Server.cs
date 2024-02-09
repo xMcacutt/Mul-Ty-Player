@@ -111,16 +111,15 @@ internal class Server
             SettingsHandler.Settings.Password = "XXXXX";
     }
 
-    public static void SendCoordinatesToAll(ushort clientID, string koalaName, int level, float[] coordinates,
-        bool onMenu)
+    public static void SendCoordinatesToAll(ushort clientId, string koalaName, int level, float[] coordinates, bool onMenu)
     {
         var message = Message.Create(MessageSendMode.Unreliable, MessageID.KoalaCoordinates);
         message.AddBool(onMenu);
-        message.AddUShort(clientID);
+        message.AddUShort(clientId);
         message.AddString(koalaName);
         message.AddInt(level);
         message.AddFloats(coordinates);
-        _Server.SendToAll(message, clientID);
+        _Server.SendToAll(message, clientId);
         
     }
 }

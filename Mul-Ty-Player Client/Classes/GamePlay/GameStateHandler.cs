@@ -1,4 +1,5 @@
-﻿using MulTyPlayerClient.GUI.Models;
+﻿using System.Linq;
+using MulTyPlayerClient.GUI.Models;
 
 namespace MulTyPlayerClient;
 
@@ -30,8 +31,16 @@ public class GameStateHandler
     private void NotifyLobbyOfMenu(bool onMenu)
     {
         ModelController.Lobby.IsOnMenu = onMenu;
-        if (onMenu && ModelController.Lobby.TryGetPlayerInfo(Client._client.Id, out var playerInfo))
-            playerInfo.Level = "M/L";
+        
+        if (!onMenu) return;
+        
+        if (!PlayerHandler.TryGetPlayer(Client._client.Id, out var self))
+        {
+            Logger.Write("[ERROR] Failed to find self in player list.");
+            return;
+        }
+        
+        self.Level = "M/L";
     }
     
     

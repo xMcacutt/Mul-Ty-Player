@@ -17,7 +17,7 @@ namespace MulTyPlayerClient.GUI.Views;
 /// </summary>
 public partial class Lobby : UserControl
 {
-    private PlayerInfo clickedPlayer;
+    private Player clickedPlayer;
 
     public Lobby()
     {
@@ -79,7 +79,7 @@ public partial class Lobby : UserControl
     {
         var row = FindAncestor<DataGridRow>((DependencyObject)e.OriginalSource);
         if (row is null) return;
-        clickedPlayer = row.Item as PlayerInfo;
+        clickedPlayer = row.Item as Player;
     }
 
     private static T FindAncestor<T>(DependencyObject current)
@@ -99,13 +99,13 @@ public partial class Lobby : UserControl
     private void GiveHost_OnClick(object sender, RoutedEventArgs e)
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.GiftHost);
-        message.AddUShort(clickedPlayer.ClientId);
+        message.AddUShort(clickedPlayer.Id);
         Client._client.Send(message);
     }
 
     private void KickPlayer_OnClick(object sender, RoutedEventArgs routedEventArgs)
     {
-        Client.HCommand.Commands["kick"].InitExecute(new string[] { clickedPlayer.ClientId.ToString() });
+        Client.HCommand.Commands["kick"].InitExecute(new string[] { clickedPlayer.Id.ToString() });
     }
 
     private void HostMenuButton_Click(object sender, RoutedEventArgs e)
@@ -141,7 +141,7 @@ public partial class Lobby : UserControl
 
     private void DataGrid_OnContextMenuOpening(object sender, RoutedEventArgs e)
     {
-        if (DataContext is not LobbyViewModel viewModel || clickedPlayer == null || clickedPlayer.ClientId == Client._client.Id || !viewModel.IsHostMenuButtonEnabled)
+        if (DataContext is not LobbyViewModel viewModel || clickedPlayer == null || clickedPlayer.Id == Client._client.Id || !viewModel.IsHostMenuButtonEnabled)
         {
             e.Handled = true;
             HostDataGridContextMenu.IsOpen = false;
@@ -170,7 +170,7 @@ public partial class Lobby : UserControl
            // VoiceHandler.JoinVoice();
             return;
         } 
-      //  VoiceHandler.LeaveVoice();
+        //  VoiceHandler.LeaveVoice();
     }
 
     private void Proximity_Click(object sender, RoutedEventArgs e)

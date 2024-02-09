@@ -153,7 +153,8 @@ public class MtpCommandTeleport : Command
             Client._client.Send(message);
             return;
         }
-        if (!PlayerHandler.Players.TryGetValue(to.Value.Item2, out var player))
+        
+        if (!PlayerHandler.TryGetPlayer(to.Value.Item2, out var player))
         {
             LogError("The client id specified is not a player.");
             return;
@@ -223,7 +224,7 @@ public class MtpCommandTeleport : Command
         {
             var toClient = message.GetUShort();
             Logger.Write($"Teleporting to client {toClient}");
-            if (!PlayerHandler.Players.TryGetValue(toClient, out var toPlayer))
+            if (!PlayerHandler.TryGetPlayer(toClient, out var toPlayer))
             {
                 Logger.Write("[ERROR] Could not find player.");
                 return;

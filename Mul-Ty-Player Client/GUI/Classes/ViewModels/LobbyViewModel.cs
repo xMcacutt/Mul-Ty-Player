@@ -25,19 +25,13 @@ public class LobbyViewModel : IViewModel
         Lobby.IsHideSeekEnabledChanged += Model_IsHideSeekEnabledChanged;
         Lobby.IsLevelLockEnabledChanged += Model_IsLevelLockEnabledChanged;
         Lobby.CanLaunchGameChanged += Model_CanLaunchGameChanged;
-        HSHandler.OnRoleChanged += Model_RoleChanged;
+        //HSHandler.OnRoleChanged += Model_RoleChanged;
         HSHandler.OnTimeChanged += Model_TimeChanged;
         Countdown.OnCountdownBegan += OnCountdownBegan;
         Countdown.OnCountdownAborted += OnCountdownEnded;
         Countdown.OnCountdownFinished += OnCountdownEnded;
 
         Logger.OnLogWrite += ChatMessages.Add;
-    }
-
-    public ObservableCollection<PlayerInfo> PlayerInfoList
-    {
-        get => Lobby.PlayerInfoList;
-        set => Lobby.PlayerInfoList = value;
     }
 
     public ObservableCollection<string> ChatMessages { get; set; }
@@ -63,8 +57,6 @@ public class LobbyViewModel : IViewModel
 
     public void OnEntered()
     {
-        Lobby.UpdateReadyStatus();
-        Lobby.UpdateHostIcon();
         Time = "00:00:00";
         Role = Client.HHideSeek.Role;
         Input = "";
@@ -132,7 +124,7 @@ public class LobbyViewModel : IViewModel
     {
         IsTimerVisible = value;
     }
-    
+ /*   
     private void Model_RoleChanged(HSRole newRole)
     {
         if (Client._client == null)
@@ -143,7 +135,7 @@ public class LobbyViewModel : IViewModel
         Role = Role == HSRole.Hider ? HSRole.Seeker : HSRole.Hider;
         playerInfo.Role = newRole;
     }
-
+*/
     private void OnCountdownEnded()
     {
         IsReadyButtonEnabled = IsOnMenu;

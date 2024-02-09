@@ -36,9 +36,8 @@ public class Countdown
         abortTokenSource = new CancellationTokenSource();
         var abortToken = abortTokenSource.Token;
 
-        foreach (var entry in PlayerHandler.Players) entry.Value.IsReady = false;
+        foreach (var entry in PlayerHandler.Players) entry.IsReady = false;
         ModelController.Lobby.IsReady = false;
-        ModelController.Lobby.UpdateReadyStatus();
         ModelController.Lobby.OnLogout += Abort;
 
         var countdown = Task.Run(() =>
@@ -97,6 +96,6 @@ public class Countdown
 
     private static bool CheckAnyPlayerOnMainMenu()
     {
-        return !Client.HGameState.IsAtMainMenu() || ModelController.Lobby.PlayerInfoList.Any(p => p.Level != "M/L");
+        return !Client.HGameState.IsAtMainMenu() || PlayerHandler.Players.Any(p => p.Level != "M/L");
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using MulTyPlayerClient.GUI.Models;
 using MulTyPlayerClient.Objectives;
 
@@ -51,9 +52,12 @@ internal class LevelHandler
     public void GetCurrentLevel()
     {
         ProcessHandler.TryRead(0x280594, out int levelId, true, "LevelHandler::GetCurrentLevel()");
-
-        if (ModelController.Lobby.TryGetPlayerInfo(Client._client.Id, out var playerInfo))
-            playerInfo.Level = Levels.GetLevelData(levelId).Code;
+        if (!PlayerHandler.TryGetPlayer(Client._client.Id, out var self))
+        {
+            Logger.Write("[ERROR] Failed to find self in player list.");
+            return;
+        }
+        self.Level = Levels.GetLevelData(levelId).Code;
         CurrentLevelId = levelId;
     }
 

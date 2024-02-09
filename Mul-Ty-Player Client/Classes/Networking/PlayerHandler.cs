@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
@@ -13,40 +14,38 @@ namespace MulTyPlayerClient;
 
 internal class PlayerHandler
 {
-    public static Dictionary<ushort, Player> Players = new();
-
+    public static ObservableCollection<Player> Players = new();
+    
     public PlayerHandler()
     {
-        Players = new Dictionary<ushort, Player>();
+        Players = new ObservableCollection<Player>();
     }
 
     //Adds other player to players & playerInfo
     public static void AddPlayer(Koala koala, string name, ushort clientId, bool isHost, bool isReady, HSRole role)
     {
-        var koalaName = Koalas.GetInfo[koala].Name;
-        Players.Remove(clientId);
-        Players.Add(clientId, new Player(koala, name, clientId, isHost, isReady, role));
-        PlayerInfo player = new(clientId, name, koalaName, role);
-        Application.Current.Dispatcher.BeginInvoke(
-            DispatcherPriority.Background,
-            () => { ModelController.Lobby.PlayerInfoList.Add(player); });
+        if (Players.Any(x => x.Id == clientId))
+            Players.Remove(Players.First(x => x.Id == clientId));
+        Players.Add(new Player(koala, name, clientId, isHost, isReady, role));
         ModelController.KoalaSelect.SetAvailability(koala, false);
         SFXPlayer.PlaySound(SFX.PlayerConnect);
         PlayerReplication.AddPlayer((int)koala);
     }
     
-    //Adds yourself to playerInfo
-    public static void AnnounceSelection(string koalaName, string name, bool isHost, bool isReady = false, HSRole role = HSRole.Hider)
+    //Adds yourself to players
+    public static void AnnounceSelection(Koala koala, string name, bool isHost, bool isReady = false, HSRole role = HSRole.Hider)
     {
+        var clientId = Client._client.Id;
         var message = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
-        message.AddString(koalaName);
+        message.AddString(Enum.GetName(typeof(Koala), koala));
         message.AddString(name);
         message.AddUShort(Client._client.Id);
         message.AddBool(isHost);
         message.AddBool(isReady);
         message.AddInt((int)role);
-        PlayerInfo player = new(Client._client.Id, name, koalaName, role);
-        ModelController.Lobby.PlayerInfoList.Add(player);
+        if (Players.Any(x => x.Id == clientId))
+            Players.Remove(Players.First(x => x.Id == clientId));
+        Players.Add(new Player(koala, name, clientId, isHost, isReady, role));
         Client._client.Send(message);
         Client.KoalaSelected = true;
     }
@@ -55,15 +54,14 @@ internal class PlayerHandler
     {
         ModelController.KoalaSelect.SetAvailability(Players[clientId].Koala, true);
         PlayerReplication.RemovePlayer((int)Players[clientId].Koala);
-        Players.Remove(clientId);
-        Application.Current.Dispatcher.BeginInvoke(
-            DispatcherPriority.Background,
-            () =>
-            {
-                if (ModelController.Lobby.TryGetPlayerInfo(clientId, out var playerInfo))
-                    ModelController.Lobby.PlayerInfoList.Remove(playerInfo);
-            }
-        );
+        if (Players.Any(x => x.Id == clientId))
+            Players.Remove(Players.First(x => x.Id == clientId));
+    }
+
+    public static bool TryGetPlayer(ushort clientId, out Player player)
+    {
+        player = Players.FirstOrDefault(x => x.Id == clientId);
+        return player != null;
     }
 
     [MessageHandler((ushort)MessageID.AnnounceDisconnect)]
@@ -74,35 +72,25 @@ internal class PlayerHandler
         //VoiceHandler.TryRemoveVoice(clientId);
         SFXPlayer.PlaySound(SFX.PlayerDisconnect);
     }
-
-    public static bool TryGetLocalPlayer(out Player player)
-    {
-        return Players.TryGetValue(Client._client.Id, out player);
-    }
     
     public static bool HostExists()
     {
-        return PlayerHandler.Players.Values.Any(p => p.IsHost);
+        return Players.Any(p => p.IsHost);
     }
     
     public void SetReady()
     {
-        Players[Client._client.Id].IsReady = !Players[Client._client.Id].IsReady;
+        var player = Players.First(x => x.Id == Client._client.Id);
+        player.IsReady = !player.IsReady;
         var message = Message.Create(MessageSendMode.Reliable, MessageID.Ready);
-        message.AddBool(Players[Client._client.Id].IsReady);
+        message.AddBool(player.IsReady);
         Client._client.Send(message);
-        Application.Current.Dispatcher.BeginInvoke(
-            DispatcherPriority.Background,
-            new Action(ModelController.Lobby.UpdateReadyStatus));
     }
     
     [MessageHandler((ushort)MessageID.Ready)]
     public static void PeerReady(Message message)
     {
         Players[message.GetUShort()].IsReady = message.GetBool();
-        Application.Current.Dispatcher.BeginInvoke(
-            DispatcherPriority.Background,
-            new Action(ModelController.Lobby.UpdateReadyStatus));
     }
     
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.GUI.Models;
@@ -138,8 +139,9 @@ internal class KoalaHandler
         var level = message.GetInt();
 
         //Set the incoming players current level code
-        if (ModelController.Lobby.TryGetPlayerInfo(clientId, out var playerInfo))
-            playerInfo.Level = onMenu ? "M/L" : Levels.GetLevelData(level).Code;
+        if (!PlayerHandler.TryGetPlayer(clientId, out var player))
+            return;
+        player.Level = onMenu ? "M/L" : Levels.GetLevelData(level).Code;
 
         //Return if player is on the main menu or loading screen,
         //No need to set coords
@@ -150,8 +152,7 @@ internal class KoalaHandler
         }
 
         //If failed to get this clients player, or received our own coordinates, return
-        if (!PlayerHandler.Players.TryGetValue(Client._client.Id, out var p) ||
-            Koalas.GetInfo[p.Koala].Name == koalaName)
+        if (!PlayerHandler.TryGetPlayer(Client._client.Id, out var self) || Koalas.GetInfo[self.Koala].Name == koalaName)
             return;
 
         //If the received player has finished the game, return

@@ -44,10 +44,9 @@ public static class VoiceHandler
         {
             if (level != Client.HLevel.CurrentLevelId)
                 return;
-            var playerInfo = ModelController.Lobby.PlayerInfoList.FirstOrDefault(x => x.ClientId == fromClientId);
-            if (playerInfo != null)
+            if (PlayerHandler.TryGetPlayer(fromClientId, out var player))
             {
-                if (playerInfo.Level != "M/L" || !Client.HGameState.IsAtMainMenu())
+                if (player.Level != "M/L" || !Client.HGameState.IsAtMainMenu())
                     voice.SampleChannel.Volume = distance >= SettingsHandler.Settings.ProximityRange ? 0.0f :
                         distance <= RANGE_LOWER_BOUND ? 1.0f :
                         1.0f - (distance - RANGE_LOWER_BOUND) / (SettingsHandler.Settings.ProximityRange - RANGE_LOWER_BOUND);

@@ -27,7 +27,7 @@ public class MtpCommandWhisper : Command
             SuggestHelp();
             return;
         }
-        if (!PlayerHandler.Players.ContainsKey(clientId))
+        if (PlayerHandler.Players.All(x => x.Id != clientId))
         {
             LogError($"{args[0]} is not a valid client ID");
             return;
@@ -38,6 +38,7 @@ public class MtpCommandWhisper : Command
     public void RunWhisper(ushort clientId, string message)
     {
         PeerMessageHandler.SendMessage(message, clientId);
-        Logger.Write($"Sent message to {PlayerHandler.Players[clientId].Name}.");
+        var name = PlayerHandler.TryGetPlayer(clientId, out var p) ? p.Name : "UnknownPlayer";
+        Logger.Write($"Sent message to {name}.");
     }
 }

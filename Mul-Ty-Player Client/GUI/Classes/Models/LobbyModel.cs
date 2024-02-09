@@ -11,12 +11,8 @@ public class LobbyModel
 {
     public LobbyModel()
     {
-        PlayerInfoList = new ObservableCollection<PlayerInfo>();
-        OnLogout += PlayerInfoList.Clear;
     }
-
-    public ObservableCollection<PlayerInfo> PlayerInfoList { get; set; }
-
+    
     public event Action OnLogout;
     public event Action OnCountdownBegin;
     public event Action OnCountdownEnded;
@@ -50,38 +46,6 @@ public class LobbyModel
             Client.HCommand.UndoCalls.TryPeek(out recall);
         }
         return recall;
-    }
-
-    public bool TryGetPlayerInfo(ushort clientID, out PlayerInfo playerInfo)
-    {
-        try
-        {
-            playerInfo = PlayerInfoList.First(pInfo => pInfo.ClientId == clientID);
-            return true;
-        }
-        catch
-        {
-            playerInfo = null;
-            return false;
-        }
-    }
-
-    public void ResetPlayerList()
-    {
-        PlayerInfoList.Clear();
-    }
-
-    public void UpdateReadyStatus()
-    {
-        foreach (var player in PlayerInfoList)
-            if (PlayerHandler.Players.TryGetValue(player.ClientId, out var value))
-                player.IsReady = value.IsReady;
-    }
-
-    public void UpdateHostIcon()
-    {
-        foreach (var player in PlayerInfoList) player.IsHost = PlayerHandler.Players[player.ClientId].IsHost;
-        IsHost = PlayerHandler.Players[Client._client.Id].IsHost;
     }
 
     public void Logout()

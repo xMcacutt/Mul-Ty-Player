@@ -121,9 +121,6 @@ internal class Client
         KoalaSelected = false;
         IsConnected = false;
         ModelController.KoalaSelect.MakeAllAvailable();
-        Application.Current.Dispatcher.BeginInvoke(
-            DispatcherPriority.Background,
-            new Action(ModelController.Lobby.ResetPlayerList));
         SFXPlayer.PlaySound(SFX.PlayerDisconnect);
         if (e.Reason == DisconnectReason.TimedOut && SettingsHandler.Settings.AttemptReconnect)
         {

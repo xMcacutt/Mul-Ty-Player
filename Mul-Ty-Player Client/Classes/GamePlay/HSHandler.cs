@@ -75,7 +75,7 @@ public class HSHandler
             RunRadiusCheck(HSRole.Seeker);
         }
         
-        if (ModelController.Lobby.PlayerInfoList.Any(x => x.Role == HSRole.Hider))
+        if (PlayerHandler.Players.Any(x => x.Role == HSRole.Hider))
             return;
         _mode = HSMode.Neutral;
         _timerRunning = false;
@@ -92,11 +92,9 @@ public class HSHandler
 
     private void RunRadiusCheck(HSRole role)
     {
-        foreach (var otherPlayer in ModelController.Lobby.PlayerInfoList.Where(x => x.Role != role))
+        foreach (var otherPlayer in PlayerHandler.Players.Where(x => x.Role != role))
         {
-            if (!Enum.TryParse(typeof(Koala), otherPlayer.KoalaName, out var koala))
-                continue;
-            if (!PlayerReplication.PlayerTransforms.TryGetValue((int)koala, out var otherPlayerTransform))
+            if (!PlayerReplication.PlayerTransforms.TryGetValue((int)otherPlayer.Koala, out var otherPlayerTransform))
                 continue;
             if (otherPlayerTransform.LevelID != Client.HLevel.CurrentLevelId)
                 continue;
@@ -109,7 +107,7 @@ public class HSHandler
                 ? SettingsHandler.HSRange * 1.25
                 : SettingsHandler.HSRange;
             if (distance > radiusCheckDistance) continue;
-            Catch(otherPlayer.ClientId);
+            Catch(otherPlayer.Id);
         }
     }
 
@@ -187,13 +185,8 @@ public class HSHandler
 
     private static void ChangeRole(ushort clientId, HSRole role)
     {
-        if (!PlayerHandler.Players.TryGetValue(clientId, out var player))
-            return;
-        player.Role = (HSRole)role;
-        var playerInfo = ModelController.Lobby.PlayerInfoList.FirstOrDefault(x => x.ClientId == clientId);
-        if (playerInfo == null)
-            return;
-        playerInfo.Role = (HSRole)role;
+        if (PlayerHandler.TryGetPlayer(clientId, out var player)) 
+            player.Role = (HSRole)role;
     }
 
     [MessageHandler((ushort)MessageID.HS_HideTimerStart)]
@@ -201,9 +194,8 @@ public class HSHandler
     { 
         Client.HCommand.Commands["tp"].InitExecute(new string[] {"@s"});
         Client.HHideSeek._mode = HSMode.HideTime;
-        foreach (var entry in PlayerHandler.Players) entry.Value.IsReady = false;
+        foreach (var entry in PlayerHandler.Players) entry.IsReady = false;
         ModelController.Lobby.IsReady = false;
-        ModelController.Lobby.UpdateReadyStatus();
         SFXPlayer.PlaySound(SFX.HS_HideStart);
         if (Client.HHideSeek.Role == HSRole.Hider)
             ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EC00, BitConverter.GetBytes((float)750));

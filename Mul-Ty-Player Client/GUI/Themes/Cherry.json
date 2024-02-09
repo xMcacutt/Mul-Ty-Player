@@ -2,9 +2,9 @@
   "MainBackColor": "#ff170606",
   "AltBackColor": "#ff351212",
   "SpecialBackColor": "#ff753636",
-  "MainTextColor": "#ffffd7d7",
+  "MainTextColor": "#ffFFE8E8",
   "AltTextColor": "#ff995757",
   "InvertedTextColor": "#ff340000",
-  "MainAccentColor": "#ffbd2f2f",
+  "MainAccentColor": "#ffE92424",
   "AltAccentColor": "#ff21381f"
 }

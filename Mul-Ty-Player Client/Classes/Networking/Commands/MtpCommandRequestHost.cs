@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Mime;
 using System.Windows;
 using System.Windows.Threading;
+using Microsoft.VisualBasic.Logging;
 using MulTyPlayer;
 using MulTyPlayerClient.GUI.Models;
 using Riptide;
@@ -29,7 +30,7 @@ public class MtpCommandRequestHost : Command
             SuggestHelp();
             return;
         }
-        if (PlayerHandler.Players[Client._client.Id].IsHost)
+        if (PlayerHandler.TryGetPlayer(Client._client.Id, out var p) && p.IsHost)
         {
             LogError("You already have host privileges");
             return;
@@ -46,18 +47,22 @@ public class MtpCommandRequestHost : Command
     [MessageHandler((ushort)MessageID.ReqHost)]
     public static void RequestHostResponse(Message message)
     {
-        if (message.GetBool())
+        if (!PlayerHandler.TryGetPlayer(Client._client.Id, out var self))
         {
-            PlayerHandler.Players[Client._client.Id].IsHost = true;
-            Application.Current.Dispatcher.BeginInvoke(
-                DispatcherPriority.Background,
-                new Action(ModelController.Lobby.UpdateHostIcon));
+            Logger.Write("[ERROR] Could not find own player in the list.");
+            return;
+        }
+        
+        var makeHost = message.GetBool();
+        if (makeHost)
+        {
+            self.IsHost = true;
             Logger.Write("You have been made host. You now have access to host only commands.");
             return;
         }
         try
         {
-            var existingHost = PlayerHandler.Players.Values.First(p => p.IsHost);
+            var existingHost = PlayerHandler.Players.First(p => p.IsHost);
             Logger.Write($"Player {existingHost.Name} already has host privileges");
         }
         catch
@@ -70,10 +75,13 @@ public class MtpCommandRequestHost : Command
     [MessageHandler((ushort)MessageID.HostChange)]
     public static void HostChange(Message message)
     {
-        foreach (var key in PlayerHandler.Players.Keys) PlayerHandler.Players[key].IsHost = false;
-        PlayerHandler.Players[message.GetUShort()].IsHost = true;
-        Application.Current.Dispatcher.BeginInvoke(
-            DispatcherPriority.Background,
-            new Action(ModelController.Lobby.UpdateHostIcon));
+        var newHostId = message.GetUShort();
+        foreach (var player in PlayerHandler.Players) player.IsHost = false;
+        if (!PlayerHandler.TryGetPlayer(newHostId, out var newHost))
+        {
+            Logger.Write("[ERROR] Could not find new host in player list.");
+            return;
+        }
+        newHost.IsHost = true;
     }
 }
