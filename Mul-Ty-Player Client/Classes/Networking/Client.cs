@@ -110,7 +110,6 @@ internal class Client
             IsReconnect = false;
         }
         HSync.HLevelLock.RequestData();
-        HLevel.DoLevelSetup();
     }
 
     private static void Disconnected(object sender, DisconnectedEventArgs e)

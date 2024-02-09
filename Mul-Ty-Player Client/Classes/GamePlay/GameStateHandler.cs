@@ -9,7 +9,7 @@ public class GameStateHandler
     private const int MAIN_MENU_STATE_ADDRESS = 0x286641;
     private const int LOADING_SCREEN_STATE_ADDRESS = 0x27EBF0;
 
-    private bool wasLoadingLastFrame;
+    private bool wasLoadingLastFrame = true;
     public bool IsOnMainMenuOrLoading = true;
 
     public void CheckMainMenuOrLoading()
