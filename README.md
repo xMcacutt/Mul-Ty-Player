@@ -15,16 +15,7 @@ Boss Cass together as your favourite koalas.
 
 ![Boonie](/GitImages/Boonie.png)
 
-3.4.0 has been released. 
-If you were on a version earlier than v3 read the below instructions for information and installation.
-
-If you have a 3.0+ version installed, please delete all client, server, and updater files and reinstall using the new updater.
-
-This version is the start of objective syncing. Treasure Chests, Koalas, and Flame Burners are all now synced
-between clients. More to come. 
-
-The Lyre shadow bug has also been fixed by permanently disabling shadows in Patch_PC. A flexible option
-is being looked into.
+### If you're new to MTP, it is strongly recommended that you read the [docs](./Docs/User/User%20Guide.md). Instructions for installation are clearly defined in the first page.
 
 ![ClientGUI](/GitImages/Lobby.png)
 
@@ -154,7 +145,28 @@ With your port forwarding rule set up, people can now join your server using you
 - (HS) Time reduced to 75s for hide
 - (HS) /hs abort added to cancel session
 
+#### 3.4.3
+- Extra themes
+- [Documentation](./Docs/User/User%20Guide.md)
+- Server selection drop down
+- Countdown abort / start command added
+- Extra stability
+- *Note* - Frame syncing is still bugged
+
 ### Bug Fixes
+
+#### 3.4.3
+- Ghost players in client resolved
+- Redundant player info list removed
+- Main menu or loading function issue resolved
+- Koala return on disconnect / change level fixed
+- (HS) Time message changed to match reduced time in 3.4.2
+- Stopwatch activating on wrong TE fixed
+- Seahorse collision activated
+- No host set on connect to reduce duplicate host chance
+- Global.model edited to increase picture frame range
+- Updater no longer overwrites modifications to the GUI directory allowing cutsomization
+
 
 #### 3.4.2
 - Updater setup menu trigger source set correctly
@@ -279,16 +291,6 @@ With your port forwarding rule set up, people can now join your server using you
 
 - Basically everything wrong with v1.2.0
 - Black stump actually works now
-
-### Future Plans
-
-- Objectives Synchronisation
-- Picture Frames & Rainbow Scales Synchronisation
-
-### Known Issues
-
-- Sound effects sometimes fail to play
-- Client can very rarely crash if the game crashes
 
 ## Support
 
