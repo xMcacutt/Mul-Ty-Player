@@ -52,7 +52,6 @@ public class MtpCommandRequestHost : Command
             Logger.Write("[ERROR] Could not find own player in the list.");
             return;
         }
-        
         var makeHost = message.GetBool();
         if (makeHost)
         {

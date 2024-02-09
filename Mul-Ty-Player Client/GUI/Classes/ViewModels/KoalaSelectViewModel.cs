@@ -1,4 +1,5 @@
 ﻿using MulTyPlayerClient.GUI.Models;
+using MulTyPlayerClient.GUI.Views;
 using PropertyChanged;
 
 namespace MulTyPlayerClient.GUI.ViewModels;
@@ -8,8 +9,9 @@ public class KoalaSelectViewModel : IViewModel
 {
     public KoalaSelectViewModel()
     {
-        KoalaSelect.OnKoalaSelected += delegate { BlockKoalaSelect = true; };
-        KoalaSelect.OnProceedToLobby += delegate { BlockKoalaSelect = false; };
+        KoalaSelect.OnKoalaSelected += delegate { KoalaSelect.BlockKoalaSelect = true; };
+        KoalaSelect.OnProceedToLobby += delegate { KoalaSelect.BlockKoalaSelect = false; };
+        KoalaSelect.OnBlockKoalaSelectChanged += Model_BlockKoalaSelectChanged;
         Boonie = new KoalaSelectEntryViewModel(KoalaSelect.Boonie);
         Mim = new KoalaSelectEntryViewModel(KoalaSelect.Mim);
         Gummy = new KoalaSelectEntryViewModel(KoalaSelect.Gummy);
@@ -30,6 +32,11 @@ public class KoalaSelectViewModel : IViewModel
     public KoalaSelectEntryViewModel Dubbo { get; set; }
 
     public bool BlockKoalaSelect { get; set; }
+    
+    private void Model_BlockKoalaSelectChanged(bool value)
+    {
+        BlockKoalaSelect = value;
+    }
 
     private static KoalaSelectModel KoalaSelect => ModelController.KoalaSelect;
 

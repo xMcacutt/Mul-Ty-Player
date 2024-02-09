@@ -34,9 +34,8 @@ public class KoalaSelectModel
     public async void KoalaClicked(Koala koala, bool proceedToLobby)
     {
         Client.OldKoala = koala;
-        var isHost = !PlayerHandler.HostExists();
-        PlayerHandler.Players.Add(new Player(koala, Client.Name, Client._client.Id, isHost, false, HSRole.Hider));
-        PlayerHandler.AnnounceSelection(koala, Client.Name, isHost);
+        PlayerHandler.Players.Add(new Player(koala, Client.Name, Client._client.Id, false, false, HSRole.Hider));
+        PlayerHandler.AnnounceSelection(koala, Client.Name, false);
         OnKoalaSelected?.Invoke(koala);
         SFXPlayer.PlaySound(SFX.PlayerConnect);
         if (proceedToLobby)
@@ -68,6 +67,7 @@ public class KoalaSelectModel
 
     public void MakeAllAvailable()
     {
+        BlockKoalaSelect = false;
         Boonie.SetAvailability(true);
         Dubbo.SetAvailability(true);
         Elizabeth.SetAvailability(true);
@@ -111,6 +111,19 @@ public class KoalaSelectModel
         }
 
         throw new InvalidKoalaException((int)koala);
+    }
+
+    
+    public event Action<bool> OnBlockKoalaSelectChanged;
+    private bool blockKoalaSelect;
+    public bool BlockKoalaSelect
+    {
+        get => blockKoalaSelect;
+        set
+        {
+            blockKoalaSelect = value;
+            OnBlockKoalaSelectChanged?.Invoke(blockKoalaSelect);
+        }
     }
 
     private KoalaSelectEntryModel GetEntry(Koala koala)
