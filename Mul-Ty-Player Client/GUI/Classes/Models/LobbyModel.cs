@@ -47,6 +47,16 @@ public class LobbyModel
         }
         return recall;
     }
+    
+    public void UpdateHost()
+    {
+        if (!PlayerHandler.TryGetPlayer(Client._client.Id, out var player))
+        {
+            Logger.Write("[ERROR] Could not find self in player list.");
+            return;
+        }
+        IsHost = player.IsHost;
+    }
 
     public void Logout()
     {

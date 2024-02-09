@@ -25,7 +25,6 @@ public class LobbyViewModel : IViewModel
         Lobby.IsHideSeekEnabledChanged += Model_IsHideSeekEnabledChanged;
         Lobby.IsLevelLockEnabledChanged += Model_IsLevelLockEnabledChanged;
         Lobby.CanLaunchGameChanged += Model_CanLaunchGameChanged;
-        //HSHandler.OnRoleChanged += Model_RoleChanged;
         HSHandler.OnTimeChanged += Model_TimeChanged;
         Countdown.OnCountdownBegan += OnCountdownBegan;
         Countdown.OnCountdownAborted += OnCountdownEnded;
@@ -57,6 +56,7 @@ public class LobbyViewModel : IViewModel
 
     public void OnEntered()
     {
+        Lobby.UpdateHost();
         Time = "00:00:00";
         Role = Client.HHideSeek.Role;
         Input = "";

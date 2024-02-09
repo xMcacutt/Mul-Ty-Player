@@ -30,6 +30,8 @@ internal class LevelHandler
 
     public void DoLevelSetup()
     {
+        if (Client.HGameState.IsOnMainMenuOrLoading)
+            return;
         GetCurrentLevel();
         HSync.SetCurrentData(CurrentLevelData.IsMainStage, CurrentLevelData.FrameCount != 0);
         HSync.SetMemAddrs();

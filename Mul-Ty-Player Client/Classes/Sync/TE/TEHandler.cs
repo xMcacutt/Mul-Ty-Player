@@ -44,7 +44,7 @@ internal class TEHandler : SyncObjectHandler
     private static void HandleStopWatchActivate(Message message)
     {
         var level = message.GetInt();
-        if (Client.HLevel.CurrentLevelData.Id != level || Client.HGameState.IsAtMainMenuOrLoading()) return;
+        if (Client.HLevel.CurrentLevelData.Id != level || Client.HGameState.IsOnMainMenuOrLoading) return;
         SFXPlayer.PlaySound(SFX.TAOpen);
         (Client.HSync.SyncObjects["TE"] as TEHandler)?.ShowStopwatch();
     }

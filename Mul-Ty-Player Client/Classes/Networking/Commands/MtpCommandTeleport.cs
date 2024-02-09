@@ -38,7 +38,7 @@ public class MtpCommandTeleport : Command
             return;
         }
         //CHECK PRELIMS
-        if (Client.HGameState.IsAtMainMenuOrLoading())
+        if (Client.HGameState.IsOnMainMenuOrLoading)
         {
             LogError("Cannot teleport on main menu or load screen.");
             return;

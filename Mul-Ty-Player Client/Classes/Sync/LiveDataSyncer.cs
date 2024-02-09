@@ -13,7 +13,7 @@ internal abstract class LiveDataSyncer
     public virtual void Collect(int index)
     {
         if (HSyncObject.CurrentObjectData[index] >= 3) return;
-        if (Client.HGameState.IsAtMainMenuOrLoading()) return;
+        if (Client.HGameState.IsOnMainMenuOrLoading) return;
         ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + ObjectLength * index,
             new[] { HSyncObject.WriteState }, "Setting collectible to collected");
         if (!SeparateCollisionByte) return;

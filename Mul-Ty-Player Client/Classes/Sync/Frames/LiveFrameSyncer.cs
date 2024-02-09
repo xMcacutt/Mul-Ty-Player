@@ -43,7 +43,7 @@ internal class LiveFrameSyncer : LiveDataSyncer
 
     public override void Collect(int index)
     {
-        if (Client.HGameState.IsAtMainMenuOrLoading()) return;
+        if (Client.HGameState.IsOnMainMenuOrLoading) return;
         var address = HFrame.FrameAddress;
         for (var i = 0; i < index; i++)
             ProcessHandler.TryRead(address + 0x30, out address, false, "LiveFrameSyncer::Collect {0}");

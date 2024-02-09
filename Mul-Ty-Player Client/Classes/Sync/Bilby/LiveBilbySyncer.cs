@@ -19,7 +19,7 @@ internal class LiveBilbySyncer : LiveDataSyncer
     public override void Collect(int index)
     {
         if (HSyncObject.CurrentObjectData[index] != 1) return;
-        if (Client.HGameState.IsAtMainMenuOrLoading()) return;
+        if (Client.HGameState.IsOnMainMenuOrLoading) return;
         ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + ObjectLength * index,
             new[] { HSyncObject.WriteState }, "Collecting bilby");
         if (!SeparateCollisionByte) return;
@@ -32,7 +32,7 @@ internal class LiveBilbySyncer : LiveDataSyncer
     [MessageHandler((ushort)MessageID.DespawnAllBilbies)]
     public static void DespawnBilbies(Message message)
     {
-        if (Client.HLevel.CurrentLevelId != message.GetInt() || Client.HGameState.IsAtMainMenuOrLoading()) return;
+        if (Client.HLevel.CurrentLevelId != message.GetInt() || Client.HGameState.IsOnMainMenuOrLoading) return;
         (Client.HSync.SyncObjects["Bilby"].LiveSync as LiveBilbySyncer).CollectAll();
     }
     public void CollectAll()

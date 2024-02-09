@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using MulTyPlayerClient.GUI.Models;
 
 namespace MulTyPlayerClient;
@@ -9,15 +10,22 @@ public class GameStateHandler
     private const int LOADING_SCREEN_STATE_ADDRESS = 0x27EBF0;
 
     private bool wasLoadingLastFrame;
+    public bool IsOnMainMenuOrLoading = true;
 
-    public bool IsAtMainMenuOrLoading()
+    public void CheckMainMenuOrLoading()
     {
         ProcessHandler.TryRead(LOADING_SCREEN_STATE_ADDRESS, out long result, true,
             "GameStateHandler::IsAtMainMenuOrLoading()");
-        var loading = result == 0;
-        if (wasLoadingLastFrame && !loading) Client.HLevel.DoLevelSetup();
-        wasLoadingLastFrame = loading;
-        return loading;
+        IsOnMainMenuOrLoading = result == 0;
+        if (IsOnMainMenuOrLoading)
+            wasLoadingLastFrame = true;
+    }
+
+    public void CheckLoadChanged()
+    {
+        if (wasLoadingLastFrame && !IsOnMainMenuOrLoading) 
+            Client.HLevel.DoLevelSetup();
+        wasLoadingLastFrame = IsOnMainMenuOrLoading;
     }
 
     public bool IsAtMainMenu()

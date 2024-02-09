@@ -57,7 +57,9 @@ public class MtpCommandRequestHost : Command
         if (makeHost)
         {
             self.IsHost = true;
-            ModelController.Lobby.IsHost = true;
+            Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+                new Action(ModelController.Lobby.UpdateHost));
             Logger.Write("You have been made host. You now have access to host only commands.");
             return;
         }
@@ -84,5 +86,8 @@ public class MtpCommandRequestHost : Command
             return;
         }
         newHost.IsHost = true;
+        Application.Current.Dispatcher.BeginInvoke(
+            DispatcherPriority.Background,
+            new Action(ModelController.Lobby.UpdateHost));
     }
 }

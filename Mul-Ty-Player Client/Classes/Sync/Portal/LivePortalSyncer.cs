@@ -14,7 +14,7 @@ internal class LivePortalSyncer : LiveDataSyncer
 
     public override void Collect(int level)
     {
-        if (Client.HGameState.IsAtMainMenuOrLoading()) return;
+        if (Client.HGameState.IsOnMainMenuOrLoading) return;
         var portalIndex = Array.IndexOf(PortalHandler.LivePortalOrder, level);
         ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + ObjectLength * portalIndex,
             new[] { HSyncObject.WriteState }, "Making portal visible");

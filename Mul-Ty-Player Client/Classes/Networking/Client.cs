@@ -110,14 +110,12 @@ internal class Client
             IsReconnect = false;
         }
         HSync.HLevelLock.RequestData();
-        if (HGameState.IsAtMainMenuOrLoading()) return;
         HLevel.DoLevelSetup();
     }
 
     private static void Disconnected(object sender, DisconnectedEventArgs e)
     {
         cts.Cancel();
-        //VoiceHandler.LeaveVoice();
         KoalaSelected = false;
         IsConnected = false;
         ModelController.KoalaSelect.MakeAllAvailable();
@@ -189,8 +187,10 @@ internal class Client
             if (TyProcess.FindProcess() && KoalaSelected)
                 try
                 {
-                    if (!HGameState.IsAtMainMenuOrLoading())
+                    HGameState.CheckMainMenuOrLoading();
+                    if (!HGameState.IsOnMainMenuOrLoading)
                     {
+                        HGameState.CheckLoadChanged();
                         HLevel.GetCurrentLevel();
                         if (!SettingsHandler.DoHideSeek)
                         {

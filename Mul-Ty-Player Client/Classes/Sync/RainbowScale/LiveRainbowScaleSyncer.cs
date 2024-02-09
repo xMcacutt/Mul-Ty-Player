@@ -22,7 +22,7 @@ internal class LiveRSSyncer : LiveDataSyncer
             return;
 
         //If in menu or loading, return
-        if (Client.HGameState.IsAtMainMenuOrLoading())
+        if (Client.HGameState.IsOnMainMenuOrLoading)
             return;
 
         if (HLevel.CurrentLevelId != Levels.RainbowCliffs.Id)

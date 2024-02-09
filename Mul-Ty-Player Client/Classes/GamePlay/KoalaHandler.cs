@@ -145,7 +145,7 @@ internal class KoalaHandler
 
         //Return if player is on the main menu or loading screen,
         //No need to set coords
-        if (HGameState.IsAtMainMenuOrLoading())
+        if (HGameState.IsOnMainMenuOrLoading)
         {
             readyToWriteTransformData = false;
             return;

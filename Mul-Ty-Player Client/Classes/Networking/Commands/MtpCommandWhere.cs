@@ -27,7 +27,7 @@ public class MtpCommandWhere : Command
             SuggestHelp();
             return;
         }
-        if (Client.HGameState.IsAtMainMenuOrLoading())
+        if (Client.HGameState.IsOnMainMenuOrLoading)
         {
             LogError("Cannot get location on main menu or load screen.");
             return;

@@ -84,7 +84,7 @@ internal static class PlayerReplication
     public static void RenderTick()
     {
         foreach (var koalaId in receivedSnapshotData.Keys)
-            if (!Client.HGameState.IsAtMainMenuOrLoading())
+            if (!Client.HGameState.IsOnMainMenuOrLoading)
             {
                 var t = UpdateTransform(koalaId);
                 WriteTransformData(koalaId, t);
