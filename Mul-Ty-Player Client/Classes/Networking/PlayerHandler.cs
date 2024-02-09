@@ -53,7 +53,6 @@ internal class PlayerHandler
             Players.Add(new Player(koala, name, clientId, isHost, isReady, role)); 
         });
         Client._client.Send(message);
-        Client.KoalaSelected = true;
     }
 
     public static void RemovePlayer(ushort clientId)

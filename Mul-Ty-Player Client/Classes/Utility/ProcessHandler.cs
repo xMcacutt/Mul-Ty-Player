@@ -7,7 +7,7 @@ namespace MulTyPlayerClient;
 
 internal class ProcessHandler
 {
-    public static bool MemoryWriteDebugLogging = false;
+    public static bool MemoryWriteDebugLogging = true;
     public static bool MemoryReadDebugLogging = false;
     public static string MostRecentIOIndicator = "None";
     public static bool LogMostRecentMemoryIOInfoOnProcessExit = true;
@@ -36,6 +36,7 @@ internal class ProcessHandler
             var message = BitConverter.ToString(bytes) + " to 0x" + address.ToString("X") + " For: " + writeIndicator;
             var logMsg = (success ? "Successfully wrote " : "Failed to write") + message;
             Logger.Write(logMsg);
+            Console.WriteLine(logMsg);
             return success;
         }
 

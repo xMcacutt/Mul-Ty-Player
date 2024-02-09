@@ -124,18 +124,7 @@ public class LobbyViewModel : IViewModel
     {
         IsTimerVisible = value;
     }
- /*   
-    private void Model_RoleChanged(HSRole newRole)
-    {
-        if (Client._client == null)
-            return;
-        var playerInfo = PlayerInfoList.FirstOrDefault(x => x.ClientId == Client._client.Id);
-        if (playerInfo == null)
-            return;
-        Role = Role == HSRole.Hider ? HSRole.Seeker : HSRole.Hider;
-        playerInfo.Role = newRole;
-    }
-*/
+
     private void OnCountdownEnded()
     {
         IsReadyButtonEnabled = IsOnMenu;

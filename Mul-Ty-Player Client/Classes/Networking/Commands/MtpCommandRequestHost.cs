@@ -57,6 +57,7 @@ public class MtpCommandRequestHost : Command
         if (makeHost)
         {
             self.IsHost = true;
+            ModelController.Lobby.IsHost = true;
             Logger.Write("You have been made host. You now have access to host only commands.");
             return;
         }

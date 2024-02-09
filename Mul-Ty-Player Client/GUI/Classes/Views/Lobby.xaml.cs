@@ -100,6 +100,7 @@ public partial class Lobby : UserControl
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.GiftHost);
         message.AddUShort(clickedPlayer.Id);
+        ModelController.Lobby.IsHost = false;
         Client._client.Send(message);
     }
 

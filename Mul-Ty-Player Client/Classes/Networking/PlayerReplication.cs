@@ -123,7 +123,6 @@ internal static class PlayerReplication
             return;
         }
 
-        Console.WriteLine($"{transform.Position.X}, {transform.Position.Y}, {transform.Position.Z}");
         ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(transform.Position.X));
         ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(transform.Position.Y));
         ProcessHandler.WriteData(ktp.Z, BitConverter.GetBytes(transform.Position.Z));
