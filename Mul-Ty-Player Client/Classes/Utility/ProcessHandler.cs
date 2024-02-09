@@ -36,7 +36,6 @@ internal class ProcessHandler
             var message = BitConverter.ToString(bytes) + " to 0x" + address.ToString("X") + " For: " + writeIndicator;
             var logMsg = (success ? "Successfully wrote " : "Failed to write") + message;
             Logger.Write(logMsg);
-            Console.WriteLine(logMsg);
             return success;
         }
 

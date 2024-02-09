@@ -33,6 +33,7 @@ public class TriggerHandler
 
     public void CheckSetTrigger(int index, bool value)
     {
+        Console.WriteLine($"{index} {value}");
         var b = value ? (byte)0x0 : (byte)0x1;
         if (GetTriggerActivity(index) == b)
             SetTriggerActivity(index, value);

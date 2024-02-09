@@ -13,7 +13,6 @@ internal class LevelHandler
     public Action<int> OnLevelChange = delegate { };
     private static KoalaHandler HKoala => Client.HKoala;
     private static SyncHandler HSync => Client.HSync;
-    private static ObjectiveHandler HObjective => Client.HObjective;
 
     public int CurrentLevelId
     {

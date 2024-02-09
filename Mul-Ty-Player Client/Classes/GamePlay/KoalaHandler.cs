@@ -34,7 +34,6 @@ internal class KoalaHandler
         var role = (HSRole)message.GetInt();
         var k = Enum.Parse<Koala>(koalaName, true);
         PlayerHandler.AddPlayer(k, playerName, clientId, isHost, isReady, role);
-        Client.HSync.RequestSync();
     }
 
     public void CreateKoalaAddressArray()

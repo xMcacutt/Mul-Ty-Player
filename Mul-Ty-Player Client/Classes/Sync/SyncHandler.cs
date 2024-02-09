@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MulTyPlayer;
 using MulTyPlayerClient.LevelLock;
 using Riptide;
@@ -44,9 +45,15 @@ internal class SyncHandler
         HTrigger = new TriggerHandler();
     }
 
-    public void SetMemAddrs()
+    public static void SetSaveDataBaseAddress()
     {
         SaveDataBaseAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0x10 });
+        Console.WriteLine(SaveDataBaseAddress);
+    }
+
+    public void SetMemAddrs()
+    {
+        SetSaveDataBaseAddress();
         HTrigger.SetMemAddrs();
         HAttribute.SetMemAddrs();
         if (Levels.GetLevelData(Client.HLevel.CurrentLevelId).FrameCount != 0)
