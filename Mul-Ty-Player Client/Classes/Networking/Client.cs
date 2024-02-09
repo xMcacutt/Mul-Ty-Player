@@ -80,7 +80,6 @@ internal class Client
         HPlayer = new PlayerHandler();
         HObjective = new ObjectiveHandler();
         HHideSeek = new HSHandler();
-        PlayerHandler.Players.Clear();
     }
 
     private static void InitRiptide()

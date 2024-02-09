@@ -27,6 +27,7 @@ public class LoginViewModel : IViewModel
 
     public ObservableCollection<ServerListing> Servers { get; set; }
     public ServerListing SelectedServer { get; set; }
+    public bool IsPopupOpen { get; set; }
     public string Name { get; set; }
     public string Pass { get; set; }
     public string ConnectingAddress { get; set; }
@@ -48,9 +49,8 @@ public class LoginViewModel : IViewModel
     {
         Login.Setup();
         Servers = new ObservableCollection<ServerListing>(Login.GetServers());
-        SelectedServer = Login.GetSelectedServer();
-        ConnectingAddress = SelectedServer.IP;
-        Pass = SelectedServer.Pass;
+        ConnectingAddress = Login.GetIP();
+        Pass = Login.GetPass();
         Name = Login.GetName();
         ConnectButtonEnabled = true;
     }
@@ -75,16 +75,5 @@ public class LoginViewModel : IViewModel
     {
         await Task.Delay(1000);
         ConnectButtonEnabled = true;
-    }
-    
-    public void SelectedServerChanged(object selectedItem)
-    {
-        if (selectedItem is not ServerListing item)
-            return;
-        ModelController.Login.SetSelectedServer(item);
-        SelectedServer = Login.GetSelectedServer();
-        ConnectingAddress = SelectedServer.IP;
-        Pass = SelectedServer.Pass;
-        Name = Login.GetName();
     }
 }

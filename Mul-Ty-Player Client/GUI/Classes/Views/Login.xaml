@@ -77,60 +77,70 @@
                 </TextBlock>
 
                 <Grid>
-                    <ComboBox x:Name="FieldHostIp"
-                             PreviewKeyDown="FieldHostIp_OnPreviewKeyDown"
-                             SelectionChanged="FieldHostIp_OnSelectionChanged"
-                             SelectedItem="{Binding SelectedServer}"
-                             ItemsSource="{Binding Servers}"
-                             FontSize="25"
-                             IsEditable="True"
-                             Height="40"
-                             Width="350"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Center"
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="30"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="FieldHostIp"
+                             Grid.Column="0"
                              HorizontalContentAlignment="Left"
+                             Text="{Binding ConnectingAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             FontSize="25"
+                             Height="40"
+                             Width="320"
+                             Padding="5 0 0 0"
+                             HorizontalAlignment="Stretch"
                              VerticalContentAlignment="Center"
                              BorderThickness="2"
                              BorderBrush="{x:Null}">
-                        <ComboBox.Background>
+                        <TextBox.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="#7F6D4500" />
                                 <GradientStop Color="#7F000000" Offset="1" />
                             </LinearGradientBrush>
-                        </ComboBox.Background>
-                        <ComboBox.Style>
-                            <Style TargetType="ComboBox" BasedOn="{StaticResource TyComboBox}">
+                        </TextBox.Background>
+                        <TextBox.Style>
+                            <Style TargetType="TextBox" BasedOn="{StaticResource TyTextBox}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding HideAddress}" Value="True">
                                         <Setter Property="Foreground" Value="Transparent" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding HideAddress}" Value="False">
-                                        <Setter Property="Foreground" Value="White" />
-                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </ComboBox.Style>
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding IP}" Foreground="White" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                    <TextBlock
-                        Text="{Binding ConnectingAddress, 
-                                      Mode=OneWay, 
-                                      Converter={StaticResource BoolTextCensorConverter}}"
-                        Style="{StaticResource RubikBlock}"
-                        IsHitTestVisible="False"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Center"
-                        Padding="8 0 0 0"
-                        Margin="0, 0, 0,0"
-                        FontSize="25"
-                        Height="30"
-                        Visibility="{Binding HideAddress, 
-                                            Converter={StaticResource BooleanToVisibilityConverter},
-                                            ConverterParameter=True}" />
+                        </TextBox.Style>
+                    </TextBox>
+                    <ToggleButton Grid.Column="1" 
+                                  Template="{StaticResource TyComboBoxToggleButtonTemplate}"
+                                  IsChecked="{Binding IsPopupOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Popup StaysOpen="False" Placement="Bottom" Grid.Column="0" HorizontalOffset="200" Width="150" IsOpen="{Binding IsPopupOpen, Mode=TwoWay}">
+                        <ListView SelectionChanged="ServerListView_SelectionChanged" 
+                                  x:Name="ServerListView"
+                                  ItemsSource="{Binding Servers}" 
+                                  DisplayMemberPath="IP"
+                                  Style="{StaticResource TyListBox}">
+                            <ListView.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#7F6D4500" />
+                                    <GradientStop Color="#7F000000" Offset="1" />
+                                </LinearGradientBrush>
+                            </ListView.Background>
+                        </ListView>
+                    </Popup>
+                    <TextBlock Grid.Column="0"
+                               Text="{Binding ConnectingAddress, Mode=TwoWay, 
+                                    Converter={StaticResource BoolTextCensorConverter}}"
+                               Style="{StaticResource RubikBlock}"
+                               IsHitTestVisible="False"
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Center"
+                               Padding="8 0 0 0"
+                               Margin="0, 0, 0,0"
+                               FontSize="25"
+                               Height="30"
+                               Visibility="{Binding HideAddress, 
+                                    Converter={StaticResource BooleanToVisibilityConverter},
+                                    ConverterParameter=True}" />
                 </Grid>
 
                 <CheckBox HorizontalAlignment="Left"

@@ -118,7 +118,6 @@ internal static class PlayerReplication
         var ktp = KoalaHandler.TransformAddresses[koalaId];
 
         var selfLevel = Client.HLevel.CurrentLevelId;
-        Console.WriteLine(transform.Position.X);
         if (transform.LevelID != selfLevel)
         {
             PlayerTransforms[koalaId].Position = new Position(_defaultKoalaPosX[selfLevel], _defaultKoalaPosY[selfLevel], _defaultKoalaPosZ[selfLevel]);

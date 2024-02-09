@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using MulTyPlayerClient.GUI.ViewModels;
 
@@ -24,7 +25,17 @@ public partial class Login : UserControl
 
     private void FieldHostIp_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (FieldHostIp.SelectedItem != null)
-            (DataContext as LoginViewModel)!.SelectedServerChanged(FieldHostIp.SelectedItem);
+        //if (FieldHostIp.SelectedItem != null)
+            //(DataContext as LoginViewModel)!.SelectedServerChanged(FieldHostIp.SelectedItem);
+    }
+
+    private void ServerListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (DataContext is not LoginViewModel vm)
+            return;
+        vm.IsPopupOpen = false;
+        if (ServerListView.SelectedItem == null)
+            return;
+        vm.ConnectingAddress = ServerListView.SelectedItem.ToString();
     }
 }
