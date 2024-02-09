@@ -82,6 +82,10 @@ internal class PlayerHandler
     public static void PeerDisconnected(Message message)
     {
         var clientId = message.GetUShort();
+        if (!PlayerHandler.TryGetPlayer(clientId, out var player))
+            Logger.Write("[ERROR] Could not find player in player list");
+        else
+            PlayerReplication.ReturnKoala((int)player.Koala);
         RemovePlayer(clientId);
         SFXPlayer.PlaySound(SFX.PlayerDisconnect);
     }

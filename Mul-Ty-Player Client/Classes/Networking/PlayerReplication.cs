@@ -100,6 +100,17 @@ internal static class PlayerReplication
         return PlayerTransforms[koalaId];
     }
 
+    public static void ReturnKoala(KoalaID koalaId)
+    {
+        var level = PlayerTransforms[koalaId].LevelID;
+        if (Client.HLevel.CurrentLevelId != level)
+            return;
+        var ktp = KoalaHandler.TransformAddresses[koalaId];
+        ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(_defaultKoalaPosX[level]));
+        ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(_defaultKoalaPosY[level]));
+        ProcessHandler.WriteData(ktp.Z, BitConverter.GetBytes(_defaultKoalaPosZ[level]));
+    }
+
     private static void WriteTransformData(KoalaID koalaId, Transform transform)
     {
         var ktp = KoalaHandler.TransformAddresses[koalaId];
@@ -112,7 +123,7 @@ internal static class PlayerReplication
             return;
         }
 
-
+        Console.WriteLine($"{transform.Position.X}, {transform.Position.Y}, {transform.Position.Z}");
         ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(transform.Position.X));
         ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(transform.Position.Y));
         ProcessHandler.WriteData(ktp.Z, BitConverter.GetBytes(transform.Position.Z));

@@ -102,8 +102,6 @@ internal class Server
             PeerMessageHandler.SendMessageToClients($"{PlayerHandler.Players[e.Client.Id].Name} has disconnected from the server.", true);
             PeerMessageHandler.SendMessageToClients($"{PlayerHandler.Players[e.Client.Id].Koala.KoalaName} was returned to the koala pool",
                 true);
-            if (PlayerHandler.Players[e.Client.Id].Koala != null)
-                HKoala.ReturnKoala(PlayerHandler.Players[e.Client.Id], PlayerHandler.Players[e.Client.Id].CurrentLevel);
             PlayerHandler.RemovePlayer(e.Client.Id);
             PlayerHandler.AnnounceDisconnect(e.Client.Id);
         }
