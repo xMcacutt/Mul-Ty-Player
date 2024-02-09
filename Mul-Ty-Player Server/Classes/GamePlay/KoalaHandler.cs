@@ -1,4 +1,5 @@
-﻿using MulTyPlayer;
+﻿using System.Linq;
+using MulTyPlayer;
 using MulTyPlayerServer.Classes.Networking.Commands;
 using Riptide;
 
@@ -64,24 +65,18 @@ internal class KoalaHandler
                 player.Role, recipient, false);
     }
 
-    public void ReturnKoala(Player player)
+    public void ReturnKoala(Player player, int level)
     {
-        foreach (var otherPlayer in PlayerHandler.Players.Values)
+        float[] defaultCoords =
         {
-            if (otherPlayer.CurrentLevel == player.PreviousLevel && otherPlayer.Name != player.Name)
-            {
-                float[] defaultCoords =
-                {
-                    _defaultKoalaPosX[player.PreviousLevel],
-                    _defaultKoalaPosY[player.PreviousLevel],
-                    _defaultKoalaPosZ[player.PreviousLevel],
-                    0,
-                    0,
-                    0
-                };
-                Server.SendCoordinatesToAll(player.ClientID, player.Koala.KoalaName, player.PreviousLevel,
-                    defaultCoords, player.OnMenu);
-            }
-        }
+            _defaultKoalaPosX[level],
+            _defaultKoalaPosY[level],
+            _defaultKoalaPosZ[level],
+            0,
+            0,
+            0
+        };
+        Server.SendCoordinatesToAll(player.ClientID, player.Koala.KoalaName, level,
+            defaultCoords, player.OnMenu);
     }
 }

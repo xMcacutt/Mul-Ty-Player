@@ -45,9 +45,9 @@ internal class Server
                     LevelLockHandler.UpdateCheck();
                 foreach (var player in PlayerHandler.Players.Values)
                 {
-                    if (player.CurrentLevel != player.PreviousLevel)
+                    if (player.CurrentLevel != player.PreviousLevel && player.PreviousLevel != 99)
                     {
-                        HKoala.ReturnKoala(player);
+                        HKoala.ReturnKoala(player, player.PreviousLevel);
                         player.PreviousLevel = player.CurrentLevel;
                     }
                     SendCoordinatesToAll(player.ClientID, player.Koala.KoalaName, player.CurrentLevel,
@@ -103,7 +103,7 @@ internal class Server
             PeerMessageHandler.SendMessageToClients($"{PlayerHandler.Players[e.Client.Id].Koala.KoalaName} was returned to the koala pool",
                 true);
             if (PlayerHandler.Players[e.Client.Id].Koala != null)
-                HKoala.ReturnKoala(PlayerHandler.Players[e.Client.Id]);
+                HKoala.ReturnKoala(PlayerHandler.Players[e.Client.Id], PlayerHandler.Players[e.Client.Id].CurrentLevel);
             PlayerHandler.RemovePlayer(e.Client.Id);
             PlayerHandler.AnnounceDisconnect(e.Client.Id);
         }

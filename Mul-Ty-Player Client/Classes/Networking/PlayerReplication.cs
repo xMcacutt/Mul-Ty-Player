@@ -83,26 +83,26 @@ internal static class PlayerReplication
 
     public static void RenderTick()
     {
-        foreach (var koalaID in receivedSnapshotData.Keys)
+        foreach (var koalaId in receivedSnapshotData.Keys)
             if (!Client.HGameState.IsAtMainMenuOrLoading())
             {
-                var t = UpdateTransform(koalaID);
-                WriteTransformData(koalaID, t);
+                var t = UpdateTransform(koalaId);
+                WriteTransformData(koalaId, t);
             }
     }
 
-    private static Transform UpdateTransform(KoalaID koalaID)
+    private static Transform UpdateTransform(KoalaID koalaId)
     {
-        var snapshots = receivedSnapshotData[koalaID];
-        PlayerTransforms[koalaID].Position = Interpolation.LerpPosition(snapshots, InterpolationMode);
-        PlayerTransforms[koalaID].Rotation = snapshots.New.Transform.Rotation;
-        PlayerTransforms[koalaID].LevelID = snapshots.New.Transform.LevelID;
-        return PlayerTransforms[koalaID];
+        var snapshots = receivedSnapshotData[koalaId];
+        PlayerTransforms[koalaId].Position = Interpolation.LerpPosition(snapshots, InterpolationMode);
+        PlayerTransforms[koalaId].Rotation = snapshots.New.Transform.Rotation;
+        PlayerTransforms[koalaId].LevelID = snapshots.New.Transform.LevelID;
+        return PlayerTransforms[koalaId];
     }
 
-    private static void WriteTransformData(KoalaID koalaID, Transform transform)
+    private static void WriteTransformData(KoalaID koalaId, Transform transform)
     {
-        var ktp = KoalaHandler.TransformAddresses[koalaID];
+        var ktp = KoalaHandler.TransformAddresses[koalaId];
         
         if (transform.LevelID != Client.HLevel.CurrentLevelId)
         {

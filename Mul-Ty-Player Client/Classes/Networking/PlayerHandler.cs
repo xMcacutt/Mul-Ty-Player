@@ -24,9 +24,12 @@ internal class PlayerHandler
     //Adds other player to players & playerInfo
     public static void AddPlayer(Koala koala, string name, ushort clientId, bool isHost, bool isReady, HSRole role)
     {
-        if (Players.Any(x => x.Id == clientId))
-            Players.Remove(Players.First(x => x.Id == clientId));
-        Players.Add(new Player(koala, name, clientId, isHost, isReady, role));
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            if (Players.Any(x => x.Id == clientId))
+                Players.Remove(Players.First(x => x.Id == clientId));
+            Players.Add(new Player(koala, name, clientId, isHost, isReady, role));
+        });
         ModelController.KoalaSelect.SetAvailability(koala, false);
         SFXPlayer.PlaySound(SFX.PlayerConnect);
         PlayerReplication.AddPlayer((int)koala);
@@ -43,19 +46,30 @@ internal class PlayerHandler
         message.AddBool(isHost);
         message.AddBool(isReady);
         message.AddInt((int)role);
-        if (Players.Any(x => x.Id == clientId))
-            Players.Remove(Players.First(x => x.Id == clientId));
-        Players.Add(new Player(koala, name, clientId, isHost, isReady, role));
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            if (Players.Any(x => x.Id == clientId))
+                Players.Remove(Players.First(x => x.Id == clientId));
+            Players.Add(new Player(koala, name, clientId, isHost, isReady, role)); 
+        });
         Client._client.Send(message);
         Client.KoalaSelected = true;
     }
 
     public static void RemovePlayer(ushort clientId)
     {
-        ModelController.KoalaSelect.SetAvailability(Players[clientId].Koala, true);
-        PlayerReplication.RemovePlayer((int)Players[clientId].Koala);
+        if (!TryGetPlayer(clientId, out var player))
+        {
+            Logger.Write("[Error] Could not find player in player list");
+            return;
+        }
+        ModelController.KoalaSelect.SetAvailability(player.Koala, true);
+        PlayerReplication.RemovePlayer((int)player.Koala);
         if (Players.Any(x => x.Id == clientId))
-            Players.Remove(Players.First(x => x.Id == clientId));
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Players.Remove(Players.First(x => x.Id == clientId));
+            });
     }
 
     public static bool TryGetPlayer(ushort clientId, out Player player)
@@ -69,7 +83,6 @@ internal class PlayerHandler
     {
         var clientId = message.GetUShort();
         RemovePlayer(clientId);
-        //VoiceHandler.TryRemoveVoice(clientId);
         SFXPlayer.PlaySound(SFX.PlayerDisconnect);
     }
     
@@ -90,7 +103,13 @@ internal class PlayerHandler
     [MessageHandler((ushort)MessageID.Ready)]
     public static void PeerReady(Message message)
     {
-        Players[message.GetUShort()].IsReady = message.GetBool();
+        var clientId = message.GetUShort();
+        if (!TryGetPlayer(clientId, out var player))
+        {
+            Logger.Write("[Error] Could not find player in player list");
+            return;
+        }
+        player.IsReady = message.GetBool();
     }
     
 }

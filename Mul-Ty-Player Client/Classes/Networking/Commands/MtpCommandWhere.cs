@@ -52,7 +52,12 @@ public class MtpCommandWhere : Command
             LogError("The id given is not valid");
             return;
         }
-        if (!PlayerHandler.TryGetPlayer(Client._client.Id, out var player))
+        if (clientId == Client._client.Id)
+        {
+            RunWhere();
+            return;
+        }
+        if (!PlayerHandler.TryGetPlayer(clientId, out var player))
         {
             LogError("The client id specified is not a player.");
             return;
