@@ -109,7 +109,8 @@ internal class Client
             KoalaSelected = true;
             IsReconnect = false;
         }
-        HSync.HLevelLock.RequestData();
+        if (SettingsHandler.DoLevelLock)
+            HSync.HLevelLock.RequestData();
     }
 
     private static void Disconnected(object sender, DisconnectedEventArgs e)

@@ -18,7 +18,7 @@ internal class LiveBilbySyncer : LiveDataSyncer
 
     public override void Collect(int index)
     {
-        if (HSyncObject.CurrentObjectData[index] != 1) return;
+        //if (HSyncObject.CurrentObjectData[index] != 1) return;
         if (Client.HGameState.IsOnMainMenuOrLoading) return;
         ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + ObjectLength * index,
             new[] { HSyncObject.WriteState }, "Collecting bilby");

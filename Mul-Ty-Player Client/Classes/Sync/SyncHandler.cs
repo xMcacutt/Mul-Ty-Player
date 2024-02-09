@@ -48,7 +48,6 @@ internal class SyncHandler
     public static void SetSaveDataBaseAddress()
     {
         SaveDataBaseAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0x10 });
-        Console.WriteLine(SaveDataBaseAddress);
     }
 
     public void SetMemAddrs()
