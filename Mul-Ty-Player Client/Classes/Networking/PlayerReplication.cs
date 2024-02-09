@@ -106,6 +106,8 @@ internal static class PlayerReplication
         if (Client.HLevel.CurrentLevelId != level)
             return;
         var ktp = KoalaHandler.TransformAddresses[koalaId];
+        PlayerTransforms[koalaId].Position = new Position(_defaultKoalaPosX[level], _defaultKoalaPosY[level], _defaultKoalaPosZ[level]);
+
         ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(_defaultKoalaPosX[level]));
         ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(_defaultKoalaPosY[level]));
         ProcessHandler.WriteData(ktp.Z, BitConverter.GetBytes(_defaultKoalaPosZ[level]));
@@ -114,12 +116,15 @@ internal static class PlayerReplication
     private static void WriteTransformData(KoalaID koalaId, Transform transform)
     {
         var ktp = KoalaHandler.TransformAddresses[koalaId];
-        
-        if (transform.LevelID != Client.HLevel.CurrentLevelId)
+
+        var selfLevel = Client.HLevel.CurrentLevelId;
+        Console.WriteLine(transform.Position.X);
+        if (transform.LevelID != selfLevel)
         {
-            ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(_defaultKoalaPosX[Client.HLevel.CurrentLevelId]));
-            ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(_defaultKoalaPosY[Client.HLevel.CurrentLevelId]));
-            ProcessHandler.WriteData(ktp.Z, BitConverter.GetBytes(_defaultKoalaPosZ[Client.HLevel.CurrentLevelId]));
+            PlayerTransforms[koalaId].Position = new Position(_defaultKoalaPosX[selfLevel], _defaultKoalaPosY[selfLevel], _defaultKoalaPosZ[selfLevel]);
+            ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(_defaultKoalaPosX[selfLevel]));
+            ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(_defaultKoalaPosY[selfLevel]));
+            ProcessHandler.WriteData(ktp.Z, BitConverter.GetBytes(_defaultKoalaPosZ[selfLevel]));
             return;
         }
 
@@ -131,9 +136,9 @@ internal static class PlayerReplication
         ProcessHandler.WriteData(ktp.Roll, BitConverter.GetBytes(transform.Rotation.Roll));
     }
 
-    internal static void UpdatePlayerSnapshotData(KoalaID koalaID, float[] transform, int levelID)
+    internal static void UpdatePlayerSnapshotData(KoalaID koalaId, float[] transform, int levelId)
     {
-        receivedSnapshotData[koalaID].Update(new TransformSnapshot(transform, levelID));
+        receivedSnapshotData[koalaId].Update(new TransformSnapshot(transform, levelId));
     }
 
     #region AddRemovePlayers
