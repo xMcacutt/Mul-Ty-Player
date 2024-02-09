@@ -15,10 +15,10 @@ namespace MulTyPlayerClient;
 internal class PlayerHandler
 {
     public static ObservableCollection<Player> Players = new();
-    
+
     public PlayerHandler()
     {
-        Players = new ObservableCollection<Player>();
+        Application.Current.Dispatcher.Invoke(() => { Players.Clear(); });
     }
 
     //Adds other player to players & playerInfo
