@@ -41,6 +41,7 @@ public class HSHandler
             _role = value;
             if (value == HSRole.Seeker)
                 _timerRunning = false;
+            ChangeRole(Client._client.Id, value);
             ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EC00, BitConverter.GetBytes((float)350));
             OnRoleChanged?.Invoke(value);
         }

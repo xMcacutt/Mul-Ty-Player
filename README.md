@@ -155,6 +155,9 @@ With your port forwarding rule set up, people can now join your server using you
 
 ### Bug Fixes
 
+#### 3.4.4 Hotfix
+- (HS) Role now updates correctly
+
 #### 3.4.3
 - Ghost players in client resolved
 - Redundant player info list removed

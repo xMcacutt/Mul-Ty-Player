@@ -25,6 +25,7 @@ public class LobbyViewModel : IViewModel
         Lobby.IsHideSeekEnabledChanged += Model_IsHideSeekEnabledChanged;
         Lobby.IsLevelLockEnabledChanged += Model_IsLevelLockEnabledChanged;
         Lobby.CanLaunchGameChanged += Model_CanLaunchGameChanged;
+        HSHandler.OnRoleChanged += Model_RoleChanged;
         HSHandler.OnTimeChanged += Model_TimeChanged;
         Countdown.OnCountdownBegan += OnCountdownBegan;
         Countdown.OnCountdownAborted += OnCountdownEnded;
@@ -90,6 +91,11 @@ public class LobbyViewModel : IViewModel
     private void Model_IsReadyChanged(bool value)
     {
         IsReady = value;
+    }
+    
+    private void Model_RoleChanged(HSRole newRole)
+    {
+        Role = newRole;
     }
 
     private void Model_CanLaunchGameChanged(bool value)
