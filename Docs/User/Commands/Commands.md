@@ -80,3 +80,17 @@ Server commands must be called through the command line interface in the server 
 - [Teleport](./TeleportCommand.md)
 
 - [Whisper](./WhisperCommand.md)
+
+---
+
+## Global Hotkeys
+
+As of v3.4.5, global hotkeys have been activated allowing certain functions to be called using shortcuts without the client needing to be the focussed window.
+These are the shortcuts available
+- Ctrl + Shift + G - Runs the /groundswim command
+- Ctrl + Shift + H - Runs the /requesthost command
+- Ctrl + Shift + S - Runs the /countdown command with the "start" argument
+- Ctrl + Shift + T - Runs the /taunt command for Hide & Seek mode
+- Ctrl + Shift + R - Runs the /ready command
+- Ctrl + Shift + Alt + C - Runs the /crash command
+- Ctrl + Shift + P - Runs the last command typed into the console

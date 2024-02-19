@@ -62,6 +62,18 @@ internal class TyProcess
         }
     }
 
+    public static void CloseProcess()
+    {
+        try
+        {
+            process?.CloseMainWindow();
+        }
+        catch
+        {
+            
+        }
+    }
+
     //Returns true if process is running
     //Attempts to find the Ty process if not, returns true if successfully found
     //Returns false if Ty is closed or is in the process of being launched

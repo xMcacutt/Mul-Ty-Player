@@ -38,6 +38,9 @@ When a Seeker is in range of a Hider, the Hider will be "caught" and teleported 
 
 This continues untill all players are caught when the game resets to neutral.
 
+##### Taunting
+Once every 30 seconds into seek time, hiders may choose to taunt, playing a sound to all seekers within 3000 units. A time bonus is awarded with more time added the closer the seeker was to you. The effect stacks with multiple seekers in range.
+
 ---
 
 ## Command

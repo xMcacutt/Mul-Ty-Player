@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Xps.Serialization;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.GUI.Models;
@@ -72,15 +73,25 @@ internal class KoalaHandler
             TransformAddresses[koalaId].Collision = _baseKoalaAddress + 0x298 + koalaOffset;
             TransformAddresses[koalaId].Visibility = _baseKoalaAddress + 0x44 + koalaOffset;
             TransformAddresses[koalaId].Scale = _baseKoalaAddress + 0x60 + koalaOffset;
+            TransformAddresses[koalaId].State = _baseKoalaAddress + 0x98 + koalaOffset;
         }
         
         ScaleKoalas();
+        SetKoalaState();
         MakeVisible();
 
         if (!SettingsHandler.Settings.DoKoalaCollision)
             SetCollision();
 
         readyToWriteTransformData = true;
+    }
+
+    public void SetKoalaState()
+    {
+        // Turns koala state to 0 to avoid audio playing from koalas
+        var value = SettingsHandler.DoHideSeek ? (byte)0 : (byte)1;
+        for (var i = 0; i < 8; i++)
+            ProcessHandler.WriteData(TransformAddresses[i].State, new byte[] { value }, "Removing voice lines");
     }
 
     public void SetCollision()
@@ -167,6 +178,6 @@ internal class KoalaHandler
 
     public struct KoalaTransformAddresses
     {
-        public int X, Y, Z, Pitch, Yaw, Roll, Collision, Visibility, Scale;
+        public int X, Y, Z, Pitch, Yaw, Roll, Collision, Visibility, Scale, State;
     }
 }

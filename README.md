@@ -153,6 +153,10 @@ With your port forwarding rule set up, people can now join your server using you
 - Extra stability
 - *Note* - Frame syncing is still bugged
 
+#### 3.4.5
+- Global hotkeys to access functions in the client whilst in Ty.
+- Taunt system for Hide & Seek
+
 ### Bug Fixes
 
 #### 3.4.4 Hotfix

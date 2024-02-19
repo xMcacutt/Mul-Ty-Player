@@ -44,6 +44,11 @@ public class HeroHandler
     {
         return currentPositionRotation;
     }
+
+    public void SetHeroState(int state)
+    {
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27158C, BitConverter.GetBytes(state));
+    }
     
     public void WritePosition(float x, float y, float z, bool log = true)
     {

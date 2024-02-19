@@ -27,6 +27,9 @@ public class CommandHandler
         RegisterCommand(new MtpCommandWhere());
         RegisterCommand(new MtpCommandWhisper());
         RegisterCommand(new MtpCommandHideSeek());
+        RegisterCommand(new MtpCommandGroundSwim());
+        RegisterCommand(new MtpCommandCrash());
+        RegisterCommand(new MtpCommandTaunt());
     }
     
     public void ParseCommand(string input)

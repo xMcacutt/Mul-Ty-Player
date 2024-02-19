@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MulTyPlayer;
 using Riptide;
 
 namespace MulTyPlayerServer.Classes.Networking.Commands;
@@ -48,5 +49,12 @@ public class CommandHandler
         {
             Commands[alias] = command;
         }
+    }
+
+    [MessageHandler((ushort)MessageID.Crash)]
+    private static void CrashClients(ushort fromClientId, Message message)
+    {
+        var response = Message.Create(MessageSendMode.Reliable, MessageID.Crash);
+        Server._Server.SendToAll(response, fromClientId);
     }
 }

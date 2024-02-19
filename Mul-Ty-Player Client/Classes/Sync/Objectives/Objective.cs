@@ -78,12 +78,6 @@ public abstract class Objective
         }
     }
 
-    private bool MemoryAddressValid()
-    {
-        ProcessHandler.TryRead(ObjectAddress, out ushort result, false, "MemoryAddressValid()");
-        return result == CheckValue;
-    }
-
     private void RunAction(object sender, ObjectiveStateChangedEventArgs e)
     {
         if (Client.HLevel.CurrentLevelId != Level)
@@ -104,6 +98,12 @@ public abstract class Objective
             default:
                 throw new ArgumentOutOfRangeException();
         }
+    }
+
+    private bool MemoryAddressValid()
+    {
+        ProcessHandler.TryRead(ObjectAddress, out ushort result, false, "MemoryAddressValid()");
+        return result == CheckValue;
     }
 
     public virtual void SetMemoryAddress()

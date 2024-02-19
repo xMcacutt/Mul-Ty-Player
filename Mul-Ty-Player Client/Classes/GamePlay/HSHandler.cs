@@ -14,7 +14,7 @@ public class HSHandler
 {
     //HIDE & SEEK HANDLER
     private bool _timerRunning;
-    private HSMode _mode;
+    public HSMode Mode;
     private bool _camLocked;
     
     private int _time;
@@ -53,24 +53,24 @@ public class HSHandler
     {
         OnRoleChanged += AnnounceRoleChanged;
         Role = HSRole.Hider;
-        _mode = HSMode.Neutral;
+        Mode = HSMode.Neutral;
     }
     
     public void Run()
     {
         //HIDE TIME SEEKER
-        if (_mode == HSMode.HideTime && Role == HSRole.Seeker)
+        if (Mode == HSMode.HideTime && Role == HSRole.Seeker)
             LockPlayer();
         
         //SEEK TIME HIDER
-        if (_mode == HSMode.SeekTime && Role == HSRole.Hider)
+        if (Mode == HSMode.SeekTime && Role == HSRole.Hider)
         {
             if (!_timerRunning)
                 _timerRunning = true;
             RunRadiusCheck(HSRole.Hider);
         }
 
-        if (_mode == HSMode.SeekTime && Role == HSRole.Seeker)
+        if (Mode == HSMode.SeekTime && Role == HSRole.Seeker)
         {
             Client.HHero.SetRunSpeed(10.05f);
             RunRadiusCheck(HSRole.Seeker);
@@ -78,7 +78,7 @@ public class HSHandler
         
         if (PlayerHandler.Players.Any(x => x.Role == HSRole.Hider))
             return;
-        _mode = HSMode.Neutral;
+        Mode = HSMode.Neutral;
         _timerRunning = false;
         Client.HHero.SetRunSpeed();
     }
@@ -192,9 +192,10 @@ public class HSHandler
 
     [MessageHandler((ushort)MessageID.HS_HideTimerStart)]
     private static void HideTimerStart(Message message)
-    { 
+    {
         Client.HCommand.Commands["tp"].InitExecute(new string[] {"@s"});
-        Client.HHideSeek._mode = HSMode.HideTime;
+        Client.HKoala.SetKoalaState();
+        Client.HHideSeek.Mode = HSMode.HideTime;
         foreach (var entry in PlayerHandler.Players) entry.IsReady = false;
         ModelController.Lobby.IsReady = false;
         SFXPlayer.PlaySound(SFX.HS_HideStart);
@@ -218,7 +219,9 @@ public class HSHandler
     [MessageHandler((ushort)MessageID.HS_StartSeek)]
     private static void StartSeek(Message message)
     {
-        Client.HHideSeek._mode = HSMode.SeekTime;
+        Client.HHideSeek.Mode = HSMode.SeekTime;
+        
+        (Client.HCommand.Commands["taunt"] as MtpCommandTaunt).TauntStopwatch.Restart();
         
         Client.HKoala.ScaleKoalas();
         
@@ -239,7 +242,7 @@ public class HSHandler
     private static void Abort(Message message)
     {
         Client.HHideSeek.Role = HSRole.Seeker;
-        Client.HHideSeek._mode = HSMode.Neutral;
+        Client.HHideSeek.Mode = HSMode.Neutral;
         Client.HHideSeek._timerRunning = false;
         Client.HHero.SetRunSpeed();
         SFXPlayer.PlaySound(SFX.TAOpen);

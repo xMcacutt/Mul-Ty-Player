@@ -45,6 +45,7 @@ internal static class SettingsHandler
             _doHideSeek = value;
             if (value)
                 Client.HHideSeek.StartTimerLoop();
+            Client.HKoala.SetKoalaState();
         }
     }
 

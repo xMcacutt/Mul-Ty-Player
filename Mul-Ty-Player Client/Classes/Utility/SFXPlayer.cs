@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Media;
+using MulTyPlayerClient.Classes.Networking;
 
 namespace MulTyPlayerClient;
 
@@ -21,7 +22,8 @@ public enum SFX
     HS_HideStart,
     HS_SeekStart,
     Punch,
-    Objective
+    Objective,
+    Taunt
 }
 
 public static class SFXPlayer
@@ -44,6 +46,7 @@ public static class SFXPlayer
         { SFX.HS_SeekStart, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/HS_SeekStart.wav")},
         { SFX.Punch, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Punch.wav")},
         { SFX.Objective, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Objective.wav")},
+        { SFX.Taunt, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Taunt.wav")}
     };
 
     private static Dictionary<SFX, MediaPlayer> mediaPlayers;
@@ -61,6 +64,17 @@ public static class SFXPlayer
             player.Dispatcher.Invoke(() =>
             {
                 player.Stop();
+                player.Play();
+            });
+    }
+    
+    public static void PlaySound(SFX sfxName, float volume)
+    {
+        if (mediaPlayers.TryGetValue(sfxName, out var player))
+            player.Dispatcher.Invoke(() =>
+            {
+                player.Stop();
+                player.Volume = volume;
                 player.Play();
             });
     }
@@ -90,6 +104,7 @@ public static class SFXPlayer
         MediaPlayer mp = new();
         mp.Open(uri);
         mp.Volume = 0.15f;
+        mp.MediaEnded += delegate { mp.Volume = 0.15f; };
         mediaPlayers.Add(sfxName, mp);
     }
 

@@ -2,10 +2,6 @@
 
 ---
 
-This guide is intended for those wanting to use and understand the features of Mul-Ty-Player with a high level overview. If you are looking to understand how MTP functions, please see ../Developer/DeveloperGuide.md. 
-
----
-
 ## What is Mul-Ty-Player?
 
 Mul-Ty-Player (MTP) is an application and modification of Ty the Tasmanian Tiger allowing up to eight people to connect online to play together. This is achieved by manually reading and writing to the game's memory to manipulate player positions, collectible states, etc. To run MTP, both the client (the application which manipulates the game's memory) and the modified game files must be run concurrently. The modified game files are installed via a sideloading method left over from Krome's development of Ty. 

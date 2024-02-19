@@ -160,7 +160,6 @@ public class UpdateViewModel
         var guiDirPath = Path.Combine(clientDirPath, "GUI");
         if (Directory.Exists(guiDirPath))
             CopyDirectory(guiDirPath, tempDirPath, true);
-        
         Directory.Delete(clientDirPath, true);
         Directory.CreateDirectory(clientDirPath);
         var zipPath = Path.Combine(clientDirPath, "Client.zip");

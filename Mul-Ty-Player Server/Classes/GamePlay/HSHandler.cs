@@ -60,6 +60,16 @@ public class HSHandler
             PeerMessageHandler.SendMessageToClient("No Hide & Seek session to abort.", false, fromClientId);
         }
     }
+
+    [MessageHandler((ushort)MessageID.HS_Taunt)]
+    private static void HandleTaunt(ushort fromClientId, Message message)
+    {
+        var clientId = message.GetUShort();
+        var distance = message.GetFloat();
+        var forward = Message.Create(MessageSendMode.Reliable, MessageID.HS_Taunt);
+        forward.AddFloat(distance);
+        Server._Server.Send(forward, clientId);
+    }
     
     public static void StartHideTimer()
     {

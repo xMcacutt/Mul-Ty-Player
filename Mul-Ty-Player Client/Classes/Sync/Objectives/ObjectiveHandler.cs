@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using MulTyPlayer;
-using MulTyPlayerClient.Classes.Utility;
-using MulTyPlayerClient.LevelLock;
 using Riptide;
 
 namespace MulTyPlayerClient.Objectives;
