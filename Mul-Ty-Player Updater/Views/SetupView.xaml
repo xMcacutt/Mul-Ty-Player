@@ -118,7 +118,7 @@
                                 Orientation="Horizontal" 
                                 HorizontalAlignment="Center">
                         <TextBox Style="{StaticResource SettingsTextBoxStyle}"
-                                 Text="{Binding MTPPath}"
+                                 Text="{Binding MTPPath, UpdateSourceTrigger=PropertyChanged}"
                                  Margin="0"
                                  x:Name="MTPPathBox"
                                  Width="340"/>

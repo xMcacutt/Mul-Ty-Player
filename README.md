@@ -11,11 +11,11 @@ Mul-Ty-Player breathes new life into Ty the Tasmanian Tiger, allowing you to pla
 In just a few minutes, you can be exploring snowy mountains, swimming through shark infested waters, and fighting off
 Boss Cass together as your favourite koalas.
 
-## Update & Installation
+## Getting Started
+
+***If you're new to MTP, it is strongly recommended that you read the [docs](./Docs/User/User%20Guide.md). Instructions for installation are clearly defined in the first page.***
 
 ![Boonie](/GitImages/Boonie.png)
-
-### If you're new to MTP, it is strongly recommended that you read the [docs](./Docs/User/User%20Guide.md). Instructions for installation are clearly defined in the first page.
 
 ![ClientGUI](/GitImages/Lobby.png)
 
@@ -33,41 +33,9 @@ having to visit this site again.
 
 ![Updater](/GitImages/Updater%20Main.png)
 
-Before installing, make sure you remove all pre 3.2.0 versions of Mul-Ty-Player from your computer, including the game
-files.
-
-You can remove the applications from the "Add or Remove Programs" section of your control panel.
-
-To remove the game files, delete the "Mul-Ty-Player" folder from your game directory.
-
-To install Mul-Ty-Player, go to the releases page and download the "Mul-Ty-Player Updater" application.
-
-Extract the files and run the application. You'll need to install the files
-on your first use. After that, you can update your files simply by using the update button.
-If you move any of your files or want to change your update settings, you can use the setup window.
 
 ![Installer](/GitImages/Installer.png)
 
-The server application is only necessary if you wish to host sessions.
-
-Avoid installing the client and server in protected locations such as Program Files.
-
-Mul-Ty-Player should now be installed and ready to run.
-
-### Port Forwarding For Server Hosts.
-
-To run the server you'll need to open port 8750 on UDP.
-
-1. Open CMD (Command Prompt).
-2. Type 'ipconfig' and press return.
-3. Find IPv4 address and copy this into browser search bar.
-4. Log in to your router.
-5. Set up a new port forwarding rule.
-6. Paste IPv4 address into forwarding address, set port to 8750, set rule to UDP.
-7. *Read the above sentence again and make sure the rule is set to UDP.*
-8. Go to https://www.whatismypublicip.com/ this is your public IP address.
-
-With your port forwarding rule set up, people can now join your server using your public IP address.
 
 ## Changelog
 
@@ -158,6 +126,9 @@ With your port forwarding rule set up, people can now join your server using you
 - Taunt system for Hide & Seek
 
 ### Bug Fixes
+
+#### 3.4.5 
+- Updater now functions correctly in most cases and can be used over 3.2.2
 
 #### 3.4.4 Hotfix
 - (HS) Role now updates correctly
