@@ -158,7 +158,7 @@ public class HSHandler
     private void CaughtBySeeker(ushort seekerId)
     {
         SFXPlayer.PlaySound(SFX.Punch);
-        Client.HCommand.Commands["tp"].InitExecute(new string[] {"@s"});
+        Client.HHero.SetHeroState(29);
         Role = HSRole.Seeker;
         
         var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);

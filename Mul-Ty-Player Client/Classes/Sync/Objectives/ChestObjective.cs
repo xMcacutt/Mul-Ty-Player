@@ -38,7 +38,6 @@ public class ChestObjective : Objective
         HTrigger.CheckSetTrigger(0, false);
         //GET CURRENT CHEST FROM DATA COUNT
         CurrentChest = CurrentData.Count(x => x == 1) - 1;
-        //Console.WriteLine($"Current Chest {CurrentChest} ChestStates {CurrentData[0]} {CurrentData[1]} {CurrentData[2]} {CurrentData[3]} {CurrentData[4]} {CurrentData[5]}");
         //IF ALL CHESTS ARE ACTIVE SET TURN IN READY
         if (CurrentChest == 5)
         {

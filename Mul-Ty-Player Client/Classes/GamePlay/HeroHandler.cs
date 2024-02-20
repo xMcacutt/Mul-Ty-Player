@@ -45,9 +45,15 @@ public class HeroHandler
         return currentPositionRotation;
     }
 
+    public void SetHealth(int value)
+    {
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x2737CC, BitConverter.GetBytes(value));
+    }
+
     public void SetHeroState(int state)
     {
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27158C, BitConverter.GetBytes(state));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x26EE4C, BitConverter.GetBytes(state));
     }
     
     public void WritePosition(float x, float y, float z, bool log = true)

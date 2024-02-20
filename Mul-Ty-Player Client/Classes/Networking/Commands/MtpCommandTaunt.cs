@@ -79,6 +79,8 @@ public class MtpCommandTaunt : Command
 
     private void RunTaunt()
     {
+        var overallTimeBonus = 0;
+        var seekerCount = 0;
         foreach (var player in PlayerHandler.Players.Where(x => x.Role == HSRole.Seeker))
         {
             var ownPosition = Client.HHero.GetCurrentPosRot();
@@ -96,16 +98,20 @@ public class MtpCommandTaunt : Command
             Client.HHideSeek.Time += timeBonus;
             if (timeBonus > 0)
             {
-                Logger.Write($"[HIDE AND SEEK] Bonus time of {timeBonus} awarded for taunt.");
                 var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Taunt);
                 message.AddUShort(player.Id);
                 message.AddFloat(distance);
                 Client._client.Send(message);
-                return;
+                overallTimeBonus += timeBonus;
+                seekerCount++;
             }
+        }
+        if (seekerCount == 0)
+        {
             Logger.Write($"[HIDE AND SEEK] No seekers were nearby to hear your screams. Womp womp.");
             return;
         }
+        Logger.Write($"[HIDE AND SEEK] {seekerCount} seekers heard you. Bonus time of {overallTimeBonus} awarded for taunt.");
     }
 
     [MessageHandler((ushort)MessageID.HS_Taunt)]
