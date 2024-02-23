@@ -125,7 +125,15 @@ having to visit this site again.
 - Global hotkeys to access functions in the client whilst in Ty.
 - Taunt system for Hide & Seek
 
+#### 3.4.6
+- Request Sync hotkey added
+- Commas allowed in /tp
+
 ### Bug Fixes
+
+#### 3.4.6
+- Taunt system fixes
+- Cable car syncing fixes
 
 #### 3.4.5 
 - Updater now functions correctly in most cases and can be used over 3.2.2

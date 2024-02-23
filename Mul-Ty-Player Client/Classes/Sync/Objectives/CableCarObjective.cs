@@ -112,7 +112,7 @@ public class CableCarObjective : Objective
     {
         for (var i = 0; i < Count; i++)
         {
-            if (data[i] != 1 || CurrentData[i] == 1) continue;
+            if (CurrentData[i] == 1) continue;
             CurrentData[i] = OldData[i] = data[i];
             UpdateObjectState(i);
         }

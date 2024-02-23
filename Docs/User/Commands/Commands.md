@@ -94,3 +94,4 @@ These are the shortcuts available
 - Ctrl + Shift + R - Runs the /ready command
 - Ctrl + Shift + Alt + C - Runs the /crash command
 - Ctrl + Shift + P - Runs the last command typed into the console
+- Ctrl + Shift + Q - Calls request sync (for de-synchronization issues)

@@ -31,6 +31,7 @@ public class MtpCommandTeleport : Command
 
     public override void InitExecute(string[] args)
     {
+        args = args.Select(arg => arg.Replace(",", "")).ToArray();
         //CHECK ARGS
         if (args.Length is 0 or > 4)
         {
