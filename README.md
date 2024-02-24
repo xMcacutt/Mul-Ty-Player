@@ -129,7 +129,15 @@ having to visit this site again.
 - Request Sync hotkey added
 - Commas allowed in /tp
 
+#### 3.4.7
+- Cheat command added
+- Cheat command hotkeys added under Alt + Shift
+- Sounds added on rang obtain
+
 ### Bug Fixes
+
+#### 3.4.7
+- Hotkey crash handled with warning box
 
 #### 3.4.6
 - Taunt system fixes

@@ -97,4 +97,24 @@ public class HeroHandler
         ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288914), BitConverter.GetBytes(speed));
     }
     
+    public void ToggleInvincibility()
+    {
+        ProcessHandler.TryRead(0x288A55, out bool result, true, "ToggleInvincibility()");
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288A55), BitConverter.GetBytes(!result));
+    }
+
+    public void GiveTechnorangs()
+    {
+        var saveAddress = PointerCalculations.GetPointerAddress(0x288730, new int[1]);
+        ProcessHandler.WriteData(saveAddress + 0xABB, new byte[] { 1, 1, 1, 1, 1 });
+        ProcessHandler.WriteData(saveAddress + 0xAC2, new byte[] { 1, 1 });
+    }
+    
+    public void ToggleElementals()
+    {
+        var saveAddress = PointerCalculations.GetPointerAddress(0x288730, new int[1]);
+        ProcessHandler.WriteData(saveAddress + 0xAB4, new byte[] { 1, 1, 1 });
+        ProcessHandler.WriteData(saveAddress + 0xAB9, new byte[] { 1, 1 });
+        ProcessHandler.WriteData(saveAddress + 0xAC0, new byte[] { 1 });
+    }
 }

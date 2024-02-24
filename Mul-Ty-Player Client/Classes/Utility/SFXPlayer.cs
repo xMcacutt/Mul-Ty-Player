@@ -23,7 +23,9 @@ public enum SFX
     HS_SeekStart,
     Punch,
     Objective,
-    Taunt
+    Taunt,
+    RangGet,
+    CheatActivated
 }
 
 public static class SFXPlayer
@@ -46,7 +48,9 @@ public static class SFXPlayer
         { SFX.HS_SeekStart, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/HS_SeekStart.wav")},
         { SFX.Punch, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Punch.wav")},
         { SFX.Objective, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Objective.wav")},
-        { SFX.Taunt, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Taunt.wav")}
+        { SFX.Taunt, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Taunt.wav")},
+        { SFX.RangGet, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/RangGet.wav")},
+        { SFX.CheatActivated, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/CheatActivated.wav")}
     };
 
     private static Dictionary<SFX, MediaPlayer> mediaPlayers;

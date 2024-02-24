@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 using System.Windows.Input;
 using NHotkey;
 using NHotkey.Wpf;
@@ -10,14 +11,32 @@ public class HotkeyHandler
     public static void SetupHotkeys()
     {
 #pragma warning disable CA1416
-        HotkeyManager.Current.AddOrReplace("groundswim", Key.G, ModifierKeys.Control | ModifierKeys.Shift, OnKeyPress);
-        HotkeyManager.Current.AddOrReplace("ready", Key.R, ModifierKeys.Control | ModifierKeys.Shift, OnKeyPress);
-        HotkeyManager.Current.AddOrReplace("requesthost", Key.H, ModifierKeys.Control | ModifierKeys.Shift, OnKeyPress);
-        HotkeyManager.Current.AddOrReplace("start", Key.S, ModifierKeys.Control | ModifierKeys.Shift, OnKeyPress);
-        HotkeyManager.Current.AddOrReplace("previous", Key.P, ModifierKeys.Control | ModifierKeys.Shift, OnKeyPress);
-        HotkeyManager.Current.AddOrReplace("taunt", Key.T, ModifierKeys.Control | ModifierKeys.Shift, OnKeyPress);
-        HotkeyManager.Current.AddOrReplace("requestsync", Key.Q, ModifierKeys.Control | ModifierKeys.Shift, OnKeyPress);
-        HotkeyManager.Current.AddOrReplace("crash", Key.C, ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt, OnKeyPress);
+        try
+        {
+            HotkeyManager.Current.AddOrReplace("groundswim", Key.G, ModifierKeys.Control | ModifierKeys.Shift,
+                OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("ready", Key.R, ModifierKeys.Control | ModifierKeys.Shift, OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("requesthost", Key.H, ModifierKeys.Control | ModifierKeys.Shift,
+                OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("start", Key.S, ModifierKeys.Control | ModifierKeys.Shift, OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("previous", Key.P, ModifierKeys.Control | ModifierKeys.Shift,
+                OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("taunt", Key.T, ModifierKeys.Control | ModifierKeys.Shift, OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("requestsync", Key.Q, ModifierKeys.Control | ModifierKeys.Shift,
+                OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("crash", Key.C,
+                ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt, OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("cheat_i", Key.I, ModifierKeys.Alt | ModifierKeys.Shift, OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("cheat_t", Key.T, ModifierKeys.Alt | ModifierKeys.Shift, OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("cheat_m", Key.M, ModifierKeys.Alt | ModifierKeys.Shift, OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("cheat_e", Key.E, ModifierKeys.Alt | ModifierKeys.Shift, OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("cheat_l", Key.L, ModifierKeys.Alt | ModifierKeys.Shift, OnKeyPress);
+        }
+        catch
+        {
+            MessageBox.Show(
+                @"Global hotkeys may be disabled due to conflicts. Check running apps for conflicting global hotkeys.");
+        }
 #pragma warning restore CA1416
     }
 
@@ -63,6 +82,11 @@ public class HotkeyHandler
         if (e.Name == "requestsync")
         {
             Client.HSync?.RequestSync();
+        }
+
+        if (e.Name.StartsWith("cheat"))
+        {
+            Client.HCommand.Commands["cheat"].InitExecute(new [] {e.Name.Split('_')[1]});
         }
     }
 }

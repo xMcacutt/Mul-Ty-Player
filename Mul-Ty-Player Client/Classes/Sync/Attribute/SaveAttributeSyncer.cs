@@ -14,13 +14,15 @@ internal class SaveAttributeSyncer : SaveDataSyncer
         var address = SyncHandler.SaveDataBaseAddress + 0xAA4 + iAttribute;
         var saved = ProcessHandler.WriteData(address, new byte[] { 1 },
             $"Setting attribute {Enum.GetValues(typeof(Attributes)).GetValue(iAttribute)} to true");
-        if (saved) SyncHandler.HAttribute.GlobalObjectData[iAttribute] = 1;
+        if (!saved) return;
+        SyncHandler.HAttribute.GlobalObjectData[iAttribute] = 1;
+        SFXPlayer.PlaySound(SFX.RangGet);
     }
 
     public override void Sync(int null1, byte[] bytes)
     {
         for (var i = 0; i < bytes.Length; i++)
-            if (bytes[i] == 1) //&& SyncHandler.HAttribute.GlobalObjectData[i] == 0)
+            if (bytes[i] == 1 && SyncHandler.HAttribute.GlobalObjectData[i] == 0)
                 Save(i, null);
     }
 }

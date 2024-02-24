@@ -30,6 +30,7 @@ public class CommandHandler
         RegisterCommand(new MtpCommandGroundSwim());
         RegisterCommand(new MtpCommandCrash());
         RegisterCommand(new MtpCommandTaunt());
+        RegisterCommand(new MtpCommandCheat());
     }
     
     public void ParseCommand(string input)

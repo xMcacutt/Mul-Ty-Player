@@ -95,3 +95,8 @@ These are the shortcuts available
 - Ctrl + Shift + Alt + C - Runs the /crash command
 - Ctrl + Shift + P - Runs the last command typed into the console
 - Ctrl + Shift + Q - Calls request sync (for de-synchronization issues)
+- Alt + Shift + T - Runs cheat to give technorangs
+- Alt + Shift + E - Runs cheat to give elemental rangs
+- Alt + Shift + L - Runs cheat to toggle lines in sky
+- Alt + Shift + M - Runs cheat to toggle level select menu
+- Alt + Shift + I - Runs cheat to toggle invincibility

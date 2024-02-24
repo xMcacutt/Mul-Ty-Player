@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using MulTyPlayerClient.GUI.Models;
 
@@ -51,10 +52,23 @@ public class GameStateHandler
         self.Level = "M/L";
     }
     
-    
     public void ProtectLeaderboard()
     {
         var address = SyncHandler.SaveDataBaseAddress + 0xB07;
         ProcessHandler.WriteData(address, new byte[] { 1 }, "Protecting leaderboard");
+    }
+
+    public void ToggleCollectibleLines()
+    {
+        ProcessHandler.TryRead(0x28AB68, out bool result, true, "ToggleInvincibility()");
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x28AB68), BitConverter.GetBytes(!result));
+    }
+
+    public void ToggleLevelSelect()
+    {
+        var addr = PointerCalculations.GetPointerAddress(0x286CB0, new[] { 0xCA4 });
+        ProcessHandler.TryRead(addr + 2, out bool result, false, "ToggleInvincibility()");
+        var toggledByte = BitConverter.GetBytes(!result)[0];
+        ProcessHandler.WriteData(addr, new byte[3] {toggledByte, 0, toggledByte});
     }
 }
