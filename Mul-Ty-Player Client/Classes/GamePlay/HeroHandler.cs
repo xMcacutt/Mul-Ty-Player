@@ -106,6 +106,7 @@ public class HeroHandler
     public void GiveTechnorangs()
     {
         var saveAddress = PointerCalculations.GetPointerAddress(0x288730, new int[1]);
+        ProcessHandler.WriteData(saveAddress + 0xAB6, new byte[] { 1 });
         ProcessHandler.WriteData(saveAddress + 0xABB, new byte[] { 1, 1, 1, 1, 1 });
         ProcessHandler.WriteData(saveAddress + 0xAC2, new byte[] { 1, 1 });
     }
