@@ -116,6 +116,6 @@ public class HeroHandler
         var saveAddress = PointerCalculations.GetPointerAddress(0x288730, new int[1]);
         ProcessHandler.WriteData(saveAddress + 0xAB4, new byte[] { 1, 1, 1 });
         ProcessHandler.WriteData(saveAddress + 0xAB9, new byte[] { 1, 1 });
-        ProcessHandler.WriteData(saveAddress + 0xAC0, new byte[] { 1 });
+        ProcessHandler.WriteData(saveAddress + 0xAC0, new byte[] { 1, 1 });
     }
 }

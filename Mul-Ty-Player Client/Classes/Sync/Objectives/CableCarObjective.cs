@@ -104,8 +104,8 @@ public class CableCarObjective : Objective
     {
         ProcessHandler.TryRead(ObjectAddress + RockFrillIndices[index] * 0x438 + 0xA0, out int frillOutState, false, "CableCar : IsActive()");
         if (frillOutState == 0x8)
-            return;
-        ProcessHandler.WriteData(ObjectAddress + RockFrillIndices[index] * 0x438 + 0x98, new byte[] { 0x8 });
+            return; 
+        //ProcessHandler.WriteData(ObjectAddress + RockFrillIndices[index] * 0x438 + 0x98, new byte[] { 0x8 });
     }
 
     public override void Sync(byte[] data)
