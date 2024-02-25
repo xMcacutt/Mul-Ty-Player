@@ -12,11 +12,13 @@ public class MtpCommandCheat : Command
         "techno",
         "elemental",
         "invincibility",
+        "speed",
         "l",
         "m",
         "t",
         "e",
-        "i"
+        "i",
+        "s"
     };
     
     public MtpCommandCheat()
@@ -71,6 +73,13 @@ public class MtpCommandCheat : Command
             // Invincibility 
             case "i":
                 Client.HHero.ToggleInvincibility();
+                break;
+            case "s":
+                ProcessHandler.TryRead(0x288914, out float speed, true, "SpeedHack");
+                if (Math.Abs(Math.Round(speed) - 10f) < 0.5)
+                    Client.HHero.SetRunSpeed(20f);
+                else
+                    Client.HHero.SetRunSpeed();
                 break;
             default:
                 return;
