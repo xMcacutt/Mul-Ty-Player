@@ -31,7 +31,6 @@ public class HotkeyHandler
             HotkeyManager.Current.AddOrReplace("cheat_m", Key.M, ModifierKeys.Alt | ModifierKeys.Shift, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("cheat_e", Key.E, ModifierKeys.Alt | ModifierKeys.Shift, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("cheat_l", Key.L, ModifierKeys.Alt | ModifierKeys.Shift, OnKeyPress);
-            HotkeyManager.Current.AddOrReplace("cheat_s", Key.S, ModifierKeys.Alt | ModifierKeys.Shift, OnKeyPress);
         }
         catch
         {
