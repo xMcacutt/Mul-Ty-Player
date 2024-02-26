@@ -89,7 +89,7 @@ internal class KoalaHandler
     public void SetKoalaState()
     {
         // Turns koala state to 0 to avoid audio playing from koalas
-        var value = SettingsHandler.DoHideSeek ? (byte)0 : (byte)1;
+        var value = SettingsHandler.DoHideSeek ? (byte)0 : (byte)2;
         for (var i = 0; i < 8; i++)
             ProcessHandler.WriteData(TransformAddresses[i].State, new byte[] { value }, "Removing voice lines");
     }
