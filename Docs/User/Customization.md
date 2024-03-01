@@ -64,3 +64,7 @@ Swapping out the sounds is even easier than making custom themes. Simple locate 
 ## Graphics
 
 The final customizable aspect of the client is the koala selection images and the Ty theme background used on the splash screen and koala select. It's unlikely you'd want to change these assets but all are available in the Koala Selection Assets directory and can be swapped similarly to the Sounds.
+
+## Hotkeys
+
+Hotkeys can be customized in the Hotkeys.json file. The application must be restarted for this to take effect and the file is overwritten on update. This is unlikely to be fixed soon (v3.4.9).

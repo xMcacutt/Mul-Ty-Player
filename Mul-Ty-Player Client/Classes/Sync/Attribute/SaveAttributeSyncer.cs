@@ -22,7 +22,11 @@ internal class SaveAttributeSyncer : SaveDataSyncer
     public override void Sync(int null1, byte[] bytes)
     {
         for (var i = 0; i < bytes.Length; i++)
-            if (bytes[i] == 1 && SyncHandler.HAttribute.GlobalObjectData[i] == 0)
+        {
+            var address = SyncHandler.SaveDataBaseAddress + 0xAA4 + i;
+            ProcessHandler.TryRead(address, out byte saved, false, "Attribute Sync");    
+            if (bytes[i] == 1 && saved == 0)
                 Save(i, null);
+        }
     }
 }

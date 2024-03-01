@@ -134,7 +134,17 @@ having to visit this site again.
 - Cheat command hotkeys added under Alt + Shift
 - Sounds added on rang obtain
 
+#### 3.4.9
+- /tp to last teleported position command added
+- hotkey file added for hotkey customisation
+
 ### Bug Fixes
+
+#### 3.4.9
+- Rang desync issue resolved
+
+#### 3.4.8
+- Hotfix to resolve koalas falling through world
 
 #### 3.4.7
 - Hotkey crash handled with warning box

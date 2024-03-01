@@ -17,6 +17,7 @@ public class MtpCommandTeleport : Command
         HostOnly = false;
         Usages = new List<string>
         {
+            "/tp (teleports to last teleported POSITION)",
             "/tp <x> <y> <z>", "/tp <clientId>", "/tp <@1> <@2>", "/tp <@1> <x> <y> <z>", "/tp <@1> <posId>",
             "/tp <posId>"
         };
