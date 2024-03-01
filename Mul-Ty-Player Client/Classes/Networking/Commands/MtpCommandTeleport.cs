@@ -15,17 +15,21 @@ public class MtpCommandTeleport : Command
         Name = "tp";
         Aliases = new List<string> { "teleport", "tele" };
         HostOnly = false;
-        Usages = new List<string> { "/tp <x> <y> <z>", "/tp <clientId>", "/tp <@1> <@2>", "/tp <@1> <x> <y> <z>", "/tp <@1> <posId>", "/tp <posId>" };
+        Usages = new List<string>
+        {
+            "/tp <x> <y> <z>", "/tp <clientId>", "/tp <@1> <@2>", "/tp <@1> <x> <y> <z>", "/tp <@1> <posId>",
+            "/tp <posId>"
+        };
         Description = "Teleport to a specific location or other player in the same level.";
         ArgDescriptions = new Dictionary<string, string>
         {
-            {"<x>", "x-coordinate to teleport to. Relative to current with ~x."},
-            {"<y>", "x-coordinate to teleport to. Relative to current with ~y."},
-            {"<z>", "z-coordinate to teleport to. Relative to current with ~z."},
-            {"<clientId>", "client to teleport to."},
-            {"<@1>", "Target selector from @a, @r, or clientId"},
-            {"<@2>", "Target selector to @r, or clientId"},
-            {"<posId>", "Level position identifier @s (start), @e (end)"}
+            { "<x>", "x-coordinate to teleport to. Relative to current with ~x." },
+            { "<y>", "x-coordinate to teleport to. Relative to current with ~y." },
+            { "<z>", "z-coordinate to teleport to. Relative to current with ~z." },
+            { "<clientId>", "client to teleport to." },
+            { "<@1>", "Target selector from @a, @r, or clientId" },
+            { "<@2>", "Target selector to @r, or clientId" },
+            { "<posId>", "Level position identifier @s (start), @e (end)" }
         };
     }
 
@@ -33,17 +37,19 @@ public class MtpCommandTeleport : Command
     {
         args = args.Select(arg => arg.Replace(",", "")).ToArray();
         //CHECK ARGS
-        if (args.Length is 0 or > 4)
+        if (args.Length > 4)
         {
             SuggestHelp();
             return;
         }
+
         //CHECK PRELIMS
         if (Client.HGameState.IsOnMainMenuOrLoading)
         {
             LogError("Cannot teleport on main menu or load screen.");
             return;
         }
+
         //INFER AND RUN
         if (args.Length == 4)
             RunTeleport(args[0], args[1], args[2], args[3]);
@@ -53,6 +59,13 @@ public class MtpCommandTeleport : Command
             RunTeleport(args[0], args[1]);
         if (args.Length == 1)
             RunTeleport(args[0]);
+        if (args.Length == 0)
+            RunTeleport();
+    }
+
+    private void RunTeleport()
+    {
+        Client.HHero.WriteHeldPosition();
     }
 
     private void RunTeleport(string selectorFrom, string x, string y, string z)

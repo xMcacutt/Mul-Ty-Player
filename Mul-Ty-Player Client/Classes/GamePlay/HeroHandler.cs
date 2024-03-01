@@ -20,6 +20,8 @@ public class HeroHandler
     private int positionAddress = TY_POSITION_ADDRESS;
     private int rotationAddress = TY_ROTATION_ADDRESS;
 
+    private float[] heldPosition = new [] { 0f, 0f, 0f };
+
     public HeroHandler()
     {
         currentPositionRotation = new float[6];
@@ -64,6 +66,7 @@ public class HeroHandler
             .ToArray();
         if (log)
             Logger.Write($"Teleported to {x}, {y}, {z}");
+        heldPosition = new[] { x, y, z };
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + positionAddress, bytes);
     }
 
@@ -117,5 +120,15 @@ public class HeroHandler
         ProcessHandler.WriteData(saveAddress + 0xAB4, new byte[] { 1, 1, 1 });
         ProcessHandler.WriteData(saveAddress + 0xAB9, new byte[] { 1, 1 });
         ProcessHandler.WriteData(saveAddress + 0xAC0, new byte[] { 1, 1 });
+    }
+
+    public void WriteHeldPosition()
+    {
+        var bytes = BitConverter.GetBytes(heldPosition[0])
+            .Concat(BitConverter.GetBytes(heldPosition[1]))
+            .Concat(BitConverter.GetBytes(heldPosition[2]))
+            .ToArray();
+        Logger.Write($"Teleported to {heldPosition[0]}, {heldPosition[1]}, {heldPosition[2]}");
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + positionAddress, bytes);
     }
 }
