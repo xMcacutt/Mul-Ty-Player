@@ -26,7 +26,7 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        HotkeyHandler.SetupHotkeys();
+        HotkeyHandler.Initialize();
         SettingsHandler.Setup();
         ModelController.InstantiateModels();
         SFXPlayer.Init();
