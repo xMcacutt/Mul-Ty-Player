@@ -1,0 +1,54 @@
+﻿{
+  "GroundSwim": {
+    "Key": "G",
+    "Modifiers": "Control, Shift"
+  },
+  "Ready": {
+    "Key": "R",
+    "Modifiers": "Control, Shift"
+  },
+  "RequestHost": {
+    "Key": "H",
+    "Modifiers": "Control, Shift"
+  },
+  "Start": {
+    "Key": "S",
+    "Modifiers": "Control, Shift"
+  },
+  "Previous": {
+    "Key": "P",
+    "Modifiers": "Control, Shift"
+  },
+  "Taunt": {
+    "Key": "T",
+    "Modifiers": "Control, Shift"
+  },
+  "RequestSync": {
+    "Key": "Q",
+    "Modifiers": "Control, Shift"
+  },
+  "Crash": {
+    "Key": "C",
+    "Modifiers": "Control, Shift, Alt"
+  },
+  "CheatI": {
+    "Key": "I",
+    "Modifiers": "Alt, Shift"
+  },
+  "CheatT": {
+    "Key": "T",
+    "Modifiers": "Alt, Shift"
+  },
+  "CheatM": {
+    "Key": "M",
+    "Modifiers": "Alt, Shift"
+  },
+  "CheatE": {
+    "Key": "E",
+    "Modifiers": "Alt, Shift"
+  },
+  "CheatL": {
+    "Key": "L",
+    "Modifiers": "Alt, Shift"
+  }
+}

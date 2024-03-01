@@ -121,7 +121,7 @@ public class HeroHandler
         ProcessHandler.WriteData(saveAddress + 0xAB9, new byte[] { 1, 1 });
         ProcessHandler.WriteData(saveAddress + 0xAC0, new byte[] { 1, 1 });
     }
-
+    
     public void WriteHeldPosition()
     {
         var bytes = BitConverter.GetBytes(heldPosition[0])
