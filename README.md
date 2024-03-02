@@ -138,6 +138,9 @@ having to visit this site again.
 - /tp to last teleported position command added
 - hotkey file added for hotkey customisation
 
+#### 3.4.10
+- Added koala skins for Ty
+
 ### Bug Fixes
 
 #### 3.4.9

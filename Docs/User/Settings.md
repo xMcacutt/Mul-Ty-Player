@@ -92,6 +92,10 @@ Interpolation mode attempts to reduce the load on the network by reducing the nu
 
 Determines whether you as the player should collide with the koalas visually representing the other players. It is turned off by default but may be toggled with instant results.
 
+##### Use Koala Textures
+
+Determines whether to auto load your chosen koala's Ty texture onto Ty.
+
 ---
 
 ### Developer Settings

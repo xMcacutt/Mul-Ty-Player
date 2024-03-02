@@ -28,6 +28,7 @@ public class SettingsViewModel
     
     // GAMEPLAY SETTINGS
     public bool DoKoalaCollision { get; set; }
+    public bool DoUseTyKoalaTextures { get; set; }
     public float KoalaScale { get; set; }
     public string InterpolationMode { get; set; }
     
@@ -71,6 +72,7 @@ public class SettingsViewModel
         AutoLaunchTyOnStartup = SettingsHandler.Settings.AutoLaunchTyOnStartup;
         
         DoKoalaCollision = SettingsHandler.Settings.DoKoalaCollision;
+        DoUseTyKoalaTextures = SettingsHandler.Settings.UseTyKoalaTextures;
         KoalaScale = SettingsHandler.Settings.KoalaScale;
         InterpolationMode = SettingsHandler.Settings.InterpolationMode;
 
@@ -91,6 +93,7 @@ public class SettingsViewModel
         SettingsHandler.Settings.AutoLaunchTyOnStartup = AutoLaunchTyOnStartup;
         
         SettingsHandler.Settings.DoKoalaCollision = DoKoalaCollision;
+        SettingsHandler.Settings.UseTyKoalaTextures = DoUseTyKoalaTextures;
         SettingsHandler.Settings.KoalaScale = KoalaScale;
         SettingsHandler.Settings.InterpolationMode = InterpolationMode;
 

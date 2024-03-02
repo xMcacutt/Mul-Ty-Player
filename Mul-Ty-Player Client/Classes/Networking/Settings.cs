@@ -17,4 +17,5 @@ internal class Settings
     public bool AutoJoinVoice { get; set; }
     public int ProximityRange { get; set; }
     public string Version { get; set; }
+    public bool UseTyKoalaTextures { get; set; }
 }

@@ -131,4 +131,11 @@ public class HeroHandler
         Logger.Write($"Teleported to {heldPosition[0]}, {heldPosition[1]}, {heldPosition[2]}");
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + positionAddress, bytes);
     }
+
+    public void ChangeSkin(int index)
+    {
+        //["Mul-Ty-Player.exe" + 0x289298] +0x5E8;
+        var address = PointerCalculations.GetPointerAddress(0x289298, new[] { 0x5E8 });
+        ProcessHandler.WriteData(address, BitConverter.GetBytes(address - 68 - (76 * index)));
+    }
 }

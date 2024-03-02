@@ -13,5 +13,6 @@
   "AutoJoinVoice": false,
   "ProximityRange": 2250,
   "Theme": "Dark",
-  "Version": "3.4.9"
+  "Version": "3.4.10",
+  "UseTyKoalaTextures": true
 }

@@ -154,6 +154,10 @@
                 <CheckBox IsChecked="{Binding DoKoalaCollision}"
                           Style="{StaticResource SettingsCheckBoxStyle}"
                           Content="Collide Koalas"/>
+                
+                <CheckBox IsChecked="{Binding DoUseTyKoalaTextures}"
+                          Style="{StaticResource SettingsCheckBoxStyle}"
+                          Content="Use Koala Textures"/>
             </StackPanel>
             <Separator Visibility="Collapsed" Style="{StaticResource SettingsSepStyle}"/>
             
