@@ -141,7 +141,17 @@ having to visit this site again.
 #### 3.4.10
 - Added koala skins for Ty
 
+#### 3.5.0
+- Added koala beacons showing where other players are
+- Server hosting change
+
 ### Bug Fixes
+
+#### 3.5.0
+- Koala jitter bug fixed by removing all koala location sounds from rkv and rolling back koala state change
+- Cable car syncing fix attempted by extending frill global.model range
+- Server IP dropdown made bigger for longer IPs
+- 
 
 #### 3.4.9
 - Rang desync issue resolved
