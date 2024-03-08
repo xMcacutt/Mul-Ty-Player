@@ -46,6 +46,8 @@ internal class LevelHandler
         {
             HKoala.SetBaseAddress();
             HKoala.SetCoordinateAddresses();
+            Client.HGlow.SetBaseAddress();
+            Client.HGlow.SetCoordinateAddresses();
         }
         if (CurrentLevelData.HasKoalas)
             ObjectiveCountSet();

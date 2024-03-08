@@ -35,6 +35,7 @@ internal class Client
     public static SyncHandler HSync;
     public static ObjectiveHandler HObjective;
     public static HSHandler HHideSeek;
+    public static GlowHandler HGlow;
 
     public static CancellationTokenSource cts;
     public static bool Relaunching => TyProcess.LaunchingGame;
@@ -80,6 +81,7 @@ internal class Client
         HPlayer = new PlayerHandler();
         HObjective = new ObjectiveHandler();
         HHideSeek = new HSHandler();
+        HGlow = new GlowHandler();
     }
 
     private static void InitRiptide()

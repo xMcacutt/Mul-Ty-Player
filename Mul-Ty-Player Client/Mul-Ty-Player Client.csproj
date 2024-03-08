@@ -253,7 +253,7 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="list.servers">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
         <None Update="Resources\Steamworks.NET.dll">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>

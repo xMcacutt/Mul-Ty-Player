@@ -18,4 +18,5 @@ internal class Settings
     public int ProximityRange { get; set; }
     public string Version { get; set; }
     public bool UseTyKoalaTextures { get; set; }
+    public bool ShowKoalaBeacons { get; set; }
 }

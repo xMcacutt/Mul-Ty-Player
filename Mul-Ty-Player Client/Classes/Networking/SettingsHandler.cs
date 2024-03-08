@@ -43,9 +43,9 @@ internal static class SettingsHandler
         {
             ModelController.Lobby.IsHideSeekEnabled = value;
             _doHideSeek = value;
+            Client.HGlow.ReturnGlows();
             if (value)
                 Client.HHideSeek.StartTimerLoop();
-            Client.HKoala.SetKoalaState();
         }
     }
 

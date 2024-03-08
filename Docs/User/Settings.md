@@ -96,6 +96,10 @@ Determines whether you as the player should collide with the koalas visually rep
 
 Determines whether to auto load your chosen koala's Ty texture onto Ty.
 
+##### Show Koala Beacons
+
+Determines whether to display beacons to show the position of other connected players.
+
 ---
 
 ### Developer Settings

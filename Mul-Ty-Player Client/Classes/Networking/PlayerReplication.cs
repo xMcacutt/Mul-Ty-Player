@@ -111,11 +111,14 @@ internal static class PlayerReplication
         ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(_defaultKoalaPosX[level]));
         ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(_defaultKoalaPosY[level]));
         ProcessHandler.WriteData(ktp.Z, BitConverter.GetBytes(_defaultKoalaPosZ[level]));
+        
+        Client.HGlow.ReturnGlow(koalaId);
     }
 
     private static void WriteTransformData(KoalaID koalaId, Transform transform)
     {
         var ktp = KoalaHandler.TransformAddresses[koalaId];
+        var gtp = GlowHandler.TransformAddresses[koalaId];
 
         var selfLevel = Client.HLevel.CurrentLevelId;
         if (transform.LevelID != selfLevel)
@@ -124,6 +127,7 @@ internal static class PlayerReplication
             ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(_defaultKoalaPosX[selfLevel]));
             ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(_defaultKoalaPosY[selfLevel]));
             ProcessHandler.WriteData(ktp.Z, BitConverter.GetBytes(_defaultKoalaPosZ[selfLevel]));
+            Client.HGlow.ReturnGlow(koalaId);
             return;
         }
 
@@ -133,6 +137,15 @@ internal static class PlayerReplication
         ProcessHandler.WriteData(ktp.Pitch, BitConverter.GetBytes(transform.Rotation.Pitch));
         ProcessHandler.WriteData(ktp.Yaw, BitConverter.GetBytes(transform.Rotation.Yaw));
         ProcessHandler.WriteData(ktp.Roll, BitConverter.GetBytes(transform.Rotation.Roll));
+
+        if (SettingsHandler.DoHideSeek || !SettingsHandler.Settings.ShowKoalaBeacons)
+            return;
+        ProcessHandler.WriteData(gtp.X, BitConverter.GetBytes(transform.Position.X));
+        ProcessHandler.WriteData(gtp.Y, BitConverter.GetBytes(transform.Position.Y + 200));
+        ProcessHandler.WriteData(gtp.Z, BitConverter.GetBytes(transform.Position.Z));
+        ProcessHandler.WriteData(gtp.sX, BitConverter.GetBytes(0.3f), "Scaling glows");
+        ProcessHandler.WriteData(gtp.sY, BitConverter.GetBytes(40f), "Scaling glows");
+        ProcessHandler.WriteData(gtp.sZ, BitConverter.GetBytes(0.3f), "Scaling glows");
     }
 
     internal static void UpdatePlayerSnapshotData(KoalaID koalaId, float[] transform, int levelId)
@@ -152,6 +165,7 @@ internal static class PlayerReplication
 
     public static void RemovePlayer(KoalaID koalaID)
     {
+        ReturnKoala(koalaID);
         receivedSnapshotData.Remove(koalaID);
         PlayerTransforms.Remove(koalaID);
     }

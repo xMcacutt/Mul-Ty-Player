@@ -193,8 +193,8 @@ public class HSHandler
     [MessageHandler((ushort)MessageID.HS_HideTimerStart)]
     private static void HideTimerStart(Message message)
     {
+        Client.HGlow.ReturnGlows();
         Client.HCommand.Commands["tp"].InitExecute(new string[] {"@s"});
-        Client.HKoala.SetKoalaState();
         Client.HHideSeek.Mode = HSMode.HideTime;
         foreach (var entry in PlayerHandler.Players) entry.IsReady = false;
         ModelController.Lobby.IsReady = false;
@@ -224,6 +224,7 @@ public class HSHandler
         (Client.HCommand.Commands["taunt"] as MtpCommandTaunt).TauntStopwatch.Restart();
         
         Client.HKoala.ScaleKoalas();
+        Client.HGlow.ReturnGlows();
         
         SFXPlayer.PlaySound(SFX.HS_SeekStart);
         

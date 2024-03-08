@@ -113,7 +113,7 @@
                                   Template="{StaticResource TyComboBoxToggleButtonTemplate}"
                                   IsChecked="{Binding IsPopupOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <Popup StaysOpen="False" Placement="Bottom" Grid.Column="0" HorizontalOffset="200" Width="150" IsOpen="{Binding IsPopupOpen, Mode=TwoWay}">
+                    <Popup StaysOpen="False" Placement="Bottom" Grid.Column="0" HorizontalOffset="100" Width="250" IsOpen="{Binding IsPopupOpen, Mode=TwoWay}">
                         <ListView SelectionChanged="ServerListView_SelectionChanged" 
                                   x:Name="ServerListView"
                                   ItemsSource="{Binding Servers}" 

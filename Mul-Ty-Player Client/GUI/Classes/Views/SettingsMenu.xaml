@@ -158,6 +158,10 @@
                 <CheckBox IsChecked="{Binding DoUseTyKoalaTextures}"
                           Style="{StaticResource SettingsCheckBoxStyle}"
                           Content="Use Koala Textures"/>
+                
+                <CheckBox IsChecked="{Binding ShowKoalaBeacons}"
+                          Style="{StaticResource SettingsCheckBoxStyle}"
+                          Content="Show Koala Beacons"/>
             </StackPanel>
             <Separator Visibility="Collapsed" Style="{StaticResource SettingsSepStyle}"/>
             

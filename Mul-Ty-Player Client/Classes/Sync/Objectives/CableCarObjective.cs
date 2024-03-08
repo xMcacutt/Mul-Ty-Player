@@ -54,7 +54,7 @@ public class CableCarObjective : Objective
                 if (frillActivity == 0x3)
                     continue;
                 ProcessHandler.WriteData(ObjectAddress + frillIndex * 0x438 + 0x44,
-                    new byte[] { 0x3, 0x2, 0x0, 0x0, 0x3, 0x0, 0x0, 0x0 });
+                    new byte[] { 0x3, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 });
             }
         }
         if (CurrentData.Any(x => x != 0x1))

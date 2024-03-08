@@ -13,7 +13,7 @@ internal class ProcessHandler
     public static bool LogMostRecentMemoryIOInfoOnProcessExit = true;
 
     [DllImport("kernel32.dll")]
-    internal static extern unsafe bool ReadProcessMemory(
+    private static extern unsafe bool ReadProcessMemory(
         nint hProcess,
         void* lpBaseAddress,
         void* lpBuffer,
@@ -21,7 +21,11 @@ internal class ProcessHandler
         nuint* lpNumberOfBytesRead);
 
     [DllImport("kernel32.dll", SetLastError = true)]
-    public static extern bool WriteProcessMemory(IntPtr hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize,
+    private static extern bool WriteProcessMemory(
+        IntPtr hProcess, 
+        int lpBaseAddress, 
+        byte[] lpBuffer, int 
+            dwSize,
         out IntPtr lpNumberOfBytesWritten);
 
     //Do not check if the process is running (for now),

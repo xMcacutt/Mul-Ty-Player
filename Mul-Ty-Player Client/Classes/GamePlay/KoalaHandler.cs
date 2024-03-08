@@ -73,11 +73,9 @@ internal class KoalaHandler
             TransformAddresses[koalaId].Collision = _baseKoalaAddress + 0x298 + koalaOffset;
             TransformAddresses[koalaId].Visibility = _baseKoalaAddress + 0x44 + koalaOffset;
             TransformAddresses[koalaId].Scale = _baseKoalaAddress + 0x60 + koalaOffset;
-            TransformAddresses[koalaId].State = _baseKoalaAddress + 0x98 + koalaOffset;
         }
         
         ScaleKoalas();
-        SetKoalaState();
         MakeVisible();
 
         if (!SettingsHandler.Settings.DoKoalaCollision)
@@ -85,15 +83,7 @@ internal class KoalaHandler
 
         readyToWriteTransformData = true;
     }
-
-    public void SetKoalaState()
-    {
-        // Turns koala state to 0 to avoid audio playing from koalas
-        var value = SettingsHandler.DoHideSeek ? (byte)0 : (byte)2;
-        for (var i = 0; i < 8; i++)
-            ProcessHandler.WriteData(TransformAddresses[i].State, new byte[] { value }, "Removing voice lines");
-    }
-
+    
     public void SetCollision()
     {
         var col = SettingsHandler.Settings.DoKoalaCollision ? (byte)1 : (byte)0;
@@ -178,6 +168,6 @@ internal class KoalaHandler
 
     public struct KoalaTransformAddresses
     {
-        public int X, Y, Z, Pitch, Yaw, Roll, Collision, Visibility, Scale, State;
+        public int X, Y, Z, Pitch, Yaw, Roll, Collision, Visibility, Scale;
     }
 }

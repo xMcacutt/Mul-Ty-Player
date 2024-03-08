@@ -31,6 +31,7 @@ public class SettingsViewModel
     public bool DoUseTyKoalaTextures { get; set; }
     public float KoalaScale { get; set; }
     public string InterpolationMode { get; set; }
+    public bool ShowKoalaBeacons { get; set; }
     
     public ObservableCollection<string> InterpolationModes { get; set; }
     
@@ -75,6 +76,7 @@ public class SettingsViewModel
         DoUseTyKoalaTextures = SettingsHandler.Settings.UseTyKoalaTextures;
         KoalaScale = SettingsHandler.Settings.KoalaScale;
         InterpolationMode = SettingsHandler.Settings.InterpolationMode;
+        ShowKoalaBeacons = SettingsHandler.Settings.ShowKoalaBeacons;
 
         AutoJoinVoice = SettingsHandler.Settings.AutoJoinVoice;
         ProximityRange = SettingsHandler.Settings.ProximityRange;
@@ -96,6 +98,7 @@ public class SettingsViewModel
         SettingsHandler.Settings.UseTyKoalaTextures = DoUseTyKoalaTextures;
         SettingsHandler.Settings.KoalaScale = KoalaScale;
         SettingsHandler.Settings.InterpolationMode = InterpolationMode;
+        SettingsHandler.Settings.ShowKoalaBeacons = ShowKoalaBeacons;
 
         SettingsHandler.Settings.AutoJoinVoice = AutoJoinVoice;
         SettingsHandler.Settings.ProximityRange = ProximityRange;
@@ -103,10 +106,12 @@ public class SettingsViewModel
         SettingsHandler.Settings.CreateLogFile = DoOutputLogs;
         SettingsHandler.Settings.Port = DefaultPort;
         
+        
         SettingsHandler.Save();
 
         App.AppColors.SetColors(SettingsHandler.Settings.Theme);
         Client.HKoala.ScaleKoalas();
         Client.HKoala.SetCollision();
+        Client.HGlow.ReturnGlows();
     }
 }
