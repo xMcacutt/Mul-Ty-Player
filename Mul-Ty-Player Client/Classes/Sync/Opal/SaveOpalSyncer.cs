@@ -6,10 +6,8 @@ internal class SaveOpalSyncer : SaveDataSyncer
     {
         var crateOpals = Levels.GetLevelData((int)level).CrateOpalCount;
         var newIndex = index > 299 - crateOpals ? 300 - crateOpals + (299 - index) : index;
-
         var byteIndex = newIndex / 8 + 1;
         var bitIndex = newIndex % 8;
-
         var address = SyncHandler.SaveDataBaseAddress + 0x70 * (int)level + byteIndex;
         ProcessHandler.TryRead(address, out byte b, false, "SaveOpalSyncer::Save()");
         b |= (byte)(1 << bitIndex);

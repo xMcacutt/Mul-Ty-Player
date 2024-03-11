@@ -82,4 +82,18 @@ internal class LevelHandler
             }
         }
     }
+
+
+    public void ChangeLevel(int level)
+    {
+        ProcessHandler.TryRead(0x286C54, out byte onMenu, true, "CheckMenuStatus");
+        if (onMenu == 0x1)
+        {
+            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x264248, BitConverter.GetBytes(0.01f));
+            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x286C54, new byte[1]);
+        }
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x289028, BitConverter.GetBytes(level));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x289050, new byte[] { 0x1 });
+        Logger.Write($"Changed level to {Levels.GetLevelData(level).Name}.");
+    }
 }

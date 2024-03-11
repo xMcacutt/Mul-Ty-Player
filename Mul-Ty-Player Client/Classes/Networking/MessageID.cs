@@ -42,5 +42,6 @@ public enum MessageID : ushort
     HS_Abort,
     HS_RangeChanged,
     Crash,
-    HS_Taunt
+    HS_Taunt,
+    ForceLevelChange
 }

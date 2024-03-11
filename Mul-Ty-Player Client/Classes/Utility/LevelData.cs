@@ -6,6 +6,7 @@ public struct LevelData
 {
     public int Id;
     public string Code;
+    public string Name;
     public int CrateCount;
     public int CrateOpalCount;
     public int FrameCount;
@@ -19,6 +20,7 @@ public class Levels
     {
         Id = 0,
         Code = "Z1",
+        Name = "Rainbow Cliffs",
         FrameCount = 9,
         IsMainStage = false,
         HasKoalas = false
@@ -28,6 +30,7 @@ public class Levels
     {
         Id = 4,
         Code = "A1",
+        Name = "Two Up",
         FrameCount = 7,
         CrateCount = 31,
         CrateOpalCount = 170,
@@ -39,6 +42,7 @@ public class Levels
     {
         Id = 5,
         Code = "A2",
+        Name = "Walk In The Park",
         FrameCount = 6,
         CrateCount = 16,
         CrateOpalCount = 102,
@@ -50,6 +54,7 @@ public class Levels
     {
         Id = 6,
         Code = "A3",
+        Name = "Ship Rex",
         FrameCount = 9,
         CrateCount = 24,
         CrateOpalCount = 119,
@@ -61,6 +66,7 @@ public class Levels
     {
         Id = 7,
         Code = "A4",
+        Name = "Bull's Pen",
         FrameCount = 0,
         IsMainStage = false,
         HasKoalas = false
@@ -70,6 +76,7 @@ public class Levels
     {
         Id = 8,
         Code = "B1",
+        Name = "Bridge On The River Ty",
         FrameCount = 20,
         CrateCount = 24,
         CrateOpalCount = 120,
@@ -81,6 +88,7 @@ public class Levels
     {
         Id = 9,
         Code = "B2",
+        Name = "Snow Worries",
         FrameCount = 24,
         CrateCount = 12,
         CrateOpalCount = 60,
@@ -92,6 +100,7 @@ public class Levels
     {
         Id = 10,
         Code = "B3",
+        Name = "Outback Safari",
         FrameCount = 0,
         CrateCount = 300,
         CrateOpalCount = 300,
@@ -103,6 +112,7 @@ public class Levels
     {
         Id = 19,
         Code = "D4",
+        Name = "Crikeys Cove",
         FrameCount = 0,
         IsMainStage = false,
         HasKoalas = false
@@ -112,6 +122,7 @@ public class Levels
     {
         Id = 12,
         Code = "C1",
+        Name = "Lyre, Lyre Pants On Fire",
         FrameCount = 5,
         CrateCount = 6,
         CrateOpalCount = 30,
@@ -123,6 +134,7 @@ public class Levels
     {
         Id = 13,
         Code = "C2",
+        Name = "Beyond The Black Stump",
         FrameCount = 29,
         CrateCount = 34,
         CrateOpalCount = 170,
@@ -134,6 +146,7 @@ public class Levels
     {
         Id = 14,
         Code = "C3",
+        Name = "Rex Marks The Spot",
         FrameCount = 18,
         CrateCount = 43,
         CrateOpalCount = 215,
@@ -145,6 +158,7 @@ public class Levels
     {
         Id = 15,
         Code = "C4",
+        Name = "Fluffy's Fjord",
         FrameCount = 0,
         IsMainStage = false,
         HasKoalas = false
@@ -154,6 +168,7 @@ public class Levels
     {
         Id = 20,
         Code = "E1",
+        Name = "Cass' Pass",
         FrameCount = 0,
         IsMainStage = false,
         HasKoalas = false
@@ -163,6 +178,7 @@ public class Levels
     {
         Id = 17,
         Code = "D2",
+        Name = "Cass' Crest",
         FrameCount = 0,
         IsMainStage = false,
         HasKoalas = false
@@ -172,6 +188,7 @@ public class Levels
     {
         Id = 23,
         Code = "E4",
+        Name = "Final Battle",
         FrameCount = 0,
         IsMainStage = false,
         HasKoalas = false
@@ -190,6 +207,7 @@ public class Levels
     {
         Id = 21,
         Code = "E2",
+        Name = "Bonus World 1",
         FrameCount = 123,
         IsMainStage = false,
         HasKoalas = false
@@ -199,6 +217,7 @@ public class Levels
     {
         Id = 22,
         Code = "E3",
+        Name = "Bonus World 2",
         FrameCount = 123,
         IsMainStage = false,
         HasKoalas = false
