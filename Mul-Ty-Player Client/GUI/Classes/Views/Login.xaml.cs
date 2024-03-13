@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using MulTyPlayerClient.GUI.Classes.Views;
+using MulTyPlayerClient.GUI.Models;
 using MulTyPlayerClient.GUI.ViewModels;
 
 namespace MulTyPlayerClient.GUI.Views;

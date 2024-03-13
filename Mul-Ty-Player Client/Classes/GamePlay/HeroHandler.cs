@@ -2,7 +2,11 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Controls;
 using MulTyPlayer;
+using MulTyPlayerClient.GUI.Classes.Views;
+using MulTyPlayerClient.GUI.Models;
 using Riptide;
 
 namespace MulTyPlayerClient;

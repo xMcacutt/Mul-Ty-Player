@@ -1,4 +1,5 @@
-﻿using MulTyPlayerClient.GUI.ViewModels;
+﻿using MulTyPlayerClient.GUI.Classes.Views;
+using MulTyPlayerClient.GUI.ViewModels;
 
 namespace MulTyPlayerClient.GUI.Models;
 
@@ -9,6 +10,7 @@ public static class ModelController
     public static KoalaSelectModel KoalaSelect { get; private set; }
     public static LobbyModel Lobby { get; private set; }
     public static SettingsViewModel Settings { get; private set; }
+    public static Minimap Minimap = new Minimap();
 
     public static void InstantiateModels()
     {

@@ -5,11 +5,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI.Classes.Views"
         mc:Ignorable="d"
-        Title="Minimap" Height="Auto" Width="Auto">
+        PreviewMouseDown="Minimap_OnPreviewMouseDown"
+        Title="Minimap" Height="Auto" Width="Auto" Background="Transparent" AllowsTransparency="True" WindowStyle="None">
     <Grid>
-        <Image Source="fe_000_map_d1_00.png" Width="512" Height="512"/>
-        <Canvas Height="512" Width="512">
-            <Image x:Name="Player1" Source="fe_999_icon_arrow.png" Width="70" Canvas.Left="0" Canvas.Top="0"/>
+        <Image Source="/GUI/MinimapAssets/fe_000_map_d1_00.png" Width="512" Height="512"/>
+        <Canvas x:Name="MinimapCanvas" Height="512" Width="512">
+            <Image x:Name="Player1" Source="/GUI/MinimapAssets/fe_999_icon_arrow.png" Width="35" Canvas.Left="0" Canvas.Top="0"/>
         </Canvas>
     </Grid>
 </Window>
