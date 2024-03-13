@@ -74,19 +74,27 @@ public class GameStateHandler
 
     public void ForceEnterNewGameScreen()
     {
-        if (IsOnMainMenuOrLoading)
+        if (!IsOnMainMenuOrLoading)
             return;
         // Force onto main menu
-        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x28AB68), BitConverter.GetBytes());
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x285B8C), BitConverter.GetBytes(4));
         // Force select new game
         ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x286640), BitConverter.GetBytes(1));
         // Force enter new game screen
         ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x286650), BitConverter.GetBytes(6));
     }
 
-    public void ForcePrepareNewGame(int slot)
+    public void ForceBackToMainMenu()
     {
         if (IsOnMainMenuOrLoading)
+            return;
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x285B8C), BitConverter.GetBytes(4));
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288A74), BitConverter.GetBytes(8));
+    }
+
+    public void ForcePrepareNewGame(int slot)
+    {
+        if (!IsOnMainMenuOrLoading)
             return;
         // Force save slot bytes
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x273838, BitConverter.GetBytes(slot));
@@ -102,6 +110,11 @@ public class GameStateHandler
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x273F74, BitConverter.GetBytes(9));
     }
 
+    public static void ForceNoIdle()
+    {
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x526C08, new byte[] { 0x1 });
+    }
+    
     public void ForceNewGame()
     {
         // Force enter new game

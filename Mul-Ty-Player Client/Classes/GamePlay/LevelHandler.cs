@@ -50,7 +50,7 @@ internal class LevelHandler
             Client.HGlow.SetCoordinateAddresses();
         }
         if (CurrentLevelData.HasKoalas)
-            ObjectiveCountSet();
+            FixKoalaObjectiveCount();
         OnLevelChange?.Invoke(currentLevelId);
     }
 
@@ -66,20 +66,19 @@ internal class LevelHandler
         CurrentLevelId = levelId;
     }
 
-    public static void ObjectiveCountSet()
+    private static void FixKoalaObjectiveCount()
     {
         var currentCountMax = 16;
         while (currentCountMax != 8)
         {
             var objectiveCounterAddr = PointerCalculations.GetPointerAddress(0x26A4B0, new[] { 0x6E });
-            ProcessHandler.TryRead(objectiveCounterAddr, out byte result, false, "LevelHandler::ObjectiveCountSet()");
+            ProcessHandler.TryRead(objectiveCounterAddr, out byte result, false, "FixKoalaObjectiveCount");
             currentCountMax = result;
-            if (currentCountMax == 16)
-            {
-                ProcessHandler.WriteData(objectiveCounterAddr, BitConverter.GetBytes(8),
-                    "Setting koala objective koala count");
-                currentCountMax = 8;
-            }
+            if (currentCountMax != 16) 
+                continue;
+            ProcessHandler.WriteData(objectiveCounterAddr, BitConverter.GetBytes(8),
+                "Setting koala objective koala count");
+            currentCountMax = 8;
         }
     }
 

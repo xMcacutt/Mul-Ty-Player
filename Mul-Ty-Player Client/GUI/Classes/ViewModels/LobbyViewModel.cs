@@ -84,8 +84,6 @@ public class LobbyViewModel : IViewModel
     private void Model_IsOnMenuChanged(bool value)
     {
         IsOnMenu = value;
-        if (!SettingsHandler.DoHideSeek)
-            IsReadyButtonEnabled = IsOnMenu;
     }
 
     private void Model_IsReadyChanged(bool value)
@@ -112,7 +110,6 @@ public class LobbyViewModel : IViewModel
     {
         IsHideSeekButtonEnabled = value;
         if (!value) Lobby.IsTimerVisible = false;
-        IsReadyButtonEnabled = value || IsOnMenu;
     }
     
     private void Model_IsLevelLockEnabledChanged(bool value)

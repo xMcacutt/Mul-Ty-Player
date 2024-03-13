@@ -44,19 +44,24 @@ public class Countdown
         {
             abortToken.ThrowIfCancellationRequested();
             OnCountdownBegan?.Invoke();
+            Client.HSync = new SyncHandler();
             SFXPlayer.StopAll();
             Client.HHero.SetRunSpeed();
-            Client.HSync = new SyncHandler();
             SFXPlayer.PlaySound(SFX.Race10);
+            Client.HGameState.ForceBackToMainMenu();
             for (var i = 10; i > 0; i--)
             {
-                if (CheckAnyPlayerOnMainMenu()) Abort();
+                if (i != 10 && CheckAnyPlayerOnMainMenu()) Abort();
 
                 if (abortToken.IsCancellationRequested) abortToken.ThrowIfCancellationRequested();
 
                 Logger.Write(i.ToString());
+                if (i == 5)
+                    Client.HGameState.ForceEnterNewGameScreen();
                 if (i == 3)
                 {
+                    Client.HGameState.ForcePrepareNewGame(1);
+                    Client.HSync = new SyncHandler();
                     SFXPlayer.StopAll();
                     SFXPlayer.PlaySound(SFX.Race321);
                 }
@@ -64,6 +69,7 @@ public class Countdown
                 Task.Delay(1000).Wait();
             }
 
+            Client.HGameState.ForceNewGame();
             Logger.Write("Go!");
         }, abortToken);
 

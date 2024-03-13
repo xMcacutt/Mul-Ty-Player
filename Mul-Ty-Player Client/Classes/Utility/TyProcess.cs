@@ -45,7 +45,7 @@ internal class TyProcess
         try
         {
             process = new Process();
-            process.StartInfo = new ProcessStartInfo(SettingsHandler.Settings.MulTyPlayerFolderPath, "noidle")
+            process.StartInfo = new ProcessStartInfo(SettingsHandler.Settings.MulTyPlayerFolderPath, "-noidle")
                 { UseShellExecute = false, RedirectStandardError = true, RedirectStandardOutput = true };
             process.StartInfo.WorkingDirectory = Path.GetDirectoryName(SettingsHandler.Settings.MulTyPlayerFolderPath);
             process.Start();
@@ -137,6 +137,7 @@ internal class TyProcess
         BaseAddress = process.MainModule.BaseAddress;
         SettingsHandler.Settings.MulTyPlayerFolderPath = process.MainModule.FileName;
         SettingsHandler.Save();
+        GameStateHandler.ForceNoIdle();
         IsRunning = true;
     }
 
