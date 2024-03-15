@@ -88,6 +88,7 @@ public class GameStateHandler
     {
         if (IsOnMainMenuOrLoading)
             return;
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x264248, BitConverter.GetBytes(0.01f));
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x286C54, new byte[1]);
         ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x285B8C), BitConverter.GetBytes(4));
         ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288A74), BitConverter.GetBytes(8));
