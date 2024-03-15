@@ -46,7 +46,7 @@ internal class InvisiCrateHandler : SyncObjectHandler
 
     public override void Sync(int level, byte[] liveData, byte[] saveData)
     {
-        ProcessHandler.TryRead(0x254DAC, out int crateCount, true, "CrateCount");
+        var crateCount = GlobalObjectData[level].Length;
         for (var i = 0; i < crateCount; i++)
             if (liveData[i] == 2 && GlobalObjectData[level][i] == 1)
                 GlobalObjectData[level][i] = 0;
