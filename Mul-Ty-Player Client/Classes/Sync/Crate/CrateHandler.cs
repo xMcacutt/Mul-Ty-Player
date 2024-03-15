@@ -18,7 +18,7 @@ internal class CrateHandler : SyncObjectHandler
         GlobalObjectData = new Dictionary<int, byte[]>
         {
             { 4, Enumerable.Repeat((byte)1, 31).ToArray() },
-            { 5, Enumerable.Repeat((byte)1, 16).ToArray() },
+            { 5, Enumerable.Repeat((byte)1, 18).ToArray() },
             { 6, Enumerable.Repeat((byte)1, 24).ToArray() },
             { 8, Enumerable.Repeat((byte)1, 24).ToArray() },
             { 9, Enumerable.Repeat((byte)1, 12).ToArray() },
@@ -41,16 +41,15 @@ internal class CrateHandler : SyncObjectHandler
 
     public override void Sync(int level, byte[] liveData, byte[] saveData)
     {
-        var crateCount = Levels.GetLevelData(level).CrateCount;
+        ProcessHandler.TryRead(0x254CB4, out int crateCount, true, "InvisiCrateCount");
         for (var i = 0; i < crateCount; i++)
             if (liveData[i] == 0 && GlobalObjectData[level][i] == 1)
                 GlobalObjectData[level][i] = 0;
-        if (Client.HLevel.CurrentLevelId == level)
-        {
-            PreviousObjectData = liveData;
-            CurrentObjectData = liveData;
-            LiveSync.Sync(liveData, crateCount, CheckState);
-        }
+        if (Client.HLevel.CurrentLevelId != level) 
+            return;
+        PreviousObjectData = liveData;
+        CurrentObjectData = liveData;
+        LiveSync.Sync(liveData, crateCount, CheckState);
     }
 
     public override bool CheckObserverCondition(byte previousState, byte currentState)

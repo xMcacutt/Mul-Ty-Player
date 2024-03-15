@@ -90,7 +90,7 @@ internal class FrameHandler : SyncObjectHandler
 
     public override void SetMemAddrs()
     {
-        FrameAddress = PointerCalculations.GetPointerAddress(0x274D24, new[] { 0x1C4, 0x0 });
+        FrameAddress = PointerCalculations.GetPointerAddress(0x26BEB0, new[] { 0x0 });
         CounterAddress = SyncHandler.SaveDataBaseAddress + 0xAC2;
         ProcessHandler.CheckAddress(FrameAddress, (ushort)28276, "Frame base address check");
     }

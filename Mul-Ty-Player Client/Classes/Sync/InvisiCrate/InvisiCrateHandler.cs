@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Diagnostics.Tracing.AutomatedAnalysis;
 
 namespace MulTyPlayerClient;
 
@@ -27,7 +28,9 @@ internal class InvisiCrateHandler : SyncObjectHandler
             { 10, Enumerable.Repeat((byte)1, 0).ToArray() },
             { 12, Enumerable.Repeat((byte)1, 5).ToArray() },
             { 13, Enumerable.Repeat((byte)1, 29).ToArray() },
-            { 14, Enumerable.Repeat((byte)1, 18).ToArray() }
+            { 14, Enumerable.Repeat((byte)1, 18).ToArray() },
+            { 21, Enumerable.Repeat((byte)1, 25).ToArray() },
+            { 22, Enumerable.Repeat((byte)1, 20).ToArray() }
         };
         LiveSync = new LiveInvisiCrateSyncer(this);
         SetSyncClasses(LiveSync);
@@ -43,16 +46,15 @@ internal class InvisiCrateHandler : SyncObjectHandler
 
     public override void Sync(int level, byte[] liveData, byte[] saveData)
     {
-        var crateCount = Levels.GetLevelData(level).FrameCount;
+        ProcessHandler.TryRead(0x254DAC, out int crateCount, true, "CrateCount");
         for (var i = 0; i < crateCount; i++)
             if (liveData[i] == 2 && GlobalObjectData[level][i] == 1)
                 GlobalObjectData[level][i] = 0;
-        if (Client.HLevel.CurrentLevelId == level)
-        {
-            PreviousObjectData = liveData;
-            CurrentObjectData = liveData;
-            LiveSync.Sync(liveData, crateCount, CheckState);
-        }
+        if (Client.HLevel.CurrentLevelId != level) 
+            return;
+        PreviousObjectData = liveData;
+        CurrentObjectData = liveData;
+        LiveSync.Sync(liveData, crateCount, CheckState);
     }
 
     public override bool CheckObserverCondition(byte previousState, byte currentState)

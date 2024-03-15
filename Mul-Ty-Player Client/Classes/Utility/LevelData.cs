@@ -44,7 +44,7 @@ public class Levels
         Code = "A2",
         Name = "Walk In The Park",
         FrameCount = 6,
-        CrateCount = 16,
+        CrateCount = 18,
         CrateOpalCount = 102,
         IsMainStage = true,
         HasKoalas = false
