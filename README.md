@@ -150,7 +150,15 @@ having to visit this site again.
 - Added auto start to automatically force the game to start during countdown
 - Added save slot setting to change slot autostart goes into
 
+#### 3.5.2
+- Teleport now works cross level
+
 ### Bug Fixes
+
+#### 3.5.2
+- Fixed issues with crate syncing
+- Fixed reset sync incorrectly resetting rangs
+- Level warp all made host only
 
 #### 3.5.1
 - Attempt at fixing outback desync
