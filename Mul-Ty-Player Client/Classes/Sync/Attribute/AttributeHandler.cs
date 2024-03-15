@@ -1,4 +1,6 @@
-﻿namespace MulTyPlayerClient;
+﻿using System;
+
+namespace MulTyPlayerClient;
 
 internal class AttributeHandler : SyncObjectHandler
 {

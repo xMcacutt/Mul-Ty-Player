@@ -193,6 +193,7 @@
 
                         <Button x:Name="LaunchGameButton"
                                 Margin="2 0"
+                                Visibility="Collapsed"
                                 Click="LaunchGameButton_Click"
                                 ToolTip="Launch Game"
                                 Width="55"

@@ -43,5 +43,6 @@ public enum MessageID : ushort
     HS_RangeChanged,
     Crash,
     HS_Taunt,
-    ForceLevelChange
+    ForceLevelChange,
+    CountdownFinishing
 }

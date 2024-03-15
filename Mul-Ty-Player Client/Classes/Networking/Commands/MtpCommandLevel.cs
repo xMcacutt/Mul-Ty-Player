@@ -66,6 +66,16 @@ public class MtpCommandLevel : Command
             }
             warpAll = string.Equals(args[1], "true", StringComparison.CurrentCultureIgnoreCase);
         }
+        if (!PlayerHandler.TryGetPlayer(Client._client.Id, out var self))
+        {
+            LogError("Critical error. Could not find self.");
+            return;
+        }
+        if (warpAll && !self.IsHost)
+        {
+            LogError("Warping all is a host only privilege.");
+            return;
+        }
         RunLevel(level, warpAll);
     }
 

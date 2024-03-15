@@ -270,7 +270,7 @@
                 <Button Style="{StaticResource LobbyButton}" 
                         Width="100"
                         Click="CancelButton_OnClick">
-                    <controls:Icon Code="{DynamicResource IcoUndo}"
+                    <controls:Icon Code="{DynamicResource IcoCancel}"
                                    Size="20"
                                    Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" />
                 </Button>

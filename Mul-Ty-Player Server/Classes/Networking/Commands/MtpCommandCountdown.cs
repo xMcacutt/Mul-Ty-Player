@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using MulTyPlayer;
+using MulTyPlayerServer.Sync.Objective;
 using Riptide;
 
 namespace MulTyPlayerServer.Classes.Networking.Commands;
@@ -39,7 +41,16 @@ public class MtpCommandCountdown : Command
     [MessageHandler((ushort)MessageID.Countdown)]
     private static void HandleProxyCountdown(ushort fromClientId, Message message)
     {
+        Program.HSync = new SyncHandler();
+        Program.HObjective = new ObjectiveHandler();
         var param = message.GetString();
         Console.WriteLine(RunCountdown(param));
+    }
+    
+    [MessageHandler((ushort)MessageID.CountdownFinishing)]
+    private static void HandleCountdownFinishing(ushort fromClientId, Message message)
+    {
+        Program.HSync = new SyncHandler();
+        Program.HObjective = new ObjectiveHandler();
     }
 }

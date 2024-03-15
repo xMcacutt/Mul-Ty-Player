@@ -114,14 +114,10 @@ public class MtpCommandTeleport
             PeerMessageHandler.SendMessageToClient("[ERROR] Teleport failed, critical error.", false, sender);
             return;
         }
-
-        if (fromPlayer.CurrentLevel != toPlayer.CurrentLevel)
-        {
-            PeerMessageHandler.SendMessageToClient("[ERROR] Teleport failed, players in different levels.", false, sender);
-            return;
-        }
+        
         var message = Message.Create(MessageSendMode.Reliable, MessageID.AdvancedTeleport);
         message.AddUShort(toPlayer.ClientID);
+        message.AddInt(toPlayer.CurrentLevel);
         Server._Server.Send(message, fromPlayer.ClientID);
     }
 

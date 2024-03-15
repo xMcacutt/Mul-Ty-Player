@@ -14,7 +14,7 @@ public class Icons : ResourceDictionary
         this["IcoHelp"] = "\u003f";
         this["IcoEdit"] = "\uf303";
         this["IcoNew"] = "\uf65e";
-        this["IcoSave"] = "\uf019";
+        this["IcoSave"] = "\uf0c7";
         this["IcoUndo"] = "\uf2ea";
         this["IcoMin"] = "\uf068";
         this["IcoCode"] = "\uf120";
@@ -46,5 +46,6 @@ public class Icons : ResourceDictionary
         this["IcoStopwatch"] = "\uf2f2";
         this["IcoResetTimer"] = "\uf1da";
         this["IcoLock"] = "\uf023";
+        this["IcoCancel"] = "\uf05e";
     }
 }

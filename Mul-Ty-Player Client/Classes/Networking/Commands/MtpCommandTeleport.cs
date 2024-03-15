@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using MulTyPlayer;
+using MulTyPlayerClient.Classes.GamePlay;
 using MulTyPlayerClient.Classes.Networking;
 using Riptide;
 
@@ -183,9 +185,17 @@ public class MtpCommandTeleport : Command
         var transform = PlayerReplication.PlayerTransforms[koalaId];
         if (transform.LevelID != Client.HLevel.CurrentLevelId)
         {
-            LogError("Cannot teleport to player in a different level");
+            Client.HLevel.ChangeLevel(transform.LevelID);
+            var delayedTp = new Thread(() => DelayTP(3000, transform));
+            delayedTp.Start();
             return;
         }
+        Client.HHero.WritePosition(transform.Position.X, transform.Position.Y, transform.Position.Z);
+    }
+
+    private static void DelayTP(int millis, Transform transform)
+    {
+        Thread.Sleep(millis);
         Client.HHero.WritePosition(transform.Position.X, transform.Position.Y, transform.Position.Z);
     }
 
@@ -235,9 +245,10 @@ public class MtpCommandTeleport : Command
     [MessageHandler((ushort)MessageID.AdvancedTeleport)]
     private static void ProxyTeleport(Message message)
     {
-        if (message.UnreadLength == 2)
+        if (message.UnreadLength == 2 || message.UnreadLength == 6)
         {
             var toClient = message.GetUShort();
+            var level = message.GetInt();
             Logger.Write($"Teleporting to client {toClient}");
             if (!PlayerHandler.TryGetPlayer(toClient, out var toPlayer))
             {
@@ -252,7 +263,9 @@ public class MtpCommandTeleport : Command
             var koalaId = Koalas.GetInfo[toPlayer.Koala].Id;
             if (!PlayerReplication.PlayerTransforms.TryGetValue(koalaId, out var transform) || transform.LevelID != Client.HLevel.CurrentLevelId)
             {
-                Logger.Write("[ERROR] Cannot teleport to player in a different level");
+                Client.HLevel.ChangeLevel(level);
+                var delayedTp = new Thread(() => DelayTP(3000, transform));
+                delayedTp.Start();
                 return;
             }
             Client.HHero.WritePosition(transform.Position.X, transform.Position.Y, transform.Position.Z);

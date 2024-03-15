@@ -62,6 +62,11 @@ public class Countdown
                 {
                     Client.HGameState.ForcePrepareNewGame(SettingsHandler.Settings.DefaultSaveSlot);
                     Client.HSync = new SyncHandler();
+                    if (Client._client.Id == PlayerHandler.Players[0].Id)
+                    {
+                        var message = Message.Create(MessageSendMode.Reliable, MessageID.CountdownFinishing);
+                        Client._client.Send(message);
+                    }
                     SFXPlayer.StopAll();
                     SFXPlayer.PlaySound(SFX.Race321);
                 }
