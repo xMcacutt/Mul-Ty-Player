@@ -74,7 +74,7 @@ public class HeroHandler
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + positionAddress, bytes);
     }
 
-    public void CheckOutbackSafari(int levelId)
+    private void CheckOutbackSafari(int levelId)
     {
         if (levelId == Levels.OutbackSafari.Id)
         {

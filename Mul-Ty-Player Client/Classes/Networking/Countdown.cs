@@ -60,7 +60,7 @@ public class Countdown
                     Client.HGameState.ForceEnterNewGameScreen();
                 if (i == 3)
                 {
-                    Client.HGameState.ForcePrepareNewGame(1);
+                    Client.HGameState.ForcePrepareNewGame(SettingsHandler.Settings.DefaultSaveSlot);
                     Client.HSync = new SyncHandler();
                     SFXPlayer.StopAll();
                     SFXPlayer.PlaySound(SFX.Race321);

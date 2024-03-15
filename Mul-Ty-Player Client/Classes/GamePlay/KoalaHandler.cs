@@ -88,7 +88,10 @@ internal class KoalaHandler
     {
         var col = SettingsHandler.Settings.DoKoalaCollision ? (byte)1 : (byte)0;
         for (var i = 0; i < 8; i++)
-            ProcessHandler.WriteData(TransformAddresses[i].Collision, new byte[] { col }, "Removing collision");
+            ProcessHandler.WriteData(
+                TransformAddresses[i].Collision, 
+                new byte[] { col }, 
+                "Removing collision");
     }
 
     public void CheckTA()

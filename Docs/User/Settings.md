@@ -100,6 +100,10 @@ Determines whether to auto load your chosen koala's Ty texture onto Ty.
 
 Determines whether to display beacons to show the position of other connected players.
 
+##### Default Save Slot
+
+Determines the save slot to be used for the auto start during countdown.
+
 ---
 
 ### Developer Settings

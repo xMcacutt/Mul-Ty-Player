@@ -162,6 +162,12 @@
                 <CheckBox IsChecked="{Binding ShowKoalaBeacons}"
                           Style="{StaticResource SettingsCheckBoxStyle}"
                           Content="Show Koala Beacons"/>
+                
+                <Label Content="Default Save Slot" 
+                       Style="{StaticResource SettingsLabelStyle}"/>
+                <ComboBox ItemsSource="{Binding SaveSlots}"
+                          SelectedIndex="{Binding SelectedSlotIndex}"
+                          Style="{StaticResource SettingsComboBoxStyle}"/>
             </StackPanel>
             <Separator Visibility="Collapsed" Style="{StaticResource SettingsSepStyle}"/>
             

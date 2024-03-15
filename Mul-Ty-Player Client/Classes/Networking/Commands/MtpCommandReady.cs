@@ -21,11 +21,6 @@ public class MtpCommandReady : Command
             SuggestHelp();
             return;
         }
-        if (!Client.HGameState.IsOnMainMenuOrLoading && !SettingsHandler.DoHideSeek)
-        {
-            LogError("Ready only available from main menu.");
-            return;
-        }
         Client.HPlayer.SetReady();
     }
 }

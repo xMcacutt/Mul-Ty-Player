@@ -32,6 +32,8 @@ public class SettingsViewModel
     public float KoalaScale { get; set; }
     public string InterpolationMode { get; set; }
     public bool ShowKoalaBeacons { get; set; }
+    public int SelectedSlotIndex { get; set; }
+    public ObservableCollection<string> SaveSlots { get; set; }
     
     public ObservableCollection<string> InterpolationModes { get; set; }
     
@@ -65,6 +67,8 @@ public class SettingsViewModel
         foreach (var mode in Enum.GetNames(typeof(KoalaInterpolationMode)))
             InterpolationModes.Add(mode);
         
+        SaveSlots = new ObservableCollection<string>() { "Save Slot 1", "Save Slot 2", "Save Slot 3" };
+        
         AutoRestartTy = SettingsHandler.Settings.AutoRestartTyOnCrash;
         Theme = SettingsHandler.Settings.Theme;
         DoGetSteamName = SettingsHandler.Settings.DoGetSteamName;
@@ -77,6 +81,7 @@ public class SettingsViewModel
         KoalaScale = SettingsHandler.Settings.KoalaScale;
         InterpolationMode = SettingsHandler.Settings.InterpolationMode;
         ShowKoalaBeacons = SettingsHandler.Settings.ShowKoalaBeacons;
+        SelectedSlotIndex = SettingsHandler.Settings.DefaultSaveSlot;
 
         AutoJoinVoice = SettingsHandler.Settings.AutoJoinVoice;
         ProximityRange = SettingsHandler.Settings.ProximityRange;
@@ -99,6 +104,7 @@ public class SettingsViewModel
         SettingsHandler.Settings.KoalaScale = KoalaScale;
         SettingsHandler.Settings.InterpolationMode = InterpolationMode;
         SettingsHandler.Settings.ShowKoalaBeacons = ShowKoalaBeacons;
+        SettingsHandler.Settings.DefaultSaveSlot = SelectedSlotIndex;
 
         SettingsHandler.Settings.AutoJoinVoice = AutoJoinVoice;
         SettingsHandler.Settings.ProximityRange = ProximityRange;

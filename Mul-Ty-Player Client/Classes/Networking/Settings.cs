@@ -19,4 +19,5 @@ internal class Settings
     public string Version { get; set; }
     public bool UseTyKoalaTextures { get; set; }
     public bool ShowKoalaBeacons { get; set; }
+    public int DefaultSaveSlot { get; set; }
 }

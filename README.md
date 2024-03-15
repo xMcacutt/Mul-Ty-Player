@@ -145,13 +145,20 @@ having to visit this site again.
 - Added koala beacons showing where other players are
 - Server hosting change
 
+#### 3.5.1
+- Added level command to warp into levels
+- Added auto start to automatically force the game to start during countdown
+- Added save slot setting to change slot autostart goes into
+
 ### Bug Fixes
+
+#### 3.5.1
+- Attempt at fixing outback desync
 
 #### 3.5.0
 - Koala jitter bug fixed by removing all koala location sounds from rkv and rolling back koala state change
 - Cable car syncing fix attempted by extending frill global.model range
 - Server IP dropdown made bigger for longer IPs
-- 
 
 #### 3.4.9
 - Rang desync issue resolved
@@ -183,7 +190,6 @@ having to visit this site again.
 - No host set on connect to reduce duplicate host chance
 - Global.model edited to increase picture frame range
 - Updater no longer overwrites modifications to the GUI directory allowing cutsomization
-
 
 #### 3.4.2
 - Updater setup menu trigger source set correctly
