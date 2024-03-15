@@ -22,7 +22,9 @@ internal class InvisiCrateSyncer : Syncer
             { 10, Enumerable.Repeat((byte)1, 0).ToArray() },
             { 12, Enumerable.Repeat((byte)1, 5).ToArray() },
             { 13, Enumerable.Repeat((byte)1, 29).ToArray() },
-            { 14, Enumerable.Repeat((byte)1, 18).ToArray() }
+            { 14, Enumerable.Repeat((byte)1, 18).ToArray() },
+            { 21, Enumerable.Repeat((byte)1, 25).ToArray() },
+            { 22, Enumerable.Repeat((byte)1, 20).ToArray() }
         };
     }
 

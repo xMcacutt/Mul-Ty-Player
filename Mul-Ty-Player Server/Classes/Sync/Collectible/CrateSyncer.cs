@@ -14,7 +14,7 @@ internal class CrateSyncer : Syncer
         GlobalObjectData = new Dictionary<int, byte[]>
         {
             { 4, Enumerable.Repeat((byte)1, 31).ToArray() },
-            { 5, Enumerable.Repeat((byte)1, 16).ToArray() },
+            { 5, Enumerable.Repeat((byte)1, 18).ToArray() },
             { 6, Enumerable.Repeat((byte)1, 24).ToArray() },
             { 8, Enumerable.Repeat((byte)1, 24).ToArray() },
             { 9, Enumerable.Repeat((byte)1, 12).ToArray() },
