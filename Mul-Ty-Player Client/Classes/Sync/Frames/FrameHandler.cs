@@ -6,7 +6,8 @@ namespace MulTyPlayerClient;
 
 internal class FrameHandler : SyncObjectHandler
 {
-    public int FrameAddress;
+    public int CrateFrameAddress;
+    public int NonCrateFrameAddress;
     public (int, byte)[] FrameData;
     public (int, byte)[] OldFrameData;
     public int InvisiCrateAddress;
@@ -97,11 +98,9 @@ internal class FrameHandler : SyncObjectHandler
 
     public override void SetMemAddrs()
     {
-        FrameAddress = Client.HLevel.CurrentLevelId > 20 ?
-            PointerCalculations.GetPointerAddress(0x26BEB0, new[] { 0x0 }) :
-            PointerCalculations.GetPointerAddress(0x274D24, new[] { 0x1C4, 0x0 });
+        CrateFrameAddress = PointerCalculations.GetPointerAddress(0x274D24, new[] { 0x1C4, 0x0 });
+        NonCrateFrameAddress = PointerCalculations.GetPointerAddress(0x26BEB0, new[] { 0x0 });
         CounterAddress = SyncHandler.SaveDataBaseAddress + 0xAC2;
-        ProcessHandler.CheckAddress(FrameAddress, (ushort)28276, "Frame base address check");
     }
 
     public override bool CheckObserverCondition(byte previousState, byte currentState)

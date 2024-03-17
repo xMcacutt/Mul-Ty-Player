@@ -83,7 +83,7 @@ public class Countdown
             await countdown;
             OnCountdownFinished?.Invoke();
         }
-        catch (OperationCanceledException cancel)
+        catch (OperationCanceledException)
         {
             Logger.Write("Countdown aborted.");
         }

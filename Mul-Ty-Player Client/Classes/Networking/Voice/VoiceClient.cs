@@ -60,7 +60,7 @@ public class VoiceClient
                     ReceiveAudio(data);
             }
         }
-        catch (ObjectDisposedException ex)
+        catch (ObjectDisposedException)
         {
 
         }

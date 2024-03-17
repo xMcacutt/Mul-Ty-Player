@@ -23,7 +23,7 @@ public class GlowHandler
     };
     
     
-      private static bool readyToWriteTransformData;
+    private static bool readyToWriteTransformData;
     private static int _baseGlowAddress;
 
     public GlowHandler()
