@@ -47,6 +47,7 @@
                     <ContextMenu x:Name="HostDataGridContextMenu">
                         <controls:CustomMenuItem IconCode="{DynamicResource IcoGift}" Header="Gift Host" Click="GiveHost_OnClick"/>
                         <controls:CustomMenuItem IconCode="{DynamicResource IcoKick}" Header="Kick" Click="KickPlayer_OnClick"/>
+                        <controls:CustomMenuItem IconCode="{DynamicResource IcoHome}" Header="Force Menu" Click="ForceMenu_OnClick"></controls:CustomMenuItem>
                     </ContextMenu>
                 </DataGrid.ContextMenu>
                 <DataGrid.Columns>

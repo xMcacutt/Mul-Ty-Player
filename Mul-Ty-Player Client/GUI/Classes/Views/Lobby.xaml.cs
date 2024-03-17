@@ -109,6 +109,11 @@ public partial class Lobby : UserControl
         Client.HCommand.Commands["kick"].InitExecute(new string[] { clickedPlayer.Id.ToString() });
     }
 
+    private void ForceMenu_OnClick(object sender, RoutedEventArgs e)
+    {
+        Client.HPlayer.ForceToMenu(clickedPlayer.Id);
+    }
+
     private void HostMenuButton_Click(object sender, RoutedEventArgs e)
     {
         // Open the context menu on left click

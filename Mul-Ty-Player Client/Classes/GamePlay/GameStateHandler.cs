@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using MulTyPlayer;
 using MulTyPlayerClient.GUI.Models;
+using Riptide;
 
 namespace MulTyPlayerClient;
 
@@ -121,5 +123,11 @@ public class GameStateHandler
     {
         // Force enter new game
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x2864BC, new byte[] { 0x2 });
+    }
+
+    [MessageHandler((ushort)MessageID.ForceMainMenu)]
+    private static void HandleForceMenu(Message message)
+    {
+        Client.HGameState.ForceBackToMainMenu();
     }
 }

@@ -44,5 +44,6 @@ public enum MessageID : ushort
     Crash,
     HS_Taunt,
     ForceLevelChange,
-    CountdownFinishing
+    CountdownFinishing,
+    ForceMainMenu
 }

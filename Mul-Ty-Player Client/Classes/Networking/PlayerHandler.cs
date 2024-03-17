@@ -114,5 +114,11 @@ internal class PlayerHandler
         }
         player.IsReady = message.GetBool();
     }
-    
+
+    public void ForceToMenu(ushort clickedPlayerId)
+    {
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.ForceMainMenu);
+        message.AddUShort(clickedPlayerId);
+        Client._client.Send(message);
+    }
 }

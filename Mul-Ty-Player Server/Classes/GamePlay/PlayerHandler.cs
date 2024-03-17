@@ -87,4 +87,12 @@ internal class PlayerHandler
         countdownStart.AddString("start");
         Server._Server.SendToAll(countdownStart);
     }
+
+    [MessageHandler((ushort)MessageID.ForceMainMenu)]
+    private static void HandleForceMenu(ushort fromClientId, Message message)
+    {
+        var playerToForce = message.GetUShort();
+        var response = Message.Create(MessageSendMode.Reliable, MessageID.ForceMainMenu);
+        Server._Server.Send(response, playerToForce);
+    }
 }
