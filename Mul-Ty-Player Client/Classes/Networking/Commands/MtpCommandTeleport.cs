@@ -183,9 +183,9 @@ public class MtpCommandTeleport : Command
         }
         var koalaId = Koalas.GetInfo[player.Koala].Id;
         var transform = PlayerReplication.PlayerTransforms[koalaId];
-        if (transform.LevelID != Client.HLevel.CurrentLevelId)
+        if (transform.LevelId != Client.HLevel.CurrentLevelId)
         {
-            Client.HLevel.ChangeLevel(transform.LevelID);
+            Client.HLevel.ChangeLevel(transform.LevelId);
             var delayedTp = new Thread(() => DelayTP(3000, transform));
             delayedTp.Start();
             return;
@@ -261,7 +261,7 @@ public class MtpCommandTeleport : Command
                 return;
             }
             var koalaId = Koalas.GetInfo[toPlayer.Koala].Id;
-            if (!PlayerReplication.PlayerTransforms.TryGetValue(koalaId, out var transform) || transform.LevelID != Client.HLevel.CurrentLevelId)
+            if (!PlayerReplication.PlayerTransforms.TryGetValue(koalaId, out var transform) || transform.LevelId != Client.HLevel.CurrentLevelId)
             {
                 Client.HLevel.ChangeLevel(level);
                 var delayedTp = new Thread(() => DelayTP(3000, transform));

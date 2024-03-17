@@ -163,10 +163,7 @@ internal class KoalaHandler
             return;
 
         var transform = message.GetFloats();
-        //Debug.WriteLine($"Handle coordinates: {KoalaTransform.DebugTransform(transform)}");
-        //Debug.WriteLine($"Before updating coordinates: {KoalaTransform.DebugTransform(playerTransformAddresses[koalaID].New.Transform)}");
-        PlayerReplication.UpdatePlayerSnapshotData(koalaId, transform, level);
-        //Debug.WriteLine($"After updating coordinates: {KoalaTransform.DebugTransform(playerTransformAddresses[koalaID].New.Transform)}");
+        PlayerReplication.UpdatePlayerSnapshotData(koalaId, transform, onMenu, level);
     }
 
     public struct KoalaTransformAddresses

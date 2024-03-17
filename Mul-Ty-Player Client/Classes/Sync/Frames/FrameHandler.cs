@@ -8,6 +8,7 @@ internal class FrameHandler : SyncObjectHandler
 {
     public int FrameAddress;
     public (int, byte)[] FrameData;
+    public (int, byte)[] OldFrameData;
     public int InvisiCrateAddress;
     public byte[] NullState;
     public new byte[] ObserverState;
@@ -49,19 +50,25 @@ internal class FrameHandler : SyncObjectHandler
     public override void CheckObserverChanged()
     {
         ObserverState = ReadObserver(CounterAddress, CounterByteLength);
-        if (PreviousObserverState.SequenceEqual(ObserverState) || ObserverState.All(b => b == 0)) return;
+        if (PreviousObserverState.SequenceEqual(ObserverState) || ObserverState.All(b => b == 0)) 
+            return;
         Array.Copy(ObserverState, PreviousObserverState, 0x2E);
+        
+        // FRAME DATA ITEM 1 IS THE INDEX OF THE FRAME
         FrameData = (LiveSync as LiveFrameSyncer)?.ReadData();
-        if (FrameData != null) CurrentObjectData = FrameData.Select(x => x.Item2).ToArray();
+        if (FrameData == null)
+            return;
+        CurrentObjectData = FrameData.Select(x => x.Item2).ToArray();
         for (var iLive = 0; iLive < CurrentObjectData.Length; iLive++)
         {
-            if (!CheckObserverCondition(PreviousObjectData[iLive], CurrentObjectData[iLive])) continue;
+            if (!CheckObserverCondition(PreviousObjectData[iLive], CurrentObjectData[iLive])) 
+                continue;
 
             //FRAME IS COLLECTED
             PreviousObjectData[iLive] = CurrentObjectData[iLive] = WriteState;
-            var iSave = CurrentObjectData[iLive];
-            if (GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] == CheckState) continue;
-
+            var iSave = FrameData[iLive].Item1;
+            if (GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] == CheckState) 
+                continue;
             //Logger.Write(Name + " number " + iLive + " collected.");
             GlobalObjectData[Client.HLevel.CurrentLevelId][iLive] = (byte)CheckState;
             Client.HSync.SendDataToServer(iLive, iSave, Client.HLevel.CurrentLevelId, Name);

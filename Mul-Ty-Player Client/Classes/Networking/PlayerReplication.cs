@@ -96,22 +96,21 @@ internal static class PlayerReplication
         var snapshots = receivedSnapshotData[koalaId];
         PlayerTransforms[koalaId].Position = Interpolation.LerpPosition(snapshots, InterpolationMode);
         PlayerTransforms[koalaId].Rotation = snapshots.New.Transform.Rotation;
-        PlayerTransforms[koalaId].LevelID = snapshots.New.Transform.LevelID;
+        PlayerTransforms[koalaId].OnMenu = snapshots.New.Transform.OnMenu;
+        PlayerTransforms[koalaId].LevelId = snapshots.New.Transform.LevelId;
         return PlayerTransforms[koalaId];
     }
 
     public static void ReturnKoala(KoalaID koalaId)
     {
-        var level = PlayerTransforms[koalaId].LevelID;
+        var level = PlayerTransforms[koalaId].LevelId;
         if (Client.HLevel.CurrentLevelId != level)
             return;
         var ktp = KoalaHandler.TransformAddresses[koalaId];
         PlayerTransforms[koalaId].Position = new Position(_defaultKoalaPosX[level], _defaultKoalaPosY[level], _defaultKoalaPosZ[level]);
-
         ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(_defaultKoalaPosX[level]));
         ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(_defaultKoalaPosY[level]));
         ProcessHandler.WriteData(ktp.Z, BitConverter.GetBytes(_defaultKoalaPosZ[level]));
-        
         Client.HGlow.ReturnGlow(koalaId);
     }
 
@@ -121,7 +120,7 @@ internal static class PlayerReplication
         var gtp = GlowHandler.TransformAddresses[koalaId];
 
         var selfLevel = Client.HLevel.CurrentLevelId;
-        if (transform.LevelID != selfLevel)
+        if (transform.LevelId != selfLevel)
         {
             PlayerTransforms[koalaId].Position = new Position(_defaultKoalaPosX[selfLevel], _defaultKoalaPosY[selfLevel], _defaultKoalaPosZ[selfLevel]);
             ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(_defaultKoalaPosX[selfLevel]));
@@ -130,7 +129,11 @@ internal static class PlayerReplication
             Client.HGlow.ReturnGlow(koalaId);
             return;
         }
-
+        if (transform.OnMenu)
+        {
+            ReturnKoala(koalaId);
+            return;
+        }
         ProcessHandler.WriteData(ktp.X, BitConverter.GetBytes(transform.Position.X));
         ProcessHandler.WriteData(ktp.Y, BitConverter.GetBytes(transform.Position.Y));
         ProcessHandler.WriteData(ktp.Z, BitConverter.GetBytes(transform.Position.Z));
@@ -148,9 +151,9 @@ internal static class PlayerReplication
         ProcessHandler.WriteData(gtp.sZ, BitConverter.GetBytes(0.3f), "Scaling glows");
     }
 
-    internal static void UpdatePlayerSnapshotData(KoalaID koalaId, float[] transform, int levelId)
+    internal static void UpdatePlayerSnapshotData(KoalaID koalaId, float[] transform, bool onMenu, int levelId)
     {
-        receivedSnapshotData[koalaId].Update(new TransformSnapshot(transform, levelId));
+        receivedSnapshotData[koalaId].Update(new TransformSnapshot(transform, onMenu, levelId));
     }
 
     #region AddRemovePlayers

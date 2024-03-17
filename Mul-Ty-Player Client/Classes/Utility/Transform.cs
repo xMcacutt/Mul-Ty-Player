@@ -85,23 +85,27 @@ public struct Rotation : ITransformData
 
 public class Transform
 {
-    public int LevelID;
+    public int LevelId;
+    public bool OnMenu;
     public Position Position;
     public Rotation Rotation;
 
-    public Transform(Position Position, Rotation Rotation, int LevelID)
+    public Transform(Position position, Rotation rotation, bool onMenu, int levelId)
     {
-        this.Position = Position;
-        this.Rotation = Rotation;
-        this.LevelID = LevelID;
+        this.Position = position;
+        this.Rotation = rotation;
+        this.OnMenu = onMenu;
+        this.LevelId = levelId;
     }
 
-    public Transform(float[] transform, int levelid) : this(new Position(transform[..3]), new Rotation(transform[3..6]),
-        levelid)
+    public Transform(float[] transform, bool onMenu, int levelId) : 
+        this(new Position(transform[..3]), 
+        new Rotation(transform[3..6]),
+        onMenu, levelId)
     {
     }
 
-    public Transform() : this(new Position(), new Rotation(), 0)
+    public Transform() : this(new Position(), new Rotation(), false, 0)
     {
     }
 }
@@ -112,7 +116,7 @@ public record struct TransformSnapshot(Transform Transform, DateTime Timestamp)
     {
     }
 
-    public TransformSnapshot(float[] transform, int levelid) : this(new Transform(transform, levelid), DateTime.Now)
+    public TransformSnapshot(float[] transform, bool onMenu, int levelId) : this(new Transform(transform, onMenu, levelId), DateTime.Now)
     {
     }
 

@@ -97,7 +97,7 @@ public class HSHandler
         {
             if (!PlayerReplication.PlayerTransforms.TryGetValue((int)otherPlayer.Koala, out var otherPlayerTransform))
                 continue;
-            if (otherPlayerTransform.LevelID != Client.HLevel.CurrentLevelId)
+            if (otherPlayerTransform.LevelId != Client.HLevel.CurrentLevelId)
                 continue;
             var otherPlayerPos = otherPlayerTransform.Position;
             var currentPos = Client.HHero.GetCurrentPosRot();

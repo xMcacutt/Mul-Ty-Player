@@ -64,6 +64,6 @@ public class MtpCommandWhere : Command
         }
         var koalaId = Koalas.GetInfo[player.Koala].Id;
         var transform = PlayerReplication.PlayerTransforms[koalaId];
-        Logger.Write($"{player.Name} is in {Levels.GetLevelData(transform.LevelID).Code} at {transform.Position.X}, {transform.Position.Y}, {transform.Position.Z}");
+        Logger.Write($"{player.Name} is in {Levels.GetLevelData(transform.LevelId).Code} at {transform.Position.X}, {transform.Position.Y}, {transform.Position.Z}");
     }
 }
