@@ -59,21 +59,21 @@ internal class LiveFrameSyncer : LiveDataSyncer
 
     public override void Collect(int index)
     {
+        // IF INDEX IS LESS THAN NON CRATE FRAME COUNT, THEN TREAT AS NON CRATE FRAME NBO MANIPULATION
+        Console.WriteLine(index);
         if (Client.HGameState.IsOnMainMenuOrLoading) return;
         var framesInLevel = Levels.GetLevelData(HLevel.CurrentLevelId).FrameCount;
         var address = HFrame.CrateFrameAddress;
         ProcessHandler.TryRead(0x26BEAC, out int nonCrateFrameCount, true, "Non Crate Frames Count");
-        // HANDLE CRATE FRAMES WITH INDEX AS GIVEN
-        if (index < framesInLevel - nonCrateFrameCount)
+        if (index < nonCrateFrameCount)
         {
-            for (var i = 0; i < index; i++)
-                ProcessHandler.TryRead(address + 0x30, out address, false, "LiveFrameSyncer::Collect {0}");
+            address = HFrame.NonCrateFrameAddress + 0xCC * index;
         }
-        // HANDLE NON CRATE FRAMES WHERE INDEX IS FROM FIRST NON CRATE FRAMES
         else
         {
-            index -= (framesInLevel - nonCrateFrameCount);
-            address = HFrame.NonCrateFrameAddress + 0xCC * index;
+            index -= framesInLevel - nonCrateFrameCount;
+            for (var i = 0; i < index; i++)
+                ProcessHandler.TryRead(address + 0x30, out address, false, "LiveFrameSyncer::Collect {0}");
         }
         ProcessHandler.WriteData(address + 0x89, new byte[] { 0x1 }, "LiveFrameSyncer::Collect {1}");
         ProcessHandler.WriteData(address + 0x8B, new byte[] { 0x1 }, "LiveFrameSyncer::Collect {1}");
