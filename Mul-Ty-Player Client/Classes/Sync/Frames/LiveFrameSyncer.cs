@@ -72,6 +72,7 @@ internal class LiveFrameSyncer : LiveDataSyncer
         else
         {
             index -= framesInLevel - nonCrateFrameCount;
+
             for (var i = 0; i < index; i++)
                 ProcessHandler.TryRead(address + 0x30, out address, false, "LiveFrameSyncer::Collect {0}");
         }

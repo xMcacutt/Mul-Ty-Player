@@ -32,7 +32,7 @@ internal class LiveInvisiCrateSyncer : LiveDataSyncer
 
     public override byte[] ReadData()
     {
-        var crateCount = Levels.GetLevelData(Client.HLevel.CurrentLevelId).FrameCount;
+        var crateCount = HSyncObject.GlobalObjectData[Client.HLevel.CurrentLevelId].Length;
         var currentData = new byte[crateCount];
         var address = HSyncObject.LiveObjectAddress;
         for (var i = 0; i < currentData.Length; i++)
