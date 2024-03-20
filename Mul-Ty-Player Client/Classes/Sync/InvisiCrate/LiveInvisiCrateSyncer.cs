@@ -36,8 +36,12 @@ internal class LiveInvisiCrateSyncer : LiveDataSyncer
         var currentData = new byte[crateCount];
         var address = HSyncObject.LiveObjectAddress;
         for (var i = 0; i < currentData.Length; i++)
+        {
             ProcessHandler.TryRead(address + StateOffset + ObjectLength * i, out currentData[i], false,
                 "LiveCrateSyncer::ReadData()");
+            Console.Write(currentData[i] + ", ");
+        }
+        Console.WriteLine();
         return currentData;
     }
 }

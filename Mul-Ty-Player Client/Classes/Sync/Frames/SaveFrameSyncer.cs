@@ -6,7 +6,6 @@ internal class SaveFrameSyncer : SaveDataSyncer
 {
     public override void Save(int index, int? level)
     {
-        Console.WriteLine(index);
         var byteIndex = index / 8;
         var bitIndex = index % 8;
         var address = SyncHandler.SaveDataBaseAddress + 0xAC2 + byteIndex;

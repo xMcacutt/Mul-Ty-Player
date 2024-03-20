@@ -59,7 +59,7 @@ internal class InvisiCrateHandler : SyncObjectHandler
 
     public override bool CheckObserverCondition(byte previousState, byte currentState)
     {
-        return previousState == 1 && currentState == 2;
+        return previousState != 2 && currentState == 2;
     }
 
     public override void SetMemAddrs()
@@ -81,7 +81,7 @@ internal class InvisiCrateHandler : SyncObjectHandler
 
         PreviousObserverState = ObserverState;
         CurrentObjectData = LiveSync.ReadData();
-        var crateCount = Levels.GetLevelData(Client.HLevel.CurrentLevelId).FrameCount;
+        var crateCount = GlobalObjectData[Client.HLevel.CurrentLevelId].Length;
         if (PreviousObjectData.Length != crateCount) return;
         for (var iLive = 0; iLive < crateCount; iLive++)
             if (CheckObserverCondition(PreviousObjectData[iLive], CurrentObjectData[iLive]))

@@ -60,7 +60,6 @@ internal class LiveFrameSyncer : LiveDataSyncer
     public override void Collect(int index)
     {
         // IF INDEX IS LESS THAN NON CRATE FRAME COUNT, THEN TREAT AS NON CRATE FRAME NBO MANIPULATION
-        Console.WriteLine(index);
         if (Client.HGameState.IsOnMainMenuOrLoading) return;
         var framesInLevel = Levels.GetLevelData(HLevel.CurrentLevelId).FrameCount;
         var address = HFrame.CrateFrameAddress;
