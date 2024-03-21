@@ -102,6 +102,7 @@ internal class Server
 
     private static void ClientDisconnected(object sender, ServerDisconnectedEventArgs e)
     {
+        
         if (PlayerHandler.Players.TryGetValue(e.Client.Id, out _))
         {
             PeerMessageHandler.SendMessageToClients($"{PlayerHandler.Players[e.Client.Id].Name} has disconnected from the server.", true);
@@ -123,6 +124,5 @@ internal class Server
         message.AddInt(level);
         message.AddFloats(coordinates);
         _Server.SendToAll(message, clientId);
-        
     }
 }

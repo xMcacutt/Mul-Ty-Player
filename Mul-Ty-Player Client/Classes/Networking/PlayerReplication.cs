@@ -40,6 +40,11 @@ internal static class PlayerReplication
         PlayerTransforms = new Dictionary<int, Transform>();
     }
 
+    public static void ClearSnapshotData()
+    {
+        receivedSnapshotData.Clear();
+    }
+
     public static void RenderKoalas(int maxTimeMilliseconds)
     {
         if (InterpolationMode == KoalaInterpolationMode.None)

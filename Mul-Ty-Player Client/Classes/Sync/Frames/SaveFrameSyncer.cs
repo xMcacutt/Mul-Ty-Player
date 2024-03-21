@@ -16,6 +16,6 @@ internal class SaveFrameSyncer : SaveDataSyncer
 
     public void Sync(byte[] data)
     {
-        ProcessHandler.WriteData(SyncHandler.SaveDataBaseAddress + 0xAD2, data, "Syncing frame save data");
+        ProcessHandler.WriteData(SyncHandler.SaveDataBaseAddress + 0xAC2, data, "Syncing frame save data");
     }
 }

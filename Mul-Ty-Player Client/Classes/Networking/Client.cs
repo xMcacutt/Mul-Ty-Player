@@ -72,6 +72,7 @@ internal class Client
 
     private static void InitHandlers()
     {
+        //PlayerReplication.
         HLevel = new LevelHandler();
         HSync = new SyncHandler();
         HGameState = new GameStateHandler();
@@ -121,6 +122,7 @@ internal class Client
         IsConnected = false;
         foreach (var koalaID in PlayerReplication.PlayerTransforms.Keys) 
             PlayerReplication.ReturnKoala(koalaID);
+        PlayerReplication.ClearPlayers();
         ModelController.KoalaSelect.MakeAllAvailable();
         SFXPlayer.PlaySound(SFX.PlayerDisconnect);
         if (e.Reason == DisconnectReason.TimedOut && SettingsHandler.Settings.AttemptReconnect)
