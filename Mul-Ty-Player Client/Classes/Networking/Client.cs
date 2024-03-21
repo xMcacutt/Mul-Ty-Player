@@ -233,6 +233,8 @@ internal class Client
                     }
                     if (ModelController.Login.JoinAsSpectator)
                     {
+                        if (SpectatorHandler.LookingAtSpectatee)
+                            SpectatorHandler.LookAtSpectatee();
                         HGameState.CheckMainMenuOrLoading();
                         if (!HGameState.IsOnMainMenuOrLoading)
                         {
