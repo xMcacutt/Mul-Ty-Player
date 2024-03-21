@@ -230,7 +230,6 @@ public class MtpCommandTeleport : Command
                 outSelector = null;
                 return false;
         }
-
         var fromInValid = selectorType == SelectorType.From && selector is Selector.LevelEnd or Selector.LevelStart;
         var toInvalid = selectorType == SelectorType.To && selector is Selector.AllPlayers;
         if (fromInValid || toInvalid)
@@ -245,7 +244,8 @@ public class MtpCommandTeleport : Command
     [MessageHandler((ushort)MessageID.AdvancedTeleport)]
     private static void ProxyTeleport(Message message)
     {
-        if (message.UnreadLength == 2 || message.UnreadLength == 6)
+        Console.WriteLine(message.UnreadBits);
+        if (message.UnreadBits < 96)
         {
             var toClient = message.GetUShort();
             var level = message.GetInt();

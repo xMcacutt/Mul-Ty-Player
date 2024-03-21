@@ -39,9 +39,7 @@ internal class LiveInvisiCrateSyncer : LiveDataSyncer
         {
             ProcessHandler.TryRead(address + StateOffset + ObjectLength * i, out currentData[i], false,
                 "LiveCrateSyncer::ReadData()");
-            Console.Write(currentData[i] + ", ");
         }
-        Console.WriteLine();
         return currentData;
     }
 }

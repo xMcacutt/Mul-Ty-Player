@@ -28,7 +28,7 @@ internal class Server
     private static void Loop()
     {
         _Server = new Riptide.Server();
-        _Server.Start(SettingsHandler.Settings.Port, 8);
+        _Server.Start(SettingsHandler.Settings.Port, 12);
 
         _Server.HandleConnection += HandleConnection;
         _Server.ClientConnected += ClientConnected;
@@ -73,6 +73,7 @@ internal class Server
     {
         Console.WriteLine("Received connection attempt...");
         var pass = authenticationMessage.GetString();
+        var spectator = authenticationMessage.GetBool();
         if (!string.Equals(pass, SettingsHandler.Settings.Password, StringComparison.CurrentCultureIgnoreCase)
             && !string.Equals(SettingsHandler.Settings.Password, "XXXXX", StringComparison.CurrentCultureIgnoreCase)
             && !string.IsNullOrWhiteSpace(SettingsHandler.Settings.Password)
@@ -85,6 +86,10 @@ internal class Server
         {
             _Server.Accept(pendingConnection);
             Console.WriteLine("Accepting.");
+        }
+        if (spectator)
+        {
+            
         }
     }
 

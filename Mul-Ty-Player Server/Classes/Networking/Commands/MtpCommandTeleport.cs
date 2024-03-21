@@ -10,7 +10,6 @@ namespace MulTyPlayerServer.Classes.Networking.Commands;
 
 public class MtpCommandTeleport
 {
-
     public static Dictionary<int, float[]> _levelStarts = new Dictionary<int, float[]>()
     {
          {0, new float[] {71f, 2622.9421f, 209f} },
@@ -212,9 +211,8 @@ public class MtpCommandTeleport
         for (var i = 0; i < 3; i++)
         {
             var inCoord = inCoords[i];
-            var absCoord = 0f;
             var relCoord = 0f;
-            if ((!float.TryParse(inCoord, out absCoord) && !inCoord.StartsWith("~"))
+            if ((!float.TryParse(inCoord, out var absCoord) && !inCoord.StartsWith("~"))
                 || (inCoord.StartsWith("~") && inCoord != "~" && !float.TryParse(inCoord.Skip(1).ToArray(), out relCoord)))
             {
                 PeerMessageHandler.SendMessageToClient("[ERROR] Coordinates specified are not valid", false, sender);

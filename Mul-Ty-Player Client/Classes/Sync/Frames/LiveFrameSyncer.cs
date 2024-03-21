@@ -70,11 +70,11 @@ internal class LiveFrameSyncer : LiveDataSyncer
         }
         else
         {
-            index -= framesInLevel - nonCrateFrameCount;
-
+            index -= nonCrateFrameCount;
             for (var i = 0; i < index; i++)
                 ProcessHandler.TryRead(address + 0x30, out address, false, "LiveFrameSyncer::Collect {0}");
         }
+        ProcessHandler.TryRead(address + 0x84, out int indexRead, false, "");
         ProcessHandler.WriteData(address + 0x89, new byte[] { 0x1 }, "LiveFrameSyncer::Collect {1}");
         ProcessHandler.WriteData(address + 0x8B, new byte[] { 0x1 }, "LiveFrameSyncer::Collect {1}");
     }

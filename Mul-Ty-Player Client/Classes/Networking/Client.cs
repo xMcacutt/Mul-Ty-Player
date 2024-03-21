@@ -119,6 +119,8 @@ internal class Client
         cts.Cancel();
         KoalaSelected = false;
         IsConnected = false;
+        foreach (var koalaID in PlayerReplication.PlayerTransforms.Keys) 
+            PlayerReplication.ReturnKoala(koalaID);
         ModelController.KoalaSelect.MakeAllAvailable();
         SFXPlayer.PlaySound(SFX.PlayerDisconnect);
         if (e.Reason == DisconnectReason.TimedOut && SettingsHandler.Settings.AttemptReconnect)
