@@ -50,7 +50,7 @@ internal class KoalaHandler
         if (bSendToAll)
         {
             Server._Server.SendToAll(announcement, fromToClientId);
-            PeerMessageHandler.SendMessageToClients($"{playerName} (Client{fromToClientId}) selected {koalaName}", true);
+            PeerMessageHandler.SendMessageToClients($"{playerName} (Client {fromToClientId}) selected {koalaName}", true);
         }
         else
         {

@@ -137,6 +137,7 @@ internal class KoalaHandler
         //If this client isnt in game, or hasnt selected a koala, return
         if (!Client.KoalaSelected || Client.Relaunching)
             return;
+        Console.WriteLine("AHHHHH");
         //Debug.WriteLine("Received koala coord");
         var onMenu = message.GetBool();
         var clientId = message.GetUShort();

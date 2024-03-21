@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using Riptide;
 using Riptide.Utils;
@@ -43,7 +44,7 @@ internal class Server
             {
                 if (SettingsHandler.DoLevelLock)
                     LevelLockHandler.UpdateCheck();
-                foreach (var player in PlayerHandler.Players.Values)
+                foreach (var player in PlayerHandler.Players.Values.Where(x => x.Koala.KoalaName != "SPECTATOR"))
                 {
                     if (player.CurrentLevel != player.PreviousLevel && player.PreviousLevel != 99)
                     {

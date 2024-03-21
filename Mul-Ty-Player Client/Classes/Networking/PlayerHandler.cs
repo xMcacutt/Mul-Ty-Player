@@ -95,7 +95,7 @@ internal class PlayerHandler
         var clientId = message.GetUShort();
         if (!PlayerHandler.TryGetPlayer(clientId, out var player))
             Logger.Write("[ERROR] Could not find player in player list");
-        else
+        else if (player.Koala is not null) 
             PlayerReplication.ReturnKoala((int)player.Koala);
         RemovePlayer(clientId);
         SFXPlayer.PlaySound(SFX.PlayerDisconnect);

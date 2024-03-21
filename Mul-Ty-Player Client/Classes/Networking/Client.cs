@@ -207,7 +207,7 @@ internal class Client
             {
                 try
                 {
-                    if (KoalaSelected)
+                    if (KoalaSelected && !ModelController.Login.JoinAsSpectator)
                     {
                         HGameState.CheckMainMenuOrLoading();
                         if (!HGameState.IsOnMainMenuOrLoading)
@@ -226,7 +226,6 @@ internal class Client
                             HHero.GetTyPosRot();
                             HKoala.CheckTA();
                         }
-
                         HHero.SendCoordinates();
                         // Writes all received player coordinates into koala positions in memory
                         PlayerReplication.RenderKoalas(MS_PER_TICK);
