@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:MulTyPlayerClient.GUI.Controls"
-                    xmlns:mulTyPlayerClient="clr-namespace:MulTyPlayerClient">
+                    xmlns:mulTyPlayerClient="clr-namespace:MulTyPlayerClient"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
     
     <LinearGradientBrush x:Key="ControlBackgroundGradient" EndPoint="0.5,1" StartPoint="0.5,0">
         <GradientStop Color="#7F6D4500" />
@@ -224,11 +225,50 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    <Style x:Key="ComicTextCheck" TargetType="CheckBox">
+    
+    <!--CHECKBOX-->
+    <Style TargetType="{x:Type CheckBox}" x:Key="ComicTextCheck">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="25" />
         <Setter Property="FontFamily" Value="../Fonts/#SF Slapstick Comic" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="HorizontalContentAlignment" Value="Right" />
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0"
+                                   Text="{TemplateBinding Content}"
+                                   Style="{StaticResource ComicText}"
+                                   Margin="5,0,0,3">
+                            <TextBlock.Effect>
+                                <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2" />
+                            </TextBlock.Effect>
+                        </TextBlock>
+
+                        <Grid Grid.Column="1">
+                            <Border Width="20"
+                                    Height="20"
+                                    Margin="10 0 10 0"
+                                    CornerRadius="3"
+                                    Background="Transparent"
+                                    BorderBrush="{Binding MainText, Source={x:Static mulTyPlayerClient:App.AppColors}}"
+                                    BorderThickness="2">
+                            </Border>
+                            <controls:Icon Code="{DynamicResource IcoCheck}"
+                                           Foreground="White"
+                                           Size="25"
+                                           Visibility="{TemplateBinding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"/>
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!--Buttons-->

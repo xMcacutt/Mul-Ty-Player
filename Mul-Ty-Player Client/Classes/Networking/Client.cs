@@ -189,28 +189,50 @@ internal class Client
     {
         while (!ct.IsCancellationRequested)
         {
-            if (TyProcess.FindProcess() && KoalaSelected)
+            if (TyProcess.FindProcess())
+            {
                 try
                 {
-                    HGameState.CheckMainMenuOrLoading();
-                    if (!HGameState.IsOnMainMenuOrLoading)
+                    if (KoalaSelected)
                     {
-                        HGameState.CheckLoadChanged();
-                        HLevel.GetCurrentLevel();
-                        if (!SettingsHandler.DoHideSeek)
+                        HGameState.CheckMainMenuOrLoading();
+                        if (!HGameState.IsOnMainMenuOrLoading)
                         {
-                            HSync.CheckEnabledObservers();
-                            if (SettingsHandler.DoTESyncing)
-                                HObjective.RunChecks();
+                            HGameState.CheckLoadChanged();
+                            HLevel.GetCurrentLevel();
+                            if (!SettingsHandler.DoHideSeek)
+                            {
+                                HSync.CheckEnabledObservers();
+                                if (SettingsHandler.DoTESyncing)
+                                    HObjective.RunChecks();
+                            }
+                            else
+                                HHideSeek.Run();
+
+                            HHero.GetTyPosRot();
+                            HKoala.CheckTA();
                         }
-                        else
-                            HHideSeek.Run();
-                        HHero.GetTyPosRot();
-                        HKoala.CheckTA();
+
+                        HHero.SendCoordinates();
+                        // Writes all received player coordinates into koala positions in memory
+                        PlayerReplication.RenderKoalas(MS_PER_TICK);
                     }
-                    HHero.SendCoordinates();
-                    // Writes all received player coordinates into koala positions in memory
-                    PlayerReplication.RenderKoalas(MS_PER_TICK);
+                    if (ModelController.Login.JoinAsSpectator)
+                    {
+                        HGameState.CheckMainMenuOrLoading();
+                        if (!HGameState.IsOnMainMenuOrLoading)
+                        {
+                            HGameState.CheckLoadChanged();
+                            HLevel.GetCurrentLevel();
+                            if (!SettingsHandler.DoHideSeek)
+                            {
+                                HSync.CheckEnabledObservers();
+                                if (SettingsHandler.DoTESyncing)
+                                    HObjective.RunChecks();
+                            }
+                            HKoala.CheckTA();
+                        }
+                    }
                 }
                 catch (TyClosedException e)
                 {
@@ -224,6 +246,7 @@ internal class Client
                 {
                     Logger.Write(e.ToString());
                 }
+            }
             _client.Update();
         }
     }

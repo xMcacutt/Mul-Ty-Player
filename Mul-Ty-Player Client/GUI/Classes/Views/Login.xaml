@@ -299,6 +299,13 @@
                           Style="{StaticResource VisibilityCheckBox}"
                           IsChecked="{Binding HideName}" />
             </StackPanel>
+            
+            <CheckBox x:Name="SpectatorCheckBox"
+                      Style="{StaticResource ComicTextCheck}"
+                      HorizontalAlignment="Center"
+                      Content="Join As Spectator?"
+                      Click="SpectatorCheckBox_OnClick"
+                      IsChecked="{Binding JoinAsSpectator, Mode=TwoWay}"/>
 
             <Button x:Name="ButtonConnect"
                     HorizontalAlignment="Center"

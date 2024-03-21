@@ -40,4 +40,9 @@ public partial class Login : UserControl
             return;
         vm.ConnectingAddress = ServerListView.SelectedItem.ToString();
     }
+
+    private void SpectatorCheckBox_OnClick(object sender, RoutedEventArgs e)
+    {
+        ModelController.Login.JoinAsSpectator = (bool)SpectatorCheckBox.IsChecked;
+    }
 }

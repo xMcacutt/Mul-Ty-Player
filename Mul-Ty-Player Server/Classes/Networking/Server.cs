@@ -87,10 +87,6 @@ internal class Server
             _Server.Accept(pendingConnection);
             Console.WriteLine("Accepting.");
         }
-        if (spectator)
-        {
-            
-        }
     }
 
     private static void ClientConnected(object sender, ServerConnectedEventArgs e)

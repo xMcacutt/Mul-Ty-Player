@@ -17,6 +17,7 @@ public class LoginModel
     public bool ConnectionAttemptCompleted;
     public bool ConnectionAttemptSuccessful = false;
 
+    
     private string ip, name, pass;
     public event Action OnLoginSuccess;
     public event Action OnLoginFailed;
@@ -171,4 +172,17 @@ public class LoginModel
         MessageBox.Show("Connection failed!\nPlease check IPAddress & Password are correct and server is open.");
         OnLoginFailed?.Invoke();
     }
+    
+    
+    public event Action<bool> JoinAsSpectatorChanged;
+    public bool JoinAsSpectator
+    {
+        get => joinAsSpectator;
+        set
+        {
+            joinAsSpectator = value;
+            JoinAsSpectatorChanged(joinAsSpectator);
+        }
+    }
+    private bool joinAsSpectator;
 }

@@ -18,6 +18,7 @@ public class LoginViewModel : IViewModel
         ConnectCommand = new RelayCommand(TryConnect);
         Login.OnLoginFailed += Model_OnLoginFailed;
         Login.OnLoginSuccess += Model_OnLoginSuccess;
+        Login.JoinAsSpectatorChanged += Model_JoinAsSpectatorChanged;
         var github = new GitHubClient(new ProductHeaderValue("Mul-Ty-Player"));
         var latestRelease = github.Repository.Release.GetLatest("xMcacutt", "Mul-Ty-Player").Result;
         var latestVersion = latestRelease.TagName.Replace("v", "");
@@ -31,6 +32,7 @@ public class LoginViewModel : IViewModel
     public string Name { get; set; }
     public string Pass { get; set; }
     public string ConnectingAddress { get; set; }
+    public bool JoinAsSpectator { get; set; }
 
     public bool HideName { get; set; }
     public bool HidePass { get; set; } = true;
@@ -75,5 +77,10 @@ public class LoginViewModel : IViewModel
     {
         await Task.Delay(1000);
         ConnectButtonEnabled = true;
+    }
+    
+    private void Model_JoinAsSpectatorChanged(bool value)
+    {
+        JoinAsSpectator = value;
     }
 }

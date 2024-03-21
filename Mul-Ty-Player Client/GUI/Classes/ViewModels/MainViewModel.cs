@@ -25,14 +25,22 @@ public class MainViewModel
         CurrentViewModel = splashViewModel;
 
         ModelController.Splash.OnComplete += () => GoToView(View.Login);
-        ModelController.Login.OnLoginSuccess += () => GoToView(View.KoalaSelect);
+        ModelController.Login.OnLoginSuccess += CheckSpectator;
         ModelController.KoalaSelect.OnProceedToLobby += () => GoToView(View.Lobby);
         ModelController.Lobby.OnLogout += () => GoToView(View.Login);
     }
 
     public IViewModel CurrentViewModel { get; set; }
 
-    public void GoToView(View view)
+    private void CheckSpectator()
+    {
+        if (ModelController.Login.JoinAsSpectator) 
+            GoToView(View.Lobby);
+        else
+            GoToView(View.KoalaSelect);
+    }
+
+    private void GoToView(View view)
     {
         lastViewModel = CurrentViewModel;
         CurrentViewModel = view switch

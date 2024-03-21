@@ -59,7 +59,7 @@ internal class PlayerHandler
         Server._Server.SendToAll(status, fromClientId);
 
         //Server.SendMessageToClients($"Client {fromClientId} is {readyStatus}, {PlayerHandler.Players.Count(x => x.Value.IsReady)} / {Server._Server.ClientCount}", true);
-        if (Players.Count(x => x.Value.IsReady) == Server._Server.ClientCount)
+        if (Players.Count(x => x.Value.IsReady) == Players.Count)
         {
             foreach (var entry in Players) entry.Value.IsReady = false;
             if (SettingsHandler.DoHideSeek)
