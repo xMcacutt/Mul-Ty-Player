@@ -32,7 +32,7 @@ internal class PlayerHandler
                 Players.Remove(Players.First(x => x.Id == clientId));
             Players.Add(new Player(koala, name, clientId, isHost, isReady, role));
         });
-        if (!ModelController.Login.JoinAsSpectator)
+        if (koala != null)
             ModelController.KoalaSelect.SetAvailability((Koala)koala, false);
         SFXPlayer.PlaySound(SFX.PlayerConnect);
         PlayerReplication.AddPlayer((int)koala);
