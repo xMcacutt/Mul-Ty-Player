@@ -102,14 +102,28 @@ internal class Client
         IsConnected = true;
         if (IsReconnect)
         {
+            if (!ModelController.Login.JoinAsSpectator)
+            {
+                Application.Current.Dispatcher.BeginInvoke(
+                    DispatcherPriority.Background,
+                    () =>
+                    {
+                        ModelController.KoalaSelect.KoalaClicked(OldKoala, false);
+                    });
+            }
+            KoalaSelected = true;
+            IsReconnect = false;
+        }
+        if (ModelController.Login.JoinAsSpectator)
+        {
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                 () =>
                 {
-                    ModelController.KoalaSelect.KoalaClicked(OldKoala, false);
+                    PlayerHandler.Players.Add(new Player(null, Client.Name, Client._client.Id, false, false, null));
+                    PlayerHandler.AnnounceSelection(null, Client.Name, false);
+                    SFXPlayer.PlaySound(SFX.PlayerConnect);
                 });
-            KoalaSelected = true;
-            IsReconnect = false;
         }
         if (SettingsHandler.DoLevelLock)
             HSync.HLevelLock.RequestData();

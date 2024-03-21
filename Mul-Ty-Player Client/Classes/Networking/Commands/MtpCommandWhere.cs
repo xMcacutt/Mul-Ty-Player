@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Documents;
 using MulTyPlayerClient.Classes.Networking;
+using MulTyPlayerClient.GUI.Models;
 
 namespace MulTyPlayerClient;
 
@@ -62,7 +63,7 @@ public class MtpCommandWhere : Command
             LogError("The client id specified is not a player.");
             return;
         }
-        var koalaId = Koalas.GetInfo[player.Koala].Id;
+        var koalaId = Koalas.GetInfo[(Koala)player.Koala].Id;
         var transform = PlayerReplication.PlayerTransforms[koalaId];
         Logger.Write($"{player.Name} is in {Levels.GetLevelData(transform.LevelId).Code} at {transform.Position.X}, {transform.Position.Y}, {transform.Position.Z}");
     }

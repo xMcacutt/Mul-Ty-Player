@@ -181,7 +181,7 @@ public class MtpCommandTeleport : Command
             LogError("You can't teleport to yourself silly!");
             return;
         }
-        var koalaId = Koalas.GetInfo[player.Koala].Id;
+        var koalaId = Koalas.GetInfo[(Koala)player.Koala].Id;
         var transform = PlayerReplication.PlayerTransforms[koalaId];
         if (transform.LevelId != Client.HLevel.CurrentLevelId)
         {
@@ -260,7 +260,7 @@ public class MtpCommandTeleport : Command
                 Logger.Write("[ERROR] Attempted to teleport to self. Aborting.");
                 return;
             }
-            var koalaId = Koalas.GetInfo[toPlayer.Koala].Id;
+            var koalaId = Koalas.GetInfo[(Koala)toPlayer.Koala].Id;
             if (!PlayerReplication.PlayerTransforms.TryGetValue(koalaId, out var transform) || transform.LevelId != Client.HLevel.CurrentLevelId)
             {
                 Client.HLevel.ChangeLevel(level);

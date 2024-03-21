@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
+using Microsoft.CodeAnalysis;
+using Microsoft.Diagnostics.Tracing.Parsers.Clr;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.GUI;
@@ -22,7 +24,7 @@ internal class PlayerHandler
     }
 
     //Adds other player to players & playerInfo
-    public static void AddPlayer(Koala koala, string name, ushort clientId, bool isHost, bool isReady, HSRole role)
+    public static void AddPlayer(Koala? koala, string name, ushort clientId, bool isHost, bool isReady, HSRole role)
     {
         Application.Current.Dispatcher.Invoke(() =>
         {
@@ -30,17 +32,21 @@ internal class PlayerHandler
                 Players.Remove(Players.First(x => x.Id == clientId));
             Players.Add(new Player(koala, name, clientId, isHost, isReady, role));
         });
-        ModelController.KoalaSelect.SetAvailability(koala, false);
+        if (!ModelController.Login.JoinAsSpectator)
+            ModelController.KoalaSelect.SetAvailability((Koala)koala, false);
         SFXPlayer.PlaySound(SFX.PlayerConnect);
         PlayerReplication.AddPlayer((int)koala);
     }
     
     //Adds yourself to players
-    public static void AnnounceSelection(Koala koala, string name, bool isHost, bool isReady = false, HSRole role = HSRole.Hider)
+    public static void AnnounceSelection(Koala? koala, string name, bool isHost, bool isReady = false, HSRole role = HSRole.Hider)
     {
         var clientId = Client._client.Id;
         var message = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
-        message.AddString(Enum.GetName(typeof(Koala), koala));
+        if (koala is null)
+            message.AddString("SPECTATOR");
+        else
+            message.AddString(Enum.GetName(typeof(Koala), koala));
         message.AddString(name);
         message.AddUShort(Client._client.Id);
         message.AddBool(isHost);
@@ -62,8 +68,12 @@ internal class PlayerHandler
             Logger.Write("[Error] Could not find player in player list");
             return;
         }
-        ModelController.KoalaSelect.SetAvailability(player.Koala, true);
-        PlayerReplication.RemovePlayer((int)player.Koala);
+
+        if (player.Koala != null)
+        {
+            ModelController.KoalaSelect.SetAvailability((Koala)player.Koala, true);
+            PlayerReplication.RemovePlayer((int)player.Koala);
+        }
         if (Players.Any(x => x.Id == clientId))
             Application.Current.Dispatcher.Invoke(() =>
             {

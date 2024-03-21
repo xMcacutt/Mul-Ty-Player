@@ -84,7 +84,7 @@ public class MtpCommandTaunt : Command
         foreach (var player in PlayerHandler.Players.Where(x => x.Role == HSRole.Seeker))
         {
             var ownPosition = Client.HHero.GetCurrentPosRot();
-            var koalaId = Koalas.GetInfo[player.Koala].Id;
+            var koalaId = Koalas.GetInfo[(Koala)player.Koala].Id;
             var transform = PlayerReplication.PlayerTransforms[koalaId];
             var seekerPosition = transform.Position.AsFloats();
             var distance = Vector3.Distance(new Vector3(ownPosition), new Vector3(seekerPosition));

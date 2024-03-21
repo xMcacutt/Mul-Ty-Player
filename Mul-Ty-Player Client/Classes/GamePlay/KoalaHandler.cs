@@ -33,7 +33,11 @@ internal class KoalaHandler
         var isHost = message.GetBool();
         var isReady = message.GetBool();
         var role = (HSRole)message.GetInt();
-        var k = Enum.Parse<Koala>(koalaName, true);
+        Koala? k;
+        if (koalaName == "SPECTATOR")
+            k = null;
+        else
+            k = Enum.Parse<Koala>(koalaName, true);
         PlayerHandler.AddPlayer(k, playerName, clientId, isHost, isReady, role);
     }
 
@@ -155,8 +159,9 @@ internal class KoalaHandler
         }
 
         //If failed to get this clients player, or received our own coordinates, return
-        if (!PlayerHandler.TryGetPlayer(Client._client.Id, out var self) || Koalas.GetInfo[self.Koala].Name == koalaName)
-            return;
+        if (!ModelController.Login.JoinAsSpectator)
+            if (!PlayerHandler.TryGetPlayer(Client._client.Id, out var self) || Koalas.GetInfo[(Koala)self.Koala].Name == koalaName)
+                return;
 
         //If the received player has finished the game, return
         if (level == Levels.EndGame.Id)
