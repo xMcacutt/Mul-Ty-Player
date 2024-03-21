@@ -165,6 +165,7 @@ internal class Client
                 if(App.SettingsWindow is not null) 
                     App.SettingsWindow.Hide(); 
                 ModelController.Lobby.Logout();
+                KoalaSelected = true;
             });
     }
 

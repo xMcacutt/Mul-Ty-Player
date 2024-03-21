@@ -103,7 +103,8 @@ internal class Server
         if (PlayerHandler.Players.TryGetValue(e.Client.Id, out _))
         {
             PeerMessageHandler.SendMessageToClients($"{PlayerHandler.Players[e.Client.Id].Name} has disconnected from the server.", true);
-            PeerMessageHandler.SendMessageToClients($"{PlayerHandler.Players[e.Client.Id].Koala.KoalaName} was returned to the koala pool",
+            if (PlayerHandler.Players[e.Client.Id].Koala.KoalaName != "SPECTATOR")
+                PeerMessageHandler.SendMessageToClients($"{PlayerHandler.Players[e.Client.Id].Koala.KoalaName} was returned to the koala pool",
                 true);
             PlayerHandler.RemovePlayer(e.Client.Id);
             PlayerHandler.AnnounceDisconnect(e.Client.Id);
