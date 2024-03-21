@@ -134,7 +134,6 @@ internal class KoalaHandler
     [MessageHandler((ushort)MessageID.KoalaCoordinates)]
     private static void HandleGettingCoordinates(Message message)
     {
-        Console.WriteLine("Ahh");
         //If this client isnt in game, or hasnt selected a koala, return
         if (!Client.KoalaSelected || Client.Relaunching)
             return;

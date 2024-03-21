@@ -123,6 +123,7 @@ internal class Client
                     PlayerHandler.Players.Add(new Player(null, Client.Name, Client._client.Id, false, false, null));
                     PlayerHandler.AnnounceSelection(null, Client.Name, false);
                     SFXPlayer.PlaySound(SFX.PlayerConnect);
+                    KoalaSelected = true;
                 });
         }
         if (SettingsHandler.DoLevelLock)
@@ -165,7 +166,6 @@ internal class Client
                 if(App.SettingsWindow is not null) 
                     App.SettingsWindow.Hide(); 
                 ModelController.Lobby.Logout();
-                KoalaSelected = true;
             });
     }
 
@@ -236,6 +236,8 @@ internal class Client
                         HGameState.CheckMainMenuOrLoading();
                         if (!HGameState.IsOnMainMenuOrLoading)
                         {
+                            HHero.SetHeroState(50);
+                            HGameState.SetCameraState(28);
                             HGameState.CheckLoadChanged();
                             HLevel.GetCurrentLevel();
                             if (!SettingsHandler.DoHideSeek)
@@ -246,6 +248,7 @@ internal class Client
                             }
                             HKoala.CheckTA();
                         }
+                        PlayerReplication.RenderKoalas(MS_PER_TICK);
                     }
                 }
                 catch (TyClosedException e)

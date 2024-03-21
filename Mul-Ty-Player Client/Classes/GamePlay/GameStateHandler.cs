@@ -130,4 +130,10 @@ public class GameStateHandler
     {
         Client.HGameState.ForceBackToMainMenu();
     }
+
+    public void SetCameraState(int state)
+    {
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EBD0, BitConverter.GetBytes(state));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EBC8, BitConverter.GetBytes(state));
+    }
 }

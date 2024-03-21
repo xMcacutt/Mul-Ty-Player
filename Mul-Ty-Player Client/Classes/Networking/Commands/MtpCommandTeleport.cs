@@ -244,7 +244,6 @@ public class MtpCommandTeleport : Command
     [MessageHandler((ushort)MessageID.AdvancedTeleport)]
     private static void ProxyTeleport(Message message)
     {
-        Console.WriteLine(message.UnreadBits);
         if (message.UnreadBits < 96)
         {
             var toClient = message.GetUShort();
