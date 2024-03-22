@@ -54,5 +54,13 @@
   "CheatL": {
     "Key": "L",
     "Modifiers": "Alt, Shift"
+  },
+  "FreecamPrevious": {
+    "Key": "[",
+    "Modifiers": "Ctrl, Shift"
+  },
+  "FreecamNext": {
+    "Key": "]",
+    "Modifiers": "Ctrl, Shift"
   }
 }

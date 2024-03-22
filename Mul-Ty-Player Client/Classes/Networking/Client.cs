@@ -234,8 +234,11 @@ internal class Client
                     }
                     if (ModelController.Login.JoinAsSpectator)
                     {
-                        if (SpectatorHandler.LookingAtSpectatee)
+                        if (SpectatorHandler.SpectateeKoalaId != null)
+                        {
+                            SpectatorHandler.FollowSpectatee();
                             SpectatorHandler.LookAtSpectatee();
+                        }
                         HGameState.CheckMainMenuOrLoading();
                         if (!HGameState.IsOnMainMenuOrLoading)
                         {
