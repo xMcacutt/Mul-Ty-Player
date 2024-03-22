@@ -79,7 +79,7 @@ internal class Server
             && !string.Equals(SettingsHandler.Settings.Password, "XXXXX", StringComparison.CurrentCultureIgnoreCase)
             && !string.IsNullOrWhiteSpace(SettingsHandler.Settings.Password)
             && _Server.ClientCount > 0
-            || (PlayerHandler.Players.Count(x => x.Value.Koala.KoalaName != "SPECTATOR") == 1 && !spectator))
+            || (PlayerHandler.Players.Count(x => x.Value.Koala.KoalaName != "SPECTATOR") == 8 && !spectator))
         {
             _Server.Reject(pendingConnection);
             Console.WriteLine("Rejecting.");

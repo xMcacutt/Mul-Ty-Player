@@ -30,7 +30,7 @@ public class SpectatorHandler
         var positionVector = currentSpectateePosVector - currentCameraPosVector;
         
         var distanceXZ = Math.Sqrt(positionVector.X * positionVector.X + positionVector.Z * positionVector.Z);
-        var yaw = Math.Atan2(positionVector.X, positionVector.Z);
+        var yaw = -Math.Atan2(positionVector.X, positionVector.Z) + (float)Math.PI;
         var pitch = Math.Atan2(-positionVector.Y, distanceXZ);
 
         SetCameraRotation(Convert.ToSingle(pitch), Convert.ToSingle(yaw));
