@@ -58,8 +58,8 @@ public class HotkeyHandler
             CheatM = new HotkeyConfig { Key = Key.M, Modifiers = ModifierKeys.Alt | ModifierKeys.Shift },
             CheatE = new HotkeyConfig { Key = Key.E, Modifiers = ModifierKeys.Alt | ModifierKeys.Shift },
             CheatL = new HotkeyConfig { Key = Key.L, Modifiers = ModifierKeys.Alt | ModifierKeys.Shift },
-            FreecamPrevious = new HotkeyConfig { Key = Key.OemOpenBrackets, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
-            FreecamNext = new HotkeyConfig { Key = Key.OemCloseBrackets, Modifiers = ModifierKeys.Control | ModifierKeys.Shift }
+            FreecamPrevious = new HotkeyConfig { Key = Key.NumPad9, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
+            FreecamNext = new HotkeyConfig { Key = Key.NumPad0, Modifiers = ModifierKeys.Control | ModifierKeys.Shift }
         };
     }
     

@@ -56,11 +56,11 @@
     "Modifiers": "Alt, Shift"
   },
   "FreecamPrevious": {
-    "Key": "[",
-    "Modifiers": "Ctrl, Shift"
+    "Key": "9",
+    "Modifiers": "Control, Shift"
   },
   "FreecamNext": {
-    "Key": "]",
-    "Modifiers": "Ctrl, Shift"
+    "Key": "0",
+    "Modifiers": "Control, Shift"
   }
 }
