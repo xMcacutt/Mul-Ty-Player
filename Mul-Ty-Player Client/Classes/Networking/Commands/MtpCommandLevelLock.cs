@@ -12,6 +12,7 @@ public class MtpCommandLevelLock : Command
         Name = "levellock";
         Aliases = new List<string> { "ll" };
         HostOnly = true;
+        SpectatorAllowed = true;
         Usages = new List<string> { "/levellock <true/false>" };
         Description = "Activate / Deactivate Level Lock mode.";
         ArgDescriptions = new Dictionary<string, string>

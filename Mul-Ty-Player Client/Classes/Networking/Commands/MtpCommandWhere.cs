@@ -13,6 +13,7 @@ public class MtpCommandWhere : Command
         Name = "where";
         Aliases = new List<string> { "position", "pos" };
         HostOnly = false;
+        SpectatorAllowed = false;
         Usages = new List<string> { "/where", "/where <clientId>" };
         Description = "Print your or a specified client's position.";
         ArgDescriptions = new Dictionary<string, string>

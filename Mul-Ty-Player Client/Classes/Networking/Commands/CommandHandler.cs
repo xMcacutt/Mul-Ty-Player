@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MulTyPlayer;
+using MulTyPlayerClient.GUI.Models;
 using Riptide;
 
 namespace MulTyPlayerClient;
@@ -32,6 +33,7 @@ public class CommandHandler
         RegisterCommand(new MtpCommandTaunt());
         RegisterCommand(new MtpCommandCheat());
         RegisterCommand(new MtpCommandLevel());
+        RegisterCommand(new MtpCommandFreeCam());
     }
     
     public void ParseCommand(string input)
@@ -53,9 +55,14 @@ public class CommandHandler
                 Logger.Write("[ERROR] Failed to find self in player list.");
                 return;
             }
+            if (!command.SpectatorAllowed && ModelController.Login.JoinAsSpectator)
+            {
+                Logger.Write("[ERROR] You do not have the privileges to run this command as a spectator.");
+                return;
+            }
             if (command.HostOnly && !self.IsHost)
             {
-                Logger.Write("[ERROR] You do not have the privileges to run this command.");
+                Logger.Write("[ERROR] You do not have the privileges to run this command without host status.");
                 return;
             }
             command.InitExecute(args);

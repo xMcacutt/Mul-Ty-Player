@@ -17,6 +17,7 @@ public class MtpCommandPassword : Command
         Description = "Set or get the server password.";
         Usages = new List<string> { "/password", "/password <password>", "/password default" };
         HostOnly = true;
+        SpectatorAllowed = true;
         ArgDescriptions = new Dictionary<string, string>
         {
             { "<password>", "New password for server." }

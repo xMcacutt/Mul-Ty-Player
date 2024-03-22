@@ -12,6 +12,7 @@ public class MtpCommandCountdown : Command
         Name = "countdown";
         Aliases = new List<string> { "cd" };
         HostOnly = true;
+        SpectatorAllowed = true;
         Usages = new List<string> { "/countdown start", "/countdown abort" };
         Description = "Start / stop the countdown. (Does not work in Hide & Seek Mode.)";
         ArgDescriptions = new Dictionary<string, string>

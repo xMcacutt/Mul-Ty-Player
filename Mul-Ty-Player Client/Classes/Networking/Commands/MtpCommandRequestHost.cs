@@ -18,6 +18,7 @@ public class MtpCommandRequestHost : Command
         Name = "requesthost";
         Aliases = new List<string> { "rh", "reqhost" };
         HostOnly = false;
+        SpectatorAllowed = true;
         Usages = new List<string> { "/requesthost" };
         Description = "Request host privileges if no host already exists.";
         ArgDescriptions = new Dictionary<string, string>();

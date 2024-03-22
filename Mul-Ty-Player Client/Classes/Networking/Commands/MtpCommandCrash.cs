@@ -14,6 +14,7 @@ public class MtpCommandCrash : Command
         Name = "crash";
         Aliases = new List<string> { "close", "c" };
         HostOnly = true;
+        SpectatorAllowed = true;
         Usages = new List<string> { "/crash" };
         Description = "Attempts to crash every player's game, forcing a restart.";
         ArgDescriptions = new Dictionary<string, string>

@@ -10,6 +10,7 @@ public class MtpCommandCommandList : Command
         Name = "clist";
         Aliases = new List<string> { "commands", "cmds" };
         HostOnly = false;
+        SpectatorAllowed = true;
         Usages = new List<string> { "/clist" };
         Description = "Prints all available command names.";
         ArgDescriptions = new Dictionary<string, string>();
@@ -31,6 +32,7 @@ public class MtpCommandCommandList : Command
         {
             var cmdStr = command.Key;
             if (command.Value.HostOnly) cmdStr += " [HOST]";
+            if (command.Value.SpectatorAllowed) cmdStr += " [NO SPECT]";
             Logger.Write(cmdStr);
         }
     }

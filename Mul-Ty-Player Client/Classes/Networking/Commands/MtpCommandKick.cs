@@ -11,6 +11,7 @@ public class MtpCommandKick : Command
         Name = "kick";
         Aliases = new List<string> { "k" };
         HostOnly = true;
+        SpectatorAllowed = true;
         Usages = new List<string> { "/kick <clientId>" };
         Description = "Remove a client from the server.";
         ArgDescriptions = new Dictionary<string, string>

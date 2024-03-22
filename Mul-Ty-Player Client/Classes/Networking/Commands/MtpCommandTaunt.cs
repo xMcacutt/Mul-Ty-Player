@@ -23,6 +23,7 @@ public class MtpCommandTaunt : Command
         Name = "taunt";
         Aliases = new List<string> { "t" };
         HostOnly = false;
+        SpectatorAllowed = false;
         Usages = new List<string> { "/taunt" };
         Description = "Taunts the seekers during H&S mode and grants hide time based on your distance to the seeker.";
         ArgDescriptions = new Dictionary<string, string>

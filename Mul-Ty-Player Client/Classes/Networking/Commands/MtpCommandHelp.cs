@@ -10,6 +10,7 @@ public class MtpCommandHelp : Command
         Name = "help";
         Aliases = new List<string> { "h", "?" };
         HostOnly = false;
+        SpectatorAllowed = true;
         Usages = new List<string> { "/help", "/help <command>" };
         Description = "Display command information";
         ArgDescriptions = new Dictionary<string, string>

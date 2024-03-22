@@ -9,6 +9,7 @@ public class MtpCommandReady : Command
         Name = "ready";
         Aliases = new List<string> { "r" };
         HostOnly = false;
+        SpectatorAllowed = false;
         Usages = new List<string> { "/ready" };
         Description = "Set ready status.";
         ArgDescriptions = new Dictionary<string, string>();

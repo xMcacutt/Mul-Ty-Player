@@ -10,6 +10,7 @@ public class MtpCommandGroundSwim : Command
         Name = "groundswim";
         Aliases = new List<string> { "gs", "swim" };
         HostOnly = false;
+        SpectatorAllowed = false;
         Usages = new List<string> { "/groundswim" };
         Description = "Attempts to start player swimming.";
         ArgDescriptions = new Dictionary<string, string>

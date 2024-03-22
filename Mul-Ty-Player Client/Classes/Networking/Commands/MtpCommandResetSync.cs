@@ -11,6 +11,7 @@ public class MtpCommandResetSync : Command
         Name = "resetsync";
         Aliases = new List<string> { "reset", "rs" };
         HostOnly = true;
+        SpectatorAllowed = true;
         Usages = new List<string> { "/resetsync" };
         Description = "Reset collectible synchronisations to new game state.";
         ArgDescriptions = new Dictionary<string, string>();

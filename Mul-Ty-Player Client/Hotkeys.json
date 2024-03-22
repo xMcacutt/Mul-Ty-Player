@@ -1,4 +1,8 @@
 ﻿{
+  "Freecam": {
+    "Key": "F",
+    "Modifiers": "Control, Shift"
+  },
   "GroundSwim": {
     "Key": "G",
     "Modifiers": "Control, Shift"

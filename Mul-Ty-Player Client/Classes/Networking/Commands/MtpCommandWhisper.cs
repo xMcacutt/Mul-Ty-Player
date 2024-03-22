@@ -11,6 +11,7 @@ public class MtpCommandWhisper : Command
         Name = "whisper";
         Aliases = new List<string> { "w", "pm" };
         HostOnly = false;
+        SpectatorAllowed = true;
         Usages = new List<string> { "/whisper <clientId> <message>" };
         Description = "Send a message to a specific client.";
         ArgDescriptions = new Dictionary<string, string>

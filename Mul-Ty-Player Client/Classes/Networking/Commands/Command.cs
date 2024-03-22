@@ -11,6 +11,7 @@ public abstract class Command
     public Dictionary<string, string> ArgDescriptions;
     public string Description;
     public bool HostOnly;
+    public bool SpectatorAllowed;
 
     public abstract void InitExecute(string[] args);
 
@@ -21,7 +22,8 @@ public abstract class Command
                      $"Aliases:\n {string.Join(", ", Aliases)}\n" +
                      $"Usages:\n {string.Join(",\n ", Usages)}\n" +
                      $"Arguments:\n {string.Join(",\n ", ArgDescriptions.Select(arg => $"{arg.Key}: {arg.Value}"))}\n" +
-                     $"HostOnly?: {HostOnly}\n");
+                     $"HostOnly?: {HostOnly}\n" +
+                     $"SpectatorAllowed?: {SpectatorAllowed}\n");
     }
 
     protected virtual void SuggestHelp()

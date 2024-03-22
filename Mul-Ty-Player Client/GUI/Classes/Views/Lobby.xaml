@@ -6,6 +6,7 @@
              xmlns:viewmodels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
              xmlns:controls="clr-namespace:MulTyPlayerClient.GUI.Controls"
              xmlns:client="clr-namespace:MulTyPlayerClient"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d"
              Height="450" Width="800" FontSize="10" BorderBrush="Black"
              x:Name="LobbyView"
@@ -20,13 +21,7 @@
         </Grid.ColumnDefinitions>
 
         <!--Left side panel-->
-        <Grid Margin="0, 0, 0, 0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.5*" />
-                <RowDefinition Height="4.6*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
+        <StackPanel Margin="0, 0, 0, 0">
             <TextBlock Grid.Row="0"
                        Style="{StaticResource ComicTextMain}"
                        VerticalAlignment="Center"
@@ -38,6 +33,7 @@
                       ContextMenuOpening="DataGrid_OnContextMenuOpening"
                       Style="{StaticResource DataGridStyle}"
                       Grid.Row="1"
+                      Height="225"
                       HorizontalContentAlignment="Stretch"
                       ItemsSource="{x:Static client:PlayerHandler.Players}">
                 <DataGrid.Resources>
@@ -137,13 +133,117 @@
                 </DataGrid.Columns>
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
+                        <Setter Property="Height" Value="35" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Koala}" Value="{x:Null}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                <Setter Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
+                            </Trigger>
                         </Style.Triggers>
                     </Style>
                 </DataGrid.RowStyle>
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+            </DataGrid>
+            
+            <Line/>
+            
+            <TextBlock Grid.Row="0"
+                       Style="{StaticResource ComicTextMain}"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="25"
+                       Text="Spectators"/>
+            <DataGrid Name="SpectatorInfo"
+                      PreviewMouseRightButtonDown="PlayerListItem_OnMouseRightButtonDown"
+                      ContextMenuOpening="DataGrid_OnContextMenuOpening"
+                      Style="{StaticResource DataGridStyle}"
+                      Grid.Row="1"
+                      Height="75"
+                      HorizontalContentAlignment="Stretch"
+                      ItemsSource="{x:Static client:PlayerHandler.Players}">
+                <DataGrid.Resources>
+                    <controls:BindingProxy x:Key="Proxy" Data="{Binding}" />
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Client ID" Width="0.3*" CanUserResize="False">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Style="{StaticResource ComicText}"
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           IsHitTestVisible="False"
+                                           Padding="3"
+                                           Text="{Binding Id}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Player Name" Width="1.5*" CanUserResize="False">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Style="{StaticResource ComicText}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           FontSize="14"
+                                           Padding="0"
+                                           Margin="2 0 0 0"
+                                           ToolTip="{Binding Name}"
+                                           Text="{Binding Name}"
+                                           TextTrimming="CharacterEllipsis" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Host Status" Width="0.35*" CanUserResize="False">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <controls:Icon Size="10"
+                                               Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
+                                               Margin="0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Code="{Binding IsHost, Converter={StaticResource BooleanToHostIconConverter}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Visibility" Value="Collapsed"></Setter>
+                        <Setter Property="Height" Value="35" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Koala}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                <Setter Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
             </DataGrid>
             
             <TextBlock Grid.Row="2"
@@ -156,7 +256,7 @@
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"/>
-        </Grid>
+        </StackPanel>
 
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>

@@ -12,6 +12,7 @@ public class MtpCommandHideSeek : Command
         Name = "hideseek";
         Aliases = new List<string> { "hs" };
         HostOnly = true;
+        SpectatorAllowed = true;
         Usages = new List<string> { "/hideseek <true/false>", "/hideseek abort", "/hideseek range <x>" };
         Description = "Activate / Deactivate Hide & Seek mode or stop the current Hide & Seek session.";
         ArgDescriptions = new Dictionary<string, string>

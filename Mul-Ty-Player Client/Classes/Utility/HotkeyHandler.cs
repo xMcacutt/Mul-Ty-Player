@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Windows.Forms;
 using System.Windows.Input;
+using MulTyPlayerClient.GUI.Models;
 using Newtonsoft.Json;
 using NHotkey;
 using NHotkey.Wpf;
@@ -12,6 +13,7 @@ namespace MulTyPlayerClient.Classes.Utility;
 
 public class Hotkeys
 {
+    public HotkeyConfig Freecam { get; set; }
     public HotkeyConfig GroundSwim { get; set; }
     public HotkeyConfig Ready { get; set; }
     public HotkeyConfig RequestHost { get; set; }
@@ -40,6 +42,7 @@ public class HotkeyHandler
     {
         return new Hotkeys
         {
+            Freecam = new HotkeyConfig { Key = Key.F, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
             GroundSwim = new HotkeyConfig { Key = Key.G, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
             Ready = new HotkeyConfig { Key = Key.R, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
             RequestHost = new HotkeyConfig { Key = Key.H, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
@@ -61,6 +64,7 @@ public class HotkeyHandler
         #pragma warning disable CA1416
         try
         {
+            HotkeyManager.Current.AddOrReplace("freecam", keys.Freecam.Key, keys.Freecam.Modifiers, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("groundswim", keys.GroundSwim.Key, keys.GroundSwim.Modifiers, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("ready", keys.Ready.Key, keys.Ready.Modifiers, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("requesthost", keys.RequestHost.Key, keys.RequestHost.Modifiers, OnKeyPress);
@@ -94,7 +98,7 @@ public class HotkeyHandler
         }
         if (Client.HCommand.Commands.TryGetValue(e.Name, out var command))
         {
-            if (command.HostOnly && !self.IsHost)
+            if (command.HostOnly && !self.IsHost || !command.SpectatorAllowed && ModelController.Login.JoinAsSpectator)
             {
                 Logger.Write("[ERROR] You do not have the privileges to run this command.");
                 return;

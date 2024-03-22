@@ -24,6 +24,7 @@ public class MtpCommandCheat : Command
         Name = "cheat";
         Aliases = new List<string> { "ch" };
         HostOnly = false;
+        SpectatorAllowed = true;
         Usages = new List<string> { "/ch <cheatId>" };
         Description = "Toggles the specified cheat.";
         ArgDescriptions = new Dictionary<string, string>()

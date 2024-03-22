@@ -17,6 +17,7 @@ public class MtpCommandTeleport : Command
         Name = "tp";
         Aliases = new List<string> { "teleport", "tele" };
         HostOnly = false;
+        SpectatorAllowed = false;
         Usages = new List<string>
         {
             "/tp (teleports to last teleported POSITION)",

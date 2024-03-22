@@ -54,6 +54,7 @@ internal class Client
 
             var authentication = Message.Create();
             authentication.AddString(_pass);
+            authentication.AddBool(ModelController.Login.JoinAsSpectator);
             if (!_ip.Contains(':'))
                 _ip += ":" + SettingsHandler.Settings.Port;
             var attempt = _client.Connect(_ip, 5, 0, authentication);
@@ -238,7 +239,8 @@ internal class Client
                         HGameState.CheckMainMenuOrLoading();
                         if (!HGameState.IsOnMainMenuOrLoading)
                         {
-                            HHero.SetHeroState(50);
+                            var lockedHeroState = HLevel.CurrentLevelData.Id == Levels.OutbackSafari.Id ? 5 : 50;
+                            HHero.SetHeroState(lockedHeroState);
                             HGameState.SetCameraState(28);
                             HGameState.CheckLoadChanged();
                             HLevel.GetCurrentLevel();

@@ -9,7 +9,7 @@ public static class VectorMath
         double vx = P2[0] - P1[0];
         double vy = P2[1] - P1[1];
         double vz = P2[2] - P1[2];
-        return Math.Atan2(vz, Math.Sqrt(vx * vx + vy * vy));
+        return Math.Atan2(vz, Math.Sqrt(Math.Pow(vx, 2) + Math.Pow(vy, 2)));
     }
 
     public static double CalculateYaw(double[] P1, double[] P2)

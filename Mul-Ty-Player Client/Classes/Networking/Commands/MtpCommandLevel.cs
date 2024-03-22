@@ -13,6 +13,7 @@ public class MtpCommandLevel : Command
         Name = "level";
         Aliases = new List<string> { "lvl", "warp" };
         HostOnly = false;
+        SpectatorAllowed = true;
         Usages = new List<string> { "/level <levelId>", "/level <levelId> <warpAll>" };
         Description = "Warp to a specific level.";
         ArgDescriptions = new Dictionary<string, string>
