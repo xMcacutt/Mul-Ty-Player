@@ -22,6 +22,7 @@ internal class LevelHandler
             if (currentLevelId != value)
             {
                 currentLevelId = value;
+                SpectatorHandler.ChangedLevel = false;
                 CurrentLevelData = Levels.GetLevelData(value);
             }
         }

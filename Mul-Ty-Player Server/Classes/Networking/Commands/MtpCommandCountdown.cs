@@ -31,7 +31,8 @@ public class MtpCommandCountdown : Command
 
     private static string RunCountdown(string param)
     {
-        foreach (var entry in PlayerHandler.Players) entry.Value.IsReady = false;
+        foreach (var entry in PlayerHandler.Players) 
+            entry.Value.IsReady = false;
         var message = Message.Create(MessageSendMode.Reliable, MessageID.Countdown);
         message.AddString(param);
         Server._Server.SendToAll(message);

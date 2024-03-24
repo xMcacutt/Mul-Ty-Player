@@ -12,17 +12,23 @@ namespace MulTyPlayerClient;
 
 public class SpectatorHandler
 {
-    public static Koala? SpectateeKoalaId = null;
-
-    public static void SetSpectatee(int id)
-    { 
-        SpectateeKoalaId = (Koala)id;
+    private static Koala? _spectateeKoalaId;
+    public static Koala? SpectateeKoalaId {
+        get => _spectateeKoalaId;
+        set
+        {
+            _spectateeKoalaId = value;
+            ChangedLevel = false;
+        }
+        
     }
 
     public static void LookAtSpectatee()
     {
         var currentCameraPos = ReadCameraPosition();
         if (SpectateeKoalaId == null || !PlayerReplication.PlayerTransforms.TryGetValue((int)SpectateeKoalaId, out var playerTransform))
+            return;
+        if (playerTransform.OnMenu)
             return;
         var currentSpectateePos = playerTransform.Position.AsFloats();
         var currentCameraPosVector = new Vector3(currentCameraPos[0], currentCameraPos[1], currentCameraPos[2]);
@@ -34,15 +40,21 @@ public class SpectatorHandler
         var yaw = -Math.Atan2(positionVector.X, positionVector.Z) + (float)Math.PI;
         var pitch = Math.Atan2(-positionVector.Y, distanceXZ);
 
+        yaw = Math.Round(yaw, 1);
+        pitch = Math.Round(pitch, 1);
         SetCameraRotation(Convert.ToSingle(pitch), Convert.ToSingle(yaw));
     }
 
+    public static bool ChangedLevel = false;
     public static void FollowSpectatee()
     {
         if (!PlayerReplication.PlayerTransforms.TryGetValue((int)SpectateeKoalaId, out var playerTransform))
             return;
-        if (playerTransform.LevelId != Client.HLevel.CurrentLevelId)
+        if (playerTransform.LevelId != Client.HLevel.CurrentLevelId && !ChangedLevel)
+        {
             Client.HLevel.ChangeLevel(playerTransform.LevelId);
+            ChangedLevel = true;
+        }
     }
 
     public static void SetCameraPosition(float x, float y, float z)
