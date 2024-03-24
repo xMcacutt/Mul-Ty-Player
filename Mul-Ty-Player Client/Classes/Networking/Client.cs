@@ -121,7 +121,7 @@ internal class Client
                 DispatcherPriority.Background,
                 () =>
                 {
-                    PlayerHandler.Players.Add(new Player(null, Client.Name, Client._client.Id, false, false, null));
+                    PlayerHandler.Players.Add(new Player(null, Client.Name, Client._client.Id, false, false, HSRole.Spectator));
                     PlayerHandler.AnnounceSelection(null, Client.Name, false);
                     SFXPlayer.PlaySound(SFX.PlayerConnect);
                     KoalaSelected = true;
@@ -234,11 +234,7 @@ internal class Client
                     }
                     if (ModelController.Login.JoinAsSpectator)
                     {
-                        if (SpectatorHandler.SpectateeKoalaId != null)
-                        {
-                            SpectatorHandler.FollowSpectatee();
-                            SpectatorHandler.LookAtSpectatee();
-                        }
+                        SpectatorHandler.UpdateCamera();
                         HGameState.CheckMainMenuOrLoading();
                         if (!HGameState.IsOnMainMenuOrLoading)
                         {

@@ -61,6 +61,8 @@ public class LobbyViewModel : IViewModel
         Time = "00:00:00";
         Role = Client.HHideSeek.Role;
         Input = "";
+        if (ModelController.Login.JoinAsSpectator)
+            IsHideSeekButtonEnabled = false;
     }
 
     public void OnExited()
@@ -108,6 +110,8 @@ public class LobbyViewModel : IViewModel
 
     private void Model_IsHideSeekEnabledChanged(bool value)
     {
+        if (ModelController.Login.JoinAsSpectator)
+            IsHideSeekButtonEnabled = false;
         IsHideSeekButtonEnabled = value;
         if (!value) Lobby.IsTimerVisible = false;
     }

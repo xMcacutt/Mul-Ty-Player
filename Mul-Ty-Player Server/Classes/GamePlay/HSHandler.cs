@@ -120,5 +120,6 @@ public class HSHandler
 public enum HSRole
 {
     Hider,
-    Seeker
+    Seeker,
+    Spectator
 }

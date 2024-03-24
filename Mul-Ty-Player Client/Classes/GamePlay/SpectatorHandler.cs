@@ -23,36 +23,54 @@ public class SpectatorHandler
         
     }
 
+    private static Vector3 _currentSpectateeVector;
+    private static Vector3 _currentCameraVector;
+    private static Vector3 _currentDisplacementVector;
+    private static float _cameraDistance;
+    private static int _spectateeLevel;
+
+
+
+    public static void UpdateCamera()
+    {
+        if (SpectatorHandler.SpectateeKoalaId != null)
+        {
+            if (!PlayerHandler.Players.Any(x => x.Koala == SpectateeKoalaId))
+                SpectateeKoalaId = null;
+            if (SpectateeKoalaId == null || 
+                !PlayerReplication.PlayerTransforms.TryGetValue((int)SpectateeKoalaId, out var spectateeInfo) ||
+                spectateeInfo.OnMenu)
+                return;
+            _spectateeLevel = spectateeInfo.LevelId;
+            var currentSpectateePos = spectateeInfo.Position;
+            _currentSpectateeVector = new Vector3(currentSpectateePos.X, currentSpectateePos.Y, currentSpectateePos.Z);
+            _currentCameraVector = ReadCameraPosition();
+            _currentDisplacementVector = _currentSpectateeVector - _currentCameraVector;
+            _cameraDistance = Vector3.Distance(_currentSpectateeVector, _currentCameraVector);
+            FollowSpectatee();
+            LookAtSpectatee();
+        }
+    }
+    
     public static void LookAtSpectatee()
     {
-        var currentCameraPos = ReadCameraPosition();
-        if (SpectateeKoalaId == null || !PlayerReplication.PlayerTransforms.TryGetValue((int)SpectateeKoalaId, out var playerTransform))
-            return;
-        if (playerTransform.OnMenu)
-            return;
-        var currentSpectateePos = playerTransform.Position.AsFloats();
-        var currentCameraPosVector = new Vector3(currentCameraPos[0], currentCameraPos[1], currentCameraPos[2]);
-        var currentSpectateePosVector = new Vector3(currentSpectateePos[0], currentSpectateePos[1], currentSpectateePos[2]);
-        
-        var positionVector = currentSpectateePosVector - currentCameraPosVector;
-        
-        var distanceXZ = Math.Sqrt(positionVector.X * positionVector.X + positionVector.Z * positionVector.Z);
-        var yaw = -Math.Atan2(positionVector.X, positionVector.Z) + (float)Math.PI;
-        var pitch = Math.Atan2(-positionVector.Y, distanceXZ);
-
-        yaw = Math.Round(yaw, 1);
-        pitch = Math.Round(pitch, 1);
+        var flatDistance = Math.Sqrt(_currentDisplacementVector.X * _currentDisplacementVector.X + _currentDisplacementVector.Z * _currentDisplacementVector.Z);
+        var yaw = -Math.Atan2(_currentDisplacementVector.X, _currentDisplacementVector.Z) + Math.PI;
+        var pitch = Math.Atan2(-_currentDisplacementVector.Y, flatDistance);
         SetCameraRotation(Convert.ToSingle(pitch), Convert.ToSingle(yaw));
     }
 
     public static bool ChangedLevel = false;
     public static void FollowSpectatee()
     {
-        if (!PlayerReplication.PlayerTransforms.TryGetValue((int)SpectateeKoalaId, out var playerTransform))
-            return;
-        if (playerTransform.LevelId != Client.HLevel.CurrentLevelId && !ChangedLevel)
+        if (_cameraDistance > 10000)
         {
-            Client.HLevel.ChangeLevel(playerTransform.LevelId);
+            var newCameraVector = _currentSpectateeVector - _currentDisplacementVector * 0.5f;
+            SetCameraPosition(newCameraVector.X, newCameraVector.Y, newCameraVector.Z);
+        }
+        if (_spectateeLevel != Client.HLevel.CurrentLevelId && !ChangedLevel)
+        {
+            Client.HLevel.ChangeLevel(_spectateeLevel);
             ChangedLevel = true;
         }
     }
@@ -65,49 +83,51 @@ public class SpectatorHandler
             ProcessHandler.WriteData(addr + i * 4, BitConverter.GetBytes(pos[i]));
     }
 
-    public static void SetCameraRotation(float p, float y)
+    public static void SetCameraRotation(double p, double y)
     {
         var addr = (int)TyProcess.BaseAddress + 0x27F2B4;
-        float[] rot = { p, y };
-        rot[1] += (float)Math.PI / 2;
+        double[] rot = { p, y };
+        rot[1] += Math.PI / 2;
         for (var i = 0; i < 2; i++)
-            ProcessHandler.WriteData(addr + i * 4, BitConverter.GetBytes(rot[i]));
+            ProcessHandler.WriteData(addr + i * 4, BitConverter.GetBytes(Convert.ToSingle(rot[i])));
     }
 
-    public static float[] ReadCameraPosition()
+    public static float[] ReadCameraRotation()
     {
-        var cameraPos = new float[3];
+        var cameraRot = new float[2];
         for (
-            var i = 0; i < 3; i++)
-            ProcessHandler.TryRead(0x27EB78 + i * 4, out cameraPos[i], true, "ReadCameraPosition");
+            var i = 0; i < 2; i++)
+            ProcessHandler.TryRead(0x27F2B4 + i * 4, out cameraRot[i], true, "ReadCameraPosition");
+        return cameraRot;
+    }
+    
+    public static Vector3 ReadCameraPosition()
+    {
+        Vector3 cameraPos;
+        ProcessHandler.TryRead(0x27EB78 + 0, out cameraPos.X, true, "ReadCameraPosition");
+        ProcessHandler.TryRead(0x27EB78 + 4, out cameraPos.Y, true, "ReadCameraPosition");
+        ProcessHandler.TryRead(0x27EB78 + 8, out cameraPos.Z, true, "ReadCameraPosition");
         return cameraPos;
     }
 
     public static void FindNextSpectatee()
     {
-        if (!PlayerHandler.Players.Any(x => x.Koala == SpectateeKoalaId))
-            SpectateeKoalaId = null;
         var currentLevelPlayers = PlayerHandler.Players.Where(
             x => x.Koala != null &&
-                 PlayerReplication.PlayerTransforms[(int)x.Koala].LevelId == Client.HLevel.CurrentLevelId).ToArray();
+                       PlayerReplication.PlayerTransforms[(int)x.Koala].LevelId == Client.HLevel.CurrentLevelId).ToArray();
         if (SpectateeKoalaId is null && currentLevelPlayers.Length > 0)
         {
             SpectateeKoalaId = currentLevelPlayers[0].Koala;
             return;
         }
         
-        if (PlayerHandler.Players.Count(x => x.Koala != null) == 1)
-        {
-            SpectateeKoalaId = null;
-            return;
-        }
-        
-        if (currentLevelPlayers.Length == 1)
+        if (currentLevelPlayers.Length <= 1)
         {
             var currentOtherLevelPlayers = PlayerHandler.Players.Where(
                 x => x.Koala != null && 
-                     PlayerReplication.PlayerTransforms[(int)x.Koala].LevelId != Client.HLevel.CurrentLevelId).ToArray();
-            SpectateeKoalaId = currentOtherLevelPlayers[0].Koala;
+                           PlayerReplication.PlayerTransforms[(int)x.Koala].LevelId != Client.HLevel.CurrentLevelId).ToArray();
+            SpectateeKoalaId = currentOtherLevelPlayers.Length == 0 ? null : currentOtherLevelPlayers[0].Koala;
+            return;
         }
         
         for (var playerIndex = 0; playerIndex < currentLevelPlayers.Length; playerIndex++)
@@ -119,33 +139,30 @@ public class SpectatorHandler
             SpectateeKoalaId = currentLevelPlayers[playerIndex].Koala;
             return;
         }
+
+        if (PlayerHandler.Players.Count(x => x.Koala != null) != 1) 
+            return;
+        SpectateeKoalaId = null;
     }
     
     public static void FindPreviousSpectatee()
     {
-        if (!PlayerHandler.Players.Any(x => x.Koala == SpectateeKoalaId))
-            SpectateeKoalaId = null;
         var currentLevelPlayers = PlayerHandler.Players.Where(
             x => x.Koala != null &&
                  PlayerReplication.PlayerTransforms[(int)x.Koala].LevelId == Client.HLevel.CurrentLevelId).ToArray();
         if (SpectateeKoalaId is null && currentLevelPlayers.Length > 0)
         {
-            SpectateeKoalaId = currentLevelPlayers[0].Koala;
+            SpectateeKoalaId = currentLevelPlayers[currentLevelPlayers.Length - 1].Koala;
             return;
         }
         
-        if (PlayerHandler.Players.Count(x => x.Koala != null) == 1)
-        {
-            SpectateeKoalaId = null;
-            return;
-        }
-        
-        if (currentLevelPlayers.Length == 1)
+        if (currentLevelPlayers.Length <= 1)
         {
             var currentOtherLevelPlayers = PlayerHandler.Players.Where(
                 x => x.Koala != null && 
                      PlayerReplication.PlayerTransforms[(int)x.Koala].LevelId != Client.HLevel.CurrentLevelId).ToArray();
-            SpectateeKoalaId = currentOtherLevelPlayers[0].Koala;
+            SpectateeKoalaId = currentOtherLevelPlayers.Length == 0 ? null : currentOtherLevelPlayers[currentOtherLevelPlayers.Length - 1].Koala;
+            return;
         }
         
         for (var playerIndex = 0; playerIndex < currentLevelPlayers.Length; playerIndex++)
@@ -157,5 +174,9 @@ public class SpectatorHandler
             SpectateeKoalaId = currentLevelPlayers[playerIndex].Koala;
             return;
         }
+
+        if (PlayerHandler.Players.Count(x => x.Koala != null) != 1) 
+            return;
+        SpectateeKoalaId = null;
     }
 }

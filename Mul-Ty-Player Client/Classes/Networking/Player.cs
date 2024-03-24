@@ -10,11 +10,11 @@ internal class Player
     public string Name { get; set; }
     public bool IsHost { get; set; }
     public bool IsReady { get; set; }
-    public HSRole? Role { get; set; }
+    public HSRole Role { get; set; }
     
     public string Level { get; set; }
     
-    public Player(Koala? koala, string name, ushort id, bool isHost, bool isReady, HSRole? role)
+    public Player(Koala? koala, string name, ushort id, bool isHost, bool isReady, HSRole role)
     {
         Koala = koala;
         Name = name;

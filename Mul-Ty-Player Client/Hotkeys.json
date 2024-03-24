@@ -55,12 +55,16 @@
     "Key": "L",
     "Modifiers": "Alt, Shift"
   },
-  "FreecamPrevious": {
-    "Key": "9",
+  "SpectatorFreecamPrevious": {
+    "Key": "D9",
     "Modifiers": "Control, Shift"
   },
-  "FreecamNext": {
-    "Key": "0",
+  "SpectatorFreecamNext": {
+    "Key": "D0",
+    "Modifiers": "Control, Shift"
+  },
+  "SpectatorFreecamDisengage": {
+    "Key": "D8",
     "Modifiers": "Control, Shift"
   }
 }

@@ -47,7 +47,7 @@ public class MtpCommandFreeCam : Command
         if (inFreeCam)
         {
             var camPos = SpectatorHandler.ReadCameraPosition();
-            Client.HHero.WritePosition(camPos[0], camPos[1], camPos[2]);
+            Client.HHero.WritePosition(camPos.X, camPos.Y, camPos.Z);
         }
         Client.HGameState.SetCameraState(newCamState);
         Client.HHero.SetHeroState(newHeroState);

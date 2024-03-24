@@ -53,6 +53,8 @@ internal class PlayerHandler
         message.AddUShort(Client._client.Id);
         message.AddBool(isHost);
         message.AddBool(isReady);
+        if (ModelController.Login.JoinAsSpectator)
+            role = HSRole.Spectator;
         message.AddInt((int)role);
         Application.Current.Dispatcher.Invoke(() =>
         {

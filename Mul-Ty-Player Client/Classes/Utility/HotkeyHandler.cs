@@ -27,8 +27,9 @@ public class Hotkeys
     public HotkeyConfig CheatM { get; set; }
     public HotkeyConfig CheatE { get; set; }
     public HotkeyConfig CheatL { get; set; }
-    public HotkeyConfig FreecamPrevious { get; set; }
-    public HotkeyConfig FreecamNext { get; set; }
+    public HotkeyConfig SpectatorFreecamPrevious { get; set; }
+    public HotkeyConfig SpectatorFreecamNext { get; set; }
+    public HotkeyConfig SpectatorFreecamDisengage { get; set; }
 }
 
 public class HotkeyConfig
@@ -58,8 +59,9 @@ public class HotkeyHandler
             CheatM = new HotkeyConfig { Key = Key.M, Modifiers = ModifierKeys.Alt | ModifierKeys.Shift },
             CheatE = new HotkeyConfig { Key = Key.E, Modifiers = ModifierKeys.Alt | ModifierKeys.Shift },
             CheatL = new HotkeyConfig { Key = Key.L, Modifiers = ModifierKeys.Alt | ModifierKeys.Shift },
-            FreecamPrevious = new HotkeyConfig { Key = Key.NumPad9, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
-            FreecamNext = new HotkeyConfig { Key = Key.NumPad0, Modifiers = ModifierKeys.Control | ModifierKeys.Shift }
+            SpectatorFreecamPrevious = new HotkeyConfig { Key = Key.D9, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
+            SpectatorFreecamNext = new HotkeyConfig { Key = Key.D0, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
+            SpectatorFreecamDisengage = new HotkeyConfig { Key = Key.D8, Modifiers = ModifierKeys.Control | ModifierKeys.Shift }
         };
     }
     
@@ -82,8 +84,9 @@ public class HotkeyHandler
             HotkeyManager.Current.AddOrReplace("cheat_m", keys.CheatM.Key, keys.CheatM.Modifiers, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("cheat_e", keys.CheatE.Key, keys.CheatE.Modifiers, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("cheat_l", keys.CheatL.Key, keys.CheatL.Modifiers, OnKeyPress);
-            HotkeyManager.Current.AddOrReplace("freecam_previous", keys.FreecamPrevious.Key, keys.FreecamPrevious.Modifiers, OnKeyPress);
-            HotkeyManager.Current.AddOrReplace("freecam_next", keys.FreecamNext.Key, keys.FreecamNext.Modifiers, OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("spectator_freecam_previous", keys.SpectatorFreecamPrevious.Key, keys.SpectatorFreecamPrevious.Modifiers, OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("spectator_freecam_next", keys.SpectatorFreecamNext.Key, keys.SpectatorFreecamNext.Modifiers, OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("spectator_freecam_disengage", keys.SpectatorFreecamDisengage.Key, keys.SpectatorFreecamDisengage.Modifiers, OnKeyPress);
         }
         catch
         {
@@ -123,13 +126,17 @@ public class HotkeyHandler
             case "start":
                 Client.HCommand.Commands["countdown"].InitExecute(new string[] {"start"});
                 return;
-            case "freecam_previous":
+            case "spectator_freecam_previous":
                 if (ModelController.Login.JoinAsSpectator)
                     SpectatorHandler.FindPreviousSpectatee();
                 return;
-            case "freecam_next":
+            case "spectator_freecam_next":
                 if (ModelController.Login.JoinAsSpectator)
                     SpectatorHandler.FindNextSpectatee();
+                return;
+            case "spectator_freecam_disengage":
+                if (ModelController.Login.JoinAsSpectator)
+                    SpectatorHandler.SpectateeKoalaId = null;
                 return;
             case "requestsync":
                 Client.HSync?.RequestSync();

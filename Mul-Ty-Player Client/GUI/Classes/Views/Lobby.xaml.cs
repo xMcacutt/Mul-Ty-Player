@@ -193,6 +193,8 @@ public partial class Lobby : UserControl
 
     private void ChangeRoleToggle_Click(object sender, RoutedEventArgs e)
     {
+        if (ModelController.Login.JoinAsSpectator)
+            Client.HHideSeek.Role = HSRole.Spectator;
         Client.HHideSeek.Role = Client.HHideSeek.Role == HSRole.Hider ? HSRole.Seeker : HSRole.Hider;
     }
 

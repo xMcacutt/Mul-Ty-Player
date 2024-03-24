@@ -52,7 +52,7 @@ public class HSHandler
     public HSHandler()
     {
         OnRoleChanged += AnnounceRoleChanged;
-        Role = HSRole.Hider;
+        Role = ModelController.Login.JoinAsSpectator ? HSRole.Spectator : HSRole.Hider;
         Mode = HSMode.Neutral;
     }
     
@@ -72,7 +72,7 @@ public class HSHandler
 
         if (Mode == HSMode.SeekTime && Role == HSRole.Seeker)
         {
-            Client.HHero.SetRunSpeed(10.05f);
+            Client.HHero.SetRunSpeed(10.15f);
             RunRadiusCheck(HSRole.Seeker);
         }
         
@@ -270,7 +270,8 @@ public class HSHandler
 public enum HSRole
 {
     Hider,
-    Seeker
+    Seeker,
+    Spectator
 }
 
 public enum HSMode
