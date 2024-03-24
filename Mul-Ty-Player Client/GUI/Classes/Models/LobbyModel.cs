@@ -152,7 +152,7 @@ public class LobbyModel
         get => isHideSeekEnabled;
         set
         {
-            isHideSeekEnabled = value;
+            isHideSeekEnabled = !ModelController.Login.JoinAsSpectator && value;
             IsHideSeekEnabledChanged(isHideSeekEnabled);
         }
     }

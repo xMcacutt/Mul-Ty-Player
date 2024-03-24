@@ -37,6 +37,11 @@ public class HSHandler
         get => _role;
         set
         {
+            if (ModelController.Login.JoinAsSpectator)
+            {
+                _role = HSRole.Spectator;
+                return;
+            }
             if (_role == value) return;
             _role = value;
             if (value == HSRole.Seeker)

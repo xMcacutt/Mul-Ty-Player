@@ -100,3 +100,7 @@ These are the shortcuts available
 - Alt + Shift + L - Runs cheat to toggle lines in sky
 - Alt + Shift + M - Runs cheat to toggle level select menu
 - Alt + Shift + I - Runs cheat to toggle invincibility
+- Ctrl + Shift + F - Puts player info freecam teleport mode. When pressed a second time, the player teleports to the position of the camera.
+- Ctrl + Shift + 8 - \[SPECTATOR ONLY] Disengage from following player
+- Ctrl + Shift + 9 - \[SPECTATOR ONLY] Find previous player to follow
+- Ctrl + Shift + 0 - \[SPECTATOR ONLY] Find next player to follow
