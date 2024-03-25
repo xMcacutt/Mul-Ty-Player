@@ -63,9 +63,9 @@ public class SpectatorHandler
     public static bool ChangedLevel = false;
     public static void FollowSpectatee()
     {
-        if (_cameraDistance > 10000)
+        if (_cameraDistance > 5000)
         {
-            var newCameraVector = _currentSpectateeVector - _currentDisplacementVector * 0.5f;
+            var newCameraVector = _currentSpectateeVector - _currentDisplacementVector * 0.1f;
             SetCameraPosition(newCameraVector.X, newCameraVector.Y, newCameraVector.Z);
         }
         if (_spectateeLevel != Client.HLevel.CurrentLevelId && !ChangedLevel)

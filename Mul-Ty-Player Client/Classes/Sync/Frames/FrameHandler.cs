@@ -22,9 +22,9 @@ internal class FrameHandler : SyncObjectHandler
         CheckState = 1;
         SeparateID = true;
         IDOffset = 0x84;
-        CounterByteLength = 0x2E;
-        ObserverState = new byte[0x2E];
-        PreviousObserverState = new byte[0x2E];
+        CounterByteLength = 0x2F;
+        ObserverState = new byte[0x2F];
+        PreviousObserverState = new byte[0x2F];
         PreviousObjectData = new byte[200];
         CurrentObjectData = new byte[200];
         LiveSync = new LiveFrameSyncer(this);
@@ -53,7 +53,7 @@ internal class FrameHandler : SyncObjectHandler
         ObserverState = ReadObserver(CounterAddress, CounterByteLength);
         if (PreviousObserverState.SequenceEqual(ObserverState) || ObserverState.All(b => b == 0)) 
             return;
-        Array.Copy(ObserverState, PreviousObserverState, 0x2E);
+        Array.Copy(ObserverState, PreviousObserverState, 0x2F);
         
         // FRAME DATA ITEM 1 IS THE INDEX OF THE FRAME
         FrameData = (LiveSync as LiveFrameSyncer)?.ReadData();

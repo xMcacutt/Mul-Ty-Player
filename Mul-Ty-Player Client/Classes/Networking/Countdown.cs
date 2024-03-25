@@ -51,7 +51,7 @@ public class Countdown
             Client.HGameState.ForceBackToMainMenu();
             for (var i = 10; i > 0; i--)
             {
-                if (i != 10 && CheckAnyPlayerOnMainMenu()) Abort();
+                if (i < 8 && CheckAnyPlayerOnMainMenu()) Abort();
 
                 if (abortToken.IsCancellationRequested) abortToken.ThrowIfCancellationRequested();
 

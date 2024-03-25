@@ -30,6 +30,16 @@ public class MtpCommandGroundSwim : Command
             LogError("Cannot change hero state on main menu or load screen.");
             return;
         }
+        if (Client.HLevel.CurrentLevelId == Levels.OutbackSafari.Id)
+        {
+            LogError("Cannot change hero state to swimming in Outback Safari.");
+            return;
+        }
+
+        if (MtpCommandFreeCam.inFreeCam)
+        {
+            LogError("Cannot change hero state to swimming while in freecam.");
+        }
         
         if (args.Length == 0)
             RunGroundSwim();

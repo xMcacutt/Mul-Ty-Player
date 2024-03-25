@@ -13,7 +13,7 @@ internal class FrameSyncer : Syncer
     {
         Name = "Frame";
         CheckState = 1;
-        FrameSaveData = new byte[0x2E];
+        FrameSaveData = new byte[0x2F];
         GlobalObjectData = new Dictionary<int, byte[]>
         {
             { 0, new byte[9] },
@@ -33,6 +33,7 @@ internal class FrameSyncer : Syncer
     public override void HandleServerUpdate(int iLive, int iSave, int level, ushort originalSender)
     {
         if (!GlobalObjectData.ContainsKey(level)) return;
+        Console.WriteLine(iLive);
         GlobalObjectData[level][iLive] = (byte)CheckState;
         var byteIndex = iSave / 8;
         var bitOffset = iSave % 8;
