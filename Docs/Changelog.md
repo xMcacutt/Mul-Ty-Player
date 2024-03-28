@@ -9,6 +9,7 @@
 - Picture frame syncing bugs fully resolved
 - Frills killed with kaboomerang during cable cars now update correctly
 - Client and Server settings are no longer overwritten on update
+- Documentation fully updated
 
 ### Known Issues
 - Cable car syncing occasionally breaks
