@@ -36,14 +36,19 @@ It is strongly recommended that you use this feature if you are ever stuck. All 
 
 The following is a list of all of the commands linking to documents with their specific details.
 
-- [Help](./HelpCommand.md)
-- [CommandList](./CommandListCommand.md)
-- [Password](./PasswordCommand.md)
-- [Ready](./ReadyCommand.md)
-- [RequestHost](./RequestHostCommand.md)
-- [Teleport](./TeleportCommand.md)
-- [Where](./WhereCommand.md)
-- [Whisper](./WhisperCommand.md)
+- [Help](./Help.md)
+- [CommandList](./CommandList.md)
+- [Password](./Password.md)
+- [Ready](./Ready.md)
+- [RequestHost](./RequestHost.md)
+- [Teleport](./Teleport.md)
+- [Where](./Where.md)
+- [Whisper](./Whisper.md)
+- [Groundswim](./Groundswim.md)
+- [Freecam](./Freecam.md)
+- [Level](./Level.md)
+- [Taunt](./Taunt.md)
+- [Cheat](./Cheat.md)
 
 ___
 
@@ -54,6 +59,7 @@ ___
 - [LevelLock](./LevelLockCommand.md)
 - [HideSeek](./HideSeekCommand.md)
 - [ResetSync](./ResetSyncCommand.md)
+- [Crash](./CrashCommand)
 
 ___
 
@@ -104,3 +110,4 @@ These are the shortcuts available
 - Ctrl + Shift + 8 - \[SPECTATOR ONLY] Disengage from following player
 - Ctrl + Shift + 9 - \[SPECTATOR ONLY] Find previous player to follow
 - Ctrl + Shift + 0 - \[SPECTATOR ONLY] Find next player to follow
+These shortcuts can be modified with the Hotkeys.json file. If any other application is already using the hotkey globally, it will not be assigned and an error message will appear on launch warning you of the unassigned hotkeys.

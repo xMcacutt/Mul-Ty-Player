@@ -346,13 +346,9 @@
         <None Remove="Collectible Tracking\Resources\TE.png" />
         <None Remove="Collectible Tracking\Collectibles.html" />
         <None Remove="GUI\MinimapAssets\fe_000_map_d1_00.png" />
-        <Content Include="GUI\MinimapAssets\fe_000_map_d1_00.png">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
+        <Content Include="GUI\MinimapAssets\fe_000_map_d1_00.png" />
         <None Remove="GUI\MinimapAssets\fe_999_icon_arrow.png" />
-        <Content Include="GUI\MinimapAssets\fe_999_icon_arrow.png">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
+        <Content Include="GUI\MinimapAssets\fe_999_icon_arrow.png" />
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="Facepunch.Steamworks.Win32.dll">

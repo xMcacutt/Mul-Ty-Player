@@ -14,9 +14,9 @@ Once everyone is ready, a countdown will run depending on the current mode.
 
 The regular countdown lasts for 10 seconds. For the first seven seconds a bunyip sound will play. When three seconds remain, the Ty2 race countdown sounds will play to notify you that you should be ready to start on go.
 
-The countdown can be aborted by the host using the [countdown command](./Commands/CountdownCommand.md). 
+The countdown can be force started or aborted by the host using the [countdown command](./Commands/CountdownCommand.md). 
 
-(tldr /cd abort)
+(tldr /cd start/abort)
 
 ---
 

@@ -67,3 +67,8 @@ To switch the default server simply remove the asterisk and add it to the line w
 ## Dedicated Servers
 
 As of 05/02/24, MTP has dedicated servers running 24/7. The default server IP on install will always be the IP of the dedicated server. If you have lost the IP, you can switch back to the dedicated IP using the list.servers method described above.
+
+## Join As Spectator
+
+Since version 3.6.0, a spectating mode has been added to the app. In this mode, you will be forced into freecam whenever you load into a level.
+More information on the mode can be found in [the Spectator Mode documentation](Spectator.md).

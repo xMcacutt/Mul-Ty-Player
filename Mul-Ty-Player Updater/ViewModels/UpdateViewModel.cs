@@ -248,16 +248,24 @@ public class UpdateViewModel
     {
         var oldSettingsJ = JObject.Parse(oldSettings);
         var newSettingsJ = JObject.Parse(newSettings);
-
         // Remove properties from oldSettings that are not in newSettings
         foreach (var property in oldSettingsJ.Properties().ToList().Where(property => !newSettingsJ.ContainsKey(property.Name)))
+        {
+            // Remove unused settings
             property.Remove();
+        }
+        // Update version property with the new value
+        if (newSettingsJ.TryGetValue(nameof(Version), out var value))
+        {
+            oldSettingsJ[nameof(Version)] = value;
+        }
+        // Add missing properties from newSettings
         foreach (var property in newSettingsJ.Properties())
         {
             if (!oldSettingsJ.ContainsKey(property.Name))
+            {
                 oldSettingsJ.Add(property.Name, property.Value);
-            else
-                oldSettingsJ[property.Name] = property.Value;
+            }
         }
         return oldSettingsJ.ToString();
     }

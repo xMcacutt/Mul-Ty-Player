@@ -1,4 +1,21 @@
-﻿### New Features 
+﻿# Changelog
+
+## Most Recent
+
+### 3.6.1
+- Countdown checks for players on menu later to avoid falsely aborted countdowns
+- Groundswim hotkey has been disabled in freecam and in outback safari to avoid crashing
+- Spectator follow distances reduced
+- Picture frame syncing bugs fully resolved
+- Frills killed with kaboomerang during cable cars now update correctly
+- Client and Server settings are no longer overwritten on update
+
+### Known Issues
+- Cable car syncing occasionally breaks
+- Spectator mode is liable to crashing
+- Occasionally all crates spawn opals at once
+
+## New Features 
 
 #### v3.0.0
 - GUI mostly functions in a single window now so no more swapping windows.
@@ -116,7 +133,7 @@
 - Added Freecam Teleport (ctrl+shift+F)
 - Added host context menu item to force a specific player to the main menu
 
-### Bug Fixes
+## Bug Fixes
 
 #### 1.3.0
 - Basically everything wrong with v1.2.0
@@ -277,3 +294,11 @@
 - Fixed picture frame syncing across all levels
 - Fixed koalas not being returned to their hidden location on disconnect
 - Fixed cross level teleportation via /tp
+
+#### 3.6.1
+- Countdown checks for players on menu later to avoid falsely aborted countdowns
+- Groundswim hotkey has been disabled in freecam and in outback safari to avoid crashing
+- Spectator follow distances reduced 
+- Picture frame syncing bugs fully resolved
+- Frills killed with kaboomerang during cable cars now update correctly
+- Client and Server settings are no longer overwritten on update

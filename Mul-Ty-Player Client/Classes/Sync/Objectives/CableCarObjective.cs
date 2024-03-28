@@ -40,7 +40,7 @@ public class CableCarObjective : Objective
                 continue;
             var frillIndex = RockFrillIndices[i];
             ProcessHandler.TryRead(ObjectAddress + frillIndex * 0x438 + 0xA0, out int frillOutState, false, "CableCar : IsActive()");
-            if (frillOutState == 8)
+            if (frillOutState is 8 or 7)
             {
                 CurrentData[i] = 1;
                 if (OldData[i] == 1)

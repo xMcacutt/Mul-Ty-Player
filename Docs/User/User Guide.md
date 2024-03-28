@@ -80,6 +80,8 @@ There's tonnes of features in the most recent version of MTP. The following is a
 
 - [Customization](./Customization.md)
 
+- [Spectator Mode](Spectator.md)
+
 ---
 
 ## Contact

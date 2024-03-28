@@ -12,10 +12,10 @@ The principle for syncing is still very similar to opals but a few things to not
 
 - Luckily, the frames do get saved to the pre-save memory when collected so unlike the opals, the save data can be used as an observer.
 
-- Picture frames do not fall by default once spawned and as of v3.4.2, a method to make them fall has not been found
+- Picture frames do not fall by default once spawned and as of v3.6.1, a method to make them fall has not been found
 
 - As of v3.4.2 frame syncing is broken in the bonus worlds for unknown reasons
 
 - As of v3.4.2 the frame draw distance is not high enough and frames are unlikely to collect when on extreme ends of most levels \*Fixed in v3.4.3
 
-- 
+- As of v3.6.1 the picture frame syncing is fully implemented and has no bugs.

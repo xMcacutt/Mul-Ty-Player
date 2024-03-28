@@ -35,10 +35,11 @@ public class MtpCommandGroundSwim : Command
             LogError("Cannot change hero state to swimming in Outback Safari.");
             return;
         }
-
-        if (MtpCommandFreeCam.inFreeCam)
+        // I DONT KNOW WHY THIS NEEDS TO BE INVERTED... IT SHOULDN'T... BUT IT DOES
+        if (!MtpCommandFreeCam.inFreeCam)
         {
             LogError("Cannot change hero state to swimming while in freecam.");
+            return;
         }
         
         if (args.Length == 0)

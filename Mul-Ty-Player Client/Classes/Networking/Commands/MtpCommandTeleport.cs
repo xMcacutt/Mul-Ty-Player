@@ -24,7 +24,7 @@ public class MtpCommandTeleport : Command
             "/tp <x> <y> <z>", "/tp <clientId>", "/tp <@1> <@2>", "/tp <@1> <x> <y> <z>", "/tp <@1> <posId>",
             "/tp <posId>"
         };
-        Description = "Teleport to a specific location or other player in the same level.";
+        Description = "Teleport to a location based on the provided identifiers.";
         ArgDescriptions = new Dictionary<string, string>
         {
             { "<x>", "x-coordinate to teleport to. Relative to current with ~x." },

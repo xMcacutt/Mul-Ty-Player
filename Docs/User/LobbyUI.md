@@ -58,9 +58,11 @@ Marked by a gear icon. Opens the settings menu. For detailed information on all 
 
 Marked by a person with a checkmark icon. Toggles ready status. For more information on how the ready system works see [ready system documentation](./Ready.md).
 
-##### 10 - Launch Game Button
+##### ~~10 - Launch Game Button~~
 
-Marked by a gamepad icon. Launches the game if the path is known by the client. This button will be grayed out if a valid instance on MTP is open and hooked into. The button will only be enabled in the case where the user has the "Auto-Restart Ty" settings disabled and closes their game.
+~~Marked by a gamepad icon. Launches the game if the path is known by the client. This button will be grayed out if a valid instance on MTP is open and hooked into. The button will only be enabled in the case where the user has the "Auto-Restart Ty" settings disabled and closes their game.~~
+
+*Removed
 
 ##### 11 - Request Sync Button
 

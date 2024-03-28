@@ -16,7 +16,7 @@ For better communication, provided below is a basic overview of the Koalas
 Boonie is the troublemaker of the group. In Ty2, his mother is revealed to have passed. He is featured in several missions across Ty1 and Ty2 and is present in Ty3.
 
 <img title="" src="../Images/Mim.png" alt="" data-align="left" width="100">
-Mim is the tallest koala after Katie suggesting he may be the oldest male koala under Shiela's care. For some unknown reason, his texture is significantly lower quality than the others.
+Mim is the tallest koala after Katie. Her texture is significantly lower quality than the others.
 
 <img title="" src="../Images/Katie.png" alt="" data-align="left" width="100">
 Katie is by far the largest koala under Shiela's care and likely the oldest of the group.

@@ -36,7 +36,7 @@ Hiders will be alerted by a sound to the activation of Seek Time and their timer
 
 When a Seeker is in range of a Hider, the Hider will be "caught" and teleported back to the start of the level. A sound will play to both the Hider and the Seeker to alert them of the catch. 15 seconds of time are added to the Seeker's time as a reward and the Hider becomes a Seeker.
 
-This continues untill all players are caught when the game resets to neutral.
+This continues until all players are caught when the game resets to neutral.
 
 ##### Taunting
 Once every 30 seconds into seek time, hiders may choose to taunt, playing a sound to all seekers within 3000 units. A time bonus is awarded with more time added the closer the seeker was to you. The effect stacks with multiple seekers in range.

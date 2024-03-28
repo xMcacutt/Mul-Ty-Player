@@ -2,7 +2,7 @@
 
 ---
 
-The host system provides one player with additional priviledges that could be abused if multiple players had access to them. These come in two forms: host menus and host commands.
+The host system provides one player with additional privileges that could be abused if multiple players had access to them. These come in two forms: host menus and host commands.
 
 ---
 
