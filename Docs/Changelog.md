@@ -2,18 +2,13 @@
 
 ## Most Recent
 
-### 3.6.1
-- Countdown checks for players on menu later to avoid falsely aborted countdowns
-- Groundswim hotkey has been disabled in freecam and in outback safari to avoid crashing
-- Spectator follow distances reduced
-- Picture frame syncing bugs fully resolved
-- Frills killed with kaboomerang during cable cars now update correctly
-- Client and Server settings are no longer overwritten on update
-- Documentation fully updated
+### 3.6.2
+- Cable car issue fully resolved (triggering deactivation on opal TE by mistake)
+- Ground swim / Free cam interaction fixed
 
 ### Known Issues
-- Cable car syncing occasionally breaks
 - Spectator mode is liable to crashing
+- Spectator mode breaks bilby and crate syncing
 - Occasionally all crates spawn opals at once
 
 ## New Features 

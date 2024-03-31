@@ -45,7 +45,6 @@ public class MtpCommandFreeCam : Command
         {
             newHeroState = inFreeCam ? 35 :  50;
         }
-        
         if (inFreeCam)
         {
             var camPos = SpectatorHandler.ReadCameraPosition();
@@ -55,5 +54,6 @@ public class MtpCommandFreeCam : Command
         Client.HHero.SetHeroState(newHeroState);
         if (!inFreeCam)
             SpectatorHandler.SetCameraRotation(0, Client.HHero.GetCurrentPosRot()[4]);
+        inFreeCam = !inFreeCam;
     }
 }
