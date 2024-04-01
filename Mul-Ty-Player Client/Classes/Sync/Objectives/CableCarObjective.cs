@@ -67,7 +67,7 @@ public class CableCarObjective : Objective
     {
         Client.HSync.HTrigger.CheckSetTrigger(1, false);
         Client.HSync.HTrigger.CheckSetTrigger(2, true);
-        if((Client.HSync.SyncObjects["TE"].SaveSync as SaveTESyncer)?.GlobalSaveData[Level][4] == 1)
+        if((Client.HSync.SyncObjects["TE"].SaveSync as SaveTESyncer)?.GlobalSaveData[Level][4] != 1)
             return;
         State = ObjectiveState.Complete;
     }
@@ -92,8 +92,8 @@ public class CableCarObjective : Objective
 
     protected override void Deactivate()
     {
-       Client.HSync.HTrigger.CheckSetTrigger(1, false);
-       Client.HSync.HTrigger.CheckSetTrigger(2, false);
+       //Client.HSync.HTrigger.CheckSetTrigger(1, false);
+       //Client.HSync.HTrigger.CheckSetTrigger(2, false);
     }
 
     protected override void UpdateCount()
