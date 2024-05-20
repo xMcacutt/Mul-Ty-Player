@@ -4,7 +4,7 @@ using Riptide;
 
 namespace MulTyPlayerClient;
 
-internal class TEHandler : SyncObjectHandler
+internal class  TEHandler : SyncObjectHandler
 {
     public TEHandler()
     {

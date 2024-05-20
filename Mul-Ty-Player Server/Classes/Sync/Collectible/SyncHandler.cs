@@ -60,8 +60,9 @@ internal class SyncHandler
     private static void HandleServerDataUpdate(ushort fromClientId, Message message)
     {
         var syncMessage = SyncMessage.Decode(message);
-        //Console.WriteLine($"{syncMessage.type} {syncMessage.iLive} collected in level {syncMessage.level} by client {fromClientId}.");
         Program.HSync.Syncers[syncMessage.type]
+        //Console.WriteLine($"{syncMessage.type} {syncMessage.iLive} collected in level {syncMessage.level} by client {fromClientId}.");
             .HandleServerUpdate(syncMessage.iLive, syncMessage.iSave, syncMessage.level, fromClientId);
     }
 }
+

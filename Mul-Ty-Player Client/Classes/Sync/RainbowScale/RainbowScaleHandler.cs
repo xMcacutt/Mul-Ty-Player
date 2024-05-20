@@ -5,11 +5,6 @@ namespace MulTyPlayerClient;
 internal class RSHandler : SyncObjectHandler
 {
     private const int GEM_PTR_LIST_BASE_ADDRESS = 0x28AB7C;
-    //possible addresses
-    // 0x265478 Counter value (as it scrolls)
-    // 0x26547C Counter target (actual count)
-    // 0x2888B0 Rainbow scales / opals collected
-    // 0x2888B4 Rainbow scales / opals collected since entering level
 
     public RSHandler()
     {
