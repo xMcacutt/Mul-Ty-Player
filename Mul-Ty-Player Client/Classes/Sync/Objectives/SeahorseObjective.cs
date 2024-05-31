@@ -46,6 +46,7 @@ public class SeahorseObjective : Objective
                 OldData[i] = 1;
             }
         }
+        UpdateCount();
         if (CurrentData.Any(x => x != 1))
             return;
         State = ObjectiveState.ReadyForTurnIn;
@@ -67,18 +68,19 @@ public class SeahorseObjective : Objective
 
     protected override void AllowTurnIn()
     {
-        for (var i = 0; i < Count; i++)
-        {
-            ProcessHandler.TryRead(ObjectAddress + i * 0x19C + 0xA8, out int seahorseActivity, false,
-                "CableCar : IsReady()");
-            if (seahorseActivity == 0x0)
-                continue;
-            ProcessHandler.WriteData(ObjectAddress + i * 0x19C + 0xA8, new byte[1]);
-        }
+        
     }
 
     protected override void Deactivate()
     {
+        for (var i = 0; i < Count; i++)
+        {
+            ProcessHandler.TryRead(ObjectAddress + i * 0x19C + 0xA8, out int seahorseActivity, false,
+                "Seahorse : IsReady()");
+            if (seahorseActivity == 0x0)
+                continue;
+            ProcessHandler.WriteData(ObjectAddress + i * 0x19C + 0xA8, new byte[1]);
+        }
     }
 
     protected override void UpdateCount()
