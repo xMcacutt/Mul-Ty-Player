@@ -29,6 +29,7 @@ public class SeahorseObjective : Objective
     protected override void IsActive()
     {
         Client.HSync.HTrigger.CheckSetTrigger(16, false);
+        UpdateCount();
         for (var i = 0; i < Count; i++)
         {
             if (CurrentData[i] == 1)

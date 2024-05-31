@@ -38,6 +38,15 @@ internal class OpalHandler : SyncObjectHandler
         CrateOpalsAddress = PointerCalculations.GetPointerAddress(GEM_PTR_LIST_BASE_ADDRESS, new[] { 0x4AC, 0x0 });
         ProcessHandler.CheckAddress(NonCrateOpalsAddress, (ushort)(17326560 & 0xFFFF), "Opal base address check");
     }
+    
+    public override void HandleClientUpdate(int iLive, int iSave, int level)
+    {
+        GlobalObjectData[level][iLive] = (byte)CheckState;
+        SaveSync.Save(iSave, level);
+        if (level != Client.HLevel.CurrentLevelId) return;
+        CurrentObjectData = LiveSync.ReadData();
+        LiveSync.Collect(iLive);
+    }
 
     public override bool CheckObserverCondition(byte previousState, byte currentState)
     {
