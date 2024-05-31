@@ -48,7 +48,7 @@ public class MtpCommandPassword : Command
     {
         var pass = message.GetString();
         if (string.Equals(pass, "default", StringComparison.CurrentCultureIgnoreCase))
-            pass = "xxxxx";
+            pass = "XXXXX";
         RunPassword(pass);
         var announcement = Message.Create(MessageSendMode.Reliable, MessageID.SetPassword);
         announcement.AddString(pass);

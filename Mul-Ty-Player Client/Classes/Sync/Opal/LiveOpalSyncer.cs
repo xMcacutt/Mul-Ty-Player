@@ -40,8 +40,12 @@ internal class LiveOpalSyncer : LiveDataSyncer
 
     public override void Collect(int index)
     {
-        if (HOpal.CurrentObjectData[index] >= 3) return;
-        if (Client.HGameState.IsOnMainMenuOrLoading) return;
+        if (HOpal.CurrentObjectData[index] >= 3) 
+            return;
+        
+        if (Client.HGameState.IsOnMainMenuOrLoading) 
+            return;
+        
         int baseAddress;
         var crateOpalsInCurrentLevel = Levels.GetLevelData(HLevel.CurrentLevelId).CrateOpalCount;
         int address;

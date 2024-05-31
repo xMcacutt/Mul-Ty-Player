@@ -64,7 +64,7 @@ public class MtpCommandPassword : Command
         var pass = message.GetString();
         Logger.Write(
             string.Equals(pass, "xxxxx", StringComparison.CurrentCultureIgnoreCase) ?
-            $"Password set to default.\nPassword check will be bypassed for connecting players." : 
-            $"Password changed to {message.GetString()}");
+            "Password set to default.\nPassword check will be bypassed for connecting players." : 
+            $"Password changed to {pass}");
     }
 }

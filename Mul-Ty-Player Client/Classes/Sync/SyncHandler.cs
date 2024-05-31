@@ -135,13 +135,27 @@ internal class SyncHandler
             HOpal.CheckObserverChanged();
             HCrate.CheckObserverChanged();
         }
-        if (SettingsHandler.DoTESyncing) HThEg.CheckObserverChanged();
-        if (SettingsHandler.DoCogSyncing) HCog.CheckObserverChanged();
-        if (SettingsHandler.DoBilbySyncing) HBilby.CheckObserverChanged();
-        if (SettingsHandler.DoRangSyncing) HAttribute.CheckObserverChanged();
-        if (SettingsHandler.DoLevelLock) HLevelLock.CheckEntry();
-        else if (SettingsHandler.DoPortalSyncing) HPortal.CheckObserverChanged();
-        if (SettingsHandler.DoCliffsSyncing) HCliffs.CheckObserverChanged();
+        if (SettingsHandler.DoTESyncing) 
+            HThEg.CheckObserverChanged();
+        
+        if (SettingsHandler.DoCogSyncing) 
+            HCog.CheckObserverChanged();
+        
+        if (SettingsHandler.DoBilbySyncing) 
+            HBilby.CheckObserverChanged();
+        
+        if (SettingsHandler.DoRangSyncing) 
+            HAttribute.CheckObserverChanged();
+        
+        if (SettingsHandler.DoLevelLock) 
+            HLevelLock.CheckEntry();
+        
+        else if (SettingsHandler.DoPortalSyncing) 
+            HPortal.CheckObserverChanged();
+        
+        if (SettingsHandler.DoCliffsSyncing) 
+            HCliffs.CheckObserverChanged();
+        
         if (SettingsHandler.DoFrameSyncing && (Levels.GetLevelData(Client.HLevel.CurrentLevelId).FrameCount != 0))
         {
             HFrame.CheckObserverChanged();

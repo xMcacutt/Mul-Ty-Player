@@ -73,7 +73,6 @@ internal class Client
 
     private static void InitHandlers()
     {
-        //PlayerReplication.
         HLevel = new LevelHandler();
         HSync = new SyncHandler();
         HGameState = new GameStateHandler();

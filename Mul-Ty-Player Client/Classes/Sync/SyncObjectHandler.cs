@@ -98,12 +98,11 @@ internal abstract class SyncObjectHandler
         for (var i = 0; i < ObjectAmount; i++)
             if (liveData[i] == CheckState && GlobalObjectData[level][i] != CheckState)
                 GlobalObjectData[level][i] = WriteState;
-        if (Client.HLevel.CurrentLevelId == level)
-        {
-            LiveSync.Sync(liveData, ObjectAmount, CheckState);
-            PreviousObjectData = liveData;
-            CurrentObjectData = liveData;
-        }
+        if (Client.HLevel.CurrentLevelId != level) 
+            return;
+        LiveSync.Sync(liveData, ObjectAmount, CheckState);
+        PreviousObjectData = liveData;
+        CurrentObjectData = liveData;
     }
 
     public virtual byte[] ConvertSave(int level, byte[] data)
