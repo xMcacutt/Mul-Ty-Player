@@ -11,6 +11,10 @@
     "Key": "R",
     "Modifiers": "Control, Shift"
   },
+  "ResetSync": {
+    "Key": "R",
+    "Modifiers": "Control, Shift, Alt"
+  },
   "RequestHost": {
     "Key": "H",
     "Modifiers": "Control, Shift"

@@ -65,7 +65,7 @@ public class BurnerObjective : Objective
         if (objectiveState == 1)
             AllowTurnIn();
         //CHECK TE STATE FOR COMPLETION
-        if (Client.HSync.SyncObjects["TE"].GlobalObjectData[Level][4] != 5)
+        if ((Client.HSync.SyncObjects["TE"].SaveSync as SaveTESyncer)?.GlobalSaveData[Level][4] != 1)
             return;
         State = ObjectiveState.Complete;
         SendState();

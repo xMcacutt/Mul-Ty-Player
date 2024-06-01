@@ -16,6 +16,7 @@ public class Hotkeys
     public HotkeyConfig Freecam { get; set; }
     public HotkeyConfig GroundSwim { get; set; }
     public HotkeyConfig Ready { get; set; }
+    public HotkeyConfig ResetSync { get; set; }
     public HotkeyConfig RequestHost { get; set; }
     public HotkeyConfig Start { get; set; }
     public HotkeyConfig Previous { get; set; }
@@ -48,6 +49,7 @@ public class HotkeyHandler
             Freecam = new HotkeyConfig { Key = Key.F, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
             GroundSwim = new HotkeyConfig { Key = Key.G, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
             Ready = new HotkeyConfig { Key = Key.R, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
+            ResetSync = new HotkeyConfig { Key = Key.R, Modifiers = ModifierKeys.Control | ModifierKeys.Alt | ModifierKeys.Shift },
             RequestHost = new HotkeyConfig { Key = Key.H, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
             Start = new HotkeyConfig { Key = Key.S, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
             Previous = new HotkeyConfig { Key = Key.P, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
@@ -73,6 +75,7 @@ public class HotkeyHandler
             HotkeyManager.Current.AddOrReplace("freecam", keys.Freecam.Key, keys.Freecam.Modifiers, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("groundswim", keys.GroundSwim.Key, keys.GroundSwim.Modifiers, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("ready", keys.Ready.Key, keys.Ready.Modifiers, OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("resetsync", keys.ResetSync.Key, keys.ResetSync.Modifiers, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("requesthost", keys.RequestHost.Key, keys.RequestHost.Modifiers, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("start", keys.Start.Key, keys.Start.Modifiers, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("previous", keys.Previous.Key, keys.Previous.Modifiers, OnKeyPress);

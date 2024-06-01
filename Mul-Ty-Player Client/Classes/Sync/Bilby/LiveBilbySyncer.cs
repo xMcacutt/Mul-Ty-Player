@@ -35,6 +35,7 @@ internal class LiveBilbySyncer : LiveDataSyncer
         if (Client.HLevel.CurrentLevelId != message.GetInt() || Client.HGameState.IsOnMainMenuOrLoading) return;
         (Client.HSync.SyncObjects["Bilby"].LiveSync as LiveBilbySyncer).CollectAll();
     }
+    
     public void CollectAll()
     {
         for (var i = 0; i < 5; i++)
@@ -45,6 +46,7 @@ internal class LiveBilbySyncer : LiveDataSyncer
                 BitConverter.GetBytes(0), "Setting bilby cage collision to off pt 1");
             ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + 0x31 + ObjectLength * i, new byte[] { 0, 1 },
                 "Setting bilby cage collision to off pt 2");
+            HSyncObject.SaveSync.Save(i, Client.HLevel.CurrentLevelId);
         }
     }
 }

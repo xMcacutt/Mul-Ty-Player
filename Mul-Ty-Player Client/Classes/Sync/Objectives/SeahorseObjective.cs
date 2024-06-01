@@ -57,7 +57,7 @@ public class SeahorseObjective : Objective
     {
         Client.HSync.HTrigger.CheckSetTrigger(16, false);
         Client.HSync.HTrigger.CheckSetTrigger(17, true);
-        if (Client.HSync.SyncObjects["TE"].GlobalObjectData[Level][4] != 5)
+        if ((Client.HSync.SyncObjects["TE"].SaveSync as SaveTESyncer)?.GlobalSaveData[Level][4] != 1)
             return;
         State = ObjectiveState.Complete;
     }

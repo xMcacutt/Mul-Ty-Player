@@ -99,6 +99,7 @@ These are the shortcuts available
 - Ctrl + Shift + T - Runs the /taunt command for Hide & Seek mode
 - Ctrl + Shift + R - Runs the /ready command
 - Ctrl + Shift + Alt + C - Runs the /crash command
+- Ctrl + Shift + Alt + R - Runs the /resetsync command
 - Ctrl + Shift + P - Runs the last command typed into the console
 - Ctrl + Shift + Q - Calls request sync (for de-synchronization issues)
 - Alt + Shift + T - Runs cheat to give technorangs

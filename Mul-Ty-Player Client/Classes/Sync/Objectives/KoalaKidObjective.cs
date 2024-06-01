@@ -55,7 +55,7 @@ public class KoalaKidObjective : Objective
             ProcessHandler.WriteData(ObjectAddress + 0x6C, BitConverter.GetBytes((ushort)0x0));
         ProcessHandler.WriteData(ObjectAddress + 0x70, new byte[] { 8 });
         //CHECK TE STATE FOR COMPLETION
-        if (Client.HSync.SyncObjects["TE"].GlobalObjectData[Level][3] != 5)
+        if ((Client.HSync.SyncObjects["TE"].SaveSync as SaveTESyncer)?.GlobalSaveData[Level][3] != 1)
             return;
         State = ObjectiveState.Complete;
         SendState();

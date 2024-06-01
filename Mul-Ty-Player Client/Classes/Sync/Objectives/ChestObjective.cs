@@ -74,7 +74,7 @@ public class ChestObjective : Objective
         //TURN LAST CHEST AND TRIGGER ON
         HTrigger.CheckSetTrigger(ChestTriggerIndices[5], true);
         ChestHandler.CheckSetVisibility(Array.IndexOf(ChestHandler.ChestObjectIndices, 5), true);
-        if (Client.HSync.SyncObjects["TE"].GlobalObjectData[Level][3] != 5)
+        if ((Client.HSync.SyncObjects["TE"].SaveSync as SaveTESyncer)?.GlobalSaveData[Level][3] != 1)
             return;
         State = ObjectiveState.Complete;
     }
@@ -105,7 +105,7 @@ public class ChestObjective : Objective
     }
 }
 
-public enum Chest : int
+public enum Chest
 {
     CrabIsland,
     AnchorRock,

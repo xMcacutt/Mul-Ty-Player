@@ -2,14 +2,16 @@
 
 ## Most Recent
 
-### 3.6.2
-- Cable car issue fully resolved (triggering deactivation on opal TE by mistake)
-- Ground swim / Free cam interaction fixed
+#### 3.6.4
+- Resetsync hotkey added
+- Password no longer throws error on attempt to change
+- Rainbow Scales and Opals now auto sync on level reload if game was not saved before reload
+- Seahorse count is now updated on reload
+- Seahorses now despawn on talking to Aurora instead of on collection of last seahorse
+- Last bilby is now shown as collected for all players in game info
 
 ### Known Issues
 - Spectator mode is liable to crashing
-- Spectator mode breaks bilby and crate syncing
-- Occasionally all crates spawn opals at once
 
 ## New Features 
 
@@ -128,6 +130,9 @@
 - Added Spectator Mode
 - Added Freecam Teleport (ctrl+shift+F)
 - Added host context menu item to force a specific player to the main menu
+
+#### 3.6.4
+- Added resetsync hotkey
 
 ## Bug Fixes
 
@@ -298,3 +303,14 @@
 - Picture frame syncing bugs fully resolved
 - Frills killed with kaboomerang during cable cars now update correctly
 - Client and Server settings are no longer overwritten on update
+
+#### 3.6.2 / 3.6.3
+- Cable car issue fully resolved (triggering deactivation on opal TE by mistake)
+- Ground swim / Free cam interaction fixed
+
+#### 3.6.4
+- Password no longer throws error on attempt to change
+- Rainbow Scales and Opals now auto sync on level reload if game was not saved before reload
+- Seahorse count is now updated on reload
+- Seahorses now despawn on talking to Aurora instead of on collection of last seahorse
+- Last bilby is now shown as collected for all players in game info
