@@ -129,7 +129,7 @@ public class HeroHandler
     
     public void SetGlideSpeed(float speed = 7f)
     {
-        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288940), BitConverter.GetBytes(speed));
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288928), BitConverter.GetBytes(speed));
     }
     
     public void ToggleInvincibility()
