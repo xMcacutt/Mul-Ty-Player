@@ -43,6 +43,11 @@ internal class LevelHandler
             HSync.SyncObjects["TE"].GlobalObjectData.ContainsKey(CurrentLevelId) &&
             (HSync.SyncObjects["TE"].SaveSync as SaveTESyncer)?.GlobalSaveData[CurrentLevelId][3] == 1)
             (HSync.SyncObjects["TE"] as TEHandler)?.ShowStopwatch();
+        if (SettingsHandler.DoHideSeek)
+        {
+            Client.HHideSeek.CurrentPerk.Deactivate();
+            Client.HHideSeek.CurrentPerk = PerkHandler.LevelPerks[CurrentLevelId];
+        }
         if (CurrentLevelData.Id != 16)
         {
             HKoala.SetBaseAddress();

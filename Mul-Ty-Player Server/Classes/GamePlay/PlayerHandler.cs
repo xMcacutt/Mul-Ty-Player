@@ -50,7 +50,6 @@ internal class PlayerHandler
     public static void ClientReady(ushort fromClientId, Message message)
     {
         var ready = message.GetBool();
-        //string readyStatus = ready? "ready" : "no longer ready";
         Players[fromClientId].IsReady = ready;
 
         var status = Message.Create(MessageSendMode.Reliable, MessageID.Ready);
@@ -58,12 +57,11 @@ internal class PlayerHandler
         status.AddBool(ready);
         Server._Server.SendToAll(status, fromClientId);
 
-        //Server.SendMessageToClients($"Client {fromClientId} is {readyStatus}, {PlayerHandler.Players.Count(x => x.Value.IsReady)} / {Server._Server.ClientCount}", true);
         if (Players.Count(x => x.Value.IsReady) == Players.Count(x => x.Value.Koala.KoalaName != "SPECTATOR"))
         {
             foreach (var entry in Players) entry.Value.IsReady = false;
             if (SettingsHandler.DoHideSeek)
-                StartHideTimer();
+                StartHideTimer(SettingsHandler.HideSeekTime);
             else
             {
                 PeerMessageHandler.SendMessageToClients("All clients are ready, starting countdown", true);
@@ -72,11 +70,12 @@ internal class PlayerHandler
         }
     }
 
-    private static void StartHideTimer()
+    private static void StartHideTimer(int hideTimeLength)
     {
         var hideTimerMessage = Message.Create(MessageSendMode.Reliable, MessageID.HS_HideTimerStart);
+        hideTimerMessage.AddInt(hideTimeLength);
         Server._Server.SendToAll(hideTimerMessage);
-        HSHandler.StartHideTimer();
+        HSHandler.StartHideTimer(hideTimeLength);
     }
 
     private static void StartCountdown()

@@ -100,7 +100,10 @@ internal class KoalaHandler
 
     public void CheckTA()
     {
-        ProcessHandler.TryRead(_bTimeAttackAddress, out int inTimeAttack, true, "KoalaHandler::CheckTA()");
+        ProcessHandler.TryRead(_bTimeAttackAddress, 
+            out int inTimeAttack, 
+            true, 
+            "KoalaHandler::CheckTA()");
         if (inTimeAttack == 1)
             MakeVisible();
     }
@@ -108,7 +111,9 @@ internal class KoalaHandler
     public void MakeVisible()
     {
         for (var i = 0; i < 8; i++)
-            ProcessHandler.WriteData(TransformAddresses[i].Visibility, new byte[] { 1 }, "Making players visible");
+            ProcessHandler.WriteData(TransformAddresses[i].Visibility, 
+                new byte[] { 1 }, 
+                "Making players visible");
     }
 
     public void ScaleKoalas()

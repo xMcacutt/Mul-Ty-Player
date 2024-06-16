@@ -16,6 +16,7 @@ public class HSHandler
     private bool _timerRunning;
     public HSMode Mode;
     private bool _camLocked;
+    private bool _applyPerks;
     
     private int _time;
     public int Time
@@ -51,6 +52,10 @@ public class HSHandler
             OnRoleChanged?.Invoke(value);
         }
     }
+
+    public bool LinesVisible = false;
+    public HSPerk CurrentPerk = new NoPerk();
+    
     public delegate void RoleChangedEventHandler(HSRole newRole);
     public static event RoleChangedEventHandler OnRoleChanged;
 
@@ -63,28 +68,37 @@ public class HSHandler
     
     public void Run()
     {
-        //HIDE TIME SEEKER
+        // HIDE TIME HIDER
+        if (Mode == HSMode.HideTime && Role == HSRole.Hider)
+            CurrentPerk.ApplyHider();
+        
+        // HIDE TIME SEEKER
         if (Mode == HSMode.HideTime && Role == HSRole.Seeker)
             LockPlayer();
         
-        //SEEK TIME HIDER
+        // SEEK TIME HIDER
         if (Mode == HSMode.SeekTime && Role == HSRole.Hider)
         {
             if (!_timerRunning)
                 _timerRunning = true;
             RunRadiusCheck(HSRole.Hider);
+            CurrentPerk.ApplyHider();
         }
 
+        // SEEK TIME SEEKER
         if (Mode == HSMode.SeekTime && Role == HSRole.Seeker)
         {
+            Client.HHero.SetSwimSpeed(22f);
             Client.HHero.SetRunSpeed(10.15f);
             RunRadiusCheck(HSRole.Seeker);
+            CurrentPerk.ApplySeeker();
         }
         
         if (PlayerHandler.Players.Any(x => x.Role == HSRole.Hider))
             return;
         Mode = HSMode.Neutral;
         _timerRunning = false;
+        Client.HHero.SetSwimSpeed();
         Client.HHero.SetRunSpeed();
     }
 
@@ -178,6 +192,7 @@ public class HSHandler
         SettingsHandler.DoHideSeek = message.GetBool();
         var result = SettingsHandler.DoHideSeek ? "Hide & Seek has been activated" : "Hide & Seek has been disabled";
         Logger.Write(result);
+        Client.HHero.SetSwimSpeed();
         Client.HHero.SetRunSpeed();
     }
 
@@ -198,6 +213,7 @@ public class HSHandler
     [MessageHandler((ushort)MessageID.HS_HideTimerStart)]
     private static void HideTimerStart(Message message)
     {
+        var hideTime = message.GetInt();
         Client.HGlow.ReturnGlows();
         Client.HCommand.Commands["tp"].InitExecute(new string[] {"@s"});
         Client.HHideSeek.Mode = HSMode.HideTime;
@@ -207,8 +223,8 @@ public class HSHandler
         if (Client.HHideSeek.Role == HSRole.Hider)
             ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EC00, BitConverter.GetBytes((float)750));
         Logger.Write(Client.HHideSeek.Role == HSRole.Hider
-            ? "[HIDE AND SEEK] You have 75 seconds to hide!"
-            : "[HIDE AND SEEK] 75 seconds until seeking!");
+            ? $"[HIDE AND SEEK] You have {hideTime} seconds to hide!"
+            : $"[HIDE AND SEEK] {hideTime} seconds until seeking!");
     }
     
     [MessageHandler((ushort)MessageID.HS_Warning)]
@@ -250,6 +266,7 @@ public class HSHandler
         Client.HHideSeek.Role = HSRole.Seeker;
         Client.HHideSeek.Mode = HSMode.Neutral;
         Client.HHideSeek._timerRunning = false;
+        Client.HHero.SetSwimSpeed();
         Client.HHero.SetRunSpeed();
         SFXPlayer.PlaySound(SFX.TAOpen);
     }
@@ -265,7 +282,8 @@ public class HSHandler
         //REPLACE WITH TOKEN
         while (!cts.IsCancellationRequested && SettingsHandler.DoHideSeek)
         {
-            if (!_timerRunning) continue;
+            if (!_timerRunning) 
+                continue;
             Time++;
             Thread.Sleep(1000);
         }

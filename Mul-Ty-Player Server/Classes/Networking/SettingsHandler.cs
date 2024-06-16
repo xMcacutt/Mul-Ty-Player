@@ -23,6 +23,7 @@ internal class SettingsHandler
     
     public static bool DoLevelLock { get; set; }
     public static bool DoHideSeek { get; set; }
+    public static int HideSeekTime { get; set; }
 
 
     private static float _hsRange = 65f;
@@ -46,6 +47,7 @@ internal class SettingsHandler
         Settings = JsonConvert.DeserializeObject<Settings>(json);
         DoLevelLock = false;
         DoHideSeek = false;
+        HideSeekTime = 75;
         SyncSettings = new Dictionary<string, bool>
         {
             { "TE", Settings.DoSyncTEs },
@@ -76,7 +78,7 @@ internal class SettingsHandler
             Settings.DoSyncScale,
             Settings.DoSyncFrame,
             DoLevelLock,
-            DoHideSeek
+            DoHideSeek,
         };
         var message = Message.Create(MessageSendMode.Reliable, MessageID.SyncSettings);
         message.AddBools(b);

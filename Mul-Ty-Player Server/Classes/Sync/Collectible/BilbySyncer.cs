@@ -25,8 +25,9 @@ internal class BilbySyncer : Syncer
 
     public override void HandleServerUpdate(int iLive, int iSave, int level, ushort originalSender)
     {
-        if (!GlobalObjectData.Keys.Contains(level)) return;
-        //Console.WriteLine("Sending " + Name + " LiveNumber: " + iLive + " SaveNumber: " + iSave + " For Level: " + level);
+        if (!GlobalObjectData.ContainsKey(level)) return;
+        
+        // PREVENT SYNCING OF FINAL BILBY (DEFERRED TO WHEN TE IS COLLECTED)
         if (GlobalObjectCounts[level] == 4 && GlobalObjectData[level][iLive] == 1)
         {
             GlobalObjectSaveData[level][iSave] = 3;
@@ -39,3 +40,4 @@ internal class BilbySyncer : Syncer
         SendUpdatedData(iLive, iSave, level, originalSender);
     }
 }
+

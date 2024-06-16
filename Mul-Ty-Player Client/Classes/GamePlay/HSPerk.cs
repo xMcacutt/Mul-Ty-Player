@@ -1,0 +1,288 @@
+﻿using System;
+using System.Collections.Generic;
+using MulTyPlayer;
+using Riptide;
+
+namespace MulTyPlayerClient;
+
+public class PerkHandler
+{
+    public static readonly Dictionary<int, HSPerk> LevelPerks = new()
+    {
+        {0, new OpalSpeedPerk()},
+        {4, new HiderGravityPerk()},
+        {5, new SeekerGravityPerk()},
+        {6, new SeekerSwimSpeedPerk()},
+        {8, new HiderOneHitPerk()},
+        {9, new SeekerGlideSpeedPerk()},
+        {10, new SeekerOneHitPerk()},
+        {12, new OpalSlowPerk()},
+        {13, new HiderOneRangPerk()},
+        {14, new SeekersSeeLightsPerk()},
+    };
+
+    public static void DeactivateAllPerks()
+    {
+        foreach (var perk in LevelPerks.Values)
+            perk.Deactivate();
+    }
+}
+
+public abstract class HSPerk
+{
+    public virtual void ApplyHider() {}
+    public virtual void ApplySeeker() {}
+    public virtual void ApplyTime() {}
+    public virtual void ApplyAbility() {}
+    public virtual void Deactivate() {}
+}
+
+public class NoPerk : HSPerk
+{
+}
+
+public class OpalSlowPerk : HSPerk
+{
+    public override void ApplyHider()
+    {
+        var opalCount = CountOpals();
+        var divisor = Client.HLevel.CurrentLevelId == 0 ? 10f : 120f;
+        var speed = 10f - opalCount / divisor;
+        Client.HHero.SetRunSpeed(speed);
+    }
+
+    public override void ApplySeeker()
+    {
+        var opalCount = CountOpals();
+        var divisor = Client.HLevel.CurrentLevelId == 0 ? 10.4f : 125f;
+        var speed = 10.15f - opalCount / divisor;
+        Client.HHero.SetRunSpeed(speed);
+    }
+
+    public override void Deactivate()
+    {
+        switch (Client.HHideSeek.Role)
+        {
+            case HSRole.Hider:
+                Client.HHero.SetRunSpeed();
+                break;
+            case HSRole.Seeker:
+                Client.HHero.SetRunSpeed(10.15f);
+                break;
+            case HSRole.Spectator:
+                break;
+        }
+    }
+
+    private int CountOpals()
+    {
+        ProcessHandler.TryRead(0x26547C, out int count, true, "ReadOpalCount");
+        return count;
+    }
+}
+
+public class OpalSpeedPerk : HSPerk
+{
+    public override void ApplyHider()
+    {
+        var opalCount = CountOpals();
+        var divisor = Client.HLevel.CurrentLevelId == 0 ? 5f : 60f;
+        var speed = 10f + opalCount / divisor;   
+        Client.HHero.SetRunSpeed(speed);
+    }
+
+    public override void ApplySeeker()
+    {
+        var opalCount = CountOpals();
+        var divisor = Client.HLevel.CurrentLevelId == 0 ? 5.2f : 62.5f;
+        var speed = 10.15f + opalCount / divisor;
+        Client.HHero.SetRunSpeed(speed);
+    }
+
+    public override void Deactivate()
+    {
+        switch (Client.HHideSeek.Role)
+        {
+            case HSRole.Hider:
+                Client.HHero.SetRunSpeed();
+                break;
+            case HSRole.Seeker:
+                Client.HHero.SetRunSpeed(10.15f);
+                break;
+            case HSRole.Spectator:
+                break;
+        }
+    }
+
+    private int CountOpals()
+    {
+        ProcessHandler.TryRead(0x26547C, out int count, true, "ReadOpalCount");
+        return count;
+    }
+}
+
+public class SeekerGravityPerk : HSPerk
+{
+    public override void ApplySeeker()
+    {
+        Client.HHero.SetGravity(0.45f);
+    }
+
+    public override void Deactivate()
+    {
+        Client.HHero.SetGravity();
+    }
+}
+
+public class HiderGravityPerk : HSPerk
+{
+    public override void ApplyHider()
+    {
+        Client.HHero.SetGravity(0.45f);
+    }
+
+    public override void Deactivate()
+    {
+        Client.HHero.SetGravity();
+    }
+}
+
+public class SeekerSwimSpeedPerk : HSPerk
+{
+    public override void ApplySeeker()
+    {
+        Client.HHero.SetSwimSpeed(25f);
+    }
+    
+    public override void Deactivate()
+    {
+        Client.HHero.SetSwimSpeed();
+    }
+}
+
+public class HiderSwimSpeedPerk : HSPerk
+{
+    public override void ApplyHider()
+    {
+        Client.HHero.SetSwimSpeed(25f);
+    }
+
+    public override void Deactivate()
+    {
+        Client.HHero.SetSwimSpeed();
+    }
+}
+
+public class HiderGlideSpeedPerk : HSPerk
+{
+    public override void ApplyHider()
+    {
+        Client.HHero.SetGlideSpeed(11.5f);
+    }
+
+    public override void Deactivate()
+    {
+        Client.HHero.SetGlideSpeed();
+    }
+}
+
+public class SeekerGlideSpeedPerk : HSPerk
+{
+    public override void ApplySeeker()
+    {
+        Client.HHero.SetGlideSpeed(11.5f);
+    }
+
+    public override void Deactivate()
+    {
+        Client.HHero.SetGlideSpeed();
+    }
+}
+
+public class SeekerOneHitPerk : HSPerk
+{
+    public override void ApplySeeker()
+    {
+        if (Client.HHero.GetHealth() > 1)
+            Client.HHero.SetHealth(1);
+    }
+
+    public override void Deactivate()
+    {
+        Client.HHero.SetHealth(4);
+    }
+}
+
+public class HiderOneHitPerk : HSPerk
+{
+    public override void ApplyHider()
+    {
+        if (Client.HHero.GetHealth() > 1)
+            Client.HHero.SetHealth(1);
+    }
+
+    public override void Deactivate()
+    {
+        Client.HHero.SetHealth(4);
+    }
+}
+
+public class SeekerOneRangPerk : HSPerk
+{
+    public override void ApplySeeker()
+    {
+        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0xAB6 });
+        ProcessHandler.WriteData(rangAddress + 0xAB6, new byte[] { 0x0 }, "Remove Second Rang");
+    }
+
+    public override void Deactivate()
+    {
+        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0xAB6 });
+        ProcessHandler.WriteData(rangAddress, new byte[] { 0x1 }, "Remove Second Rang");
+    }
+}
+
+public class HiderOneRangPerk : HSPerk
+{
+    public override void ApplyHider()
+    {
+        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0xAB6 });
+        ProcessHandler.WriteData(rangAddress + 0xAB6, new byte[] { 0x0 }, "Remove Second Rang");
+    }
+
+    public override void Deactivate()
+    {
+        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0xAB6 });
+        ProcessHandler.WriteData(rangAddress, new byte[] { 0x1 }, "Remove Second Rang");
+    }
+}
+
+public class HidersSeeLightsPerk : HSPerk
+{
+    public override void ApplyAbility()
+    {
+        if (Client.HHideSeek.Role != HSRole.Hider)
+            return;
+        Client.HHideSeek.LinesVisible = true;
+    }
+
+    public override void Deactivate()
+    {
+        Client.HHideSeek.LinesVisible = false;
+    }
+}
+
+public class SeekersSeeLightsPerk : HSPerk
+{
+    public override void ApplyAbility()
+    {
+        if (Client.HHideSeek.Role != HSRole.Seeker)
+            return;
+        Client.HHideSeek.LinesVisible = true;
+    }
+
+    public override void Deactivate()
+    {
+        Client.HHideSeek.LinesVisible = false;
+    }
+}

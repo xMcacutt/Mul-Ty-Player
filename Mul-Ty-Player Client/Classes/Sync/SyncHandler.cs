@@ -102,7 +102,11 @@ internal class SyncHandler
         if (Client.Relaunching) return;
         var type = message.GetString();
         if (SettingsHandler.SyncSettings[type])
-            Client.HSync.SyncObjects[type].Sync(message.GetInt(), message.GetBytes(), message.GetBytes());
+            Client.HSync.SyncObjects[type].Sync(
+                message.GetInt(), 
+                message.GetBytes(), 
+                message.GetBytes()
+                );
     }
     
     [MessageHandler((ushort)MessageID.ResetSync)]
@@ -117,8 +121,8 @@ internal class SyncHandler
     {
         if (Client.Relaunching) return;
         var syncMessage = CollectibleSyncMessage.Decode(message);
-        Client.HSync.SyncObjects[syncMessage.type]
-            .HandleClientUpdate(syncMessage.iLive, syncMessage.iSave, syncMessage.level);
+        Client.HSync.SyncObjects[syncMessage.Type]
+            .HandleClientUpdate(syncMessage.LiveIndex, syncMessage.SaveIndex, syncMessage.Level);
     }
 
     public void SendDataToServer(int iLive, int iSave, int level, string type)
@@ -130,7 +134,8 @@ internal class SyncHandler
     public void CheckEnabledObservers()
     {
         //OBSERVERS
-        if (SettingsHandler.DoOpalSyncing && Levels.GetLevelData(Client.HLevel.CurrentLevelId).IsMainStage)
+        if (SettingsHandler.DoOpalSyncing 
+            && Levels.GetLevelData(Client.HLevel.CurrentLevelId).IsMainStage)
         {
             HOpal.CheckObserverChanged();
             HCrate.CheckObserverChanged();
@@ -156,12 +161,14 @@ internal class SyncHandler
         if (SettingsHandler.DoCliffsSyncing) 
             HCliffs.CheckObserverChanged();
         
-        if (SettingsHandler.DoFrameSyncing && (Levels.GetLevelData(Client.HLevel.CurrentLevelId).FrameCount != 0))
+        if (SettingsHandler.DoFrameSyncing 
+            && (Levels.GetLevelData(Client.HLevel.CurrentLevelId).FrameCount != 0))
         {
             HFrame.CheckObserverChanged();
             HInvisiCrate.CheckObserverChanged();
         }
-        if (SettingsHandler.DoRainbowScaleSyncing && Client.HLevel.CurrentLevelId == Levels.RainbowCliffs.Id)
+        if (SettingsHandler.DoRainbowScaleSyncing 
+            && Client.HLevel.CurrentLevelId == Levels.RainbowCliffs.Id)
             HRainbowScale.CheckObserverChanged();
     }
 }

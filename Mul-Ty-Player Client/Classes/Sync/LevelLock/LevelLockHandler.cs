@@ -59,13 +59,14 @@ public class LevelLockHandler
 
     public void EnableAllCurrentPortals()
     {
-        //Console.WriteLine("Enabled all levels");
         foreach (var key in PortalStates.Keys.ToList())
-        {
             PortalStates[key] = !InvisPortals.Contains(key);
-        }
+        
         _bossPortalsActive = true;
-        if (Client.HLevel.CurrentLevelId != 0) return;
+        
+        if (Client.HLevel.CurrentLevelId != 0) 
+            return;
+        
         var iterator = 0;
         foreach (var level in BossLevelsWithTriggers)
         {
@@ -76,8 +77,7 @@ public class LevelLockHandler
     
     public void DisableAllPortals(int except)
     {
-        //Console.WriteLine("Disabled all except " + except);
-        foreach (var key in PortalStates.Keys.ToList())
+        foreach (var key in PortalStates.Keys.ToList()) 
         {
             PortalStates[key] = key == except; 
         }
@@ -86,18 +86,33 @@ public class LevelLockHandler
 
     public void SetPortalStatesInGame()
     {
+        // ONLY RUNS IN RAINBOW CLIFFS
         if (Client.HLevel.CurrentLevelId != 0)
             return;
+        
         foreach (var level in PortalStates.Keys.ToList())
         {
-            ProcessHandler.TryRead(Client.HSync.SyncObjects["Portal"].LiveObjectAddress + 0x9C + 0xB0 * Array.IndexOf(LivePortalOrder, level),
+            var baseAddress = Client.HSync.SyncObjects["Portal"].LiveObjectAddress;
+            var portalIndex = Array.IndexOf(LivePortalOrder, level);
+                
+            // READ THE PORTAL STATE
+            ProcessHandler.TryRead(baseAddress + 0x9C + 0xB0 * portalIndex,
                 out byte result, false, "LevelLockHandler: SetPortalStates() 1");
-            if ((PortalStates[level] && result < 3) || (!PortalStates[level] && result == 3)) continue;
+            
+            // CHECK IF PORTAL'S IN GAME STATE MATCHES ITS EXPECTED STATE. IF SO, DO NOTHING
+            if ((PortalStates[level] && result < 3) || (!PortalStates[level] && result == 3)) 
+                continue;
+            
+            // ELSE WRITE THE EXPECTED STATE TO THE PORTAL
             var b = PortalStates[level] ? (byte)0x1 : (byte)0x3;
-            ProcessHandler.WriteData(Client.HSync.SyncObjects["Portal"].LiveObjectAddress + 0x9C + 0xB0 * Array.IndexOf(LivePortalOrder, level), new byte[] {b}, "LevelLockHandler: SetPortalStates() 2");
+            ProcessHandler.WriteData(baseAddress + 0x9C + 0xB0 * portalIndex, 
+                new byte[] {b}, "LevelLockHandler: SetPortalStates() 2");
         }
+        
+        // SET BOSS TRIGGERS IN A SIMILAR FASHION
         for (var i = 0; i < BossLevelsWithTriggers.Length; i++)
-            Client.HSync.HTrigger.CheckSetTrigger(BossTriggerIndices[i], PortalStates[BossLevelsWithTriggers[i]] || _bossPortalsActive);
+            Client.HSync.HTrigger.CheckSetTrigger(BossTriggerIndices[i], 
+                PortalStates[BossLevelsWithTriggers[i]] || _bossPortalsActive);
     }
 
     public void CheckEntry()
@@ -105,10 +120,15 @@ public class LevelLockHandler
         SetPortalStatesInGame();
         foreach (var level in Portals)
         {
+            // IF LEVEL HAS ALREADY BEEN ENTERED, DO NOTHING
             if (OldLevelsEntredCount[level] > 0) continue;
             var address = SyncHandler.SaveDataBaseAddress + 0x70 * level;
-            ProcessHandler.TryRead(address, out byte count, false, "LevelLockHandler: CheckEntry()");
+            ProcessHandler.TryRead(address, 
+                out byte count, 
+                false, 
+                "LevelLockHandler: CheckEntry()");
             CurrentLevelsEntredCount[level] = count;
+            // IF NEW LEVEL HAS BEEN ENTERED, INFORM THE SERVER
             if(OldLevelsEntredCount[level] == 0 && CurrentLevelsEntredCount[level] > 0)
                 InformEntry(level);
             OldLevelsEntredCount[level] = CurrentLevelsEntredCount[level];
@@ -126,7 +146,6 @@ public class LevelLockHandler
     [MessageHandler((ushort)MessageID.LL_LevelEntered)]
     public static void ActiveLevelChanged(Message message)
     {
-        //Console.WriteLine("Active level changed in server");
         var level = message.GetInt();
         if (Client.HSync.HLevelLock.InvisPortals.Contains(level))
             Client.HSync.HLevelLock.InvisPortals.Remove(level);
@@ -136,7 +155,6 @@ public class LevelLockHandler
     [MessageHandler((ushort)MessageID.LL_LevelCompleted)]
     public static void OpenPortals(Message message)
     {
-        //Console.WriteLine("Level completed");
         SFXPlayer.PlaySound(SFX.LevelComplete);
         Client.HSync.HLevelLock.EnableAllCurrentPortals();
     }

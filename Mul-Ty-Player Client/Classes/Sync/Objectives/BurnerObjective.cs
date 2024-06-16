@@ -22,7 +22,10 @@ public class BurnerObjective : Objective
     protected override void IsInactive()
     {
         //MONITOR OBJ STATE
-        ProcessHandler.TryRead(ObjectAddress + 0x6C, out ushort objectiveState, false, "Burner: IsInactive()");
+        ProcessHandler.TryRead(ObjectAddress + 0x6C, 
+            out ushort objectiveState, 
+            false, 
+            "Burner: IsInactive()");
         if (objectiveState == 0)
             return;
         //WHEN ACTIVATED SET STATE TO ACTIVE
@@ -33,19 +36,28 @@ public class BurnerObjective : Objective
     protected override void IsActive()
     {
         //WHILE ACTIVE CHECK OBJ STATE
-        ProcessHandler.TryRead(ObjectAddress + 0x6C, out ushort objectiveState, false, "Burner: IsActive() 1");
+        ProcessHandler.TryRead(ObjectAddress + 0x6C, 
+            out ushort objectiveState, 
+            false, 
+            "Burner: IsActive() 1");
         if (objectiveState == 0)
             Activate();
         Client.HSync.HTrigger.CheckSetTrigger(15, false);
         //READ COUNT
-        ProcessHandler.TryRead(ObjectAddress + 0x70, out CurrentCount, false, "Burner: IsActive() 2");
+        ProcessHandler.TryRead(ObjectAddress + 0x70, 
+            out CurrentCount, 
+            false, 
+            "Burner: IsActive() 2");
         if (CurrentCount > OldCount)
         {
             OldCount = CurrentCount;
             for (var i = 0; i < Count; i++)
             {
                 //READ EACH BURNER STATE
-                ProcessHandler.TryRead(ObjectAddress + 0x90 + i * 0x70 + 0x6C, out CurrentData[i], false, "Burner: IsActive() 3");
+                ProcessHandler.TryRead(ObjectAddress + 0x90 + i * 0x70 + 0x6C, 
+                    out CurrentData[i], 
+                    false, 
+                    "Burner: IsActive() 3");
                 if (CurrentData[i] != ObjectActiveState || OldData[i] == ObjectActiveState) continue;
                 OldData[i] = CurrentData[i];
                 //SEND MESSAGE TO SERVER
@@ -78,11 +90,12 @@ public class BurnerObjective : Objective
         ProcessHandler.WriteData(ObjectAddress + 0x6E, new byte[] { 0x8 });
         for (var i = 0; i < Count; i++)
         {
-            ProcessHandler.WriteData(ObjectAddress + 0x90 + (0x70 * i) + 0x4C, new byte[] { 0x1 });
-            ProcessHandler.TryRead(ObjectAddress + 0x90 + (0x70 * i) + 0x6C, out ushort objectState, false,
+            var baseAddr = ObjectAddress + 0x90 + (0x70 * i);
+            ProcessHandler.WriteData(baseAddr + 0x4C, new byte[] { 0x1 });
+            ProcessHandler.TryRead(baseAddr + 0x6C, out ushort objectState, false,
                 "Burner: Activate() 1");
             if (objectState == 0)
-                ProcessHandler.WriteData(ObjectAddress + 0x90 + (0x70 * i) + 0x6C, new byte[] { 0x1 });
+                ProcessHandler.WriteData(baseAddr + 0x6C, new byte[] { 0x1 });
         }
     }
 

@@ -146,7 +146,7 @@ internal static class PlayerReplication
         ProcessHandler.WriteData(ktp.Yaw, BitConverter.GetBytes(transform.Rotation.Yaw));
         ProcessHandler.WriteData(ktp.Roll, BitConverter.GetBytes(transform.Rotation.Roll));
 
-        if (SettingsHandler.DoHideSeek || !SettingsHandler.Settings.ShowKoalaBeacons)
+        if ((SettingsHandler.DoHideSeek || !SettingsHandler.Settings.ShowKoalaBeacons) && !Client.HHideSeek.LinesVisible)
             return;
         ProcessHandler.WriteData(gtp.X, BitConverter.GetBytes(transform.Position.X));
         ProcessHandler.WriteData(gtp.Y, BitConverter.GetBytes(transform.Position.Y + 200));

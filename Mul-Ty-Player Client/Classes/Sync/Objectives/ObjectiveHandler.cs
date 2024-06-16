@@ -8,20 +8,15 @@ namespace MulTyPlayerClient.Objectives;
 
 public class ObjectiveHandler
 {
-    public Dictionary<string, Objective> Objectives;
-
-    public ObjectiveHandler()
+    public Dictionary<string, Objective> Objectives = new()
     {
-        Objectives = new Dictionary<string, Objective>
-        {
-            { "Seahorse", new SeahorseObjective(6, "Seahorse")},
-            { "Burner", new BurnerObjective(8, "Burner") },
-            { "SnowKoalaKid", new KoalaKidObjective(9, "SnowKoalaKid") },
-            { "StumpKoalaKid", new KoalaKidObjective(13, "StumpKoalaKid") },
-            { "CableCar", new CableCarObjective(13, "CableCar")},
-            { "Chest", new ChestObjective(14, "Chest")}
-        };
-    }
+        { "Seahorse", new SeahorseObjective(6, "Seahorse")},
+        { "Burner", new BurnerObjective(8, "Burner") },
+        { "SnowKoalaKid", new KoalaKidObjective(9, "SnowKoalaKid") },
+        { "StumpKoalaKid", new KoalaKidObjective(13, "StumpKoalaKid") },
+        { "CableCar", new CableCarObjective(13, "CableCar")},
+        { "Chest", new ChestObjective(14, "Chest")}
+    };
 
     public void SetMemAddrs()
     {
@@ -31,12 +26,13 @@ public class ObjectiveHandler
 
     public void SendIndexToServer(int index, string type)
     {
-        var message = Message.Create(MessageSendMode.Reliable, MessageID.ObjectiveObjectActivated);
+        var message = Message.Create(MessageSendMode.Reliable, 
+            MessageID.ObjectiveObjectActivated);
         message.AddString(type);
         message.AddInt(index);
         Client._client.Send(message);
     }
-
+    
     public void SendObjectiveStateToServer(ObjectiveState state, string type)
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.ObjectiveStateChanged);
@@ -50,7 +46,6 @@ public class ObjectiveHandler
     {
         var type = message.GetString();
         var index = message.GetInt();
-        //Console.WriteLine($"Activated {type} number {index}");
         Client.HObjective.Objectives[type].SetObjectActive(index);
     }
 
@@ -59,7 +54,6 @@ public class ObjectiveHandler
     {
         var type = message.GetString();
         var state = (ObjectiveState)message.GetByte();
-        //Console.WriteLine($"{type} state changed to {Enum.GetName(typeof(ObjectiveState), state)}");
         Client.HObjective.Objectives[type].SetState(state);
     }
     
@@ -88,7 +82,8 @@ public class ObjectiveHandler
     
     public void RunChecks()
     {
-        foreach (var objective in Objectives.Values.Where(objective => objective.Level == Client.HLevel.CurrentLevelId))
+        foreach (var objective in Objectives.Values.Where(objective => 
+                     objective.Level == Client.HLevel.CurrentLevelId))
             objective.RunCheck();
     }
 }

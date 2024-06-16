@@ -32,8 +32,10 @@ internal class LiveBilbySyncer : LiveDataSyncer
     [MessageHandler((ushort)MessageID.DespawnAllBilbies)]
     public static void DespawnBilbies(Message message)
     {
-        if (Client.HLevel.CurrentLevelId != message.GetInt() || Client.HGameState.IsOnMainMenuOrLoading) return;
-        (Client.HSync.SyncObjects["Bilby"].LiveSync as LiveBilbySyncer).CollectAll();
+        if (Client.HLevel.CurrentLevelId != message.GetInt() 
+            || Client.HGameState.IsOnMainMenuOrLoading) 
+            return;
+        ((LiveBilbySyncer)Client.HSync.SyncObjects["Bilby"].LiveSync).CollectAll();
     }
     
     public void CollectAll()

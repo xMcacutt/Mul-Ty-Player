@@ -20,14 +20,21 @@ public class TriggerHandler
     public void SetTriggerActivity(int index, bool value)
     {
         var addr = _triggerAddress + index * 0xB8 + 0x88;
-        ProcessHandler.WriteData(addr, Enumerable.Repeat(BitConverter.GetBytes(value)[0], 3).ToArray(), "TriggerHandler: SetTriggerActivity()");
-        ProcessHandler.WriteData(addr + 4, BitConverter.GetBytes(value), "TriggerHandler: SetTriggerActivity()");
+        ProcessHandler.WriteData(addr, 
+            Enumerable.Repeat(BitConverter.GetBytes(value)[0], 3).ToArray(), 
+            "TriggerHandler: SetTriggerActivity()");
+        ProcessHandler.WriteData(addr + 4, 
+            BitConverter.GetBytes(value), 
+            "TriggerHandler: SetTriggerActivity()");
     }
 
     public byte GetTriggerActivity(int index)
     {
         var addr = _triggerAddress + index * 0xB8 + 0x8C;
-        ProcessHandler.TryRead(addr, out byte result, false, "TriggerHandler: GetTriggerActivity()");
+        ProcessHandler.TryRead(addr, 
+            out byte result, 
+            false, 
+            "TriggerHandler: GetTriggerActivity()");
         return result;
     }
 

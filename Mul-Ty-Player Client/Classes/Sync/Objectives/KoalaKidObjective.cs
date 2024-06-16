@@ -20,18 +20,28 @@ public class KoalaKidObjective : Objective
 
     protected override void IsActive()
     {
-        ProcessHandler.TryRead(ObjectAddress + 0x6C, out ushort objectiveState, false, "KKO: IsActive() 1");
+        ProcessHandler.TryRead(ObjectAddress + 0x6C, 
+            out ushort objectiveState, 
+            false, 
+            "KKO: IsActive() 1");
         if (objectiveState == 0)
-            ProcessHandler.WriteData(ObjectAddress + 0x6C, BitConverter.GetBytes((ushort)1));
+            ProcessHandler.WriteData(ObjectAddress + 0x6C, 
+                BitConverter.GetBytes((ushort)1));
         //READ COUNT
-        ProcessHandler.TryRead(ObjectAddress + 0x70, out CurrentCount, false, "KKO: IsActive() 1");
+        ProcessHandler.TryRead(ObjectAddress + 0x70, 
+            out CurrentCount,
+            false, 
+            "KKO: IsActive() 1");
         if (CurrentCount > OldCount)
         {
             OldCount = CurrentCount;
             for (var i = 0; i < Count; i++)
             {
                 //READ EACH KOALA STATE
-                ProcessHandler.TryRead(ObjectAddress + 0x90 + (i * 2) * 0x518 + 0x98, out int result, false,
+                var addr = ObjectAddress + 0x90 + (i * 2) * 0x518 + 0x98;
+                ProcessHandler.TryRead(addr, 
+                    out int result, 
+                    false, 
                     "KKO: IsActive() 2");
                 if (result <= 2 || OldData[i] > 3)
                     continue;

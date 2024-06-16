@@ -25,21 +25,29 @@ internal class TESyncer : Syncer
     public override void HandleServerUpdate(int iLive, int iSave, int level, ushort originalSender)
     {
         if (!GlobalObjectData.ContainsKey(level)) return;
-        //Console.WriteLine("Sending " + Name + " LiveNumber: " + iLive + " SaveNumber: " + iSave + " For Level: " + level);
         GlobalObjectData[level][iLive] = (byte)CheckState;
         GlobalObjectSaveData[level][iSave] = (byte)CheckState;
         GlobalObjectCounts[level] = GlobalObjectData[level].Count(i => i == CheckState);
         SendUpdatedData(iLive, iSave, level, originalSender);
-        if (iSave == 1 && SettingsHandler.Settings.DoSyncBilbies)
+        switch (iSave)
         {
-            (Program.HSync.Syncers["Bilby"] as BilbySyncer).GlobalObjectData[level] = new byte[5];
-            var message = Message.Create(MessageSendMode.Reliable, MessageID.DespawnAllBilbies);
-            message.AddInt(level);
-            Server._Server.SendToAll(message);
+            // IF TE IS BILBY TE, SEND MESSAGE TO CLIENTS TO ALSO DESPAWN LAST BILBY
+            case 1 when SettingsHandler.Settings.DoSyncBilbies:
+            {
+                ((BilbySyncer)Program.HSync.Syncers["Bilby"]).GlobalObjectData[level] = new byte[5];
+                var bilbyMessage = Message.Create(MessageSendMode.Reliable, MessageID.DespawnAllBilbies);
+                bilbyMessage.AddInt(level);
+                Server._Server.SendToAll(bilbyMessage);
+                break;
+            }
+            // IF TE IS MAIN OBJECTIVE TE, SEND MESSAGE TO CLIENTS TO SPAWN STOPWATCH FOR TA
+            case 3:
+            {
+                var stopWatchMessage = Message.Create(MessageSendMode.Reliable, MessageID.StopWatch);
+                stopWatchMessage.AddInt(level);
+                Server._Server.SendToAll(stopWatchMessage);
+                break;
+            }
         }
-        if (iSave != 3) return;
-        var stopWatchActivateMessage = Message.Create(MessageSendMode.Reliable, MessageID.StopWatch);
-        stopWatchActivateMessage.AddInt(level);
-        Server._Server.SendToAll(stopWatchActivateMessage);
     }
 }

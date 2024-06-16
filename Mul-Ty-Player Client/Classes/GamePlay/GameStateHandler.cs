@@ -54,22 +54,26 @@ public class GameStateHandler
         self.Level = "M/L";
     }
     
+    // CALLED ON CONNECTING TO MTP
     public void ProtectLeaderboard()
     {
         var address = SyncHandler.SaveDataBaseAddress + 0xB07;
-        ProcessHandler.WriteData(address, new byte[] { 1 }, "Protecting leaderboard");
+        // WRITES 1 TO THE MSB OF THE TIME, SETTING IT VERY HIGH
+        ProcessHandler.WriteData(address, 
+            new byte[] { 1 }, 
+            "Protecting leaderboard");
     }
 
     public void ToggleCollectibleLines()
     {
-        ProcessHandler.TryRead(0x28AB68, out bool result, true, "ToggleInvincibility()");
+        ProcessHandler.TryRead(0x28AB68, out bool result, true, "ToggleCollectibleLines()");
         ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x28AB68), BitConverter.GetBytes(!result));
     }
 
     public void ToggleLevelSelect()
     {
         var addr = PointerCalculations.GetPointerAddress(0x286CB0, new[] { 0xCA4 });
-        ProcessHandler.TryRead(addr + 2, out bool result, false, "ToggleInvincibility()");
+        ProcessHandler.TryRead(addr + 2, out bool result, false, "ToggleLevelSelect()");
         var toggledByte = BitConverter.GetBytes(!result)[0];
         ProcessHandler.WriteData(addr, new byte[3] {toggledByte, 0, toggledByte});
     }
@@ -107,7 +111,8 @@ public class GameStateHandler
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x52F2B8, BitConverter.GetBytes(slot));
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27383C, BitConverter.GetBytes(0));
         // Write save pointer
-        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x52F2BC, BitConverter.GetBytes((int)TyProcess.BaseAddress + 0x273844));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x52F2BC, 
+            BitConverter.GetBytes((int)TyProcess.BaseAddress + 0x273844));
         // Save save pointer
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x52F2A4, BitConverter.GetBytes(2));
         // Switch to save created screen

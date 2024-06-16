@@ -128,6 +128,7 @@ internal class Client
         }
         if (SettingsHandler.DoLevelLock)
             HSync.HLevelLock.RequestData();
+        PerkHandler.DeactivateAllPerks();
     }
 
     private static void Disconnected(object sender, DisconnectedEventArgs e)

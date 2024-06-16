@@ -56,6 +56,17 @@ public class HeroHandler
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x2737CC, BitConverter.GetBytes(value));
     }
 
+    public void SetSwimSpeed(float speed = 20f)
+    {
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x1F982C, BitConverter.GetBytes(speed));
+    }
+    
+    public int GetHealth()
+    {
+        ProcessHandler.TryRead(0x2737CC, out int health, true, "GetHealth()");
+        return health;
+    }
+
     public void SetHeroState(int state)
     {
         if (Client.HLevel.CurrentLevelData.Id == Levels.OutbackSafari.Id)
@@ -109,6 +120,16 @@ public class HeroHandler
     public void SetRunSpeed(float speed = 10.0f)
     {
         ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288914), BitConverter.GetBytes(speed));
+    }
+
+    public void SetGravity(float gravity = 0.75f)
+    {
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288940), BitConverter.GetBytes(gravity));
+    }
+    
+    public void SetGlideSpeed(float speed = 7f)
+    {
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288940), BitConverter.GetBytes(speed));
     }
     
     public void ToggleInvincibility()

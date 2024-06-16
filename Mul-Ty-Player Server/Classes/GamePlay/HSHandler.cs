@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MulTyPlayer;
@@ -71,31 +72,34 @@ public class HSHandler
         Server._Server.Send(forward, clientId);
     }
     
-    public static void StartHideTimer()
+    public static void StartHideTimer(int hideTimeLength)
     {
-        var hideTimer = new Thread(RunTimer);
-        hideTimer.Start();
+        var hideTimer = new Thread(new ParameterizedThreadStart(RunTimer));
+        hideTimer.Start(hideTimeLength);
     }
 
     private static CancellationTokenSource abortTokenSource;
-    public static async void RunTimer()
+    private static async void RunTimer(object? parameter)
     {
+        if (parameter is not int hideTimeLength)
+            return;
+        
         abortTokenSource = new CancellationTokenSource();
         var abortToken = abortTokenSource.Token;
         
         var countdown = Task.Run(() =>
         {
             abortToken.ThrowIfCancellationRequested();
-            for (var i = 75; i > 0; i--)
+            for (var i = hideTimeLength; i > 0; i--)
             {
                 if (abortToken.IsCancellationRequested) abortToken.ThrowIfCancellationRequested();
-                if (i is 10 or 30 or 60)
+                if (i % 30 == 0 || i == 10)
                 {
                     var warning = Message.Create(MessageSendMode.Reliable, MessageID.HS_Warning);
                     warning.AddInt(i);
                     Server._Server.SendToAll(warning);
                 }
-                Task.Delay(1000).Wait();
+                Task.Delay(1000, abortToken).Wait(abortToken);
             }
         }, abortToken);
         try

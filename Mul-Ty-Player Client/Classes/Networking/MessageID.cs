@@ -32,7 +32,6 @@ public enum MessageID : ushort
     ObjectiveStateChanged,
     ReqObjectiveSync,
     AdvancedTeleport,
-    Voice,
     HS_ProxyRunHideSeek,
     HS_RoleChanged,
     HS_HideTimerStart,
@@ -45,5 +44,8 @@ public enum MessageID : ushort
     HS_Taunt,
     ForceLevelChange,
     CountdownFinishing,
-    ForceMainMenu
+    ForceMainMenu,
+    HS_SwapPlayers
 }
+
+

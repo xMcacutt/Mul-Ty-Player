@@ -64,8 +64,8 @@ internal class PortalHandler : SyncObjectHandler
             {
                 //ORDER OF PORTALS IS IRRITATING SO I JUST MADE A LIST OF THEM
                 var orderedIndex = Array.IndexOf(LivePortalOrder, FlakyPortals[i]);
-                ProcessHandler.TryRead(address + LiveSync.ObjectLength * orderedIndex, out byte portalLiveDataState,
-                    false, "PortalHandler::ReadObserver() 2");
+                ProcessHandler.TryRead(address + LiveSync.ObjectLength * orderedIndex, 
+                    out byte portalLiveDataState, false, "PortalHandler::ReadObserver() 2");
                 if (portalLiveDataState == 2)
                 {
                     PortalsActive[FlakyPortals[i]] = 1;
@@ -73,7 +73,6 @@ internal class PortalHandler : SyncObjectHandler
                 }
             }
         }
-
         return portals.Count(i => i == 1);
     }
 

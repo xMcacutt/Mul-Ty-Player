@@ -40,7 +40,9 @@ public abstract class Objective
             if (state == value) return;
             var oldState = state;
             state = value;
-            OnStateChanged?.Invoke(this, new ObjectiveStateChangedEventArgs(oldState, state));
+            OnStateChanged?.Invoke(this, 
+                new ObjectiveStateChangedEventArgs(oldState, 
+                     state));
         }
     }
     
@@ -102,7 +104,10 @@ public abstract class Objective
 
     private bool MemoryAddressValid()
     {
-        ProcessHandler.TryRead(ObjectAddress, out ushort result, false, "MemoryAddressValid()");
+        ProcessHandler.TryRead(ObjectAddress, 
+            out ushort result, 
+            false, 
+            "MemoryAddressValid()");
         return result == CheckValue;
     }
 
@@ -154,13 +159,11 @@ public abstract class Objective
 
     public void SendIndex(int index)
     {
-        //Console.WriteLine($"{Name} index number {index} activated.");
         Client.HObjective.SendIndexToServer(index, Name);
     }
 
     public void SendState()
     {
-        //Console.WriteLine($"{Name} state changed to {Enum.GetName(typeof(ObjectiveState), State)}");
         Client.HObjective.SendObjectiveStateToServer(State, Name);
     }
 }

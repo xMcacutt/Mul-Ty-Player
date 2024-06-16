@@ -45,11 +45,19 @@ internal static class SettingsHandler
             _doHideSeek = value;
             Client.HGlow.ReturnGlows();
             if (value)
+            {
+                Client.HHideSeek.CurrentPerk = PerkHandler.LevelPerks[Client.HLevel.CurrentLevelId];
                 Client.HHideSeek.StartTimerLoop();
+            }
+            else
+            { 
+                Client.HHideSeek.CurrentPerk.Deactivate();
+                Client.HHideSeek.CurrentPerk = new NoPerk();
+            }
         }
     }
 
-    public static float HSRange = 65f;
+    public static float HSRange = 70f;
 
     public static Dictionary<string, bool> SyncSettings;
     public static Settings Settings { get; private set; }
@@ -109,23 +117,16 @@ internal static class SettingsHandler
             DoRainbowScaleSyncing = b[7];
             SyncSettings["RainbowScale"] = DoRainbowScaleSyncing;
         }
-
         if (b.Length > 8)
         {
             DoFrameSyncing = b[8];
             SyncSettings["Frame"] = DoFrameSyncing;
             SyncSettings["InvisiCrate"] = DoFrameSyncing;
         }
-
         if (b.Length > 9)
-        {
             DoLevelLock = b[9];
-        }
-
         if (b.Length > 10)
-        {
             DoHideSeek = b[10];
-        }
 
         HSRange = message.GetFloat();
 
