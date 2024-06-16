@@ -88,7 +88,7 @@ public class HSHandler
         // SEEK TIME SEEKER
         if (Mode == HSMode.SeekTime && Role == HSRole.Seeker)
         {
-            Client.HHero.SetSwimSpeed(22f);
+            Client.HHero.SetSwimSpeed(21f);
             Client.HHero.SetRunSpeed(10.15f);
             RunRadiusCheck(HSRole.Seeker);
             CurrentPerk.ApplySeeker();

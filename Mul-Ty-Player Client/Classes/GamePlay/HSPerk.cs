@@ -46,7 +46,7 @@ public class OpalSlowPerk : HSPerk
     public override void ApplyHider()
     {
         var opalCount = CountOpals();
-        var divisor = Client.HLevel.CurrentLevelId == 0 ? 10f : 120f;
+        var divisor = Client.HLevel.CurrentLevelId == 0 ? 10f : 42.9f;
         var speed = 10f - opalCount / divisor;
         Client.HHero.SetRunSpeed(speed);
     }
@@ -54,7 +54,7 @@ public class OpalSlowPerk : HSPerk
     public override void ApplySeeker()
     {
         var opalCount = CountOpals();
-        var divisor = Client.HLevel.CurrentLevelId == 0 ? 10.4f : 125f;
+        var divisor = Client.HLevel.CurrentLevelId == 0 ? 10.4f : 50f;
         var speed = 10.15f - opalCount / divisor;
         Client.HHero.SetRunSpeed(speed);
     }
@@ -151,7 +151,7 @@ public class SeekerSwimSpeedPerk : HSPerk
 {
     public override void ApplySeeker()
     {
-        Client.HHero.SetSwimSpeed(25f);
+        Client.HHero.SetSwimSpeed(23f);
     }
     
     public override void Deactivate()
@@ -164,7 +164,7 @@ public class HiderSwimSpeedPerk : HSPerk
 {
     public override void ApplyHider()
     {
-        Client.HHero.SetSwimSpeed(25f);
+        Client.HHero.SetSwimSpeed(23f);
     }
 
     public override void Deactivate()
@@ -205,6 +205,10 @@ public class SeekerOneHitPerk : HSPerk
     {
         if (Client.HHero.GetHealth() > 1)
             Client.HHero.SetHealth(1);
+        if (Client.HHero.GetWaterHealth() > 1)
+            Client.HHero.SetWaterHealth(1);
+        if (Client.HHero.GetOutbackHealth() > 1)
+            Client.HHero.SetOutbackHealth(1);
     }
 
     public override void Deactivate()
@@ -219,6 +223,10 @@ public class HiderOneHitPerk : HSPerk
     {
         if (Client.HHero.GetHealth() > 1)
             Client.HHero.SetHealth(1);
+        if (Client.HHero.GetWaterHealth() > 1)
+            Client.HHero.SetWaterHealth(1);
+        if (Client.HHero.GetOutbackHealth() > 1)
+            Client.HHero.SetOutbackHealth(1);
     }
 
     public override void Deactivate()
@@ -231,13 +239,13 @@ public class SeekerOneRangPerk : HSPerk
 {
     public override void ApplySeeker()
     {
-        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0xAB6 });
+        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0, 0xAB6 });
         ProcessHandler.WriteData(rangAddress + 0xAB6, new byte[] { 0x0 }, "Remove Second Rang");
     }
 
     public override void Deactivate()
     {
-        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0xAB6 });
+        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0, 0xAB6 });
         ProcessHandler.WriteData(rangAddress, new byte[] { 0x1 }, "Remove Second Rang");
     }
 }
@@ -246,13 +254,13 @@ public class HiderOneRangPerk : HSPerk
 {
     public override void ApplyHider()
     {
-        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0xAB6 });
+        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0, 0xAB6 });
         ProcessHandler.WriteData(rangAddress + 0xAB6, new byte[] { 0x0 }, "Remove Second Rang");
     }
 
     public override void Deactivate()
     {
-        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0xAB6 });
+        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0, 0xAB6 });
         ProcessHandler.WriteData(rangAddress, new byte[] { 0x1 }, "Remove Second Rang");
     }
 }

@@ -51,19 +51,42 @@ public class HeroHandler
         return currentPositionRotation;
     }
 
+    public void SetSwimSpeed(float speed = 20f)
+    {
+        ProcessHandler.UnprotectMemory<float>((int)TyProcess.BaseAddress + 0x1F982C);
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x1F982C, BitConverter.GetBytes(speed));
+    }
+    
     public void SetHealth(int value)
     {
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x2737CC, BitConverter.GetBytes(value));
-    }
-
-    public void SetSwimSpeed(float speed = 20f)
-    {
-        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x1F982C, BitConverter.GetBytes(speed));
     }
     
     public int GetHealth()
     {
         ProcessHandler.TryRead(0x2737CC, out int health, true, "GetHealth()");
+        return health;
+    }
+    
+    public void SetWaterHealth(int value)
+    {
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x2737F0, BitConverter.GetBytes(value));
+    }
+    
+    public int GetWaterHealth()
+    {
+        ProcessHandler.TryRead(0x2737F0, out int health, true, "GetHealth()");
+        return health;
+    }
+    
+    public void SetOutbackHealth(int value)
+    {
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x273814, BitConverter.GetBytes(value));
+    }
+    
+    public int GetOutbackHealth()
+    {
+        ProcessHandler.TryRead(0x273814, out int health, true, "GetHealth()");
         return health;
     }
 

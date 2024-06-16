@@ -27,6 +27,19 @@ internal class ProcessHandler
         byte[] lpBuffer, int 
             dwSize,
         out IntPtr lpNumberOfBytesWritten);
+    
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool VirtualProtectEx(
+        IntPtr hProcess,
+        IntPtr lpAddress,
+        uint dwSize,
+        uint flNewProtect,
+        out uint lpflOldProtect);
+
+    public unsafe static bool UnprotectMemory<T>(int address)
+    {
+        return VirtualProtectEx(TyProcess.Handle, address, (uint)sizeof(T), 0x40, out _);
+    }
 
     //Do not check if the process is running (for now),
     //throwing this exception allows up to exit the client loop
