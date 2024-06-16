@@ -59,22 +59,24 @@ public class MtpCommandTaunt : Command
             LogError("You must wait till seek time to taunt.");
             return;
         }
-        if (self.Role == HSRole.Seeker)
-        {
-            LogError("Cannot taunt as seeker.");
-            return;
-        }
         
         // Check if enough time has passed since the last taunt
         if (TauntStopwatch.Elapsed >= tauntCooldown)
         {
+            if (self.Role == HSRole.Seeker)
+            {
+                Client.HHideSeek.CurrentPerk.ApplyAbility();
+                TauntStopwatch.Restart();
+                return;
+            }
             RunTaunt();
             TauntStopwatch.Restart(); // Restart the stopwatch after calling RunTaunt
         }
         else
         {
             var remainingTime = tauntCooldown - TauntStopwatch.Elapsed;
-            LogError($"You must wait {Math.Round(remainingTime.TotalSeconds)} seconds before taunting.");
+            var msg = self.Role == HSRole.Seeker ? "Using your ability." : "taunting."; 
+            LogError($"You must wait {Math.Round(remainingTime.TotalSeconds)} seconds before {msg}");
         }
     }
 

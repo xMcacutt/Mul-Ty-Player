@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using MulTyPlayer;
 using Riptide;
 
@@ -239,13 +241,13 @@ public class SeekerOneRangPerk : HSPerk
 {
     public override void ApplySeeker()
     {
-        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0, 0xAB6 });
+        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0 });
         ProcessHandler.WriteData(rangAddress + 0xAB6, new byte[] { 0x0 }, "Remove Second Rang");
     }
 
     public override void Deactivate()
     {
-        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0, 0xAB6 });
+        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0 });
         ProcessHandler.WriteData(rangAddress, new byte[] { 0x1 }, "Remove Second Rang");
     }
 }
@@ -254,13 +256,13 @@ public class HiderOneRangPerk : HSPerk
 {
     public override void ApplyHider()
     {
-        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0, 0xAB6 });
+        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0 });
         ProcessHandler.WriteData(rangAddress + 0xAB6, new byte[] { 0x0 }, "Remove Second Rang");
     }
 
     public override void Deactivate()
     {
-        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0, 0xAB6 });
+        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0 });
         ProcessHandler.WriteData(rangAddress, new byte[] { 0x1 }, "Remove Second Rang");
     }
 }
@@ -286,7 +288,15 @@ public class SeekersSeeLightsPerk : HSPerk
     {
         if (Client.HHideSeek.Role != HSRole.Seeker)
             return;
+        var thread = new Thread(ShowLines);
+        thread.Start();
+    }
+
+    private async void ShowLines()
+    {
         Client.HHideSeek.LinesVisible = true;
+        await Task.Delay(3000);
+        Client.HHideSeek.LinesVisible = false;
     }
 
     public override void Deactivate()

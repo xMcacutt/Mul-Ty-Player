@@ -2,13 +2,8 @@
 
 ## Most Recent
 
-#### 3.6.4
-- Resetsync hotkey added
-- Password no longer throws error on attempt to change
-- Rainbow Scales and Opals now auto sync on level reload if game was not saved before reload
-- Seahorse count is now updated on reload
-- Seahorses now despawn on talking to Aurora instead of on collection of last seahorse
-- Last bilby is now shown as collected for all players in game info
+#### 3.6.5
+- Added level perks to Hide & Seek
 
 ### Known Issues
 - Spectator mode is liable to crashing
@@ -133,6 +128,9 @@
 
 #### 3.6.4
 - Added resetsync hotkey
+
+#### 3.6.5
+- Added level perks to Hide & Seek
 
 ## Bug Fixes
 

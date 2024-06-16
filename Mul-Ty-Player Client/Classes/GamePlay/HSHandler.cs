@@ -53,7 +53,18 @@ public class HSHandler
         }
     }
 
-    public bool LinesVisible = false;
+    private bool _linesVisible;
+    public bool LinesVisible
+    {
+        get => _linesVisible;
+        set
+        {
+            _linesVisible = value;
+            if (!_linesVisible)
+                Client.HGlow.ReturnGlows();
+        }
+    }
+
     public HSPerk CurrentPerk = new NoPerk();
     
     public delegate void RoleChangedEventHandler(HSRole newRole);

@@ -148,6 +148,7 @@ internal static class PlayerReplication
 
         if ((SettingsHandler.DoHideSeek || !SettingsHandler.Settings.ShowKoalaBeacons) && !Client.HHideSeek.LinesVisible)
             return;
+        
         ProcessHandler.WriteData(gtp.X, BitConverter.GetBytes(transform.Position.X));
         ProcessHandler.WriteData(gtp.Y, BitConverter.GetBytes(transform.Position.Y + 200));
         ProcessHandler.WriteData(gtp.Z, BitConverter.GetBytes(transform.Position.Z));
