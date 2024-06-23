@@ -138,6 +138,12 @@
         <None Update="Hotkeys.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Update="GUI\Sounds\Freeze.wav">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="GUI\Sounds\Unfreeze.wav">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
         <Page Remove="GUI\App.xaml" />

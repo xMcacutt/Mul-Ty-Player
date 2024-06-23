@@ -103,11 +103,6 @@ internal class PlayerHandler
         SFXPlayer.PlaySound(SFX.PlayerDisconnect);
     }
     
-    public static bool HostExists()
-    {
-        return Players.Any(p => p.IsHost);
-    }
-    
     public void SetReady()
     {
         var player = Players.First(x => x.Id == Client._client.Id);

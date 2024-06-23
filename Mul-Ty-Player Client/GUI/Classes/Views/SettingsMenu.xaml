@@ -221,6 +221,75 @@
             </StackPanel>
             <Separator Style="{StaticResource SettingsSepStyle}"/>
             
+            
+            <!--Server Settings Item Stack Panel-->
+            <Button Click="ServerDropDownButton_OnClick" 
+                    Style="{StaticResource SettingsButtonStyle}" 
+                    HorizontalAlignment="Stretch" 
+                    HorizontalContentAlignment="Left"
+                    Visibility="{Binding IsHost, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="35"/>
+                    </Grid.ColumnDefinitions>
+                    <controls:Icon Grid.Column="0"
+                                   Size="25"
+                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" 
+                                   Code="{DynamicResource IcoHost}"/>
+                    <TextBlock Grid.Column="1" 
+                               Text="Server"
+                               Style="{StaticResource SettingsTextStyle}"
+                               FontSize="24"
+                               Margin="15 0"/>
+                    <controls:Icon Grid.Column="2" 
+                                   Foreground="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" 
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Size="20"
+                                   Code="{Binding ElementName=ServerStackPanel, Path=Visibility, Converter={StaticResource PopupVisibilityToArrowDirectionConverter}}"/>
+                </Grid>
+            </Button>
+            
+            <!--Server Settings Panel Stack Panel-->
+            <StackPanel x:Name="ServerStackPanel"
+                        Height="Auto"
+                        Visibility="Collapsed">
+                <Label Style="{StaticResource SettingsLabelStyle}"
+                       Content="Sync Settings"/>
+                <CheckBox IsChecked="{Binding DoSyncTEs}"
+                          Style="{StaticResource SettingsCheckBoxStyle}"
+                          Content="Thunder Eggs"/>
+                <CheckBox IsChecked="{Binding DoSyncCogs}"
+                          Style="{StaticResource SettingsCheckBoxStyle}"
+                          Content="Golden Cogs"/>
+                <CheckBox IsChecked="{Binding DoSyncBilbies}"
+                          Style="{StaticResource SettingsCheckBoxStyle}"
+                          Content="Bilbies"/>
+                <CheckBox IsChecked="{Binding DoSyncOpals}"
+                          Style="{StaticResource SettingsCheckBoxStyle}"
+                          Content="Opals"/>
+                <CheckBox IsChecked="{Binding DoSyncRangs}"
+                          Style="{StaticResource SettingsCheckBoxStyle}"
+                          Content="Rangs &amp; Attributes"/>
+                <CheckBox IsChecked="{Binding DoSyncRainbowCliffs}"
+                          Style="{StaticResource SettingsCheckBoxStyle}"
+                          Content="Rainbow Cliffs Data"/>
+                <CheckBox IsChecked="{Binding DoSyncPortals}"
+                          Style="{StaticResource SettingsCheckBoxStyle}"
+                          Content="Portals"/>
+                <CheckBox IsChecked="{Binding DoSyncScales}"
+                          Style="{StaticResource SettingsCheckBoxStyle}"
+                          Content="Rainbow Scales"/>
+                <CheckBox IsChecked="{Binding DoSyncFrames}"
+                          Style="{StaticResource SettingsCheckBoxStyle}"
+                          Content="Picture Frames"/>
+            </StackPanel>
+            
+            <Separator Style="{StaticResource SettingsSepStyle}"
+                       Visibility="{Binding IsHost, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"/>
+            
             <!--Dev Settings Item Stack Panel-->
             <Button Click="DevDropDownButton_OnClick" Style="{StaticResource SettingsButtonStyle}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                 <Grid>

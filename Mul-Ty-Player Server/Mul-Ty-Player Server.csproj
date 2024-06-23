@@ -57,6 +57,9 @@
         <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0"/>
     </ItemGroup>
     <ItemGroup>
+      <Compile Include="..\Mul-Ty-Player Client\Classes\GamePlay\GameMode.cs">
+        <Link>GameMode.cs</Link>
+      </Compile>
       <Compile Include="..\Mul-Ty-Player Client\Classes\Networking\MessageID.cs">
         <Link>Classes\Networking\MessageID.cs</Link>
       </Compile>

@@ -2,8 +2,13 @@
 
 ## Most Recent
 
-#### 3.6.5
-- Added level perks to Hide & Seek
+#### 4.0.0
+- Added chaos mode, a randomizer for the cogs and bilbies.
+- Expanded game mode system and menu in lobby.
+- Server-side sync settings can now be changed from client-side settings menu.
+- (HS) Added hider freeze perk to Walk in the Park
+- Fixed server being marked with v instead of s in mismatched versions warning.
+- Reduced number of dedicated servers.
 
 ### Known Issues
 - Spectator mode is liable to crashing
@@ -131,6 +136,16 @@
 
 #### 3.6.5
 - Added level perks to Hide & Seek
+
+#### 4.0.0
+- Added chaos mode, a randomizer for the cogs and bilbies.
+- Expanded game mode system and menu in lobby.
+- Server-side sync settings can now be changed from client-side settings menu.
+- (HS) Added hider freeze perk to Walk in the Park
+
+
+
+
 
 ## Bug Fixes
 
@@ -312,3 +327,7 @@
 - Seahorse count is now updated on reload
 - Seahorses now despawn on talking to Aurora instead of on collection of last seahorse
 - Last bilby is now shown as collected for all players in game info
+
+#### 4.0.0
+- Fixed server being marked with v instead of s in mismatched versions warning.
+- Reduced number of dedicated servers.

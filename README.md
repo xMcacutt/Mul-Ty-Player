@@ -11,10 +11,6 @@ Mul-Ty-Player breathes new life into Ty the Tasmanian Tiger, allowing you to pla
 In just a few minutes, you can be exploring snowy mountains, swimming through shark infested waters, and fighting off
 Boss Cass together as your favourite koalas.
 
-This application is not longer being actively worked on. Don't worry, that's a good thing! It means we're finally finished.
-Mul-Ty-Player will hopefully continue to thrive and bugs will be addressed and squashed where needed but
-no new features will be added from here. Keep an eye out for Mul-Ty2-Player.
-
 [Click here](Docs/Changelog.md) to see the full changelog.
 
 ## Getting Started

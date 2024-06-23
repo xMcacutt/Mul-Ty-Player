@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
+using MulTyPlayer;
 using MulTyPlayerClient.Classes;
 using MulTyPlayerClient.GUI.Models;
 using PropertyChanged;
@@ -22,7 +23,7 @@ public class LobbyViewModel : IViewModel
         Lobby.IsReadyChanged += Model_IsReadyChanged;
         Lobby.IsHostChanged += Model_IsHostChanged;
         Lobby.IsTimerVisibleChanged += Model_IsTimerVisibleChanged;
-        Lobby.IsHideSeekEnabledChanged += Model_IsHideSeekEnabledChanged;
+        Lobby.GameModeChanged += Model_GameModeChanged;
         Lobby.IsLevelLockEnabledChanged += Model_IsLevelLockEnabledChanged;
         Lobby.CanLaunchGameChanged += Model_CanLaunchGameChanged;
         HSHandler.OnRoleChanged += Model_RoleChanged;
@@ -49,6 +50,9 @@ public class LobbyViewModel : IViewModel
     public bool IsHostMenuButtonEnabled { get; set; } = false;
     public bool IsTimerVisible { get; set; } = false;
     public object IsHideSeekButtonEnabled { get; set; }
+    public object IsChaosButtonEnabled { get; set; }
+    public object IsCollectionButtonEnabled { get; set; }
+    public object IsNoModeButtonEnabled { get; set; }
     public object IsLevelLockEnabled { get; set; }
     public string Time { get; set; } = "00:00:00";
     public HSRole Role { get; set; } = HSRole.Hider;
@@ -61,8 +65,6 @@ public class LobbyViewModel : IViewModel
         Time = "00:00:00";
         Role = Client.HHideSeek.Role;
         Input = "";
-        if (ModelController.Login.JoinAsSpectator)
-            IsHideSeekButtonEnabled = false;
     }
 
     public void OnExited()
@@ -108,12 +110,55 @@ public class LobbyViewModel : IViewModel
         IsHostMenuButtonEnabled = value;
     }
 
-    private void Model_IsHideSeekEnabledChanged(bool value)
+    private void Model_GameModeChanged(GameMode value)
     {
-        if (ModelController.Login.JoinAsSpectator)
-            IsHideSeekButtonEnabled = false;
-        IsHideSeekButtonEnabled = value;
-        if (!value) Lobby.IsTimerVisible = false;
+        switch (value)
+        {
+            case GameMode.HideSeek:
+                Model_HideSeekSelected();
+                break;
+            case GameMode.Normal:
+                Model_NoModeSelected();
+                break;
+            case GameMode.Chaos:
+                Model_ChaosSelected();
+                break;
+            case GameMode.Collection:
+                Model_CollectionSelected();
+                break;
+        }
+    }
+
+    private void Model_HideSeekSelected()
+    {
+        IsChaosButtonEnabled = false;
+        IsCollectionButtonEnabled = false;
+        IsNoModeButtonEnabled = false;
+        IsHideSeekButtonEnabled = !ModelController.Login.JoinAsSpectator;
+    }
+    
+    private void Model_ChaosSelected()
+    {
+        IsHideSeekButtonEnabled = false;
+        IsCollectionButtonEnabled = false;
+        IsNoModeButtonEnabled = false;
+        IsChaosButtonEnabled = !ModelController.Login.JoinAsSpectator;
+    }
+    
+    private void Model_CollectionSelected()
+    {
+        IsHideSeekButtonEnabled = false;
+        IsChaosButtonEnabled = false;
+        IsNoModeButtonEnabled = false;
+        IsCollectionButtonEnabled = !ModelController.Login.JoinAsSpectator;
+    }
+    
+    private void Model_NoModeSelected()
+    {
+        IsHideSeekButtonEnabled = false;
+        IsChaosButtonEnabled = false;
+        IsCollectionButtonEnabled = false;
+        IsNoModeButtonEnabled = !ModelController.Login.JoinAsSpectator;
     }
     
     private void Model_IsLevelLockEnabledChanged(bool value)

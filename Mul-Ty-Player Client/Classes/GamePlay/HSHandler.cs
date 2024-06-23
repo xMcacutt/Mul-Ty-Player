@@ -76,6 +76,20 @@ public class HSHandler
         Role = ModelController.Login.JoinAsSpectator ? HSRole.Spectator : HSRole.Hider;
         Mode = HSMode.Neutral;
     }
+
+    public static void Activate()
+    {
+        Client.HGlow.ReturnGlows();
+        Client.HHideSeek.CurrentPerk = PerkHandler.LevelPerks[Client.HLevel.CurrentLevelId];
+        Client.HHideSeek.StartTimerLoop();
+    }
+
+    public static void Deactivate()
+    {
+        Client.HGlow.ReturnGlows();
+        Client.HHideSeek.CurrentPerk.Deactivate();
+        Client.HHideSeek.CurrentPerk = new NoPerk();
+    }
     
     public void Run()
     {
@@ -200,9 +214,9 @@ public class HSHandler
     [MessageHandler((ushort)MessageID.HS_ProxyRunHideSeek)]
     private static void SetHideSeek(Message message)
     {
-        SettingsHandler.DoHideSeek = message.GetBool();
-        var result = SettingsHandler.DoHideSeek ? "Hide & Seek has been activated" : "Hide & Seek has been disabled";
-        Logger.Write(result);
+        //SettingsHandler.= message.GetBool();
+        //var result = SettingsHandler.DoHideSeek ? "Hide & Seek has been activated" : "Hide & Seek has been disabled";
+        //Logger.Write(result);
         Client.HHero.SetSwimSpeed();
         Client.HHero.SetRunSpeed();
     }
@@ -291,7 +305,7 @@ public class HSHandler
     private void UpdateTime(CancellationTokenSource cts)
     {
         //REPLACE WITH TOKEN
-        while (!cts.IsCancellationRequested && SettingsHandler.DoHideSeek)
+        while (!cts.IsCancellationRequested && SettingsHandler.GameMode == GameMode.HideSeek)
         {
             if (!_timerRunning) 
                 continue;

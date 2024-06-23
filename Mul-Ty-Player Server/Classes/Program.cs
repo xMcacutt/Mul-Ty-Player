@@ -11,6 +11,7 @@ internal class Program
     public static CommandHandler HCommand;
     public static PlayerHandler HPlayer;
     public static ObjectiveHandler HObjective;
+    public static ChaosHandler HChaos;
     public static string _inputStr;
 
     private static void Main()
@@ -38,6 +39,7 @@ internal class Program
         HCommand = new CommandHandler();
         HPlayer = new PlayerHandler();
         HObjective = new ObjectiveHandler();
+        HChaos = new ChaosHandler();
         Console.WriteLine(
             "Welcome to Mul-Ty-Player.\nThis is the server application. \nPort forward to allow connections.\n");
 

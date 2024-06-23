@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using MulTyPlayer;
 using MulTyPlayerClient.GUI.Models;
 using MulTyPlayerClient.Objectives;
 
@@ -43,7 +44,7 @@ internal class LevelHandler
             HSync.SyncObjects["TE"].GlobalObjectData.ContainsKey(CurrentLevelId) &&
             (HSync.SyncObjects["TE"].SaveSync as SaveTESyncer)?.GlobalSaveData[CurrentLevelId][3] == 1)
             (HSync.SyncObjects["TE"] as TEHandler)?.ShowStopwatch();
-        if (SettingsHandler.DoHideSeek)
+        if (SettingsHandler.GameMode == GameMode.HideSeek)
         {
             Client.HHideSeek.CurrentPerk.Deactivate();
             Client.HHideSeek.CurrentPerk = PerkHandler.LevelPerks[CurrentLevelId];
@@ -57,6 +58,8 @@ internal class LevelHandler
         }
         if (CurrentLevelData.HasKoalas)
             FixKoalaObjectiveCount();
+        if (CurrentLevelData.IsMainStage && SettingsHandler.GameMode == GameMode.Chaos)
+            Client.HChaos.MoveCollectibles(CurrentLevelId);
         OnLevelChange?.Invoke(currentLevelId);
     }
 
@@ -91,10 +94,18 @@ internal class LevelHandler
 
     public void ChangeLevel(int level)
     {
-        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x264248, BitConverter.GetBytes(0.01f));
-        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x286C54, new byte[1]);
-        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x289028, BitConverter.GetBytes(level));
-        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x289050, new byte[] { 0x1 });
+        ProcessHandler.WriteData(
+            (int)TyProcess.BaseAddress + 0x264248, 
+            BitConverter.GetBytes(0.01f));
+        ProcessHandler.WriteData(
+            (int)TyProcess.BaseAddress + 0x286C54, 
+            new byte[1]);
+        ProcessHandler.WriteData(
+            (int)TyProcess.BaseAddress + 0x289028,
+            BitConverter.GetBytes(level));
+        ProcessHandler.WriteData(
+            (int)TyProcess.BaseAddress + 0x289050, 
+            new byte[] { 0x1 });
         Logger.Write($"Changed level to {Levels.GetLevelData(level).Name}.");
     }
 }

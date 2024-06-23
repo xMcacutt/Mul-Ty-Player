@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MulTyPlayer;
@@ -126,4 +127,15 @@ public enum HSRole
     Hider,
     Seeker,
     Spectator
+}
+
+public class PerkHandler
+{
+    [MessageHandler((ushort)MessageID.HS_Freeze)]
+    public static void ReceiveFreeze(ushort fromClientId, Message message)
+    {
+        var response = Message.Create(MessageSendMode.Reliable, MessageID.HS_Freeze);
+        foreach (var player in PlayerHandler.Players.Values.Where(x => x.Role == HSRole.Hider))
+            Server._Server.Send(response, player.ClientID);
+    }
 }

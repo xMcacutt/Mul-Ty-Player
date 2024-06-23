@@ -13,7 +13,8 @@ namespace MulTyPlayerClient.GUI.ViewModels;
 [AddINotifyPropertyChangedInterface]
 public class SettingsViewModel
 {
-    
+    public bool IsHost { get; set; }
+
     // CLIENT SETTINGS
     public string Theme { get; set; }
     
@@ -45,7 +46,17 @@ public class SettingsViewModel
     public bool AutoJoinVoice { get; set; }
     public int ProximityRange { get; set; }
 
-
+    // SERVER SETTINGS
+    public bool DoSyncTEs { get; set; }
+    public bool DoSyncBilbies { get; set; }
+    public bool DoSyncCogs { get; set; }
+    public bool DoSyncFrames { get; set; }
+    public bool DoSyncOpals { get; set; }
+    public bool DoSyncScales { get; set; }
+    public bool DoSyncRainbowCliffs { get; set; }
+    public bool DoSyncRangs { get; set; }
+    public bool DoSyncPortals { get; set; }
+    
     public void UpdateInputDevices()
     {
         InputDevices.Clear();
@@ -88,6 +99,16 @@ public class SettingsViewModel
 
         DoOutputLogs = SettingsHandler.Settings.CreateLogFile;
         DefaultPort = SettingsHandler.Settings.Port;
+
+        DoSyncBilbies = SettingsHandler.DoBilbySyncing;
+        DoSyncCogs = SettingsHandler.DoCogSyncing;
+        DoSyncFrames = SettingsHandler.DoFrameSyncing;
+        DoSyncOpals = SettingsHandler.DoOpalSyncing;
+        DoSyncPortals = SettingsHandler.DoPortalSyncing;
+        DoSyncRangs = SettingsHandler.DoRangSyncing;
+        DoSyncScales = SettingsHandler.DoRainbowScaleSyncing;
+        DoSyncTEs = SettingsHandler.DoTESyncing;
+        DoSyncRainbowCliffs = SettingsHandler.DoCliffsSyncing;
     }
 
     public void SavePropertiesBackToSettings()
@@ -112,6 +133,19 @@ public class SettingsViewModel
         SettingsHandler.Settings.CreateLogFile = DoOutputLogs;
         SettingsHandler.Settings.Port = DefaultPort;
         
+        if (IsHost)
+        {
+            SettingsHandler.DoBilbySyncing = DoSyncBilbies;
+            SettingsHandler.DoCogSyncing = DoSyncCogs;
+            SettingsHandler.DoFrameSyncing = DoSyncFrames;
+            SettingsHandler.DoOpalSyncing = DoSyncOpals;
+            SettingsHandler.DoPortalSyncing = DoSyncPortals;
+            SettingsHandler.DoRangSyncing = DoSyncRangs;
+            SettingsHandler.DoRainbowScaleSyncing = DoSyncScales;
+            SettingsHandler.DoTESyncing = DoSyncTEs;
+            SettingsHandler.DoCliffsSyncing = DoSyncRainbowCliffs;
+            SettingsHandler.UpdateSyncSettings();
+        }
         
         SettingsHandler.Save();
 
@@ -119,5 +153,15 @@ public class SettingsViewModel
         Client.HKoala.ScaleKoalas();
         Client.HKoala.SetCollision();
         Client.HGlow.ReturnGlows();
+    }
+    
+    public void UpdateHost()
+    {
+        if (!PlayerHandler.TryGetPlayer(Client._client.Id, out var player))
+        {
+            Logger.Write("[ERROR] Could not find self in player list.");
+            return;
+        }
+        IsHost = player.IsHost;
     }
 }

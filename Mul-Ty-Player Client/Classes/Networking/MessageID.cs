@@ -45,7 +45,10 @@ public enum MessageID : ushort
     ForceLevelChange,
     CountdownFinishing,
     ForceMainMenu,
-    HS_SwapPlayers
+    HS_SwapPlayers,
+    HS_Freeze,
+    GameMode,
+    CH_Shuffle
 }
 
 

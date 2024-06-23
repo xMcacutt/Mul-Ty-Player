@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Controls;
 using MulTyPlayerClient;
 using System.Windows.Input;
+using MulTyPlayer;
 
 namespace MulTyPlayerClient.GUI.Models;
 
@@ -143,25 +144,26 @@ public class LobbyModel
 
     #endregion
     
-    #region IsHideSeek
+    
+    #region GameMode
+    
+    public event Action<GameMode> GameModeChanged;
 
-    public event Action<bool> IsHideSeekEnabledChanged;
-
-    public bool IsHideSeekEnabled
+    public GameMode GameMode
     {
-        get => isHideSeekEnabled;
+        get => gameMode;
         set
         {
-            isHideSeekEnabled = !ModelController.Login.JoinAsSpectator && value;
-            IsHideSeekEnabledChanged(isHideSeekEnabled);
+            gameMode = value;
+            GameModeChanged(gameMode);
         }
     }
 
-    private bool isHideSeekEnabled;
+    private GameMode gameMode;
 
     #endregion
     
-    #region IsHideSeek
+    #region LevelLock
 
     public event Action<bool> IsLevelLockEnabledChanged;
 

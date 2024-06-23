@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Media;
+using Microsoft.Diagnostics.Tracing.Parsers.MicrosoftWindowsWPF;
 using MulTyPlayerClient.Classes.Networking;
 
 namespace MulTyPlayerClient;
@@ -25,7 +26,9 @@ public enum SFX
     Objective,
     Taunt,
     RangGet,
-    CheatActivated
+    CheatActivated,
+    Freeze,
+    Unfreeze
 }
 
 public static class SFXPlayer
@@ -50,7 +53,9 @@ public static class SFXPlayer
         { SFX.Objective, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Objective.wav")},
         { SFX.Taunt, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Taunt.wav")},
         { SFX.RangGet, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/RangGet.wav")},
-        { SFX.CheatActivated, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/CheatActivated.wav")}
+        { SFX.CheatActivated, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/CheatActivated.wav")},
+        { SFX.Freeze, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Freeze.wav")},
+        { SFX.Unfreeze, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Unfreeze.wav")}
     };
 
     private static Dictionary<SFX, MediaPlayer> mediaPlayers;

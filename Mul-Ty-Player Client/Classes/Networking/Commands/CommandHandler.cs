@@ -34,6 +34,7 @@ public class CommandHandler
         RegisterCommand(new MtpCommandCheat());
         RegisterCommand(new MtpCommandLevel());
         RegisterCommand(new MtpCommandFreeCam());
+        RegisterCommand(new MtpCommandGameMode());
     }
     
     public void ParseCommand(string input)

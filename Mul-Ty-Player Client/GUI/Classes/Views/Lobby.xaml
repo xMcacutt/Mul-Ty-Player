@@ -349,16 +349,32 @@
                             </Button.Resources>
                             <Button.ContextMenu>
                                 <ContextMenu>
-                                    <controls:CustomMenuItem Header="Level Lock Mode"
+                                    <controls:CustomMenuItem Header="Level Lock"
                                                              x:Name="LevelLockToggle"
                                                              Click="LevelLockToggle_Click"
                                                              IconCode="{DynamicResource IcoLock}"
                                                              IsChecked="{Binding PlacementTarget.Tag.IsLevelLockEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                                    <controls:CustomMenuItem Header="Hide &amp; Seek Mode"
-                                                             x:Name="HideSeekToggle"
-                                                             Click="HideSeekToggle_Click"
-                                                             IconCode="{DynamicResource IcoHider}"
-                                                             IsChecked="{Binding PlacementTarget.Tag.IsHideSeekButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                    <controls:CustomMenuItem Header="Game Mode"
+                                                             IconCode="{DynamicResource IcoGame}">
+                                        <controls:CustomMenuItem Header="No Mode"
+                                                                 Click="NoMode_Click"
+                                                                 IconCode="{DynamicResource IcoCancel}"
+                                                                 IsChecked="{Binding PlacementTarget.Tag.IsNoModeButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                        <controls:CustomMenuItem Header="Hide &amp; Seek Mode"
+                                                                 x:Name="HideSeekToggle"
+                                                                 Click="HideSeekMode_Click"
+                                                                 IconCode="{DynamicResource IcoHider}"
+                                                                 IsChecked="{Binding PlacementTarget.Tag.IsHideSeekButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                        <controls:CustomMenuItem Header="Chaos Mode"
+                                                                 Click="ChaosMode_Click"
+                                                                 IconCode="{DynamicResource IcoRandom}"
+                                                                 IsChecked="{Binding PlacementTarget.Tag.IsChaosButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                        <controls:CustomMenuItem Header="Collection Mode"
+                                                                 Click="CollectionMode_Click"
+                                                                 IsEnabled="False"
+                                                                 IconCode="{DynamicResource IcoCollect}"
+                                                                 IsChecked="{Binding PlacementTarget.Tag.IsCollectionButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                    </controls:CustomMenuItem>
                                     <controls:CustomMenuItem Header="Reset Sync"
                                                              Click="ResetSync_Click"
                                                              IconCode="{DynamicResource IcoUndo}"/>
@@ -404,7 +420,7 @@
                         <Button x:Name="HideSeekMenuButton"
                                 Margin="2 0"
                                 Click="HideSeekMenuButton_Click"
-                                IsEnabled="{Binding IsHideSeekButtonEnabled}"
+                                Visibility="{Binding IsHideSeekButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"
                                 ToolTip="Hide &amp; Seek Menu"
                                 Width="55"
                                 Tag="{Binding DataContext, ElementName=LobbyView}"

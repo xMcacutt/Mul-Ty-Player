@@ -24,6 +24,8 @@ internal class SyncHandler
 
     public static int SaveDataBaseAddress;
     public Dictionary<string, SyncObjectHandler> SyncObjects;
+    
+    
 
     public SyncHandler()
     {

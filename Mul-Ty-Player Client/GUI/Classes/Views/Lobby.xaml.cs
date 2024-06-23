@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using MulTyPlayer;
 using MulTyPlayerClient.GUI.Controls;
 using MulTyPlayerClient.GUI.Models;
@@ -48,6 +49,9 @@ public partial class Lobby : UserControl
     private void SettingsButton_Click(object sender, RoutedEventArgs e)
     {
         App.SettingsWindow = new SettingsMenu();
+        Application.Current.Dispatcher.BeginInvoke(
+            DispatcherPriority.Background,
+            new Action(ModelController.Settings.UpdateHost));
         ModelController.Settings.SetPropertiesFromSettings();
         App.SettingsWindow.ShowDialog();
     }
@@ -128,10 +132,24 @@ public partial class Lobby : UserControl
         Client.HCommand.Commands["levellock"].InitExecute(new string[] { value });
     }
     
-    private void HideSeekToggle_Click(object sender, RoutedEventArgs e)
+    private void NoMode_Click(object sender, RoutedEventArgs e)
     {
-        var value = SettingsHandler.DoHideSeek ? "False" : "True";
-        Client.HCommand.Commands["hideseek"].InitExecute(new string[] { value });
+        Client.HCommand.Commands["gamemode"].InitExecute(new [] { "Normal" });
+    }
+    
+    private void HideSeekMode_Click(object sender, RoutedEventArgs e)
+    {
+        Client.HCommand.Commands["gamemode"].InitExecute(new [] { "HideSeek" });
+    }
+    
+    private void ChaosMode_Click(object sender, RoutedEventArgs e)
+    {
+        Client.HCommand.Commands["gamemode"].InitExecute(new [] { "Chaos" });
+    }
+    
+    private void CollectionMode_Click(object sender, RoutedEventArgs e)
+    {
+        Client.HCommand.Commands["gamemode"].InitExecute(new [] { "Collection" });
     }
 
     private void ClearPassword_Click(object sender, RoutedEventArgs e)
@@ -160,7 +178,8 @@ public partial class Lobby : UserControl
     {
         LevelLockToggle.IsChecked = SettingsHandler.DoLevelLock;
     }
-
+    
+    #region Voice
     private void VoiceMenuButton_Click(object sender, RoutedEventArgs e)
     {
         // Open the context menu on left click
@@ -173,7 +192,7 @@ public partial class Lobby : UserControl
         MTPAudioToggle.IsChecked = !MTPAudioToggle.IsChecked;
         if (MTPAudioToggle.IsChecked)
         {
-           // VoiceHandler.JoinVoice();
+            // VoiceHandler.JoinVoice();
             return;
         } 
         //  VoiceHandler.LeaveVoice();
@@ -181,8 +200,10 @@ public partial class Lobby : UserControl
 
     private void Proximity_Click(object sender, RoutedEventArgs e)
     {
-       // VoiceHandler.DoProximityCheck = ProximityToggle.IsChecked;
+        // VoiceHandler.DoProximityCheck = ProximityToggle.IsChecked;
     }
+    #endregion
+    
 
     private void HideSeekMenuButton_Click(object sender, RoutedEventArgs e)
     {
@@ -207,5 +228,4 @@ public partial class Lobby : UserControl
     {
         Client.HHideSeek.Time = 0;
     }
-
 }

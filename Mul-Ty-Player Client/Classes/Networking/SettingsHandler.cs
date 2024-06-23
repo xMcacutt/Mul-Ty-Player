@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.Utility;
@@ -13,19 +14,7 @@ namespace MulTyPlayerClient;
 
 internal static class SettingsHandler
 {
-    //GLOBAL SETTINGS [RECEIVED FROM SERVER]
-    public static bool DoTESyncing;
-    public static bool DoCogSyncing;
-    public static bool DoBilbySyncing;
-    public static bool DoRangSyncing;
-    public static bool DoOpalSyncing;
-    public static bool DoPortalSyncing;
-    public static bool DoCliffsSyncing;
-    public static bool DoRainbowScaleSyncing;
-    public static bool DoFrameSyncing;
-
     private static bool _doLevelLock;
-
     public static bool DoLevelLock
     {
         get => _doLevelLock;
@@ -35,32 +24,92 @@ internal static class SettingsHandler
             _doLevelLock = value;
         }
     }
-    private static bool _doHideSeek;
-    public static bool DoHideSeek
+
+    private static GameMode _gameMode;
+    public static GameMode GameMode
     {
-        get => _doHideSeek;
+        get => _gameMode;
         set
         {
-            ModelController.Lobby.IsHideSeekEnabled = value;
-            _doHideSeek = value;
-            Client.HGlow.ReturnGlows();
-            if (value)
+            switch (_gameMode)
             {
-                Client.HHideSeek.CurrentPerk = PerkHandler.LevelPerks[Client.HLevel.CurrentLevelId];
-                Client.HHideSeek.StartTimerLoop();
-            }
-            else
-            { 
-                Client.HHideSeek.CurrentPerk.Deactivate();
-                Client.HHideSeek.CurrentPerk = new NoPerk();
-            }
-        }
+                case GameMode.HideSeek:
+                    HSHandler.Deactivate();
+                    break;
+                
+            };
+            ModelController.Lobby.GameMode = value;
+            _gameMode = value;
+            switch (value)
+            {
+                case GameMode.HideSeek:
+                    HSHandler.Activate();
+                    break;
+                
+            };
+        } 
     }
 
     public static float HSRange = 70f;
 
-    public static Dictionary<string, bool> SyncSettings;
+    public static Dictionary<string, bool> SyncSettings => _syncSettings;
+    public static Dictionary<string, bool> _syncSettings;
+    public static bool DoTESyncing
+    {
+        get => _syncSettings["TE"];
+        set => _syncSettings["TE"] = value;
+    }
+    public static bool DoCogSyncing
+    {
+        get => _syncSettings["Cog"];
+        set => _syncSettings["Cog"] = value;
+    }
+    public static bool DoBilbySyncing
+    {
+        get => _syncSettings["Bilby"];
+        set => _syncSettings["Bilby"] = value;
+    }
+    public static bool DoRangSyncing
+    {
+        get => _syncSettings["Crate"];
+        set => _syncSettings["Crate"] = value;
+    }
+    public static bool DoOpalSyncing
+    {
+        get => _syncSettings["Opal"];
+        set
+        {
+            _syncSettings["Opal"] = value;
+            _syncSettings["Crate"] = value;
+        }
+    }
+    public static bool DoPortalSyncing
+    {
+        get => _syncSettings["Portal"];
+        set => _syncSettings["Portal"] = value;
+    }
+    public static bool DoCliffsSyncing
+    {
+        get => _syncSettings["RC"];
+        set => _syncSettings["RC"] = value;
+    }
+    public static bool DoRainbowScaleSyncing
+    {
+        get => _syncSettings["RainbowScale"];
+        set => _syncSettings["RainbowScale"] = value;
+    }
+    public static bool DoFrameSyncing
+    {
+        get => _syncSettings["Frame"];
+        set
+        {
+            _syncSettings["Frame"] = value;
+            _syncSettings["InvisiCrate"] = value;
+        }
+    }
+    
     public static Settings Settings { get; private set; }
+    
 
     public static void Setup()
     {
@@ -71,11 +120,11 @@ internal static class SettingsHandler
         App.AppColors.SetColors(Settings.Theme);
         
         //SYNC SETTINGS
-        SyncSettings = new Dictionary<string, bool>
+        _syncSettings = new Dictionary<string, bool>
         {
             { "TE", false },
-            { "Opal", false },
             { "Cog", false },
+            { "Opal", false },
             { "Bilby", false },
             { "Crate", false },
             { "Portal", false },
@@ -92,43 +141,27 @@ internal static class SettingsHandler
         var json = JsonConvert.SerializeObject(Settings);
         File.WriteAllText("./ClientSettings.json", json);
     }
-
+    
     [MessageHandler((ushort)MessageID.SyncSettings)]
     private static void HandleSettingsUpdate(Message message)
     {
         var b = message.GetBools();
         DoTESyncing = b[0];
-        SyncSettings["TE"] = DoTESyncing;
         DoCogSyncing = b[1];
-        SyncSettings["Cog"] = DoCogSyncing;
         DoBilbySyncing = b[2];
-        SyncSettings["Bilby"] = DoBilbySyncing;
         DoRangSyncing = b[3];
-        SyncSettings["Attribute"] = DoRangSyncing;
         DoOpalSyncing = b[4];
-        SyncSettings["Opal"] = DoOpalSyncing;
-        SyncSettings["Crate"] = DoOpalSyncing;
         DoPortalSyncing = b[5];
-        SyncSettings["Portal"] = DoPortalSyncing;
         DoCliffsSyncing = b[6];
-        SyncSettings["RC"] = DoCliffsSyncing;
-        if (b.Length > 7)
-        {
-            DoRainbowScaleSyncing = b[7];
-            SyncSettings["RainbowScale"] = DoRainbowScaleSyncing;
-        }
-        if (b.Length > 8)
-        {
-            DoFrameSyncing = b[8];
-            SyncSettings["Frame"] = DoFrameSyncing;
-            SyncSettings["InvisiCrate"] = DoFrameSyncing;
-        }
-        if (b.Length > 9)
-            DoLevelLock = b[9];
-        if (b.Length > 10)
-            DoHideSeek = b[10];
+        DoRainbowScaleSyncing = b[7];
+        DoFrameSyncing = b[8];
+        DoLevelLock = b[9];
 
+        GameMode = (GameMode)message.GetInt();
+        
         HSRange = message.GetFloat();
+
+        Client.HChaos.ChaosSeed = message.GetInt();
 
         var serverVersion = message.GetString();
         var clientVersion = Settings.Version;
@@ -140,7 +173,7 @@ internal static class SettingsHandler
             case VersionResult.NeitherNewer:
                 break;
             case VersionResult.FirstNewer or VersionResult.SecondNewer:
-                Logger.Write($"[WARN] Client and server versions do not match. c{clientVersion} | v{serverVersion}");
+                Logger.Write($"[WARN] Client and server versions do not match. c{clientVersion} | s{serverVersion}");
                 break;
         }
     }
@@ -155,5 +188,38 @@ internal static class SettingsHandler
     {
         HSRange = message.GetFloat();
         Logger.Write($"Range changed to {HSRange}");
+    }
+
+    public static void UpdateSyncSettings()
+    {
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.SyncSettings);
+        var b = new bool[]
+        {
+            DoTESyncing,
+            DoCogSyncing,
+            DoBilbySyncing,
+            DoRangSyncing,
+            DoOpalSyncing,
+            DoPortalSyncing,
+            DoCliffsSyncing,
+            DoRainbowScaleSyncing,
+            DoFrameSyncing
+        };
+        message.AddBools(b);
+        Client._client.Send(message);
+    }
+
+    private static void SendGameMode()
+    {
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.GameMode);
+        message.AddInt((int)GameMode);
+        Client._client.Send(message);
+    }
+
+    [MessageHandler((ushort)MessageID.GameMode)]
+    public static void HandleGameModeReceived(Message message)
+    {
+        GameMode = (GameMode)message.GetInt();
+        Logger.Write($"Game mode changed to {Enum.GetName(typeof(GameMode), GameMode)}");
     }
 }

@@ -60,7 +60,7 @@ internal class PlayerHandler
         if (Players.Count(x => x.Value.IsReady) == Players.Count(x => x.Value.Koala.KoalaName != "SPECTATOR"))
         {
             foreach (var entry in Players) entry.Value.IsReady = false;
-            if (SettingsHandler.DoHideSeek)
+            if (SettingsHandler.GameMode == GameMode.HideSeek)
                 StartHideTimer(SettingsHandler.HideSeekTime);
             else
             {

@@ -36,6 +36,7 @@ internal class Client
     public static ObjectiveHandler HObjective;
     public static HSHandler HHideSeek;
     public static GlowHandler HGlow;
+    public static ChaosHandler HChaos;
 
     public static CancellationTokenSource cts;
     public static bool Relaunching => TyProcess.LaunchingGame;
@@ -83,6 +84,7 @@ internal class Client
         HObjective = new ObjectiveHandler();
         HHideSeek = new HSHandler();
         HGlow = new GlowHandler();
+        HChaos = new ChaosHandler();
     }
 
     private static void InitRiptide()
@@ -216,15 +218,14 @@ internal class Client
                         {
                             HGameState.CheckLoadChanged();
                             HLevel.GetCurrentLevel();
-                            if (!SettingsHandler.DoHideSeek)
+                            if (SettingsHandler.GameMode == GameMode.HideSeek)
+                                HHideSeek.Run();
+                            else
                             {
                                 HSync.CheckEnabledObservers();
                                 if (SettingsHandler.DoTESyncing)
                                     HObjective.RunChecks();
                             }
-                            else
-                                HHideSeek.Run();
-
                             HHero.GetTyPosRot();
                             HKoala.CheckTA();
                         }
@@ -243,7 +244,7 @@ internal class Client
                             HGameState.SetCameraState(28);
                             HGameState.CheckLoadChanged();
                             HLevel.GetCurrentLevel();
-                            if (!SettingsHandler.DoHideSeek)
+                            if (SettingsHandler.GameMode != GameMode.HideSeek)
                             {
                                 HSync.CheckEnabledObservers();
                                 if (SettingsHandler.DoTESyncing)

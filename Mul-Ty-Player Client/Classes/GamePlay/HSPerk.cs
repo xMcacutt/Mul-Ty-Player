@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
 using MulTyPlayer;
@@ -13,7 +14,7 @@ public class PerkHandler
     {
         {0, new OpalSpeedPerk()},
         {4, new HiderGravityPerk()},
-        {5, new SeekerGravityPerk()},
+        {5, new SeekersFreezeHidersPerk()},
         {6, new SeekerSwimSpeedPerk()},
         {8, new HiderOneHitPerk()},
         {9, new SeekerGlideSpeedPerk()},
@@ -302,5 +303,44 @@ public class SeekersSeeLightsPerk : HSPerk
     public override void Deactivate()
     {
         Client.HHideSeek.LinesVisible = false;
+    }
+}
+
+public class SeekersFreezeHidersPerk : HSPerk
+{
+    public override void ApplyAbility()
+    {
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Freeze);
+        Client._client.Send(message);
+    }
+    
+    private static async void Freeze()
+    {
+        if (Client.HHideSeek.Role != HSRole.Hider)
+            return;
+        SFXPlayer.PlaySound(SFX.Freeze);
+        ProcessHandler.WriteData(
+            (int)TyProcess.BaseAddress + 0x264248, 
+            BitConverter.GetBytes(1f));
+        await Task.Delay(3000);
+        ProcessHandler.WriteData(
+            (int)TyProcess.BaseAddress + 0x264248, 
+            BitConverter.GetBytes(0.01f));
+        SFXPlayer.PlaySound(SFX.Unfreeze);
+    }
+
+
+    [MessageHandler((ushort)MessageID.HS_Freeze)]
+    public static void ReceiveFreeze(Message message)
+    {
+        var thread = new Thread(Freeze);
+        thread.Start();
+    }
+    
+    public override void Deactivate()
+    {
+        ProcessHandler.WriteData(
+            (int)TyProcess.BaseAddress + 0x264248, 
+            BitConverter.GetBytes(0.01f));
     }
 }

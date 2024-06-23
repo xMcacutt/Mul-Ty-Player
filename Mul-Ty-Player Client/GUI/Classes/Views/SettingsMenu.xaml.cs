@@ -58,6 +58,7 @@ public partial class SettingsMenu : Window
         AnimateCloseDropdown(GameStackPanel);
         AnimateCloseDropdown(DevStackPanel);
         AnimateCloseDropdown(VoiceStackPanel);
+        AnimateCloseDropdown(ServerStackPanel);
         AnimateDropdown(ClientStackPanel);
     }
     
@@ -66,6 +67,7 @@ public partial class SettingsMenu : Window
         AnimateCloseDropdown(GameStackPanel);
         AnimateCloseDropdown(ClientStackPanel);
         AnimateCloseDropdown(VoiceStackPanel);
+        AnimateCloseDropdown(ServerStackPanel);
         AnimateDropdown(DevStackPanel);
     }
     
@@ -74,6 +76,7 @@ public partial class SettingsMenu : Window
         AnimateCloseDropdown(DevStackPanel);
         AnimateCloseDropdown(ClientStackPanel);
         AnimateCloseDropdown(VoiceStackPanel);
+        AnimateCloseDropdown(ServerStackPanel);
         AnimateDropdown(GameStackPanel);
     }
     
@@ -82,7 +85,17 @@ public partial class SettingsMenu : Window
         AnimateCloseDropdown(DevStackPanel);
         AnimateCloseDropdown(ClientStackPanel);
         AnimateCloseDropdown(GameStackPanel);
+        AnimateCloseDropdown(ServerStackPanel);
         AnimateDropdown(VoiceStackPanel);
+    }
+    
+    private void ServerDropDownButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        AnimateCloseDropdown(DevStackPanel);
+        AnimateCloseDropdown(ClientStackPanel);
+        AnimateCloseDropdown(GameStackPanel);
+        AnimateCloseDropdown(VoiceStackPanel);
+        AnimateDropdown(ServerStackPanel);
     }
 
     private void AnimateCloseDropdown(StackPanel dropDown)
@@ -154,4 +167,6 @@ public partial class SettingsMenu : Window
     {
         (DataContext as SettingsViewModel)?.UpdateInputDevices();
     }
+
+
 }

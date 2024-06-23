@@ -60,6 +60,9 @@ public class MtpCommandRequestHost : Command
             Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                 new Action(ModelController.Lobby.UpdateHost));
+            Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+                new Action(ModelController.Settings.UpdateHost));
             Logger.Write("You have been made host. You now have access to host only commands.");
             return;
         }
@@ -89,5 +92,8 @@ public class MtpCommandRequestHost : Command
         Application.Current.Dispatcher.BeginInvoke(
             DispatcherPriority.Background,
             new Action(ModelController.Lobby.UpdateHost));
+        Application.Current.Dispatcher.BeginInvoke(
+            DispatcherPriority.Background,
+            new Action(ModelController.Settings.UpdateHost));
     }
 }

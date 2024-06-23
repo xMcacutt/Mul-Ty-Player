@@ -39,7 +39,7 @@ public class MtpCommandTaunt : Command
             return;
         }
 
-        if (!SettingsHandler.DoHideSeek)
+        if (SettingsHandler.GameMode != GameMode.HideSeek)
         {
             LogError("Cannot taunt outside of Hide & Seek mode.");
             return;

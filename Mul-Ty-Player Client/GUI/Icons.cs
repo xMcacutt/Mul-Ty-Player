@@ -47,5 +47,7 @@ public class Icons : ResourceDictionary
         this["IcoResetTimer"] = "\uf1da";
         this["IcoLock"] = "\uf023";
         this["IcoCancel"] = "\uf05e";
+        this["IcoCollect"] = "\uf81d";
+        this["IcoRandom"] = "\uf074";
     }
 }
