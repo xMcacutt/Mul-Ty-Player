@@ -301,22 +301,6 @@
                             </Button.Resources>
                         </Button>
 
-                        <Button x:Name="LaunchGameButton"
-                                Margin="2 0"
-                                Visibility="Collapsed"
-                                Click="LaunchGameButton_Click"
-                                ToolTip="Launch Game"
-                                Width="55"
-                                IsEnabled="{Binding IsLaunchGameButtonEnabled}"
-                                Style="{StaticResource LobbyButton}">
-                            <controls:Icon Margin="5,0" Code="{DynamicResource IcoGame}" Size="24" />
-                            <Button.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="5" />
-                                </Style>
-                            </Button.Resources>
-                        </Button>
-
                         <Button x:Name="RequestSyncButton"
                                 Margin="2 0"
                                 Click="RequestSyncButton_Click"
@@ -334,7 +318,7 @@
                         
                         <Button x:Name="HostMenuButton"
                                 Margin="2 0"
-                                Click="HostMenuButton_Click"
+                                Click="MenuButton_Click"
                                 ContextMenuOpening="HostMenuButton_OnContextMenuOpening"
                                 ToolTip="Host Menu"
                                 Tag="{Binding DataContext, ElementName=LobbyView}"
@@ -390,7 +374,7 @@
                         
                          <Button x:Name="VoiceMenuButton"
                                 Margin="2 0"
-                                Click="VoiceMenuButton_Click"
+                                Click="MenuButton_Click"
                                 ToolTip="Voice Menu"
                                 Width="55"
                                 Visibility="Collapsed"
@@ -419,7 +403,7 @@
                         
                         <Button x:Name="HideSeekMenuButton"
                                 Margin="2 0"
-                                Click="HideSeekMenuButton_Click"
+                                Click="MenuButton_Click"
                                 Visibility="{Binding IsHideSeekButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"
                                 ToolTip="Hide &amp; Seek Menu"
                                 Width="55"
@@ -446,6 +430,39 @@
                                                              x:Name="ResetTimer"
                                                              Click="ResetTimer_OnClick"
                                                              IconCode="{DynamicResource IcoResetTimer}"/>
+                                </ContextMenu>
+                            </Button.ContextMenu>
+                        </Button>
+                        
+                         <Button x:Name="ChaosMenuButton"
+                                Margin="2 0"
+                                Click="MenuButton_Click"
+                                Visibility="{Binding IsChaosButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"
+                                ToolTip="Chaos Mode Menu"
+                                Width="55"
+                                Tag="{Binding DataContext, ElementName=LobbyView}"
+                                Style="{StaticResource LobbyButton}">
+                             <controls:Icon Margin="5,0" Code="{DynamicResource IcoRandom}" Size="24" />
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="5" />
+                                </Style>
+                            </Button.Resources>
+                            <Button.ContextMenu>
+                                <ContextMenu>
+                                    <controls:CustomMenuItem Header="Shuffle Seed"
+                                                             Click="ShuffleSeed_Click"
+                                                             IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                             IconCode="{DynamicResource IcoRandom}"/>
+                                    <controls:CustomMenuItem Header="Shuffle On Start"
+                                                             x:Name="ShuffleOnStart"
+                                                             IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                             IsChecked="{Binding PlacementTarget.Tag.ShuffleOnStart, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                             Click="ShuffleOnStartToggle_OnClick"
+                                                             IconCode="{DynamicResource IcoResetTimer}"/>
+                                    <controls:CustomMenuItem Header="Force Move Collectibles"
+                                                             Click="ForceMoveCollectibles_Click"
+                                                             IconCode="{DynamicResource IcoRefresh}"/>
                                 </ContextMenu>
                             </Button.ContextMenu>
                         </Button>

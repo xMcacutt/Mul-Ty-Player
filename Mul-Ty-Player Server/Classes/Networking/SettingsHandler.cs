@@ -94,6 +94,8 @@ internal class SettingsHandler
         message.AddFloat(HSRange);
 
         message.AddInt(Program.HChaos.ChaosSeed);
+
+        message.AddBool(Program.HChaos.ShuffleOnStart);
         
         message.AddString(Settings.Version);
         

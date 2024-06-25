@@ -28,13 +28,14 @@ public class LobbyViewModel : IViewModel
         Lobby.CanLaunchGameChanged += Model_CanLaunchGameChanged;
         HSHandler.OnRoleChanged += Model_RoleChanged;
         HSHandler.OnTimeChanged += Model_TimeChanged;
+        ChaosHandler.OnShuffleOnStartChanged += Model_ShuffleOnStartChanged;
         Countdown.OnCountdownBegan += OnCountdownBegan;
         Countdown.OnCountdownAborted += OnCountdownEnded;
         Countdown.OnCountdownFinished += OnCountdownEnded;
 
         Logger.OnLogWrite += ChatMessages.Add;
     }
-
+    
     public ObservableCollection<string> ChatMessages { get; set; }
 
     public ICommand ManageInputCommand { get; set; }
@@ -56,6 +57,7 @@ public class LobbyViewModel : IViewModel
     public object IsLevelLockEnabled { get; set; }
     public string Time { get; set; } = "00:00:00";
     public HSRole Role { get; set; } = HSRole.Hider;
+    public bool ShuffleOnStart { get; set; }
 
     private static LobbyModel Lobby => ModelController.Lobby;
 
@@ -98,6 +100,11 @@ public class LobbyViewModel : IViewModel
     private void Model_RoleChanged(HSRole newRole)
     {
         Role = newRole;
+    }
+    
+    private void Model_ShuffleOnStartChanged(bool shuffleOnStart)
+    {
+        ShuffleOnStart = shuffleOnStart;
     }
 
     private void Model_CanLaunchGameChanged(bool value)

@@ -68,11 +68,6 @@ public partial class Lobby : UserControl
         Client.HPlayer.SetReady();
     }
 
-    private void LaunchGameButton_Click(object sender, RoutedEventArgs e)
-    {
-        TyProcess.TryLaunchGame();
-    }
-
     private void RequestSyncButton_Click(object sender, RoutedEventArgs e)
     {
         Client.HSync.RequestSync();
@@ -116,14 +111,6 @@ public partial class Lobby : UserControl
     private void ForceMenu_OnClick(object sender, RoutedEventArgs e)
     {
         Client.HPlayer.ForceToMenu(clickedPlayer.Id);
-    }
-
-    private void HostMenuButton_Click(object sender, RoutedEventArgs e)
-    {
-        // Open the context menu on left click
-        if (sender is not FrameworkElement element) return;
-        element.ContextMenu.PlacementTarget = element;
-        element.ContextMenu.IsOpen = true;
     }
 
     private void LevelLockToggle_Click(object sender, RoutedEventArgs e)
@@ -180,12 +167,6 @@ public partial class Lobby : UserControl
     }
     
     #region Voice
-    private void VoiceMenuButton_Click(object sender, RoutedEventArgs e)
-    {
-        // Open the context menu on left click
-        if (sender is FrameworkElement element)
-            element.ContextMenu.IsOpen = true;
-    }
 
     private void MTPAudioToggle_Click(object sender, RoutedEventArgs e)
     {
@@ -205,7 +186,7 @@ public partial class Lobby : UserControl
     #endregion
     
 
-    private void HideSeekMenuButton_Click(object sender, RoutedEventArgs e)
+    private void MenuButton_Click(object sender, RoutedEventArgs e)
     {
         if (sender is not FrameworkElement element) return;
         element.ContextMenu.PlacementTarget = element;
@@ -227,5 +208,20 @@ public partial class Lobby : UserControl
     private void ResetTimer_OnClick(object sender, RoutedEventArgs e)
     {
         Client.HHideSeek.Time = 0;
+    }
+
+    private void ShuffleSeed_Click(object sender, RoutedEventArgs e)
+    {
+        ChaosHandler.RequestShuffle();
+    }
+
+    private void ShuffleOnStartToggle_OnClick(object sender, RoutedEventArgs e)
+    {
+        ChaosHandler.RequestShuffleOnStartToggle();
+    }
+
+    private void ForceMoveCollectibles_Click(object sender, RoutedEventArgs e)
+    {
+        Client.HChaos.MoveCollectibles(Client.HLevel.CurrentLevelId);
     }
 }

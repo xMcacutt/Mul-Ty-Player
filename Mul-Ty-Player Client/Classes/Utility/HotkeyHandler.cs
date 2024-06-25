@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Windows.Forms;
 using System.Windows.Input;
+using MulTyPlayer;
 using MulTyPlayerClient.GUI.Models;
 using Newtonsoft.Json;
 using NHotkey;
@@ -142,6 +143,8 @@ public class HotkeyHandler
                     SpectatorHandler.SpectateeKoalaId = null;
                 return;
             case "requestsync":
+                if (SettingsHandler.GameMode == GameMode.Chaos)
+                    Client.HChaos.MoveCollectibles(Client.HLevel.CurrentLevelId);
                 Client.HSync?.RequestSync();
                 return;
         }

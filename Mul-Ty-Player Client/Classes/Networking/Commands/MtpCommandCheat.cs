@@ -22,10 +22,10 @@ public class MtpCommandCheat : Command
     public MtpCommandCheat()
     {
         Name = "cheat";
-        Aliases = new List<string> { "ch" };
+        Aliases = new List<string> { "c" };
         HostOnly = false;
         SpectatorAllowed = true;
-        Usages = new List<string> { "/ch <cheatId>" };
+        Usages = new List<string> { "/cheat <cheatId>" };
         Description = "Toggles the specified cheat.";
         ArgDescriptions = new Dictionary<string, string>()
         {

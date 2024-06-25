@@ -163,6 +163,8 @@ internal static class SettingsHandler
 
         Client.HChaos.ChaosSeed = message.GetInt();
 
+        Client.HChaos.ShuffleOnStart = message.GetBool();
+
         var serverVersion = message.GetString();
         var clientVersion = Settings.Version;
         switch (VersionHandler.Compare(clientVersion, serverVersion))

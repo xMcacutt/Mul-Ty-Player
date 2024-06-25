@@ -160,7 +160,7 @@
                 <ControlTemplate TargetType="controls:CustomMenuItem">
                     <ControlTemplate.Resources>
                         <SolidColorBrush x:Key="MenuItem.Highlight.Background" Color="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" />
-                        <SolidColorBrush x:Key="Menu.Disabled.Foreground" Color="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
+                        <SolidColorBrush x:Key="Menu.Disabled.Foreground" Color="{Binding AltText, Source={x:Static client:App.AppColors}}" />
                     </ControlTemplate.Resources>
                     <Border x:Name="templateRoot" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid VerticalAlignment="Center" Height="25">
@@ -226,8 +226,10 @@
                             <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="{StaticResource Menu.Disabled.Foreground}"/>
-                            <Setter Property="TextElement.Foreground" TargetName="CheckIcon" Value="{StaticResource Menu.Disabled.Foreground}"/>
+                            <Setter Property="Foreground" TargetName="Icon" Value="{Binding AltText, Source={x:Static client:App.AppColors}}"/>
+                            <Setter Property="Foreground" TargetName="CheckIcon" Value="{Binding AltText, Source={x:Static client:App.AppColors}}"/>
+                            <Setter Property="Foreground" TargetName="Header" Value="{Binding AltText, Source={x:Static client:App.AppColors}}"/>
+                            <Setter Property="Foreground" TargetName="SubMenuIcon" Value="{Binding AltText, Source={x:Static client:App.AppColors}}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -48,7 +48,9 @@ public enum MessageID : ushort
     HS_SwapPlayers,
     HS_Freeze,
     GameMode,
-    CH_Shuffle
+    CH_Shuffle,
+    CH_SetSeed,
+    CH_ShuffleOnStartToggle
 }
 
 
