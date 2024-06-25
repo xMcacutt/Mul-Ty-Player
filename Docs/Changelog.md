@@ -2,6 +2,18 @@
 
 ## Most Recent
 
+#### 4.1.0
+- Fixed everything Chaos Mode
+- Cogs now moved to the correct positions
+- Bilbies are now rotated
+- All bilbies are now moved
+- Chaos mode menu added
+- Shuffle on start option added
+- Fixed seed option added
+- Cheat command alias changed to c from ch
+- Chaos mode command alias changed to ch from cm
+- Chaos seed is now displayed when changed
+
 #### 4.0.0
 - Added chaos mode, a randomizer for the cogs and bilbies.
 - Expanded game mode system and menu in lobby.
