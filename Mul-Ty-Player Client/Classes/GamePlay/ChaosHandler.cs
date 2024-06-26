@@ -179,7 +179,7 @@ public class ChaosHandler
                         new PositionData(-7587.725f, 117.107f, -1567.788f),
                         new PositionData(-7744.977f, 145.849f, -2102.101f),
                         new PositionData(3412.644f, -1375.523f, -5273.588f),
-                        new PositionData(4420.788f, -1722.424f, -6299.802f),
+                        new PositionData(5076.538f, -1631.1735f, -7353.204f),
                         new PositionData(7532.867f, -208.74f, 7239.067f),
                         new PositionData(6145.532f, -2573.032f, 1604.408f),
                         new PositionData(4993.38f, -2651.574f, 3759.845f),
@@ -934,7 +934,7 @@ public class ChaosHandler
                 BitConverter.GetBytes(transform.X)
                     .Concat(BitConverter.GetBytes(transform.Y))
                     .Concat(BitConverter.GetBytes(transform.Z)).ToArray();
-            Logger.Write($"Writing {transform.X}, {transform.Y}, {transform.Z} for bilby at index {CurrentPositionIndices[level][bilbyIndex + 10]}");
+            //Logger.Write($"Writing {transform.X}, {transform.Y}, {transform.Z} for bilby at index {CurrentPositionIndices[level][bilbyIndex + 10]}");
             ProcessHandler.WriteData(cagePosAddr, bytesToWrite);
             ProcessHandler.WriteData(bilbyPosAddr, bytesToWrite);
             ProcessHandler.WriteData(bilbyTEPosAddr, bytesToWrite);
