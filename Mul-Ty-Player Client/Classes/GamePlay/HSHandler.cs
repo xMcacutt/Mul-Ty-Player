@@ -43,7 +43,8 @@ public class HSHandler
                 _role = HSRole.Spectator;
                 return;
             }
-            if (_role == value) return;
+            if (_role == value) 
+                return;
             _role = value;
             if (value == HSRole.Seeker)
                 _timerRunning = false;
@@ -137,8 +138,11 @@ public class HSHandler
 
     private void RunRadiusCheck(HSRole role)
     {
-        foreach (var otherPlayer in PlayerHandler.Players.Where(x => x.Role != role))
+        foreach (var otherPlayer in PlayerHandler.Players.Where(x => x.Role != role && x.Role != HSRole.Spectator))
         {
+            Logger.Write(Enum.GetName(otherPlayer.Role));
+            if (otherPlayer.Koala == null)
+                return;
             if (!PlayerReplication.PlayerTransforms.TryGetValue((int)otherPlayer.Koala, out var otherPlayerTransform))
                 continue;
             if (otherPlayerTransform.LevelId != Client.HLevel.CurrentLevelId)

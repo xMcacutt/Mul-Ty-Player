@@ -53,15 +53,16 @@ internal class PlayerHandler
         message.AddUShort(Client._client.Id);
         message.AddBool(isHost);
         message.AddBool(isReady);
-        if (ModelController.Login.JoinAsSpectator)
-            role = HSRole.Spectator;
         message.AddInt((int)role);
-        Application.Current.Dispatcher.Invoke(() =>
+        if (koala is not null)
         {
-            if (Players.Any(x => x.Id == clientId))
-                Players.Remove(Players.First(x => x.Id == clientId));
-            Players.Add(new Player(koala, name, clientId, isHost, isReady, role)); 
-        });
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                if (Players.Any(x => x.Id == clientId))
+                    Players.Remove(Players.First(x => x.Id == clientId));
+                Players.Add(new Player(koala, name, clientId, isHost, isReady, role)); 
+            });
+        }
         Client._client.Send(message);
     }
 
@@ -73,7 +74,7 @@ internal class PlayerHandler
             return;
         }
 
-        if (player.Koala != null)
+        if (player.Koala is not null)
         {
             ModelController.KoalaSelect.SetAvailability((Koala)player.Koala, true);
             PlayerReplication.RemovePlayer((int)player.Koala);

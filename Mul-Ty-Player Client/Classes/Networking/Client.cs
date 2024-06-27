@@ -123,7 +123,7 @@ internal class Client
                 () =>
                 {
                     PlayerHandler.Players.Add(new Player(null, Client.Name, Client._client.Id, false, false, HSRole.Spectator));
-                    PlayerHandler.AnnounceSelection(null, Client.Name, false);
+                    PlayerHandler.AnnounceSelection(null, Client.Name, false, false, HSRole.Spectator);
                     SFXPlayer.PlaySound(SFX.PlayerConnect);
                     KoalaSelected = true;
                 });
