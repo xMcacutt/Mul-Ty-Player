@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using MulTyPlayer;
+using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI.Models;
 using MulTyPlayerClient.Objectives;
 
@@ -10,10 +11,17 @@ internal class LevelHandler
 {
     public LevelData CurrentLevelData;
     private int currentLevelId;
+    
+    public BloomSettings LevelBloomSettings;
 
     public Action<int> OnLevelChange = delegate { };
     private static KoalaHandler HKoala => Client.HKoala;
     private static SyncHandler HSync => Client.HSync;
+
+    public LevelHandler()
+    {
+        LevelBloomSettings = BloomSettings.Create();
+    }
 
     public int CurrentLevelId
     {
@@ -34,6 +42,7 @@ internal class LevelHandler
         if (Client.HGameState.IsOnMainMenuOrLoading)
             return;
         GetCurrentLevel();
+        LevelBloomSettings = BloomSettings.Create();
         HSync.SetCurrentData(CurrentLevelData.IsMainStage, CurrentLevelData.FrameCount != 0);
         HSync.SetMemAddrs();
         HSync.RequestSync();

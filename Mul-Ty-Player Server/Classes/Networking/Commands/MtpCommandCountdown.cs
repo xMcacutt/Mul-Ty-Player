@@ -42,6 +42,8 @@ public class MtpCommandCountdown : Command
     [MessageHandler((ushort)MessageID.Countdown)]
     private static void HandleProxyCountdown(ushort fromClientId, Message message)
     {
+        if (Program.HChaos.ShuffleOnStart && SettingsHandler.GameMode == GameMode.Chaos)
+            ChaosHandler.ForceShuffle();
         Program.HSync = new SyncHandler();
         Program.HObjective = new ObjectiveHandler();
         var param = message.GetString();

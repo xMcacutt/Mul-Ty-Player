@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Threading;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking;
@@ -107,7 +108,6 @@ public class HSHandler
         {
             if (!_timerRunning)
                 _timerRunning = true;
-            RunRadiusCheck(HSRole.Hider);
             CurrentPerk.ApplyHider();
         }
 
@@ -116,75 +116,35 @@ public class HSHandler
         {
             Client.HHero.SetSwimSpeed(21f);
             Client.HHero.SetRunSpeed(10.15f);
-            RunRadiusCheck(HSRole.Seeker);
             CurrentPerk.ApplySeeker();
         }
-        
-        if (PlayerHandler.Players.Any(x => x.Role == HSRole.Hider))
-            return;
-        Mode = HSMode.Neutral;
-        _timerRunning = false;
-        Client.HHero.SetSwimSpeed();
-        Client.HHero.SetRunSpeed();
     }
 
     private void LockPlayer()
     {
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EC00, BitConverter.GetBytes((float)0));
         _camLocked = true;
-        var pos = Client.HHero.GetCurrentPosRot();
+        var pos = MtpCommandTeleport.LevelStarts[Client.HLevel.CurrentLevelId];
         Client.HHero.WritePosition(pos[0], pos[1], pos[2], false);
-    }
-
-    private void RunRadiusCheck(HSRole role)
-    {
-        foreach (var otherPlayer in PlayerHandler.Players.Where(x => x.Role != role && x.Role != HSRole.Spectator))
-        {
-            Logger.Write(Enum.GetName(otherPlayer.Role));
-            if (otherPlayer.Koala == null)
-                return;
-            if (!PlayerReplication.PlayerTransforms.TryGetValue((int)otherPlayer.Koala, out var otherPlayerTransform))
-                continue;
-            if (otherPlayerTransform.LevelId != Client.HLevel.CurrentLevelId)
-                continue;
-            var otherPlayerPos = otherPlayerTransform.Position;
-            var currentPos = Client.HHero.GetCurrentPosRot();
-            var otherPlayerVector = new Vector3(otherPlayerPos.X, otherPlayerPos.Y, otherPlayerPos.Z);
-            var currentVector = new Vector3(currentPos[0], currentPos[1], currentPos[2]);
-            var distance = Vector3.Distance(otherPlayerVector, currentVector);
-            var radiusCheckDistance = Client.HLevel.CurrentLevelId == 10
-                ? SettingsHandler.HSRange * 1.25
-                : SettingsHandler.HSRange;
-            if (distance > radiusCheckDistance) continue;
-            Catch(otherPlayer.Id);
-        }
+        Client.HHero.SetRunSpeed(0);
+        Client.HLevel.LevelBloomSettings.State = true;
+        Client.HLevel.LevelBloomSettings.Value = 0;
     }
 
     [MessageHandler((ushort)MessageID.HS_Catch)]
-    private static void CatchConfirmation(Message message)
+    private static void Catch(Message message)
     {
-        if ((HSRole)message.GetInt() == HSRole.Seeker)
+        SFXPlayer.PlaySound(SFX.Punch);
+        if (Client.HHideSeek.Role == HSRole.Seeker)
         {
             Client.HHideSeek.Time += 15; //NEEDS TESTING
             SFXPlayer.StopAll();
-            SFXPlayer.PlaySound(SFX.Punch);
         }
         else
         {
-            if (Client.HHideSeek.Role == HSRole.Seeker)
-                return;
-            SFXPlayer.PlaySound(SFX.Punch);
-            Client.HCommand.Commands["tp"].InitExecute(new string[] {"@s"});
+            Client.HHero.KillPlayer();
             Client.HHideSeek.Role = HSRole.Seeker;
         }
-    }
-
-    private void Catch(ushort id)
-    {
-        if (Role == HSRole.Hider)
-            CaughtBySeeker(id);
-        else
-            CaughtHider(id);
     }
 
     private void AnnounceRoleChanged(HSRole newRole)
@@ -194,35 +154,14 @@ public class HSHandler
         Client._client.Send(message);
     }
     
-    private void CaughtHider(ushort hiderId)
-    {
-        ChangeRole(hiderId, HSRole.Seeker);   
-        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
-        message.AddUShort(hiderId);
-        message.AddInt((int)HSRole.Hider);
-        Client._client.Send(message);
-    }
-
-    private void CaughtBySeeker(ushort seekerId)
-    {
-        SFXPlayer.PlaySound(SFX.Punch);
-        Client.HHero.SetHeroState(29);
-        Role = HSRole.Seeker;
-        
-        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
-        message.AddUShort(seekerId);
-        message.AddInt((int)HSRole.Seeker);
-        Client._client.Send(message);
-    }
-    
     [MessageHandler((ushort)MessageID.HS_ProxyRunHideSeek)]
     private static void SetHideSeek(Message message)
     {
-        //SettingsHandler.= message.GetBool();
-        //var result = SettingsHandler.DoHideSeek ? "Hide & Seek has been activated" : "Hide & Seek has been disabled";
-        //Logger.Write(result);
         Client.HHero.SetSwimSpeed();
         Client.HHero.SetRunSpeed();
+        Client.HHero.SetGravity();
+        Client.HHero.SetGlideSpeed();
+        Client.HLevel.LevelBloomSettings.RevertToOriginal();
     }
 
     [MessageHandler((ushort)MessageID.HS_RoleChanged)]
@@ -242,15 +181,22 @@ public class HSHandler
     [MessageHandler((ushort)MessageID.HS_HideTimerStart)]
     private static void HideTimerStart(Message message)
     {
-        var hideTime = message.GetInt();
         Client.HGlow.ReturnGlows();
+        
         Client.HCommand.Commands["tp"].InitExecute(new string[] {"@s"});
+        
         Client.HHideSeek.Mode = HSMode.HideTime;
-        foreach (var entry in PlayerHandler.Players) entry.IsReady = false;
+        
+        foreach (var entry in PlayerHandler.Players) 
+            entry.IsReady = false;
         ModelController.Lobby.IsReady = false;
+        
         SFXPlayer.PlaySound(SFX.HS_HideStart);
+       
         if (Client.HHideSeek.Role == HSRole.Hider)
             ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EC00, BitConverter.GetBytes((float)750));
+        
+        var hideTime = message.GetInt();
         Logger.Write(Client.HHideSeek.Role == HSRole.Hider
             ? $"[HIDE AND SEEK] You have {hideTime} seconds to hide!"
             : $"[HIDE AND SEEK] {hideTime} seconds until seeking!");
@@ -271,10 +217,11 @@ public class HSHandler
     {
         Client.HHideSeek.Mode = HSMode.SeekTime;
         
-        (Client.HCommand.Commands["taunt"] as MtpCommandTaunt).TauntStopwatch.Restart();
+        (Client.HCommand.Commands["taunt"] as MtpCommandTaunt)?.TauntStopwatch.Restart();
         
         Client.HKoala.ScaleKoalas();
         Client.HGlow.ReturnGlows();
+        Client.HLevel.LevelBloomSettings.RevertToOriginal();
         
         SFXPlayer.PlaySound(SFX.HS_SeekStart);
         
@@ -288,6 +235,19 @@ public class HSHandler
             ? $"[HIDE AND SEEK] The seekers are coming!"
             : $"[HIDE AND SEEK] Go find them!");
     }
+    
+    [MessageHandler((ushort)MessageID.HS_EndSeek)]
+    private static void EndSeek(Message message)
+    {
+        Client.HHideSeek.Mode = HSMode.Neutral; 
+        Client.HHideSeek._timerRunning = false;
+        Client.HHero.SetSwimSpeed();
+        Client.HHero.SetRunSpeed();
+        Client.HHero.SetGravity();
+        Client.HHero.SetGlideSpeed();
+        Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        SFXPlayer.PlaySound(SFX.TAOpen);
+    }
 
     [MessageHandler((ushort)MessageID.HS_Abort)]
     private static void Abort(Message message)
@@ -297,6 +257,9 @@ public class HSHandler
         Client.HHideSeek._timerRunning = false;
         Client.HHero.SetSwimSpeed();
         Client.HHero.SetRunSpeed();
+        Client.HHero.SetGravity();
+        Client.HHero.SetGlideSpeed();
+        Client.HLevel.LevelBloomSettings.RevertToOriginal();
         SFXPlayer.PlaySound(SFX.TAOpen);
     }
 

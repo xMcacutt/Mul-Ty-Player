@@ -101,8 +101,10 @@ internal class SyncHandler
     [MessageHandler((ushort)MessageID.ReqCollectibleSync)]
     private static void HandleSyncReqResponse(Message message)
     {
-        if (Client.Relaunching) return;
+        if (Client.Relaunching) 
+            return;
         var type = message.GetString();
+        //Logger.Write(type);
         if (SettingsHandler.SyncSettings[type])
             Client.HSync.SyncObjects[type].Sync(
                 message.GetInt(), 

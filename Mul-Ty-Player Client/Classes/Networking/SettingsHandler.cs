@@ -49,9 +49,11 @@ internal static class SettingsHandler
             };
         } 
     }
-
+    
     public static float HSRange = 70f;
 
+    #region SYNC SETTINGS
+    
     public static Dictionary<string, bool> SyncSettings => _syncSettings;
     public static Dictionary<string, bool> _syncSettings;
     public static bool DoTESyncing
@@ -71,8 +73,8 @@ internal static class SettingsHandler
     }
     public static bool DoRangSyncing
     {
-        get => _syncSettings["Crate"];
-        set => _syncSettings["Crate"] = value;
+        get => _syncSettings["Attribute"];
+        set => _syncSettings["Attribute"] = value;
     }
     public static bool DoOpalSyncing
     {
@@ -107,6 +109,9 @@ internal static class SettingsHandler
             _syncSettings["InvisiCrate"] = value;
         }
     }
+    
+
+    #endregion
     
     public static Settings Settings { get; private set; }
     

@@ -50,6 +50,7 @@ internal abstract class SyncObjectHandler
         GlobalObjectData[level][iLive] = (byte)CheckState;
         SaveSync.Save(iSave, level);
         if (level != Client.HLevel.CurrentLevelId) return;
+        CurrentObjectData = LiveSync.ReadData();
         LiveSync.Collect(iLive);
     }
 

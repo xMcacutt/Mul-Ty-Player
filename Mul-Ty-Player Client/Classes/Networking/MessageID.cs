@@ -50,7 +50,8 @@ public enum MessageID : ushort
     GameMode,
     CH_Shuffle,
     CH_SetSeed,
-    CH_ShuffleOnStartToggle
+    CH_ShuffleOnStartToggle,
+    HS_EndSeek
 }
 
 

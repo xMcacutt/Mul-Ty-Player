@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using MulTyPlayer;
+using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI.Models;
 using Riptide;
 
@@ -142,3 +143,4 @@ public class GameStateHandler
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EBC8, BitConverter.GetBytes(state));
     }
 }
+

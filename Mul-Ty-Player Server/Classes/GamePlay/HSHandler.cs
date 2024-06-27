@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using MulTyPlayer;
@@ -29,23 +30,6 @@ public class HSHandler
         Server._Server.SendToAll(message, clientId);
     }
 
-    [MessageHandler((ushort)MessageID.HS_Catch)]
-    private static void HandleCatch(ushort fromClientId, Message message)
-    {
-        var otherPlayerId = message.GetUShort();
-        var otherPlayerRole = (HSRole)message.GetInt();
-        var response = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
-        response.AddInt((int)otherPlayerRole);
-        Server._Server.Send(response, otherPlayerId);
-
-        if (otherPlayerRole == HSRole.Seeker) 
-            return;
-
-        var seekerConfirmation = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
-        seekerConfirmation.AddInt((int)HSRole.Seeker);
-        Server._Server.Send(seekerConfirmation, fromClientId);
-    }
-
     [MessageHandler((ushort)MessageID.HS_Abort)]
     private static void AbortSession(ushort fromClientId, Message message)
     {
@@ -72,6 +56,26 @@ public class HSHandler
         forward.AddFloat(distance);
         Server._Server.Send(forward, clientId);
     }
+
+    private static void RunRadiusCheck()
+    {
+        foreach (var seeker in PlayerHandler.Players.Values.Where(x => x.Role == HSRole.Seeker))
+        {
+            foreach (var hider in PlayerHandler.Players.Values.Where(x => x.Role == HSRole.Hider))
+            {
+                var seekerVector = new Vector3(seeker.Coordinates[0], seeker.Coordinates[1], seeker.Coordinates[2]);
+                var hiderVector = new Vector3(hider.Coordinates[0], hider.Coordinates[1], hider.Coordinates[2]);
+                var radiusCheckDistance = seeker.CurrentLevel == 10
+                    ? SettingsHandler.HSRange * 1.25
+                    : SettingsHandler.HSRange;
+                if (Vector3.Distance(hiderVector, seekerVector) > radiusCheckDistance)
+                    continue;
+                var catchMessage = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
+                Server._Server.Send(catchMessage, seeker.ClientID);
+                Server._Server.Send(catchMessage, hider.ClientID);
+            }
+        }
+    }
     
     public static void StartHideTimer(int hideTimeLength)
     {
@@ -88,10 +92,10 @@ public class HSHandler
         abortTokenSource = new CancellationTokenSource();
         var abortToken = abortTokenSource.Token;
         
-        var countdown = Task.Run(() =>
+        var hideTime = Task.Run(() =>
         {
             abortToken.ThrowIfCancellationRequested();
-            for (var i = 5; i > 0; i--)
+            for (var i = hideTimeLength; i > 0; i--)
             {
                 if (abortToken.IsCancellationRequested) abortToken.ThrowIfCancellationRequested();
                 if (i % 30 == 0 || i == 10)
@@ -103,21 +107,28 @@ public class HSHandler
                 Task.Delay(1000, abortToken).Wait(abortToken);
             }
         }, abortToken);
+
+        var seekTime = Task.Run(() =>
+        {
+            while(PlayerHandler.Players.Values.Any(x => x.Role == HSRole.Hider))
+                RunRadiusCheck();
+        }, abortToken);
+            
         try
         {
-            await countdown;
-            var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_StartSeek);
-            Server._Server.SendToAll(message);
+            await hideTime;
+            var startMessage = Message.Create(MessageSendMode.Reliable, MessageID.HS_StartSeek);
+            Server._Server.SendToAll(startMessage);
+            
+            await seekTime;
+            var endMessage = Message.Create(MessageSendMode.Reliable, MessageID.HS_EndSeek);
+            Server._Server.SendToAll(endMessage);
         }
         catch (OperationCanceledException cancel)
         {
             Console.WriteLine("Hide & Seek session aborted.");
             var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Abort);
             Server._Server.SendToAll(message);
-        }
-        finally
-        {
-            abortTokenSource.Dispose();
         }
     }
 }

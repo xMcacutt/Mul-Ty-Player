@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -26,6 +27,27 @@ public class HeroHandler
 
     private float[] heldPosition = new [] { 0f, 0f, 0f };
 
+    private Dictionary<int, float> _deathPlaneHeight = new Dictionary<int, float>()
+    {
+        {0, -2500},
+        {4, -3000},
+        {5, -6000},
+        {6, -4000},
+        {7, -2000},
+        {8, -4000},
+        {9, -13500},
+        {12, -6500},
+        {13, -10000},
+        {14, -7000},
+        {15, -1500},
+        {17, -4500},
+        {19, -6000},
+        {20, -3500},
+        {21, -2000},
+        {22, -2000},
+        {23, -3000},
+    };
+
     public HeroHandler()
     {
         currentPositionRotation = new float[6];
@@ -44,6 +66,14 @@ public class HeroHandler
             ProcessHandler.TryRead(rotationAddress + sizeof(float) * i, out currentPositionRotation[i + 3], true,
                 "HeroHandler::GetTyPosRot() {rotation}");
         }
+        CheckDeathPlane();
+    }
+
+    private void CheckDeathPlane()
+    {
+        if (_deathPlaneHeight.ContainsKey(HLevel.CurrentLevelId))
+            if (currentPositionRotation[1] < _deathPlaneHeight[HLevel.CurrentLevelId])
+                KillPlayer();
     }
 
     public float[] GetCurrentPosRot()
@@ -192,5 +222,13 @@ public class HeroHandler
         //["Mul-Ty-Player.exe" + 0x289298] +0x5E8;
         var address = PointerCalculations.GetPointerAddress(0x289298, new[] { 0x5E8 });
         ProcessHandler.WriteData(address, BitConverter.GetBytes(address - 68 - (76 * index)));
+    }
+
+    public void KillPlayer()
+    {
+        if (HLevel.CurrentLevelId == 10)
+            SetHeroState(7);
+        else
+            SetHeroState(29);
     }
 }

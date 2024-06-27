@@ -32,9 +32,10 @@ internal class KoalaHandler
         var playerName = message.GetString();
         var clientId = message.GetUShort();
         var isHost = message.GetBool();
+        var isReady = message.GetBool();
         var role = (HSRole)message.GetInt();
         PlayerHandler.AddPlayer(koalaName, playerName, clientId, isHost, role);
-        AnnounceKoalaAssigned(koalaName, playerName, clientId, isHost, false, role, fromClientId, true);
+        AnnounceKoalaAssigned(koalaName, playerName, clientId, isHost, isReady, role, fromClientId, true);
     }
     
     private static void AnnounceKoalaAssigned(string koalaName, string playerName, ushort clientId, bool isHost,

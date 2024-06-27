@@ -40,9 +40,6 @@ internal class LiveOpalSyncer : LiveDataSyncer
 
     public override void Collect(int index)
     {
-        if (HOpal.CurrentObjectData[index] >= 3) 
-            return;
-        
         if (Client.HGameState.IsOnMainMenuOrLoading) 
             return;
         

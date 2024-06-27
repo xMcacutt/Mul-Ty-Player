@@ -16,11 +16,7 @@ internal class LiveRSSyncer : LiveDataSyncer
     private static LevelHandler HLevel => Client.HLevel;
 
     public override void Collect(int index)
-    {
-        //If gem has already been collected, return
-        if (HRainbowScale.CurrentObjectData[index] >= 3)
-            return;
-
+    { 
         //If in menu or loading, return
         if (Client.HGameState.IsOnMainMenuOrLoading)
             return;

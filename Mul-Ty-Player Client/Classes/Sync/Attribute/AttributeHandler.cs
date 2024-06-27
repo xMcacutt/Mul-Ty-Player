@@ -44,8 +44,8 @@ internal class AttributeHandler : SyncObjectHandler
     {
         var attributeAmount = 21;
 
-        SaveSync.Sync(0, saveData);
-
+        (SaveSync as SaveAttributeSyncer)?.Sync(0, saveData);
+        
         for (var i = 0; i < attributeAmount; i++)
             if (saveData[i] == 1)
                 GlobalObjectData[i] = 1;

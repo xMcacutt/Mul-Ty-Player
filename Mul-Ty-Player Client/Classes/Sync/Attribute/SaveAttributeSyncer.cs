@@ -14,7 +14,8 @@ internal class SaveAttributeSyncer : SaveDataSyncer
         var address = SyncHandler.SaveDataBaseAddress + 0xAA4 + iAttribute;
         var saved = ProcessHandler.WriteData(address, new byte[] { 1 },
             $"Setting attribute {Enum.GetValues(typeof(Attributes)).GetValue(iAttribute)} to true");
-        if (!saved) return;
+        if (!saved) 
+            return;
         SyncHandler.HAttribute.GlobalObjectData[iAttribute] = 1;
         SFXPlayer.PlaySound(SFX.RangGet);
     }

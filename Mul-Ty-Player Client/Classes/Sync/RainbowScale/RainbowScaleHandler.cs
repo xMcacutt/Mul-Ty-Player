@@ -28,15 +28,6 @@ internal class RSHandler : SyncObjectHandler
             { Levels.RainbowCliffs.Id, new byte[ObjectAmount] }
         };
     }
-    
-    public override void HandleClientUpdate(int iLive, int iSave, int level)
-    {
-        GlobalObjectData[level][iLive] = (byte)CheckState;
-        SaveSync.Save(iSave, level);
-        if (level != Client.HLevel.CurrentLevelId) return;
-        CurrentObjectData = LiveSync.ReadData();
-        LiveSync.Collect(iLive);
-    }
 
     public override void SetMemAddrs()
     {

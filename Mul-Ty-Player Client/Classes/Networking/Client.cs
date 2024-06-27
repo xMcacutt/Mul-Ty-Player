@@ -74,9 +74,9 @@ internal class Client
 
     private static void InitHandlers()
     {
+        HGameState = new GameStateHandler();
         HLevel = new LevelHandler();
         HSync = new SyncHandler();
-        HGameState = new GameStateHandler();
         HHero = new HeroHandler();
         HKoala = new KoalaHandler();
         HCommand = new CommandHandler();

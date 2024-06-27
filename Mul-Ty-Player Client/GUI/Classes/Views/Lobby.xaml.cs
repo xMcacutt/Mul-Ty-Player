@@ -224,4 +224,9 @@ public partial class Lobby : UserControl
     {
         Client.HChaos.MoveCollectibles(Client.HLevel.CurrentLevelId);
     }
+
+    private void AbortSession_OnClick(object sender, RoutedEventArgs e)
+    {
+        Client.HCommand.Commands["hs"].InitExecute(new []{"abort"});
+    }
 }

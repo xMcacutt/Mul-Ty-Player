@@ -65,8 +65,6 @@ internal class PlayerHandler
             else
             {
                 PeerMessageHandler.SendMessageToClients("All clients are ready, starting countdown", true);
-                if (Program.HChaos.ShuffleOnStart && SettingsHandler.GameMode == GameMode.Chaos)
-                    ChaosHandler.ForceShuffle();
                 StartCountdown();
             }
         }
@@ -82,6 +80,8 @@ internal class PlayerHandler
 
     private static void StartCountdown()
     {
+        if (Program.HChaos.ShuffleOnStart && SettingsHandler.GameMode == GameMode.Chaos)
+            ChaosHandler.ForceShuffle();
         Program.HSync = new SyncHandler();
         Program.HObjective = new ObjectiveHandler();
         var countdownStart = Message.Create(MessageSendMode.Reliable, MessageID.Countdown);

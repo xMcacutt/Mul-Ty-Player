@@ -430,6 +430,11 @@
                                                              x:Name="ResetTimer"
                                                              Click="ResetTimer_OnClick"
                                                              IconCode="{DynamicResource IcoResetTimer}"/>
+                                    <controls:CustomMenuItem Header="Abort Session"
+                                                             x:Name="AbortSession"
+                                                             Click="AbortSession_OnClick"
+                                                             IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                             IconCode="{DynamicResource IcoCancel}"/>
                                 </ContextMenu>
                             </Button.ContextMenu>
                         </Button>
