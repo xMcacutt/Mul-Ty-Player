@@ -70,8 +70,10 @@ public class HSHandler
                     : SettingsHandler.HSRange;
                 if (Vector3.Distance(hiderVector, seekerVector) > radiusCheckDistance)
                     continue;
+                hider.Role = HSRole.Seeker;
                 var catchMessage = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
                 Server._Server.Send(catchMessage, seeker.ClientID);
+                catchMessage = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
                 Server._Server.Send(catchMessage, hider.ClientID);
             }
         }
@@ -107,19 +109,26 @@ public class HSHandler
                 Task.Delay(1000, abortToken).Wait(abortToken);
             }
         }, abortToken);
-
-        var seekTime = Task.Run(() =>
-        {
-            while(PlayerHandler.Players.Values.Any(x => x.Role == HSRole.Hider))
-                RunRadiusCheck();
-        }, abortToken);
-            
         try
         {
             await hideTime;
             var startMessage = Message.Create(MessageSendMode.Reliable, MessageID.HS_StartSeek);
             Server._Server.SendToAll(startMessage);
-            
+        }
+        catch (OperationCanceledException cancel)
+        {
+            Console.WriteLine("Hide & Seek session aborted.");
+            var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Abort);
+            Server._Server.SendToAll(message);
+        }
+        
+        var seekTime = Task.Run(() =>
+        {
+            while(PlayerHandler.Players.Values.Any(x => x.Role == HSRole.Hider))
+                RunRadiusCheck();
+        }, abortToken);
+        try
+        {
             await seekTime;
             var endMessage = Message.Create(MessageSendMode.Reliable, MessageID.HS_EndSeek);
             Server._Server.SendToAll(endMessage);

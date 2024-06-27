@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using MulTyPlayer;
@@ -10,11 +11,11 @@ namespace MulTyPlayerServer;
 
 internal class PlayerHandler
 {
-    public static Dictionary<ushort, Player> Players = new();
+    public static ConcurrentDictionary<ushort, Player> Players = new();
 
     public PlayerHandler()
     {
-        Players = new Dictionary<ushort, Player>();
+        Players = new ConcurrentDictionary<ushort, Player>();
     }
 
     public static void AddPlayer(string koalaName, string name, ushort clientID, bool isHost, HSRole role)
@@ -25,7 +26,7 @@ internal class PlayerHandler
 
     public static void RemovePlayer(ushort id)
     {
-        Players.Remove(id);
+        Players.Remove(id, out _);
     }
 
     public static void AnnounceDisconnect(ushort id)

@@ -136,10 +136,7 @@ public class HSHandler
     {
         SFXPlayer.PlaySound(SFX.Punch);
         if (Client.HHideSeek.Role == HSRole.Seeker)
-        {
             Client.HHideSeek.Time += 15; //NEEDS TESTING
-            SFXPlayer.StopAll();
-        }
         else
         {
             Client.HHero.KillPlayer();
