@@ -27,6 +27,7 @@ public class SetupViewModel
     public string MTPPath { get; set; }
     public string Version { get; set; }
     public bool RemoveMagnetRandom { get; set; }
+    public bool RevertOutbackMovement { get; set; }
     
     public SetupViewModel()
     {
@@ -39,6 +40,7 @@ public class SetupViewModel
         ServerPath = s.ServerDir;
         MTPPath = s.GameDir;
         Version = s.Version;
+        RevertOutbackMovement = s.RevertOutbackMovement;
         RemoveMagnetRandom = s.FixedMagnets;
     }
 
@@ -51,6 +53,7 @@ public class SetupViewModel
         SettingsHandler.Settings.ClientDir = ClientPath;
         SettingsHandler.Settings.ServerDir = ServerPath;
         SettingsHandler.Settings.GameDir = MTPPath;
+        SettingsHandler.Settings.RevertOutbackMovement = RevertOutbackMovement;
         SettingsHandler.Settings.FixedMagnets = RemoveMagnetRandom;
         SettingsHandler.Settings.Version = Version;
         SettingsHandler.SaveSettings();

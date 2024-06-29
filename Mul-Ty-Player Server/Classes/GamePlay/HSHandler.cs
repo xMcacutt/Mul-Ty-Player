@@ -12,6 +12,8 @@ namespace MulTyPlayerServer;
 
 public class HSHandler
 {
+    public static HSMode Mode = HSMode.Neutral;
+    
     //HIDE & SEEK HANDLER
     [MessageHandler((ushort)MessageID.HS_RoleChanged)]
     private static void RoleChanged(ushort fromClientId, Message message)
@@ -33,6 +35,7 @@ public class HSHandler
     [MessageHandler((ushort)MessageID.HS_Abort)]
     private static void AbortSession(ushort fromClientId, Message message)
     {
+        Mode = HSMode.Neutral;
         try
         {
             abortTokenSource.Cancel();
@@ -93,7 +96,8 @@ public class HSHandler
         
         abortTokenSource = new CancellationTokenSource();
         var abortToken = abortTokenSource.Token;
-        
+
+        Mode = HSMode.HideTime;
         var hideTime = Task.Run(() =>
         {
             abortToken.ThrowIfCancellationRequested();
@@ -122,6 +126,7 @@ public class HSHandler
             Server._Server.SendToAll(message);
         }
         
+        Mode = HSMode.SeekTime;
         var seekTime = Task.Run(() =>
         {
             while(PlayerHandler.Players.Values.Any(x => x.Role == HSRole.Hider))
@@ -139,6 +144,7 @@ public class HSHandler
             var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Abort);
             Server._Server.SendToAll(message);
         }
+        Mode = HSMode.Neutral;
     }
 }
 
@@ -147,6 +153,13 @@ public enum HSRole
     Hider,
     Seeker,
     Spectator
+}
+
+public enum HSMode
+{
+    HideTime,
+    SeekTime,
+    Neutral,
 }
 
 public class PerkHandler

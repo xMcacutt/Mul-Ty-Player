@@ -33,6 +33,7 @@ public class Settings
     public string ClientDir { get; set; }
     public string ServerDir { get; set; }
     public string GameDir { get; set; }
+    public bool RevertOutbackMovement { get; set; }
     public bool FixedMagnets { get; set; }
     public string Version { get; set; }
 }

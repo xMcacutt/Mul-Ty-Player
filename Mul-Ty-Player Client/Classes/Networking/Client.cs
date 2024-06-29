@@ -205,6 +205,7 @@ internal class Client
 
     private static void ClientLoop(CancellationToken ct)
     {
+        SpectatorHandler.ToggleFreeCam(false, true);
         while (!ct.IsCancellationRequested)
         {
             if (TyProcess.FindProcess())

@@ -198,4 +198,22 @@ public class LobbyModel
     private bool isTimerVisible;
 
     #endregion
+    
+    #region IsRBEnabled
+
+    public event Action<bool> IsReadyButtonEnabledChanged;
+
+    public bool IsReadyButtonEnabled
+    {
+        get => isReadyButtonEnabled;
+        set
+        {
+            isReadyButtonEnabled = value;
+            IsReadyButtonEnabledChanged(isReadyButtonEnabled);
+        }
+    }
+
+    private bool isReadyButtonEnabled;
+
+    #endregion
 }

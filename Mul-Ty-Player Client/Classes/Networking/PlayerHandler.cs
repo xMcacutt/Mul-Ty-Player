@@ -107,6 +107,8 @@ internal class PlayerHandler
     public void SetReady()
     {
         var player = Players.First(x => x.Id == Client._client.Id);
+        if (ModelController.Login.JoinAsSpectator)
+            return;
         player.IsReady = !player.IsReady;
         var message = Message.Create(MessageSendMode.Reliable, MessageID.Ready);
         message.AddBool(player.IsReady);

@@ -20,7 +20,6 @@ public class SpectatorHandler
             _spectateeKoalaId = value;
             ChangedLevel = false;
         }
-        
     }
 
     private static Vector3 _currentSpectateeVector;
@@ -33,7 +32,7 @@ public class SpectatorHandler
 
     public static void UpdateCamera()
     {
-        if (SpectatorHandler.SpectateeKoalaId != null)
+        if (SpectateeKoalaId != null)
         {
             if (!PlayerHandler.Players.Any(x => x.Koala == SpectateeKoalaId))
                 SpectateeKoalaId = null;
@@ -178,5 +177,37 @@ public class SpectatorHandler
         if (PlayerHandler.Players.Count(x => x.Koala != null) != 1) 
             return;
         SpectateeKoalaId = null;
+    }
+
+
+    public static bool _inFreeCam = false;
+    public static void ToggleFreeCam(bool state = false, bool forceState = false)
+    {
+        ProcessHandler.TryRead(0x27EBD0, out int currentCameraState, true, "ReadCamState");
+        _inFreeCam = currentCameraState == 28;
+        if (state == _inFreeCam && forceState)
+            return;
+        if (forceState)
+            _inFreeCam = !state;
+        var newCamState = _inFreeCam ? 5 : 28;
+        var newHeroState = 5;
+        if (Client.HLevel.CurrentLevelData.Id == Levels.OutbackSafari.Id)
+        {
+            newHeroState = _inFreeCam ? 0 :  5;
+        }
+        else
+        {
+            newHeroState = _inFreeCam ? 35 :  50;
+        }
+        if (_inFreeCam)
+        {
+            var camPos = SpectatorHandler.ReadCameraPosition();
+            Client.HHero.WritePosition(camPos.X, camPos.Y, camPos.Z);
+        }
+        Client.HGameState.SetCameraState(newCamState);
+        Client.HHero.SetHeroState(newHeroState);
+        if (!_inFreeCam)
+            SpectatorHandler.SetCameraRotation(0, Client.HHero.GetCurrentPosRot()[4]);
+        _inFreeCam = !_inFreeCam;
     }
 }

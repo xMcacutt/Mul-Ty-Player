@@ -35,7 +35,7 @@ public class MtpCommandGroundSwim : Command
             LogError("Cannot change hero state to swimming in Outback Safari.");
             return;
         }
-        if (MtpCommandFreeCam.inFreeCam)
+        if (SpectatorHandler._inFreeCam)
         {
             LogError("Cannot change hero state to swimming while in freecam.");
             return;

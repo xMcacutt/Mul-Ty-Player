@@ -6,8 +6,6 @@ namespace MulTyPlayerClient;
 
 public class MtpCommandFreeCam : Command
 {
-    public static bool inFreeCam;
-    
     public MtpCommandFreeCam()
     {
         Name = "freecam";
@@ -33,27 +31,6 @@ public class MtpCommandFreeCam : Command
 
     private void RunFreecam()
     {
-        ProcessHandler.TryRead(0x27EBD0, out int currentCameraState, true, "ReadCamState");
-        inFreeCam = currentCameraState == 28;
-        var newCamState = inFreeCam ? 5 : 28;
-        var newHeroState = 5;
-        if (Client.HLevel.CurrentLevelData.Id == Levels.OutbackSafari.Id)
-        {
-            newHeroState = inFreeCam ? 0 :  5;
-        }
-        else
-        {
-            newHeroState = inFreeCam ? 35 :  50;
-        }
-        if (inFreeCam)
-        {
-            var camPos = SpectatorHandler.ReadCameraPosition();
-            Client.HHero.WritePosition(camPos.X, camPos.Y, camPos.Z);
-        }
-        Client.HGameState.SetCameraState(newCamState);
-        Client.HHero.SetHeroState(newHeroState);
-        if (!inFreeCam)
-            SpectatorHandler.SetCameraRotation(0, Client.HHero.GetCurrentPosRot()[4]);
-        inFreeCam = !inFreeCam;
+        SpectatorHandler.ToggleFreeCam();
     }
 }

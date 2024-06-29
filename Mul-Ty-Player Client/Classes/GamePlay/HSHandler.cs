@@ -106,6 +106,7 @@ public class HSHandler
         // SEEK TIME HIDER
         if (Mode == HSMode.SeekTime && Role == HSRole.Hider)
         {
+            //CheckDeath();
             if (!_timerRunning)
                 _timerRunning = true;
             CurrentPerk.ApplyHider();
@@ -118,6 +119,16 @@ public class HSHandler
             Client.HHero.SetRunSpeed(10.15f);
             CurrentPerk.ApplySeeker();
         }
+    }
+
+    private void CheckDeath()
+    {
+        if (Role == HSRole.Seeker)
+            return;
+        var state = Client.HHero.GetHeroState();
+        var comparison = Client.HLevel.CurrentLevelId == 10 ? 8 : 28;
+        if (state == comparison)
+            Role = HSRole.Seeker;
     }
 
     private void LockPlayer()
@@ -187,6 +198,7 @@ public class HSHandler
         foreach (var entry in PlayerHandler.Players) 
             entry.IsReady = false;
         ModelController.Lobby.IsReady = false;
+        ModelController.Lobby.IsReadyButtonEnabled = false;
         
         SFXPlayer.PlaySound(SFX.HS_HideStart);
        
@@ -243,6 +255,7 @@ public class HSHandler
         Client.HHero.SetGravity();
         Client.HHero.SetGlideSpeed();
         Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        ModelController.Lobby.IsReadyButtonEnabled = true;
         SFXPlayer.PlaySound(SFX.TAOpen);
     }
 
@@ -257,6 +270,7 @@ public class HSHandler
         Client.HHero.SetGravity();
         Client.HHero.SetGlideSpeed();
         Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        ModelController.Lobby.IsReadyButtonEnabled = true;
         SFXPlayer.PlaySound(SFX.TAOpen);
     }
 

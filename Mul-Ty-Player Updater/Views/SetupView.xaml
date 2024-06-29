@@ -137,6 +137,9 @@
                     <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
                               Content="Remove Magnet Randomization"
                               IsChecked="{Binding RemoveMagnetRandom}"/>
+                    <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Revert Outback Movement"
+                              IsChecked="{Binding RevertOutbackMovement}"/>
                 </StackPanel>
                 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

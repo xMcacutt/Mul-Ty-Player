@@ -144,6 +144,9 @@
         <None Update="GUI\Sounds\Unfreeze.wav">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <None Update="GUI\Themes\Finnruns.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
         <Page Remove="GUI\App.xaml" />
@@ -355,6 +358,78 @@
         <Content Include="GUI\MinimapAssets\fe_000_map_d1_00.png" />
         <None Remove="GUI\MinimapAssets\fe_999_icon_arrow.png" />
         <Content Include="GUI\MinimapAssets\fe_999_icon_arrow.png" />
+        <None Remove="GUI\HS_DraftAssets\0.png" />
+        <Content Include="GUI\HS_DraftAssets\0.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\4.png" />
+        <Content Include="GUI\HS_DraftAssets\4.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\5.png" />
+        <Content Include="GUI\HS_DraftAssets\5.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\6.png" />
+        <Content Include="GUI\HS_DraftAssets\6.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\8.png" />
+        <Content Include="GUI\HS_DraftAssets\8.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\9.png" />
+        <Content Include="GUI\HS_DraftAssets\9.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\10.png" />
+        <Content Include="GUI\HS_DraftAssets\10.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\12.png" />
+        <Content Include="GUI\HS_DraftAssets\12.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\13.png" />
+        <Content Include="GUI\HS_DraftAssets\13.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\14.png" />
+        <Content Include="GUI\HS_DraftAssets\14.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\Boonie.png" />
+        <Content Include="GUI\HS_DraftAssets\Boonie.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\Dubbo.png" />
+        <Content Include="GUI\HS_DraftAssets\Dubbo.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\Elizabeth.png" />
+        <Content Include="GUI\HS_DraftAssets\Elizabeth.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\Gummy.png" />
+        <Content Include="GUI\HS_DraftAssets\Gummy.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\Katie.png" />
+        <Content Include="GUI\HS_DraftAssets\Katie.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\Kiki.png" />
+        <Content Include="GUI\HS_DraftAssets\Kiki.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\Mim.png" />
+        <Content Include="GUI\HS_DraftAssets\Mim.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\Snugs.png" />
+        <Content Include="GUI\HS_DraftAssets\Snugs.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="Facepunch.Steamworks.Win32.dll">

@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="MulTyPlayerClient.GUI.Views.HS_Drafts"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:MulTyPlayerClient.GUI.Classes.Views"
+             xmlns:client="clr-namespace:MulTyPlayerClient"
+             mc:Ignorable="d"
+             d:DesignHeight="750" d:DesignWidth="1200"
+             Background="{Binding MainBack, Source={x:Static client:App.AppColors}}">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="0.7*"/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width ="0.2*"/>
+            <ColumnDefinition Width ="0.7*"/>
+            <ColumnDefinition Width ="0.2*"/>
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock Grid.Column="0"
+                   Grid.ColumnSpan="3"
+                   Text = "Hide &amp; Seek Drafts"
+                   Style="{StaticResource ComicTextMain}"
+                   FontSize="30"/>
+        
+        <StackPanel Margin="5" Grid.Row="1" Grid.Column="0">
+            <ContentControl Content="{Binding Team1Player1}"/>
+            <ContentControl Content="{Binding Team1Player2}"/>
+            <ContentControl Content="{Binding Team1Player3}"/>
+            <ContentControl Content="{Binding Team1Player4}"/>
+        </StackPanel>
+        
+        <StackPanel Margin="5" Grid.Row="1" Grid.Column="2">
+            <ContentControl Content="{Binding Team2Player1}"/>
+            <ContentControl Content="{Binding Team2Player2}"/>
+            <ContentControl Content="{Binding Team2Player3}"/>
+            <ContentControl Content="{Binding Team2Player4}"/>
+        </StackPanel>
+        
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width ="*"/>
+                <ColumnDefinition Width ="*"/>
+                <ColumnDefinition Width ="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <ContentControl Grid.Row="3" Grid.Column="1" Content="{Binding LevelZ1}"/>
+            <ContentControl Grid.Row="0" Grid.Column="0" Content="{Binding LevelA1}"/>
+            <ContentControl Grid.Row="1" Grid.Column="0" Content="{Binding LevelB1}"/>
+            <ContentControl Grid.Row="2" Grid.Column="0" Content="{Binding LevelC1}"/>
+            <ContentControl Grid.Row="0" Grid.Column="1" Content="{Binding LevelA2}"/>
+            <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding LevelB2}"/>
+            <ContentControl Grid.Row="2" Grid.Column="1" Content="{Binding LevelC2}"/>
+            <ContentControl Grid.Row="0" Grid.Column="2" Content="{Binding LevelA3}"/>
+            <ContentControl Grid.Row="1" Grid.Column="2" Content="{Binding LevelB3}"/>
+            <ContentControl Grid.Row="2" Grid.Column="2" Content="{Binding LevelC3}"/>
+        </Grid>
+        
+        <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <ContentControl Grid.Column="0" Content="{Binding Ban1}"/>
+            <ContentControl Grid.Column="1" Content="{Binding Ban2}"/>
+            <ContentControl Grid.Column="2" Content="{Binding Ban3}"/>
+            <ContentControl Grid.Column="3" Content="{Binding Ban4}"/>
+            <ContentControl Grid.Column="4" Content="{Binding Pick1}"/>
+            <ContentControl Grid.Column="5" Content="{Binding Pick2}"/>
+            <ContentControl Grid.Column="6" Content="{Binding Pick3}"/>
+            <ContentControl Grid.Column="7" Content="{Binding Pick4}"/>
+        </Grid>
+    </Grid>
+</UserControl>

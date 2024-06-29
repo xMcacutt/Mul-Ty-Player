@@ -2,17 +2,36 @@
 
 ## Most Recent
 
+#### 4.2.0 - Finnruns Edition
+- Added Finnruns theming
+- (HS) Screen is made black during hide time to avoid cheating.
+- (HS) Abort button added to menu.
+- (HS) End of session (all caught) sound added.
+- Outback Safari input vectoring un-patch option added to updater.
+- Camera override sphere removed from spire in Ship Rex.
+- Added death plane to all levels (except Outback Safari).
+- (SP) Freecam is now removed on joining as non-spectator.
+- (SP) Spectator no longer has access to ready status.
+- (HS) Multiple Hide & Seek sessions can no longer run at the same time.
+- (HS) Switched to Server-Side range check.
+- (CH) Fixed cog on WiTP forcing main menu in chaos mode.
+- (CH) Removed accidental debug artifact.
+- (SP) Fixed spectator breaking Hide & Seek.
+- (SP) Fixed IsReady not being retrieved on connect.
+- Fixed collectible syncing running in invalid levels.
+- Fixed collectibles not correctly resyncing on main menu.
+
 #### 4.1.0
-- Fixed everything Chaos Mode
-- Cogs now moved to the correct positions
-- Bilbies are now rotated
-- All bilbies are now moved
-- Chaos mode menu added
-- Shuffle on start option added
-- Fixed seed option added
-- Cheat command alias changed to c from ch
-- Chaos mode command alias changed to ch from cm
-- Chaos seed is now displayed when changed
+- Fixed everything Chaos Mode.
+- Cogs now moved to the correct positions.
+- Bilbies are now rotated.
+- All bilbies are now moved.
+- Chaos mode menu added.
+- Shuffle on start option added.
+- Fixed seed option added.
+- Cheat command alias changed to c from ch.
+- Chaos mode command alias changed to ch from cm.
+- Chaos seed is now displayed when changed.
 
 #### 4.0.0
 - Added chaos mode, a randomizer for the cogs and bilbies.
@@ -154,6 +173,36 @@
 - Expanded game mode system and menu in lobby.
 - Server-side sync settings can now be changed from client-side settings menu.
 - (HS) Added hider freeze perk to Walk in the Park
+
+#### 4.1.0
+- Chaos mode menu added.
+- Shuffle on start option added.
+- Fixed seed option added.
+- Chaos seed is now displayed when changed.
+
+#### 4.2.0 - Finnruns Edition
+- Added Finnruns theming
+- (HS) Screen is made black during hide time to avoid cheating.
+- (HS) Abort button added to menu.
+- (HS) End of session (all caught) sound added.
+- Outback Safari input vectoring un-patch option added to updater.
+- Camera override sphere removed from spire in Ship Rex.
+- Added death plane to all levels (except Outback Safari).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -343,3 +392,23 @@
 #### 4.0.0
 - Fixed server being marked with v instead of s in mismatched versions warning.
 - Reduced number of dedicated servers.
+
+#### 4.1.0
+- Fixed everything Chaos Mode.
+- Cogs now moved to the correct positions.
+- Bilbies are now rotated.
+- All bilbies are now moved.
+- Cheat command alias changed to c from ch.
+- Chaos mode command alias changed to ch from cm.
+
+#### 4.2.0 - Finnruns Edition
+- (SP) Freecam is now removed on joining as non-spectator.
+- (SP) Spectator no longer has access to ready status.
+- (HS) Multiple Hide & Seek sessions can no longer run at the same time.
+- (HS) Switched to Server-Side range check.
+- (CH) Fixed cog on WiTP forcing main menu in chaos mode.
+- (CH) Removed accidental debug artifact.
+- (SP) Fixed spectator breaking Hide & Seek.
+- (SP) Fixed IsReady not being retrieved on connect.
+- Fixed collectible syncing running in invalid levels.
+- Fixed collectibles not correctly resyncing on main menu.

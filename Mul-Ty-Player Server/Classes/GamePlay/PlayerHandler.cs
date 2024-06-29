@@ -58,9 +58,10 @@ internal class PlayerHandler
         status.AddBool(ready);
         Server._Server.SendToAll(status, fromClientId);
 
-        if (Players.Count(x => x.Value.IsReady) == Players.Count(x => x.Value.Koala.KoalaName != "SPECTATOR"))
+        if (Players.Values.Count(x => x.IsReady && x.Koala.KoalaName != "SPECTATOR") == Players.Values.Count(x => x.Koala.KoalaName != "SPECTATOR"))
         {
-            foreach (var entry in Players) entry.Value.IsReady = false;
+            foreach (var entry in Players) 
+                entry.Value.IsReady = false;
             if (SettingsHandler.GameMode == GameMode.HideSeek)
                 StartHideTimer(SettingsHandler.HideSeekTime);
             else
@@ -73,6 +74,8 @@ internal class PlayerHandler
 
     private static void StartHideTimer(int hideTimeLength)
     {
+        if (HSHandler.Mode != HSMode.Neutral)
+            return;
         var hideTimerMessage = Message.Create(MessageSendMode.Reliable, MessageID.HS_HideTimerStart);
         hideTimerMessage.AddInt(hideTimeLength);
         Server._Server.SendToAll(hideTimerMessage);

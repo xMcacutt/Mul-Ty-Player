@@ -131,6 +131,10 @@ internal class SyncHandler
 
     public void SendDataToServer(int iLive, int iSave, int level, string type)
     {
+        // if (SettingsHandler.GameMode == GameMode.Collection)
+        // ADD POINTS
+        // SEND TO OTHER CLIENTS
+        // WRITE TO UI
         var syncMessage = CollectibleSyncMessage.Create(iLive, iSave, level, type);
         Client._client.Send(CollectibleSyncMessage.Encode(syncMessage));
     }

@@ -290,6 +290,11 @@ public class UpdateViewModel
             fileStream.Seek(entry.Key, SeekOrigin.Begin);
             binaryWriter.Write(entry.Value);
         }
+        
+        //OUTBACK MOVEMENT
+        var outbackData = SettingsHandler.Settings.RevertOutbackMovement ? new byte[] {0x90, 0x90} : new byte[] {0x75, 0x06}; 
+        fileStream.Seek(0x17251B, SeekOrigin.Begin);
+        binaryWriter.Write(outbackData);
     }
 
     private void UpdateRKV(Release latestRelease)

@@ -229,4 +229,9 @@ public partial class Lobby : UserControl
     {
         Client.HCommand.Commands["hs"].InitExecute(new []{"abort"});
     }
+
+    private void OpenDrafts_OnClick(object sender, RoutedEventArgs e)
+    {
+        (DataContext as LobbyViewModel)?.OpenDrafts();
+    }
 }

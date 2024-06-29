@@ -116,12 +116,12 @@ public class BloomSettings
 
     public void RevertToOriginal()
     {
-        this.State = _originalBloomSettings.State;
-        this.RedThreshold = _originalBloomSettings.RedThreshold;
-        this.GreenThreshold = _originalBloomSettings.GreenThreshold;
-        this.BlueThreshold = _originalBloomSettings.BlueThreshold;
-        this.Hue = _originalBloomSettings.Hue;
-        this.Saturation = _originalBloomSettings.Saturation;
-        this.Value = _originalBloomSettings.Value;
+        State = _originalBloomSettings.State;
+        RedThreshold = _originalBloomSettings.RedThreshold;
+        GreenThreshold = _originalBloomSettings.GreenThreshold;
+        BlueThreshold = _originalBloomSettings.BlueThreshold;
+        Hue = _originalBloomSettings.Hue;
+        Saturation = _originalBloomSettings.Saturation;
+        Value = _originalBloomSettings.Value;
     }
 }

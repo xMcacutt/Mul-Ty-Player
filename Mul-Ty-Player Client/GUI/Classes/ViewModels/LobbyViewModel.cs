@@ -5,7 +5,9 @@ using System.Windows.Data;
 using System.Windows.Input;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes;
+using MulTyPlayerClient.GUI.Classes.Views;
 using MulTyPlayerClient.GUI.Models;
+using MulTyPlayerClient.GUI.Views;
 using PropertyChanged;
 
 namespace MulTyPlayerClient.GUI.ViewModels;
@@ -23,6 +25,7 @@ public class LobbyViewModel : IViewModel
         Lobby.IsReadyChanged += Model_IsReadyChanged;
         Lobby.IsHostChanged += Model_IsHostChanged;
         Lobby.IsTimerVisibleChanged += Model_IsTimerVisibleChanged;
+        Lobby.IsReadyButtonEnabledChanged += Model_IsReadyButtonEnabledChanged;
         Lobby.GameModeChanged += Model_GameModeChanged;
         Lobby.IsLevelLockEnabledChanged += Model_IsLevelLockEnabledChanged;
         Lobby.CanLaunchGameChanged += Model_CanLaunchGameChanged;
@@ -64,6 +67,7 @@ public class LobbyViewModel : IViewModel
     public void OnEntered()
     {
         Lobby.UpdateHost();
+        Lobby.IsReadyButtonEnabled = true;
         Time = "00:00:00";
         Role = Client.HHideSeek.Role;
         Input = "";
@@ -115,6 +119,21 @@ public class LobbyViewModel : IViewModel
     private void Model_IsHostChanged(bool value)
     {
         IsHostMenuButtonEnabled = value;
+    }
+
+    private void Model_IsReadyButtonEnabledChanged(bool value)
+    {
+        if (ModelController.Login.JoinAsSpectator)
+        {
+            IsReadyButtonEnabled = false;
+            return;
+        }
+        if (Client.HHideSeek.Mode != HSMode.Neutral)
+        {
+            IsReadyButtonEnabled = false;
+            return;
+        }
+        IsReadyButtonEnabled = value;
     }
 
     private void Model_GameModeChanged(GameMode value)
@@ -186,11 +205,18 @@ public class LobbyViewModel : IViewModel
 
     private void OnCountdownEnded()
     {
-        IsReadyButtonEnabled = IsOnMenu;
+        Lobby.IsReadyButtonEnabled = IsOnMenu;
     }
 
     private void OnCountdownBegan()
     {
-        IsReadyButtonEnabled = false;
+        Lobby.IsReadyButtonEnabled = false;
+    }
+
+    public static HSD_MainWindow DraftWindow;
+    public void OpenDrafts()
+    {
+        DraftWindow = new HSD_MainWindow();
+        DraftWindow.Show();
     }
 }

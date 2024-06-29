@@ -5,6 +5,7 @@ using System.Windows.Input;
 using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
+using MulTyPlayerClient.GUI.Views;
 using NHotkey;
 using NHotkey.Wpf;
 using Application = System.Windows.Application;

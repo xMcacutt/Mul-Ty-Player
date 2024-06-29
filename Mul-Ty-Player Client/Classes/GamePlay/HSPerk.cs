@@ -21,7 +21,7 @@ public class PerkHandler
         {10, new SeekerOneHitPerk()},
         {12, new OpalSlowPerk()},
         {13, new HiderOneRangPerk()},
-        {14, new SeekersSeeLightsPerk()},
+        {14, new SeekersSeeLightsPerk()}
     };
 
     public static void DeactivateAllPerks()

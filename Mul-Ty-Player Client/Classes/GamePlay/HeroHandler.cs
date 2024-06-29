@@ -231,4 +231,14 @@ public class HeroHandler
         else
             SetHeroState(29);
     }
+
+    public int GetHeroState()
+    {
+        int result;
+        if (Client.HLevel.CurrentLevelData.Id == Levels.OutbackSafari.Id)
+            ProcessHandler.TryRead(0x254560, out result, true, "Get Hero State Outback");
+        else
+            ProcessHandler.TryRead(0x27158C, out result, true, "Get Hero State Ty");
+        return result;
+    }
 }
