@@ -24,13 +24,13 @@ internal class PlayerHandler
     }
 
     //Adds other player to players & playerInfo
-    public static void AddPlayer(Koala? koala, string name, ushort clientId, bool isHost, bool isReady, HSRole role)
+    public static void AddPlayer(Koala? koala, string name, ushort clientId, bool isHost, bool isReady, HSRole role, int score)
     {
         Application.Current.Dispatcher.Invoke(() =>
         {
             if (Players.Any(x => x.Id == clientId))
                 Players.Remove(Players.First(x => x.Id == clientId));
-            Players.Add(new Player(koala, name, clientId, isHost, isReady, role));
+            Players.Add(new Player(koala, name, clientId, isHost, isReady, role, score));
         });
         if (koala != null)
         {
@@ -41,7 +41,7 @@ internal class PlayerHandler
     }
     
     //Adds yourself to players
-    public static void AnnounceSelection(Koala? koala, string name, bool isHost, bool isReady = false, HSRole role = HSRole.Hider)
+    public static void AnnounceSelection(Koala? koala, string name, bool isHost, bool isReady = false, HSRole role = HSRole.Hider, int score = 0)
     {
         var clientId = Client._client.Id;
         var message = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
@@ -54,13 +54,15 @@ internal class PlayerHandler
         message.AddBool(isHost);
         message.AddBool(isReady);
         message.AddInt((int)role);
+        message.AddInt(score);
+        
         if (koala is not null)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
                 if (Players.Any(x => x.Id == clientId))
                     Players.Remove(Players.First(x => x.Id == clientId));
-                Players.Add(new Player(koala, name, clientId, isHost, isReady, role)); 
+                Players.Add(new Player(koala, name, clientId, isHost, isReady, role, score)); 
             });
         }
         Client._client.Send(message);

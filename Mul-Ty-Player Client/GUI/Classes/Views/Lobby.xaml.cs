@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using MulTyPlayer;
+using MulTyPlayerClient.Classes.GamePlay;
 using MulTyPlayerClient.GUI.Controls;
 using MulTyPlayerClient.GUI.Models;
 using MulTyPlayerClient.GUI.ViewModels;
@@ -233,5 +234,10 @@ public partial class Lobby : UserControl
     private void OpenDrafts_OnClick(object sender, RoutedEventArgs e)
     {
         (DataContext as LobbyViewModel)?.OpenDrafts();
+    }
+
+    private void ResetScores_Click(object sender, RoutedEventArgs e)
+    {
+        CollectionModeHandler.ResetScores();
     }
 }

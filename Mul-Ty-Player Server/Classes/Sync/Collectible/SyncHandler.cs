@@ -63,6 +63,8 @@ internal class SyncHandler
         Program.HSync.Syncers[syncMessage.type]
         //Console.WriteLine($"{syncMessage.type} {syncMessage.iLive} collected in level {syncMessage.level} by client {fromClientId}.");
             .HandleServerUpdate(syncMessage.iLive, syncMessage.iSave, syncMessage.level, fromClientId);
+        if (SettingsHandler.GameMode == GameMode.Collection)
+            CollectionModeHandler.HandleScoreUpdate(fromClientId, syncMessage.type, syncMessage.iLive, syncMessage.iSave);
     }
 }
 

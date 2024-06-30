@@ -2,6 +2,9 @@
 
 ## Most Recent
 
+#### 4.2.1 - Finnruns Edition
+- Added Collection Mode (CL)
+
 #### 4.2.0 - Finnruns Edition
 - Added Finnruns theming
 - (HS) Screen is made black during hide time to avoid cheating.
@@ -189,6 +192,8 @@
 - Camera override sphere removed from spire in Ship Rex.
 - Added death plane to all levels (except Outback Safari).
 
+#### 4.2.1 - Finnruns Edition
+- Added Collection Mode (CL)
 
 
 

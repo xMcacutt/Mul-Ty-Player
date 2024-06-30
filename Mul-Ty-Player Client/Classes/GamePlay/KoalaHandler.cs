@@ -33,12 +33,13 @@ internal class KoalaHandler
         var isHost = message.GetBool();
         var isReady = message.GetBool();
         var role = (HSRole)message.GetInt();
+        var score = message.GetInt();
         Koala? k;
         if (koalaName == "SPECTATOR")
             k = null;
         else
             k = Enum.Parse<Koala>(koalaName, true);
-        PlayerHandler.AddPlayer(k, playerName, clientId, isHost, isReady, role);
+        PlayerHandler.AddPlayer(k, playerName, clientId, isHost, isReady, role, score);
     }
 
     public void CreateKoalaAddressArray()

@@ -10,6 +10,7 @@ internal class Player
     public string Name;
     public bool OnMenu;
     public HSRole Role;
+    public int Score;
     public int PreviousLevel = 99;
 
     public Player(Koala koala, string name, ushort id, bool isHost, bool isReady, bool onMenu, HSRole role)
@@ -22,6 +23,7 @@ internal class Player
         IsReady = isReady;
         OnMenu = onMenu;
         Role = role;
+        Score = 0;
     }
 
     public Koala Koala { get; set; }

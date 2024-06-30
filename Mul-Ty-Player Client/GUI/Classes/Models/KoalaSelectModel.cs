@@ -34,7 +34,7 @@ public class KoalaSelectModel
     public async void KoalaClicked(Koala koala, bool proceedToLobby)
     {
         Client.OldKoala = koala;
-        PlayerHandler.Players.Add(new Player(koala, Client.Name, Client._client.Id, false, false, HSRole.Hider));
+        PlayerHandler.Players.Add(new Player(koala, Client.Name, Client._client.Id, false, false, HSRole.Hider, 0));
         PlayerHandler.AnnounceSelection(koala, Client.Name, false);
         OnKoalaSelected?.Invoke(koala);
         SFXPlayer.PlaySound(SFX.PlayerConnect);

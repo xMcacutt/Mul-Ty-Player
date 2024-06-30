@@ -10,4 +10,5 @@
     <gui:KoalaToIconConverter x:Key="KoalaToIconConverter" />
     <gui:PopupVisibilityToArrowDirectionConverter x:Key="PopupVisibilityToArrowDirectionConverter"/>
     <gui:RoleToIconConverter x:Key="RoleToIconConverter"/>
+    <gui:ScoreLeaderConverter x:Key="ScoreLeaderConverter"/>
 </ResourceDictionary>

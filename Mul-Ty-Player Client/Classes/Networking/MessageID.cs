@@ -51,7 +51,9 @@ public enum MessageID : ushort
     CH_Shuffle,
     CH_SetSeed,
     CH_ShuffleOnStartToggle,
-    HS_EndSeek
+    HS_EndSeek,
+    CL_UpdateScore,
+    CL_ResetScore
 }
 
 
