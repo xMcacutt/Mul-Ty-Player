@@ -53,7 +53,7 @@ public class CollectionModeHandler
     }
 
     [MessageHandler((ushort)MessageID.CL_ResetScore)]
-    public static void HandleResetScores()
+    public static void HandleResetScores(ushort fromClientId, Message message)
     {
         foreach (var player in PlayerHandler.Players.Values)
         {
