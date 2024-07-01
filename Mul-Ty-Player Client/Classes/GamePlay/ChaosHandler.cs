@@ -904,7 +904,6 @@ public class ChaosHandler
     public void SwapPortals()
     {
         var basePortalAddr = PointerCalculations.GetPointerAddress(0x267408, new[] { 0x0 });
-        Console.WriteLine(basePortalAddr);
         foreach (var portal in _newPortals)
             ProcessHandler.WriteData(basePortalAddr + 0xAC + 0xB0 * portal.Key, BitConverter.GetBytes(portal.Value));
     }
