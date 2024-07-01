@@ -839,6 +839,10 @@ public class ChaosHandler
         }
     };
 
+    private Dictionary<int, int> _originalPortals = new()
+        { { 1, 5 }, { 2, 4 }, { 3, 13 }, { 4, 10 }, { 8, 9 }, { 11, 12 }, { 12, 8 }, { 13, 6 }, { 14, 14 } };
+    private Dictionary<int, int> _newPortals = new();
+
     public Dictionary<int, byte[]> CurrentPositionIndices = new();
     private Random _random;
     private int _chaosSeed;
@@ -850,6 +854,9 @@ public class ChaosHandler
             _chaosSeed = value;
             Logger.Write($"The Chaos Mode seed is now {Client.HChaos.ChaosSeed}");
             ShuffleIndices(value);
+            MoveCollectibles(Client.HLevel.CurrentLevelId);
+            if (Client.HLevel.CurrentLevelId == 0)
+                SwapPortals();
         }
     }
 
@@ -889,6 +896,17 @@ public class ChaosHandler
             var randomisedCollectibleIndices = cogs.Concat(bilbies).ToArray();
             CurrentPositionIndices.Add(level.Id, randomisedCollectibleIndices);
         }
+        _newPortals = _originalPortals.Keys.Zip(_originalPortals.Values
+            .OrderBy(x => _random.Next()), (k, v) => new { k, v })
+            .ToDictionary(x => x.k, x => x.v);
+    }
+
+    public void SwapPortals()
+    {
+        var basePortalAddr = PointerCalculations.GetPointerAddress(0x267408, new[] { 0x0 });
+        Console.WriteLine(basePortalAddr);
+        foreach (var portal in _newPortals)
+            ProcessHandler.WriteData(basePortalAddr + 0xAC + 0xB0 * portal.Key, BitConverter.GetBytes(portal.Value));
     }
     
     public void MoveCollectibles(int level)

@@ -69,6 +69,8 @@ internal class LevelHandler
             FixKoalaObjectiveCount();
         if (CurrentLevelData.IsMainStage && SettingsHandler.GameMode == GameMode.Chaos)
             Client.HChaos.MoveCollectibles(CurrentLevelId);
+        if (CurrentLevelData.Id == Levels.RainbowCliffs.Id && SettingsHandler.GameMode == GameMode.Chaos)
+            Client.HChaos.SwapPortals();
         OnLevelChange?.Invoke(currentLevelId);
     }
 

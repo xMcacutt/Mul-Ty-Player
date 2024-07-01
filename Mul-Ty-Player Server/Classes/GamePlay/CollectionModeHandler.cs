@@ -11,7 +11,7 @@ public class CollectionModeHandler
         switch (type)
         {
             case "Opal":
-                scoreIncrease = 2;
+                scoreIncrease = 3;
                 break;
             case "TE":
                 scoreIncrease = iSave == 2 ? 150 : 50;                

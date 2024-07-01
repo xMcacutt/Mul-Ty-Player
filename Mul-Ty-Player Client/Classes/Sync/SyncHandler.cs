@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MulTyPlayer;
+using MulTyPlayerClient.Classes;
 using MulTyPlayerClient.LevelLock;
 using Riptide;
 
@@ -21,7 +22,8 @@ internal class SyncHandler
     public static InvisiCrateHandler HInvisiCrate;
     public LevelLockHandler HLevelLock;
     public TriggerHandler HTrigger;
-
+    public GameInfoHandler HGameInfo;
+    
     public static int SaveDataBaseAddress;
     public Dictionary<string, SyncObjectHandler> SyncObjects;
     
@@ -45,6 +47,7 @@ internal class SyncHandler
         };
         HLevelLock = new LevelLockHandler();
         HTrigger = new TriggerHandler();
+        HGameInfo = new GameInfoHandler();
     }
 
     public static void SetSaveDataBaseAddress()
@@ -104,13 +107,17 @@ internal class SyncHandler
         if (Client.Relaunching) 
             return;
         var type = message.GetString();
+        var level = message.GetInt();
         //Logger.Write(type);
         if (SettingsHandler.SyncSettings[type])
+        {
             Client.HSync.SyncObjects[type].Sync(
-                message.GetInt(), 
+                level, 
                 message.GetBytes(), 
                 message.GetBytes()
                 );
+            Client.HSync.HGameInfo.ActivateGameInfoScreen(level);
+        }
     }
     
     [MessageHandler((ushort)MessageID.ResetSync)]
@@ -127,6 +134,7 @@ internal class SyncHandler
         var syncMessage = CollectibleSyncMessage.Decode(message);
         Client.HSync.SyncObjects[syncMessage.Type]
             .HandleClientUpdate(syncMessage.LiveIndex, syncMessage.SaveIndex, syncMessage.Level);
+        Client.HSync.HGameInfo.ActivateGameInfoScreen(syncMessage.Level);
     }
 
     public void SendDataToServer(int iLive, int iSave, int level, string type)
