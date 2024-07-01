@@ -2,6 +2,12 @@
 
 ## Most Recent
 
+#### 4.2.2 - Finnruns Edition
+- (CL) Modified collectible point balance
+- Added portal swapping to chaos mode
+- Added old patch rang syncing to updater
+- Added controller camera aiming to updater
+
 #### 4.2.1 - Finnruns Edition
 - Added Collection Mode (CL)
 
