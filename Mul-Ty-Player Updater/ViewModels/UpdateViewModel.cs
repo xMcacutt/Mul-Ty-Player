@@ -151,6 +151,9 @@ public class UpdateViewModel
 
     private void UpdateClient(Release latest)
     {
+        var asset = latest.Assets.FirstOrDefault(asset => asset.Name == "Mul-Ty-Player.Client.zip");
+        if (asset == null) throw new Exception();
+        
         var clientDirPath = SettingsHandler.Settings.ClientDir;
         
         var oldSettings = File.ReadAllText(Path.Combine(clientDirPath, "ClientSettings.json"));
@@ -163,8 +166,6 @@ public class UpdateViewModel
         Directory.Delete(clientDirPath, true);
         Directory.CreateDirectory(clientDirPath);
         var zipPath = Path.Combine(clientDirPath, "Client.zip");
-        var asset = latest.Assets.FirstOrDefault(asset => asset.Name == "Mul-Ty-Player.Client.zip");
-        if (asset == null) throw new Exception();
         HttpClient client = new();
         var uri = new Uri(asset.BrowserDownloadUrl);
         var response = client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead).Result;
@@ -204,6 +205,9 @@ public class UpdateViewModel
     
     private void UpdateServer(Release latest)
     {
+        var asset = latest.Assets.FirstOrDefault(asset => asset.Name == "Mul-Ty-Player.Server.zip");
+        if (asset == null) throw new Exception();
+        
         var serverDirPath = SettingsHandler.Settings.ServerDir;
         
         var oldSettings = File.ReadAllText(Path.Combine(serverDirPath, "ServerSettings.json"));
@@ -211,8 +215,7 @@ public class UpdateViewModel
         Directory.Delete(serverDirPath, true);
         Directory.CreateDirectory(serverDirPath);
         var zipPath = Path.Combine(serverDirPath, "Server.zip");
-        var asset = latest.Assets.FirstOrDefault(asset => asset.Name == "Mul-Ty-Player.Server.zip");
-        if (asset == null) throw new Exception();
+        
         HttpClient client = new();
         var uri = new Uri(asset.BrowserDownloadUrl);
         var response = client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead).Result;
@@ -295,6 +298,18 @@ public class UpdateViewModel
         var outbackData = SettingsHandler.Settings.RevertOutbackMovement ? new byte[] {0x90, 0x90} : new byte[] {0x75, 0x06}; 
         fileStream.Seek(0x17251B, SeekOrigin.Begin);
         binaryWriter.Write(outbackData);
+        
+        //RANG SWITCHING
+        var rangData = SettingsHandler.Settings.RevertRangSwitching
+            ? new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }
+            : new byte[] { 0x0F, 0x85, 0xC0, 0x00, 0x00, 0x00 };
+        fileStream.Seek(0x161F8A, SeekOrigin.Begin);
+        binaryWriter.Write(rangData);
+            
+        //CAMERA AIMING
+        var cameraData = SettingsHandler.Settings.FixControllerCameraAiming ? new byte[] {0x90, 0x90} : new byte[] {0x75, 0x0C}; 
+        fileStream.Seek(0x169ABC, SeekOrigin.Begin);
+        binaryWriter.Write(cameraData);
     }
 
     private void UpdateRKV(Release latestRelease)

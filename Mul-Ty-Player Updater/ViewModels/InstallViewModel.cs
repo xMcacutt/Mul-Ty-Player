@@ -29,6 +29,8 @@ public class InstallViewModel
     public string Version { get; set; }
     public bool RemoveMagnetRandom { get; set; }
     public bool RevertOutbackMovement { get; set; }
+    public bool RevertRangSwitching { get; set; }
+    public bool FixControllerCameraAiming { get; set; }
     public float Progress { get; set; }
     public string? ProgressMessage { get; set; }
     public bool Installing { get; set; }
@@ -43,6 +45,8 @@ public class InstallViewModel
         InstallGameFiles = true;
         RemoveMagnetRandom = true;
         RevertOutbackMovement = true;
+        RevertRangSwitching = true;
+        FixControllerCameraAiming = true;
         Progress = 0;
 
         var tyPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Steam\steamapps\common\TY the Tasmanian Tiger");
@@ -248,6 +252,18 @@ public class InstallViewModel
             var outbackData = RevertOutbackMovement ? new byte[] {0x90, 0x90} : new byte[] {0x75, 0x06}; 
             fileStream.Seek(0x17251B, SeekOrigin.Begin);
             binaryWriter.Write(outbackData);
+            
+            //RANG SWITCHING
+            var rangData = RevertRangSwitching
+                ? new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }
+                : new byte[] { 0x0F, 0x85, 0xC0, 0x00, 0x00, 0x00 };
+            fileStream.Seek(0x161F8A, SeekOrigin.Begin);
+            binaryWriter.Write(rangData);
+            
+            //CAMERA AIMING
+            var cameraData = FixControllerCameraAiming ? new byte[] {0x90, 0x90} : new byte[] {0x75, 0x0C}; 
+            fileStream.Seek(0x169ABC, SeekOrigin.Begin);
+            binaryWriter.Write(cameraData);
         }
         
         CopyPatch(latestRelease);
@@ -291,6 +307,8 @@ public class InstallViewModel
         SettingsHandler.Settings.ServerDir = Path.Combine(ServerPath, "Server");
         SettingsHandler.Settings.GameDir = Path.Combine(MTPPath, "Game");
         SettingsHandler.Settings.RevertOutbackMovement = RevertOutbackMovement;
+        SettingsHandler.Settings.RevertRangSwitching = RevertRangSwitching;
+        SettingsHandler.Settings.FixControllerCameraAiming = FixControllerCameraAiming;
         SettingsHandler.Settings.FixedMagnets = RemoveMagnetRandom;
         SettingsHandler.Settings.Version = Version;
         SettingsHandler.SaveSettings();

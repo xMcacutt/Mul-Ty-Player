@@ -157,10 +157,20 @@
                     
                     <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
                               Content="Remove Magnet Randomization"
+                              ToolTip="Removes all magnet randomisation, always giving a magnet over quarter pie"
                               IsChecked="{Binding RemoveMagnetRandom}"/>
                     <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
                               Content="Revert Outback Movement"
+                              ToolTip="Reverts to old patch Outback Safari input vectoring with W and A/D"
                               IsChecked="{Binding RevertOutbackMovement}"/>
+                    <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Revert Rang Switching"
+                              ToolTip="Reverts to old patch (fast) rang switching"
+                              IsChecked="{Binding RevertRangSwitching}"/>
+                    <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Fix Controller Camera Aiming"
+                              ToolTip="Sets controls to throw rang where camera is aimed when using controller"
+                              IsChecked="{Binding FixControllerCameraAiming}"/>
                 </StackPanel>
                 
                 

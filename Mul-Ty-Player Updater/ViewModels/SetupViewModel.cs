@@ -28,6 +28,8 @@ public class SetupViewModel
     public string Version { get; set; }
     public bool RemoveMagnetRandom { get; set; }
     public bool RevertOutbackMovement { get; set; }
+    public bool RevertRangSwitching { get; set; }
+    public bool FixControllerCameraAiming { get; set; }
     
     public SetupViewModel()
     {
@@ -41,6 +43,8 @@ public class SetupViewModel
         MTPPath = s.GameDir;
         Version = s.Version;
         RevertOutbackMovement = s.RevertOutbackMovement;
+        RevertRangSwitching = s.RevertRangSwitching;
+        FixControllerCameraAiming = s.FixControllerCameraAiming;
         RemoveMagnetRandom = s.FixedMagnets;
     }
 
@@ -54,6 +58,8 @@ public class SetupViewModel
         SettingsHandler.Settings.ServerDir = ServerPath;
         SettingsHandler.Settings.GameDir = MTPPath;
         SettingsHandler.Settings.RevertOutbackMovement = RevertOutbackMovement;
+        SettingsHandler.Settings.RevertRangSwitching = RevertRangSwitching;
+        SettingsHandler.Settings.FixControllerCameraAiming = FixControllerCameraAiming;
         SettingsHandler.Settings.FixedMagnets = RemoveMagnetRandom;
         SettingsHandler.Settings.Version = Version;
         SettingsHandler.SaveSettings();

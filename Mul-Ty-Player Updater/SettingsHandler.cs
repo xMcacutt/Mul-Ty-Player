@@ -34,6 +34,8 @@ public class Settings
     public string ServerDir { get; set; }
     public string GameDir { get; set; }
     public bool RevertOutbackMovement { get; set; }
+    public bool RevertRangSwitching { get; set; }
+    public bool FixControllerCameraAiming { get; set; }
     public bool FixedMagnets { get; set; }
     public string Version { get; set; }
 }

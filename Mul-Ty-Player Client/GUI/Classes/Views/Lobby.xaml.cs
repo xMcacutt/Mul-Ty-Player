@@ -224,8 +224,6 @@ public partial class Lobby : UserControl
     private void ForceMoveCollectibles_Click(object sender, RoutedEventArgs e)
     {
         Client.HChaos.MoveCollectibles(Client.HLevel.CurrentLevelId);
-        if (Client.HLevel.CurrentLevelId == 0)
-            Client.HChaos.SwapPortals();
     }
 
     private void AbortSession_OnClick(object sender, RoutedEventArgs e)

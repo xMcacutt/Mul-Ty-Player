@@ -162,4 +162,13 @@ internal class ProcessHandler
         if (test.Equals(value)) return;
         Logger.Write(indicator + " " + test);
     }
+    
+    public static void CheckAddress<T>(int addr, T value, string indicator, out bool result) where T : unmanaged
+    {
+        TryRead(addr, out T test, false, indicator);
+        result = test.Equals(value);
+        if (result) 
+            return;
+        Logger.Write(indicator + " " + test);
+    }
 }

@@ -855,8 +855,6 @@ public class ChaosHandler
             Logger.Write($"The Chaos Mode seed is now {Client.HChaos.ChaosSeed}");
             ShuffleIndices(value);
             MoveCollectibles(Client.HLevel.CurrentLevelId);
-            if (Client.HLevel.CurrentLevelId == 0)
-                SwapPortals();
         }
     }
 
@@ -903,6 +901,8 @@ public class ChaosHandler
 
     public void SwapPortals()
     {
+        if (Client.Relaunching || Client.HGameState.IsOnMainMenuOrLoading)
+            return;
         var basePortalAddr = PointerCalculations.GetPointerAddress(0x267408, new[] { 0x0 });
         foreach (var portal in _newPortals)
             ProcessHandler.WriteData(basePortalAddr + 0xAC + 0xB0 * portal.Key, BitConverter.GetBytes(portal.Value));
@@ -961,6 +961,9 @@ public class ChaosHandler
             ProcessHandler.WriteData(cagePosAddr - 0x30, matBytes);
             ProcessHandler.WriteData(bilbyPosAddr - 0x30, matBytes);
         }
+        
+        if (Client.HLevel.CurrentLevelId == 0)
+            SwapPortals();
     }
     
     [MessageHandler((ushort)MessageID.CH_Shuffle)]

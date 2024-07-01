@@ -146,8 +146,6 @@ public class HotkeyHandler
                 if (SettingsHandler.GameMode == GameMode.Chaos)
                 {
                     Client.HChaos.MoveCollectibles(Client.HLevel.CurrentLevelId);
-                    if (Client.HLevel.CurrentLevelId == 0)
-                        Client.HChaos.SwapPortals();
                 }
                 Client.HSync?.RequestSync();
                 return;

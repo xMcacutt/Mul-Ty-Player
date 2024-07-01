@@ -21,6 +21,8 @@ internal class PlayerHandler
     public PlayerHandler()
     {
         Application.Current.Dispatcher.Invoke(() => { Players.Clear(); });
+        Players.CollectionChanged += (s, e) => NotifyScoresChanged();
+
     }
 
     //Adds other player to players & playerInfo
@@ -92,6 +94,14 @@ internal class PlayerHandler
     {
         player = Players.FirstOrDefault(x => x.Id == clientId);
         return player != null;
+    }
+    
+    public static void NotifyScoresChanged()
+    {
+        foreach (var player in Players)
+        {
+            player.Score = player.Score;
+        }
     }
 
     [MessageHandler((ushort)MessageID.AnnounceDisconnect)]
