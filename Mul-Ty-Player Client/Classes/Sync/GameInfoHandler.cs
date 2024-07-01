@@ -15,7 +15,7 @@ public class GameInfoHandler
     {
         if (level < 0 || level > 23 || levelsActive[level] )
             return;
-        ProcessHandler.WriteData(SyncHandler.SaveDataBaseAddress + 0xB0 * level, new byte[] { 0x1 });
+        ProcessHandler.WriteData(SyncHandler.SaveDataBaseAddress + 0x70 * level, new byte[] { 0x1 });
         levelsActive[level] = true;
     }
 }
