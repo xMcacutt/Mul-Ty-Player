@@ -18,7 +18,6 @@ namespace Mul_Ty_Player_Updater.ViewModels;
 [AddINotifyPropertyChangedInterface]
 public class SetupViewModel
 {
-    
     public bool UpdateClient { get; set; }
     public string ClientPath { get; set; }
     public bool UpdateServer { get; set; }
@@ -30,6 +29,8 @@ public class SetupViewModel
     public bool RevertOutbackMovement { get; set; }
     public bool RevertRangSwitching { get; set; }
     public bool FixControllerCameraAiming { get; set; }
+    public bool OpenAllGameInfo { get; set; }
+    public bool FixMenuBug { get; set; }
     
     public SetupViewModel()
     {
@@ -46,6 +47,8 @@ public class SetupViewModel
         RevertRangSwitching = s.RevertRangSwitching;
         FixControllerCameraAiming = s.FixControllerCameraAiming;
         RemoveMagnetRandom = s.FixedMagnets;
+        OpenAllGameInfo = s.OpenAllGameInfo;
+        FixMenuBug = s.FixMenuBug;
     }
 
     public void SaveSettings()
@@ -61,6 +64,8 @@ public class SetupViewModel
         SettingsHandler.Settings.RevertRangSwitching = RevertRangSwitching;
         SettingsHandler.Settings.FixControllerCameraAiming = FixControllerCameraAiming;
         SettingsHandler.Settings.FixedMagnets = RemoveMagnetRandom;
+        SettingsHandler.Settings.OpenAllGameInfo = OpenAllGameInfo;
+        SettingsHandler.Settings.FixMenuBug = FixMenuBug;
         SettingsHandler.Settings.Version = Version;
         SettingsHandler.SaveSettings();
     }

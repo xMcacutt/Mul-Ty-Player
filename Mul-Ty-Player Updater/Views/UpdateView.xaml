@@ -17,7 +17,7 @@
     <Window.DataContext>
         <vm:UpdateViewModel/>
     </Window.DataContext>
-    <Grid Margin="10">
+    <Grid Margin="10" MouseDown="UIElement_OnMouseDown">
         <StackPanel>
             <TextBlock Style="{StaticResource SettingsTextStyle}"
                        Text="Update"

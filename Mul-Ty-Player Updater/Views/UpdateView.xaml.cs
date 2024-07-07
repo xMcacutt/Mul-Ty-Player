@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 using Mul_Ty_Player_Updater.ViewModels;
 
 namespace Mul_Ty_Player_Updater.Views;
@@ -23,5 +24,10 @@ public partial class UpdateView : Window
         if (DataContext is UpdateViewModel vm)
             vm.UpdateCompleted -= VmOnUpdateCompleted;
         DialogResult = true;
+    }
+
+    private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Pressed) DragMove();
     }
 }

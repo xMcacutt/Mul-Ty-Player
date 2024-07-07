@@ -171,6 +171,14 @@
                               Content="Fix Controller Camera Aiming"
                               ToolTip="Sets controls to throw rang where camera is aimed when using controller"
                               IsChecked="{Binding FixControllerCameraAiming}"/>
+                    <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Fix Menu Bug"
+                              ToolTip="Fixes the bug causing opening the menu with keyboard to default to Save Game"
+                              IsChecked="{Binding FixMenuBug}"/>
+                    <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Open All Game Info"
+                              ToolTip="Allows all game info screens to be accessed once a level has been entered"
+                              IsChecked="{Binding OpenAllGameInfo}"/>
                 </StackPanel>
                 
                 

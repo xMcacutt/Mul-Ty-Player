@@ -31,6 +31,8 @@ public class InstallViewModel
     public bool RevertOutbackMovement { get; set; }
     public bool RevertRangSwitching { get; set; }
     public bool FixControllerCameraAiming { get; set; }
+    public bool OpenAllGameInfo { get; set; }
+    public bool FixMenuBug { get; set; }
     public float Progress { get; set; }
     public string? ProgressMessage { get; set; }
     public bool Installing { get; set; }
@@ -47,6 +49,8 @@ public class InstallViewModel
         RevertOutbackMovement = true;
         RevertRangSwitching = true;
         FixControllerCameraAiming = true;
+        FixMenuBug = true;
+        OpenAllGameInfo = true;
         Progress = 0;
 
         var tyPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Steam\steamapps\common\TY the Tasmanian Tiger");
@@ -264,6 +268,22 @@ public class InstallViewModel
             var cameraData = FixControllerCameraAiming ? new byte[] {0x90, 0x90} : new byte[] {0x75, 0x0C}; 
             fileStream.Seek(0x169ABC, SeekOrigin.Begin);
             binaryWriter.Write(cameraData);
+            
+            //GAME INFO FIX
+            var gameInfoData = OpenAllGameInfo
+                ? new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90 }
+                : new byte[] { 0x80, 0x7C, 0x31, 0x10, 0x00 };
+            fileStream.Seek(0xE49CD, SeekOrigin.Begin);
+            binaryWriter.Write(gameInfoData);
+            fileStream.Seek(0xE5E4D, SeekOrigin.Begin);
+            binaryWriter.Write(gameInfoData);
+
+            //MENU FIX
+            var menuButtonPositionData = FixMenuBug
+                ? BitConverter.GetBytes(-5f)
+                : BitConverter.GetBytes(48f);
+            fileStream.Seek(0x2019B0, SeekOrigin.Begin);
+            binaryWriter.Write(menuButtonPositionData);
         }
         
         CopyPatch(latestRelease);
@@ -310,6 +330,8 @@ public class InstallViewModel
         SettingsHandler.Settings.RevertRangSwitching = RevertRangSwitching;
         SettingsHandler.Settings.FixControllerCameraAiming = FixControllerCameraAiming;
         SettingsHandler.Settings.FixedMagnets = RemoveMagnetRandom;
+        SettingsHandler.Settings.OpenAllGameInfo = OpenAllGameInfo;
+        SettingsHandler.Settings.FixMenuBug = FixMenuBug;
         SettingsHandler.Settings.Version = Version;
         SettingsHandler.SaveSettings();
     }

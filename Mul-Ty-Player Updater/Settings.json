@@ -8,6 +8,8 @@
   "RevertOutbackMovement": true,
   "RevertRangSwitching": true,
   "FixControllerCameraAiming": true,
+  "OpenAllGameInfo": true,
+  "FixMenuBug": true,
   "FixedMagnets": true,
-  "Version": "4.2.2"
+  "Version": "4.3.0"
 }

@@ -310,6 +310,22 @@ public class UpdateViewModel
         var cameraData = SettingsHandler.Settings.FixControllerCameraAiming ? new byte[] {0x90, 0x90} : new byte[] {0x75, 0x0C}; 
         fileStream.Seek(0x169ABC, SeekOrigin.Begin);
         binaryWriter.Write(cameraData);
+        
+        //GAME INFO FIX
+        var gameInfoData = SettingsHandler.Settings.OpenAllGameInfo
+            ? new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90 }
+            : new byte[] { 0x80, 0x7C, 0x31, 0x10, 0x00 };
+        fileStream.Seek(0xE49CD, SeekOrigin.Begin);
+        binaryWriter.Write(gameInfoData);
+        fileStream.Seek(0xE5E4D, SeekOrigin.Begin);
+        binaryWriter.Write(gameInfoData);
+
+        //MENU FIX
+        var menuButtonPositionData = SettingsHandler.Settings.FixMenuBug
+            ? BitConverter.GetBytes(-5f)
+            : BitConverter.GetBytes(48f);
+        fileStream.Seek(0x2019B0, SeekOrigin.Begin);
+        binaryWriter.Write(menuButtonPositionData);
     }
 
     private void UpdateRKV(Release latestRelease)
