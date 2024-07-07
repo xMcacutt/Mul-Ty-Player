@@ -67,7 +67,7 @@ internal class LevelHandler
         }
         if (CurrentLevelData.HasKoalas)
             FixKoalaObjectiveCount();
-        if (CurrentLevelData.IsMainStage && SettingsHandler.GameMode == GameMode.Chaos)
+        if (SettingsHandler.GameMode == GameMode.Chaos)
             Client.HChaos.MoveCollectibles(CurrentLevelId);
         OnLevelChange?.Invoke(currentLevelId);
     }
