@@ -910,6 +910,8 @@ public class ChaosHandler
     
     public void MoveCollectibles(int level)
     {
+        if (Client.HLevel.CurrentLevelId == 0 || Client.HGameState.IsOnMainMenuOrLoading)
+            SwapPortals();
         if (!_positions.ContainsKey(level) || !CurrentPositionIndices.ContainsKey(level) || Client.HGameState.IsOnMainMenuOrLoading)
             return;
         //Logger.Write($"Moving collectibles for level {level}");
@@ -961,9 +963,6 @@ public class ChaosHandler
             ProcessHandler.WriteData(cagePosAddr - 0x30, matBytes);
             ProcessHandler.WriteData(bilbyPosAddr - 0x30, matBytes);
         }
-        
-        if (Client.HLevel.CurrentLevelId == 0)
-            SwapPortals();
     }
     
     [MessageHandler((ushort)MessageID.CH_Shuffle)]
