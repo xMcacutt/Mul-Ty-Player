@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MulTyPlayer;
 using Riptide;
 
@@ -53,5 +54,13 @@ internal class  TEHandler : SyncObjectHandler
     {
         var address = PointerCalculations.GetPointerAddress(0x270420, new[] { 0x68 });
         ProcessHandler.WriteData(address, new byte[] { 0x2 });
+    }
+    
+    
+    public override int ReadObserver(int address, int size)
+    {
+        ProcessHandler.TryRead(address, out int result, CounterAddressStatic, "SyncObjectHandler::ReadObserver()");
+        if (size == 1) result = BitConverter.GetBytes(result)[0];
+        return result;
     }
 }

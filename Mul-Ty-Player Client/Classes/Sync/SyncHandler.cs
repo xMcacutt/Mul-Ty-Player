@@ -146,6 +146,17 @@ internal class SyncHandler
     public void CheckEnabledObservers()
     {
         //OBSERVERS
+        if (SettingsHandler.GameMode == GameMode.Chaos && SettingsHandler.DoTESyncing)
+        {
+            ProcessHandler.TryRead(SaveDataBaseAddress - 3, out byte result, false, "Chaos Thunder Egg");
+            if (result >= 17)
+                ProcessHandler.WriteData(SyncHandler.SaveDataBaseAddress + 0x70 * 7, new byte[] { 0x1 });
+            if (result >= 34)
+                ProcessHandler.WriteData(SyncHandler.SaveDataBaseAddress + 0x70 * 19, new byte[] { 0x1 }); 
+            if (result >= 51)
+                ProcessHandler.WriteData(SyncHandler.SaveDataBaseAddress + 0x70 * 15, new byte[] { 0x1 }); 
+        }
+        
         if (Levels.GetLevelData(Client.HLevel.CurrentLevelId).IsMainStage)
         {
             if (SettingsHandler.DoOpalSyncing)
