@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace MulTyPlayerClient.GUI.Classes.Views;
+namespace MulTyPlayerClient.GUI.Views;
 
 public partial class HSD_Player : UserControl
 {

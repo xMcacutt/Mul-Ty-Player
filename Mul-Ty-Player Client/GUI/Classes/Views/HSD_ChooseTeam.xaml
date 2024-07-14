@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="MulTyPlayerClient.GUI.Views.HS_ChooseTeam"
+﻿<UserControl x:Class="MulTyPlayerClient.GUI.Views.HSD_ChooseTeam"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,7 +6,7 @@
              xmlns:viewModels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
              xmlns:client="clr-namespace:MulTyPlayerClient"
              xmlns:controls="clr-namespace:MulTyPlayerClient.GUI.Controls"
-             d:DataContext="{d:DesignInstance Type=viewModels:HS_ChooseTeamViewModel}"
+             d:DataContext="{d:DesignInstance Type=viewModels:HSD_ChooseTeamViewModel}"
              mc:Ignorable="d"
              Background="{Binding MainBack, Source={x:Static client:App.AppColors}}"
              d:DesignHeight="750" d:DesignWidth="1200">
@@ -46,6 +46,7 @@
                 
                 <Button Grid.Row="0" 
                         Grid.Column="0" 
+                        Click="Team1_OnClick"
                         Style="{StaticResource LobbyButton}" 
                         Margin="10" 
                         HorizontalContentAlignment="Center">
@@ -64,6 +65,7 @@
                 
                 <Button Grid.Row="0" 
                         Grid.Column="2" 
+                        Click="Team2_OnClick"
                         Style="{StaticResource LobbyButton}" 
                         Margin="10" 
                         HorizontalContentAlignment="Center">
@@ -91,10 +93,10 @@
                                HorizontalAlignment="Center"
                                Text="Team 1 Players:"></TextBlock>
                     <ItemsControl x:Name="Team1ItemsControl" 
-                                  ItemsSource="{Binding Team1NamesCollection}">
+                                  ItemsSource="{x:Static client:HSD_DraftsHandler.Team1}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding }"
+                                <TextBlock Text="{Binding PlayerName}"
                                            Padding="15 0 0 0"
                                            Style="{StaticResource SettingsTextStyle}"
                                            FontSize="15"/>                        
@@ -114,10 +116,10 @@
                                HorizontalAlignment="Center"
                                Text="Team 2 Players:"></TextBlock>
                     <ItemsControl x:Name="Team2ItemsControl" 
-                                  ItemsSource="{Binding Team2NamesCollection}">
+                                  ItemsSource="{x:Static client:HSD_DraftsHandler.Team2}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding}"
+                                <TextBlock Text="{Binding PlayerName}"
                                            Padding="15 0 0 0"
                                            Style="{StaticResource SettingsTextStyle}"
                                            FontSize="15"/>

@@ -3,7 +3,7 @@
 namespace MulTyPlayerClient;
 
 [AddINotifyPropertyChangedInterface]
-internal class Player
+public class Player
 {
     public ushort Id { get; set; }
     public Koala? Koala { get; set; }

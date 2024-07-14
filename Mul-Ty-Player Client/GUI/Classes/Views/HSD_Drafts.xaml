@@ -1,0 +1,111 @@
+﻿<UserControl x:Class="MulTyPlayerClient.GUI.Views.HSD_Drafts"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:MulTyPlayerClient.GUI.Classes.Views"
+             xmlns:client="clr-namespace:MulTyPlayerClient"
+             xmlns:viewModels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="760" d:DesignWidth="1100"
+             Width="1050"
+             Height="775"
+             d:DataContext="{d:DesignInstance Type=viewModels:HSD_DraftViewModel}"
+             Background="{Binding MainBack, Source={x:Static client:App.AppColors}}">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width ="0.2*"/>
+            <ColumnDefinition Width ="0.7*"/>
+            <ColumnDefinition Width ="0.2*"/>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Row="0" Grid.Column="1">
+            <TextBlock Text = "Hide &amp; Seek Drafts"
+                       HorizontalAlignment="Center"
+                       Style="{StaticResource ComicTextMain}"
+                       FontSize="50"/>
+            <Button Style="{StaticResource LobbyButton}"
+                    Height="40"
+                    Width="110"
+                    Visibility="{Binding ReadyToStart, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"
+                    Click="StartSessionClick"
+                    VerticalAlignment="Bottom">
+                <TextBlock Style="{StaticResource ComicText}"
+                           Text="Start"
+                           FontSize="24"
+                           Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"/>
+            </Button>
+        </StackPanel>
+
+        
+        <Button Style="{StaticResource LobbyButton}"
+                Grid.Row="0"
+                Grid.Column="0"
+                Height="40"
+                Width="110"
+                Visibility="{Binding IsSwapTeam1Enabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"
+                Click="SwapTeam1Click"
+                VerticalAlignment="Bottom">
+            <TextBlock Style="{StaticResource ComicText}"
+                       Text="Swap Team"
+                       FontSize="20"
+                       Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"/>
+        </Button>
+        
+        <Button Style="{StaticResource LobbyButton}"
+                Grid.Row="0"
+                Grid.Column="2"
+                Height="40"
+                Width="110"
+                Visibility="{Binding IsSwapTeam2Enabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"
+                Click="SwapTeam2Click"
+                VerticalAlignment="Bottom">
+            <TextBlock Style="{StaticResource ComicText}"
+                       Text="Swap Team"
+                       FontSize="20"
+                       Foreground="{Binding AltAccent, Source={x:Static client:App.AppColors}}"/>
+        </Button>
+        
+        <ItemsControl Margin="5" Grid.Row="1" Grid.Column="0" ItemsSource="{x:Static client:HSD_DraftsHandler.Team1Backgrounds}"/>
+        <ItemsControl Margin="5" Grid.Row="1" Grid.Column="2" ItemsSource="{x:Static client:HSD_DraftsHandler.Team2Backgrounds}"/>
+        <ItemsControl Margin="5" Grid.Row="1" Grid.Column="0" ItemsSource="{x:Static client:HSD_DraftsHandler.Team1}"/>
+        <ItemsControl Margin="5" Grid.Row="1" Grid.Column="2" ItemsSource="{x:Static client:HSD_DraftsHandler.Team2}"/>
+        
+        <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width ="*"/>
+                <ColumnDefinition Width ="*"/>
+                <ColumnDefinition Width ="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <ContentControl Grid.Row="3" Grid.Column="1" IsHitTestVisible="{Binding BlockLevelSelect}" Content="{Binding LevelZ1}"/>
+            <ContentControl Grid.Row="0" Grid.Column="0" IsHitTestVisible="{Binding BlockLevelSelect}" Content="{Binding LevelA1}"/>
+            <ContentControl Grid.Row="1" Grid.Column="0" IsHitTestVisible="{Binding BlockLevelSelect}" Content="{Binding LevelB1}"/>
+            <ContentControl Grid.Row="2" Grid.Column="0" IsHitTestVisible="{Binding BlockLevelSelect}" Content="{Binding LevelC1}"/>
+            <ContentControl Grid.Row="0" Grid.Column="1" IsHitTestVisible="{Binding BlockLevelSelect}" Content="{Binding LevelA2}"/>
+            <ContentControl Grid.Row="1" Grid.Column="1" IsHitTestVisible="{Binding BlockLevelSelect}" Content="{Binding LevelB2}"/>
+            <ContentControl Grid.Row="2" Grid.Column="1" IsHitTestVisible="{Binding BlockLevelSelect}" Content="{Binding LevelC2}"/>
+            <ContentControl Grid.Row="0" Grid.Column="2" IsHitTestVisible="{Binding BlockLevelSelect}" Content="{Binding LevelA3}"/>
+            <ContentControl Grid.Row="1" Grid.Column="2" IsHitTestVisible="{Binding BlockLevelSelect}" Content="{Binding LevelB3}"/>
+            <ContentControl Grid.Row="2" Grid.Column="2" IsHitTestVisible="{Binding BlockLevelSelect}" Content="{Binding LevelC3}"/>
+        </Grid>
+        
+        <ItemsControl Margin="5" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{x:Static client:HSD_DraftsHandler.Picks}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>    </Grid>
+</UserControl>

@@ -22,7 +22,6 @@ internal class PlayerHandler
     {
         Application.Current.Dispatcher.Invoke(() => { Players.Clear(); });
         Players.CollectionChanged += (s, e) => NotifyScoresChanged();
-
     }
 
     //Adds other player to players & playerInfo

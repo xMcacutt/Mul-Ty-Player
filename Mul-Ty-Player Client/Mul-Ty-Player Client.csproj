@@ -161,6 +161,16 @@
             <XamlRuntime>Wpf</XamlRuntime>
             <SubType>Designer</SubType>
         </Page>
+        <Page Update="GUI\Classes\Views\HSD_Level.xaml">
+          <Generator>MSBuild:Compile</Generator>
+          <XamlRuntime>Wpf</XamlRuntime>
+          <SubType>Designer</SubType>
+        </Page>
+        <Page Update="GUI\Classes\Views\HSD_Pick.xaml">
+          <Generator>MSBuild:Compile</Generator>
+          <XamlRuntime>Wpf</XamlRuntime>
+          <SubType>Designer</SubType>
+        </Page>
     </ItemGroup>
     <ItemGroup>
         <ApplicationDefinition Include="GUI\App.xaml">
@@ -262,7 +272,7 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="list.servers">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Resources\Steamworks.NET.dll">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -429,6 +439,53 @@
         <None Remove="GUI\HS_DraftAssets\Snugs.png" />
         <Content Include="GUI\HS_DraftAssets\Snugs.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\0bw.png" />
+        <Content Include="GUI\HS_DraftAssets\0bw.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\4bw.png" />
+        <Content Include="GUI\HS_DraftAssets\4bw.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\5bw.png" />
+        <Content Include="GUI\HS_DraftAssets\5bw.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\6bw.png" />
+        <Content Include="GUI\HS_DraftAssets\6bw.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\8bw.png" />
+        <Content Include="GUI\HS_DraftAssets\8bw.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\9bw.png" />
+        <Content Include="GUI\HS_DraftAssets\9bw.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\10bw.png" />
+        <Content Include="GUI\HS_DraftAssets\10bw.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\12bw.png" />
+        <Content Include="GUI\HS_DraftAssets\12bw.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\13bw.png" />
+        <Content Include="GUI\HS_DraftAssets\13bw.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\14bw.png" />
+        <Content Include="GUI\HS_DraftAssets\14bw.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="GUI\HS_DraftAssets\HSD_KoalaBack.png">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <None Remove="GUI\HS_DraftAssets\HSD_KoalaBack.png" />
+        <Content Include="GUI\HS_DraftAssets\HSD_KoalaBack.png">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
     <ItemGroup>

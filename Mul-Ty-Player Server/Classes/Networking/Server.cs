@@ -95,6 +95,7 @@ internal class Server
     {
         //Console.WriteLine("Client connected.");
         KoalaHandler.SendKoalaAvailability(e.Client.Id);
+        Program.HDrafts.SendTeamData(e.Client.Id);
         SettingsHandler.SendSettings(e.Client.Id);
     }
 
@@ -109,6 +110,7 @@ internal class Server
                 true);
             PlayerHandler.RemovePlayer(e.Client.Id);
             PlayerHandler.AnnounceDisconnect(e.Client.Id);
+            Program.HDrafts.TryRemovePlayer(e.Client.Id);
         }
         if (_Server.ClientCount == 0 && SettingsHandler.Settings.ResetPasswordOnEmpty)
             SettingsHandler.Settings.Password = "XXXXX";

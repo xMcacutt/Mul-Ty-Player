@@ -53,7 +53,13 @@ public enum MessageID : ushort
     CH_ShuffleOnStartToggle,
     HS_EndSeek,
     CL_UpdateScore,
-    CL_ResetScore
+    CL_ResetScore,
+    HSD_TeamData,
+    HSD_PlayerJoined,
+    HSD_PlayerLeft,
+    HSD_PickRequest,
+    HSD_Start,
+    HSD_Reset
 }
 
 

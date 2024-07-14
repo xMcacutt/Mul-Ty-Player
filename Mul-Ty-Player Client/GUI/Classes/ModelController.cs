@@ -10,8 +10,8 @@ public static class ModelController
     public static KoalaSelectModel KoalaSelect { get; private set; }
     public static LobbyModel Lobby { get; private set; }
     public static SettingsViewModel Settings { get; private set; }
-    public static HS_ChooseTeamModel HS_ChooseTeam { get; private set; }
-    //public static HS_DraftModel HS_Draft { get; private set; }
+    public static HSD_ChooseTeamModel HSD_ChooseTeam { get; private set; }
+    public static HSD_DraftModel HSD_Draft { get; private set; }
     public static Minimap Minimap = new Minimap();
 
     public static void InstantiateModels()
@@ -22,7 +22,7 @@ public static class ModelController
         Login = new LoginModel();
         KoalaSelect = new KoalaSelectModel();
         Lobby = new LobbyModel();
-        HS_ChooseTeam = new HS_ChooseTeamModel();
-        //HS_Draft = new HS_DraftModel();
+        HSD_ChooseTeam = new HSD_ChooseTeamModel();
+        HSD_Draft = new HSD_DraftModel();
     }
 }

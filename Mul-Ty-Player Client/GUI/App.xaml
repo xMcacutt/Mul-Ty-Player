@@ -38,11 +38,20 @@
                     <DataTemplate DataType="{x:Type viewmodels:SettingsViewModel}">
                         <views:SettingsMenu />
                     </DataTemplate>
-                    <DataTemplate DataType="{x:Type viewmodels:HS_ChooseTeamViewModel}">
-                        <views:HS_ChooseTeam />
+                    <DataTemplate DataType="{x:Type viewmodels:HSD_ChooseTeamViewModel}">
+                        <views:HSD_ChooseTeam />
                     </DataTemplate>
-                    <DataTemplate DataType="{x:Type viewmodels:HS_DraftViewModel}">
-                        <views:HS_Drafts />
+                    <DataTemplate DataType="{x:Type viewmodels:HSD_DraftViewModel}">
+                        <views:HSD_Drafts />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:HSD_LevelViewModel}">
+                        <views:HSD_Level />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:HSD_PlayerViewModel}">
+                        <views:HSD_Player />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:HSD_PickViewModel}">
+                        <views:HSD_Pick />
                     </DataTemplate>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>

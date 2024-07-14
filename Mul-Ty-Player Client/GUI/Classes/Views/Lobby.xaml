@@ -448,7 +448,7 @@
                                                              IconCode="{DynamicResource IcoCancel}"/>
                                     <controls:CustomMenuItem Header="Open Drafts"
                                                              x:Name="StartDraft"
-                                                             IsEnabled="False"
+                                                             IsEnabled="True"
                                                              Click="OpenDrafts_OnClick"
                                                              IconCode="{DynamicResource IcoDrafts}"/>
                                 </ContextMenu>

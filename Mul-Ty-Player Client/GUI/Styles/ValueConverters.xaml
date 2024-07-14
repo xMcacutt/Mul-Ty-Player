@@ -11,4 +11,5 @@
     <gui:PopupVisibilityToArrowDirectionConverter x:Key="PopupVisibilityToArrowDirectionConverter"/>
     <gui:RoleToIconConverter x:Key="RoleToIconConverter"/>
     <gui:ScoreLeaderConverter x:Key="ScoreLeaderConverter"/>
+    <gui:ClientIdToNameConverter x:Key="ClientIdToNameConverter"/>
 </ResourceDictionary>

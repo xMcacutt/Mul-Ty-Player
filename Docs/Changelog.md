@@ -2,12 +2,8 @@
 
 ## Most Recent
 
-#### 4.3.0
-- (FR) Removed Finnruns theming.
-- Removed game info syncing.
-- Added game info activation to the updater.
-- Added incorrect menu option on pause bug fix to the updater.
-- Prevented deletion of files on update error.
+#### 4.4.0
+- (HSD) Added basic hide & seek drafts
 
 ### Known Issues
 - Spectator mode is liable to crashing

@@ -7,6 +7,7 @@ using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
+using MulTyPlayerClient.GUI.ViewModels;
 using MulTyPlayerClient.GUI.Views;
 using MulTyPlayerClient.Objectives;
 using Riptide;
@@ -37,6 +38,7 @@ internal class Client
     public static HSHandler HHideSeek;
     public static GlowHandler HGlow;
     public static ChaosHandler HChaos;
+    public static HSD_DraftsHandler HDrafts;
 
     public static CancellationTokenSource cts;
     public static bool Relaunching => TyProcess.LaunchingGame;
@@ -85,6 +87,7 @@ internal class Client
         HHideSeek = new HSHandler();
         HGlow = new GlowHandler();
         HChaos = new ChaosHandler();
+        HDrafts = new HSD_DraftsHandler();
     }
 
     private static void InitRiptide()
@@ -142,6 +145,7 @@ internal class Client
             PlayerReplication.ReturnKoala(koalaID);
         PlayerReplication.ClearPlayers();
         ModelController.KoalaSelect.MakeAllAvailable();
+        Application.Current.Dispatcher.Invoke(() => { LobbyViewModel.DraftWindow.Close(); });
         SFXPlayer.PlaySound(SFX.PlayerDisconnect);
         if (e.Reason == DisconnectReason.TimedOut && SettingsHandler.Settings.AttemptReconnect)
         {

@@ -20,7 +20,7 @@ public class LobbyViewModel : IViewModel
         ChatMessages = new ObservableCollection<string>();
         ManageInputCommand = new RelayCommand(ManageInput);
         LogoutCommand = new RelayCommand(Logout);
-
+        DraftWindow = new HSD_MainWindow();
         Lobby.IsOnMenuChanged += Model_IsOnMenuChanged;
         Lobby.IsReadyChanged += Model_IsReadyChanged;
         Lobby.IsHostChanged += Model_IsHostChanged;
@@ -216,7 +216,16 @@ public class LobbyViewModel : IViewModel
     public static HSD_MainWindow DraftWindow;
     public void OpenDrafts()
     {
-        DraftWindow = new HSD_MainWindow();
-        DraftWindow.Show();
+        if (DraftWindow is not { IsVisible: true })
+        {
+            // Create a new instance if it is not open or has been closed
+            DraftWindow = new HSD_MainWindow();
+            DraftWindow.Show();
+        }
+        else
+        {
+            // If the window is already open, bring it to the front
+            DraftWindow.Activate();
+        }
     }
 }

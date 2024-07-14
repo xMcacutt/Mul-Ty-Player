@@ -1,19 +1,37 @@
-﻿<UserControl x:Class="MulTyPlayerClient.GUI.Classes.Views.HSD_Player"
+﻿<UserControl x:Class="MulTyPlayerClient.GUI.Views.HSD_Player"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:MulTyPlayerClient.GUI.Classes.Views"
              xmlns:client="clr-namespace:MulTyPlayerClient"
+             xmlns:views="clr-namespace:MulTyPlayerClient.GUI.Views"
+             xmlns:viewModels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
              mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=viewModels:HSD_PlayerViewModel}"
              d:DesignHeight="150" d:DesignWidth="148">
+        <UserControl.Resources>
+        <DrawingImage x:Key="KoalaFace">
+            <DrawingImage.Drawing>
+                <DrawingGroup ClipGeometry="M0,0 V146.83598 H156.75714 V0 H0 Z">
+                    <DrawingGroup Opacity="1" Transform="1,0,0,1,-26.621428,-92.35233">
+                        <GeometryDrawing Brush="{Binding MainBack, Source={x:Static client:App.AppColors}}" Geometry="F1 M156.75714,146.83598z M0,0z M79.548396,237.65271L75.386187,236.2322 71.755427,234.09975 68.124667,231.9673 62.215417,227.16958 56.306168,222.37186 49.500574,216.42779 42.69498,210.48372 41.259433,209.25006 39.823886,208.01639 39.823886,206.23528 39.823886,204.45417 38.631054,203.13611 37.438223,201.81804 34.119336,195.78018 30.800449,189.74231 30.800449,188.73118 30.800449,187.72006 33.665937,185.76862 36.531426,183.81717 36.537026,183.12349 36.542626,182.42981 34.884735,180.10152 33.226844,177.77323 32.03281,174.38897 30.838776,171.00472 29.263257,164.28595 27.687738,157.56717 27.154583,151.00467 26.621428,144.44217 27.916253,139.58695 29.211077,134.73172 28.365133,133.88577 27.519189,133.03983 27.519189,131.13681 27.519189,129.23379 29.461994,126.17392 31.404799,123.11405 35.92914,118.85115 40.453481,114.58825 45.597888,111.26326 50.742295,107.93827 51.878265,107.93827 53.014235,107.93827 56.11636,109.52085 59.218484,111.10344 63.701738,114.75547 68.184992,118.40751 71.814994,123.22172 75.444997,128.03592 75.619492,128.3159 75.793988,128.59588 77.543423,128.04063 79.292858,127.48538 80.035498,125.53209 80.778138,123.5788 85.707302,121.09057 90.636471,118.60233 91.890331,118.60233 93.144191,118.60233 93.144191,114.97386 93.144191,111.3454 95.277511,108.81008 97.410841,106.27478 106.28377,99.3135549999999 115.1567,92.3523349999999 116.86529,92.3523349999999 118.57388,92.3523349999999 118.57388,93.9907749999999 118.57388,95.6292049999999 116.10983,100.84439 113.64578,106.05956 112.00827,112.46216 110.37076,118.86477 110.37076,121.43451 110.37076,124.00425 114.25539,125.04323 118.14002,126.08221 122.00412,128.45981 125.86822,130.83742 126.40967,129.13149 126.95111,127.42555 133.03734,121.05517 139.12356,114.68479 143.3947,112.8474 147.66584,111.01 153.83275,110.9618 159.99966,110.9136 165.49823,113.45859 170.9968,116.00359 175.1253,119.86531 179.2538,123.72704 181.31618,128.08657 183.37857,132.44609 183.37857,134.79376 183.37857,137.14143 182.64542,137.92073 181.91227,138.70003 181.56443,152.9572 181.21658,167.21438 180.00259,168.13298 178.7886,169.05159 175.62388,174.79378 172.45917,180.53596 169.92965,184.10192 167.40014,187.66788 169.44209,189.27289 171.48404,190.8779 172.91958,192.05632 174.35513,193.23475 174.35513,195.1756 174.35513,197.11644 171.58522,200.74408 168.81531,204.37172 165.01936,207.48222 161.2234,210.59272 154.16088,215.02671 147.09836,219.4607 132.72016,226.47186 118.34197,233.48301 113.33097,235.14429 108.31997,236.80557 102.72924,237.99694 97.138491,239.18831 90.424541,239.13081 83.710595,239.07331z" />
+                    </DrawingGroup>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+    </UserControl.Resources>
     <StackPanel>
         <Border Width="128" Height="128"
                 Margin="10"
+                Background="{Binding AltBack, Source={x:Static client:App.AppColors}}"
                 BorderBrush="{Binding TeamColor}"
                 BorderThickness="2">
             <Grid>
-                <Image Source="{Binding KoalaImage}"/>
+                <Viewbox Height="100" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image Source="{StaticResource KoalaFace}"/>
+                </Viewbox>
+                <Image Source="{Binding KoalaImageSource}"/>
                 <TextBlock Style="{StaticResource ComicTextMain}"
                            Text="{Binding PlayerName}"
                            FontSize="16"
@@ -23,7 +41,5 @@
                            VerticalAlignment="Bottom"/>
             </Grid>
         </Border>
-       
     </StackPanel>
-    
 </UserControl>

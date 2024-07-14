@@ -9,18 +9,18 @@ public class HSD_MainViewModel
 {
     public IViewModel CurrentViewModel { get; set; }
     private IViewModel lastViewModel;
-    private readonly HS_ChooseTeamViewModel chooseTeamViewModel;
-    private readonly HS_DraftViewModel draftViewModel;
+    private readonly HSD_ChooseTeamViewModel chooseTeamViewModel;
+    private readonly HSD_DraftViewModel draftViewModel;
 
     public HSD_MainViewModel()
     {
-        chooseTeamViewModel = new HS_ChooseTeamViewModel();
-        draftViewModel = new HS_DraftViewModel();
+        chooseTeamViewModel = new HSD_ChooseTeamViewModel();
+        draftViewModel = new HSD_DraftViewModel();
         
         lastViewModel = chooseTeamViewModel;
         CurrentViewModel = chooseTeamViewModel;
         
-        ModelController.HS_ChooseTeam.OnChosenTeam += () => GoToView(HSD_View.Draft);
+        ModelController.HSD_ChooseTeam.OnChosenTeam += () => GoToView(HSD_View.Draft);
     }
     
     private void GoToView(HSD_View view)

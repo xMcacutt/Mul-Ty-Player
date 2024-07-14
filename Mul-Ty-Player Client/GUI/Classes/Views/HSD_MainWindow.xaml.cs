@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 using MulTyPlayerClient.GUI.ViewModels;
 
@@ -27,5 +28,11 @@ public partial class HSD_MainWindow : Window
     private void CloseButton_OnClick(object sender, RoutedEventArgs e)
     {
         Close();
+    }
+
+    private void HSD_MainWindow_OnClosing(object sender, CancelEventArgs e)
+    {
+        if (Client.HDrafts is not null)
+            Client.HDrafts.LeaveTeam();
     }
 }

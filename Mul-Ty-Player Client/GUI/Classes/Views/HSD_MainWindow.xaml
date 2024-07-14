@@ -13,6 +13,7 @@
         Title="Mul-Ty-Player Client - Hide &amp; Seek Drafts"
         BorderBrush="{Binding SpecialBack, Source={x:Static client:App.AppColors}}"
         BorderThickness="1"
+        Closing="HSD_MainWindow_OnClosing"
         SizeToContent="WidthAndHeight">
     <Grid>
         <Grid.RowDefinitions>
