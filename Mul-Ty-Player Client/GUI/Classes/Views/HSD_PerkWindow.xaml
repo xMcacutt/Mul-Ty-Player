@@ -1,0 +1,56 @@
+﻿<Window x:Class="MulTyPlayerClient.GUI.Classes.Views.HSD_PerkWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:MulTyPlayerClient.GUI.Classes.Views"
+        xmlns:client="clr-namespace:MulTyPlayerClient"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="{Binding MainBack, Source={x:Static client:App.AppColors}}"
+        Title="Choose Your Perks"
+        SizeToContent="WidthAndHeight">
+    <Grid>
+        <StackPanel Visibility="{Binding ChoosePerkActive, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}">
+            <TextBlock Text="Choose Your Perk"
+                       Style="{StaticResource ComicText}"
+                       FontSize="30"/>
+            <Button Style="{StaticResource LobbyButton}"
+                    Content="{Binding Perk1}"
+                    Name="Perk1"
+                    Width="200"
+                    Click="Perk_OnClick"/>
+            <Button Style="{StaticResource LobbyButton}"
+                    Content="{Binding Perk2}"
+                    Name="Perk2"
+                    Width="200"
+                    Click="Perk_OnClick"/>
+            <Button Style="{StaticResource LobbyButton}"
+                    Content="{Binding Perk3}"
+                    Name="Perk3"
+                    Width="200"
+                    Click="Perk_OnClick"/>
+        </StackPanel>
+            <StackPanel Visibility="{Binding ChoosePerkActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock Text="Choose Your Debuff"
+                       Style="{StaticResource ComicText}"
+                       FontSize="30"/>
+            <Button Style="{StaticResource LobbyButton}"
+                    Content="{Binding Debuff1}"
+                    Name="Debuff1"
+                    Width="200"
+                    Click="Debuff_OnClick"/>
+            <Button Style="{StaticResource LobbyButton}"
+                    Content="{Binding Debuff2}"
+                    Name="Debuff2"
+                    Width="200"
+                    Click="Debuff_OnClick"/>
+            <Button Style="{StaticResource LobbyButton}"
+                    Content="{Binding Debuff3}"
+                    Name="Debuff3"
+                    Width="200"
+                    Click="Debuff_OnClick"/>
+        </StackPanel>
+    </Grid>
+</Window>

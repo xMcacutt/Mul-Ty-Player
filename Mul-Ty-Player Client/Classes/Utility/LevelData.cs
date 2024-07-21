@@ -184,6 +184,16 @@ public class Levels
         HasKoalas = false
     };
 
+    public static readonly LevelData EventLevel = new()
+    {
+        Id = 18,
+        Code = "D3",
+        Name = "Event Level",
+        FrameCount = 0,
+        IsMainStage = false,
+        HasKoalas = false
+    };
+
     public static readonly LevelData FinalBattle = new()
     {
         Id = 23,
@@ -248,7 +258,9 @@ public class Levels
         { 20, CassPass },
         { 21, BonusWorld1 },
         { 22, BonusWorld2 },
-        { 23, FinalBattle }
+        { 23, FinalBattle },
+        
+        { 18, EventLevel}
     };
 
     public static readonly LevelData[] MainStages =

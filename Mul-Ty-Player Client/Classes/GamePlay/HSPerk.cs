@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,6 +25,40 @@ public class PerkHandler
         {14, new SeekersSeeLightsPerk()}
     };
 
+    public static readonly ObservableCollection<HSPerk> HiderPerks = new()
+    {
+        new HiderGravityPerk(),
+        new HiderGlideSpeedPerk(),
+        new OpalSpeedPerk(),
+        new HidersSeeLightsPerk(),
+        new HiderSwimSpeedPerk(),
+        //new HidersFreezeSeekersPerk()
+    };
+
+    public static readonly ObservableCollection<HSPerk> HiderDebuffs = new()
+    {
+        new HiderOneHitPerk(),
+        new OpalSlowPerk(),
+        new HiderOneRangPerk()
+    };
+
+    public static readonly ObservableCollection<HSPerk> SeekerPerks = new()
+    {
+        new SeekerGravityPerk(),
+        new SeekerGlideSpeedPerk(),
+        new SeekersSeeLightsPerk(),
+        new SeekersFreezeHidersPerk(),
+        new SeekerSwimSpeedPerk(),
+        new OpalSpeedPerk()
+    };
+    
+    public static readonly ObservableCollection<HSPerk> SeekerDebuffs = new()
+    {
+        new SeekerOneHitPerk(),
+        new OpalSlowPerk(),
+        new SeekerOneRangPerk()
+    };
+
     public static void DeactivateAllPerks()
     {
         foreach (var perk in LevelPerks.Values)
@@ -33,6 +68,9 @@ public class PerkHandler
 
 public abstract class HSPerk
 {
+    public string DisplayName;
+    public string ToolTip;
+
     public virtual void ApplyHider() {}
     public virtual void ApplySeeker() {}
     public virtual void ApplyTime() {}
@@ -42,10 +80,21 @@ public abstract class HSPerk
 
 public class NoPerk : HSPerk
 {
+    public NoPerk()
+    {
+        DisplayName = "None";
+        ToolTip = "No perk will be applied";
+    }
 }
 
 public class OpalSlowPerk : HSPerk
 {
+    public OpalSlowPerk()
+    {
+        DisplayName = "Opal Slowness";
+        ToolTip = "No perk will be applied";
+    }
+    
     public override void ApplyHider()
     {
         var opalCount = CountOpals();
