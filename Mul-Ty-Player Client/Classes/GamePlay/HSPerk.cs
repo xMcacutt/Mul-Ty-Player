@@ -5,6 +5,7 @@ using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
 using MulTyPlayer;
+using MulTyPlayerClient.GUI.Classes.Views;
 using PropertyChanged;
 using Riptide;
 
@@ -12,6 +13,8 @@ namespace MulTyPlayerClient;
 
 public class PerkHandler
 {
+    public static HSD_PerkWindow PerkDialog;
+    
     public static readonly Dictionary<int, HSPerk> LevelPerks = new()
     {
         {0, new OpalSpeedPerk()},

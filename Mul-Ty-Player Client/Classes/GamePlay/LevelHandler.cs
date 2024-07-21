@@ -55,8 +55,8 @@ internal class LevelHandler
             (HSync.SyncObjects["TE"] as TEHandler)?.ShowStopwatch();
         if (SettingsHandler.GameMode == GameMode.HideSeek)
         {
-            Client.HHideSeek.CurrentPerk.Deactivate();
-            Client.HHideSeek.CurrentPerk = PerkHandler.LevelPerks[CurrentLevelId];
+            //Client.HHideSeek.CurrentPerk.Deactivate();
+            //Client.HHideSeek.CurrentPerk = PerkHandler.LevelPerks[CurrentLevelId];
         }
         if (CurrentLevelData.Id != 16)
         {

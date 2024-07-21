@@ -9,7 +9,9 @@ using Microsoft.Diagnostics.Tracing.Parsers.Clr;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.GUI;
+using MulTyPlayerClient.GUI.Classes.Views;
 using MulTyPlayerClient.GUI.Models;
+using MulTyPlayerClient.GUI.ViewModels;
 using Riptide;
 
 namespace MulTyPlayerClient;
@@ -117,6 +119,15 @@ internal class PlayerHandler
     
     public void SetReady()
     {
+        if (SettingsHandler.GameMode == GameMode.HideSeek &&
+            Client.HHideSeek.CurrentPerk != null &&
+            Client.HHideSeek.CurrentPerk.DisplayName == "None")
+        {
+            PerkHandler.PerkDialog = new HSD_PerkWindow();
+            PerkHandler.PerkDialog.ShowDialog();
+            return;
+        }
+        
         var player = Players.First(x => x.Id == Client._client.Id);
         if (ModelController.Login.JoinAsSpectator)
             return;

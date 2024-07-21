@@ -145,7 +145,8 @@ internal class Client
             PlayerReplication.ReturnKoala(koalaID);
         PlayerReplication.ClearPlayers();
         ModelController.KoalaSelect.MakeAllAvailable();
-        Application.Current.Dispatcher.Invoke(() => { LobbyViewModel.DraftWindow.Close(); });
+        Application.Current.Dispatcher.Invoke(() => { LobbyViewModel.DraftWindow?.Close(); });
+        Application.Current.Dispatcher.Invoke(() => { PerkHandler.PerkDialog?.Close(); });
         SFXPlayer.PlaySound(SFX.PlayerDisconnect);
         if (e.Reason == DisconnectReason.TimedOut && SettingsHandler.Settings.AttemptReconnect)
         {

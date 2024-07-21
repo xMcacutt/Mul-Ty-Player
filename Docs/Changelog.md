@@ -2,8 +2,8 @@
 
 ## Most Recent
 
-#### 4.4.0
-- (HSD) Added basic hide & seek drafts
+#### 4.4.2
+- (HSD) Overhaul to perk system
 
 ### Known Issues
 - Spectator mode is liable to crashing
@@ -168,6 +168,8 @@
 - Added game info activation to the updater.
 - Added incorrect menu option on pause bug fix to the updater.
 
+#### 4.4.0
+- (HSD) Added drafts system.
 
 
 

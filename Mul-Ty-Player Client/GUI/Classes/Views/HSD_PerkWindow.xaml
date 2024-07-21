@@ -5,52 +5,77 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:MulTyPlayerClient.GUI.Classes.Views"
         xmlns:client="clr-namespace:MulTyPlayerClient"
+        xmlns:viewModels="clr-namespace:MulTyPlayerClient.GUI.ViewModels"
         mc:Ignorable="d"
         WindowStyle="None"
         ResizeMode="NoResize"
         Background="{Binding MainBack, Source={x:Static client:App.AppColors}}"
         Title="Choose Your Perks"
         SizeToContent="WidthAndHeight">
+    <Window.DataContext>
+        <viewModels:HSD_PerkWindowViewModel />
+    </Window.DataContext>
     <Grid>
-        <StackPanel Visibility="{Binding ChoosePerkActive, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}">
+        <StackPanel Margin="10"
+                    Visibility="{Binding ChoosePerkActive, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}">
             <TextBlock Text="Choose Your Perk"
+                       Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"
                        Style="{StaticResource ComicText}"
-                       FontSize="30"/>
+                       FontSize="44" />
             <Button Style="{StaticResource LobbyButton}"
-                    Content="{Binding Perk1}"
+                    Content="{Binding Perk1.DisplayName}"
+                    ToolTip="{Binding Perk1.ToolTip}"
                     Name="Perk1"
+                    FontFamily="SF Slapstick Comic"
+                    FontSize="24"
                     Width="200"
-                    Click="Perk_OnClick"/>
+                    Click="Perk_OnClick" />
             <Button Style="{StaticResource LobbyButton}"
-                    Content="{Binding Perk2}"
+                    Content="{Binding Perk2.DisplayName}"
+                    ToolTip="{Binding Perk2.ToolTip}"
                     Name="Perk2"
+                    FontFamily="SF Slapstick Comic"
+                    FontSize="24"
                     Width="200"
-                    Click="Perk_OnClick"/>
+                    Click="Perk_OnClick" />
             <Button Style="{StaticResource LobbyButton}"
-                    Content="{Binding Perk3}"
+                    Content="{Binding Perk3.DisplayName}"
+                    ToolTip="{Binding Perk3.ToolTip}"
                     Name="Perk3"
+                    FontFamily="SF Slapstick Comic"
+                    FontSize="24"
                     Width="200"
-                    Click="Perk_OnClick"/>
+                    Click="Perk_OnClick" />
         </StackPanel>
-            <StackPanel Visibility="{Binding ChoosePerkActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <StackPanel Visibility="{Binding ChoosePerkActive, Converter={StaticResource BooleanToVisibilityConverter}}">
             <TextBlock Text="Choose Your Debuff"
+                       Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"
                        Style="{StaticResource ComicText}"
-                       FontSize="30"/>
+                       FontSize="44" />
             <Button Style="{StaticResource LobbyButton}"
-                    Content="{Binding Debuff1}"
+                    Content="{Binding Debuff1.DisplayName}"
+                    ToolTip="{Binding Debuff1.ToolTip}" 
                     Name="Debuff1"
+                    FontFamily="SF Slapstick Comic"
+                    FontSize="24"
                     Width="200"
-                    Click="Debuff_OnClick"/>
+                    Click="Debuff_OnClick" />
             <Button Style="{StaticResource LobbyButton}"
-                    Content="{Binding Debuff2}"
+                    Content="{Binding Debuff2.DisplayName}"
+                    ToolTip="{Binding Debuff2.ToolTip}"
                     Name="Debuff2"
+                    FontFamily="SF Slapstick Comic"
+                    FontSize="24"
                     Width="200"
-                    Click="Debuff_OnClick"/>
+                    Click="Debuff_OnClick" />
             <Button Style="{StaticResource LobbyButton}"
-                    Content="{Binding Debuff3}"
+                    Content="{Binding Debuff3.DisplayName}"
+                    ToolTip="{Binding Debuff3.ToolTip}"
                     Name="Debuff3"
+                    FontFamily="SF Slapstick Comic"
+                    FontSize="24"
                     Width="200"
-                    Click="Debuff_OnClick"/>
+                    Click="Debuff_OnClick" />
         </StackPanel>
     </Grid>
 </Window>

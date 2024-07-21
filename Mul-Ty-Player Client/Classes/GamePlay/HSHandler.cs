@@ -67,6 +67,8 @@ public class HSHandler
         }
     }
 
+    public HSPerk CurrentDebuff = new NoPerk();
+
     public HSPerk CurrentPerk = new NoPerk();
     
     public delegate void RoleChangedEventHandler(HSRole newRole);
@@ -82,7 +84,7 @@ public class HSHandler
     public static void Activate()
     {
         Client.HGlow.ReturnGlows();
-        Client.HHideSeek.CurrentPerk = PerkHandler.LevelPerks[Client.HLevel.CurrentLevelId];
+        //Client.HHideSeek.CurrentPerk = PerkHandler.LevelPerks[Client.HLevel.CurrentLevelId];
         Client.HHideSeek.StartTimerLoop();
     }
 
@@ -97,7 +99,10 @@ public class HSHandler
     {
         // HIDE TIME HIDER
         if (Mode == HSMode.HideTime && Role == HSRole.Hider)
+        {
             CurrentPerk.ApplyHider();
+            CurrentDebuff.ApplyHider();
+        }
         
         // HIDE TIME SEEKER
         if (Mode == HSMode.HideTime && Role == HSRole.Seeker)
@@ -110,6 +115,7 @@ public class HSHandler
             if (!_timerRunning)
                 _timerRunning = true;
             CurrentPerk.ApplyHider();
+            CurrentDebuff.ApplyHider();
         }
 
         // SEEK TIME SEEKER
@@ -118,6 +124,7 @@ public class HSHandler
             Client.HHero.SetSwimSpeed(21f);
             Client.HHero.SetRunSpeed(10.15f);
             CurrentPerk.ApplySeeker();
+            CurrentDebuff.ApplySeeker();
         }
     }
 
@@ -255,6 +262,11 @@ public class HSHandler
         Client.HHero.SetGravity();
         Client.HHero.SetGlideSpeed();
         Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        Client.HHideSeek.CurrentPerk.Deactivate();
+        Client.HHideSeek.CurrentPerk = new NoPerk();
+        Client.HHideSeek.CurrentDebuff.Deactivate();
+        Client.HHideSeek.CurrentDebuff = new NoPerk();
+
         ModelController.Lobby.IsReadyButtonEnabled = true;
         SFXPlayer.PlaySound(SFX.TAOpen);
     }
@@ -270,6 +282,10 @@ public class HSHandler
         Client.HHero.SetGravity();
         Client.HHero.SetGlideSpeed();
         Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        Client.HHideSeek.CurrentPerk.Deactivate();
+        Client.HHideSeek.CurrentPerk = new NoPerk();
+        Client.HHideSeek.CurrentDebuff.Deactivate();
+        Client.HHideSeek.CurrentDebuff = new NoPerk();
         ModelController.Lobby.IsReadyButtonEnabled = true;
         SFXPlayer.PlaySound(SFX.TAOpen);
     }
