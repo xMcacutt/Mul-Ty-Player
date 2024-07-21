@@ -5,6 +5,7 @@ using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
 using MulTyPlayer;
+using PropertyChanged;
 using Riptide;
 
 namespace MulTyPlayerClient;
@@ -66,10 +67,11 @@ public class PerkHandler
     }
 }
 
+[AddINotifyPropertyChangedInterface]
 public abstract class HSPerk
 {
-    public string DisplayName;
-    public string ToolTip;
+    public string DisplayName { get; set; }
+    public string ToolTip { get; set; }
 
     public virtual void ApplyHider() {}
     public virtual void ApplySeeker() {}
@@ -83,7 +85,7 @@ public class NoPerk : HSPerk
     public NoPerk()
     {
         DisplayName = "None";
-        ToolTip = "No perk will be applied";
+        ToolTip = "No perk will be applied.";
     }
 }
 
@@ -92,7 +94,7 @@ public class OpalSlowPerk : HSPerk
     public OpalSlowPerk()
     {
         DisplayName = "Opal Slowness";
-        ToolTip = "No perk will be applied";
+        ToolTip = "Every opal collected will slow you down.";
     }
     
     public override void ApplyHider()
@@ -135,6 +137,12 @@ public class OpalSlowPerk : HSPerk
 
 public class OpalSpeedPerk : HSPerk
 {
+    public OpalSpeedPerk()
+    {
+        DisplayName = "Opal Speed";
+        ToolTip = "Every opal collected will speed you up.";
+    }
+    
     public override void ApplyHider()
     {
         var opalCount = CountOpals();
@@ -175,6 +183,11 @@ public class OpalSpeedPerk : HSPerk
 
 public class SeekerGravityPerk : HSPerk
 {
+    public SeekerGravityPerk()
+    {
+        DisplayName = "Low Gravity";
+        ToolTip = "Gravity has less of an effect.";
+    }
     public override void ApplySeeker()
     {
         Client.HHero.SetGravity(0.45f);
@@ -188,6 +201,11 @@ public class SeekerGravityPerk : HSPerk
 
 public class HiderGravityPerk : HSPerk
 {
+    public HiderGravityPerk()
+    {
+        DisplayName = "Low Gravity";
+        ToolTip = "Gravity has less of an effect.";
+    }
     public override void ApplyHider()
     {
         Client.HHero.SetGravity(0.45f);
@@ -201,6 +219,11 @@ public class HiderGravityPerk : HSPerk
 
 public class SeekerSwimSpeedPerk : HSPerk
 {
+    public SeekerSwimSpeedPerk()
+    {
+        DisplayName = "Swim Speed";
+        ToolTip = "Swim speed is increased.";
+    }
     public override void ApplySeeker()
     {
         Client.HHero.SetSwimSpeed(23f);
@@ -214,6 +237,11 @@ public class SeekerSwimSpeedPerk : HSPerk
 
 public class HiderSwimSpeedPerk : HSPerk
 {
+    public HiderSwimSpeedPerk()
+    {
+        DisplayName = "Swim Speed";
+        ToolTip = "Swim speed is increased.";
+    }
     public override void ApplyHider()
     {
         Client.HHero.SetSwimSpeed(23f);
@@ -227,6 +255,11 @@ public class HiderSwimSpeedPerk : HSPerk
 
 public class HiderGlideSpeedPerk : HSPerk
 {
+    public HiderGlideSpeedPerk()
+    {
+        DisplayName = "Glide Speed";
+        ToolTip = "Glide speed is increased.";
+    }
     public override void ApplyHider()
     {
         Client.HHero.SetGlideSpeed(11.5f);
@@ -240,6 +273,11 @@ public class HiderGlideSpeedPerk : HSPerk
 
 public class SeekerGlideSpeedPerk : HSPerk
 {
+    public SeekerGlideSpeedPerk()
+    {
+        DisplayName = "Glide Speed";
+        ToolTip = "Glide speed is increased.";
+    }
     public override void ApplySeeker()
     {
         Client.HHero.SetGlideSpeed(11.5f);
@@ -253,6 +291,11 @@ public class SeekerGlideSpeedPerk : HSPerk
 
 public class SeekerOneHitPerk : HSPerk
 {
+    public SeekerOneHitPerk()
+    {
+        DisplayName = "One Health";
+        ToolTip = "Health is lowered to 1 (including in water).";
+    }
     public override void ApplySeeker()
     {
         if (Client.HHero.GetHealth() > 1)
@@ -271,6 +314,11 @@ public class SeekerOneHitPerk : HSPerk
 
 public class HiderOneHitPerk : HSPerk
 {
+    public HiderOneHitPerk()
+    {
+        DisplayName = "One Health";
+        ToolTip = "Health is lowered to 1 (including in water).";
+    }
     public override void ApplyHider()
     {
         if (Client.HHero.GetHealth() > 1)
@@ -289,6 +337,11 @@ public class HiderOneHitPerk : HSPerk
 
 public class SeekerOneRangPerk : HSPerk
 {
+    public SeekerOneRangPerk()
+    {
+        DisplayName = "One Rang";
+        ToolTip = "Second boomerang is removed (this applies to all rangs).";
+    }
     public override void ApplySeeker()
     {
         var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0 });
@@ -304,6 +357,11 @@ public class SeekerOneRangPerk : HSPerk
 
 public class HiderOneRangPerk : HSPerk
 {
+    public HiderOneRangPerk()
+    {
+        DisplayName = "One Rang";
+        ToolTip = "Second rang is removed (this applies to all rangs).";
+    }
     public override void ApplyHider()
     {
         var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0 });
@@ -319,6 +377,11 @@ public class HiderOneRangPerk : HSPerk
 
 public class HidersSeeLightsPerk : HSPerk
 {
+    public HidersSeeLightsPerk()
+    {
+        DisplayName = "Player Lights";
+        ToolTip = "Press ctrl+shift+t to show opposing players lights for 3 seconds. This can be done once every 30 seconds.";
+    }
     public override void ApplyAbility()
     {
         if (Client.HHideSeek.Role != HSRole.Hider)
@@ -334,6 +397,11 @@ public class HidersSeeLightsPerk : HSPerk
 
 public class SeekersSeeLightsPerk : HSPerk
 {
+    public SeekersSeeLightsPerk()
+    {
+        DisplayName = "Player Lights";
+        ToolTip = "Press ctrl+shift+t to show opposing players' lights for 3 seconds. This can be done once every 30 seconds.";
+    }
     public override void ApplyAbility()
     {
         if (Client.HHideSeek.Role != HSRole.Seeker)
@@ -357,6 +425,11 @@ public class SeekersSeeLightsPerk : HSPerk
 
 public class SeekersFreezeHidersPerk : HSPerk
 {
+    public SeekersFreezeHidersPerk()
+    {
+        DisplayName = "Freeze Players";
+        ToolTip = "Press ctrl+shift+t to freeze opposing players in place for 3 seconds. This can be done once every 30 seconds.";
+    }
     public override void ApplyAbility()
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Freeze);
