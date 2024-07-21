@@ -29,6 +29,7 @@ public class Hotkeys
     public HotkeyConfig CheatM { get; set; }
     public HotkeyConfig CheatE { get; set; }
     public HotkeyConfig CheatL { get; set; }
+    public HotkeyConfig HS_Ability { get; set; }
     public HotkeyConfig SpectatorFreecamPrevious { get; set; }
     public HotkeyConfig SpectatorFreecamNext { get; set; }
     public HotkeyConfig SpectatorFreecamDisengage { get; set; }
@@ -62,6 +63,7 @@ public class HotkeyHandler
             CheatM = new HotkeyConfig { Key = Key.M, Modifiers = ModifierKeys.Alt | ModifierKeys.Shift },
             CheatE = new HotkeyConfig { Key = Key.E, Modifiers = ModifierKeys.Alt | ModifierKeys.Shift },
             CheatL = new HotkeyConfig { Key = Key.L, Modifiers = ModifierKeys.Alt | ModifierKeys.Shift },
+            HS_Ability = new HotkeyConfig { Key = Key.A, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
             SpectatorFreecamPrevious = new HotkeyConfig { Key = Key.D9, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
             SpectatorFreecamNext = new HotkeyConfig { Key = Key.D0, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
             SpectatorFreecamDisengage = new HotkeyConfig { Key = Key.D8, Modifiers = ModifierKeys.Control | ModifierKeys.Shift }
@@ -88,11 +90,12 @@ public class HotkeyHandler
             HotkeyManager.Current.AddOrReplace("cheat_m", keys.CheatM.Key, keys.CheatM.Modifiers, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("cheat_e", keys.CheatE.Key, keys.CheatE.Modifiers, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("cheat_l", keys.CheatL.Key, keys.CheatL.Modifiers, OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("ability", keys.HS_Ability.Key, keys.HS_Ability.Modifiers, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("spectator_freecam_previous", keys.SpectatorFreecamPrevious.Key, keys.SpectatorFreecamPrevious.Modifiers, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("spectator_freecam_next", keys.SpectatorFreecamNext.Key, keys.SpectatorFreecamNext.Modifiers, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("spectator_freecam_disengage", keys.SpectatorFreecamDisengage.Key, keys.SpectatorFreecamDisengage.Modifiers, OnKeyPress);
         }
-        catch
+        catch (Exception ex)
         {
             MessageBox.Show(
                 @"Global hotkeys may be disabled due to conflicts. Check running apps for conflicting global hotkeys.");

@@ -234,6 +234,7 @@ public class HSHandler
         Client.HHideSeek.Mode = HSMode.SeekTime;
         
         (Client.HCommand.Commands["taunt"] as MtpCommandTaunt)?.TauntStopwatch.Restart();
+        (Client.HCommand.Commands["ability"] as MtpCommandAbility)?.AbilityStopwatch.Restart();
         
         Client.HKoala.ScaleKoalas();
         Client.HGlow.ReturnGlows();

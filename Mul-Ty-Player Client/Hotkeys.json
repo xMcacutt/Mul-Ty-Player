@@ -59,6 +59,10 @@
     "Key": "L",
     "Modifiers": "Alt, Shift"
   },
+  "HS_Ability": {
+    "Key": "A",
+    "Modifiers": "Control, Shift"
+  },
   "SpectatorFreecamPrevious": {
     "Key": "D9",
     "Modifiers": "Control, Shift"

@@ -36,7 +36,7 @@ public class PerkHandler
         new OpalSpeedPerk(),
         new HidersSeeLightsPerk(),
         new HiderSwimSpeedPerk(),
-        //new HidersFreezeSeekersPerk()
+        new HidersFreezeSeekersPerk()
     };
 
     public static readonly ObservableCollection<HSPerk> HiderDebuffs = new()
@@ -75,6 +75,8 @@ public abstract class HSPerk
 {
     public string DisplayName { get; set; }
     public string ToolTip { get; set; }
+    public TimeSpan AbilityCooldown;
+    public bool IsAbility;
 
     public virtual void ApplyHider() {}
     public virtual void ApplySeeker() {}
@@ -383,13 +385,24 @@ public class HidersSeeLightsPerk : HSPerk
     public HidersSeeLightsPerk()
     {
         DisplayName = "Player Lights";
-        ToolTip = "Press ctrl+shift+t to show opposing players lights for 3 seconds. This can be done once every 30 seconds.";
+        ToolTip = "Press ctrl+shift+a to show opposing players lights for 3 seconds. This can be done once every 30 seconds.";
+        IsAbility = true;
+        AbilityCooldown = TimeSpan.FromSeconds(30);
     }
+    
     public override void ApplyAbility()
     {
-        if (Client.HHideSeek.Role != HSRole.Hider)
+        if (Client.HHideSeek.Role != HSRole.Seeker)
             return;
+        var thread = new Thread(ShowLines);
+        thread.Start();
+    }
+
+    private async void ShowLines()
+    {
         Client.HHideSeek.LinesVisible = true;
+        await Task.Delay(3000);
+        Client.HHideSeek.LinesVisible = false;
     }
 
     public override void Deactivate()
@@ -403,7 +416,9 @@ public class SeekersSeeLightsPerk : HSPerk
     public SeekersSeeLightsPerk()
     {
         DisplayName = "Player Lights";
-        ToolTip = "Press ctrl+shift+t to show opposing players' lights for 3 seconds. This can be done once every 30 seconds.";
+        ToolTip = "Press ctrl+shift+a to show opposing players' lights for 3 seconds. This can be done once every 30 seconds.";
+        IsAbility = true;
+        AbilityCooldown = TimeSpan.FromSeconds(45);
     }
     public override void ApplyAbility()
     {
@@ -431,7 +446,9 @@ public class SeekersFreezeHidersPerk : HSPerk
     public SeekersFreezeHidersPerk()
     {
         DisplayName = "Freeze Players";
-        ToolTip = "Press ctrl+shift+t to freeze opposing players in place for 3 seconds. This can be done once every 30 seconds.";
+        ToolTip = "Press ctrl+shift+a to freeze opposing players in place for 3 seconds. This can be done once every 30 seconds.";
+        IsAbility = true;
+        AbilityCooldown = TimeSpan.FromSeconds(60);
     }
     public override void ApplyAbility()
     {
@@ -441,8 +458,6 @@ public class SeekersFreezeHidersPerk : HSPerk
     
     private static async void Freeze()
     {
-        if (Client.HHideSeek.Role != HSRole.Hider)
-            return;
         SFXPlayer.PlaySound(SFX.Freeze);
         ProcessHandler.WriteData(
             (int)TyProcess.BaseAddress + 0x264248, 
@@ -460,6 +475,29 @@ public class SeekersFreezeHidersPerk : HSPerk
     {
         var thread = new Thread(Freeze);
         thread.Start();
+    }
+    
+    public override void Deactivate()
+    {
+        ProcessHandler.WriteData(
+            (int)TyProcess.BaseAddress + 0x264248, 
+            BitConverter.GetBytes(0.01f));
+    }
+}
+
+public class HidersFreezeSeekersPerk : HSPerk
+{
+    public HidersFreezeSeekersPerk()
+    {
+        DisplayName = "Freeze Players";
+        ToolTip = "Press ctrl+shift+a to freeze opposing players in place for 3 seconds. This can be done once every 60 seconds.";
+        IsAbility = true;
+        AbilityCooldown = TimeSpan.FromSeconds(60);
+    }
+    public override void ApplyAbility()
+    {
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Freeze);
+        Client._client.Send(message);
     }
     
     public override void Deactivate()
