@@ -60,35 +60,20 @@ public class HSHandler
         forward.AddFloat(distance);
         Server._Server.Send(forward, clientId);
     }
-
+    
     private static void RunRadiusCheck()
     {
-        // Step 1: Separate seekers and hiders
-        var seekers = new List<Player>();
-        var hiders = new List<Player>();
-
-        foreach (var player in PlayerHandler.Players.Values)
+        foreach (var seeker in PlayerHandler.Players.Values.Where(x => x.Role == HSRole.Seeker))
         {
-            if (player.Role == HSRole.Seeker)
-                seekers.Add(player);
-            else if (player.Role == HSRole.Hider)
-                hiders.Add(player);
-        }
-
-        // Step 2: Check distances and change roles if necessary
-        foreach (var seeker in seekers)
-        {
-            var seekerVector = new Vector3(seeker.Coordinates[0], seeker.Coordinates[1], seeker.Coordinates[2]);
-            var radiusCheckDistance = seeker.CurrentLevel == 10
-                ? SettingsHandler.HSRange * 1.25
-                : SettingsHandler.HSRange;
-
-            foreach (var hider in hiders)
+            foreach (var hider in PlayerHandler.Players.Values.Where(x => x.Role == HSRole.Hider))
             {
+                var seekerVector = new Vector3(seeker.Coordinates[0], seeker.Coordinates[1], seeker.Coordinates[2]);
                 var hiderVector = new Vector3(hider.Coordinates[0], hider.Coordinates[1], hider.Coordinates[2]);
+                var radiusCheckDistance = seeker.CurrentLevel == 10
+                    ? SettingsHandler.HSRange * 1.25
+                    : SettingsHandler.HSRange;
                 if (Vector3.Distance(hiderVector, seekerVector) > radiusCheckDistance)
                     continue;
-
                 hider.Role = HSRole.Seeker;
                 var catchMessage = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
                 Server._Server.Send(catchMessage, seeker.ClientID);
@@ -117,7 +102,7 @@ public class HSHandler
         var hideTime = Task.Run(() =>
         {
             abortToken.ThrowIfCancellationRequested();
-            for (var i = hideTimeLength; i > 0; i--)
+            for (var i = 6; i > 0; i--)
             {
                 if (abortToken.IsCancellationRequested) abortToken.ThrowIfCancellationRequested();
                 if (i % 30 == 0 || i == 10)
@@ -143,10 +128,13 @@ public class HSHandler
         }
         
         Mode = HSMode.SeekTime;
-        var seekTime = Task.Run(() =>
+        var seekTime = Task.Run(async () =>
         {
-            while(PlayerHandler.Players.Values.Any(x => x.Role == HSRole.Hider))
+            while (PlayerHandler.Players.Values.Any(x => x.Role == HSRole.Hider))
+            {
                 RunRadiusCheck();
+                await Task.Delay(75);
+            }
         }, abortToken);
         try
         {
