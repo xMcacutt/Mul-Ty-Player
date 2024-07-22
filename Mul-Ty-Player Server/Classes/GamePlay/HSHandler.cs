@@ -102,7 +102,7 @@ public class HSHandler
         var hideTime = Task.Run(() =>
         {
             abortToken.ThrowIfCancellationRequested();
-            for (var i = 6; i > 0; i--)
+            for (var i = hideTimeLength; i > 0; i--)
             {
                 if (abortToken.IsCancellationRequested) abortToken.ThrowIfCancellationRequested();
                 if (i % 30 == 0 || i == 10)
