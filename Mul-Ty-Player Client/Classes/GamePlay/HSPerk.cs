@@ -653,7 +653,7 @@ public class HiderFlashbangAbilityPerk : HSPerk
         DisplayName = "Flashbang Ability";
         ToolTip = "Cause the opposing team's screen to flash white and slow for a few seconds.";
         IsAbility = true;
-        AbilityCooldown = TimeSpan.FromSeconds(60);
+        AbilityCooldown = TimeSpan.FromSeconds(5);
     }
     
     public override void ApplyAbility()
@@ -667,20 +667,19 @@ public class HiderFlashbangAbilityPerk : HSPerk
     private static async void Flashbang()
     {
         SFXPlayer.PlaySound(SFX.Flashbang);
-        ProcessHandler.WriteData(
-            (int)TyProcess.BaseAddress + 0x264248, 
-            BitConverter.GetBytes(0.5f));
+        Client.HHero.SetRunSpeed(5);
         Client.HLevel.LevelBloomSettings.State = true;
         var originalBrightness = Client.HLevel.LevelBloomSettings.Value;
-        Client.HLevel.LevelBloomSettings.Value = 100f;
+        Client.HLevel.LevelBloomSettings.Value = 10000f;
+        Client.HLevel.LevelBloomSettings.Saturation = 0;
+        await Task.Delay(1000);
         for (var i = 0; i < 1000; i++)
         {
-            Client.HLevel.LevelBloomSettings.Value -= (100 - originalBrightness) / 1000;
-            await Task.Delay(1);
+            Client.HLevel.LevelBloomSettings.Value -= (10000 - originalBrightness) / 1000;
+            await Task.Delay(50);
         }
-        ProcessHandler.WriteData(
-            (int)TyProcess.BaseAddress + 0x264248, 
-            BitConverter.GetBytes(0.01f));
+        Client.HHero.SetRunSpeed();
+        Client.HLevel.LevelBloomSettings.RevertToOriginal();
     }
 
 
@@ -694,5 +693,6 @@ public class HiderFlashbangAbilityPerk : HSPerk
     public override void Deactivate()
     {
         Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        Client.HHero.SetRunSpeed();
     }
 }
