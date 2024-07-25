@@ -102,7 +102,8 @@ public class HSHandler
         var hideTime = Task.Run(() =>
         {
             abortToken.ThrowIfCancellationRequested();
-            for (var i = hideTimeLength; i > 0; i--)
+            // CHANGE THIS FOR LOWER HIDESEEK TIME
+            for (var i = 5; i > 0; i--)
             {
                 if (abortToken.IsCancellationRequested) abortToken.ThrowIfCancellationRequested();
                 if (i % 30 == 0 || i == 10)
@@ -172,6 +173,14 @@ public class PerkHandler
     public static void ReceiveFreeze(ushort fromClientId, Message message)
     {
         var response = Message.Create(MessageSendMode.Reliable, MessageID.HS_Freeze);
+        foreach (var player in PlayerHandler.Players.Values.Where(x => x.Role != PlayerHandler.Players[fromClientId].Role && x.Role != HSRole.Spectator))
+            Server._Server.Send(response, player.ClientID);
+    }
+    
+    [MessageHandler((ushort)MessageID.HS_Flashbang)]
+    public static void ReceiveFlashbang(ushort fromClientId, Message message)
+    {
+        var response = Message.Create(MessageSendMode.Reliable, MessageID.HS_Flashbang);
         foreach (var player in PlayerHandler.Players.Values.Where(x => x.Role != PlayerHandler.Players[fromClientId].Role && x.Role != HSRole.Spectator))
             Server._Server.Send(response, player.ClientID);
     }

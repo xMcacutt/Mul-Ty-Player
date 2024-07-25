@@ -37,7 +37,8 @@ public class PerkHandler
         new OpalSpeedPerk(),
         new HidersSeeLightsPerk(),
         new HiderSwimSpeedPerk(),
-        new HidersFreezeSeekersPerk()
+        new HidersFreezeSeekersPerk(),
+        new HiderFlashbangAbilityPerk(),
     };
 
     public static readonly ObservableCollection<HSPerk> HiderDebuffs = new()
@@ -543,11 +544,13 @@ public class SeekersHaveGrayscalePerk : HSPerk
 
     public override void ApplySeeker()
     {
+        Client.HLevel.LevelBloomSettings.State = true;
         Client.HLevel.LevelBloomSettings.Saturation = 0;
     }
 
     public override void Deactivate()
     {
+        Client.HLevel.LevelBloomSettings.State = true;
         Client.HLevel.LevelBloomSettings.RevertToOriginal();
     }
 }
@@ -562,7 +565,7 @@ public class DecreasedHiderSizeForSeekers : HSPerk
 
     public override void ApplySeeker()
     {
-        Client.HKoala.ScaleKoalas(2);
+        Client.HKoala.ScaleKoalas(1.75f);
     }
 
     public override void Deactivate()
@@ -583,11 +586,12 @@ public class SeekerAcidTrip : HSPerk
     private float _hue = 0;
     public override void ApplySeeker()
     {
+        Client.HLevel.LevelBloomSettings.State = true;
         Client.HLevel.LevelBloomSettings.Hue = _hue;
         if (_isGoingDown)
-            _hue -= 0.001f;
+            _hue -= 0.002f;
         else 
-            _hue += 0.001f;
+            _hue += 0.002f;
         if (_isGoingDown && _hue < 0)
         {
             _isGoingDown = false;
@@ -618,6 +622,7 @@ public class HiderAcidTrip : HSPerk
     private float _hue = 0;
     public override void ApplyHider()
     {
+        Client.HLevel.LevelBloomSettings.State = true;
         Client.HLevel.LevelBloomSettings.Hue = _hue;
         if (_isGoingDown)
             _hue -= 0.001f;
@@ -633,6 +638,57 @@ public class HiderAcidTrip : HSPerk
             _isGoingDown = true;
             _hue = 10;
         }
+    }
+
+    public override void Deactivate()
+    {
+        Client.HLevel.LevelBloomSettings.RevertToOriginal();
+    }
+}
+
+public class HiderFlashbangAbilityPerk : HSPerk
+{
+    public HiderFlashbangAbilityPerk()
+    {
+        DisplayName = "Flashbang Ability";
+        ToolTip = "Cause the opposing team's screen to flash white and slow for a few seconds.";
+        IsAbility = true;
+        AbilityCooldown = TimeSpan.FromSeconds(60);
+    }
+    
+    public override void ApplyAbility()
+    {
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Flashbang);
+        Client._client.Send(message);
+    }
+    
+    private static bool _isGoingDown = false;
+    private static float _brightness = 1.0f;
+    private static async void Flashbang()
+    {
+        SFXPlayer.PlaySound(SFX.Flashbang);
+        ProcessHandler.WriteData(
+            (int)TyProcess.BaseAddress + 0x264248, 
+            BitConverter.GetBytes(0.5f));
+        Client.HLevel.LevelBloomSettings.State = true;
+        var originalBrightness = Client.HLevel.LevelBloomSettings.Value;
+        Client.HLevel.LevelBloomSettings.Value = 100f;
+        for (var i = 0; i < 1000; i++)
+        {
+            Client.HLevel.LevelBloomSettings.Value -= (100 - originalBrightness) / 1000;
+            await Task.Delay(1);
+        }
+        ProcessHandler.WriteData(
+            (int)TyProcess.BaseAddress + 0x264248, 
+            BitConverter.GetBytes(0.01f));
+    }
+
+
+    [MessageHandler((ushort)MessageID.HS_Freeze)]
+    public static void ReceiveFreeze(Message message)
+    {
+        var thread = new Thread(Flashbang);
+        thread.Start();
     }
 
     public override void Deactivate()

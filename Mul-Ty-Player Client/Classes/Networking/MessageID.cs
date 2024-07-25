@@ -59,7 +59,8 @@ public enum MessageID : ushort
     HSD_PlayerLeft,
     HSD_PickRequest,
     HSD_Start,
-    HSD_Reset
+    HSD_Reset,
+    HS_Flashbang
 }
 
 
