@@ -684,7 +684,7 @@ public class HiderFlashbangAbilityPerk : HSPerk
     }
 
 
-    [MessageHandler((ushort)MessageID.HS_Freeze)]
+    [MessageHandler((ushort)MessageID.HS_Flashbang)]
     public static void ReceiveFreeze(Message message)
     {
         var thread = new Thread(Flashbang);
