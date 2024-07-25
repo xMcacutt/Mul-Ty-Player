@@ -5,6 +5,7 @@ using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
 using MulTyPlayer;
+using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI.Classes.Views;
 using PropertyChanged;
 using Riptide;
@@ -43,7 +44,9 @@ public class PerkHandler
     {
         new HiderOneHitPerk(),
         new OpalSlowPerk(),
-        new HiderOneRangPerk()
+        new HiderOneRangPerk(),
+        new HiderAcidTrip(),
+        new HidersHaveGrayscalePerk(),
     };
 
     public static readonly ObservableCollection<HSPerk> SeekerPerks = new()
@@ -60,7 +63,10 @@ public class PerkHandler
     {
         new SeekerOneHitPerk(),
         new OpalSlowPerk(),
-        new SeekerOneRangPerk()
+        new SeekerOneRangPerk(),
+        new SeekerAcidTrip(),
+        new SeekersHaveGrayscalePerk(),
+        new DecreasedHiderSizeForSeekers()
     };
 
     public static void DeactivateAllPerks()
@@ -505,5 +511,132 @@ public class HidersFreezeSeekersPerk : HSPerk
         ProcessHandler.WriteData(
             (int)TyProcess.BaseAddress + 0x264248, 
             BitConverter.GetBytes(0.01f));
+    }
+}
+
+public class HidersHaveGrayscalePerk : HSPerk
+{
+    public HidersHaveGrayscalePerk()
+    {
+        DisplayName = "Grayscale";
+        ToolTip = "Screen is made black and white for the entire round.";
+    }
+
+    public override void ApplyHider()
+    {
+        Client.HLevel.LevelBloomSettings.Saturation = 0;
+    }
+
+    public override void Deactivate()
+    {
+        Client.HLevel.LevelBloomSettings.RevertToOriginal();
+    }
+}
+
+public class SeekersHaveGrayscalePerk : HSPerk
+{
+    public SeekersHaveGrayscalePerk()
+    {
+        DisplayName = "Grayscale";
+        ToolTip = "Screen is made black and white for the entire round.";
+    }
+
+    public override void ApplySeeker()
+    {
+        Client.HLevel.LevelBloomSettings.Saturation = 0;
+    }
+
+    public override void Deactivate()
+    {
+        Client.HLevel.LevelBloomSettings.RevertToOriginal();
+    }
+}
+
+public class DecreasedHiderSizeForSeekers : HSPerk
+{
+    public DecreasedHiderSizeForSeekers()
+    {
+        DisplayName = "Smaller Hiders";
+        ToolTip = "Hiders are made smaller.";
+    }
+
+    public override void ApplySeeker()
+    {
+        Client.HKoala.ScaleKoalas(2);
+    }
+
+    public override void Deactivate()
+    {
+        Client.HKoala.ScaleKoalas();
+    }
+}
+
+public class SeekerAcidTrip : HSPerk
+{
+    public SeekerAcidTrip()
+    {
+        DisplayName = "Trippy Colors";
+        ToolTip = "Screen hue changes over time.";
+    }
+
+    private bool _isGoingDown = false;
+    private float _hue = 0;
+    public override void ApplySeeker()
+    {
+        Client.HLevel.LevelBloomSettings.Hue = _hue;
+        if (_isGoingDown)
+            _hue -= 0.001f;
+        else 
+            _hue += 0.001f;
+        if (_isGoingDown && _hue < 0)
+        {
+            _isGoingDown = false;
+            _hue = 0;
+        }
+        if (!_isGoingDown && _hue > 10)
+        {
+            _isGoingDown = true;
+            _hue = 10;
+        }
+    }
+
+    public override void Deactivate()
+    {
+        Client.HLevel.LevelBloomSettings.RevertToOriginal();
+    }
+}
+
+public class HiderAcidTrip : HSPerk
+{
+    public HiderAcidTrip()
+    {
+        DisplayName = "Trippy Colors";
+        ToolTip = "Screen hue changes over time.";
+    }
+
+    private bool _isGoingDown = false;
+    private float _hue = 0;
+    public override void ApplyHider()
+    {
+        Client.HLevel.LevelBloomSettings.Hue = _hue;
+        if (_isGoingDown)
+            _hue -= 0.001f;
+        else 
+            _hue += 0.001f;
+        if (_isGoingDown && _hue < 0)
+        {
+            _isGoingDown = false;
+            _hue = 0;
+        }
+        if (!_isGoingDown && _hue > 10)
+        {
+            _isGoingDown = true;
+            _hue = 10;
+        }
+    }
+
+    public override void Deactivate()
+    {
+        Client.HLevel.LevelBloomSettings.RevertToOriginal();
     }
 }

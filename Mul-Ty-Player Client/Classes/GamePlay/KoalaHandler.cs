@@ -136,6 +136,26 @@ internal class KoalaHandler
                 "Scaling koalas");
         }
     }
+    
+    public void ScaleKoalas(float size)
+    {
+        var outbackMultiplier = 1.0f;
+        if (HLevel.CurrentLevelId == 10) outbackMultiplier = 2.0f;
+        var initialScale = size;
+        var scaleFactor = initialScale * outbackMultiplier;
+        if (scaleFactor < 0.5f) scaleFactor = 0.5f;
+        if (scaleFactor > 3) scaleFactor = 3;
+        const float snugsMultiplier = 1.0725f;
+        const float katieMultiplier = 0.825f;
+        for (var koalaIndex = 0; koalaIndex < 8; koalaIndex++)
+        {
+            var tempScaleFactor = scaleFactor;
+            if (koalaIndex == 0) tempScaleFactor = scaleFactor * katieMultiplier;
+            if (koalaIndex == 3) tempScaleFactor = scaleFactor * snugsMultiplier;
+            ProcessHandler.WriteData(TransformAddresses[koalaIndex].Scale, BitConverter.GetBytes(tempScaleFactor),
+                "Scaling koalas");
+        }
+    }
 
     [MessageHandler((ushort)MessageID.KoalaCoordinates)]
     private static void HandleGettingCoordinates(Message message)
