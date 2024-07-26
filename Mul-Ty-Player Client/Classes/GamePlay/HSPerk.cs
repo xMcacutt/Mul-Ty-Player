@@ -57,7 +57,8 @@ public class PerkHandler
         new SeekersSeeLightsPerk(),
         new SeekersFreezeHidersPerk(),
         new SeekerSwimSpeedPerk(),
-        new OpalSpeedPerk()
+        new OpalSpeedPerk(),
+        new SeekerFlashbangAbilityPerk(),
     };
     
     public static readonly ObservableCollection<HSPerk> SeekerDebuffs = new()
@@ -525,6 +526,7 @@ public class HidersHaveGrayscalePerk : HSPerk
 
     public override void ApplyHider()
     {
+        Client.HLevel.LevelBloomSettings.State = true;
         Client.HLevel.LevelBloomSettings.Saturation = 0;
     }
 
@@ -550,7 +552,6 @@ public class SeekersHaveGrayscalePerk : HSPerk
 
     public override void Deactivate()
     {
-        Client.HLevel.LevelBloomSettings.State = true;
         Client.HLevel.LevelBloomSettings.RevertToOriginal();
     }
 }
@@ -589,9 +590,9 @@ public class SeekerAcidTrip : HSPerk
         Client.HLevel.LevelBloomSettings.State = true;
         Client.HLevel.LevelBloomSettings.Hue = _hue;
         if (_isGoingDown)
-            _hue -= 0.002f;
+            _hue -= 0.004f;
         else 
-            _hue += 0.002f;
+            _hue += 0.004f;
         if (_isGoingDown && _hue < 0)
         {
             _isGoingDown = false;
@@ -625,9 +626,9 @@ public class HiderAcidTrip : HSPerk
         Client.HLevel.LevelBloomSettings.State = true;
         Client.HLevel.LevelBloomSettings.Hue = _hue;
         if (_isGoingDown)
-            _hue -= 0.001f;
+            _hue -= 0.004f;
         else 
-            _hue += 0.001f;
+            _hue += 0.004f;
         if (_isGoingDown && _hue < 0)
         {
             _isGoingDown = false;
@@ -667,24 +668,28 @@ public class HiderFlashbangAbilityPerk : HSPerk
     private static async void Flashbang()
     {
         SFXPlayer.PlaySound(SFX.Flashbang);
+        HSHandler.LockoutSpeed = true;
         Client.HHero.SetRunSpeed(5);
         Client.HLevel.LevelBloomSettings.State = true;
         var originalBrightness = Client.HLevel.LevelBloomSettings.Value;
-        Client.HLevel.LevelBloomSettings.Value = 10000f;
+        var flashBrightness = 10f;
+        Client.HLevel.LevelBloomSettings.Value = flashBrightness;
+        var originalSaturation = Client.HLevel.LevelBloomSettings.Saturation;
         Client.HLevel.LevelBloomSettings.Saturation = 0;
-        await Task.Delay(1000);
-        for (var i = 0; i < 1000; i++)
+        await Task.Delay(1500);
+        var steps = 750;
+        for (var i = 0; i < steps; i++)
         {
-            Client.HLevel.LevelBloomSettings.Value -= (10000 - originalBrightness) / 1000;
-            await Task.Delay(50);
+            Client.HLevel.LevelBloomSettings.Value -= (flashBrightness - originalBrightness) / steps;
+            Client.HLevel.LevelBloomSettings.Saturation += originalSaturation / steps;
+            await Task.Delay(3);
         }
-        Client.HHero.SetRunSpeed();
-        Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        HSHandler.LockoutSpeed = false;
     }
 
 
     [MessageHandler((ushort)MessageID.HS_Flashbang)]
-    public static void ReceiveFreeze(Message message)
+    public static void ReceiveFlashbang(Message message)
     {
         var thread = new Thread(Flashbang);
         thread.Start();
@@ -693,6 +698,31 @@ public class HiderFlashbangAbilityPerk : HSPerk
     public override void Deactivate()
     {
         Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        HSHandler.LockoutSpeed = false;
         Client.HHero.SetRunSpeed();
     }
 }
+
+public class SeekerFlashbangAbilityPerk : HSPerk
+{
+    public SeekerFlashbangAbilityPerk()
+    {
+        DisplayName = "Flashbang Ability";
+        ToolTip = "Cause the opposing team's screen to flash white and slow for a few seconds.";
+        IsAbility = true;
+        AbilityCooldown = TimeSpan.FromSeconds(5);
+    }
+    
+    public override void ApplyAbility()
+    {
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Flashbang);
+        Client._client.Send(message);
+    }
+
+    public override void Deactivate()
+    {
+        Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        Client.HHero.SetRunSpeed();
+    }
+}
+

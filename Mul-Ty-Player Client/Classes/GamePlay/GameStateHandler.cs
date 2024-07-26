@@ -54,6 +54,11 @@ public class GameStateHandler
         
         self.Level = "M/L";
     }
+
+    public void DisplayInGameMessage(string message)
+    {
+        
+    }
     
     // CALLED ON CONNECTING TO MTP
     public void ProtectLeaderboard()

@@ -94,7 +94,7 @@ public class HSHandler
         Client.HHideSeek.CurrentPerk.Deactivate();
         Client.HHideSeek.CurrentPerk = new NoPerk();
     }
-    
+
     public void Run()
     {
         // HIDE TIME HIDER
@@ -103,11 +103,11 @@ public class HSHandler
             CurrentPerk.ApplyHider();
             CurrentDebuff.ApplyHider();
         }
-        
+
         // HIDE TIME SEEKER
         if (Mode == HSMode.HideTime && Role == HSRole.Seeker)
             LockPlayer();
-        
+
         // SEEK TIME HIDER
         if (Mode == HSMode.SeekTime && Role == HSRole.Hider)
         {
@@ -121,12 +121,17 @@ public class HSHandler
         // SEEK TIME SEEKER
         if (Mode == HSMode.SeekTime && Role == HSRole.Seeker)
         {
-            Client.HHero.SetSwimSpeed(21f);
-            Client.HHero.SetRunSpeed(10.15f);
+            if (!LockoutSpeed)
+            {
+                Client.HHero.SetSwimSpeed(21f);
+                Client.HHero.SetRunSpeed(10.15f);
+            }
             CurrentPerk.ApplySeeker();
             CurrentDebuff.ApplySeeker();
         }
     }
+
+    public static bool LockoutSpeed;
 
     private void CheckDeath()
     {
