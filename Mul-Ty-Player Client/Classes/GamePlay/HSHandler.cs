@@ -3,10 +3,12 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
+using MulTyPlayerClient.GUI.ViewModels;
 using Riptide;
 
 namespace MulTyPlayerClient;
@@ -177,12 +179,7 @@ public class HSHandler
     [MessageHandler((ushort)MessageID.HS_ProxyRunHideSeek)]
     private static void SetHideSeek(Message message)
     {
-        Client.HHero.SetSwimSpeed();
-        Client.HHero.SetRunSpeed();
-        Client.HHero.SetGravity();
-        Client.HHero.SetGlideSpeed();
-        Client.HHero.SetAirSpeed();
-        Client.HHero.SetJumpHeight();
+        Client.HHero.SetDefaults();
         Client.HLevel.LevelBloomSettings.RevertToOriginal();
     }
 
@@ -265,12 +262,7 @@ public class HSHandler
     {
         Client.HHideSeek.Mode = HSMode.Neutral; 
         Client.HHideSeek._timerRunning = false;
-        Client.HHero.SetSwimSpeed();
-        Client.HHero.SetRunSpeed();
-        Client.HHero.SetGravity();
-        Client.HHero.SetGlideSpeed();
-        Client.HHero.SetAirSpeed();
-        Client.HHero.SetJumpHeight();
+        Client.HHero.SetDefaults();
         Client.HLevel.LevelBloomSettings.RevertToOriginal();
         Client.HHideSeek.CurrentPerk.Deactivate();
         Client.HHideSeek.CurrentPerk = new NoPerk();
@@ -279,6 +271,22 @@ public class HSHandler
 
         ModelController.Lobby.IsReadyButtonEnabled = true;
         SFXPlayer.PlaySound(SFX.TAOpen);
+
+        if (_draftsSessionRunning && _currentPick < 4)
+        {
+            var thread = new Thread(GoToNextLevel);
+            thread.Start();
+        }
+        if (_draftsSessionRunning && _currentPick > 3)
+        {
+            Client.HHideSeek.StopDraftsSession();
+        }
+    }
+
+    private static async void GoToNextLevel()
+    {
+        await Task.Delay(15000);
+        Client.HHideSeek.TeleportToNextLevel();
     }
 
     [MessageHandler((ushort)MessageID.HS_Abort)]
@@ -287,18 +295,14 @@ public class HSHandler
         Client.HHideSeek.Role = HSRole.Seeker;
         Client.HHideSeek.Mode = HSMode.Neutral;
         Client.HHideSeek._timerRunning = false;
-        Client.HHero.SetSwimSpeed();
-        Client.HHero.SetRunSpeed();
-        Client.HHero.SetGravity();
-        Client.HHero.SetGlideSpeed();
-        Client.HHero.SetAirSpeed();
-        Client.HHero.SetJumpHeight();
+        Client.HHero.SetDefaults();
         Client.HLevel.LevelBloomSettings.RevertToOriginal();
         Client.HHideSeek.CurrentPerk.Deactivate();
         Client.HHideSeek.CurrentPerk = new NoPerk();
         Client.HHideSeek.CurrentDebuff.Deactivate();
         Client.HHideSeek.CurrentDebuff = new NoPerk();
         ModelController.Lobby.IsReadyButtonEnabled = true;
+        Client.HHideSeek.StopDraftsSession();
         SFXPlayer.PlaySound(SFX.TAOpen);
     }
 
@@ -318,6 +322,32 @@ public class HSHandler
             Time++;
             Thread.Sleep(1000);
         }
+    }
+
+    private static int _currentPick;
+    private static HSD_PickViewModel[] _picks;
+    private static bool _draftsSessionRunning;
+    public void StartDraftsSession(HSD_PickViewModel[] picks)
+    {
+        _picks = picks;
+        _draftsSessionRunning = true;
+        var level1 = picks[4];
+        var level2 = picks[5];
+        var level3 = picks[6];
+        var level4 = picks[7];
+    }
+
+    public void StopDraftsSession()
+    {
+        _currentPick = 0;
+        _picks = null;
+        _draftsSessionRunning = false;
+    }
+
+    public void TeleportToNextLevel()
+    {
+        Client.HCommand.Commands["level"].InitExecute(new string[] {_picks[4 + _currentPick].PickModel.LevelId.ToString()});
+        _currentPick++;
     }
 }
 

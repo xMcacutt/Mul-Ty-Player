@@ -263,7 +263,7 @@ public class HSD_DraftsHandler
         else
             Client.HHideSeek.Role = HSRole.Seeker;
         
-        Client.HCommand.Commands["level"].InitExecute(new string[] {Picks[4].PickModel.LevelId.ToString()});
+        Client.HHideSeek.StartDraftsSession(Picks.ToArray());
         
         Application.Current.Dispatcher.Invoke(() =>
         {

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
 using MulTyPlayer;
-using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI.Classes.Views;
 using PropertyChanged;
 using Riptide;
@@ -49,6 +47,8 @@ public class PerkHandler
         new HiderOneRangPerk(),
         new HiderAcidTrip(),
         new HidersHaveGrayscalePerk(),
+        new HiderNoLedgeGrab(),
+        new HiderNoDivePerk()
     };
 
     public static readonly ObservableCollection<HSPerk> SeekerPerks = new()
@@ -70,7 +70,9 @@ public class PerkHandler
         new SeekerOneRangPerk(),
         new SeekerAcidTrip(),
         new SeekersHaveGrayscalePerk(),
-        new DecreasedHiderSizeForSeekers()
+        new DecreasedHiderSizeForSeekers(),
+        new SeekerNoLedgeGrab(),
+        new SeekerNoDivePerk()
     };
 
     public static void DeactivateAllPerks()
@@ -366,7 +368,7 @@ public class SeekerOneRangPerk : HSPerk
     public override void Deactivate()
     {
         var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0 });
-        ProcessHandler.WriteData(rangAddress, new byte[] { 0x1 }, "Remove Second Rang");
+        ProcessHandler.WriteData(rangAddress + 0xAB6, new byte[] { 0x1 }, "Remove Second Rang");
     }
 }
 
@@ -386,7 +388,7 @@ public class HiderOneRangPerk : HSPerk
     public override void Deactivate()
     {
         var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0 });
-        ProcessHandler.WriteData(rangAddress, new byte[] { 0x1 }, "Remove Second Rang");
+        ProcessHandler.WriteData(rangAddress + 0xAB6, new byte[] { 0x1 }, "Remove Second Rang");
     }
 }
 
@@ -729,7 +731,7 @@ public class JumpBoostAbility : HSPerk
         DisplayName = "Jump Boost Ability";
         ToolTip = "Get a boosted jump for a few seconds.";
         IsAbility = true;
-        AbilityCooldown = TimeSpan.FromSeconds(25);
+        AbilityCooldown = TimeSpan.FromSeconds(20);
     }
     
     public override void ApplyAbility()
@@ -741,9 +743,9 @@ public class JumpBoostAbility : HSPerk
     private static async void JumpHeight()
     {
         SFXPlayer.PlaySound(SFX.JumpBoost);
-        Client.HHero.SetAirSpeed(20);
-        Client.HHero.SetJumpHeight(23);
-        await Task.Delay(1000);
+        Client.HHero.SetAirSpeed(22);
+        Client.HHero.SetJumpHeight(25);
+        await Task.Delay(2000);
         Client.HHero.SetAirSpeed();
         Client.HHero.SetJumpHeight();
     }
@@ -752,6 +754,84 @@ public class JumpBoostAbility : HSPerk
     {
         Client.HHero.SetAirSpeed();
         Client.HHero.SetJumpHeight();
+    }
+}
+
+public class SeekerNoLedgeGrab : HSPerk
+{
+    public SeekerNoLedgeGrab()
+    {
+        DisplayName = "No Ledge Grabs";
+        ToolTip = "You are not able to ledge grab.";
+    }
+    
+    public override void ApplySeeker()
+    {
+        Client.HHero.SetLedgeGrabTolerance(0);
+    }
+
+    public override void Deactivate()
+    {
+        Client.HHero.SetLedgeGrabTolerance();
+    }
+}
+
+public class HiderNoLedgeGrab : HSPerk
+{
+    public HiderNoLedgeGrab()
+    {
+        DisplayName = "No Ledge Grabs";
+        ToolTip = "You are not able to ledge grab.";
+    }
+    
+    public override void ApplyHider()
+    {
+        Client.HHero.SetLedgeGrabTolerance(0);
+    }
+
+    public override void Deactivate()
+    {
+        Client.HHero.SetLedgeGrabTolerance();
+    }
+}
+
+public class SeekerNoDivePerk : HSPerk
+{
+    public SeekerNoDivePerk()
+    {
+        DisplayName = "No Dive";
+        ToolTip = "You cannot dive into water. (You can submerge from the surface.)";
+    }
+    public override void ApplySeeker()
+    {
+        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0 });
+        ProcessHandler.WriteData(rangAddress + 0xAB5, new byte[] { 0x0 }, "Remove Second Rang");
+    }
+
+    public override void Deactivate()
+    {
+        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0 });
+        ProcessHandler.WriteData(rangAddress + 0xAB5, new byte[] { 0x1 }, "Remove Second Rang");
+    }
+}
+
+public class HiderNoDivePerk : HSPerk
+{
+    public HiderNoDivePerk()
+    {
+        DisplayName = "No Dive";
+        ToolTip = "You cannot dive into water. (You can submerge from the surface.)";
+    }
+    public override void ApplyHider()
+    {
+        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0 });
+        ProcessHandler.WriteData(rangAddress + 0xAB5, new byte[] { 0x0 }, "Remove dive");
+    }
+
+    public override void Deactivate()
+    {
+        var rangAddress = PointerCalculations.GetPointerAddress(0x288730, new[] { 0 });
+        ProcessHandler.WriteData(rangAddress + 0xAB5, new byte[] { 0x1 }, "Give back dive");
     }
 }
 

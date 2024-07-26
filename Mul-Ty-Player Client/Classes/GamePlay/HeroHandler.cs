@@ -195,6 +195,23 @@ public class HeroHandler
         ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x28893C), BitConverter.GetBytes(jumpHeight));
     }
     
+    public void SetLedgeGrabTolerance(float tolerance = 20f)
+    {
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288968), BitConverter.GetBytes(tolerance));
+    }
+
+    public void SetDefaults()
+    {
+        Client.HHero.SetSwimSpeed();
+        Client.HHero.SetRunSpeed();
+        Client.HHero.SetGravity();
+        Client.HHero.SetGlideSpeed();
+        Client.HHero.SetAirSpeed();
+        Client.HHero.SetJumpHeight();
+        Client.HHero.SetLedgeGrabTolerance();
+        Client.HHero.SetDoubleJumpHeight();
+    }
+    
     public void SetGlideSpeed(float speed = 7f)
     {
         ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288928), BitConverter.GetBytes(speed));
