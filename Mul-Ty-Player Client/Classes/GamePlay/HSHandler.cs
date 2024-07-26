@@ -272,20 +272,21 @@ public class HSHandler
         ModelController.Lobby.IsReadyButtonEnabled = true;
         SFXPlayer.PlaySound(SFX.TAOpen);
 
-        if (_draftsSessionRunning && _currentPick < 4)
+        if (_draftsSessionRunning && _currentPickIndex < 4)
         {
-            var thread = new Thread(GoToNextLevel);
+            var thread = new Thread(ProgressDrafts);
             thread.Start();
         }
-        if (_draftsSessionRunning && _currentPick > 3)
+        if (_draftsSessionRunning && _currentPickIndex > 3)
         {
             Client.HHideSeek.StopDraftsSession();
         }
     }
 
-    private static async void GoToNextLevel()
+    private static async void ProgressDrafts()
     {
         await Task.Delay(15000);
+        Client.HHideSeek.SetDraftsTeam();
         Client.HHideSeek.TeleportToNextLevel();
     }
 
@@ -324,27 +325,41 @@ public class HSHandler
         }
     }
 
-    private static int _currentPick;
+    private static int _currentPickIndex;
     private static HSD_PickViewModel[] _picks;
+    private static HSD_Team _team = HSD_Team.NoTeam;
     private static bool _draftsSessionRunning;
-    public void StartDraftsSession(HSD_PickViewModel[] picks)
+    public void StartDraftsSession(HSD_PickViewModel[] picks, HSD_Team team)
     {
-        _picks = picks;
+        _picks = new [] { picks[4], picks[5], picks[7], picks[6] };
+        _team = team;
         _draftsSessionRunning = true;
+        SetDraftsTeam();
         TeleportToNextLevel();
     }
 
     public void StopDraftsSession()
     {
-        _currentPick = 0;
+        _currentPickIndex = 0;
         _picks = null;
         _draftsSessionRunning = false;
     }
 
+    public void SetDraftsTeam()
+    {
+        if (Role == HSRole.Spectator)
+            return;
+        if (_picks[_currentPickIndex].PickModel.Team == HSD_Team.Team1 && _team == HSD_Team.Team1
+            || _picks[_currentPickIndex].PickModel.Team == HSD_Team.Team2 && _team == HSD_Team.Team2)
+            Client.HHideSeek.Role = HSRole.Hider;
+        else
+            Client.HHideSeek.Role = HSRole.Seeker;
+    }
+    
     public void TeleportToNextLevel()
     {
-        Client.HCommand.Commands["level"].InitExecute(new string[] {_picks[4 + _currentPick].PickModel.LevelId.ToString()});
-        _currentPick++;
+        Client.HCommand.Commands["level"].InitExecute(new string[] {_picks[_currentPickIndex].PickModel.LevelId.ToString()});
+        _currentPickIndex++;
     }
 }
 

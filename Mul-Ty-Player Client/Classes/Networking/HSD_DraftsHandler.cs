@@ -224,8 +224,9 @@ public class HSD_DraftsHandler
         if (Picks.Count == 8)
             return;
         if (CurrentTeam == HSD_Team.Team1)
-            HSD_DraftsHandler.Team1.FirstOrDefault(x => x.PlayerModel.Id == CurrentTeam1PlayerId)!.TeamColor = new SolidColorBrush(Colors.White);
-        else if (CurrentTeam == HSD_Team.Team2) HSD_DraftsHandler.Team2.FirstOrDefault(x => x.PlayerModel.Id == CurrentTeam2PlayerId)!.TeamColor = new SolidColorBrush(Colors.White);
+            Team1.FirstOrDefault(x => x.PlayerModel.Id == CurrentTeam1PlayerId)!.TeamColor = new SolidColorBrush(Colors.White);
+        else if (CurrentTeam == HSD_Team.Team2) 
+            Team2.FirstOrDefault(x => x.PlayerModel.Id == CurrentTeam2PlayerId)!.TeamColor = new SolidColorBrush(Colors.White);
     }
 
 
@@ -256,14 +257,12 @@ public class HSD_DraftsHandler
     [MessageHandler((ushort)MessageID.HSD_Reset)]
     public static void HandleReset(Message message)
     {
-        // START OF AUTOMATED SYSTEM
-        if (Picks[4].PickModel.Team == HSD_Team.Team1 && Team1.Any(x => x.PlayerModel.Id == Client._client.Id)
-            || Picks[4].PickModel.Team == HSD_Team.Team2 && Team2.Any(x => x.PlayerModel.Id == Client._client.Id))
-            Client.HHideSeek.Role = HSRole.Hider;
-        else
-            Client.HHideSeek.Role = HSRole.Seeker;
-        
-        Client.HHideSeek.StartDraftsSession(Picks.ToArray());
+        var team = HSD_Team.NoTeam;
+        if (Team1.Any(x => x.PlayerModel.Id == Client._client.Id))
+            team = HSD_Team.Team1;
+        else if (Team2.Any(x => x.PlayerModel.Id == Client._client.Id))
+            team = HSD_Team.Team2;
+        Client.HHideSeek.StartDraftsSession(Picks.ToArray(), team);
         
         Application.Current.Dispatcher.Invoke(() =>
         {
