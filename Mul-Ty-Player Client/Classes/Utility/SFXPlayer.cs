@@ -29,7 +29,8 @@ public enum SFX
     CheatActivated,
     Freeze,
     Unfreeze,
-    Flashbang
+    Flashbang,
+    JumpBoost,
 }
 
 public static class SFXPlayer
@@ -57,7 +58,8 @@ public static class SFXPlayer
         { SFX.CheatActivated, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/CheatActivated.wav")},
         { SFX.Freeze, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Freeze.wav")},
         { SFX.Unfreeze, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Unfreeze.wav")},
-        { SFX.Flashbang, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Flashbang.wav")}
+        { SFX.Flashbang, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Flashbang.wav")},
+        { SFX.JumpBoost, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/JumpBoost.wav")}
     };
 
     private static Dictionary<SFX, MediaPlayer> mediaPlayers;

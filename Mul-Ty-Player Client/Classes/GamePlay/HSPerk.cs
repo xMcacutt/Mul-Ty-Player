@@ -39,6 +39,7 @@ public class PerkHandler
         new HiderSwimSpeedPerk(),
         new HidersFreezeSeekersPerk(),
         new HiderFlashbangAbilityPerk(),
+        new JumpBoostAbility()
     };
 
     public static readonly ObservableCollection<HSPerk> HiderDebuffs = new()
@@ -59,6 +60,7 @@ public class PerkHandler
         new SeekerSwimSpeedPerk(),
         new OpalSpeedPerk(),
         new SeekerFlashbangAbilityPerk(),
+        new JumpBoostAbility()
     };
     
     public static readonly ObservableCollection<HSPerk> SeekerDebuffs = new()
@@ -590,9 +592,9 @@ public class SeekerAcidTrip : HSPerk
         Client.HLevel.LevelBloomSettings.State = true;
         Client.HLevel.LevelBloomSettings.Hue = _hue;
         if (_isGoingDown)
-            _hue -= 0.004f;
+            _hue -= 0.006f;
         else 
-            _hue += 0.004f;
+            _hue += 0.006f;
         if (_isGoingDown && _hue < 0)
         {
             _isGoingDown = false;
@@ -626,9 +628,9 @@ public class HiderAcidTrip : HSPerk
         Client.HLevel.LevelBloomSettings.State = true;
         Client.HLevel.LevelBloomSettings.Hue = _hue;
         if (_isGoingDown)
-            _hue -= 0.004f;
+            _hue -= 0.006f;
         else 
-            _hue += 0.004f;
+            _hue += 0.006f;
         if (_isGoingDown && _hue < 0)
         {
             _isGoingDown = false;
@@ -654,7 +656,7 @@ public class HiderFlashbangAbilityPerk : HSPerk
         DisplayName = "Flashbang Ability";
         ToolTip = "Cause the opposing team's screen to flash white and slow for a few seconds.";
         IsAbility = true;
-        AbilityCooldown = TimeSpan.FromSeconds(5);
+        AbilityCooldown = TimeSpan.FromSeconds(20);
     }
     
     public override void ApplyAbility()
@@ -668,11 +670,9 @@ public class HiderFlashbangAbilityPerk : HSPerk
     private static async void Flashbang()
     {
         SFXPlayer.PlaySound(SFX.Flashbang);
-        HSHandler.LockoutSpeed = true;
-        Client.HHero.SetRunSpeed(5);
         Client.HLevel.LevelBloomSettings.State = true;
         var originalBrightness = Client.HLevel.LevelBloomSettings.Value;
-        var flashBrightness = 10f;
+        var flashBrightness = 15f;
         Client.HLevel.LevelBloomSettings.Value = flashBrightness;
         var originalSaturation = Client.HLevel.LevelBloomSettings.Saturation;
         Client.HLevel.LevelBloomSettings.Saturation = 0;
@@ -684,7 +684,6 @@ public class HiderFlashbangAbilityPerk : HSPerk
             Client.HLevel.LevelBloomSettings.Saturation += originalSaturation / steps;
             await Task.Delay(3);
         }
-        HSHandler.LockoutSpeed = false;
     }
 
 
@@ -698,8 +697,6 @@ public class HiderFlashbangAbilityPerk : HSPerk
     public override void Deactivate()
     {
         Client.HLevel.LevelBloomSettings.RevertToOriginal();
-        HSHandler.LockoutSpeed = false;
-        Client.HHero.SetRunSpeed();
     }
 }
 
@@ -710,7 +707,7 @@ public class SeekerFlashbangAbilityPerk : HSPerk
         DisplayName = "Flashbang Ability";
         ToolTip = "Cause the opposing team's screen to flash white and slow for a few seconds.";
         IsAbility = true;
-        AbilityCooldown = TimeSpan.FromSeconds(5);
+        AbilityCooldown = TimeSpan.FromSeconds(20);
     }
     
     public override void ApplyAbility()
@@ -722,7 +719,39 @@ public class SeekerFlashbangAbilityPerk : HSPerk
     public override void Deactivate()
     {
         Client.HLevel.LevelBloomSettings.RevertToOriginal();
-        Client.HHero.SetRunSpeed();
+    }
+}
+
+public class JumpBoostAbility : HSPerk
+{
+    public JumpBoostAbility()
+    {
+        DisplayName = "Jump Boost Ability";
+        ToolTip = "Get a boosted jump for a few seconds.";
+        IsAbility = true;
+        AbilityCooldown = TimeSpan.FromSeconds(25);
+    }
+    
+    public override void ApplyAbility()
+    {
+        var thread = new Thread(JumpHeight);
+        thread.Start();
+    }
+    
+    private static async void JumpHeight()
+    {
+        SFXPlayer.PlaySound(SFX.JumpBoost);
+        Client.HHero.SetAirSpeed(20);
+        Client.HHero.SetJumpHeight(23);
+        await Task.Delay(1000);
+        Client.HHero.SetAirSpeed();
+        Client.HHero.SetJumpHeight();
+    }
+
+    public override void Deactivate()
+    {
+        Client.HHero.SetAirSpeed();
+        Client.HHero.SetJumpHeight();
     }
 }
 

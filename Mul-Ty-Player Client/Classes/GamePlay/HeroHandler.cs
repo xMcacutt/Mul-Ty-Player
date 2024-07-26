@@ -180,6 +180,21 @@ public class HeroHandler
         ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288940), BitConverter.GetBytes(gravity));
     }
     
+    public void SetAirSpeed(float airSpeed = 10f)
+    {
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288920), BitConverter.GetBytes(airSpeed));
+    }
+    
+    public void SetDoubleJumpHeight(float doubleJumpHeight = 10f)
+    {
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x28894C), BitConverter.GetBytes(doubleJumpHeight));
+    }
+
+    public void SetJumpHeight(float jumpHeight = 10f)
+    {
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x28893C), BitConverter.GetBytes(jumpHeight));
+    }
+    
     public void SetGlideSpeed(float speed = 7f)
     {
         ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288928), BitConverter.GetBytes(speed));

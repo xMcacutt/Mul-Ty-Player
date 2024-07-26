@@ -181,6 +181,8 @@ public class HSHandler
         Client.HHero.SetRunSpeed();
         Client.HHero.SetGravity();
         Client.HHero.SetGlideSpeed();
+        Client.HHero.SetAirSpeed();
+        Client.HHero.SetJumpHeight();
         Client.HLevel.LevelBloomSettings.RevertToOriginal();
     }
 
@@ -267,6 +269,8 @@ public class HSHandler
         Client.HHero.SetRunSpeed();
         Client.HHero.SetGravity();
         Client.HHero.SetGlideSpeed();
+        Client.HHero.SetAirSpeed();
+        Client.HHero.SetJumpHeight();
         Client.HLevel.LevelBloomSettings.RevertToOriginal();
         Client.HHideSeek.CurrentPerk.Deactivate();
         Client.HHideSeek.CurrentPerk = new NoPerk();
@@ -287,6 +291,8 @@ public class HSHandler
         Client.HHero.SetRunSpeed();
         Client.HHero.SetGravity();
         Client.HHero.SetGlideSpeed();
+        Client.HHero.SetAirSpeed();
+        Client.HHero.SetJumpHeight();
         Client.HLevel.LevelBloomSettings.RevertToOriginal();
         Client.HHideSeek.CurrentPerk.Deactivate();
         Client.HHideSeek.CurrentPerk = new NoPerk();

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using MulTyPlayerClient.GUI.ViewModels;
 
 namespace MulTyPlayerClient.GUI.Classes.Views;
@@ -10,6 +11,11 @@ public partial class HSD_PerkWindow : Window
     public HSD_PerkWindow()
     {
         InitializeComponent();
+    }
+    
+    private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Pressed) DragMove();
     }
 
     private void Perk_OnClick(object sender, RoutedEventArgs e)
