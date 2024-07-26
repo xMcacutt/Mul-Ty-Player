@@ -446,6 +446,11 @@
                                                              Click="AbortSession_OnClick"
                                                              IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                                              IconCode="{DynamicResource IcoCancel}"/>
+                                    <controls:CustomMenuItem Header="Abort Drafts"
+                                                             x:Name="AbortDrafts"
+                                                             Click="AbortDrafts_OnClick"
+                                                             IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                             IconCode="{DynamicResource IcoCancel}"/>
                                     <controls:CustomMenuItem Header="Open Drafts"
                                                              x:Name="StartDraft"
                                                              IsEnabled="True"

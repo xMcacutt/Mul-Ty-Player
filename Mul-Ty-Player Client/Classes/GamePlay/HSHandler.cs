@@ -331,10 +331,7 @@ public class HSHandler
     {
         _picks = picks;
         _draftsSessionRunning = true;
-        var level1 = picks[4];
-        var level2 = picks[5];
-        var level3 = picks[6];
-        var level4 = picks[7];
+        TeleportToNextLevel();
     }
 
     public void StopDraftsSession()

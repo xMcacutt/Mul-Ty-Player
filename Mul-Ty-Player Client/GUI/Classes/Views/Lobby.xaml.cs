@@ -240,4 +240,9 @@ public partial class Lobby : UserControl
     {
         CollectionModeHandler.ResetScores();
     }
+
+    private void AbortDrafts_OnClick(object sender, RoutedEventArgs e)
+    {
+        Client.HHideSeek.StopDraftsSession();
+    }
 }
