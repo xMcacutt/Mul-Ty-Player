@@ -29,7 +29,7 @@
                     Name="Perk1"
                     FontFamily="SF Slapstick Comic"
                     FontSize="24"
-                    Width="200"
+                    Width="250"
                     Click="Perk_OnClick" />
             <Button Style="{StaticResource LobbyButton}"
                     Content="{Binding Perk2.DisplayName}"
@@ -37,7 +37,7 @@
                     Name="Perk2"
                     FontFamily="SF Slapstick Comic"
                     FontSize="24"
-                    Width="200"
+                    Width="250"
                     Click="Perk_OnClick" />
             <Button Style="{StaticResource LobbyButton}"
                     Content="{Binding Perk3.DisplayName}"
@@ -45,7 +45,7 @@
                     Name="Perk3"
                     FontFamily="SF Slapstick Comic"
                     FontSize="24"
-                    Width="200"
+                    Width="250"
                     Click="Perk_OnClick" />
         </StackPanel>
         <StackPanel Visibility="{Binding ChoosePerkActive, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -59,7 +59,7 @@
                     Name="Debuff1"
                     FontFamily="SF Slapstick Comic"
                     FontSize="24"
-                    Width="200"
+                    Width="250"
                     Click="Debuff_OnClick" />
             <Button Style="{StaticResource LobbyButton}"
                     Content="{Binding Debuff2.DisplayName}"
@@ -67,7 +67,7 @@
                     Name="Debuff2"
                     FontFamily="SF Slapstick Comic"
                     FontSize="24"
-                    Width="200"
+                    Width="250"
                     Click="Debuff_OnClick" />
             <Button Style="{StaticResource LobbyButton}"
                     Content="{Binding Debuff3.DisplayName}"
@@ -75,7 +75,7 @@
                     Name="Debuff3"
                     FontFamily="SF Slapstick Comic"
                     FontSize="24"
-                    Width="200"
+                    Width="250"
                     Click="Debuff_OnClick" />
         </StackPanel>
     </Grid>

@@ -216,4 +216,5 @@ public class LobbyModel
     private bool isReadyButtonEnabled;
 
     #endregion
+    
 }

@@ -12,4 +12,5 @@
     <gui:RoleToIconConverter x:Key="RoleToIconConverter"/>
     <gui:ScoreLeaderConverter x:Key="ScoreLeaderConverter"/>
     <gui:ClientIdToNameConverter x:Key="ClientIdToNameConverter"/>
+    <gui:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
 </ResourceDictionary>

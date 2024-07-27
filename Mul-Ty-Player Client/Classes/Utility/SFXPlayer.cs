@@ -31,6 +31,7 @@ public enum SFX
     Unfreeze,
     Flashbang,
     JumpBoost,
+    Alert
 }
 
 public static class SFXPlayer
@@ -59,7 +60,8 @@ public static class SFXPlayer
         { SFX.Freeze, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Freeze.wav")},
         { SFX.Unfreeze, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Unfreeze.wav")},
         { SFX.Flashbang, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Flashbang.wav")},
-        { SFX.JumpBoost, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/JumpBoost.wav")}
+        { SFX.JumpBoost, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/JumpBoost.wav")},
+        { SFX.Alert, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Alert.wav")}
     };
 
     private static Dictionary<SFX, MediaPlayer> mediaPlayers;

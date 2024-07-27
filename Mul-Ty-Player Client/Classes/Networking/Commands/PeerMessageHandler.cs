@@ -1,4 +1,5 @@
-﻿using MulTyPlayer;
+﻿using System;
+using MulTyPlayer;
 using Riptide;
 
 namespace MulTyPlayerClient;
@@ -12,6 +13,13 @@ public static class PeerMessageHandler
         message.AddString(text);
         if (toClientId != null) message.AddUShort((ushort)toClientId);
         Client._client.Send(message);
+    }
+    
+    [MessageHandler((ushort)MessageID.Alert)]
+    public static void ConveyAlert(Message message)
+    {
+        SFXPlayer.PlaySound(SFX.Alert);
+        Logger.Write(message.GetString());
     }
     
     [MessageHandler((ushort)MessageID.P2PMessage)]

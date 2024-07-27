@@ -29,6 +29,7 @@ public class LobbyViewModel : IViewModel
         Lobby.GameModeChanged += Model_GameModeChanged;
         Lobby.IsLevelLockEnabledChanged += Model_IsLevelLockEnabledChanged;
         Lobby.CanLaunchGameChanged += Model_CanLaunchGameChanged;
+        ModelController.Login.JoinAsSpectatorChanged += Model_IsSpectatorChanged;
         HSHandler.OnRoleChanged += Model_RoleChanged;
         HSHandler.OnTimeChanged += Model_TimeChanged;
         ChaosHandler.OnShuffleOnStartChanged += Model_ShuffleOnStartChanged;
@@ -38,7 +39,7 @@ public class LobbyViewModel : IViewModel
 
         Logger.OnLogWrite += ChatMessages.Add;
     }
-    
+
     public ObservableCollection<string> ChatMessages { get; set; }
 
     public ICommand ManageInputCommand { get; set; }
@@ -58,6 +59,7 @@ public class LobbyViewModel : IViewModel
     public object IsCollectionButtonEnabled { get; set; }
     public object IsNoModeButtonEnabled { get; set; }
     public object IsLevelLockEnabled { get; set; }
+    public bool IsSpectator { get; set; }
     public string Time { get; set; } = "00:00:00";
     public HSRole Role { get; set; } = HSRole.Hider;
     public bool ShuffleOnStart { get; set; }
@@ -104,6 +106,11 @@ public class LobbyViewModel : IViewModel
     private void Model_RoleChanged(HSRole newRole)
     {
         Role = newRole;
+    }
+    
+    private void Model_IsSpectatorChanged(bool value)
+    {
+        IsSpectator = value;
     }
     
     private void Model_ShuffleOnStartChanged(bool shuffleOnStart)
@@ -160,7 +167,7 @@ public class LobbyViewModel : IViewModel
         IsChaosButtonEnabled = false;
         IsCollectionButtonEnabled = false;
         IsNoModeButtonEnabled = false;
-        IsHideSeekButtonEnabled = !ModelController.Login.JoinAsSpectator;
+        IsHideSeekButtonEnabled = true;
     }
     
     private void Model_ChaosSelected()
@@ -168,7 +175,7 @@ public class LobbyViewModel : IViewModel
         IsHideSeekButtonEnabled = false;
         IsCollectionButtonEnabled = false;
         IsNoModeButtonEnabled = false;
-        IsChaosButtonEnabled = !ModelController.Login.JoinAsSpectator;
+        IsChaosButtonEnabled = true;
     }
     
     private void Model_CollectionSelected()
@@ -176,7 +183,7 @@ public class LobbyViewModel : IViewModel
         IsHideSeekButtonEnabled = false;
         IsChaosButtonEnabled = false;
         IsNoModeButtonEnabled = false;
-        IsCollectionButtonEnabled = !ModelController.Login.JoinAsSpectator;
+        IsCollectionButtonEnabled = true;
     }
     
     private void Model_NoModeSelected()
@@ -184,7 +191,7 @@ public class LobbyViewModel : IViewModel
         IsHideSeekButtonEnabled = false;
         IsChaosButtonEnabled = false;
         IsCollectionButtonEnabled = false;
-        IsNoModeButtonEnabled = !ModelController.Login.JoinAsSpectator;
+        IsNoModeButtonEnabled = true;
     }
     
     private void Model_IsLevelLockEnabledChanged(bool value)

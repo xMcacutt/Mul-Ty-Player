@@ -429,17 +429,18 @@
                             <Button.ContextMenu>
                                 <ContextMenu>
                                     <controls:CustomMenuItem Header="Change Role"
+                                                             IsEnabled="{Binding IsSpectator, Converter={StaticResource InvertBooleanConverter}}"
                                                              Click="ChangeRoleToggle_Click"
                                                              IconCode="{Binding PlacementTarget.Tag.Role, RelativeSource={RelativeSource AncestorType=ContextMenu}, Converter={StaticResource RoleToIconConverter}, ConverterParameter=True}"/>
                                     <controls:CustomMenuItem Header="Show / Hide Timer"
                                                              x:Name="TimerToggle"
-                                                             IsCheckable="True"
+                                                             IsEnabled="{Binding IsSpectator, Converter={StaticResource InvertBooleanConverter}}"                                                             IsCheckable="True"
                                                              IsChecked="{Binding PlacementTarget.Tag.IsTimerVisible, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                                              Click="TimerToggle_Click"
                                                              IconCode="{DynamicResource IcoStopwatch}"/>
                                     <controls:CustomMenuItem Header="Reset Time"
                                                              x:Name="ResetTimer"
-                                                             Click="ResetTimer_OnClick"
+                                                             IsEnabled="{Binding IsSpectator, Converter={StaticResource InvertBooleanConverter}}"                                                             Click="ResetTimer_OnClick"
                                                              IconCode="{DynamicResource IcoResetTimer}"/>
                                     <controls:CustomMenuItem Header="Abort Session"
                                                              x:Name="AbortSession"

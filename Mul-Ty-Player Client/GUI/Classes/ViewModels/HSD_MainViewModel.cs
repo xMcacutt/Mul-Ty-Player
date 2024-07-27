@@ -17,8 +17,8 @@ public class HSD_MainViewModel
         chooseTeamViewModel = new HSD_ChooseTeamViewModel();
         draftViewModel = new HSD_DraftViewModel();
         
-        lastViewModel = chooseTeamViewModel;
-        CurrentViewModel = chooseTeamViewModel;
+        lastViewModel = ModelController.Login.JoinAsSpectator ? draftViewModel : chooseTeamViewModel;
+        CurrentViewModel = ModelController.Login.JoinAsSpectator ? draftViewModel : chooseTeamViewModel;
         
         ModelController.HSD_ChooseTeam.OnChosenTeam += () => GoToView(HSD_View.Draft);
     }

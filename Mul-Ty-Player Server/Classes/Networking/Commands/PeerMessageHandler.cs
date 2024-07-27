@@ -20,6 +20,20 @@ public class PeerMessageHandler
         else Server._Server.Send(response, message.GetUShort());
     }
 
+    [MessageHandler((ushort)MessageID.Alert)]
+    public static void ConveyAlert(ushort fromClientId, Message message)
+    {
+        var response = Message.Create(MessageSendMode.Reliable, MessageID.Alert);
+        var bToAll = message.GetBool();
+        var messageText = message.GetString();
+        var responseText = bToAll
+            ? $"[{DateTime.Now:HH:mm:ss}] {PlayerHandler.Players[fromClientId].Name}: {messageText}"
+            : $"[{DateTime.Now:HH:mm:ss}] {PlayerHandler.Players[fromClientId].Name} [WHISPERED]: {messageText}";
+        response.AddString(responseText);
+        if (bToAll) Server._Server.SendToAll(response);
+        else Server._Server.Send(response, message.GetUShort());
+    }
+
     public static void SendMessageToClient(string str, bool printToServer, ushort to)
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.ConsoleSend);

@@ -28,8 +28,6 @@ public class SpectatorHandler
     private static float _cameraDistance;
     private static int _spectateeLevel;
 
-
-
     public static void UpdateCamera()
     {
         if (SpectateeKoalaId != null)
@@ -170,7 +168,7 @@ public class SpectatorHandler
                 continue;
             playerIndex--;
             playerIndex %= currentLevelPlayers.Length;
-            SpectateeKoalaId = currentLevelPlayers[playerIndex].Koala;
+            SpectateeKoalaId = currentLevelPlayers[playerIndex - 1].Koala;
             return;
         }
 

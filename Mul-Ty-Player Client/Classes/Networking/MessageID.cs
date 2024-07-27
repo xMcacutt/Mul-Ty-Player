@@ -60,7 +60,8 @@ public enum MessageID : ushort
     HSD_PickRequest,
     HSD_Start,
     HSD_Reset,
-    HS_Flashbang
+    HS_Flashbang,
+    Alert
 }
 
 
