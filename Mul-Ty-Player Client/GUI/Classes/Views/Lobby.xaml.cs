@@ -245,4 +245,9 @@ public partial class Lobby : UserControl
     {
         Client.HHideSeek.StopDraftsSession();
     }
+
+    private void ChangeRole_OnClick(object sender, RoutedEventArgs e)
+    {
+        Client.HHideSeek.ForceChangeRole(clickedPlayer.Id);
+    }
 }

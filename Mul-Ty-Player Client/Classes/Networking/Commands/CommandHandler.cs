@@ -37,6 +37,7 @@ public class CommandHandler
         RegisterCommand(new MtpCommandGameMode());
         RegisterCommand(new MtpCommandChaos());
         RegisterCommand(new MtpCommandAbility());
+        RegisterCommand(new MtpCommandAlert());
     }
     
     public void ParseCommand(string input)

@@ -24,14 +24,10 @@ public class PeerMessageHandler
     public static void ConveyAlert(ushort fromClientId, Message message)
     {
         var response = Message.Create(MessageSendMode.Reliable, MessageID.Alert);
-        var bToAll = message.GetBool();
         var messageText = message.GetString();
-        var responseText = bToAll
-            ? $"[{DateTime.Now:HH:mm:ss}] {PlayerHandler.Players[fromClientId].Name}: {messageText}"
-            : $"[{DateTime.Now:HH:mm:ss}] {PlayerHandler.Players[fromClientId].Name} [WHISPERED]: {messageText}";
+        var responseText = $"[{DateTime.Now:HH:mm:ss}] {PlayerHandler.Players[fromClientId].Name}: {messageText}";
         response.AddString(responseText);
-        if (bToAll) Server._Server.SendToAll(response);
-        else Server._Server.Send(response, message.GetUShort());
+        Server._Server.SendToAll(response);
     }
 
     public static void SendMessageToClient(string str, bool printToServer, ushort to)

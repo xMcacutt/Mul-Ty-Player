@@ -188,6 +188,11 @@ public class HSHandler
     {
         var clientId = message.GetUShort();
         var role = message.GetInt();
+        if (clientId == Client._client.Id)
+        {
+            Client.HHideSeek.Role = (HSRole)role;
+            return;
+        }
         ChangeRole(clientId, (HSRole)role);
     }
 
@@ -360,6 +365,13 @@ public class HSHandler
     {
         Client.HCommand.Commands["level"].InitExecute(new string[] {_picks[_currentPickIndex].PickModel.LevelId.ToString()});
         _currentPickIndex++;
+    }
+
+    public void ForceChangeRole(ushort clickedPlayerId)
+    {
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_ForceRole);
+        message.AddUShort(clickedPlayerId);
+        Client._client.Send(message);
     }
 }
 

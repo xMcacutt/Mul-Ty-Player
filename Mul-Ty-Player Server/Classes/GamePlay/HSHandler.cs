@@ -151,6 +151,22 @@ public class HSHandler
         }
         Mode = HSMode.Neutral;
     }
+    
+    [MessageHandler((ushort)MessageID.HS_ForceRole)]
+    public static void HandleForceRoleRequest(ushort fromClientId, Message message)
+    {
+        var clientId = message.GetUShort();
+        if (!PlayerHandler.Players.TryGetValue(clientId, out var player)) 
+            return;
+        if (player.Role == HSRole.Spectator)
+            return;
+        player.Role = player.Role == HSRole.Hider ? HSRole.Seeker : HSRole.Hider;
+        var response = Message.Create(MessageSendMode.Reliable, MessageID.HS_RoleChanged);
+        response.AddUShort(clientId);
+        response.AddInt((int)player.Role);
+        Server._Server.Send(response, clientId);
+    }
+    
 }
 
 public enum HSRole

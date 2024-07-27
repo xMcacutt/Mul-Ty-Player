@@ -61,7 +61,8 @@ public enum MessageID : ushort
     HSD_Start,
     HSD_Reset,
     HS_Flashbang,
-    Alert
+    Alert,
+    HS_ForceRole
 }
 
 

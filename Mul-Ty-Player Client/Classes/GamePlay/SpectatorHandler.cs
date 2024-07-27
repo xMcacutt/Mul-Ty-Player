@@ -167,8 +167,8 @@ public class SpectatorHandler
             if (currentLevelPlayers[playerIndex].Koala != SpectateeKoalaId)
                 continue;
             playerIndex--;
-            playerIndex %= currentLevelPlayers.Length;
-            SpectateeKoalaId = currentLevelPlayers[playerIndex - 1].Koala;
+            playerIndex = (playerIndex + currentLevelPlayers.Length) % currentLevelPlayers.Length;
+            SpectateeKoalaId = currentLevelPlayers[playerIndex].Koala;
             return;
         }
 
