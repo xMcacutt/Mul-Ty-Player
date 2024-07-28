@@ -266,13 +266,14 @@ public class ClmRule_Run : CollectionModeRule
                 player.Coordinates[1], 
                 player.Coordinates[2]);
             player.Score += (int)Math.Round(Vector3.Distance(oldPlayerVector, newPlayerVector), 0) / 50;
+            CollectionModeHandler.SendScore(player.Score, player.ClientID);
         }
     }
     
     public override void RunSpecialAction()
     {
         var players = PlayerHandler.Players.Where(x => x.Value.Koala != null);
-        var _playerCoordinates = players.ToDictionary(
+        _playerCoordinates = players.ToDictionary(
             x => x.Key, x => (float[])x.Value.Coordinates.Clone());
     }
 }

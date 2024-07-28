@@ -41,6 +41,7 @@ public class CollectionModeHandler
         ModelController.Lobby.IsReady = false;
         ModelController.Lobby.IsReadyButtonEnabled = false;
         Client.HCommand.Commands["tp"].InitExecute(new string[] {"@s"});
+        Client.HGameState.DisplayInGameMessage("Collection Mode Started\nGo!");
         _isClmRunning = true;
         ResetScores();
     }
@@ -49,6 +50,7 @@ public class CollectionModeHandler
     public static void HandleClmStop(Message message)
     {
         ModelController.Lobby.IsReadyButtonEnabled = true;
+        SFXPlayer.PlaySound(SFX.RuleChange);
         SFXPlayer.PlaySound(SFX.TAOpen);
         Client.HGameState.DisplayInGameMessage("The Collection Mode Round Has Ended");
         _isClmRunning = false;
@@ -57,6 +59,12 @@ public class CollectionModeHandler
     public static void ResetScores()
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.CL_ResetScore);
+        Client._client.Send(message);
+    }
+
+    public static void RequestAbort()
+    {
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.CL_Stop);
         Client._client.Send(message);
     }
 }

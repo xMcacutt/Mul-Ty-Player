@@ -94,6 +94,12 @@ public class CollectionModeHandler
         }
     }
     
+    [MessageHandler((ushort)MessageID.CL_Stop)]
+    public static void HandleAbortRequest(ushort fromClientId, Message message)
+    {
+        Program.HCollection.StopCollectionMode();
+    }
+    
     private static Timer _mainTimer;
     private static Timer _intervalTimer;
 

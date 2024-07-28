@@ -511,6 +511,10 @@
                             </Button.Resources>
                             <Button.ContextMenu>
                                 <ContextMenu>
+                                    <controls:CustomMenuItem Header="Abort Session"
+                                                             Click="AbortCollection_Click"
+                                                             IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                             IconCode="{DynamicResource IcoCancel}"/>
                                     <controls:CustomMenuItem Header="Reset Scores"
                                                              Click="ResetScores_Click"
                                                              IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"

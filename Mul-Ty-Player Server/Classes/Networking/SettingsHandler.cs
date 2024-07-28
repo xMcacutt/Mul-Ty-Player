@@ -35,6 +35,7 @@ internal class SettingsHandler
                 return;
             if (value != GameMode.Collection && _gameMode == GameMode.Collection)
                 Program.HCollection.StopCollectionMode();
+            _gameMode = value;
         }
     }
 

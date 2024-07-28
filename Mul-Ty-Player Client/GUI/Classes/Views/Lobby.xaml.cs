@@ -250,4 +250,9 @@ public partial class Lobby : UserControl
     {
         Client.HHideSeek.ForceChangeRole(clickedPlayer.Id);
     }
+
+    private void AbortCollection_Click(object sender, RoutedEventArgs e)
+    {
+        CollectionModeHandler.RequestAbort();
+    }
 }
