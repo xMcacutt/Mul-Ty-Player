@@ -14,6 +14,7 @@ internal class Program
     public static ObjectiveHandler HObjective;
     public static HSD_DraftsHandler HDrafts;
     public static ChaosHandler HChaos;
+    public static CollectionModeHandler HCollection;
     public static string _inputStr;
 
     private static void Main()
@@ -43,6 +44,7 @@ internal class Program
         HObjective = new ObjectiveHandler();
         HDrafts = new HSD_DraftsHandler();
         HChaos = new ChaosHandler();
+        HCollection = new CollectionModeHandler();
         Console.WriteLine(
             "Welcome to Mul-Ty-Player.\nThis is the server application. \nPort forward to allow connections.\n");
 

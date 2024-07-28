@@ -62,7 +62,11 @@ public enum MessageID : ushort
     HSD_Reset,
     HS_Flashbang,
     Alert,
-    HS_ForceRole
+    HS_ForceRole,
+    CL_RuleChange,
+    Kill,
+    CL_Start,
+    CL_Stop
 }
 
 

@@ -1,6 +1,6 @@
 ﻿namespace MulTyPlayerServer;
 
-internal class Player
+public class Player
 {
     public ushort ClientID;
     public float[] Coordinates;

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
+using BenchmarkDotNet.Attributes;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI.Models;
@@ -57,7 +59,19 @@ public class GameStateHandler
 
     public void DisplayInGameMessage(string message)
     {
-        
+        if (IsOnMainMenuOrLoading)
+            return;
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x286C54, new byte[] { 0x1 });
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x289048, new byte[] { 0x1 });
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x286800, new byte[] { 0xD });
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x286804, new byte[] { 0x0 });
+
+        var addr = PointerCalculations.GetPointerAddress(0x293B14, new[] { 0x4 });
+        ProcessHandler.TryRead(addr, out int ptr, false, "Get pointer for pause menu");
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x286D18, BitConverter.GetBytes(ptr));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x287580, BitConverter.GetBytes(ptr));
+        addr = PointerCalculations.GetPointerAddress(0x529220, new[] { 0x1D });
+        ProcessHandler.WriteData(addr, Encoding.ASCII.GetBytes(message + "\n\nPress ESC To Continue.").Concat(new byte[1]).ToArray());
     }
     
     // CALLED ON CONNECTING TO MTP

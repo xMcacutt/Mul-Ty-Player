@@ -24,7 +24,19 @@ internal class SettingsHandler
     
     public static bool DoLevelLock { get; set; }
     public static int HideSeekTime { get; set; }
-    public static GameMode GameMode { get; set; }
+
+    private static GameMode _gameMode;
+    public static GameMode GameMode
+    {
+        get => _gameMode;
+        set
+        {
+            if (_gameMode == value)
+                return;
+            if (value != GameMode.Collection && _gameMode == GameMode.Collection)
+                Program.HCollection.StopCollectionMode();
+        }
+    }
 
     private static float _hsRange = 65f;
     public static float HSRange

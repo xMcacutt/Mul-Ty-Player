@@ -65,7 +65,7 @@ public class MtpCommandTeleport
         {23, new float[] {-18.875942f, -1069.9381f, -1829.7476f} },
     };
     
-    private static void Teleport(bool fromIsClientId, ushort from, bool toIsClientId, ushort to, ushort sender)
+    public static void Teleport(bool fromIsClientId, ushort from, bool toIsClientId, ushort to, ushort sender)
     {
         var fromPlayer = GetPlayer(fromIsClientId, from, SelectorType.From);
         
@@ -120,7 +120,7 @@ public class MtpCommandTeleport
         Server._Server.Send(message, fromPlayer.ClientID);
     }
 
-    private static void TeleportToLevelPosition(bool fromIsClientId, ushort from, ushort to, ushort sender)
+    public static void TeleportToLevelPosition(bool fromIsClientId, ushort from, ushort to, ushort sender)
     {
         if (!fromIsClientId && (Selector)from == Selector.AllPlayers)
         {
@@ -151,14 +151,14 @@ public class MtpCommandTeleport
         Server._Server.Send(toLevelPositionIdentifierMessage, sendPlayer.ClientID);
     }
     
-    private static void SendTeleportMessage(Player fromPlayer, Player toPlayer, ushort sender)
+    public static void SendTeleportMessage(Player fromPlayer, Player toPlayer, ushort sender)
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.AdvancedTeleport);
         message.AddUShort(toPlayer.ClientID);
         Server._Server.Send(message, fromPlayer.ClientID);
     }
 
-    private static void SendTeleportMessage(Player player, float[] coordinates, ushort sender)
+    public static void SendTeleportMessage(Player player, float[] coordinates, ushort sender)
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.AdvancedTeleport);
         message.AddFloats(coordinates);
@@ -172,7 +172,7 @@ public class MtpCommandTeleport
         Server._Server.Send(message, fromPlayer.ClientID);
     }
 
-    private static void Teleport(bool fromIsClientId, ushort from, string[] coords, ushort sender)
+    public static void Teleport(bool fromIsClientId, ushort from, string[] coords, ushort sender)
     {
         var fromPlayer = GetPlayer(fromIsClientId, from, SelectorType.From);
         if (fromPlayer is null)

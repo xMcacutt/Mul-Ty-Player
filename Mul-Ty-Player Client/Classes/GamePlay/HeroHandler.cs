@@ -255,6 +255,14 @@ public class HeroHandler
         var address = PointerCalculations.GetPointerAddress(0x289298, new[] { 0x5E8 });
         ProcessHandler.WriteData(address, BitConverter.GetBytes(address - 68 - (76 * index)));
     }
+    
+    public void SetTyInvis(bool isInvis)
+    {
+        var address = PointerCalculations.GetPointerAddress(0x289298, new[] { 0x5E8 });
+        ProcessHandler.WriteData(address, BitConverter.GetBytes(address - 68 - (76 * 10)));
+        address -= 0x2AC;
+        ProcessHandler.WriteData(address, BitConverter.GetBytes(address - 68 - (76 * 10)));
+    }
 
     public void KillPlayer()
     {
@@ -272,5 +280,11 @@ public class HeroHandler
         else
             ProcessHandler.TryRead(0x27158C, out result, true, "Get Hero State Ty");
         return result;
+    }
+
+    [MessageHandler((ushort)MessageID.Kill)]
+    public static void HandleKillReceive(Message message)
+    {
+        Client.HHero.KillPlayer();
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace MulTyPlayerServer;
 
-internal class Koala
+public class Koala
 {
     public int KoalaID;
     public string KoalaName;

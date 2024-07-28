@@ -29,6 +29,12 @@ internal class PlayerHandler
         Players.Remove(id, out _);
     }
 
+    public static void KillPlayer(ushort id)
+    {
+        var message = Message.Create(MessageSendMode.Reliable, (ushort)MessageID.Kill);
+        Server._Server.Send(message, id);
+    }
+
     public static void AnnounceDisconnect(ushort id)
     {
         var message = Message.Create(MessageSendMode.Reliable, (ushort)MessageID.AnnounceDisconnect);
@@ -64,6 +70,10 @@ internal class PlayerHandler
                 entry.Value.IsReady = false;
             if (SettingsHandler.GameMode == GameMode.HideSeek)
                 StartHideTimer(SettingsHandler.HideSeekTime);
+            else if (SettingsHandler.GameMode == GameMode.Collection)
+            {
+                CollectionModeHandler.RunCollectionMode();
+            }
             else
             {
                 PeerMessageHandler.SendMessageToClients("All clients are ready, starting countdown", true);

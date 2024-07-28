@@ -33,7 +33,13 @@ public class PeerMessageHandler
     public static void SendMessageToClient(string str, bool printToServer, ushort to)
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.ConsoleSend);
-        message.AddString($"[{DateTime.Now:HH:mm:ss}] (SERVER) {str}");
+        var messageText = $"[{DateTime.Now:HH:mm:ss}] (SERVER) {str}";
+        if (to == 65535)
+        {
+            Console.WriteLine(messageText);
+            return;
+        }
+        message.AddString(messageText);
         Server._Server.Send(message, to);
         if (printToServer) Console.WriteLine(str);
     }
