@@ -50,6 +50,14 @@ public class CollectionModeHandler
         Client.HGameState.DisplayInGameMessage("The Collection Mode Round Has Ended");
     }
 
+    public static bool NopalsActive;
+    [MessageHandler((ushort)MessageID.CL_Nopals)]
+    public static void HandleClmNopals(Message message)
+    {
+        NopalsActive = message.GetBool();
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x28AB84, new byte[] { 0x1 });
+    }
+
     public static void ResetScores()
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.CL_ResetScore);

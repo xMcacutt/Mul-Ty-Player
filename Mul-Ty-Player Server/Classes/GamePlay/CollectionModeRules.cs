@@ -84,18 +84,19 @@ public class CollectionModeRuleHandler
 
     public CollectionModeRule[] Rules = new CollectionModeRule[]
     {
-        new ClmRule_DoubleCogs(), // Cogs are worth double
-        new ClmRule_OpalsAreBad(), // Opals give negative points
-        new ClmRule_FrameCount(), // Frames give points equal to level count
-        new ClmRule_Swapsies(), // Swap player positions
-        new ClmRule_Tasty(), // Opals are worth 1 more point
-        new ClmRule_GoldenGoose(), // Turkey and turkey adjacent eggs give double points
-        new ClmRule_BilbyDeduct(), // Bilbies deduct points from your opponents
-        new ClmRule_Run(), // At the next rule change, get points corresponding to how far you are from where you are now.
-        new ClmRule_Dead(), // Die
-        new ClmRule_Crate(), // Crates aren't useless now.
-        new ClmRule_Half(), // Your points are gone 
-        new ClmRule_Virus(), // Your points might go to someone else
+        // new ClmRule_DoubleCogs(), // Cogs are worth double
+        // new ClmRule_OpalsAreBad(), // Opals give negative points
+        // new ClmRule_FrameCount(), // Frames give points equal to level count
+        // new ClmRule_Swapsies(), // Swap player positions
+        // new ClmRule_Tasty(), // Opals are worth 1 more point
+        // new ClmRule_GoldenGoose(), // Turkey and turkey adjacent eggs give double points
+        // new ClmRule_BilbyDeduct(), // Bilbies deduct points from your opponents
+        // new ClmRule_Run(), // At the next rule change, get points corresponding to how far you are from where you are now.
+        // new ClmRule_Dead(), // Die
+        // new ClmRule_Crate(), // Crates aren't useless now.
+        // new ClmRule_Half(), // Your points are gone 
+        // new ClmRule_Virus(), // Your points might go to someone else
+        new ClmRule_Nopals(), // They gone
     };
 }
 
@@ -305,7 +306,7 @@ public class ClmRule_Crate : CollectionModeRule
 
     public override void ChangeRule()
     {
-        CollectionModeSettings.Scores["Crate"] = 5;
+        CollectionModeSettings.Scores["Crate"] = 15;
     }
 }
 
@@ -356,6 +357,31 @@ public class ClmRule_Virus : CollectionModeRule
         player.Score += score;
         CollectionModeHandler.SendScore(player.Score, player.ClientID);
         return true;
+    }
+}
+
+public class ClmRule_Nopals : CollectionModeRule
+{
+    private Random _random;
+    public ClmRule_Nopals()
+    {
+        _random = new Random();
+        Name = "Nopals"; 
+        Description = "Where did they go?"; 
+    }
+
+    public override void RunSpecialAction()
+    {
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.CL_Nopals);
+        message.AddBool(true);
+        Server._Server.SendToAll(message);
+    }
+
+    public override void RunSpecialEndAction()
+    {
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.CL_Nopals);
+        message.AddBool(false);
+        Server._Server.SendToAll(message);
     }
 }
 

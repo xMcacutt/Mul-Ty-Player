@@ -264,7 +264,7 @@ public class HiderGlideSpeedPerk : HSPerk
     }
     public override void ApplyHider()
     {
-        Client.HHero.SetGlideSpeed(12f);
+        Client.HHero.SetGlideSpeed(11.5f);
     }
 
     public override void Deactivate()
@@ -282,7 +282,7 @@ public class SeekerGlideSpeedPerk : HSPerk
     }
     public override void ApplySeeker()
     {
-        Client.HHero.SetGlideSpeed(12f);
+        Client.HHero.SetGlideSpeed(11.5f);
     }
 
     public override void Deactivate()

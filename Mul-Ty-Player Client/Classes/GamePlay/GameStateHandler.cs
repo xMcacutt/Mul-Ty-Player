@@ -67,7 +67,7 @@ public class GameStateHandler
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x289048, new byte[] { 0x1 });
         
         // SET MENU TYPE TO HARD DRIVE ERROR WITH PREVIOUS STATE TO SAME VALUE TO LOCK IF REQUIRED
-        var previousState = seconds == 0 ? (byte)0x0 : (byte)0xD;
+        var previousState = seconds == 0 ? (byte)0x3 : (byte)0xD;
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x286800, new byte[] { 0xD });
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x286804, new byte[] { previousState });
 

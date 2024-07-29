@@ -176,7 +176,9 @@ public class HSHandler
     [MessageHandler((ushort)MessageID.HS_SeekerSpeed)]
     private static void HandleSeekerSpeedIncrease(Message message)
     {
-        Client.HHideSeek.SeekerSpeed += 0.15f;
+        Logger.Write("[HS] Seeker speed increased.");
+        SFXPlayer.PlaySound(SFX.SpeedUp);
+        Client.HHideSeek.SeekerSpeed += 0.175f;
     }
 
     private void AnnounceRoleChanged(HSRole newRole)

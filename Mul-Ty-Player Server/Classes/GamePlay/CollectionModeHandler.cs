@@ -110,8 +110,12 @@ public class CollectionModeHandler
     public static void RunCollectionMode()
     {
         Program.HCollection.DisposeOfTimers();
-        _mainTimer = new Timer(5 * 65 * 1000);
-        _intervalTimer = new Timer(50 * 1000);
+        const int roundSeconds = 300;
+        const int ruleChangeSeconds = 45;
+        const int messageDisplaySeconds = 5;
+        const int messageDisplayCount = (roundSeconds / ruleChangeSeconds) + 1;
+        _mainTimer = new Timer((roundSeconds + (messageDisplaySeconds * messageDisplayCount)) * 1000);
+        _intervalTimer = new Timer((ruleChangeSeconds + messageDisplaySeconds) * 1000);
         _mainTimer.Elapsed += OnMainTimerElapsed;
         _mainTimer.AutoReset = false;
         _mainTimer.Start();

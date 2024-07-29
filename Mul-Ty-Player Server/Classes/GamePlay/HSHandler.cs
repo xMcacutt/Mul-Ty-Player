@@ -108,6 +108,7 @@ public class HSHandler
         {
             abortToken.ThrowIfCancellationRequested();
             // CHANGE THIS FOR LOWER HIDE TIME
+            //hideTimeLength = 5;
             for (var i = hideTimeLength; i > 0; i--)
             {
                 if (abortToken.IsCancellationRequested) abortToken.ThrowIfCancellationRequested();
@@ -164,7 +165,8 @@ public class HSHandler
 
     private static void OnMainTimerElapsed(object? sender, ElapsedEventArgs e)
     {
-        _intervalTimer = new Timer(50 * 1000);
+        var secondsToIncrease = 60;
+        _intervalTimer = new Timer(secondsToIncrease * 1000);
         _intervalTimer.Elapsed += OnIntervalTimerElapsed;
         _intervalTimer.AutoReset = true;
         _intervalTimer.Start();

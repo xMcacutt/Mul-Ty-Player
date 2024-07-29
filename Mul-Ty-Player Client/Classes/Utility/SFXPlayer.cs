@@ -33,7 +33,8 @@ public enum SFX
     JumpBoost,
     Alert,
     RuleChange,
-    BagCollect
+    BagCollect,
+    SpeedUp
 }
 
 public static class SFXPlayer
@@ -65,7 +66,8 @@ public static class SFXPlayer
         { SFX.JumpBoost, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/JumpBoost.wav")},
         { SFX.Alert, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Alert.wav")},
         { SFX.RuleChange, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/RuleChange.wav")},
-        { SFX.BagCollect, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/BagCollect.wav")}
+        { SFX.BagCollect, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/BagCollect.wav")},
+        { SFX.SpeedUp, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/SpeedUp.wav")}
     };
 
     private static Dictionary<SFX, MediaPlayer> mediaPlayers;
