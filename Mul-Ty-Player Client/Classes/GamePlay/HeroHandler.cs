@@ -170,6 +170,15 @@ public class HeroHandler
         Client._client.Send(message);
     }
 
+    public void SetRunSpeedFromOpals(float maxSpeedGain, float initialSpeed = 10f)
+    {
+        ProcessHandler.TryRead(0x26547C, out int currentOpalCount, true, "ReadOpalCount");
+        var levelOpalCount = Client.HLevel.CurrentLevelId == 0 ? 25 : 300;
+        var divisor = levelOpalCount / maxSpeedGain;
+        var speed = initialSpeed + currentOpalCount / divisor;
+        Client.HHero.SetRunSpeed(speed);
+    }
+
     public void SetRunSpeed(float speed = 10.0f)
     {
         ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288914), BitConverter.GetBytes(speed));

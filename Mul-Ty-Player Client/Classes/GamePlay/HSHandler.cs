@@ -171,6 +171,13 @@ public class HSHandler
             Client.HHideSeek.Role = HSRole.Seeker;
         }
     }
+    
+    
+    [MessageHandler((ushort)MessageID.HS_SeekerSpeed)]
+    private static void HandleSeekerSpeedIncrease(Message message)
+    {
+        Client.HHideSeek.SeekerSpeed += 0.15f;
+    }
 
     private void AnnounceRoleChanged(HSRole newRole)
     {

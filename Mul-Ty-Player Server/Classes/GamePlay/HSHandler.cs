@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
+using System.Timers;
 using System.Linq;
 using System.Numerics;
 using System.Threading;
@@ -8,12 +9,15 @@ using System.Threading.Tasks;
 using MulTyPlayer;
 using MulTyPlayerServer.Classes.Networking.Commands;
 using Riptide;
+using Timer = System.Timers.Timer;
 
 namespace MulTyPlayerServer;
 
 public class HSHandler
 {
     public static HSMode Mode = HSMode.Neutral;
+    private static Timer _mainTimer;
+    private static Timer _intervalTimer;
     
     //HIDE & SEEK HANDLER
     [MessageHandler((ushort)MessageID.HS_RoleChanged)]
@@ -37,6 +41,7 @@ public class HSHandler
     private static void AbortSession(ushort fromClientId, Message message)
     {
         Mode = HSMode.Neutral;
+        DisposeOfTimers();
         try
         {
             abortTokenSource.Cancel();
@@ -131,6 +136,10 @@ public class HSHandler
         Mode = HSMode.SeekTime;
         var seekTime = Task.Run(async () =>
         {
+            _mainTimer = new Timer(5 * 60 * 1000);
+            _mainTimer.Elapsed += OnMainTimerElapsed;
+            _mainTimer.AutoReset = false;
+            _mainTimer.Start();
             while (PlayerHandler.Players.Values.Any(x => x.Role == HSRole.Hider))
             {
                 RunRadiusCheck();
@@ -140,6 +149,7 @@ public class HSHandler
         try
         {
             await seekTime;
+            DisposeOfTimers();
             var endMessage = Message.Create(MessageSendMode.Reliable, MessageID.HS_EndSeek);
             Server._Server.SendToAll(endMessage);
         }
@@ -151,7 +161,38 @@ public class HSHandler
         }
         Mode = HSMode.Neutral;
     }
+
+    private static void OnMainTimerElapsed(object? sender, ElapsedEventArgs e)
+    {
+        _intervalTimer = new Timer(50 * 1000);
+        _intervalTimer.Elapsed += OnIntervalTimerElapsed;
+        _intervalTimer.AutoReset = true;
+        _intervalTimer.Start();
+    }
+
+    private static void OnIntervalTimerElapsed(object? sender, ElapsedEventArgs e)
+    {
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_SeekerSpeed);
+        Server._Server.SendToAll(message);
+    }
     
+    public static void DisposeOfTimers()
+    {
+        if (_mainTimer != null)
+        {
+            _mainTimer.Stop();
+            _mainTimer.Dispose();
+            _mainTimer = null;
+        }
+        if (_intervalTimer != null)
+        {
+            _intervalTimer.Stop();
+            _intervalTimer.Dispose();
+            _intervalTimer = null;
+        }
+    }
+
+
     [MessageHandler((ushort)MessageID.HS_ForceRole)]
     public static void HandleForceRoleRequest(ushort fromClientId, Message message)
     {

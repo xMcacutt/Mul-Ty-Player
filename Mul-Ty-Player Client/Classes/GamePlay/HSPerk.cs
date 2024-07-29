@@ -116,18 +116,14 @@ public class OpalSlowPerk : HSPerk
     
     public override void ApplyHider()
     {
-        var opalCount = CountOpals();
-        var divisor = Client.HLevel.CurrentLevelId == 0 ? 10f : 42.9f;
-        var speed = 10f - opalCount / divisor;
-        Client.HHero.SetRunSpeed(speed);
+        Client.HHero.SetRunSpeedFromOpals(-5f);
+
     }
 
     public override void ApplySeeker()
     {
-        var opalCount = CountOpals();
-        var divisor = Client.HLevel.CurrentLevelId == 0 ? 10.4f : 50f;
-        var speed = 10.15f - opalCount / divisor;
-        Client.HHero.SetRunSpeed(speed);
+        Client.HHero.SetRunSpeedFromOpals(-4.5f, Client.HHideSeek.SeekerSpeed);
+
     }
 
     public override void Deactivate()
@@ -138,7 +134,7 @@ public class OpalSlowPerk : HSPerk
                 Client.HHero.SetRunSpeed();
                 break;
             case HSRole.Seeker:
-                Client.HHero.SetRunSpeed(10.15f);
+                Client.HHero.SetRunSpeed(Client.HHideSeek.SeekerSpeed);
                 break;
             case HSRole.Spectator:
                 break;
@@ -162,18 +158,13 @@ public class OpalSpeedPerk : HSPerk
     
     public override void ApplyHider()
     {
-        var opalCount = CountOpals();
-        var divisor = Client.HLevel.CurrentLevelId == 0 ? 10f : 120f;
-        var speed = 10f + opalCount / divisor;   
-        Client.HHero.SetRunSpeed(speed);
+        Client.HHero.SetRunSpeedFromOpals(3.5f);
+
     }
 
     public override void ApplySeeker()
     {
-        var opalCount = CountOpals();
-        var divisor = Client.HLevel.CurrentLevelId == 0 ? 5.2f : 62.5f;
-        var speed = Client.HHideSeek.SeekerSpeed + opalCount / divisor;
-        Client.HHero.SetRunSpeed(speed);
+        Client.HHero.SetRunSpeedFromOpals(4f, Client.HHideSeek.SeekerSpeed);
     }
 
     public override void Deactivate()
@@ -184,17 +175,11 @@ public class OpalSpeedPerk : HSPerk
                 Client.HHero.SetRunSpeed();
                 break;
             case HSRole.Seeker:
-                Client.HHero.SetRunSpeed(10.15f);
+                Client.HHero.SetRunSpeed(Client.HHideSeek.SeekerSpeed);
                 break;
             case HSRole.Spectator:
                 break;
         }
-    }
-
-    private int CountOpals()
-    {
-        ProcessHandler.TryRead(0x26547C, out int count, true, "ReadOpalCount");
-        return count;
     }
 }
 
@@ -207,7 +192,7 @@ public class SeekerGravityPerk : HSPerk
     }
     public override void ApplySeeker()
     {
-        Client.HHero.SetGravity(0.45f);
+        Client.HHero.SetGravity(0.425f);
     }
 
     public override void Deactivate()
@@ -225,7 +210,7 @@ public class HiderGravityPerk : HSPerk
     }
     public override void ApplyHider()
     {
-        Client.HHero.SetGravity(0.45f);
+        Client.HHero.SetGravity(0.425f);
     }
 
     public override void Deactivate()
@@ -279,7 +264,7 @@ public class HiderGlideSpeedPerk : HSPerk
     }
     public override void ApplyHider()
     {
-        Client.HHero.SetGlideSpeed(11.5f);
+        Client.HHero.SetGlideSpeed(12f);
     }
 
     public override void Deactivate()
@@ -297,7 +282,7 @@ public class SeekerGlideSpeedPerk : HSPerk
     }
     public override void ApplySeeker()
     {
-        Client.HHero.SetGlideSpeed(11.5f);
+        Client.HHero.SetGlideSpeed(12f);
     }
 
     public override void Deactivate()

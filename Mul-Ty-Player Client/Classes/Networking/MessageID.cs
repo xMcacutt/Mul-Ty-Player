@@ -66,7 +66,8 @@ public enum MessageID : ushort
     CL_RuleChange,
     Kill,
     CL_Start,
-    CL_Stop
+    CL_Stop,
+    HS_SeekerSpeed
 }
 
 
