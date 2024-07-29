@@ -340,7 +340,7 @@ public class ClmRule_Virus : CollectionModeRule
     
     public override bool InterceptSend(ushort originalClientId, string type, int score)
     {
-        var toRandom = _random.Next(10) > 9;
+        var toRandom = _random.Next(10) > 8;
         Player player = null;
 
         if (toRandom)

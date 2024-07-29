@@ -22,6 +22,7 @@ public class CollectionModeHandler
         if (!_isClmRunning)
             return;
         var scoreIncrease = 0;
+        
         switch (type)
         {
             case "Opal":
@@ -59,6 +60,9 @@ public class CollectionModeHandler
                 break;
             case "Frame":
                 scoreIncrease = CollectionModeSettings.Scores["PictureFrame"];
+                break;
+            case "Crate":
+                scoreIncrease = CollectionModeSettings.Scores["Crate"];
                 break;
             default:
                 return;
