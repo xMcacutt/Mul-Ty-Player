@@ -46,7 +46,7 @@ public class CollectionModeHandler
     {
         ModelController.Lobby.IsReadyButtonEnabled = true;
         SFXPlayer.PlaySound(SFX.RuleChange);
-        SFXPlayer.PlaySound(SFX.TAOpen);
+        SFXPlayer.PlaySound(SFX.BagCollect);
         Client.HGameState.DisplayInGameMessage("The Collection Mode Round Has Ended");
     }
 

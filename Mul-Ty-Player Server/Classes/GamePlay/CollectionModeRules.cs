@@ -15,7 +15,7 @@ public class CollectionModeSettings
         { "Opal", 3 },
         { "BaseThunderEgg", 50 },
         { "BilbyEgg", -25 },
-        { "TimeAttackEgg", 250 },
+        { "TimeAttackEgg", 75 },
         { "OpalEgg", -20 },
         { "Cog", 40 },
         { "Bilby", 75 },
@@ -333,7 +333,7 @@ public class ClmRule_Virus : CollectionModeRule
     private Random _random;
     public ClmRule_Virus()
     {
-        var _random = new Random();
+        _random = new Random();
         Name = "Malware Detected"; 
         Description = "Uh oh! Points have a chance to go to your opponents instead."; 
     }
