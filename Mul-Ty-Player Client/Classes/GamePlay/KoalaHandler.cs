@@ -106,7 +106,13 @@ internal class KoalaHandler
             true, 
             "KoalaHandler::CheckTA()");
         if (inTimeAttack == 1)
+        {
             MakeVisible();
+            if (SettingsHandler.GameMode == GameMode.Collection)
+            {
+                SyncHandler.MakeCollectiblesVisibleInTimeAttack();
+            }
+        }
     }
 
     public void MakeVisible()

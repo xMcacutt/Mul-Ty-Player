@@ -46,10 +46,7 @@ public class Countdown
             OnCountdownBegan?.Invoke();
             Client.HSync = new SyncHandler();
             SFXPlayer.StopAll();
-            Client.HHero.SetRunSpeed();
-            Client.HHero.SetSwimSpeed();
-            Client.HHero.SetGravity();
-            Client.HHero.SetGlideSpeed();
+            Client.HHero.SetDefaults();
             SFXPlayer.PlaySound(SFX.Race10);
             Client.HGameState.ForceBackToMainMenu();
             for (var i = 10; i > 0; i--)

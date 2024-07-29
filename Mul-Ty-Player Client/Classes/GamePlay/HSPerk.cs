@@ -163,7 +163,7 @@ public class OpalSpeedPerk : HSPerk
     public override void ApplyHider()
     {
         var opalCount = CountOpals();
-        var divisor = Client.HLevel.CurrentLevelId == 0 ? 5f : 60f;
+        var divisor = Client.HLevel.CurrentLevelId == 0 ? 10f : 120f;
         var speed = 10f + opalCount / divisor;   
         Client.HHero.SetRunSpeed(speed);
     }
@@ -172,7 +172,7 @@ public class OpalSpeedPerk : HSPerk
     {
         var opalCount = CountOpals();
         var divisor = Client.HLevel.CurrentLevelId == 0 ? 5.2f : 62.5f;
-        var speed = 10.15f + opalCount / divisor;
+        var speed = Client.HHideSeek.SeekerSpeed + opalCount / divisor;
         Client.HHero.SetRunSpeed(speed);
     }
 
@@ -404,7 +404,7 @@ public class HidersSeeLightsPerk : HSPerk
     
     public override void ApplyAbility()
     {
-        if (Client.HHideSeek.Role != HSRole.Seeker)
+        if (Client.HHideSeek.Role != HSRole.Hider)
             return;
         var thread = new Thread(ShowLines);
         thread.Start();

@@ -196,4 +196,11 @@ internal class SyncHandler
             HInvisiCrate.CheckObserverChanged();
         }
     }
+
+    public static void MakeCollectiblesVisibleInTimeAttack()
+    {
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x28AB84, new byte[] { 0x0 });
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x28CA3C, new byte[] { 0x0 });
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x28CAD4, new byte[] { 0x0 });
+    }
 }

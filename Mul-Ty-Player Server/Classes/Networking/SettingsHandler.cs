@@ -39,7 +39,7 @@ internal class SettingsHandler
         }
     }
 
-    private static float _hsRange = 65f;
+    private static float _hsRange = 80f;
     public static float HSRange
     {
         get => _hsRange;

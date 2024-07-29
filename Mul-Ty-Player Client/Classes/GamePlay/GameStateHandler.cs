@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.Utility;
@@ -57,22 +58,48 @@ public class GameStateHandler
         self.Level = "M/L";
     }
 
-    public void DisplayInGameMessage(string message)
+    public void DisplayInGameMessage(string message, int seconds = 0)
     {
         if (IsOnMainMenuOrLoading)
             return;
+        // SHOW MENU
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x286C54, new byte[] { 0x1 });
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x289048, new byte[] { 0x1 });
+        
+        // SET MENU TYPE TO HARD DRIVE ERROR WITH PREVIOUS STATE TO SAME VALUE TO LOCK IF REQUIRED
+        var previousState = seconds == 0 ? (byte)0x0 : (byte)0xD;
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x286800, new byte[] { 0xD });
-        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x286804, new byte[] { 0x0 });
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x286804, new byte[] { previousState });
 
+        // SET UP FRONT END POINTERS TO AVOID CRASHING
         var addr = PointerCalculations.GetPointerAddress(0x293B14, new[] { 0x4 });
         ProcessHandler.TryRead(addr, out int ptr, false, "Get pointer for pause menu");
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x286D18, BitConverter.GetBytes(ptr));
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x287580, BitConverter.GetBytes(ptr));
+        
+        // SET TEXT ON MENU
         addr = PointerCalculations.GetPointerAddress(0x529220, new[] { 0x1D });
-        ProcessHandler.WriteData(addr, Encoding.ASCII.GetBytes(message + "\n\nPress ESC To Continue.").Concat(new byte[1]).ToArray());
+        var footer = seconds == 0 ? "Press ESC To Continue" : seconds.ToString();
+        ProcessHandler.WriteData(addr, Encoding.ASCII.GetBytes(message + "\n\n" + footer).Concat(new byte[1]).ToArray());
+        
+        // REMOVE CURSOR
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x2887FC, new byte[] { 0x0 });
+
+        if (seconds == 0)
+            return;
+
+        Task.Run(async () =>
+        {
+            for (var t = seconds; t > 0; t--)
+            {
+                ProcessHandler.WriteData(addr, Encoding.ASCII.GetBytes(message + "\n\n" + t).Concat(new byte[1]).ToArray());
+                await Task.Delay(1000);
+            }
+            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x286C54, new byte[] { 0x0 });
+            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x289048, new byte[] { 0x0 });
+        });
     }
+    
     
     // CALLED ON CONNECTING TO MTP
     public void ProtectLeaderboard()

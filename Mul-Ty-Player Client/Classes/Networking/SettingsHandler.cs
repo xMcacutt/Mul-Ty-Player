@@ -31,12 +31,13 @@ internal static class SettingsHandler
         get => _gameMode;
         set
         {
+            if (_gameMode == value)
+                return;
             switch (_gameMode)
             {
                 case GameMode.HideSeek:
                     HSHandler.Deactivate();
                     break;
-                
             };
             ModelController.Lobby.GameMode = value;
             _gameMode = value;

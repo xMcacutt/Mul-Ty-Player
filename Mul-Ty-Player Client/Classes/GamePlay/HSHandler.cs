@@ -69,6 +69,8 @@ public class HSHandler
         }
     }
 
+    public float SeekerSpeed = 10.15f;
+
     public HSPerk CurrentDebuff = new NoPerk();
 
     public HSPerk CurrentPerk = new NoPerk();
@@ -79,6 +81,7 @@ public class HSHandler
     public HSHandler()
     {
         OnRoleChanged += AnnounceRoleChanged;
+        SeekerSpeed = 10.15f;
         Role = ModelController.Login.JoinAsSpectator ? HSRole.Spectator : HSRole.Hider;
         Mode = HSMode.Neutral;
     }
@@ -86,13 +89,13 @@ public class HSHandler
     public static void Activate()
     {
         Client.HGlow.ReturnGlows();
-        //Client.HHideSeek.CurrentPerk = PerkHandler.LevelPerks[Client.HLevel.CurrentLevelId];
         Client.HHideSeek.StartTimerLoop();
     }
 
     public static void Deactivate()
     {
         Client.HGlow.ReturnGlows();
+        ModelController.Lobby.IsTimerVisible = false;
         Client.HHideSeek.CurrentPerk.Deactivate();
         Client.HHideSeek.CurrentPerk = new NoPerk();
     }
@@ -126,7 +129,7 @@ public class HSHandler
             if (!LockoutSpeed)
             {
                 Client.HHero.SetSwimSpeed(21f);
-                Client.HHero.SetRunSpeed(10.15f);
+                Client.HHero.SetRunSpeed(SeekerSpeed);
             }
             CurrentPerk.ApplySeeker();
             CurrentDebuff.ApplySeeker();
@@ -206,6 +209,10 @@ public class HSHandler
     private static void HideTimerStart(Message message)
     {
         Client.HGlow.ReturnGlows();
+        
+        ModelController.Lobby.IsTimerVisible = true;
+
+        Client.HHideSeek.SeekerSpeed = 10.15f;
         
         Client.HCommand.Commands["tp"].InitExecute(new string[] {"@s"});
         

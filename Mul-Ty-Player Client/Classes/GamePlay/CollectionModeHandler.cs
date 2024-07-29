@@ -20,18 +20,13 @@ public class CollectionModeHandler
     [MessageHandler((ushort)MessageID.CL_RuleChange)]
     public static void HandleRuleChange(Message message)
     {
-        if (!_isClmRunning)
-            return;
         SFXPlayer.PlaySound(SFX.RuleChange);
         var name = message.GetString();
         var description = message.GetString();
-        Client.HGameState.DisplayInGameMessage(name + "\n" + description);
+        Client.HGameState.DisplayInGameMessage(name + "\n" + description, 5);
         Logger.Write($"[CLM] Rule Changed: {name}");
         Logger.Write(description);
     }
-
-    private static bool _isClmRunning = false;
-
 
     [MessageHandler((ushort)MessageID.CL_Start)]
     public static void HandleClmStart(Message message)
@@ -41,8 +36,8 @@ public class CollectionModeHandler
         ModelController.Lobby.IsReady = false;
         ModelController.Lobby.IsReadyButtonEnabled = false;
         Client.HCommand.Commands["tp"].InitExecute(new string[] {"@s"});
-        Client.HGameState.DisplayInGameMessage("Collection Mode Started\nGo!");
-        _isClmRunning = true;
+        SFXPlayer.PlaySound(SFX.RuleChange);
+        Client.HGameState.DisplayInGameMessage("Collection Mode Started\nGo!", 5);
         ResetScores();
     }
     
@@ -53,7 +48,6 @@ public class CollectionModeHandler
         SFXPlayer.PlaySound(SFX.RuleChange);
         SFXPlayer.PlaySound(SFX.TAOpen);
         Client.HGameState.DisplayInGameMessage("The Collection Mode Round Has Ended");
-        _isClmRunning = false;
     }
 
     public static void ResetScores()

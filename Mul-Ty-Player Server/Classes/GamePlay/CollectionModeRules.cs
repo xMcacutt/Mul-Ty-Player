@@ -47,7 +47,7 @@ public abstract class CollectionModeRule
     public string Description;
     public virtual void ChangeRule() { }
     public virtual void Intercept(int level, string type, int iLive, int iSave, ref int score) { }
-    public virtual bool InterceptSend(ushort originalClientId, string type) { return false; }
+    public virtual bool InterceptSend(ushort originalClientId, string type, int score) { return false; }
     public virtual void RunSpecialAction() { }
     public virtual void RunSpecialEndAction() { }
 }
@@ -63,6 +63,8 @@ public class CollectionModeRuleHandler
             _currentRule = value;
             CollectionModeSettings.ResetToDefaults();
             CurrentRule.ChangeRule();
+            if (CurrentRule is ClmRule_NoRule)
+                return;
             AnnounceRuleChange(value);
         }
     }
@@ -92,7 +94,8 @@ public class CollectionModeRuleHandler
         new ClmRule_Run(), // At the next rule change, get points corresponding to how far you are from where you are now.
         new ClmRule_Dead(), // Die
         new ClmRule_Crate(), // Crates aren't useless now.
-        new ClmRule_Half(), // Your points are halved
+        new ClmRule_Half(), // Your points are gone 
+        new ClmRule_Virus(), // Your points might go to someone else
     };
 }
 
@@ -109,7 +112,7 @@ public class ClmRule_OpalsAreBad : CollectionModeRule
 {
     public ClmRule_OpalsAreBad()
     {
-        Name = "Bad Opals";
+        Name = "These Taste Bad";
         Description = "Opals now give negative points.";
     }
     public override void ChangeRule()
@@ -122,7 +125,7 @@ public class ClmRule_DoubleCogs : CollectionModeRule
 {
     public ClmRule_DoubleCogs()
     {
-        Name = "Double Cogs";
+        Name = "Gold Rush";
         Description = "Cogs now give double points.";
     }
     public override void ChangeRule()
@@ -135,7 +138,7 @@ public class ClmRule_FrameCount : CollectionModeRule
 {
     public ClmRule_FrameCount()
     {
-        Name = "Frame Count";
+        Name = "You've Been Framed";
         Description = "Picture Frames give points equal to the total number of them for the current level.";
     }
     public override void Intercept(int level, string type, int iLive, int iSave, ref int score)
@@ -152,11 +155,11 @@ public class ClmRule_BilbyDeduct : CollectionModeRule
 {
     public ClmRule_BilbyDeduct()
     {
-        Name = "Bilby Deduction";
+        Name = "Bilby Tax";
         Description = "Bilbies cause the other players to lose points.";
     }
 
-    public override bool InterceptSend(ushort originalClientId, string type)
+    public override bool InterceptSend(ushort originalClientId, string type, int score)
     {
         if (type != "Bilby")
             return false;
@@ -176,7 +179,7 @@ public class ClmRule_GoldenGoose : CollectionModeRule
 {
     public ClmRule_GoldenGoose()
     {
-        Name = "GoldenGoose";
+        Name = "Golden Goose";
         Description = "Turkey and turkey adjacent thunder eggs grant double points.";
     }
     public override void Intercept(int level, string type, int iLive, int iSave, ref int score)
@@ -223,7 +226,7 @@ public class ClmRule_Swapsies : CollectionModeRule
     public ClmRule_Swapsies()
     {
         Name = "Swapsies";
-        Description = "Time to trade places!";
+        Description = "Time to trade places!\nYou're now where you weren't but where they were but are not now.";
     }
     public override void RunSpecialAction()
     {
@@ -283,7 +286,7 @@ public class ClmRule_Dead : CollectionModeRule
     public ClmRule_Dead()
     {
         Name = "Dead";
-        Description = "You're dead!";
+        Description = "Oops, that looked nasty!";
     }
     public override void RunSpecialAction()
     {
@@ -296,8 +299,8 @@ public class ClmRule_Crate : CollectionModeRule
 {
     public ClmRule_Crate()
     {
-        Name = "Crate";
-        Description = "Crates give points.";
+        Name = "Pandora's Box";
+        Description = "Crates give points... but sadly for you, no hope.";
     }
 
     public override void ChangeRule()
@@ -309,9 +312,9 @@ public class ClmRule_Crate : CollectionModeRule
 public class ClmRule_Half : CollectionModeRule
 {
     public ClmRule_Half()
-    {
-        Name = "Half Points";
-        Description = "Check your total... it's half now.";
+    { 
+        Name = "Half Points"; 
+        Description = "Check your total... it's half now."; 
     }
 
     public override void RunSpecialAction()
@@ -323,3 +326,36 @@ public class ClmRule_Half : CollectionModeRule
         }
     }
 }
+
+
+public class ClmRule_Virus : CollectionModeRule
+{
+    private Random _random;
+    public ClmRule_Virus()
+    {
+        var _random = new Random();
+        Name = "Malware Detected"; 
+        Description = "Uh oh! Points have a chance to go to your opponents instead."; 
+    }
+    
+    public override bool InterceptSend(ushort originalClientId, string type, int score)
+    {
+        var toRandom = _random.Next(10) > 9;
+        Player player = null;
+
+        if (toRandom)
+        {
+            var eligiblePlayers = PlayerHandler.Players.Values
+                .Where(x => x.Koala != null && x.ClientID != originalClientId)
+                .ToList();
+            player = eligiblePlayers.Any() ? eligiblePlayers[_random.Next(eligiblePlayers.Count)] : null;
+        }
+        if (player == null && !PlayerHandler.Players.TryGetValue(originalClientId, out player))
+            return false;
+
+        player.Score += score;
+        CollectionModeHandler.SendScore(player.Score, player.ClientID);
+        return true;
+    }
+}
+

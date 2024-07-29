@@ -66,7 +66,7 @@ public class CollectionModeHandler
         
         Program.HCollection._clmRuleHandler.CurrentRule.Intercept(level, type, iLive, iSave, ref scoreIncrease);
 
-        if (Program.HCollection._clmRuleHandler.CurrentRule.InterceptSend(fromClientId, type))
+        if (Program.HCollection._clmRuleHandler.CurrentRule.InterceptSend(fromClientId, type, scoreIncrease))
             return;
         
         if (!PlayerHandler.Players.TryGetValue(fromClientId, out Player p))
@@ -106,8 +106,8 @@ public class CollectionModeHandler
     public static void RunCollectionMode()
     {
         Program.HCollection.DisposeOfTimers();
-        _mainTimer = new Timer(5 * 60 * 1000);
-        _intervalTimer = new Timer(45 * 1000);
+        _mainTimer = new Timer(5 * 65 * 1000);
+        _intervalTimer = new Timer(50 * 1000);
         _mainTimer.Elapsed += OnMainTimerElapsed;
         _mainTimer.AutoReset = false;
         _mainTimer.Start();
@@ -148,13 +148,14 @@ public class CollectionModeHandler
     {
         _mainTimer.Dispose();
         _intervalTimer.Dispose();
+        Program.HCollection._clmRuleHandler.CurrentRule.RunSpecialEndAction();
         Program.HCollection.StopCollectionMode();
     }
 
     private static void OnIntervalTimerElapsed(object sender, ElapsedEventArgs e)
     {
         Program.HCollection._clmRuleHandler.CurrentRule.RunSpecialEndAction();
-        var randomRuleIndex = _rand.Next(Program.HCollection._clmRuleHandler.Rules.Length - 1);
+        var randomRuleIndex = _rand.Next(Program.HCollection._clmRuleHandler.Rules.Length);
         Program.HCollection._clmRuleHandler.CurrentRule = Program.HCollection._clmRuleHandler.Rules[randomRuleIndex];
         Program.HCollection._clmRuleHandler.CurrentRule.RunSpecialAction();
     }
