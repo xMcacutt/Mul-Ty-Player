@@ -73,6 +73,7 @@ public class CollectionModeHandler
             if (_fileStream is not { CanWrite: true })
                 _fileStream = new FileStream(LogFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
             _fileStream.SetLength(0); // Clear the file
+            _fileStream.Close();
         }
     }
 

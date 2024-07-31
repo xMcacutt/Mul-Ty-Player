@@ -2,8 +2,11 @@
 
 ## Most Recent
 
-#### 4.4.2
-- (HSD) Overhaul to perk system
+#### 4.6.0
+- MTP2YAC Edition
+
+#### 4.5.0
+- (CLM) Collection Mode updates
 
 ### Known Issues
 - Spectator mode is liable to crashing

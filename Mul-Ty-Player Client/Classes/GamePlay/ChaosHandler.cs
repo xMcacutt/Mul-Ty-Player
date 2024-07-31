@@ -854,7 +854,8 @@ public class ChaosHandler
             _chaosSeed = value;
             Logger.Write($"The Chaos Mode seed is now {Client.HChaos.ChaosSeed}");
             ShuffleIndices(value);
-            MoveCollectibles(Client.HLevel.CurrentLevelId);
+            if (SettingsHandler.GameMode == GameMode.Chaos)
+                MoveCollectibles(Client.HLevel.CurrentLevelId);
         }
     }
 
