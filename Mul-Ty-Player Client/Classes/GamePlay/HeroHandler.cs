@@ -275,10 +275,10 @@ public class HeroHandler
 
     public void KillPlayer()
     {
-        if (HLevel.CurrentLevelId == 10)
-            SetHeroState(7);
+        if (Client.HLevel.CurrentLevelData.Id == Levels.OutbackSafari.Id)
+            Client.HCommand.Commands["tp"].InitExecute(new string[] { "@s" });
         else
-            SetHeroState(29);
+            SetHeroState(29); // Kills player
     }
 
     public int GetHeroState()
