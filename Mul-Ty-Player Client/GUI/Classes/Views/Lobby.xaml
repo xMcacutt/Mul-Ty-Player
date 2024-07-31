@@ -519,6 +519,10 @@
                                                              Click="ResetScores_Click"
                                                              IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                                              IconCode="{DynamicResource IcoRefresh}"/>
+                                    <controls:CustomMenuItem Header="Clear Score Log"
+                                                             Click="ClearCLMLog_Click"
+                                                             IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                             IconCode="{DynamicResource IcoDelete}"/>
                                 </ContextMenu>
                             </Button.ContextMenu>
                         </Button>

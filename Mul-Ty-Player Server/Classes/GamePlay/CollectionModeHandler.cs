@@ -146,6 +146,7 @@ public class CollectionModeHandler
 
     public void StopCollectionMode()
     {
+        Program.HCollection._clmRuleHandler.CurrentRule.RunSpecialEndAction();
         DisposeOfTimers();
         _isClmRunning = false;
         var stopClmMessage = Message.Create(MessageSendMode.Reliable, MessageID.CL_Stop);
@@ -156,7 +157,6 @@ public class CollectionModeHandler
     {
         _mainTimer.Dispose();
         _intervalTimer.Dispose();
-        Program.HCollection._clmRuleHandler.CurrentRule.RunSpecialEndAction();
         Program.HCollection.StopCollectionMode();
     }
 

@@ -1,4 +1,8 @@
-﻿using System.Timers;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Timers;
 using MulTyPlayer;
 using MulTyPlayerClient.GUI.Models;
 using Riptide;
@@ -14,7 +18,73 @@ public class CollectionModeHandler
         var client = message.GetUShort();
         if (!PlayerHandler.TryGetPlayer(client, out var player))
             return;
+        
         player.Score = score;
+        if (player.Koala != null)
+            LogScore(player);
+    }
+    
+    private const string LogFilePath = "./Logs/Scores.clm";
+    private static readonly object FileLock = new object();
+    private static FileStream _fileStream;
+    private static void LogScore(Player player)
+    {
+        lock (FileLock)
+        {
+            // Ensure file stream is opened
+            if (_fileStream is not { CanRead: true } || !_fileStream.CanWrite)
+                _fileStream = new FileStream(LogFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
+
+            _fileStream.Position = 0; // Reset position for reading
+            var lines = new List<string>();
+            using (var reader = new StreamReader(_fileStream, Encoding.UTF8, true, 1024, true))
+                while (!reader.EndOfStream)
+                    lines.Add(reader.ReadLine());
+
+            var playerFound = false;
+            for (var i = 0; i < lines.Count; i++)
+            {
+                if (!lines[i].Equals(player.Name, StringComparison.OrdinalIgnoreCase)) 
+                    continue;
+                lines[i + 1] = player.Score.ToString();
+                playerFound = true;
+                break;
+            }
+
+            if (!playerFound)
+            {
+                lines.Add(player.Name);
+                lines.Add(player.Score.ToString());
+            }
+
+            _fileStream.SetLength(0); // Clear the file before writing
+            _fileStream.Position = 0; // Reset position for writing
+            using (var writer = new StreamWriter(_fileStream, Encoding.UTF8, 1024, true))
+                foreach (var line in lines)
+                    writer.WriteLine(line);
+        }
+    }
+
+    public static void ClearLogs()
+    {
+        lock (FileLock)
+        {
+            // Ensure file stream is opened
+            if (_fileStream is not { CanWrite: true })
+                _fileStream = new FileStream(LogFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
+            _fileStream.SetLength(0); // Clear the file
+        }
+    }
+
+    public static void Dispose()
+    {
+        lock (FileLock)
+        {
+            if (_fileStream == null) 
+                return;
+            _fileStream.Dispose();
+            _fileStream = null;
+        }
     }
 
     [MessageHandler((ushort)MessageID.CL_RuleChange)]

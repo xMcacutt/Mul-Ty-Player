@@ -255,4 +255,9 @@ public partial class Lobby : UserControl
     {
         CollectionModeHandler.RequestAbort();
     }
+
+    private void ClearCLMLog_Click(object sender, RoutedEventArgs e)
+    {
+        CollectionModeHandler.ClearLogs();
+    }
 }
