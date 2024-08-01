@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using MulTyPlayerClient.GUI.Models;
 using MulTyPlayerClient.GUI.ViewModels;
 
 namespace MulTyPlayerClient.GUI.Views;
@@ -33,6 +34,10 @@ public partial class HSD_MainWindow : Window
     private void HSD_MainWindow_OnClosing(object sender, CancelEventArgs e)
     {
         if (Client.HDrafts is not null)
+        {
             Client.HDrafts.LeaveTeam();
+            ModelController.HSD_Draft.MakeAllAvailable();
+            Client.HDrafts.ClearPicks();
+        }
     }
 }

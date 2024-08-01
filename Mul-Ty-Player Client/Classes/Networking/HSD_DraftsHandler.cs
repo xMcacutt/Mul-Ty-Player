@@ -270,6 +270,11 @@ public class HSD_DraftsHandler
         });
         Client.HDrafts = new HSD_DraftsHandler();
     }
+
+    public void ClearPicks()
+    {
+        Application.Current.Dispatcher.Invoke(() => { Picks.Clear(); });
+    }
 }
 
 public enum HSD_Team
