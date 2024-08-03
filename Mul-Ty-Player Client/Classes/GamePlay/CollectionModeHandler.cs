@@ -20,7 +20,7 @@ public class CollectionModeHandler
             return;
         
         player.Score = score;
-        if (player.Koala != null)
+        if (player.Role != HSRole.Spectator)
             LogScore(player);
     }
     

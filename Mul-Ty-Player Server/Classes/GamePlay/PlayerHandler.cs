@@ -21,7 +21,7 @@ internal class PlayerHandler
     public static void AddPlayer(string koalaName, string name, ushort clientID, bool isHost, HSRole role)
     {
         Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
-        Players.TryAdd(clientID, new Player(koala, name, clientID, isHost, false, true, role));
+        Players.TryAdd(clientID, new Player(koala, name, clientID, isHost, false, true, role)); // check if this was succesful, could be causing issues
     }
 
     public static void RemovePlayer(ushort id)
@@ -64,7 +64,7 @@ internal class PlayerHandler
         status.AddBool(ready);
         Server._Server.SendToAll(status, fromClientId);
 
-        if (Players.Values.Count(x => x.IsReady && x.Koala.KoalaName != "SPECTATOR") == Players.Values.Count(x => x.Koala.KoalaName != "SPECTATOR"))
+        if (Players.Values.Where(x => x.Role != HSRole.Spectator).All(x => x.IsReady))
         {
             foreach (var entry in Players) 
                 entry.Value.IsReady = false;

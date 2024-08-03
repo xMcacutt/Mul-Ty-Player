@@ -35,7 +35,7 @@ internal class KoalaHandler
         var role = (HSRole)message.GetInt();
         var score = message.GetInt();
         Koala? k;
-        if (koalaName == "SPECTATOR")
+        if (role == HSRole.Spectator || koalaName == "SPECTATOR") // enum check faster than string comp, but leave strcmp incase i forgor something
             k = null;
         else
             k = Enum.Parse<Koala>(koalaName, true);

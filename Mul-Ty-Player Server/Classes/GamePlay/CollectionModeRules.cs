@@ -165,7 +165,7 @@ public class ClmRule_BilbyDeduct : CollectionModeRule
         if (type != "Bilby")
             return false;
         foreach (var player in PlayerHandler.Players.Values.Where(x =>
-                     x.ClientID != originalClientId && x.Koala != null
+                     x.ClientID != originalClientId && x.Role != HSRole.Spectator
                  ))
         {
             player.Score -= 20;
@@ -231,7 +231,7 @@ public class ClmRule_Swapsies : CollectionModeRule
     }
     public override void RunSpecialAction()
     {
-        var players = PlayerHandler.Players.Values.Where(x => x.Koala != null).ToArray();
+        var players = PlayerHandler.Players.Values.Where(x => x.Role != HSRole.Spectator).ToArray();
         var playerCoordinates = players.Select(player => player.Coordinates.Take(3).Select(coord => coord.ToString()).ToArray()).ToArray();
         for (var pIndex = 0; pIndex < players.Length; pIndex++)
         {
@@ -276,7 +276,7 @@ public class ClmRule_Run : CollectionModeRule
     
     public override void RunSpecialAction()
     {
-        var players = PlayerHandler.Players.Where(x => x.Value.Koala != null);
+        var players = PlayerHandler.Players.Where(x => x.Value.Role != HSRole.Spectator);
         _playerCoordinates = players.ToDictionary(
             x => x.Key, x => (float[])x.Value.Coordinates.Clone());
     }
@@ -291,7 +291,7 @@ public class ClmRule_Dead : CollectionModeRule
     }
     public override void RunSpecialAction()
     {
-        foreach(var p in PlayerHandler.Players.Values.Where(x => x.Koala != null))  
+        foreach(var p in PlayerHandler.Players.Values.Where(x => x.Role != HSRole.Spectator))  
             PlayerHandler.KillPlayer(p.ClientID);
     }
 }
@@ -320,7 +320,7 @@ public class ClmRule_Half : CollectionModeRule
 
     public override void RunSpecialAction()
     {
-        foreach (var p in PlayerHandler.Players.Values.Where(x => x.Koala != null))
+        foreach (var p in PlayerHandler.Players.Values.Where(x => x.Role != HSRole.Spectator))
         {
             p.Score /= 2;
             CollectionModeHandler.SendScore(p.Score, p.ClientID);
@@ -347,7 +347,7 @@ public class ClmRule_Virus : CollectionModeRule
         if (toRandom)
         {
             var eligiblePlayers = PlayerHandler.Players.Values
-                .Where(x => x.Koala != null && x.ClientID != originalClientId)
+                .Where(x => x.Role != HSRole.Spectator && x.ClientID != originalClientId)
                 .ToList();
             player = eligiblePlayers.Any() ? eligiblePlayers[_random.Next(eligiblePlayers.Count)] : null;
         }
