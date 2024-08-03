@@ -2,6 +2,9 @@
 
 ## Most Recent
 
+#### 4.6.2
+- Fixes to spectator and collection mode
+
 #### 4.6.0
 - MTP2YAC Edition
 
