@@ -128,8 +128,7 @@ public class HeroHandler
         }
         else
         {
-            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27158C, BitConverter.GetBytes(state));
-            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x26EE4C, BitConverter.GetBytes(state));
+            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x271590, BitConverter.GetBytes(state));
         }
     }
     
