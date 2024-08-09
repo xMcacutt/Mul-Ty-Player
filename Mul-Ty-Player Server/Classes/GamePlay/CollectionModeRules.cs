@@ -335,7 +335,7 @@ public class ClmRule_Virus : CollectionModeRule
     public ClmRule_Virus()
     {
         _random = new Random();
-        Name = "Malware Detected"; 
+        Name = "Error Detected"; 
         Description = "Uh oh! Points have a chance to go to your opponents instead."; 
     }
     

@@ -59,6 +59,11 @@ public class ChaosHandler
                         new PositionData(-1755.0f, -343.0f, 2683.0f, 0.0f),
                         new PositionData(4432.0f, -546.0f, 5122.0f, -3.131f),
                         new PositionData(-6126.0f, -441.0f, 3604.0f, 1.841f),
+                        new PositionData(3582.2734f, -184.97473f, 475.32822f, 5.6024857f),
+                        new PositionData(3085.36f, -348.62677f, -3091.4077f, 6.1115913f),
+                        new PositionData(-1542.7802f, 186.24399f, 958.6456f, 4.87103f),
+                        new PositionData(-5122.0596f, -522.9148f, -6582.1f, 5.5758147f),
+                        new PositionData(-2726.5723f, -701.5983f, 1947.359f, 2.243216f),
                     }
                 },
                 {
@@ -114,6 +119,11 @@ public class ChaosHandler
                         new PositionData(-1944.0f, -333.0f, -7611.0f),
                         new PositionData(3352.0f, -553.0f, 6944.0f),
                         new PositionData(2599.0f, -268.0f, 6555.0f),
+                        new PositionData(1925.5317f, 445.94382f, 6803.6807f),
+                        new PositionData(-4905.5195f, 123.13815f, -254.14423f),
+                        new PositionData(-7474.0874f, 836.6917f, -1069.3177f),
+                        new PositionData(-2248.3274f, -557.0825f, -5206.1074f),
+                        new PositionData(1415.1086f, 727.209f, 1070.272f),
                     }
                 }
             }
@@ -149,6 +159,11 @@ public class ChaosHandler
                         new PositionData(-4467.0f, -1254.0f, 978.0f, -0.976f),
                         new PositionData(562.0f, -2875.0f, 2953.0f, 0.0f),
                         new PositionData(-10701.0f, -2510.0f, -1913.0f, 3.131f),
+                        new PositionData(-2352.6992f, -2616.124f, 1002.8282f, 1.9161341f),
+                        new PositionData(4612.958f, -2537.1687f, -858.83514f, 3.5435812f),
+                        new PositionData(1933.0237f, -167.33255f, 8245.678f, 4.9351654f),
+                        new PositionData(-8608.96f, 643.52893f, -1414.2255f, 1.6446202f),
+                        new PositionData(-6367.6978f, -770.1511f, -4481.694f, 2.2376738f),
                     }
                 },
                 {
@@ -204,6 +219,11 @@ public class ChaosHandler
                         new PositionData(16.0f, -2878.0f, -587.0f),
                         new PositionData(-4658.0f, -683.0f, -2407.0f),
                         new PositionData(-5969.0f, -941.0f, 5545.0f),
+                        new PositionData(7202.8154f, -2000.253f, 1808.7083f),
+                        new PositionData(-10408.455f, -806.1015f, 5128.705f),
+                        new PositionData(1333.6831f, -924.249f, -6792.3525f),
+                        new PositionData(1264.1483f, -2984.8516f, 677.8972f),
+                        new PositionData(2569.7126f, -2554.7332f, -686.2721f),
                     }
                 }
             }
@@ -239,6 +259,11 @@ public class ChaosHandler
                         new PositionData(2772.0f, 678.0f, 21903.0f, 0.0f),
                         new PositionData(12477.0f, 482.0f, 9308.0f, -1.215f),
                         new PositionData(-9441.0f, 578.0f, 14725.0f, 0.0f),
+                        new PositionData(6435.7905f, 122.75342f, -4081.2888f, 1.8757234f),
+                        new PositionData(10779.675f, 1.2984886f, 16887.242f, 2.5889568f),
+                        new PositionData(6073.9565f, 1658.6746f, 18977.502f, 3.3521965f),
+                        new PositionData(-10781.856f, 24.918228f, 20627.84f, 6.2580543f),
+                        new PositionData(-9509.315f, 117.355255f, 9912.087f, 4.957123f),
                     }
                 },
                 {
@@ -293,6 +318,11 @@ public class ChaosHandler
                         new PositionData(8557.0f, 458.0f, -11202.0f),
                         new PositionData(-9570.0f, 814.0f, -14879.0f),
                         new PositionData(-1544.0f, 676.0f, 19539.0f),
+                        new PositionData(2870.0884f, 1204.4109f, 24720.123f),
+                        new PositionData(139.52074f, 288.88177f, 1478.5171f),
+                        new PositionData(-13086.788f, 537.99725f, 20778.416f),
+                        new PositionData(49.01611f, 169.28224f, 5947.003f),
+                        new PositionData(10004.591f, -1513.2561f, 24887.98f),
                     }
                 }
             }
@@ -328,12 +358,17 @@ public class ChaosHandler
                         new PositionData(2531.0f, 64.0f, -6472.0f, 2.957f),
                         new PositionData(-6273.0f, -678.0f, 4732.0f, 1.418f),
                         new PositionData(8578.0f, 509.0f, 583.0f, -1.841f),
+                        new PositionData(10842.366f, 434.72177f, -6540.7217f, 4.184832f),
+                        new PositionData(886.8873f, 53.618446f, -9577.831f, 6.2714405f),
+                        new PositionData(7678.854f, 778.2628f, -5073.7134f, 5.019414f),
+                        new PositionData(-3762.8723f, 621.1897f, -10336.776f, 0.00335598f),
+                        new PositionData(-2294.308f, 129.26698f, -11711.495f, 6.2536974f),
                     }
                 },
                 {
                     "Cog", new PositionData[]
                     {
-                        new PositionData(474.90999999999997f, -700.291f, 6485.549f),
+                        new PositionData(474.91f, -700.291f, 6485.549f),
                         new PositionData(1663.885f, 98.243f, 5002.506f),
                         new PositionData(-1625.069f, 515.513f, 322.548f),
                         new PositionData(-2239.966f, 620.962f, -350.501f),
@@ -383,6 +418,11 @@ public class ChaosHandler
                         new PositionData(-263.0f, 578.0f, -9903.0f),
                         new PositionData(-6464.0f, 842.0f, -8021.0f),
                         new PositionData(-5498.0f, 792.0f, -3921.0f),
+                        new PositionData(-920.3767f, -198.685f, 6317.6113f),
+                        new PositionData(1977.1859f, 157.94383f, 2562.2712f),
+                        new PositionData(-549.18585f, 660.1167f, -14649.325f),
+                        new PositionData(211.18958f, 13776.94f, 2698.3662f),
+                        new PositionData(-869.5267f, 579.3568f, 4085.631f),
                     }
                 }
             }
@@ -418,6 +458,11 @@ public class ChaosHandler
                         new PositionData(35324.0f, -5775.0f, -18503.0f, -0.773f),
                         new PositionData(4928.0f, -7569.0f, -18504.0f, 1.639f),
                         new PositionData(18544.0f, -8354.0f, -13332.0f, 1.692f),
+                        new PositionData(6330.1914f, -3981.8855f, -4343.9478f, 0.66322994f),
+                        new PositionData(43878.188f, -1269.1742f, -2799.5493f, 1.6009536f),
+                        new PositionData(41965.18f, -1717.3242f, -11173.501f, 1.0729284f),
+                        new PositionData(50172.906f, -3084.4375f, -19763.504f, 4.666878f),
+                        new PositionData(33160.477f, -5779.2686f, 1709.2417f, 3.7573752f),
                     }
                 },
                 {
@@ -473,6 +518,11 @@ public class ChaosHandler
                         new PositionData(29829.0f, -7411.0f, -17095.0f),
                         new PositionData(24255.0f, -8700.0f, -17248.0f),
                         new PositionData(13828.0f, -7616.0f, -17219.0f),
+                        new PositionData(214.75781f, -2220.7705f, -1753.6304f),
+                        new PositionData(8711.201f, -5595.5435f, -10833.5625f),
+                        new PositionData(38448.473f, -2278.5566f, -6268.46f),
+                        new PositionData(15771.969f, -7127.214f, -9693.646f),
+                        new PositionData(39834.473f, -4561.5312f, -7496.4263f),
                     }
                 }
             }
@@ -508,6 +558,11 @@ public class ChaosHandler
                         new PositionData(28636.0f, 4447.0f, -2721.0f, 0.0f),
                         new PositionData(-3112.0f, 2834.0f, -9055.0f, 0.0f),
                         new PositionData(34420.0f, 3964.0f, -14061.0f, 0.0f),
+                        new PositionData(7044.599f, 3589.6802f, -17469.66f, 9.537268f),
+                        new PositionData(38928.65f, 3798.071f, -35072.223f, 13.725528f),
+                        new PositionData(19302.959f, 4602.42f, 13647.788f, 15.739266f),
+                        new PositionData(-11363.49f, 4791.543f, 17757.64f, -7.874583f),
+                        new PositionData(39218.277f, 11860.89f, -28497.56f, -76.444084f),
                     }
                 },
                 {
@@ -563,6 +618,11 @@ public class ChaosHandler
                         new PositionData(19637.0f, 3834.0f, -7499.0f),
                         new PositionData(-7503.0f, 3586.0f, -15390.0f),
                         new PositionData(9599.0f, 3477.0f, -10754.0f),
+                        new PositionData(25971.385f, 4822.248f, 14233.117f),
+                        new PositionData(59538.273f, 5165.264f, -32161.344f),
+                        new PositionData(-8473.992f, 2905.8286f, -7593.887f),
+                        new PositionData(1332.8517f, 2884.712f, -10471.886f),
+                        new PositionData(-14598.941f, 5444.801f, 17483.521f),
                     }
                 }
             }
@@ -598,6 +658,11 @@ public class ChaosHandler
                         new PositionData(-5630.0f, 1032.0f, -465.0f, 1.242f),
                         new PositionData(663.0f, -2854.0f, 4703.0f, 0.0f),
                         new PositionData(-9902.0f, -576.0f, -4261.0f, 1.547f),
+                        new PositionData(-2710.8013f, -435.34082f, -172.77069f, 0.9713726f),
+                        new PositionData(-10126.362f, 950.4771f, -2798.6855f, 0.8966017f),
+                        new PositionData(-2265.334f, -1715.6643f, 2175.7534f, 2.7997677f),
+                        new PositionData(-2723.2402f, -2945.3801f, -2437.9207f, 3.2125492f),
+                        new PositionData(-12119.986f, -539.4364f, 10085.003f, 6.2396317f),
                     }
                 },
                 {
@@ -653,6 +718,11 @@ public class ChaosHandler
                         new PositionData(1956.0f, -2722.0f, 4766.0f),
                         new PositionData(4368.0f, -1791.0f, 4032.0f),
                         new PositionData(-4613.0f, 469.0f, 4912.0f),
+                        new PositionData(-813.8419f, -2468.0857f, 233.80722f),
+                        new PositionData(-1191.5026f, -1811.5448f, 1512.9358f),
+                        new PositionData(-10683.507f, 897.783f, 6021.1016f),
+                        new PositionData(-10533.451f, 836.3846f, -487.62076f),
+                        new PositionData(1493.2614f, -2291.0562f, 1538.0892f),
                     }
                 }
             }
@@ -664,7 +734,7 @@ public class ChaosHandler
                     "Bilby", new PositionData[]
                     {
                         new PositionData(-6538.992f, -501.167f, -6703.954f, 1.519f),
-                        new PositionData(9974.571f, -487.345f, -11260.666f, 0.0f),
+                        new PositionData(2704.265f, 75.68513f, -5900.6504f, 5.9384336f),
                         new PositionData(8042.02f, -470.438f, -3297.411f, 1.595f),
                         new PositionData(2762.977f, -778.244f, -7224.633f, 0.986f),
                         new PositionData(-3528.0f, 907.253f, -128.255f, 1.306f),
@@ -688,6 +758,11 @@ public class ChaosHandler
                         new PositionData(5210.0f, -6.0f, -9636.0f, -2.505f),
                         new PositionData(-3272.0f, -487.0f, 442.0f, -1.584f),
                         new PositionData(3922.0f, 1494.0f, -1607.0f, 3.204f),
+                        new PositionData(-24014.725f, -5592.5366f, 21348.113f, 1.1587343f),
+                        new PositionData(2425.176f, -193.70284f, -8776.701f, 5.531527f),
+                        new PositionData(2528.2407f, -325.11023f, -2546.0088f, 6.2162356f),
+                        new PositionData(-4671.6016f, -488.2593f, -1559.3779f, 2.9559345f),
+                        new PositionData(-7779.245f, 10568.726f, 18036.385f, 3.863227f),
                     }
                 },
                 {
@@ -743,6 +818,11 @@ public class ChaosHandler
                         new PositionData(-14995.0f, -5562.0f, 24528.0f),
                         new PositionData(-15038.0f, -5565.0f, 22000.0f),
                         new PositionData(9525.0f, 46.0f, -10956.0f),
+                        new PositionData(1594.5232f, 280.13739f, -4477.459f),
+                        new PositionData(7102.182f, -437.34494f, -8294.368f),
+                        new PositionData(-4234.0444f, 225.63646f, -7732.138f),
+                        new PositionData(7228.6304f, 2092.3394f, 1999.9987f),
+                        new PositionData(1246.7037f, -251.86884f, -8763.004f),
                     }
                 }
             }
@@ -778,6 +858,11 @@ public class ChaosHandler
                         new PositionData(-10974.0f, -719.0f, -7756.0f, 2.589f),
                         new PositionData(11755.0f, -1496.0f, -3477.0f, 1.565f),
                         new PositionData(23990.0f, -1505.0f, 16246.0f, 2.405f),
+                        new PositionData(-12543.87f, -1633.0807f, -1534.6542f, 1.5675545f),
+                        new PositionData(31797.518f, -1460.7288f, -2692.8457f, 4.5800934f),
+                        new PositionData(19131.611f, -1204.5575f, -34428.61f, 5.2183523f),
+                        new PositionData(24078.885f, -1496.308f, -4124.016f, 1.5681572f),
+                        new PositionData(26129.506f, -1724.111f, -17254.016f, 2.746294f),
                     }
                 },
                 {
@@ -833,6 +918,11 @@ public class ChaosHandler
                         new PositionData(7043.0f, -1461.0f, -14426.0f),
                         new PositionData(32665.0f, -674.0f, -29437.0f),
                         new PositionData(27536.0f, -879.0f, 4892.0f),
+                        new PositionData(29018.252f, 162.24019f, -2186.2437f),
+                        new PositionData(11123.308f, -1526.0801f, -28788.934f),
+                        new PositionData(10631.681f, -1397.4142f, -11608.95f),
+                        new PositionData(21753.059f, -1050.7758f, -30825.412f),
+                        new PositionData(-8201.032f, -1526.0801f, -13562.118f),
                     }
                 }
             }
@@ -888,10 +978,10 @@ public class ChaosHandler
         {
             var cogs = new HashSet<byte>();
             while (cogs.Count < 10)
-                cogs.Add((byte)_random.Next(0, 49));
+                cogs.Add((byte)_random.Next(0, 55));
             var bilbies = new HashSet<byte>();
             while (bilbies.Count < 5)
-                bilbies.Add((byte)_random.Next(0, 24));
+                bilbies.Add((byte)_random.Next(0, 30));
             var randomisedCollectibleIndices = cogs.Concat(bilbies).ToArray();
             CurrentPositionIndices.Add(level.Id, randomisedCollectibleIndices);
         }
