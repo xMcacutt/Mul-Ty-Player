@@ -20,4 +20,5 @@ internal class Settings
     public bool UseTyKoalaTextures { get; set; }
     public bool ShowKoalaBeacons { get; set; }
     public int DefaultSaveSlot { get; set; }
+    public bool ShowCollectiblesInTA { get; set; }
 }

@@ -108,10 +108,8 @@ internal class KoalaHandler
         if (inTimeAttack == 1)
         {
             MakeVisible();
-            if (SettingsHandler.GameMode == GameMode.Collection)
-            {
+            if (SettingsHandler.Settings.ShowCollectiblesInTA)
                 SyncHandler.MakeCollectiblesVisibleInTimeAttack();
-            }
         }
     }
 

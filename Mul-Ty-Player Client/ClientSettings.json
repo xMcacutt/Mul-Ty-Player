@@ -16,5 +16,6 @@
   "Version": "4.6.2",
   "UseTyKoalaTextures": true,
   "ShowKoalaBeacons": true,
-  "DefaultSaveSlot": 1
+  "DefaultSaveSlot": 1,
+  "ShowCollectiblesInTA": true
 }

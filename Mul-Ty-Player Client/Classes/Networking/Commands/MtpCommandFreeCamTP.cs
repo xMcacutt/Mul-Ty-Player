@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MulTyPlayer;
 using Riptide;
 
@@ -21,12 +22,19 @@ public class MtpCommandFreeCam : Command
     
     public override void InitExecute(string[] args)
     {
-        if (args.Length > 1)
+        if (args.Length is not 0 and not 2)
         {
             SuggestHelp();
             return;
         }
-        RunFreecam();
+        
+        if (args.Length == 0)
+            RunFreecam();
+        else if (!string.Equals(args[0], "speed", StringComparison.CurrentCultureIgnoreCase)
+                 || !float.TryParse(args[1], out var speed))
+            SuggestHelp();
+        else
+            SpectatorHandler.SetFreecamSpeed(speed, true);
     }
 
     private void RunFreecam()

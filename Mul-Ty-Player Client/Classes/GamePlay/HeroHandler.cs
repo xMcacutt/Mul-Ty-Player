@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using MulTyPlayer;
+using MulTyPlayerClient.Classes.GamePlay;
 using MulTyPlayerClient.GUI.Classes.Views;
 using MulTyPlayerClient.GUI.Models;
 using Riptide;
@@ -123,13 +124,9 @@ public class HeroHandler
     public void SetHeroState(int state)
     {
         if (Client.HLevel.CurrentLevelData.Id == Levels.OutbackSafari.Id)
-        {
-            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x254560, BitConverter.GetBytes(state));
-        }
+            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x254564, BitConverter.GetBytes(state));
         else
-        {
             ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x271590, BitConverter.GetBytes(state));
-        }
     }
     
     public void WritePosition(float x, float y, float z, bool log = true)
@@ -275,9 +272,9 @@ public class HeroHandler
     public void KillPlayer()
     {
         if (Client.HLevel.CurrentLevelData.Id == Levels.OutbackSafari.Id)
-            Client.HCommand.Commands["tp"].InitExecute(new string[] { "@s" });
+            SetHeroState((int)BullState.Dying); // Kills player
         else
-            SetHeroState(29); // Kills player
+            SetHeroState((int)HeroState.Dying); // Kills player
     }
 
     public int GetHeroState()
@@ -294,5 +291,13 @@ public class HeroHandler
     public static void HandleKillReceive(Message message)
     {
         Client.HHero.KillPlayer();
+    }
+
+    public void SetHeroStateDirect(int state)
+    {
+        if (Client.HLevel.CurrentLevelData.Id == Levels.OutbackSafari.Id)
+            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x254560, BitConverter.GetBytes(state));
+        else
+            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27158C, BitConverter.GetBytes(state));
     }
 }

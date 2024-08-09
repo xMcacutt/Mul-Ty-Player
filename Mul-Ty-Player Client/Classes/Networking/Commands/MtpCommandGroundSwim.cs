@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MulTyPlayerClient.Classes.GamePlay;
 using MulTyPlayerClient.Classes.Networking;
 
 namespace MulTyPlayerClient;
@@ -47,6 +48,6 @@ public class MtpCommandGroundSwim : Command
 
     private void RunGroundSwim()
     {
-        Client.HHero.SetHeroState(39);
+        Client.HHero.SetHeroState((int)HeroState.IdleUnderwater);
     }
 }

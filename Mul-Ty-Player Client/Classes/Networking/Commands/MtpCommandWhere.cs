@@ -44,7 +44,7 @@ public class MtpCommandWhere : Command
     private void RunWhere()
     {
         var coords = Client.HHero.GetCurrentPosRot();
-        Logger.Write($"You are at {coords[0]}, {coords[1]}, {coords[2]}");
+        Logger.Write($"You are at {coords[0]}, {coords[1]}, {coords[2]}, {coords[4]}");
     }
     
     private void RunWhere(string clientIdString)
@@ -66,6 +66,6 @@ public class MtpCommandWhere : Command
         }
         var koalaId = Koalas.GetInfo[(Koala)player.Koala].Id;
         var transform = PlayerReplication.PlayerTransforms[koalaId];
-        Logger.Write($"{player.Name} is in {Levels.GetLevelData(transform.LevelId).Code} at {transform.Position.X}, {transform.Position.Y}, {transform.Position.Z}");
+        Logger.Write($"{player.Name} is in {Levels.GetLevelData(transform.LevelId).Code} at {transform.Position.X}, {transform.Position.Y}, {transform.Position.Z}, {transform.Rotation.Yaw}");
     }
 }

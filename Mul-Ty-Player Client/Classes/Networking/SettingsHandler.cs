@@ -115,7 +115,7 @@ internal static class SettingsHandler
     #endregion
     
     public static Settings Settings { get; private set; }
-    
+
 
     public static void Setup()
     {

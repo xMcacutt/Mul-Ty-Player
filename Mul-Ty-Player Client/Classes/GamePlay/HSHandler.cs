@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using MulTyPlayer;
+using MulTyPlayerClient.Classes.GamePlay;
 using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
@@ -143,7 +144,7 @@ public class HSHandler
         if (Role == HSRole.Seeker)
             return;
         var state = Client.HHero.GetHeroState();
-        var comparison = Client.HLevel.CurrentLevelId == 10 ? 8 : 28;
+        var comparison = Client.HLevel.CurrentLevelId == 10 ? (int)BullState.Dying : (int)HeroState.Dying;
         if (state == comparison)
             Role = HSRole.Seeker;
     }

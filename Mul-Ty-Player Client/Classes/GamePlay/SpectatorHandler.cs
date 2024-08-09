@@ -4,6 +4,7 @@ using System.Numerics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using MulTyPlayerClient.Classes.GamePlay;
 using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.Classes.Utility;
 using Vector = System.Numerics.Vector;
@@ -177,12 +178,25 @@ public class SpectatorHandler
         SpectateeKoalaId = null;
     }
 
+    private static float _freeCamSpeed = 0.6f;
+    public static void SetFreecamSpeed(float speed = 0.6f, bool log = false)
+    {
+        _freeCamSpeed = speed;
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x254B08), BitConverter.GetBytes(speed));
+        if (log)
+            Logger.Write($"Freecam speed set to {speed}.");
+    }
+
 
     public static bool _inFreeCam = false;
     public static void ToggleFreeCam(bool state = false, bool forceState = false)
     {
         ProcessHandler.TryRead(0x27EBD0, out int currentCameraState, true, "ReadCamState");
+        SetFreecamSpeed(_freeCamSpeed);
         _inFreeCam = currentCameraState == 28;
+        var heroState = Client.HHero.GetHeroState();
+        if (heroState == (int)HeroState.CreditsLock)
+            Client.HHero.SetHeroState(35);
         if (state == _inFreeCam && forceState)
             return;
         if (forceState)
@@ -203,7 +217,7 @@ public class SpectatorHandler
             Client.HHero.WritePosition(camPos.X, camPos.Y, camPos.Z);
         }
         Client.HGameState.SetCameraState(newCamState);
-        Client.HHero.SetHeroState(newHeroState);
+        Client.HHero.SetHeroStateDirect(newHeroState);
         if (!_inFreeCam)
             SpectatorHandler.SetCameraRotation(0, Client.HHero.GetCurrentPosRot()[4]);
         _inFreeCam = !_inFreeCam;

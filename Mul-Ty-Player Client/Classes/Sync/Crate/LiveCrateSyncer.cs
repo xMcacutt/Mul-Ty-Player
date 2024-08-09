@@ -11,6 +11,22 @@ internal class LiveCrateSyncer : LiveDataSyncer
         ObjectLength = 0x1C0;
     }
 
+    public void MakeCratesVisible()
+    {
+        for (var crateIndex = 0; crateIndex < HSyncObject.GlobalObjectData[Client.HLevel.CurrentLevelId].Length; crateIndex++)
+        {
+            if (HSyncObject.GlobalObjectData[Client.HLevel.CurrentLevelId][crateIndex] ==
+                HSyncObject.CheckState) continue;
+            var crateAddress = HSyncObject.LiveObjectAddress + crateIndex * ObjectLength;
+            ProcessHandler.WriteData(crateAddress + 0x48, 
+                new byte[] { 1 }, 
+                "Setting crate collision to false");
+            ProcessHandler.WriteData(crateAddress + 0x114, 
+                new byte[] { 1 }, 
+                "Setting crate visibility to false");
+        }
+    }
+
     public override void Collect(int index)
     {
         var crateAddress = HSyncObject.LiveObjectAddress + index * ObjectLength;
