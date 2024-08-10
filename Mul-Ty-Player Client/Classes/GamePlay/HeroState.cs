@@ -79,4 +79,24 @@ namespace MulTyPlayerClient.Classes.GamePlay
         Running = 12, // mid speed
         Gone = 13, // ??? turn invisible and cant move, can throw rang tho
     }
+
+    public static class HeroStateUtil
+    {
+        public static bool HeroStateIsAirborne(HeroState hs)
+        {
+            switch (hs)
+            {
+                case HeroState.Gliding:
+                case HeroState.GlideInit:
+                case HeroState.GlideMode:
+                case HeroState.AirDiving:
+                case HeroState.Falling:
+                case HeroState.FarFalling:
+                case HeroState.Jumping:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+    }
 }

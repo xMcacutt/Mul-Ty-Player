@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MulTyPlayer;
+using MulTyPlayerClient.Classes.GamePlay;
 using Riptide;
 
 namespace MulTyPlayerClient;
@@ -21,6 +22,22 @@ public struct PositionData
         Y = y;
         Z = z;
         Yaw = yaw;
+    }
+
+    public static float DistanceSquared(PositionData pd1, PositionData pd2)
+    {
+        float xx = pd1.X - pd2.X;
+        float yy = pd1.Y - pd2.Y;
+        float zz = pd1.Z - pd2.Z;
+        return xx * xx + yy * yy + zz * zz;
+    }
+
+    public float DistanceToSquared(float x, float y, float z)
+    {
+        float xx = X - x;
+        float yy = Y - y;
+        float zz = Z - z;
+        return xx * xx + yy * yy + zz * zz;
     }
 }
 
@@ -572,6 +589,65 @@ public class ChaosHandler
                 new PositionData(-8201.032f, -1526.0801f, -13562.118f),
             }
         }
+    };
+
+    private Dictionary<int, Func<PositionData>[]> _movingCogs = new()
+    {
+        {             
+            Levels.TwoUp.Id, new Func<PositionData>[]
+            {
+                // Flies in a circle around the starting platform
+                () => {
+                    double speed = 1f;
+                    double time = DateTime.Now.TimeOfDay.TotalSeconds;
+                    (double sin, double cos) = Math.SinCos(time * speed);
+                    double radius = 900f;
+                    float x = -3740f + (float)(radius * cos);
+                    float y = 351f;
+                    float z = 7912f + (float)(radius * sin);
+                    return new PositionData(x, y, z);
+                }
+            }
+        },
+        {
+            Levels.WalkInThePark.Id, new Func<PositionData>[]
+            {
+                // Flicks between the 3 platforms at the bottom of the waterslide
+                () => {
+                    double cycleSpeed = 1f;
+                    double time = cycleSpeed * DateTime.Now.TimeOfDay.TotalSeconds;
+                    int index = ((int)time) % 3;
+                    PositionData platform1 = new(377f, -3250f, -589f);
+                    PositionData platform2 = new(183f, -2950f, -1000f);
+                    PositionData platform3 = new(32f, -2870f, -589f);
+                    return index == 0 ? platform1 : index == 1 ? platform2 : platform3;
+                }
+            }
+        },
+        {
+            Levels.ShipRex.Id, new Func<PositionData>[]
+            {
+                // At a gap in the spire but haha funny!
+                () => {
+                    PositionData normal = new(1105f, 1994f, -10050f);
+                    PositionData moved = new(1105f, 1994f, -9850f);
+                    float[] pos = Client.HHero.GetCurrentPosRot();
+                    HeroState state = (HeroState)Client.HHero.GetHeroState();
+                    // if on the spire, attempting the jump to get the cog
+                    if(
+                        HeroStateUtil.HeroStateIsAirborne(state) &&
+                        normal.DistanceToSquared(pos[0], pos[1], pos[2]) < 15000f)
+                    {
+                        return moved;
+                    }
+                    else
+                    {
+                        return normal;
+                    }
+                }
+            }
+        },
+
     };
 
     //               LevelId
@@ -1882,8 +1958,9 @@ public class ChaosHandler
             // MAYBE ITS UGLIER ACTUALLY BUT MY TINY PEA BRAIN CAN READ IT NICER
             var randomizedPositionIndex = CurrentPositionIndices[levelId][cogIndex];
             var transform = _cogPositions[levelId][randomizedPositionIndex];
-            var cogPosAddr =
-                PointerCalculations.GetPointerAddress(0x270310, new[] { 0x144 * cogIndex + 0x8, 0x74 });
+            SetCogPosition(cogIndex, transform);
+
+            // Undo platform attachment if any? i assume
             var cogPlatformAddr =
                 PointerCalculations.GetPointerAddress(0x270310, new[] { 0x144 * cogIndex + 0x138, 0});
             if (cogPlatformAddr != 0)
@@ -1893,13 +1970,6 @@ public class ChaosHandler
                 ProcessHandler.WriteData(cogPlatformAddr + 0x98, new byte[4]);
                 ProcessHandler.WriteData(platformAttachmentsAddr, new byte[4]);
             }
-            var bytesToWrite =
-                BitConverter.GetBytes(transform.X)
-                    .Concat(BitConverter.GetBytes(transform.Y))
-                    .Concat(BitConverter.GetBytes(transform.Z)).ToArray();
-            //Logger.Write(
-               // $"Writing {transform.X}, {transform.Y}, {transform.Z} for cog at index {CurrentPositionIndices[level][cogIndex]}");
-            ProcessHandler.WriteData(cogPosAddr, bytesToWrite);
         }
 
         for (var bilbyIndex = 0; bilbyIndex < 5; bilbyIndex++)
@@ -1927,6 +1997,28 @@ public class ChaosHandler
             ProcessHandler.WriteData(cagePosAddr - 0x30, matBytes);
             ProcessHandler.WriteData(bilbyPosAddr - 0x30, matBytes);
         }
+
+        Task.Run(RunawayCogs);
+    }
+
+    public void RunawayCogs()
+    {
+        while (_movingCogs.ContainsKey(Client.HLevel.CurrentLevelId))
+        {
+            SetCogPosition(0, _movingCogs[Client.HLevel.CurrentLevelId][0]());
+        }        
+    }
+
+    private void SetCogPosition(int cogIndex, PositionData transform)
+    {
+        var cogPosAddr = PointerCalculations.GetPointerAddress(0x270310, new[] { 0x144 * cogIndex + 0x8, 0x74 });
+        var bytesToWrite =
+                BitConverter.GetBytes(transform.X)
+                    .Concat(BitConverter.GetBytes(transform.Y))
+                    .Concat(BitConverter.GetBytes(transform.Z)).ToArray();
+        //Logger.Write(
+        // $"Writing {transform.X}, {transform.Y}, {transform.Z} for cog at index {CurrentPositionIndices[level][cogIndex]}");
+        ProcessHandler.WriteData(cogPosAddr, bytesToWrite);
     }
     
     [MessageHandler((ushort)MessageID.CH_Shuffle)]
