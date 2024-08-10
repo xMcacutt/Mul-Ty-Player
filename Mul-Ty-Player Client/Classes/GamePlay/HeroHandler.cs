@@ -121,12 +121,20 @@ public class HeroHandler
         return health;
     }
 
-    public void SetHeroState(int state)
+    public void SetHeroState(HeroState state)
     {
         if (Client.HLevel.CurrentLevelData.Id == Levels.OutbackSafari.Id)
-            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x254564, BitConverter.GetBytes(state));
+            Logger.Write("Attempted to set Ty's state to a regular hero state when in Outback Safari. Bad!");
         else
-            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x271590, BitConverter.GetBytes(state));
+            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x271590, BitConverter.GetBytes((int)state));
+    }
+
+    public void SetHeroState(BullState state)
+    {
+        if (Client.HLevel.CurrentLevelData.Id == Levels.OutbackSafari.Id)
+            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x254564, BitConverter.GetBytes((int)state));
+        else
+            Logger.Write("Attempted to set Ty's state to a bull state when not in Outback Safari. Bad!");
     }
     
     public void WritePosition(float x, float y, float z, bool log = true)
@@ -272,9 +280,9 @@ public class HeroHandler
     public void KillPlayer()
     {
         if (Client.HLevel.CurrentLevelData.Id == Levels.OutbackSafari.Id)
-            SetHeroState((int)BullState.Dying); // Kills player
+            SetHeroState(BullState.Dying); // Kills player
         else
-            SetHeroState((int)HeroState.Dying); // Kills player
+            SetHeroState(HeroState.Dying); // Kills player
     }
 
     public int GetHeroState()

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
 using MulTyPlayer;
+using MulTyPlayerClient.Classes.GamePlay;
 using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI.Models;
 using Riptide;
@@ -183,10 +184,10 @@ public class GameStateHandler
         Client.HGameState.ForceBackToMainMenu();
     }
 
-    public void SetCameraState(int state)
+    public void SetCameraState(CameraState state)
     {
-        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EBD0, BitConverter.GetBytes(state));
-        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EBC8, BitConverter.GetBytes(state));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EBD0, BitConverter.GetBytes((int)state));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EBC8, BitConverter.GetBytes((int)state));
     }
 }
 

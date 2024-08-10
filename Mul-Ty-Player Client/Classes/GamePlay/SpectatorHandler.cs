@@ -196,20 +196,20 @@ public class SpectatorHandler
         _inFreeCam = currentCameraState == 28;
         var heroState = Client.HHero.GetHeroState();
         if (heroState == (int)HeroState.CreditsLock)
-            Client.HHero.SetHeroState(35);
+            Client.HHero.SetHeroState(HeroState.Idle);
         if (state == _inFreeCam && forceState)
             return;
         if (forceState)
             _inFreeCam = !state;
-        var newCamState = _inFreeCam ? 5 : 28;
+        var newCamState = _inFreeCam ? CameraState.Default : CameraState.FreeCam;
         var newHeroState = 5;
         if (Client.HLevel.CurrentLevelData.Id == Levels.OutbackSafari.Id)
         {
-            newHeroState = _inFreeCam ? 0 :  5;
+            newHeroState = (int)(_inFreeCam ? BullState.Idle :  BullState.Splat);
         }
         else
         {
-            newHeroState = _inFreeCam ? 35 :  50;
+            newHeroState = (int)(_inFreeCam ? HeroState.Idle : HeroState.CreditsLock);
         }
         if (_inFreeCam)
         {

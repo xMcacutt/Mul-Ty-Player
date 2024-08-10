@@ -4,6 +4,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 using MulTyPlayer;
+using MulTyPlayerClient.Classes.GamePlay;
 using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
@@ -245,9 +246,11 @@ internal class Client
                         HGameState.CheckMainMenuOrLoading();
                         if (!HGameState.IsOnMainMenuOrLoading)
                         {
-                            var lockedHeroState = HLevel.CurrentLevelData.Id == Levels.OutbackSafari.Id ? 5 : 50;
-                            HHero.SetHeroState(lockedHeroState);
-                            HGameState.SetCameraState(28);
+                            if (HLevel.CurrentLevelData.Id == Levels.OutbackSafari.Id)
+                                HHero.SetHeroState(BullState.Splat);
+                            else
+                                HHero.SetHeroState(HeroState.CreditsLock);
+                            HGameState.SetCameraState(CameraState.FreeCam);
                             HGameState.CheckLoadChanged();
                             HLevel.GetCurrentLevel();
                             if (SettingsHandler.GameMode != GameMode.HideSeek)

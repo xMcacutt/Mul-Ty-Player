@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MulTyPlayerClient.Classes.GamePlay
 {
-    internal enum HeroState
+    public enum HeroState
     {
         None = 0,
         Biting = 1, // include super bite charge and release
@@ -49,8 +49,8 @@ namespace MulTyPlayerClient.Classes.GamePlay
         IdleUnderwater = 39,
         ShakingDry = 40,
         TheRotator = 41, // no idea, rotates ty to the left slightly???
-        DontKnow = 42, // does not lock movement
-        LockMovement = 43, // locks all movement, unescapable
+        ChangeRang = 42, // does not lock movement
+        CollectSecondRang = 43, // locks all movement, unescapable
         Waterslide = 44,
         Aiming = 45,
         Sliding = 46,
@@ -62,7 +62,7 @@ namespace MulTyPlayerClient.Classes.GamePlay
         RexDiving = 52, // crashes outside of minigame
     }
 
-    internal enum BullState
+    public enum BullState
     {
         Idle = 0,
         Walking = 1,
@@ -70,9 +70,9 @@ namespace MulTyPlayerClient.Classes.GamePlay
         Airborne = 3, // includes tornado
         Bonked = 4, // running into pillar
         Splat = 5,
-        Dunno = 6,
+        Bonk = 6,
         Dying = 7,
-        Respawning = 8,
+        DunnyRespawn = 8,
         Charge = 9,
         PullingEmu = 10, // and also water tower
         Celebration = 11,

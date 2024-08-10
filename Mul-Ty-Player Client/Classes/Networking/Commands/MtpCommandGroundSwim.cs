@@ -48,6 +48,6 @@ public class MtpCommandGroundSwim : Command
 
     private void RunGroundSwim()
     {
-        Client.HHero.SetHeroState((int)HeroState.IdleUnderwater);
+        Client.HHero.SetHeroState(HeroState.IdleUnderwater);
     }
 }
