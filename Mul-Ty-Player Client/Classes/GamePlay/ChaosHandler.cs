@@ -29,7 +29,7 @@ public class ChaosHandler
     private Dictionary<int, Dictionary<string, PositionData[]>> _positions = new()
     {
         {
-            4, new Dictionary<string, PositionData[]>()
+            Levels.TwoUp.Id, new Dictionary<string, PositionData[]>()
             {
                 {
                     "Bilby", new PositionData[]
@@ -129,7 +129,7 @@ public class ChaosHandler
             }
         },
         {
-            5, new Dictionary<string, PositionData[]>()
+            Levels.WalkInThePark.Id, new Dictionary<string, PositionData[]>()
             {
                 {
                     "Bilby", new PositionData[]
@@ -229,7 +229,7 @@ public class ChaosHandler
             }
         },
         {
-            6, new Dictionary<string, PositionData[]>()
+            Levels.ShipRex.Id, new Dictionary<string, PositionData[]>()
             {
                 {
                     "Bilby", new PositionData[]
@@ -329,7 +329,7 @@ public class ChaosHandler
             }
         },
         {
-            8, new Dictionary<string, PositionData[]>()
+            Levels.BridgeOnTheRiverTy.Id, new Dictionary<string, PositionData[]>()
             {
                 {
                     "Bilby", new PositionData[]
@@ -429,7 +429,7 @@ public class ChaosHandler
             }
         },
         {
-            9, new Dictionary<string, PositionData[]>()
+            Levels.SnowWorries.Id, new Dictionary<string, PositionData[]>()
             {
                 {
                     "Bilby", new PositionData[]
@@ -529,7 +529,7 @@ public class ChaosHandler
             }
         },
         {
-            10, new Dictionary<string, PositionData[]>()
+            Levels.OutbackSafari.Id, new Dictionary<string, PositionData[]>()
             {
                 {
                     "Bilby", new PositionData[]
@@ -629,7 +629,7 @@ public class ChaosHandler
             }
         },
         {
-            12, new Dictionary<string, PositionData[]>()
+            Levels.LyreLyrePantsOnFire.Id, new Dictionary<string, PositionData[]>()
             {
                 {
                     "Bilby", new PositionData[]
@@ -729,7 +729,7 @@ public class ChaosHandler
             }
         },
         {
-            13, new Dictionary<string, PositionData[]>()
+            Levels.BeyondTheBlackStump.Id, new Dictionary<string, PositionData[]>()
             {
                 {
                     "Bilby", new PositionData[]
@@ -829,7 +829,7 @@ public class ChaosHandler
             }
         },
         {
-            14, new Dictionary<string, PositionData[]>()
+            Levels.RexMarksTheSpot.Id, new Dictionary<string, PositionData[]>()
             {
                 {
                     "Bilby", new PositionData[]
