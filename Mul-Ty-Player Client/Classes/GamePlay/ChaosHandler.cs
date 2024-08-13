@@ -43,14 +43,16 @@ public struct PositionData
 
 public class ChaosHandler
 {
-    const int CogLocationsPerLevel = 55;
-    const int BilbyLocationsPerLevel = 30;
+    private const int _movingCollectableUpdateSleepMs = 10;
+    private bool _currentlyMovingCollectables = false;
+    private CancellationTokenSource _collectableMoverCTS = new();
+    private static DateTime _timestampCollectablesMoved;
 
     //               LevelId
-    private Dictionary<int, PositionData[]> _cogPositions = new()
+    private Dictionary<int, PositionData[]> _staticCogPositions = new()
     {
         {
-            Levels.TwoUp.Id, new PositionData[CogLocationsPerLevel]
+            Levels.TwoUp.Id, new PositionData[]
             {
                 new PositionData(3292.59f, -61.304f, 8319.632f),
                 new PositionData(584.759f, -320.606f, 6309.147f),
@@ -110,7 +112,7 @@ public class ChaosHandler
             }
         },
         {
-            Levels.WalkInThePark.Id, new PositionData[CogLocationsPerLevel]
+            Levels.WalkInThePark.Id, new PositionData[]
             {
                 new PositionData(-8052.256f, -1091.655f, 7402.015f),
                 new PositionData(-8451.575f, -940.686f, 3905.345f),
@@ -170,7 +172,7 @@ public class ChaosHandler
             }
         },
         {
-            Levels.ShipRex.Id, new PositionData[CogLocationsPerLevel]
+            Levels.ShipRex.Id, new PositionData[]
             {
                 new PositionData(-12059.588f, 438.86f, 13832.164f),
                 new PositionData(-19945.498f, -641.363f, 17017.21f),
@@ -230,7 +232,7 @@ public class ChaosHandler
             }
         },
         {
-            Levels.BridgeOnTheRiverTy.Id, new PositionData[CogLocationsPerLevel]
+            Levels.BridgeOnTheRiverTy.Id, new PositionData[]
             {
                 new PositionData(474.91f, -700.291f, 6485.549f),
                 new PositionData(1663.885f, 98.243f, 5002.506f),
@@ -290,7 +292,7 @@ public class ChaosHandler
             }
         },
         {
-            Levels.SnowWorries.Id, new PositionData[CogLocationsPerLevel]
+            Levels.SnowWorries.Id, new PositionData[]
             {
                 new PositionData(-1060.315f, -3043.464f, -3837.269f),
                 new PositionData(2957.629f, -2854.616f, 1403.288f),
@@ -350,7 +352,7 @@ public class ChaosHandler
             }
         },
         {
-            Levels.OutbackSafari.Id, new PositionData[CogLocationsPerLevel]
+            Levels.OutbackSafari.Id, new PositionData[]
             {
                 new PositionData(-16756.686f, 4704.143f, 21466.244f),
                 new PositionData(-12231.925f, 4853.874f, 16786.572f),
@@ -410,7 +412,7 @@ public class ChaosHandler
             }
         },
         {
-            Levels.LyreLyrePantsOnFire.Id, new PositionData[CogLocationsPerLevel]
+            Levels.LyreLyrePantsOnFire.Id, new PositionData[]
             {
                 new PositionData(-3050.962f, -48.674f, 4116.261f),
                 new PositionData(-4174.389f, -89.358f, 6621.349f),
@@ -470,7 +472,7 @@ public class ChaosHandler
             }
         },
         {
-            Levels.BeyondTheBlackStump.Id, new PositionData[CogLocationsPerLevel]
+            Levels.BeyondTheBlackStump.Id, new PositionData[]
             {
                 new PositionData(-5472.37f, -439.292f, -8308.129f),
                 new PositionData(-851.102f, -75.972f, -6098.705f),
@@ -530,7 +532,7 @@ public class ChaosHandler
             }
         },
         {
-            Levels.RexMarksTheSpot.Id, new PositionData[CogLocationsPerLevel]
+            Levels.RexMarksTheSpot.Id, new PositionData[]
             {
                 new PositionData(-5775.568f, -1960.727f, -1572.521f),
                 new PositionData(-15424.289f, -247.19f, 3378.477f),
@@ -591,9 +593,9 @@ public class ChaosHandler
         }
     };
 
-    private Dictionary<int, Func<PositionData>[]> _movingCogs = new()
+    private Dictionary<int, Func<PositionData>[]> _movingCogPositions = new()
     {
-        {             
+        {
             Levels.TwoUp.Id, new Func<PositionData>[]
             {
                 // Flies in a circle around the starting platform
@@ -647,14 +649,32 @@ public class ChaosHandler
                 }
             }
         },
+        {
+            Levels.BridgeOnTheRiverTy.Id, new Func<PositionData>[]{ }
+        },
+        {
+            Levels.SnowWorries.Id, new Func<PositionData>[]{ }
+        },
+        {
+            Levels.OutbackSafari.Id, new Func<PositionData>[]{ }
+        },        
+        {
+            Levels.LyreLyrePantsOnFire.Id, new Func<PositionData>[]{ }
+        },
+        {
+            Levels.BeyondTheBlackStump.Id, new Func<PositionData>[]{ }
+        },
+        {
+            Levels.RexMarksTheSpot.Id, new Func<PositionData>[]{ }
+        },
 
     };
-
+    
     //               LevelId
-    private Dictionary<int, PositionData[]> _bilbyPositions = new()
+    private Dictionary<int, PositionData[]> _staticBilbyPositions = new()
     {
         {
-            Levels.TwoUp.Id, new PositionData[BilbyLocationsPerLevel]
+            Levels.TwoUp.Id, new PositionData[]
             {
                 new PositionData(-3822.803f, 308.366f, 9116.404f, 0.271f),
                 new PositionData(-2041.474f, 127.447f, 8776.881f, 1.42f),
@@ -689,7 +709,7 @@ public class ChaosHandler
             }
         },
         {
-            Levels.WalkInThePark.Id, new PositionData[BilbyLocationsPerLevel]
+            Levels.WalkInThePark.Id, new PositionData[]
             {
                 new PositionData(-9956.699f, -1552.092f, 6924.409f, 1.63f),
                 new PositionData(-9207.075f, -1221.275f, 5635.146f, 3.422f),
@@ -724,7 +744,7 @@ public class ChaosHandler
             }
         },
         {
-            Levels.ShipRex.Id, new PositionData[BilbyLocationsPerLevel]
+            Levels.ShipRex.Id, new PositionData[]
             {
                 new PositionData(-11441.138f, 275.632f, 24266.705f, 0.387f),
                 new PositionData(-5905.033f, -12.576f, 15642.216f, 0.0f),
@@ -759,7 +779,7 @@ public class ChaosHandler
             }
         },
         {
-            Levels.BridgeOnTheRiverTy.Id, new PositionData[BilbyLocationsPerLevel]
+            Levels.BridgeOnTheRiverTy.Id, new PositionData[]
             {
                 new PositionData(1383.987f, -719.713f, 5683.788f, 1.497f),
                 new PositionData(2101.085f, -364.967f, 2447.264f, 2.393f),
@@ -794,7 +814,7 @@ public class ChaosHandler
             }
         },
         {
-            Levels.SnowWorries.Id, new PositionData[BilbyLocationsPerLevel]
+            Levels.SnowWorries.Id, new PositionData[]
             {
                 new PositionData(-642.649f, -2603.134f, 1283.686f, 3.142f),
                 new PositionData(5416.325f, -3255.931f, 1345.119f, 4.935f),
@@ -829,7 +849,7 @@ public class ChaosHandler
             }
         },
         {
-            Levels.OutbackSafari.Id, new PositionData[BilbyLocationsPerLevel]
+            Levels.OutbackSafari.Id, new PositionData[]
             {
                 new PositionData(-17851.842f, 4654.143f, 19982.277f, 1.275f),
                 new PositionData(-3122.043f, 3286.206f, -14639.581f, 3.195f),
@@ -864,7 +884,7 @@ public class ChaosHandler
             }
         },
         {
-            Levels.LyreLyrePantsOnFire.Id, new PositionData[BilbyLocationsPerLevel]
+            Levels.LyreLyrePantsOnFire.Id, new PositionData[]
             {
                 new PositionData(-4469.313f, -121.087f, 1599.222f, 0.714f),
                 new PositionData(-3840.998f, 5.844f, 4190.916f, 5.667f),
@@ -899,7 +919,7 @@ public class ChaosHandler
             }
         },
         {
-            Levels.BeyondTheBlackStump.Id, new PositionData[BilbyLocationsPerLevel]
+            Levels.BeyondTheBlackStump.Id, new PositionData[]
             {
                 new PositionData(-6538.992f, -501.167f, -6703.954f, 1.519f),
                 new PositionData(2704.265f, 75.68513f, -5900.6504f, 5.9384336f),
@@ -934,7 +954,7 @@ public class ChaosHandler
             }
         },
         {
-            Levels.RexMarksTheSpot.Id, new PositionData[BilbyLocationsPerLevel]
+            Levels.RexMarksTheSpot.Id, new PositionData[]
             {
                 new PositionData(-15110.902f, -1438.521f, 1225.359f, 1.552f),
                 new PositionData(-14481.358f, -1427.812f, 4200.94f, 1.884f),
@@ -970,7 +990,55 @@ public class ChaosHandler
         }
     };
 
+    private Dictionary<int, Func<PositionData>[]> _movingBilbyPositions = new()
+    {
+        {
+            Levels.TwoUp.Id, new Func<PositionData>[]
+            {
+                // Flies at the camera at the starting cutscene (comedy)
+                /*
+                () => {
+                    float speed = 0.3f;
+                    float time = (float)(DateTime.Now - _timestampCollectablesMoved).TotalSeconds;
+                    float x1 = -2778f;
+                    float y1 = -600f;
+                    float z1 = -8265f;
+                    float x2 = -4200f;
+                    float y2 = 500f;
+                    float z2 = -4550f;
+                    return new PositionData(x1 + (x2 - x1) * time * speed, y1 + (y2 - y1) * time * speed, z1 + (z2 - z1) * time * speed);
+                }
+                */
+            }
+        },
+        {
+            Levels.WalkInThePark.Id, new Func<PositionData>[]{ }
+        },
+        {
+            Levels.ShipRex.Id, new Func<PositionData>[]{ }
+        },
+        {
+            Levels.BridgeOnTheRiverTy.Id, new Func<PositionData>[]{ }
+        },
+        {
+            Levels.SnowWorries.Id, new Func<PositionData>[]{ }
+        },
+        {
+            Levels.OutbackSafari.Id, new Func<PositionData>[]{ }
+        },
+        {
+            Levels.LyreLyrePantsOnFire.Id, new Func<PositionData>[]{ }
+        },
+        {
+            Levels.BeyondTheBlackStump.Id, new Func<PositionData>[]{ }
+        },
+        {
+            Levels.RexMarksTheSpot.Id, new Func<PositionData>[]{ }
+        },
+    };
+    
     // jic i fucked up copying them over xddd
+    /*
     private Dictionary<int, Dictionary<string, PositionData[]>> _positions = new()
     {
         {
@@ -1874,7 +1942,8 @@ public class ChaosHandler
             }
         }
     };
-
+    */
+    
     private Dictionary<int, int> _originalPortals = new()
         { { 1, 5 }, { 2, 4 }, { 3, 13 }, { 4, 10 }, { 8, 9 }, { 11, 12 }, { 12, 8 }, { 13, 6 }, { 14, 14 } };
     private Dictionary<int, int> _newPortals = new();
@@ -1914,20 +1983,33 @@ public class ChaosHandler
     public ChaosHandler()
     {
         ShuffleIndices(0);
+        MoveCollectibles(4);
     }
 
     public void ShuffleIndices(int seed)
     {
         _random = new Random(seed);
         CurrentPositionIndices.Clear();
+        _collectableMoverCTS.Cancel();
+        while (_currentlyMovingCollectables) { }
         foreach (var level in Levels.MainStages)
         {
+            // Generate 10 random cog indices
             var cogs = new HashSet<byte>();
             while (cogs.Count < 10)
-                cogs.Add((byte)_random.Next(0, CogLocationsPerLevel));
+            {
+                int possibleCogPositionsCount = _staticCogPositions[level.Id].Length + _movingCogPositions[level.Id].Length;
+                cogs.Add((byte)_random.Next(0, possibleCogPositionsCount));
+            }
+
+            // Generate 5 random bilby indices
             var bilbies = new HashSet<byte>();
             while (bilbies.Count < 5)
-                bilbies.Add((byte)_random.Next(0, BilbyLocationsPerLevel));
+            {
+                int possibleBilbyPositionsCount = _staticBilbyPositions[level.Id].Length + _movingBilbyPositions[level.Id].Length;
+                bilbies.Add((byte)_random.Next(0, possibleBilbyPositionsCount));
+            }
+
             var randomisedCollectibleIndices = cogs.Concat(bilbies).ToArray();
             CurrentPositionIndices.Add(level.Id, randomisedCollectibleIndices);
         }
@@ -1951,13 +2033,29 @@ public class ChaosHandler
             SwapPortals();
         if (!Levels.GetLevelData(levelId).IsMainStage || !CurrentPositionIndices.ContainsKey(levelId) || Client.HGameState.IsOnMainMenuOrLoading)
             return;
+        _timestampCollectablesMoved = DateTime.Now;
         //Logger.Write($"Moving collectibles for level {level}");
+
         for (var cogIndex = 0; cogIndex < 10; cogIndex++)
         {
             // THIS IS SLIGHTLY LESS UGLY THAN THE UGLIEST CODE MATT HAS EVER AND WILL EVER WRITE
             // MAYBE ITS UGLIER ACTUALLY BUT MY TINY PEA BRAIN CAN READ IT NICER
             var randomizedPositionIndex = CurrentPositionIndices[levelId][cogIndex];
-            var transform = _cogPositions[levelId][randomizedPositionIndex];
+            if (randomizedPositionIndex >= _staticCogPositions[levelId].Length + _movingCogPositions[levelId].Length)
+            {
+                Logger.Write($"Randomized cog position index out of bounds. " +
+                    $"Number of static positions: {_staticCogPositions[levelId].Length}, " +
+                    $"number of moving positions: {_movingCogPositions[levelId].Length}, " +
+                    $"index given: {randomizedPositionIndex}");
+                continue;
+            }
+
+            PositionData transform;
+            if (randomizedPositionIndex < _staticCogPositions[levelId].Length)
+                transform = _staticCogPositions[levelId][randomizedPositionIndex];
+            else
+                transform = _movingCogPositions[levelId][randomizedPositionIndex - _staticCogPositions[levelId].Length]();
+            
             SetCogPosition(cogIndex, transform);
 
             // Undo platform attachment if any? i assume
@@ -1974,39 +2072,92 @@ public class ChaosHandler
 
         for (var bilbyIndex = 0; bilbyIndex < 5; bilbyIndex++)
         {
-            // See comment at line 1881-1882
+            // See comment at line 2037
             var randomizedPositionIndex = CurrentPositionIndices[levelId][bilbyIndex + 10];
-            var transform = _bilbyPositions[levelId][randomizedPositionIndex];
-            var cagePosAddr =
-                PointerCalculations.GetPointerAddress(0x27D608, new[] { 0x0, 0x134 * bilbyIndex + 0x8, 0x74 });
-            var bilbyPosAddr =
-                PointerCalculations.GetPointerAddress(0x27D608, new[] { 0x0, 0x134 * bilbyIndex + 0x4, 0x74 });
-            var bilbyTEPosAddr =
-                PointerCalculations.GetPointerAddress(0x27D608, new[] { 0x0, 0x134 * bilbyIndex + 0xC });
-            var bytesToWrite =
-                BitConverter.GetBytes(transform.X)
-                    .Concat(BitConverter.GetBytes(transform.Y))
-                    .Concat(BitConverter.GetBytes(transform.Z)).ToArray();
-            //Logger.Write($"Writing {transform.X}, {transform.Y}, {transform.Z} for bilby at index {CurrentPositionIndices[level][bilbyIndex + 10]}");
-            ProcessHandler.WriteData(cagePosAddr, bytesToWrite);
-            ProcessHandler.WriteData(bilbyPosAddr, bytesToWrite);
-            ProcessHandler.WriteData(bilbyTEPosAddr, bytesToWrite);
-            // WRITE ROTATION
-            var mat = new RotationMatrix(transform.Yaw);
-            var matBytes = mat.GetBytes();
-            ProcessHandler.WriteData(cagePosAddr - 0x30, matBytes);
-            ProcessHandler.WriteData(bilbyPosAddr - 0x30, matBytes);
+            if (randomizedPositionIndex >= _staticBilbyPositions[levelId].Length + _movingBilbyPositions[levelId].Length)
+            {
+                Logger.Write($"Randomized bilby position index out of bounds. " +
+                    $"Number of static positions: {_staticBilbyPositions[levelId].Length}, " +
+                    $"number of moving positions: {_movingBilbyPositions[levelId].Length}, " +
+                    $"index given: {randomizedPositionIndex}");
+                continue;
+            }
+            PositionData transform;
+            if (randomizedPositionIndex < _staticBilbyPositions[levelId].Length)
+                transform = _staticBilbyPositions[levelId][randomizedPositionIndex];
+            else
+                transform = _movingBilbyPositions[levelId][randomizedPositionIndex - _staticBilbyPositions[levelId].Length]();
+            SetBilbyPosition(bilbyIndex, transform);
         }
-
-        Task.Run(RunawayCogs);
+        _collectableMoverCTS = new CancellationTokenSource();
+        Task.Run(() => MoveRunawayCollectables(levelId), _collectableMoverCTS.Token);
     }
 
-    public void RunawayCogs()
+    public void MoveRunawayCollectables(int levelId)
     {
-        while (_movingCogs.ContainsKey(Client.HLevel.CurrentLevelId))
+        // Return if no moving positions on this level
+        if (!_movingCogPositions.ContainsKey(levelId) && !_movingBilbyPositions.ContainsKey(levelId))
+            return;
+
+        var movingCogIndices = CurrentPositionIndices[levelId]
+                .Take(10)
+                .Select((posIndex, cogIndex) => (posIndex, cogIndex)) // deconstruct to get cogIndex
+                .Where(v => v.posIndex >= _staticCogPositions[levelId].Length)
+                .ToList();
+
+        var movingBilbyIndices = CurrentPositionIndices[levelId]
+                .Skip(10)
+                .Take(5)
+                .Select((posIndex, bilbyIndex) => (posIndex, bilbyIndex)) // deconstruct to get bilbyIndex
+                .Where(v => v.posIndex >= _staticBilbyPositions[levelId].Length)
+                .ToList();
+
+        // Check if any position indices corresponds to a moving function
+        // If none of them do, return and end coroutine
+        if (movingCogIndices.Count + movingBilbyIndices.Count == 0)
+            return;
+
+        // lookup delegate arrays
+        var movingCogDelegates = _movingCogPositions[levelId]; 
+        var movingBilbyDelegates = _movingBilbyPositions[levelId];
+
+        int staticCogIndexOffset = _staticCogPositions[levelId].Length;
+        int staticBilbyIndexOffset = _staticBilbyPositions[levelId].Length;
+
+        // get collectable states to stop moving them if collected
+        // arrays are so reference type so only one lookup required
+        var cogStates = Client.HSync.SyncObjects["Cog"].CurrentObjectData;
+        var bilbyStates = Client.HSync.SyncObjects["Bilby"].CurrentObjectData;
+
+        const byte uncollectedCogState = 2;
+        const byte uncollectedBilbyState = 1;
+        _currentlyMovingCollectables = true;
+
+        // While on a level with possible moving cogs & while still on that level
+        while (!_collectableMoverCTS.IsCancellationRequested && levelId == Client.HLevel.CurrentLevelId && _currentlyMovingCollectables)
         {
-            SetCogPosition(0, _movingCogs[Client.HLevel.CurrentLevelId][0]());
+            _currentlyMovingCollectables = false;
+            
+            foreach (var (posIndex, cogIndex) in movingCogIndices)
+            {
+                if (cogStates[cogIndex] <= uncollectedCogState)
+                {
+                    SetCogPosition(cogIndex, movingCogDelegates[posIndex - staticCogIndexOffset]());
+                    _currentlyMovingCollectables = true;
+                }
+            }
+
+            foreach (var (posIndex, bilbyIndex) in movingBilbyIndices)
+            {
+                if (cogStates[bilbyIndex] <= uncollectedBilbyState)
+                {
+                    SetBilbyPosition(bilbyIndex, movingBilbyDelegates[posIndex - staticBilbyIndexOffset]());
+                    _currentlyMovingCollectables = true;
+                }
+            }
+            Thread.Sleep(_movingCollectableUpdateSleepMs);
         }        
+        _currentlyMovingCollectables = false;
     }
 
     private void SetCogPosition(int cogIndex, PositionData transform)
@@ -2020,7 +2171,30 @@ public class ChaosHandler
         // $"Writing {transform.X}, {transform.Y}, {transform.Z} for cog at index {CurrentPositionIndices[level][cogIndex]}");
         ProcessHandler.WriteData(cogPosAddr, bytesToWrite);
     }
-    
+
+    private void SetBilbyPosition(int bilbyIndex, PositionData transform)
+    {
+        var cagePosAddr =
+                PointerCalculations.GetPointerAddress(0x27D608, new[] { 0x0, 0x134 * bilbyIndex + 0x8, 0x74 });
+        var bilbyPosAddr =
+            PointerCalculations.GetPointerAddress(0x27D608, new[] { 0x0, 0x134 * bilbyIndex + 0x4, 0x74 });
+        var bilbyTEPosAddr =
+            PointerCalculations.GetPointerAddress(0x27D608, new[] { 0x0, 0x134 * bilbyIndex + 0xC });
+        var bytesToWrite =
+            BitConverter.GetBytes(transform.X)
+                .Concat(BitConverter.GetBytes(transform.Y))
+                .Concat(BitConverter.GetBytes(transform.Z)).ToArray();
+        //Logger.Write($"Writing {transform.X}, {transform.Y}, {transform.Z} for bilby at index {CurrentPositionIndices[level][bilbyIndex + 10]}");
+        ProcessHandler.WriteData(cagePosAddr, bytesToWrite);
+        ProcessHandler.WriteData(bilbyPosAddr, bytesToWrite);
+        ProcessHandler.WriteData(bilbyTEPosAddr, bytesToWrite);
+        // WRITE ROTATION
+        var mat = new RotationMatrix(transform.Yaw);
+        var matBytes = mat.GetBytes();
+        ProcessHandler.WriteData(cagePosAddr - 0x30, matBytes);
+        ProcessHandler.WriteData(bilbyPosAddr - 0x30, matBytes);
+    }
+
     [MessageHandler((ushort)MessageID.CH_Shuffle)]
     public static void ReceiveSeed(Message message)
     {
