@@ -205,7 +205,6 @@ internal class SyncHandler
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x28CA3C, new byte[] { 0x0 });
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x28CAD4, new byte[] { 0x0 });
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x26DB54, new byte[] { 0x1 });
-        if (Client.HLevel.CurrentLevelData.Id == Levels.OutbackSafari.Id)
-            ((LiveCrateSyncer)HCrate.LiveSync).MakeCratesVisible();
+        ((LiveCrateSyncer)HCrate.LiveSync).MakeCratesVisible();
     }
 }

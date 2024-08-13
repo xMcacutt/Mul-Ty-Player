@@ -108,7 +108,7 @@ public class HSHandler
         {
             abortToken.ThrowIfCancellationRequested();
             // CHANGE THIS FOR LOWER HIDE TIME
-            //hideTimeLength = 5;
+            // hideTimeLength = 5;
             for (var i = hideTimeLength; i > 0; i--)
             {
                 if (abortToken.IsCancellationRequested) abortToken.ThrowIfCancellationRequested();

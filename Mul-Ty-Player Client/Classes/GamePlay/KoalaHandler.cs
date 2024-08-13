@@ -57,7 +57,7 @@ internal class KoalaHandler
     public void SetCoordinateAddresses()
     {
         readyToWriteTransformData = false;
-        //KOALAS ARE STRUCTURED DIFFERENTLY IN STUMP AND SNOW SO MODIFIER AND OFFSET ARE NECESSARY
+        //KOALAS ARE STRUCTURED DIFFERENTLY IN STUMP AND SNOW SO MODIFIER AND OFFSET ARE NECESSARY1
         var levelHasKoalas = Levels.GetLevelData(Client.HLevel.CurrentLevelId).HasKoalas;
         var modifier = levelHasKoalas ? 2 : 1;
         var offset = levelHasKoalas ? 0x518 : 0x0;

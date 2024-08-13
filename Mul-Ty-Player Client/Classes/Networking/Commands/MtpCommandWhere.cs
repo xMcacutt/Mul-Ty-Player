@@ -43,6 +43,13 @@ public class MtpCommandWhere : Command
 
     private void RunWhere()
     {
+        if (SpectatorHandler._inFreeCam)
+        {
+            var pos = SpectatorHandler.ReadCameraPosition();
+            var rot = SpectatorHandler.ReadCameraRotation();
+            Logger.Write($"Camera is at {pos.X}, {pos.Y}, {pos.Z} with rotation {rot[0]}, {rot[1]}, 0.000");
+            return;
+        }
         var coords = Client.HHero.GetCurrentPosRot();
         Logger.Write($"You are at {coords[0]}, {coords[1]}, {coords[2]}, {coords[4]}");
     }
