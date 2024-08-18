@@ -25,6 +25,7 @@ public class LobbyViewModel : IViewModel
         Lobby.IsReadyChanged += Model_IsReadyChanged;
         Lobby.IsHostChanged += Model_IsHostChanged;
         Lobby.IsTimerVisibleChanged += Model_IsTimerVisibleChanged;
+        Lobby.IsAbilityCooldownVisibleChanged += Model_IsAbilityCooldownVisibleChanged;
         Lobby.IsReadyButtonEnabledChanged += Model_IsReadyButtonEnabledChanged;
         Lobby.GameModeChanged += Model_GameModeChanged;
         Lobby.IsLevelLockEnabledChanged += Model_IsLevelLockEnabledChanged;
@@ -32,6 +33,7 @@ public class LobbyViewModel : IViewModel
         ModelController.Login.JoinAsSpectatorChanged += Model_IsSpectatorChanged;
         HSHandler.OnRoleChanged += Model_RoleChanged;
         HSHandler.OnTimeChanged += Model_TimeChanged;
+        MtpCommandAbility.OnAbilityCooldownTimerChanged += Model_AbilityCooldownChanged;
         ChaosHandler.OnShuffleOnStartChanged += Model_ShuffleOnStartChanged;
         Countdown.OnCountdownBegan += OnCountdownBegan;
         Countdown.OnCountdownAborted += OnCountdownEnded;
@@ -54,6 +56,7 @@ public class LobbyViewModel : IViewModel
     public bool IsSyncButtonEnabled { get; set; } = true;
     public bool IsHostMenuButtonEnabled { get; set; } = false;
     public bool IsTimerVisible { get; set; } = false;
+    public bool IsAbilityCooldownVisible { get; set; } = false;
     public object IsHideSeekButtonEnabled { get; set; }
     public object IsChaosButtonEnabled { get; set; }
     public object IsCollectionButtonEnabled { get; set; }
@@ -61,6 +64,7 @@ public class LobbyViewModel : IViewModel
     public object IsLevelLockEnabled { get; set; }
     public bool IsSpectator { get; set; }
     public string Time { get; set; } = "00:00:00";
+    public string AbilityCooldown { get; set; } = "0";
     public HSRole Role { get; set; } = HSRole.Hider;
     public bool ShuffleOnStart { get; set; }
 
@@ -71,6 +75,7 @@ public class LobbyViewModel : IViewModel
         Lobby.UpdateHost();
         Lobby.IsReadyButtonEnabled = true;
         Time = "00:00:00";
+        AbilityCooldown = "0";
         Role = Client.HHideSeek.Role;
         Input = "";
     }
@@ -204,10 +209,20 @@ public class LobbyViewModel : IViewModel
         var timeSpan = TimeSpan.FromSeconds(newTime);
         Time = $"{(int)timeSpan.TotalHours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
     }
+
+    private void Model_AbilityCooldownChanged(int value)
+    {
+        AbilityCooldown = value.ToString();
+    }
     
     private void Model_IsTimerVisibleChanged(bool value)
     {
         IsTimerVisible = value;
+    }
+
+    private void Model_IsAbilityCooldownVisibleChanged(bool value)
+    {
+        IsAbilityCooldownVisible = value;
     }
 
     private void OnCountdownEnded()

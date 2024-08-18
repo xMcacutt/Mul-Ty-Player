@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
-using System.Windows.Forms;
 using Microsoft.VisualBasic.Logging;
+using System.Timers;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking;
+using MulTyPlayerClient.GUI.Models;
 using Octokit;
 using Riptide;
 using Message = Riptide.Message;
@@ -16,7 +17,48 @@ namespace MulTyPlayerClient;
 public class MtpCommandAbility : Command
 {
     public readonly Stopwatch AbilityStopwatch = new Stopwatch();
-    
+
+    //Used to update ability cooldown display every second
+    private Timer AbilityCooldownTimer;
+
+    #region Timer Helper Functions
+    public void SetAbilityCooldownTimer()
+    {
+        AbilityCooldownTimer = new Timer(1000) { AutoReset = true };
+        AbilityCooldownTimer.Elapsed += OnAbilityCooldownTimerEvent;
+
+        OnAbilityCooldownTimerChanged?.Invoke((int)Client.HHideSeek.CurrentPerk.AbilityCooldown.TotalSeconds);
+        ModelController.Lobby.IsAbilityCooldownVisible = true;
+
+        AbilityCooldownTimer.Start();
+    }
+
+    private void OnAbilityCooldownTimerEvent(Object source, ElapsedEventArgs e)
+    {
+        var remainingTime = Client.HHideSeek.CurrentPerk.AbilityCooldown - AbilityStopwatch.Elapsed;
+        OnAbilityCooldownTimerChanged?.Invoke((int)GetAbilityCooldownRemaining());
+        if (IsAbilityAvailable())
+        {
+            AbilityCooldownTimer.Stop();
+            AbilityCooldownTimer.Dispose();
+
+            ModelController.Lobby.IsAbilityCooldownVisible = false;
+        }
+    }
+    public delegate void AbilityCooldownTimerChangedEventHandler(int value);
+    public static event AbilityCooldownTimerChangedEventHandler OnAbilityCooldownTimerChanged;
+
+    private double GetAbilityCooldownRemaining()
+    {
+        return Math.Round((Client.HHideSeek.CurrentPerk.AbilityCooldown - AbilityStopwatch.Elapsed).TotalSeconds);
+    }
+
+    private bool IsAbilityAvailable()
+    {
+        return AbilityStopwatch.Elapsed >= Client.HHideSeek.CurrentPerk.AbilityCooldown;
+    }
+    #endregion
+
     public MtpCommandAbility()
     {
         Name = "ability";
@@ -60,15 +102,15 @@ public class MtpCommandAbility : Command
         }
         
         // Check if enough time has passed since the last taunt
-        if (AbilityStopwatch.Elapsed >= Client.HHideSeek.CurrentPerk.AbilityCooldown)
+        if (IsAbilityAvailable())
         {
             Client.HHideSeek.CurrentPerk.ApplyAbility();
             AbilityStopwatch.Restart();
+            SetAbilityCooldownTimer();
         }
         else
         {
-            var remainingTime = Client.HHideSeek.CurrentPerk.AbilityCooldown - AbilityStopwatch.Elapsed;
-            LogError($"You must wait {Math.Round(remainingTime.TotalSeconds)} seconds before using your ability.");
+            LogError($"You must wait {GetAbilityCooldownRemaining()} seconds before using your ability.");
         }
     }
 }

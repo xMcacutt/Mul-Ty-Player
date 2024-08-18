@@ -264,8 +264,18 @@
                        Text="{Binding Time}"
                        Visibility="{Binding IsTimerVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"
                        FontFamily="Cascadia Code"
-                       FontSize="53"
-                       Margin="2"
+                       FontSize="35"
+                       Margin="2 2 2 0"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"/>
+
+            <TextBlock Grid.Row="3" 
+                       x:Name="AbilityCooldown"
+                       FontFamily="Cascadia Code"
+                       FontSize="15"
+                       Text="{Binding Path=AbilityCooldown, StringFormat='Ability Cooldown: {0}'}"
+                       Visibility="{Binding IsAbilityCooldownVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"/>

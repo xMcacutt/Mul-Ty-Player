@@ -97,6 +97,7 @@ public class HSHandler
     {
         Client.HGlow.ReturnGlows();
         ModelController.Lobby.IsTimerVisible = false;
+        ModelController.Lobby.IsAbilityCooldownVisible = false;
         Client.HHideSeek.CurrentPerk.Deactivate();
         Client.HHideSeek.CurrentPerk = new NoPerk();
     }
@@ -261,7 +262,8 @@ public class HSHandler
         
         (Client.HCommand.Commands["taunt"] as MtpCommandTaunt)?.TauntStopwatch.Restart();
         (Client.HCommand.Commands["ability"] as MtpCommandAbility)?.AbilityStopwatch.Restart();
-        
+        (Client.HCommand.Commands["ability"] as MtpCommandAbility)?.SetAbilityCooldownTimer();
+
         Client.HKoala.ScaleKoalas();
         Client.HGlow.ReturnGlows();
         Client.HLevel.LevelBloomSettings.RevertToOriginal();

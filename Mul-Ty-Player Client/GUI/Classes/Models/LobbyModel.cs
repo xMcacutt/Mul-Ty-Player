@@ -198,7 +198,25 @@ public class LobbyModel
     private bool isTimerVisible;
 
     #endregion
-    
+
+    #region IsAbilityCooldown
+
+    public event Action<bool> IsAbilityCooldownVisibleChanged;
+
+    public bool IsAbilityCooldownVisible
+    {
+        get => isAbilityCooldownVisible;
+        set
+        {
+            isAbilityCooldownVisible = value;
+            IsAbilityCooldownVisibleChanged(isAbilityCooldownVisible);
+        }
+    }
+
+    private bool isAbilityCooldownVisible;
+
+    #endregion
+
     #region IsRBEnabled
 
     public event Action<bool> IsReadyButtonEnabledChanged;
