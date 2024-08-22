@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.Diagnostics.Tracing.Parsers.Clr;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking;
+using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Classes.Views;
 using MulTyPlayerClient.GUI.Models;
@@ -27,24 +28,24 @@ internal class PlayerHandler
     }
 
     //Adds other player to players & playerInfo
-    public static void AddPlayer(Koala? koala, string name, ushort clientId, bool isHost, bool isReady, HSRole role, int score)
+    public static void AddPlayer(Koala? koala, string name, ushort clientId, bool isHost, bool isReady, HSRole role, int score, VIP vip)
     {
         Application.Current.Dispatcher.Invoke(() =>
         {
             if (Players.Any(x => x.Id == clientId))
                 Players.Remove(Players.First(x => x.Id == clientId));
-            Players.Add(new Player(koala, name, clientId, isHost, isReady, role, score));
+            Players.Add(new Player(koala, name, clientId, isHost, isReady, role, score, vip));
         });
         if (koala != null)
         {
             ModelController.KoalaSelect.SetAvailability((Koala)koala, false);
-            SFXPlayer.PlaySound(SFX.PlayerConnect);
+            var sound = vip == VIP.None ? SFX.PlayerConnect : VIPHandler.GetSound(vip);
+            SFXPlayer.PlaySound(sound);
             PlayerReplication.AddPlayer((int)koala);
         }
     }
     
-    //Adds yourself to players
-    public static void AnnounceSelection(Koala? koala, string name, bool isHost, bool isReady = false, HSRole role = HSRole.Hider, int score = 0)
+    public static void AnnounceSelection(Koala? koala, string name, bool isHost, bool isReady = false, HSRole role = HSRole.Hider, int score = 0, VIP vip = VIP.None)
     {
         var clientId = Client._client.Id;
         var message = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
@@ -65,7 +66,7 @@ internal class PlayerHandler
             {
                 if (Players.Any(x => x.Id == clientId))
                     Players.Remove(Players.First(x => x.Id == clientId));
-                Players.Add(new Player(koala, name, clientId, isHost, isReady, role, score)); 
+                Players.Add(new Player(koala, name, clientId, isHost, isReady, role, score, vip)); 
             });
         }
         Client._client.Send(message);

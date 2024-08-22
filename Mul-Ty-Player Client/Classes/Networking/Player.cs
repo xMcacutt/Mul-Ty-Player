@@ -1,4 +1,5 @@
-﻿using PropertyChanged;
+﻿using MulTyPlayerClient.Classes.Utility;
+using PropertyChanged;
 
 namespace MulTyPlayerClient;
 
@@ -13,8 +14,9 @@ public class Player
     public HSRole Role { get; set; }
     public string Level { get; set; }
     public int Score { get; set; }
+    public VIP VIP;
 
-    public Player(Koala? koala, string name, ushort id, bool isHost, bool isReady, HSRole role, int score)
+    public Player(Koala? koala, string name, ushort id, bool isHost, bool isReady, HSRole role, int score, VIP vip)
     {
         Koala = koala;
         Name = name;
@@ -23,5 +25,6 @@ public class Player
         IsReady = isReady;
         Role = role;
         Score = score;
+        VIP = vip;
     }
 }

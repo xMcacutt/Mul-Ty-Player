@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using MulTyPlayerClient.Classes.Utility;
 
 namespace MulTyPlayerClient.GUI.Models;
 
@@ -34,19 +35,19 @@ public class KoalaSelectModel
     public async void KoalaClicked(Koala koala, bool proceedToLobby)
     {
         Client.OldKoala = koala;
-        PlayerHandler.Players.Add(new Player(koala, Client.Name, Client._client.Id, false, false, HSRole.Hider, 0));
-        PlayerHandler.AnnounceSelection(koala, Client.Name, false);
+        PlayerHandler.Players.Add(new Player(koala, Client.Name, Client._client.Id, false, false, HSRole.Hider, 0, Client.VIP));
+        PlayerHandler.AnnounceSelection(koala, Client.Name, false, false, HSRole.Hider, 0, Client.VIP);
         OnKoalaSelected?.Invoke(koala);
-        SFXPlayer.PlaySound(SFX.PlayerConnect);
+        var sound = Client.VIP == VIP.None ? SFX.PlayerConnect : VIPHandler.GetSound(Client.VIP);
+        SFXPlayer.PlaySound(sound);
+        
         if (proceedToLobby)
-        {
             await Task.Delay(2125);
-        }
+        
         GetEntry(koala).SetAvailability(false);
+        
         if (proceedToLobby)
-        {
             OnProceedToLobby?.Invoke();
-        }
     }
 
     public bool IsKoalaAvailable(Koala koala)

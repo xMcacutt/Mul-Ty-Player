@@ -35,12 +35,13 @@ internal class KoalaHandler
         var isReady = message.GetBool();
         var role = (HSRole)message.GetInt();
         var score = message.GetInt();
-        PlayerHandler.AddPlayer(koalaName, playerName, clientId, isHost, role);
-        AnnounceKoalaAssigned(koalaName, playerName, clientId, isHost, isReady, role, score, fromClientId, true);
+        var vip = (VIP)message.GetInt();
+        PlayerHandler.AddPlayer(koalaName, playerName, clientId, isHost, role, vip);
+        AnnounceKoalaAssigned(koalaName, playerName, clientId, isHost, isReady, role, score, vip, fromClientId, true);
     }
     
     private static void AnnounceKoalaAssigned(string koalaName, string playerName, ushort clientId, bool isHost,
-        bool isReady, HSRole role, int score, ushort fromToClientId, bool bSendToAll)
+        bool isReady, HSRole role, int score, VIP vip, ushort fromToClientId, bool bSendToAll)
     {
         var announcement = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
         announcement.AddString(koalaName);
@@ -50,6 +51,7 @@ internal class KoalaHandler
         announcement.AddBool(isReady);
         announcement.AddInt((int)role);
         announcement.AddInt(score);
+        announcement.AddInt((int)vip);
         if (bSendToAll)
         {
             Server._Server.SendToAll(announcement, fromToClientId);
@@ -65,7 +67,7 @@ internal class KoalaHandler
     {
         foreach (var player in PlayerHandler.Players.Values)
             AnnounceKoalaAssigned(player.Koala.KoalaName, player.Name, player.ClientID, player.IsHost, player.IsReady, 
-                player.Role, player.Score, recipient, false);
+                player.Role, player.Score, player.VIP, recipient, false);
     }
 
     public void ReturnKoala(Player player, int level)

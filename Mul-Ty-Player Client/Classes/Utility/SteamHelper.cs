@@ -39,6 +39,14 @@ internal static class SteamHelper
         return userName;
     }
 
+    public static SteamId? GetSteamId()
+    {
+        SteamId? userId = null;
+        Init();
+        if (IsLoggedOn()) userId = SteamClient.SteamId;
+        return userId;
+    }
+    
     public static void Shutdown()
     {
         SteamClient.Shutdown();

@@ -35,7 +35,6 @@ public class MtpCommandAbility : Command
 
     private void OnAbilityCooldownTimerEvent(Object source, ElapsedEventArgs e)
     {
-        var remainingTime = Client.HHideSeek.CurrentPerk.AbilityCooldown - AbilityStopwatch.Elapsed;
         OnAbilityCooldownTimerChanged?.Invoke((int)GetAbilityCooldownRemaining());
         if (IsAbilityAvailable())
         {
@@ -112,5 +111,11 @@ public class MtpCommandAbility : Command
         {
             LogError($"You must wait {GetAbilityCooldownRemaining()} seconds before using your ability.");
         }
+    }
+
+    public void StopAbilityCooldownTimer()
+    {
+        AbilityCooldownTimer.Stop();
+        AbilityCooldownTimer.Dispose();
     }
 }

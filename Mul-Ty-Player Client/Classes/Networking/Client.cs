@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.GamePlay;
 using MulTyPlayerClient.Classes.Networking;
+using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
 using MulTyPlayerClient.GUI.ViewModels;
 using MulTyPlayerClient.GUI.Views;
 using MulTyPlayerClient.Objectives;
 using Riptide;
+using Riptide.Transports;
 using Riptide.Utils;
+using Steamworks;
+using DisconnectedEventArgs = Riptide.DisconnectedEventArgs;
 
 namespace MulTyPlayerClient;
 
@@ -24,6 +29,8 @@ internal class Client
     public static Riptide.Client _client;
     public static string _ip;
     private static string _pass;
+    public static SteamId? SteamId;
+    public static VIP VIP;
     public static string Name;
     public static Koala OldKoala;
     public static bool IsReconnect = false;
@@ -59,6 +66,9 @@ internal class Client
             var authentication = Message.Create();
             authentication.AddString(_pass);
             authentication.AddBool(ModelController.Login.JoinAsSpectator);
+            ulong steamId = SteamId ?? 0;
+            VIPHandler.VIPs.TryGetValue(steamId, out VIP);
+            
             if (!_ip.Contains(':'))
                 _ip += ":" + SettingsHandler.Settings.Port;
             var attempt = _client.Connect(_ip, 5, 0, authentication);
@@ -126,7 +136,7 @@ internal class Client
                 DispatcherPriority.Background,
                 () =>
                 {
-                    PlayerHandler.Players.Add(new Player(null, Client.Name, Client._client.Id, false, false, HSRole.Spectator, 0));
+                    PlayerHandler.Players.Add(new Player(null, Client.Name, Client._client.Id, false, false, HSRole.Spectator, 0, VIP));
                     PlayerHandler.AnnounceSelection(null, Client.Name, false, false, HSRole.Spectator);
                     SFXPlayer.PlaySound(SFX.PlayerConnect);
                     KoalaSelected = true;

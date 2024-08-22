@@ -81,6 +81,7 @@ public class LoginModel
     public void Setup()
     {
         SetName();
+        Client.SteamId = SteamHelper.GetSteamId();
 
         if (Path.Exists("./list.servers"))
         {

@@ -29,7 +29,7 @@ internal class Server
     private static void Loop()
     {
         _Server = new Riptide.Server();
-        _Server.Start(SettingsHandler.Settings.Port, 12);
+        _Server.Start(SettingsHandler.Settings.Port,12);
 
         _Server.HandleConnection += HandleConnection;
         _Server.ClientConnected += ClientConnected;

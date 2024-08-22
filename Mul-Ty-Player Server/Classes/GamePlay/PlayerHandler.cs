@@ -18,10 +18,10 @@ internal class PlayerHandler
         Players = new ConcurrentDictionary<ushort, Player>();
     }
 
-    public static void AddPlayer(string koalaName, string name, ushort clientID, bool isHost, HSRole role)
+    public static void AddPlayer(string koalaName, string name, ushort clientID, bool isHost, HSRole role, VIP vip)
     {
         Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
-        Players.TryAdd(clientID, new Player(koala, name, clientID, isHost, false, true, role)); // check if this was succesful, could be causing issues
+        Players.TryAdd(clientID, new Player(koala, name, clientID, isHost, false, true, role, vip)); // check if this was succesful, could be causing issues
     }
 
     public static void RemovePlayer(ushort id)

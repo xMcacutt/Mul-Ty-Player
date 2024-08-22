@@ -493,6 +493,7 @@
                                                              IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                                              IconCode="{DynamicResource IcoRandom}"/>
                                     <controls:CustomMenuItem Header="Shuffle On Start"
+                                 
                                                              x:Name="ShuffleOnStart"
                                                              IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                                              IsChecked="{Binding PlacementTarget.Tag.ShuffleOnStart, RelativeSource={RelativeSource AncestorType=ContextMenu}}"

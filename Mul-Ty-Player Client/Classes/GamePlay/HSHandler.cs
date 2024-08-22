@@ -97,6 +97,7 @@ public class HSHandler
     {
         Client.HGlow.ReturnGlows();
         ModelController.Lobby.IsTimerVisible = false;
+        (Client.HCommand.Commands["ability"] as MtpCommandAbility).StopAbilityCooldownTimer();
         ModelController.Lobby.IsAbilityCooldownVisible = false;
         Client.HHideSeek.CurrentPerk.Deactivate();
         Client.HHideSeek.CurrentPerk = new NoPerk();
@@ -292,6 +293,8 @@ public class HSHandler
         Client.HHideSeek.CurrentPerk = new NoPerk();
         Client.HHideSeek.CurrentDebuff.Deactivate();
         Client.HHideSeek.CurrentDebuff = new NoPerk();
+        (Client.HCommand.Commands["ability"] as MtpCommandAbility).StopAbilityCooldownTimer();
+        ModelController.Lobby.IsAbilityCooldownVisible = false;
 
         ModelController.Lobby.IsReadyButtonEnabled = true;
         SFXPlayer.PlaySound(SFX.TAOpen);
@@ -326,6 +329,8 @@ public class HSHandler
         Client.HHideSeek.CurrentPerk = new NoPerk();
         Client.HHideSeek.CurrentDebuff.Deactivate();
         Client.HHideSeek.CurrentDebuff = new NoPerk();
+        (Client.HCommand.Commands["ability"] as MtpCommandAbility).StopAbilityCooldownTimer();
+        ModelController.Lobby.IsAbilityCooldownVisible = false;
         ModelController.Lobby.IsReadyButtonEnabled = true;
         Client.HHideSeek.StopDraftsSession();
         SFXPlayer.PlaySound(SFX.TAOpen);

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Xps.Serialization;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking;
+using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI.Models;
 using Riptide;
 
@@ -34,12 +35,13 @@ internal class KoalaHandler
         var isReady = message.GetBool();
         var role = (HSRole)message.GetInt();
         var score = message.GetInt();
+        var vip = (VIP)message.GetInt();
         Koala? k;
         if (role == HSRole.Spectator || koalaName == "SPECTATOR") // enum check faster than string comp, but leave strcmp incase i forgor something
             k = null;
         else
             k = Enum.Parse<Koala>(koalaName, true);
-        PlayerHandler.AddPlayer(k, playerName, clientId, isHost, isReady, role, score);
+        PlayerHandler.AddPlayer(k, playerName, clientId, isHost, isReady, role, score, vip);
     }
 
     public void CreateKoalaAddressArray()

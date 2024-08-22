@@ -11,9 +11,10 @@ public class Player
     public bool OnMenu;
     public HSRole Role;
     public int Score;
+    public VIP VIP;
     public int PreviousLevel = 99;
 
-    public Player(Koala koala, string name, ushort id, bool isHost, bool isReady, bool onMenu, HSRole role)
+    public Player(Koala koala, string name, ushort id, bool isHost, bool isReady, bool onMenu, HSRole role, VIP vip)
     {
         Koala = koala;
         Name = name;
@@ -23,6 +24,7 @@ public class Player
         IsReady = isReady;
         OnMenu = onMenu;
         Role = role;
+        VIP = vip;
         Score = 0;
     }
 
