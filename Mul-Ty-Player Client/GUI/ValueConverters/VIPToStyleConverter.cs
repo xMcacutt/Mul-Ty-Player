@@ -13,17 +13,22 @@ public class VIPToStyleConverter : IValueConverter
     {
         if (value is VIP vip)
         {
-            switch (vip)
+            object style = vip switch
             {
-                case VIP.Buzchy:
-                    return Application.Current.Resources["BuzchyStyle"];
-                case VIP.Matt:
-                    return Application.Current.Resources["MattStyle"];
-                case VIP.Sirbeyy:
-                    return Application.Current.Resources["SirbeyyStyle"];
-                default:
-                    return Application.Current.Resources["DefaultStyle"];
+                VIP.Matt => Application.Current.Resources["MattStyle"],
+                VIP.Buzchy => Application.Current.Resources["BuzchyStyle"],
+                VIP.Sirbeyy => Application.Current.Resources["SirbeyyStyle"],
+                _ => Application.Current.Resources["DefaultStyle"]
+            };
+
+            if (style == null)
+            {
+                // Log or handle the case where style is null
+                // Example: Debug.WriteLine($"Resource not found for VIP value: {vip}");
+                style = Application.Current.Resources["DefaultStyle"];
             }
+
+            return style;
         }
         return Application.Current.Resources["DefaultStyle"];
     }

@@ -44,19 +44,19 @@
         <Setter Property="Foreground" Value="{Binding MainTextColor, Source={x:Static client:App.AppColors}}"/>
     </Style>
     
-    <Color x:Key="BuzchyColor" A="255" R="245" G="189" B="2"/>
-    <Style x:Key="BuzchyStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseVIPNameStyle}">
+    <Color x:Key="MattColor" A="255" R="255" G="0" B="0"/>
+    <Style x:Key="MattStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseVIPNameStyle}">
         <Setter Property="Foreground">
             <Setter.Value>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                     <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
-                    <GradientStop Color="{StaticResource BuzchyColor}" Offset="1.0"/>
+                    <GradientStop Color="{StaticResource MattColor}" Offset="1.0"/>
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
     </Style>
     
-    <Color x:Key="SirbeyyColor" A="255" R="73" G="`163" B="255"/>
+    <Color x:Key="SirbeyyColor" A="255" R="73" G="163" B="255"/>
     <Style x:Key="SirbeyyStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseVIPNameStyle}">
         <Setter Property="Foreground">
             <Setter.Value>
@@ -68,13 +68,13 @@
         </Setter>
     </Style>
     
-    <Color x:Key="MattColor" A="255" R="255" G="`0" B="0"/>
-    <Style x:Key="MattStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseVIPNameStyle}">
+    <Color x:Key="BuzchyColor" A="255" R="245" G="189" B="2"/>
+    <Style x:Key="BuzchyStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseVIPNameStyle}">
         <Setter Property="Foreground">
             <Setter.Value>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                     <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
-                    <GradientStop Color="{StaticResource MattColor}" Offset="1.0"/>
+                    <GradientStop Color="{StaticResource BuzchyColor}" Offset="1.0"/>
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
