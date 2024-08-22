@@ -59,6 +59,7 @@ internal class PlayerHandler
         message.AddBool(isReady);
         message.AddInt((int)role);
         message.AddInt(score);
+        message.AddInt((int)vip);
         
         if (koala is not null)
         {
