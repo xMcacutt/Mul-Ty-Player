@@ -73,7 +73,7 @@ public static class SFXPlayer
         { SFX.BagCollect, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/BagCollect.wav")},
         { SFX.SpeedUp, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/SpeedUp.wav")},
         { SFX.VIPJoinBuzchy, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/VIPJoinBuzchy.wav")},
-        { SFX.VIPJoinKythol, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/VIPJoinMatt.wav")},
+        { SFX.VIPJoinKythol, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/VIPJoinKythol.wav")},
         { SFX.VIPJoinMatt, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/VIPJoinMatt.wav")},
         { SFX.VIPJoinSirbeyy, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/VIPJoinSirbeyy.wav")}
     };

@@ -18,6 +18,7 @@ public class VIPToStyleConverter : IValueConverter
                 VIP.Matt => Application.Current.Resources["MattStyle"],
                 VIP.Buzchy => Application.Current.Resources["BuzchyStyle"],
                 VIP.Sirbeyy => Application.Current.Resources["SirbeyyStyle"],
+                VIP.Kythol => Application.Current.Resources["KytholStyle"],
                 _ => Application.Current.Resources["DefaultStyle"]
             };
 

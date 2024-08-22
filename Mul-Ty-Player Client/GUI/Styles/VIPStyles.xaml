@@ -80,4 +80,16 @@
         </Setter>
     </Style>
     
+    <Color x:Key="KytholColor" A="255" R="245" G="17" B="180"/>
+    <Style x:Key="KytholStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseVIPNameStyle}">
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
+                    <GradientStop Color="{StaticResource KytholColor}" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
 </ResourceDictionary>

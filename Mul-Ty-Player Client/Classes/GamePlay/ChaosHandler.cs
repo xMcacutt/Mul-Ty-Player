@@ -466,7 +466,7 @@ public class ChaosHandler
                 new PositionData(-4613.0f, 469.0f, 4912.0f),
                 new PositionData(-813.8419f, -2468.0857f, 233.80722f),
                 new PositionData(-1191.5026f, -1811.5448f, 1512.9358f),
-                new PositionData(-10683.507f, 897.783f, 6021.1016f),
+                new PositionData(-10686.44f, 852.51135f, 5702.1006f),
                 new PositionData(-10533.451f, 836.3846f, -487.62076f),
                 new PositionData(1493.2614f, -2291.0562f, 1538.0892f),
             }
