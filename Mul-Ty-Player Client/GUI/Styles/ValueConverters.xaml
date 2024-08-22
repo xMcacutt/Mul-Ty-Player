@@ -13,4 +13,5 @@
     <gui:ScoreLeaderConverter x:Key="ScoreLeaderConverter"/>
     <gui:ClientIdToNameConverter x:Key="ClientIdToNameConverter"/>
     <gui:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+    <gui:VIPToStyleConverter x:Key="VIPToStyleConverter"/>
 </ResourceDictionary>

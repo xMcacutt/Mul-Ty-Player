@@ -34,7 +34,11 @@ public enum SFX
     Alert,
     RuleChange,
     BagCollect,
-    SpeedUp
+    SpeedUp,
+    VIPJoinMatt,
+    VIPJoinSirbeyy,
+    VIPJoinBuzchy,
+    VIPJoinKythol
 }
 
 public static class SFXPlayer
@@ -67,7 +71,11 @@ public static class SFXPlayer
         { SFX.Alert, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/Alert.wav")},
         { SFX.RuleChange, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/RuleChange.wav")},
         { SFX.BagCollect, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/BagCollect.wav")},
-        { SFX.SpeedUp, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/SpeedUp.wav")}
+        { SFX.SpeedUp, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/SpeedUp.wav")},
+        { SFX.VIPJoinBuzchy, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/VIPJoinBuzchy.wav")},
+        { SFX.VIPJoinKythol, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/VIPJoinMatt.wav")},
+        { SFX.VIPJoinMatt, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/VIPJoinMatt.wav")},
+        { SFX.VIPJoinSirbeyy, new Uri(@"pack://siteoforigin:,,,/GUI/Sounds/VIPJoinSirbeyy.wav")}
     };
 
     private static Dictionary<SFX, MediaPlayer> mediaPlayers;

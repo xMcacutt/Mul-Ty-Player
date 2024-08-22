@@ -41,7 +41,7 @@ internal class KoalaHandler
             k = null;
         else
             k = Enum.Parse<Koala>(koalaName, true);
-        PlayerHandler.AddPlayer(k, playerName, clientId, isHost, isReady, role, score, vip);
+        PlayerHandler.AddPlayer(k, playerName, clientId, isHost, isReady, role, score, vip, Client.KoalaSelected);
     }
 
     public void CreateKoalaAddressArray()

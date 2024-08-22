@@ -1,0 +1,83 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:client="clr-namespace:MulTyPlayerClient">
+    
+    <Storyboard x:Key="GradientAnimation">
+        <!-- Animate the Offset of the StartStop -->
+        <DoubleAnimation
+            Storyboard.TargetProperty="(GradientStop.Offset)"
+            From="0.0" To="1.0"
+            Duration="0:0:5"
+            RepeatBehavior="Forever"
+            AutoReverse="True" />
+        
+        <!-- Animate the Offset of the EndStop -->
+        <DoubleAnimation
+            Storyboard.TargetProperty="(GradientStop.Offset)"
+            From="1.0" To="0.0"
+            Duration="0:0:5"
+            RepeatBehavior="Forever"
+            AutoReverse="True" />
+    </Storyboard>
+    
+    <Style x:Key="BaseVIPNameStyle" TargetType="TextBlock">
+        <Setter Property="TextElement.FontFamily" Value="../Fonts/#SF Slapstick Comic" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <LinearGradientBrush x:Name="GradientBrush" StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop x:Name="StartStop" Color="{DynamicResource GradientStartColor}" Offset="0.0"/>
+                    <GradientStop x:Name="EndStop" Color="{DynamicResource GradientEndColor}" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                <BeginStoryboard Storyboard="{StaticResource GradientAnimation}" />
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style x:Key="DefaultStyle" TargetType="TextBlock">
+        <Setter Property="TextElement.FontFamily" Value="../Fonts/#SF Slapstick Comic" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="{Binding MainTextColor, Source={x:Static client:App.AppColors}}"/>
+    </Style>
+    
+    <Color x:Key="BuzchyColor" A="255" R="245" G="189" B="2"/>
+    <Style x:Key="BuzchyStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseVIPNameStyle}">
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
+                    <GradientStop Color="{StaticResource BuzchyColor}" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Color x:Key="SirbeyyColor" A="255" R="73" G="`163" B="255"/>
+    <Style x:Key="SirbeyyStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseVIPNameStyle}">
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
+                    <GradientStop Color="{StaticResource SirbeyyColor}" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Color x:Key="MattColor" A="255" R="255" G="`0" B="0"/>
+    <Style x:Key="MattStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseVIPNameStyle}">
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
+                    <GradientStop Color="{StaticResource MattColor}" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+</ResourceDictionary>

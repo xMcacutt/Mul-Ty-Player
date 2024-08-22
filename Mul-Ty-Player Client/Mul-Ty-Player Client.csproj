@@ -165,6 +165,9 @@
         <None Update="GUI\Sounds\SpeedUp.wav">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Update="GUI\Sounds\VIPJoinSirbeyy.wav">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
         <Page Remove="GUI\App.xaml" />

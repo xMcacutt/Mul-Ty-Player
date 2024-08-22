@@ -28,7 +28,7 @@ internal class PlayerHandler
     }
 
     //Adds other player to players & playerInfo
-    public static void AddPlayer(Koala? koala, string name, ushort clientId, bool isHost, bool isReady, HSRole role, int score, VIP vip)
+    public static void AddPlayer(Koala? koala, string name, ushort clientId, bool isHost, bool isReady, HSRole role, int score, VIP vip, bool playSound)
     {
         Application.Current.Dispatcher.Invoke(() =>
         {
@@ -39,8 +39,11 @@ internal class PlayerHandler
         if (koala != null)
         {
             ModelController.KoalaSelect.SetAvailability((Koala)koala, false);
-            var sound = vip == VIP.None ? SFX.PlayerConnect : VIPHandler.GetSound(vip);
-            SFXPlayer.PlaySound(sound);
+            if (playSound)
+            {
+                var sound = vip == VIP.None ? SFX.PlayerConnect : VIPHandler.GetSound(vip);
+                SFXPlayer.PlaySound(sound);
+            }
             PlayerReplication.AddPlayer((int)koala);
         }
     }

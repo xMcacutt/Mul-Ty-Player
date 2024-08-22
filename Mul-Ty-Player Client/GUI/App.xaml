@@ -18,6 +18,7 @@
                 <ResourceDictionary Source="Styles/TyStyles.xaml" />
                 <ResourceDictionary Source="Styles/LobbyStyles.xaml" />
                 <ResourceDictionary Source="Styles/SettingsStyles.xaml"/>
+                <ResourceDictionary Source="Styles/VIPStyles.xaml"/>
                 
                 <ResourceDictionary>
                     <DataTemplate DataType="{x:Type viewmodels:SplashViewModel}">

@@ -71,7 +71,7 @@
                     <DataGridTemplateColumn Header="Player Name" Width="1.25*" CanUserResize="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Style="{StaticResource ComicText}"
+                                <TextBlock Style="{Binding VIP, Converter={StaticResource VIPToStyleConverter}}"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Left"
                                            FontSize="12"
