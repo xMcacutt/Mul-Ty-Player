@@ -14,10 +14,15 @@ For the average user, wanting to connect to the dedicated server with their stea
 
 ## IP
 
-The first box on the login screen is the IP address box. This box must contain a valid IP address and may ***not*** be a DNS address (example.com). If you wish to connect to a specific port, it may be specified after a colon following the address. For example, to connect to port 9876, you would use
+The first box on the login screen is the IP address box. This box must contain a valid IP address and may be a DNS address (example.com). If you wish to connect to a specific port, it may be specified after a colon following the address. For example, to connect to port 9876, you would use
 
 ```
 12.34.56.78:9876
+```
+
+Additionally, you can use "|sX" on the end of your ip instead of a port to use a predefined multiple of 5 starting from the default 8750 port where X is the multiple so if you wanted port 8755, you'd use
+```
+example.com|s2
 ```
 
 ---
@@ -66,7 +71,7 @@ To switch the default server simply remove the asterisk and add it to the line w
 
 ## Dedicated Servers
 
-As of 05/02/24, MTP has dedicated servers running 24/7. The default server IP on install will always be the IP of the dedicated server. If you have lost the IP, you can switch back to the dedicated IP using the list.servers method described above.
+As of 29/08/24, MTP has dedicated servers running 24/7. The default server IP on install will always be the IP of the dedicated server. If you have lost the IP, you can switch back to the dedicated IP using the list.servers method described above.
 
 ## Join As Spectator
 

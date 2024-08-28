@@ -76,6 +76,10 @@ There's tonnes of features in the most recent version of MTP. The following is a
 
 - [Level Lock Mode](./LevelLock.md)
 
+- [Chaos Mode](./ChaosMode.md)
+
+- [Collection Mode](./CollectionMode.md)
+
 - [Hide & Seek Mode](./HideSeek.md)
 
 - [Customization](./Customization.md)

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="cddf0309-df56-4d1b-b169-53318fb0ca15" name="Matt Server" url="http://Mul-Ty-Player.co.uk">
+        <fileTransfer rootFolder="/C:/Users/Administrator/Documents/Mul-Ty-Player/" accessType="SFTP" host="mul-ty-player.co.uk" port="22" sshConfigId="32abcc1f-d444-4a30-94e4-7a6e66808cb1" sshConfig="Administrator@mul-ty-player.co.uk:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

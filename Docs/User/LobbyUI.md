@@ -66,7 +66,7 @@ Marked by a person with a checkmark icon. Toggles ready status. For more informa
 
 ##### 11 - Request Sync Button
 
-Marked by a rotating arrows icon. Pings the server to ask for collectible synchronisation data in the event of a desync.
+Marked by a rotating arrows icon. Pings the server to ask for collectible synchronisation data in the event of a desync. Also forces the collectibles to move to their correct positions in Chaos Mode.
 
 ##### 12 - Host Menu Button
 
@@ -74,9 +74,9 @@ Marked by a rotating arrows icon. Pings the server to ask for collectible synchr
 
 Marked by a crown icon. Opens the host context menu. The menu is only accessible to the [host](./Host.md) of the group and contains options to
 
-- Toggle [Hide & Seek Mode](./HideSeek.md)
-
 - Toggle [Level Lock Mode](./LevelLock.md)
+
+- Game Mode - Drop down menu that allows the host to change the current game mode. Only one mode can be active at a time. See the below submenus that appear in each game mode for more info.
 
 - Reset Sync - Resets all collectibles back to the uncollected state in the server and client. Note that everyone connected should be on the main menu when this button is pressed in order for the collectibles to be fully reset. See [syncing documentation](./Syncing.md).
 
@@ -84,7 +84,7 @@ Marked by a crown icon. Opens the host context menu. The menu is only accessible
 
 ##### 13 - Hide & Seek Menu Button
 
-<img title="" src="../Images/HSMenu.png" alt="" width="246">
+<img title="" src="../Images/HSDMenu.png" alt="" width="246">
 
 Marked by either a footprints or magnifying glass icon. This button only appears when Hide & Seek Mode is active and is available to all clients connected. It contains Hide & Seek related options to 
 
@@ -94,7 +94,39 @@ Marked by either a footprints or magnifying glass icon. This button only appears
 
 - Reset Timer
 
+- Abort Session - Aborts the current hide & seek round but does not delete drafts data
+
+- Abort Drafts - Aborts the drafts session
+
+- Open Drafts - Opens the drafts menu
+
 For more information about how Hide & Seek works, see [hide & seek documentation](./HideSeek.md).
+
+##### 13 - Collection Mode Button
+
+<img title="" src="../Images/CLMMenu.png" alt="" width="246">
+
+Marked by an icon depicting a bag of money. This button only appears when Collection Mode is active and is available to all clients connected. It contains Collection Mode related options to
+
+- Abort Session - Ends the current collection mode round
+- Reset Scores
+- Clear the score log if logging is enabled
+
+For more information about how Collection Mode works, see [collection mode documentation](./CollectionMode.md).
+
+##### 13 - Chaos Mode Button
+
+<img title="" src="../Images/CHMMenu.png" alt="" width="246">
+
+Marked by an icon depicting a two twisted arrows. This button only appears when Chaos Mode is active and is available to all clients connected. It contains Chaos Mode related options to
+
+- Shuffle Seed - Generates a new random seed and moves collectibles according to the seed. The seed is server wide.
+
+- Toggle - Shuffle on Start - Generates a new seed when the countdown runs through ready up or host start. 
+
+- Force Move Collectibles - Functions the same as button 11 in the LobbyUI image.
+
+For more information about how Chaos Mode works, see [chaos mode documentation](./ChaosMode.md).
 
 ##### 14 - Disconnect Button
 
@@ -111,13 +143,15 @@ Marked by a door with an arrow icon. Disconnects you from the server and puts yo
 The console itself displays messages with various prefixes. 
 
 | Prefix                 | Meaning                                                                                              |
-| ---------------------- | ---------------------------------------------------------------------------------------------------- |
+|------------------------|------------------------------------------------------------------------------------------------------|
 | ClientName             | Message from client which everyone can see.                                                          |
 | ClientName [WHISPERED] | Message from client which only you can see.                                                          |
 | (CLIENT) / (SERVER)    | Informative messages or errors with the server or client networking.                                 |
 | [ERROR]                | Usually warning you that you did something incorrectly such as not using the correct command syntax. |
 | [WARN]                 | Warnings. Not necessarily fatal but worth keeping in mind such as mismatched client-server versions. |
 | [HIDE AND SEEK]        | Hide & Seek Mode messages.                                                                           |
+| [CLM]                  | Collection Mode messages.                                                                            |
+
 
 ##### 16 & 17 - User Input Box
 

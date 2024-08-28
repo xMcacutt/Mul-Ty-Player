@@ -115,6 +115,8 @@ public class MtpCommandAbility : Command
 
     public void StopAbilityCooldownTimer()
     {
+        if (!AbilityStopwatch.IsRunning) 
+            return;
         AbilityCooldownTimer.Stop();
         AbilityCooldownTimer.Dispose();
     }

@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using MulTyPlayerClient.GUI.Classes.Views;
 using MulTyPlayerClient.GUI.Models;
@@ -39,6 +41,19 @@ public partial class Login : UserControl
         if (ServerListView.SelectedItem == null)
             return;
         vm.ConnectingAddress = ServerListView.SelectedItem.ToString();
+    }
+    
+    private void Popup_Opened(object sender, EventArgs e)
+    {
+        // Ensure the Popup and ToggleButton are measured
+        ServerListPopup.UpdateLayout();
+        ToggleButton.UpdateLayout();
+
+        // Calculate the new HorizontalOffset
+        var offset = ToggleButton.ActualWidth - ServerListView.ActualWidth;
+    
+        // Set the HorizontalOffset to align the right edges
+        ServerListPopup.HorizontalOffset = offset;
     }
 
     private void SpectatorCheckBox_OnClick(object sender, RoutedEventArgs e)

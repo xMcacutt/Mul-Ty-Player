@@ -120,9 +120,6 @@
         <None Update="GUI\Themes\Cherry.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Update="GUI\Themes\Grayscale.json">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
         <None Update="GUI\Themes\Kiki.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
@@ -176,6 +173,9 @@
         </None>
         <None Update="GUI\Sounds\VIPJoinKythol.wav">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="GUI\Themes\Buzchy.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
     <ItemGroup>
@@ -528,6 +528,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
+        <PackageReference Include="DnsClient" Version="1.8.0" />
         <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
         <PackageReference Include="NAudio" Version="2.2.1" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

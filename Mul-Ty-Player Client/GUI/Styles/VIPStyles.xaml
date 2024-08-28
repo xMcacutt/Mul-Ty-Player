@@ -2,38 +2,44 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:client="clr-namespace:MulTyPlayerClient">
     
-    <Storyboard x:Key="GradientAnimation">
-        <!-- Animate the Offset of the StartStop -->
-        <DoubleAnimation
-            Storyboard.TargetProperty="(GradientStop.Offset)"
-            From="0.0" To="1.0"
-            Duration="0:0:5"
-            RepeatBehavior="Forever"
-            AutoReverse="True" />
-        
-        <!-- Animate the Offset of the EndStop -->
-        <DoubleAnimation
-            Storyboard.TargetProperty="(GradientStop.Offset)"
-            From="1.0" To="0.0"
-            Duration="0:0:5"
-            RepeatBehavior="Forever"
-            AutoReverse="True" />
-    </Storyboard>
-    
     <Style x:Key="BaseVIPNameStyle" TargetType="TextBlock">
         <Setter Property="TextElement.FontFamily" Value="../Fonts/#SF Slapstick Comic" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="Foreground">
             <Setter.Value>
                 <LinearGradientBrush x:Name="GradientBrush" StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop x:Name="StartStop" Color="{DynamicResource GradientStartColor}" Offset="0.0"/>
-                    <GradientStop x:Name="EndStop" Color="{DynamicResource GradientEndColor}" Offset="1.0"/>
+                    <GradientStop x:Name="StartStop" Color="{DynamicResource GradientColor1}" Offset="0.0"/>
+                    <GradientStop x:Name="MidStop" Color="{DynamicResource GradientColor2}" Offset="0.5"/>
+                    <GradientStop x:Name="EndStop" Color="{DynamicResource GradientColor1}" Offset="1.0"/>
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
         <Style.Triggers>
             <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                <BeginStoryboard Storyboard="{StaticResource GradientAnimation}" />
+                <BeginStoryboard>
+                    <Storyboard>
+                        <!-- Animate the Offset of the middle GradientStop -->
+                        <DoubleAnimation
+                            Storyboard.TargetProperty="(TextBlock.Foreground).(LinearGradientBrush.GradientStops)[0].(GradientStop.Offset)"
+                            From="-3" To="3"
+                            Duration="0:0:5"
+                            RepeatBehavior="Forever"
+                            AutoReverse="False"/>
+                        <!-- Optional: Adjust the other GradientStops to create the sweeping effect -->
+                        <DoubleAnimation
+                            Storyboard.TargetProperty="(TextBlock.Foreground).(LinearGradientBrush.GradientStops)[1].(GradientStop.Offset)"
+                            From="-2.5" To="3.5"
+                            Duration="0:0:5"
+                            RepeatBehavior="Forever"
+                            AutoReverse="False"/>
+                        <DoubleAnimation
+                            Storyboard.TargetProperty="(TextBlock.Foreground).(LinearGradientBrush.GradientStops)[2].(GradientStop.Offset)"
+                            From="-2" To="4"
+                            Duration="0:0:5"
+                            RepeatBehavior="Forever"
+                            AutoReverse="False"/>
+                    </Storyboard>
+                </BeginStoryboard>
             </EventTrigger>
         </Style.Triggers>
     </Style>
@@ -50,7 +56,8 @@
             <Setter.Value>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                     <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
-                    <GradientStop Color="{StaticResource MattColor}" Offset="1.0"/>
+                    <GradientStop Color="{StaticResource MattColor}" Offset="0.5"/>
+                    <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="1.0"/>
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
@@ -63,6 +70,7 @@
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                     <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
                     <GradientStop Color="{StaticResource SirbeyyColor}" Offset="1.0"/>
+                    <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
@@ -75,6 +83,7 @@
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                     <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
                     <GradientStop Color="{StaticResource BuzchyColor}" Offset="1.0"/>
+                    <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
@@ -87,6 +96,7 @@
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                     <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
                     <GradientStop Color="{StaticResource KytholColor}" Offset="1.0"/>
+                    <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>

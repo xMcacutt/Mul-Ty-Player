@@ -15,9 +15,9 @@
 
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.6*" />
+            <ColumnDefinition Width="1.8*" />
             <ColumnDefinition Width="10" />
-            <ColumnDefinition Width="3.2*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
 
         <!--Left side panel-->
@@ -107,7 +107,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Ready Status" Width="0.30*" CanUserResize="False">
+                    <DataGridTemplateColumn Header="Ready Status" Width="0.4*" CanUserResize="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <controls:Icon Size="10"
@@ -119,7 +119,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Role" Width="0.30*" CanUserResize="False" Visibility="{Binding Data.IsHideSeekButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Proxy}, ConverterParameter=True}">
+                    <DataGridTemplateColumn Header="Role" Width="0.4*" CanUserResize="False" Visibility="{Binding Data.IsHideSeekButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Proxy}, ConverterParameter=True}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <controls:Icon Size="10"

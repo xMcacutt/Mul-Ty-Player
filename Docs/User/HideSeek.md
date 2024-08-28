@@ -41,6 +41,12 @@ This continues until all players are caught when the game resets to neutral.
 ##### Taunting
 Once every 30 seconds into seek time, hiders may choose to taunt, playing a sound to all seekers within 3000 units. A time bonus is awarded with more time added the closer the seeker was to you. The effect stacks with multiple seekers in range.
 
+##### Perks, Debuffs, & Abilities
+During hide & seek, you'll have a perk and a debuff to help and hinder you while hiding or seeking. These are selected when you ready up through a menu that appears in the client. If you choose a perk which has an ability, you'll be able to activate your ability with control+shift+A by default. 
+
+##### Drafts
+Upon starting a drafts session, you'll be able to choose a team and pick & ban levels to hide on. The entire system is automated just be careful not to double click the levels.
+
 ---
 
 ## Command

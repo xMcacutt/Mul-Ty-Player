@@ -16,6 +16,7 @@ public class LoginModel
     private List<ServerListing> _serverList;
     public bool ConnectionAttemptCompleted;
     public bool ConnectionAttemptSuccessful = false;
+    public bool WasConnectionError = true;
 
     
     private string ip, name, pass;
@@ -64,7 +65,9 @@ public class LoginModel
         catch(Exception e)
         {
             Logger.Write(e.Message);
-            LoginFailed();
+            OnLoginFailed?.Invoke();
+            if (WasConnectionError)
+                LoginFailed(e.Message);
             return;
         }
         if (ConnectionAttemptSuccessful)
@@ -72,9 +75,11 @@ public class LoginModel
             SaveDetails();
             OnLoginSuccess?.Invoke();
         }
-        else
+        else 
         {
-            LoginFailed();
+            OnLoginFailed?.Invoke();
+            if (WasConnectionError) 
+                LoginFailed();
         }
     }
     
@@ -167,10 +172,11 @@ public class LoginModel
         return "USER" + randomNumber;
     }
 
-    private void LoginFailed()
+    private void LoginFailed(string? message = null)
     {
         SystemSounds.Hand.Play();
-        MessageBox.Show("Connection failed!\nPlease check IPAddress & Password are correct and server is open.");
+        message ??= "Check the IP and password.";
+        MessageBox.Show($"Connection attempt failed! {message}");
         OnLoginFailed?.Invoke();
     }
     

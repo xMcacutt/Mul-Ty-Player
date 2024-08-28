@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="mul-ty-player.co.uk" id="32abcc1f-d444-4a30-94e4-7a6e66808cb1" keyPath="C:\Users\admin\.ssh\id_rsa" port="22" nameFormat="DESCRIPTIVE" username="Administrator" useOpenSSHConfig="true" />
+    </configs>
+  </component>
+</project>

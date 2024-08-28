@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Sockets;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
@@ -56,9 +57,13 @@ internal class Client
         try
         {
             InitHandlers();
-            _ip = ip;
+            var parsedIP = IPHandler.ParseIP(ip);
+            if (parsedIP == "")
+                throw new InvalidIPException();
+            _ip = parsedIP;
             _pass = pass;
             Name = name;
+            ModelController.Login.WasConnectionError = true;
 
             InitRiptide();
             cts = new CancellationTokenSource();

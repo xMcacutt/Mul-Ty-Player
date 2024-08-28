@@ -44,7 +44,7 @@ The version settings is used exclusively for compatibility checks and warnings w
 
 ## Client Settings
 
-Client settings are split into three main groups: Client, Gameplay, and Developer.
+Client settings are split into three main groups: Client, Gameplay, and Developer (with an additional "Server" group for the host)
 
 ---
 
@@ -71,6 +71,12 @@ Automatically tries to reconnect to the server on network connection failure. Th
 ##### Use Steam Name
 
 Automatically attempts to fetch your steam name to use as your client display name when you launch the client. If this is disabled, another box appears in the settings asking for your default name allowing you to set a name to be used every time you launch the client.
+
+---
+
+## Host Settings
+
+In the host settings, the host will be able to change the sync settings on the server side remotely.
 
 ---
 
