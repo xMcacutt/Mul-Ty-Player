@@ -114,7 +114,7 @@ internal class Client
         {
             while(!cts.IsCancellationRequested)
                 miniClient.Update();
-        });
+        }); 
         loop.Start();
     }
 
