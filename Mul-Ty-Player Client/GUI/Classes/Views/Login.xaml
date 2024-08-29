@@ -49,7 +49,7 @@
             <TextBlock x:Name="TextTitle"
                        Text="Connect To Server"
                        VerticalAlignment="Bottom"
-                       Margin="0, 60, 0, 0"
+                       Margin="0, 40, 0, 0"
                        Style="{StaticResource ComicText}"
                        Foreground="White"
                        FontSize="55">
@@ -61,7 +61,7 @@
             </TextBlock>
 
             <StackPanel HorizontalAlignment="Center"
-                        Margin="0, 10"
+                        Margin="0, 10 0 3"
                         Orientation="Horizontal">
                 <TextBlock x:Name="LabelHostIp"
                            Text="Host IP"
@@ -88,6 +88,7 @@
                              FontSize="25"
                              Height="40"
                              Width="390"
+                             TextChanged="FieldHostIp_OnTextChanged"
                              Padding="5 0 0 0"
                              HorizontalAlignment="Stretch"
                              VerticalContentAlignment="Center"
@@ -167,7 +168,30 @@
                           Style="{StaticResource VisibilityCheckBox}"
                           IsChecked="{Binding HideAddress}" />
             </StackPanel>
-
+            
+            <StackPanel Orientation="Horizontal"
+                        Margin="130 0 0 0"
+                        HorizontalAlignment="Center">
+                <Button Style="{StaticResource SelectButton}"
+                        Content="Request Client Count"
+                        FontSize="14"
+                        Height="30"
+                        Width="175"
+                        Margin="0"
+                        Click="RequestClientCount_Click"/>
+                <TextBlock Width="200"
+                           FontSize="15"
+                           VerticalAlignment="Center"
+                           Margin="10 0 0 0"
+                           Style="{StaticResource ComicText}"
+                           Foreground="White"
+                           Text="{Binding CurrentServerClientCount}">
+                    <TextBlock.Effect>
+                        <DropShadowEffect BlurRadius="0" Direction="315" ShadowDepth="2" />
+                    </TextBlock.Effect>
+                </TextBlock>
+            </StackPanel>
+            
 
             <StackPanel HorizontalAlignment="Center"
                         Margin="0, 10"

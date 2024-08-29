@@ -72,22 +72,53 @@ internal class Server
 
     private static void HandleConnection(Connection pendingConnection, Message authenticationMessage)
     {
-        Console.WriteLine("Received connection attempt...");
-        var pass = authenticationMessage.GetString();
-        var spectator = authenticationMessage.GetBool();
-        if (!string.Equals(pass, SettingsHandler.Settings.Password, StringComparison.CurrentCultureIgnoreCase)
-            && !string.Equals(SettingsHandler.Settings.Password, "XXXXX", StringComparison.CurrentCultureIgnoreCase)
-            && !string.IsNullOrWhiteSpace(SettingsHandler.Settings.Password)
-            && _Server.ClientCount > 0
-            || (PlayerHandler.Players.Count(x => x.Value.Koala.KoalaName != "SPECTATOR") == 8 && !spectator))
+        var connectionType = (ConnectionType)authenticationMessage.GetByte();
+        switch (connectionType)
         {
-            _Server.Reject(pendingConnection);
-            Console.WriteLine("Rejecting.");
-        }
-        else
-        {
-            _Server.Accept(pendingConnection);
-            Console.WriteLine("Accepting.");
+            case ConnectionType.ClientCountRequest:
+            {
+                Console.WriteLine("Received client count request...");
+                var clientCountResponse = Message.Create();
+                clientCountResponse.AddByte((byte)ConnectionFailedType.WasClientCountRequest);
+                clientCountResponse.AddString("Connection type did not request a login.");
+                clientCountResponse.AddInt(_Server.ClientCount);
+                _Server.Reject(pendingConnection, clientCountResponse);
+                break;
+            }
+            case ConnectionType.Login:
+            {
+                Console.WriteLine("Received connection attempt...");
+                var pass = authenticationMessage.GetString();
+                var spectator = authenticationMessage.GetBool();
+                if (!string.Equals(pass, SettingsHandler.Settings.Password, StringComparison.CurrentCultureIgnoreCase)
+                    && !string.Equals(SettingsHandler.Settings.Password, "XXXXX", StringComparison.CurrentCultureIgnoreCase)
+                    && !string.IsNullOrWhiteSpace(SettingsHandler.Settings.Password)
+                    && _Server.ClientCount > 0)
+                {
+                    var response = Message.Create();
+                    response.AddByte((byte)ConnectionFailedType.IncorrectPassword);
+                    response.AddString("The password you entered was incorrect.");
+                    _Server.Reject(pendingConnection, response);
+                    Console.WriteLine("Rejecting.");
+                }
+                else if (PlayerHandler.Players.Count(x => x.Value.Koala.KoalaName != "SPECTATOR") == 8 && !spectator)
+                {
+                    var response = Message.Create();
+                    response.AddByte((byte)ConnectionFailedType.ServerFull);
+                    response.AddString("The server is full.");
+                    _Server.Reject(pendingConnection, response);
+                    Console.WriteLine("Rejecting.");
+                }
+                else
+                {
+                    _Server.Accept(pendingConnection);
+                    Console.WriteLine("Accepting.");
+                }
+
+                break;
+            }
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 
@@ -126,4 +157,18 @@ internal class Server
         message.AddFloats(coordinates);
         _Server.SendToAll(message, clientId);
     }
+}
+
+public enum ConnectionType : byte
+{
+    Login,
+    ClientCountRequest,
+}
+
+public enum ConnectionFailedType : byte
+{
+    IncorrectPassword,
+    Timeout,
+    WasClientCountRequest,
+    ServerFull
 }

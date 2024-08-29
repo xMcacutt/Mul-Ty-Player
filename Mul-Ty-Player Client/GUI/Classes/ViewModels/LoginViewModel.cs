@@ -19,6 +19,7 @@ public class LoginViewModel : IViewModel
         Login.OnLoginFailed += Model_OnLoginFailed;
         Login.OnLoginSuccess += Model_OnLoginSuccess;
         Login.JoinAsSpectatorChanged += Model_JoinAsSpectatorChanged;
+        Login.CurrentServerClientCountChanged += Model_CurrentServerClientCountChanged;
         var github = new GitHubClient(new ProductHeaderValue("Mul-Ty-Player"));
         var latestRelease = github.Repository.Release.GetLatest("xMcacutt", "Mul-Ty-Player").Result;
         var latestVersion = latestRelease.TagName.Replace("v", "");
@@ -33,7 +34,7 @@ public class LoginViewModel : IViewModel
     public string Pass { get; set; }
     public string ConnectingAddress { get; set; }
     public bool JoinAsSpectator { get; set; }
-
+    public string CurrentServerClientCount { get; set; }
     public bool HideName { get; set; }
     public bool HidePass { get; set; } = true;
     public bool HideAddress { get; set; } = true;
@@ -82,5 +83,10 @@ public class LoginViewModel : IViewModel
     private void Model_JoinAsSpectatorChanged(bool value)
     {
         JoinAsSpectator = value;
+    }
+    
+    private void Model_CurrentServerClientCountChanged(string value)
+    {
+        CurrentServerClientCount = "Koalas Connected: " + value;
     }
 }

@@ -69,6 +69,7 @@ internal class Client
             cts = new CancellationTokenSource();
 
             var authentication = Message.Create();
+            authentication.AddByte((byte)ConnectionType.Login);
             authentication.AddString(_pass);
             authentication.AddBool(ModelController.Login.JoinAsSpectator);
             ulong steamId = SteamId ?? 0;
@@ -88,6 +89,46 @@ internal class Client
         }
         Thread loop = new(() => ClientLoop(cts.Token));
         loop.Start();
+    }
+    
+    public static void StartClientCountRequest(string ip)
+    {
+        var parsedIP = IPHandler.ParseIPSilently(ip);
+        if (parsedIP is null)
+        {
+            ModelController.Login.CurrentServerClientCount = "?";
+            return;
+        }
+        RiptideLogger.Initialize(Console.WriteLine, false);
+        var miniClient = new Riptide.Client();
+        miniClient.ConnectionFailed += HandleClientCountRequestResponse;
+        cts = new CancellationTokenSource();
+        var authentication = Message.Create();
+        authentication.AddByte((byte)ConnectionType.ClientCountRequest);
+        if (!parsedIP.Contains(':'))
+            parsedIP += ":" + SettingsHandler.Settings.Port;
+        var attempt = miniClient.Connect(parsedIP, 1, 0, authentication);
+        if (!attempt)
+            ModelController.Login.CurrentServerClientCount = "?";
+        Thread loop = new(() =>
+        {
+            while(!cts.IsCancellationRequested)
+                miniClient.Update();
+        });
+        loop.Start();
+    }
+
+    private static void HandleClientCountRequestResponse(object sender, ConnectionFailedEventArgs eventArgs)
+    {
+        if (eventArgs.Message is null)
+        {
+            ModelController.Login.CurrentServerClientCount = "?";
+            return;
+        }
+        var connectionFailedType = (ConnectionFailedType)eventArgs.Message.GetByte();
+        var reason = eventArgs.Message.GetString();
+        ModelController.Login.CurrentServerClientCount = eventArgs.Message.GetInt().ToString();
+        cts.Cancel();
     }
 
     private static void InitHandlers()
@@ -170,6 +211,7 @@ internal class Client
             Logger.Write("Initiating reconnection attempt.");
             InitRiptide();
             var authentication = Message.Create();
+            authentication.AddByte((byte)ConnectionType.Login);
             authentication.AddString(_pass);
             HKoala = new KoalaHandler();
             HPlayer = new PlayerHandler();
@@ -195,12 +237,12 @@ internal class Client
 
     private static void ConnectionFailed(object sender, ConnectionFailedEventArgs eventArgs)
     {
-        string reason;
-        if (eventArgs != null && eventArgs.Message != null)
-            reason = eventArgs.Message.GetString();
-        else
-            reason = "Unknown";
-        Debug.WriteLine($"ERROR: Riptide connection failed. Reason: {reason}");
+        if (eventArgs.Message != null)
+        {
+            var connectionFailedType = (ConnectionFailedType)eventArgs.Message.GetByte();
+            var reason = eventArgs.Message.GetString();
+            Debug.WriteLine($"ERROR: Riptide connection failed. Reason: {reason}");
+        }
         cts.Cancel();
         ModelController.Login.ConnectionAttemptSuccessful = false;
         ModelController.Login.ConnectionAttemptCompleted = true;
@@ -307,4 +349,18 @@ internal class Client
     {
         _client.Disconnect();
     }
+}
+
+public enum ConnectionType : byte
+{
+    Login,
+    ClientCountRequest,
+}
+
+public enum ConnectionFailedType : byte
+{
+    IncorrectPassword,
+    Timeout,
+    WasClientCountRequest,
+    ServerFull
 }

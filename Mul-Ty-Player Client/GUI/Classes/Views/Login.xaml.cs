@@ -60,4 +60,16 @@ public partial class Login : UserControl
     {
         ModelController.Login.JoinAsSpectator = (bool)SpectatorCheckBox.IsChecked;
     }
+
+
+
+    private void RequestClientCount_Click(object sender, RoutedEventArgs e)
+    {
+        Client.StartClientCountRequest(FieldHostIp.Text);
+    }
+
+    private void FieldHostIp_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        ModelController.Login.CurrentServerClientCount = "?";
+    }
 }

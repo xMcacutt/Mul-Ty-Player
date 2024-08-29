@@ -192,4 +192,16 @@ public class LoginModel
         }
     }
     private bool joinAsSpectator;
+
+    public event Action<string> CurrentServerClientCountChanged;
+    public string CurrentServerClientCount
+    {
+        get => currentServerClientCount;
+        set
+        {
+            currentServerClientCount = value;
+            CurrentServerClientCountChanged(currentServerClientCount);
+        }
+    }
+    private string currentServerClientCount;
 }

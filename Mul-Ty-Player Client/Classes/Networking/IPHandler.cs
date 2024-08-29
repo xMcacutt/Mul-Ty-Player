@@ -10,6 +10,37 @@ namespace MulTyPlayerClient.Classes.Networking;
 
 public class IPHandler
 {
+    public static string? ParseIPSilently(string ip)
+    {
+        try
+        {
+            ushort port = 8750;
+            if (ip.Contains(':'))
+            {
+                var parts = ip.Split(':');
+                ip = parts[0];
+                if (!ushort.TryParse(parts[1], out port))
+                    return null;
+            }
+            else if (Regex.IsMatch(ip, @"\|s\d$"))
+            {
+                var serverPortIndex = int.Parse(ip.Last().ToString());
+                port = (ushort)(8750 + (serverPortIndex - 1) * 5);
+                ip = ip[..^3];
+            }
+
+            if (IPAddress.TryParse(ip, out _))
+                return $"{ip}:{port}";
+
+            var addresses = Dns.GetHostAddresses(ip);
+            return addresses.Length == 0 ? null : $"{addresses[0]}:{port}";
+        }
+        catch
+        {
+            return null;
+        }
+    }
+    
     public static string ParseIP(string ip)
     {
         try
