@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -37,12 +38,15 @@ public partial class Lobby : UserControl
                 LobbyModel.ProcessInput(TextBoxInput.Text);
                 TextBoxInput.Text = "";
                 break;
-            case Key.Up or Key.Down:
+            case Key.Up or Key.Down when !CommandCompletePopup.IsOpen:
                 var recallText = LobbyModel.ProcessRecall(e.Key == Key.Up);
                 if (e.Key == Key.Up && string.IsNullOrWhiteSpace(recallText))
                     break;
                 TextBoxInput.Text = recallText;
                 TextBoxInput.CaretIndex = TextBoxInput.Text.Length;
+                break;
+            case Key.Escape when CommandCompletePopup.IsOpen:
+                CommandCompletePopup.IsOpen = false;
                 break;
         }
     }
@@ -260,4 +264,57 @@ public partial class Lobby : UserControl
     {
         CollectionModeHandler.ClearLogs();
     }
+    
+    private void SuggestionsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (SuggestionsList.SelectedItem == null) 
+            return;
+        TextBoxInput.Text = SuggestionsList.SelectedItem.ToString() ?? string.Empty;
+        TextBoxInput.CaretIndex = TextBoxInput.Text.Length; // Move caret to the end
+        CommandCompletePopup.IsOpen = true;
+    }
+
+    private void TextBoxInput_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var input = TextBoxInput.Text;
+        if (!input.StartsWith('/'))
+        {
+            CommandCompletePopup.IsOpen = false;
+            return;
+        }
+        input = input.Substring(1, input.Length - 1);
+        Console.WriteLine(input);
+        if (!string.IsNullOrEmpty(input))
+        {
+            var suggestions = new List<string>();
+            var parts = input.Split(" ");
+            if (parts.Length == 1)
+                suggestions = Client.HCommand.Commands.Keys
+                    .Where(c => c.StartsWith(input, StringComparison.OrdinalIgnoreCase))
+                    .Select(c => "/" + c) // Add the "/" prefix to each command
+                    .ToList();
+            else if (parts.Length > 1 && Client.HCommand.Commands.TryGetValue(parts[0], out var command))
+                suggestions = command.Usages.Select(usage => $"/{parts[0]} {string.Join(" ", usage.Split(' ').Skip(1))}") // Add the "/" and the base command to each usage suggestion
+                    .ToList();
+            else
+                suggestions = suggestions;
+
+            if (suggestions.Any())
+            {
+                // Update the ListBox with suggestions
+                SuggestionsList.ItemsSource = suggestions;
+                CommandCompletePopup.IsOpen = true;
+            }
+            else
+            {
+                CommandCompletePopup.IsOpen = false;
+            }
+        }
+        else
+        {
+            CommandCompletePopup.IsOpen = false;
+            Console.WriteLine(4);
+        }
+    }
+    
 }

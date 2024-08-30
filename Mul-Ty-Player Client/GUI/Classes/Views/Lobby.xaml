@@ -609,10 +609,26 @@
                          FontFamily="Cascadia Code"
                          FontSize="14"
                          Cursor="IBeam"
+                         TextChanged="TextBoxInput_TextChanged"
                          PreviewKeyDown="TextboxInput_KeyDown"
                          Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Tag=" Type /help or /help &lt;command> for commands"
                          Style="{StaticResource PlaceholderTextStyle}" />
+                <Popup x:Name="CommandCompletePopup"
+                       Visibility="Collapsed"
+                       Grid.Column="0"
+                       PlacementTarget="{Binding ElementName=TextBoxInput}"
+                       Placement="Top"
+                       VerticalOffset="-3"
+                       Width="350">
+                    <Border BorderBrush="{Binding SpecialBack, Source={x:Static client:App.AppColors}}"
+                            BorderThickness="2">
+                        <ListBox Grid.Column="0"
+                                 Style="{StaticResource LobbyListBox}"
+                                 x:Name="SuggestionsList" 
+                                 SelectionChanged="SuggestionsList_SelectionChanged"/>
+                    </Border>
+                </Popup>
 
                 <Button Grid.Column="1"
                         VerticalAlignment="Stretch"
