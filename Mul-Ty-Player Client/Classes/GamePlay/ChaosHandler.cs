@@ -1037,12 +1037,14 @@ public class ChaosHandler
         },
     };
     
+    // Key is LV2 Index value is Level Index
     private Dictionary<int, int> _originalPortals = new()
         { { 1, 5 }, { 2, 4 }, { 3, 13 }, { 4, 10 }, { 8, 9 }, { 11, 12 }, { 12, 8 }, { 13, 6 }, { 14, 14 } };
     private Dictionary<int, int> _newPortals = new();
 
     public Dictionary<int, byte[]> CurrentPositionIndices = new();
     private Random _random;
+    
     private int _chaosSeed;
     public int ChaosSeed
     {
@@ -1058,7 +1060,6 @@ public class ChaosHandler
     }
 
     private bool _shuffleOnStart;
-
     public bool ShuffleOnStart
     {
         get => _shuffleOnStart;
@@ -1069,7 +1070,6 @@ public class ChaosHandler
             OnShuffleOnStartChanged?.Invoke(value);
         }
     }
-    
     public delegate void ShuffleOnStartChangedEventHandler(bool shuffleOnStart);
     public static event ShuffleOnStartChangedEventHandler OnShuffleOnStartChanged;
 
@@ -1091,7 +1091,7 @@ public class ChaosHandler
             var cogs = new HashSet<byte>();
             while (cogs.Count < 10)
             {
-                int possibleCogPositionsCount = _staticCogPositions[level.Id].Length + _movingCogPositions[level.Id].Length;
+                var possibleCogPositionsCount = _staticCogPositions[level.Id].Length + _movingCogPositions[level.Id].Length;
                 cogs.Add((byte)_random.Next(0, possibleCogPositionsCount));
             }
 
@@ -1099,7 +1099,7 @@ public class ChaosHandler
             var bilbies = new HashSet<byte>();
             while (bilbies.Count < 5)
             {
-                int possibleBilbyPositionsCount = _staticBilbyPositions[level.Id].Length + _movingBilbyPositions[level.Id].Length;
+                var possibleBilbyPositionsCount = _staticBilbyPositions[level.Id].Length + _movingBilbyPositions[level.Id].Length;
                 bilbies.Add((byte)_random.Next(0, possibleBilbyPositionsCount));
             }
 
@@ -1113,23 +1113,22 @@ public class ChaosHandler
 
     public void SwapPortals()
     {
-        if (Client.Relaunching || Client.HGameState.IsOnMainMenuOrLoading)
-            return;
         var basePortalAddr = PointerCalculations.GetPointerAddress(0x267408, new[] { 0x0 });
         foreach (var portal in _newPortals)
-            ProcessHandler.WriteData(basePortalAddr + 0xAC + 0xB0 * portal.Key, BitConverter.GetBytes(portal.Value));
+            ProcessHandler.WriteData(basePortalAddr + 0xB0 * portal.Key + 0xAC, BitConverter.GetBytes(portal.Value));
     }
     
     public void MoveCollectibles(int levelId)
     {
-        if (Client.HGameState.IsOnMainMenuOrLoading)
+        if (Client.Relaunching || Client.HGameState.IsOnMainMenuOrLoading)
             return;
         
-        if (Client.HLevel.CurrentLevelId == 0)
+        if (Client.HLevel.CurrentLevelId == Levels.RainbowCliffs.Id)
             SwapPortals();
         
         if (!Levels.GetLevelData(levelId).IsMainStage || !CurrentPositionIndices.ContainsKey(levelId))
             return;
+        
         _timestampCollectablesMoved = DateTime.Now;
         //Logger.Write($"Moving collectibles for level {level}");
 
@@ -1155,7 +1154,7 @@ public class ChaosHandler
             
             SetCogPosition(cogIndex, transform);
 
-            // Undo platform attachment if any? i assume
+            // Undo platform attachment if any
             var cogPlatformAddr =
                 PointerCalculations.GetPointerAddress(0x270310, new[] { 0x144 * cogIndex + 0x138, 0});
             if (cogPlatformAddr != 0)
@@ -1272,7 +1271,7 @@ public class ChaosHandler
     private void SetBilbyPosition(int bilbyIndex, PositionData transform)
     {
         var cagePosAddr =
-                PointerCalculations.GetPointerAddress(0x27D608, new[] { 0x0, 0x134 * bilbyIndex + 0x8, 0x74 });
+            PointerCalculations.GetPointerAddress(0x27D608, new[] { 0x0, 0x134 * bilbyIndex + 0x8, 0x74 });
         var bilbyPosAddr =
             PointerCalculations.GetPointerAddress(0x27D608, new[] { 0x0, 0x134 * bilbyIndex + 0x4, 0x74 });
         var bilbyTEPosAddr =

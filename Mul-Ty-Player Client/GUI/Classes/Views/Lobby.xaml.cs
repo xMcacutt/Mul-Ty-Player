@@ -283,7 +283,6 @@ public partial class Lobby : UserControl
             return;
         }
         input = input.Substring(1, input.Length - 1);
-        Console.WriteLine(input);
         if (!string.IsNullOrEmpty(input))
         {
             var suggestions = new List<string>();
@@ -306,15 +305,10 @@ public partial class Lobby : UserControl
                 CommandCompletePopup.IsOpen = true;
             }
             else
-            {
                 CommandCompletePopup.IsOpen = false;
-            }
         }
         else
-        {
             CommandCompletePopup.IsOpen = false;
-            Console.WriteLine(4);
-        }
     }
     
 }
