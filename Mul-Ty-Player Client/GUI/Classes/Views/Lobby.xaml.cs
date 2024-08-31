@@ -45,6 +45,31 @@ public partial class Lobby : UserControl
                 TextBoxInput.Text = recallText;
                 TextBoxInput.CaretIndex = TextBoxInput.Text.Length;
                 break;
+            case Key.Up or Key.Down when CommandCompletePopup.IsOpen:
+                if (e.Key == Key.Up)
+                {
+                    if (SuggestionsList.SelectedIndex > 0)
+                        SuggestionsList.SelectedIndex--;
+                    if (SuggestionsList.SelectedIndex == -1)
+                        SuggestionsList.SelectedIndex = SuggestionsList.Items.Count - 1;
+                }
+
+                if (e.Key == Key.Down)
+                {
+                    if (SuggestionsList.SelectedIndex < SuggestionsList.Items.Count - 1)
+                        SuggestionsList.SelectedIndex++;
+                    if (SuggestionsList.SelectedIndex == -1)
+                        SuggestionsList.SelectedIndex = 0;
+                }
+                break;
+            case Key.Tab:
+                e.Handled = true;
+                if (SuggestionsList.SelectedItem is null)
+                    return;
+                TextBoxInput.Text = SuggestionsList.SelectedItem.ToString() + " " ?? string.Empty;
+                TextBoxInput.CaretIndex = TextBoxInput.Text.Length; // Move caret to the end
+                SuggestionsList.SelectedIndex = -1;
+                return;
             case Key.Escape when CommandCompletePopup.IsOpen:
                 CommandCompletePopup.IsOpen = false;
                 break;
@@ -264,15 +289,6 @@ public partial class Lobby : UserControl
     {
         CollectionModeHandler.ClearLogs();
     }
-    
-    private void SuggestionsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (SuggestionsList.SelectedItem == null) 
-            return;
-        TextBoxInput.Text = SuggestionsList.SelectedItem.ToString() ?? string.Empty;
-        TextBoxInput.CaretIndex = TextBoxInput.Text.Length; // Move caret to the end
-        CommandCompletePopup.IsOpen = true;
-    }
 
     private void TextBoxInput_TextChanged(object sender, TextChangedEventArgs e)
     {
@@ -287,10 +303,15 @@ public partial class Lobby : UserControl
         {
             var suggestions = new List<string>();
             var parts = input.Split(" ");
+            if (!PlayerHandler.TryGetPlayer(Client._client.Id, out var player))
+                return;
             if (parts.Length == 1)
-                suggestions = Client.HCommand.Commands.Keys
-                    .Where(c => c.StartsWith(input, StringComparison.OrdinalIgnoreCase))
-                    .Select(c => "/" + c) // Add the "/" prefix to each command
+                suggestions = Client.HCommand.Commands
+                    .Where(c => c.Value.Name.StartsWith(input, StringComparison.OrdinalIgnoreCase) 
+                                && c.Value.Name == c.Key
+                                && ((c.Value.HostOnly && player.IsHost) || (!c.Value.HostOnly))
+                                && ((player.Role == HSRole.Spectator && c.Value.SpectatorAllowed ) || player.Role != HSRole.Spectator))
+                    .Select(c => "/" + c.Value.Name) // Add the "/" prefix to each command
                     .ToList();
             else if (parts.Length > 1 && Client.HCommand.Commands.TryGetValue(parts[0], out var command))
                 suggestions = command.Usages.Select(usage => $"/{parts[0]} {string.Join(" ", usage.Split(' ').Skip(1))}") // Add the "/" and the base command to each usage suggestion
@@ -310,5 +331,10 @@ public partial class Lobby : UserControl
         else
             CommandCompletePopup.IsOpen = false;
     }
-    
+
+    private void TextBoxInput_OnIsKeyboardFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (!(sender as TextBox).IsKeyboardFocused)
+            CommandCompletePopup.IsOpen = false;
+    }
 }

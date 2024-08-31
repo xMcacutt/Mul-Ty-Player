@@ -608,7 +608,9 @@
                          Padding="4, 0"
                          FontFamily="Cascadia Code"
                          FontSize="14"
+                         AcceptsTab="True"
                          Cursor="IBeam"
+                         IsKeyboardFocusedChanged="TextBoxInput_OnIsKeyboardFocusedChanged"
                          TextChanged="TextBoxInput_TextChanged"
                          PreviewKeyDown="TextboxInput_KeyDown"
                          Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -624,9 +626,9 @@
                     <Border BorderBrush="{Binding SpecialBack, Source={x:Static client:App.AppColors}}"
                             BorderThickness="2">
                         <ListBox Grid.Column="0"
-                                 Style="{StaticResource LobbyListBox}"
-                                 x:Name="SuggestionsList" 
-                                 SelectionChanged="SuggestionsList_SelectionChanged"/>
+                                 Style="{StaticResource CommandSuggestionsListBox}"
+                                 x:Name="SuggestionsList">
+                        </ListBox>
                     </Border>
                 </Popup>
 
