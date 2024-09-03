@@ -79,7 +79,7 @@ internal class KoalaHandler
             _defaultKoalaPosZ[level],
             0,
             0,
-            0
+            0,
         };
         Server.SendCoordinatesToAll(player.ClientID, player.Koala.KoalaName, level,
             defaultCoords, player.OnMenu);

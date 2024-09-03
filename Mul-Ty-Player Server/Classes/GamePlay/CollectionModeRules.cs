@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using MulTyPlayer;
@@ -269,7 +270,8 @@ public class ClmRule_Run : CollectionModeRule
                 player.Coordinates[0], 
                 player.Coordinates[1], 
                 player.Coordinates[2]);
-            player.Score += (int)Math.Round(Vector3.Distance(oldPlayerVector, newPlayerVector), 0) / 50;
+            var divisor = player.CurrentLevel == 10 ? 80 : 60;
+            player.Score += (int)Math.Round(Vector3.Distance(oldPlayerVector, newPlayerVector), 0) / divisor;
             CollectionModeHandler.SendScore(player.Score, player.ClientID);
         }
     }
@@ -327,7 +329,6 @@ public class ClmRule_Half : CollectionModeRule
         }
     }
 }
-
 
 public class ClmRule_Virus : CollectionModeRule
 {
