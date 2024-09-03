@@ -2,6 +2,14 @@
 
 ## Most Recent
 
+#### 4.8.1
+- Added a command suggestion and completion popup.
+- Added button to request player count from login screen.
+- Added command to toggle specific rangs by name.
+- (CHM) Fixed bilby draw distance in Chaos Mode.
+- (CLM) Balance changes to collection mode.
+- (CHM) Added seed logging to text file for OBS.
+
 #### 4.8.0
 - VIP system added for players who won the MTP2YAC event.
 - (HSD) Ability cooldown added.
