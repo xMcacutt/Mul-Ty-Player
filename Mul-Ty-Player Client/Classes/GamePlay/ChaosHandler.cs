@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -1055,6 +1056,8 @@ public class ChaosHandler
             _chaosSeed = value;
             Logger.Write($"The Chaos Mode seed is now {Client.HChaos.ChaosSeed}");
             ShuffleIndices(value);
+            if (SettingsHandler.Settings.DoLogChaosSeed)
+                LogSeed(value);
             if (SettingsHandler.GameMode == GameMode.Chaos)
                 MoveCollectibles(Client.HLevel.CurrentLevelId);
         }
@@ -1073,14 +1076,21 @@ public class ChaosHandler
     }
     public delegate void ShuffleOnStartChangedEventHandler(bool shuffleOnStart);
     public static event ShuffleOnStartChangedEventHandler OnShuffleOnStartChanged;
-
+    
     public ChaosHandler()
     {
         ShuffleIndices(0);
         MoveCollectibles(Client.HLevel.CurrentLevelId);
     }
 
-    public void ShuffleIndices(int seed)
+    private void LogSeed(int seed)
+    {
+        using var fs = File.CreateText("./Logs/ChaosSeed.txt");
+        fs.Write("seed: " + seed);
+        fs.Close();
+    }
+
+    private void ShuffleIndices(int seed)
     {
         _random = new Random(seed);
         CurrentPositionIndices.Clear();

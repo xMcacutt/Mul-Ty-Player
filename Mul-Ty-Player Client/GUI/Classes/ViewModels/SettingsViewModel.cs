@@ -26,6 +26,7 @@ public class SettingsViewModel
     public string DefaultName { get; set; }
     public bool AttemptReconnect { get; set; }
     public bool AutoLaunchTyOnStartup { get; set; }
+    public bool DoChaosSeedLogging { get; set; }
     
     // GAMEPLAY SETTINGS
     public bool DoKoalaCollision { get; set; }
@@ -86,6 +87,7 @@ public class SettingsViewModel
         DefaultName = SettingsHandler.Settings.DefaultName;
         AttemptReconnect = SettingsHandler.Settings.AttemptReconnect;
         AutoLaunchTyOnStartup = SettingsHandler.Settings.AutoLaunchTyOnStartup;
+        DoChaosSeedLogging = SettingsHandler.Settings.DoLogChaosSeed;
         
         DoKoalaCollision = SettingsHandler.Settings.DoKoalaCollision;
         DoUseTyKoalaTextures = SettingsHandler.Settings.UseTyKoalaTextures;
@@ -119,6 +121,7 @@ public class SettingsViewModel
         SettingsHandler.Settings.DefaultName = DefaultName;
         SettingsHandler.Settings.AttemptReconnect = AttemptReconnect;
         SettingsHandler.Settings.AutoLaunchTyOnStartup = AutoLaunchTyOnStartup;
+        SettingsHandler.Settings.DoLogChaosSeed = DoChaosSeedLogging;
         
         SettingsHandler.Settings.DoKoalaCollision = DoKoalaCollision;
         SettingsHandler.Settings.UseTyKoalaTextures = DoUseTyKoalaTextures;

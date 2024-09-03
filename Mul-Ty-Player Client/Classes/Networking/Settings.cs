@@ -21,4 +21,5 @@ internal class Settings
     public bool ShowKoalaBeacons { get; set; }
     public int DefaultSaveSlot { get; set; }
     public bool ShowCollectiblesInTA { get; set; }
+    public bool DoLogChaosSeed { get; set; }
 }

@@ -86,6 +86,10 @@
                           Style="{StaticResource SettingsCheckBoxStyle}"
                           Content="Attempt Reconnect"/>
                 
+                <CheckBox IsChecked="{Binding DoChaosSeedLogging}"
+                          Style="{StaticResource SettingsCheckBoxStyle}"
+                          Content="Log Chaos Mode Seed"/>
+                
                 <CheckBox IsChecked="{Binding DoGetSteamName}"
                           Style="{StaticResource SettingsCheckBoxStyle}"
                           Content="Use Steam Name"

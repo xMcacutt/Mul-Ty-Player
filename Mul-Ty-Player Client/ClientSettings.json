@@ -17,5 +17,6 @@
   "UseTyKoalaTextures": true,
   "ShowKoalaBeacons": true,
   "DefaultSaveSlot": 1,
-  "ShowCollectiblesInTA": true
+  "ShowCollectiblesInTA": true,
+  "DoLogChaosSeed": true
 }

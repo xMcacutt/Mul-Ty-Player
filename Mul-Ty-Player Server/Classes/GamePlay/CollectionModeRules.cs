@@ -87,10 +87,10 @@ public class CollectionModeRuleHandler
     {
         new ClmRule_DoubleCogs(), // Cogs are worth double
         new ClmRule_OpalsAreBad(), // Opals give negative points
-        new ClmRule_FrameCount(), // Frames give points equal to level count
+        new ClmRule_FrameCount(), // Frames give points equal to level count multiplied by 2
         new ClmRule_Swapsies(), // Swap player positions
         new ClmRule_Tasty(), // Opals are worth 1 more point
-        new ClmRule_GoldenGoose(), // Turkey and turkey adjacent eggs give double points
+        new ClmRule_GoldenGoose(), // Turkey and turkey adjacent eggs give triple points
         new ClmRule_BilbyDeduct(), // Bilbies deduct points from your opponents
         new ClmRule_Run(), // At the next rule change, get points corresponding to how far you are from where you are now.
         new ClmRule_Dead(), // Die
