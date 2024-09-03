@@ -63,7 +63,10 @@ internal class LevelHandler
         if (CurrentLevelData.HasKoalas)
             FixKoalaObjectiveCount();
         if (SettingsHandler.GameMode == GameMode.Chaos)
+        {
+            Client.HChaos.FixBilbyDraw(CurrentLevelId);
             Client.HChaos.MoveCollectibles(CurrentLevelId);
+        }
         OnLevelChange?.Invoke(currentLevelId);
     }
 

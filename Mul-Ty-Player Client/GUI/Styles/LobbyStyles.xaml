@@ -116,7 +116,7 @@
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter Property="Background" Value="{x:Null}" />
-                                    </Trigger>
+                                    </Trigger>  
                                     <Trigger Property="IsSelected" Value="True">
                                         <Setter Property="Background" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
                                     </Trigger>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Diagnostics.Tracing.AutomatedAnalysis;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.GamePlay;
 using Riptide;
@@ -1320,5 +1321,10 @@ public class ChaosHandler
     public static void HandleShuffleOnStartResponse(Message message)
     {
         Client.HChaos.ShuffleOnStart = message.GetBool();
+    }
+
+    public void FixBilbyDraw(int currentLevelId)
+    {
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x1F9B0C, BitConverter.GetBytes(30000f));
     }
 }
