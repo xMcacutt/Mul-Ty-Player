@@ -141,7 +141,7 @@ public class ClmRule_FrameCount : CollectionModeRule
     public ClmRule_FrameCount()
     {
         Name = "You've Been Framed";
-        Description = "Picture Frames give points equal to the total number of them for the current level.";
+        Description = "Picture Frames give points equal to the total number of them for the current level multiplied by 2.";
     }
     public override void Intercept(int level, string type, int iLive, int iSave, ref int score)
     {
@@ -149,7 +149,7 @@ public class ClmRule_FrameCount : CollectionModeRule
             return;
         if (!SyncHandler.SFrame.GlobalObjectData.TryGetValue(level, out var frameArray))
             return;
-        score = frameArray.Length;
+        score = frameArray.Length * 2;
     }
 }
 
@@ -169,7 +169,7 @@ public class ClmRule_BilbyDeduct : CollectionModeRule
                      x.ClientID != originalClientId && x.Role != HSRole.Spectator
                  ))
         {
-            player.Score -= 20;
+            player.Score -= 40;
             CollectionModeHandler.SendScore(player.Score, player.ClientID);
         }
 
@@ -182,7 +182,7 @@ public class ClmRule_GoldenGoose : CollectionModeRule
     public ClmRule_GoldenGoose()
     {
         Name = "Golden Goose";
-        Description = "Birds lay eggs right? Yeah those ones give double points.";
+        Description = "Birds lay eggs right? Yeah those ones give triple points.";
     }
     public override void Intercept(int level, string type, int iLive, int iSave, ref int score)
     {
@@ -204,7 +204,7 @@ public class ClmRule_GoldenGoose : CollectionModeRule
             case 12 when iSave == 3:
                 // PARROT Beard Rex Marks    
             case 14 when iSave == 4:
-                score *= 2;
+                score *= 3;
                 break;
         }
     }
@@ -308,7 +308,7 @@ public class ClmRule_Crate : CollectionModeRule
 
     public override void ChangeRule()
     {
-        CollectionModeSettings.Scores["Crate"] = 15;
+        CollectionModeSettings.Scores["Crate"] = 25;
     }
 }
 
@@ -342,7 +342,7 @@ public class ClmRule_Virus : CollectionModeRule
     
     public override bool InterceptSend(ushort originalClientId, string type, int score)
     {
-        var toRandom = _random.Next(10) > 8;
+        var toRandom = _random.Next(10) > 7;
         Player player = null;
 
         if (toRandom)
