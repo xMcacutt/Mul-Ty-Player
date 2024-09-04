@@ -1306,6 +1306,7 @@ public class ChaosHandler
     public static void ReceiveSeed(Message message)
     {
         Client.HChaos.ChaosSeed = message.GetInt();
+        Client.HGameState.SetNewGameChaosModeText(message.GetBool());
     }
 
     public static void RequestShuffle()

@@ -189,5 +189,34 @@ public class GameStateHandler
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EBD0, BitConverter.GetBytes((int)state));
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EBC8, BitConverter.GetBytes((int)state));
     }
+
+    public void SetNewGameChaosModeText(bool fixedSeed, bool reset = false)
+    {
+        var modeMessage = "";
+        var hardcoreMessage = "";
+        var subMessage = "";
+        if (reset)
+        {
+            modeMessage = "Normal Mode";
+            hardcoreMessage = "Hardcore Mode";
+            subMessage = "Press   to change game mode";
+        }
+        else if (fixedSeed)
+        {
+            modeMessage = "Fixed Seed";
+            hardcoreMessage = "Fixed Seed";
+            subMessage = $"Seed: {Client.HChaos.ChaosSeed}";
+        }
+        else
+        {
+            modeMessage = "Random Seed";
+            hardcoreMessage = "Random Seed";
+            subMessage = $"Seed: {Client.HChaos.ChaosSeed}";
+        }
+        var baseAddr = PointerCalculations.GetPointerAddress(0x528740, new[] { 0x0 });
+        ProcessHandler.WriteData(baseAddr, Encoding.ASCII.GetBytes(modeMessage).Concat(new byte[1]).ToArray());
+        ProcessHandler.WriteData(baseAddr - 0x5B, Encoding.ASCII.GetBytes(subMessage).Concat(new byte[1]).ToArray());
+        ProcessHandler.WriteData(baseAddr - 0x25, Encoding.ASCII.GetBytes(hardcoreMessage).Concat(new byte[1]).ToArray());
+    }
 }
 

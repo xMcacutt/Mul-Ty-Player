@@ -20,6 +20,7 @@ public class ChaosHandler
         Program.HChaos.ChaosSeed = _chaosRand.Next();
         var response = Message.Create(MessageSendMode.Reliable, MessageID.CH_Shuffle);
         response.AddInt(Program.HChaos.ChaosSeed);
+        response.AddBool(false);
         Server._Server.SendToAll(response);
     }
     
@@ -35,6 +36,7 @@ public class ChaosHandler
         Program.HChaos.ChaosSeed = message.GetInt();
         var response = Message.Create(MessageSendMode.Reliable, MessageID.CH_Shuffle);
         response.AddInt(Program.HChaos.ChaosSeed);
+        response.AddBool(true);
         Server._Server.SendToAll(response);
     }
     

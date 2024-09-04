@@ -39,6 +39,8 @@ internal static class SettingsHandler
                     HSHandler.Deactivate();
                     break;
             };
+            if (value != GameMode.Chaos && _gameMode == GameMode.Chaos)
+                Client.HGameState.SetNewGameChaosModeText(false, true);
             ModelController.Lobby.GameMode = value;
             _gameMode = value;
             switch (value)
