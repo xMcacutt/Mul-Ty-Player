@@ -2,6 +2,7 @@
 
 using System.Diagnostics;
 using System.IO.Compression;
+using System.Text;
 using Newtonsoft.Json.Linq;
 using Octokit;
 using FileMode = System.IO.FileMode;
@@ -190,6 +191,7 @@ public class Program
             {
                 UpdateClient(latestRelease);
                 UpdateRKV(latestRelease);
+                PatchVersionIntoGame(latestRelease);
             }
         }
         catch (Exception ex)
@@ -347,6 +349,18 @@ public class Program
             var progressPercentage = bytesWritten * 100d / totalBytes.Value;
             Message = $"Downloading Game Files: {(int)progressPercentage}%";
         } while (bytesRead > 0);
+        fileStream.Close();
+    }
+
+    private void PatchVersionIntoGame(Release latestRelease)
+    {
+        //VERSION ON TITLE SCREEN
+        using FileStream fileStream = new(SettingsHandler.GetSetting<string>("MulTyPlayerFolderPath"), FileMode.Open, FileAccess.Write);
+        fileStream.Seek(0x2024F8, SeekOrigin.Begin);
+        using BinaryWriter binaryWriter = new(fileStream);
+        var versionString = "MTP " + latestRelease.TagName + " ";
+        var replacement = Encoding.ASCII.GetBytes(versionString);
+        binaryWriter.Write(replacement);
         fileStream.Close();
     }
 }
