@@ -40,6 +40,10 @@ There are several settings in the server for the different types of syncing that
 
 The version settings is used exclusively for compatibility checks and warnings when clients connect. This should NEVER be altered unless you know exactly why you need to change it. It is handled automatically by the updater.
 
+##### DoAutoUpdate
+
+Automatically runs the mini updater (if installed) when the server is launched.
+
 ---
 
 ## Client Settings
@@ -67,6 +71,14 @@ Automatically reopens the game if it closes for any reason. This is helpful for 
 ##### Attempt Reconnect
 
 Automatically tries to reconnect to the server on network connection failure. This prevents the user from needing to tab out of the game and connect back in to the server.
+
+##### DoChaosSeedLogging
+
+Outputs the current Chaos Mode seed to ./Logs/ChaosSeed.txt to be used with OBS
+
+##### DoAutoUpdate
+
+Automatically runs the mini updater (if installed) when the client is checks for updates on the login screen.
 
 ##### Use Steam Name
 

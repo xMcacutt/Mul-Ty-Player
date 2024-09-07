@@ -2,6 +2,13 @@
 
 ## Most Recent
 
+#### 4.8.2
+Introducing the Mini Updater! A new application which sits in your client or server folder and
+can automatically update the application for you without needing to open the updater application.
+It can be installed either by downloading the application and adding it to your files or by freshly installing using the updater.
+- Added mini-updater.
+- [CHM] Added in game Chaos Mode text to verify runs.
+
 #### 4.8.1
 - Added a command suggestion and completion popup.
 - Added button to request player count from login screen.
