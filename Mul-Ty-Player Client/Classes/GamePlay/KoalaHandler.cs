@@ -85,7 +85,7 @@ internal class KoalaHandler
         ScaleKoalas();
         MakeVisible();
 
-        if (!SettingsHandler.Settings.DoKoalaCollision)
+        if (!SettingsHandler.ClientSettings.DoKoalaCollision)
             SetCollision();
 
         readyToWriteTransformData = true;
@@ -93,7 +93,7 @@ internal class KoalaHandler
     
     public void SetCollision()
     {
-        var col = SettingsHandler.Settings.DoKoalaCollision ? (byte)1 : (byte)0;
+        var col = SettingsHandler.ClientSettings.DoKoalaCollision ? (byte)1 : (byte)0;
         for (var i = 0; i < 8; i++)
             ProcessHandler.WriteData(
                 TransformAddresses[i].Collision, 
@@ -110,7 +110,7 @@ internal class KoalaHandler
         if (inTimeAttack == 1)
         {
             MakeVisible();
-            if (SettingsHandler.Settings.ShowCollectiblesInTA)
+            if (SettingsHandler.ClientSettings.ShowCollectiblesInTA)
                 SyncHandler.MakeCollectiblesVisibleInTimeAttack();
         }
     }
@@ -127,7 +127,7 @@ internal class KoalaHandler
     {
         var outbackMultiplier = 1.0f;
         if (HLevel.CurrentLevelId == 10) outbackMultiplier = 2.0f;
-        var initialScale = SettingsHandler.GameMode == GameMode.HideSeek ? 2.25f : SettingsHandler.Settings.KoalaScale;
+        var initialScale = SettingsHandler.GameMode == GameMode.HideSeek ? 2.25f : SettingsHandler.ClientSettings.KoalaScale;
         var scaleFactor = initialScale * outbackMultiplier;
         if (scaleFactor < 0.5f) scaleFactor = 0.5f;
         if (scaleFactor > 3) scaleFactor = 3;

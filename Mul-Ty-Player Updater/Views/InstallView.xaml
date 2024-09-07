@@ -71,6 +71,10 @@
                                        FontFamily="Cascadia Code"
                                        HorizontalAlignment="Center"/>
                         </Button>
+                        
+                        <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
+                                  Content="Install Mini Updater"
+                                  IsChecked="{Binding InstallMiniUpdaterClient}"/>
                     </StackPanel>
                 </StackPanel>
                 
@@ -101,6 +105,10 @@
                                        FontFamily="Cascadia Code"
                                        HorizontalAlignment="Center"/>
                         </Button>
+                        
+                        <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
+                                  Content="Install Mini Updater"
+                                  IsChecked="{Binding InstallMiniUpdaterServer}"/>
                     </StackPanel>
                 </StackPanel>
                 

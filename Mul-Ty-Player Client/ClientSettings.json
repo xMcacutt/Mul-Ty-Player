@@ -13,10 +13,11 @@
   "AutoJoinVoice": false,
   "ProximityRange": 2250,
   "Theme": "Dark",
-  "Version": "4.8.1",
+  "Version": "4.8.2",
   "UseTyKoalaTextures": true,
   "ShowKoalaBeacons": true,
   "DefaultSaveSlot": 1,
   "ShowCollectiblesInTA": true,
-  "DoLogChaosSeed": true
+  "DoLogChaosSeed": true,
+  "DoAutoUpdate": true
 }

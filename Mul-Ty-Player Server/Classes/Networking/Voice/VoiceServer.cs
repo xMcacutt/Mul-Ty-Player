@@ -18,7 +18,7 @@ public class VoiceServer
     public static void OpenVoiceServer()
     {
         _endPoint = new IPEndPoint(IPAddress.Any, 0);
-        _voiceServer = new UdpClient(SettingsHandler.Settings.Port + 1);
+        _voiceServer = new UdpClient(SettingsHandler.ServerSettings.Port + 1);
         _connectedClients = new Dictionary<ushort, IPEndPoint>();
 
         var loop = new Thread(Loop);

@@ -45,9 +45,9 @@ internal class TyProcess
         try
         {
             process = new Process();
-            process.StartInfo = new ProcessStartInfo(SettingsHandler.Settings.MulTyPlayerFolderPath, "-noidle")
+            process.StartInfo = new ProcessStartInfo(SettingsHandler.ClientSettings.MulTyPlayerFolderPath, "-noidle")
                 { UseShellExecute = false, RedirectStandardError = true, RedirectStandardOutput = true };
-            process.StartInfo.WorkingDirectory = Path.GetDirectoryName(SettingsHandler.Settings.MulTyPlayerFolderPath);
+            process.StartInfo.WorkingDirectory = Path.GetDirectoryName(SettingsHandler.ClientSettings.MulTyPlayerFolderPath);
             process.Start();
             PullProcessData();
             OnTyProcessLaunched?.Invoke();
@@ -135,7 +135,7 @@ internal class TyProcess
         }
 
         BaseAddress = process.MainModule.BaseAddress;
-        SettingsHandler.Settings.MulTyPlayerFolderPath = process.MainModule.FileName;
+        SettingsHandler.ClientSettings.MulTyPlayerFolderPath = process.MainModule.FileName;
         SettingsHandler.Save();
         GameStateHandler.ForceNoIdle();
         IsRunning = true;
@@ -152,7 +152,7 @@ internal class TyProcess
         CloseHandle();
         process.Dispose();
         process.Refresh();
-        if (SettingsHandler.Settings.AutoRestartTyOnCrash) TryLaunchGame();
+        if (SettingsHandler.ClientSettings.AutoRestartTyOnCrash) TryLaunchGame();
     }
 
     private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)

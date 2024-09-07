@@ -18,7 +18,7 @@ internal static class EventMessageLogger
         SFXPlayer.PlaySound(SFX.MenuCancel);
         var msg = "Ty the Tasmanian Tiger has exited, ";
 
-        if (SettingsHandler.Settings.AutoRestartTyOnCrash)
+        if (SettingsHandler.ClientSettings.AutoRestartTyOnCrash)
         {
             Logger.Write(msg + "attempting to re-launch the game...");
         }

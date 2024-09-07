@@ -46,7 +46,7 @@ internal class LevelHandler
         HSync.SetCurrentData(CurrentLevelData.IsMainStage, CurrentLevelData.FrameCount != 0);
         HSync.SetMemAddrs();
         HSync.RequestSync();
-        if (PlayerHandler.TryGetPlayer(Client._client.Id, out var self) && SettingsHandler.Settings.UseTyKoalaTextures && !ModelController.Login.JoinAsSpectator)
+        if (PlayerHandler.TryGetPlayer(Client._client.Id, out var self) && SettingsHandler.ClientSettings.UseTyKoalaTextures && !ModelController.Login.JoinAsSpectator)
             Client.HHero.ChangeSkin((int)self.Koala + 1);
         Client.HGameState.ProtectLeaderboard();
         if (SettingsHandler.DoTESyncing &&

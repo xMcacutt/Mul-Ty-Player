@@ -34,13 +34,13 @@ public class MtpCommandPassword : Command
 
     private static string RunPassword()
     {
-        return $"The current password is {SettingsHandler.Settings.Password}\nTo set a new password use /password <password>";
+        return $"The current password is {SettingsHandler.ServerSettings.Password}\nTo set a new password use /password <password>";
     }
     
     private static string RunPassword(string password)
     {
-        SettingsHandler.Settings.Password = password.ToUpper();
-        return $"{SettingsHandler.Settings.Password} set as new password.";
+        SettingsHandler.ServerSettings.Password = password.ToUpper();
+        return $"{SettingsHandler.ServerSettings.Password} set as new password.";
     }
     
     [MessageHandler((ushort)MessageID.SetPassword)]

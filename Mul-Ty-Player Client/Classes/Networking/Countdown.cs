@@ -60,7 +60,7 @@ public class Countdown
                     Client.HGameState.ForceEnterNewGameScreen();
                 if (i == 3)
                 {
-                    Client.HGameState.ForcePrepareNewGame(SettingsHandler.Settings.DefaultSaveSlot);
+                    Client.HGameState.ForcePrepareNewGame(SettingsHandler.ClientSettings.DefaultSaveSlot);
                     Client.HSync = new SyncHandler();
                     if (Client._client.Id == PlayerHandler.Players[0].Id)
                     {

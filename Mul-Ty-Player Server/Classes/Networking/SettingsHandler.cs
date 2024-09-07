@@ -20,7 +20,7 @@ internal class SettingsHandler
 {
     
     public static Dictionary<string, bool> SyncSettings;
-    public static Settings Settings { get; private set; }
+    public static ServerSettings ServerSettings { get; private set; }
     
     public static bool DoLevelLock { get; set; }
     public static int HideSeekTime { get; set; }
@@ -57,29 +57,29 @@ internal class SettingsHandler
     public static void Setup()
     {
         var json = File.ReadAllText("./ServerSettings.json");
-        Settings = JsonConvert.DeserializeObject<Settings>(json);
+        ServerSettings = JsonConvert.DeserializeObject<ServerSettings>(json);
         DoLevelLock = false;
         GameMode = GameMode.Normal;
         HideSeekTime = 75;
         SyncSettings = new Dictionary<string, bool>
         {
-            { "TE", Settings.DoSyncTEs },
-            { "Cog", Settings.DoSyncCogs },
-            { "Bilby", Settings.DoSyncBilbies },
-            { "Attribute", Settings.DoSyncRangs },
-            { "Opal", Settings.DoSyncOpals },
-            { "Crate", Settings.DoSyncOpals },
-            { "Portal", Settings.DoSyncPortals },
-            { "RC", Settings.DoSyncCliffs },
-            { "RainbowScale", Settings.DoSyncScale },
-            { "Frame", Settings.DoSyncFrame },
-            { "InvisiCrate", Settings.DoSyncFrame }
+            { "TE", ServerSettings.DoSyncTEs },
+            { "Cog", ServerSettings.DoSyncCogs },
+            { "Bilby", ServerSettings.DoSyncBilbies },
+            { "Attribute", ServerSettings.DoSyncRangs },
+            { "Opal", ServerSettings.DoSyncOpals },
+            { "Crate", ServerSettings.DoSyncOpals },
+            { "Portal", ServerSettings.DoSyncPortals },
+            { "RC", ServerSettings.DoSyncCliffs },
+            { "RainbowScale", ServerSettings.DoSyncScale },
+            { "Frame", ServerSettings.DoSyncFrame },
+            { "InvisiCrate", ServerSettings.DoSyncFrame }
         };
     }
 
     public static void Save()
     {
-        var json = JsonConvert.SerializeObject(Settings);
+        var json = JsonConvert.SerializeObject(ServerSettings);
         File.WriteAllText("./ServerSettings.json", json);
     }
 
@@ -89,15 +89,15 @@ internal class SettingsHandler
         
         bool[] b =
         {
-            Settings.DoSyncTEs,
-            Settings.DoSyncCogs,
-            Settings.DoSyncBilbies,
-            Settings.DoSyncRangs,
-            Settings.DoSyncOpals,
-            Settings.DoSyncPortals,
-            Settings.DoSyncCliffs,
-            Settings.DoSyncScale,
-            Settings.DoSyncFrame,
+            ServerSettings.DoSyncTEs,
+            ServerSettings.DoSyncCogs,
+            ServerSettings.DoSyncBilbies,
+            ServerSettings.DoSyncRangs,
+            ServerSettings.DoSyncOpals,
+            ServerSettings.DoSyncPortals,
+            ServerSettings.DoSyncCliffs,
+            ServerSettings.DoSyncScale,
+            ServerSettings.DoSyncFrame,
             DoLevelLock,
         };
         message.AddBools(b);
@@ -110,7 +110,7 @@ internal class SettingsHandler
 
         message.AddBool(Program.HChaos.ShuffleOnStart);
         
-        message.AddString(Settings.Version);
+        message.AddString(ServerSettings.Version);
         
         if (sendToAll)
             Server._Server.SendToAll(message, clientId);
@@ -122,31 +122,31 @@ internal class SettingsHandler
     public static void HandleUpdateSyncSettings(ushort fromClientId, Message message)
     {
         var b = message.GetBools();
-        Settings.DoSyncTEs = b[0];
-        Settings.DoSyncCogs = b[1];
-        Settings.DoSyncBilbies = b[2];
-        Settings.DoSyncRangs = b[3];
-        Settings.DoSyncOpals = b[4];
-        Settings.DoSyncPortals = b[5];
-        Settings.DoSyncCliffs = b[6];
-        Settings.DoSyncScale = b[7];
-        Settings.DoSyncFrame = b[8];
+        ServerSettings.DoSyncTEs = b[0];
+        ServerSettings.DoSyncCogs = b[1];
+        ServerSettings.DoSyncBilbies = b[2];
+        ServerSettings.DoSyncRangs = b[3];
+        ServerSettings.DoSyncOpals = b[4];
+        ServerSettings.DoSyncPortals = b[5];
+        ServerSettings.DoSyncCliffs = b[6];
+        ServerSettings.DoSyncScale = b[7];
+        ServerSettings.DoSyncFrame = b[8];
         if (b.Length > 9) 
             DoLevelLock = b[9];
         
         SyncSettings = new Dictionary<string, bool>
         {
-            { "TE", Settings.DoSyncTEs },
-            { "Cog", Settings.DoSyncCogs },
-            { "Bilby", Settings.DoSyncBilbies },
-            { "Attribute", Settings.DoSyncRangs },
-            { "Opal", Settings.DoSyncOpals },
-            { "Crate", Settings.DoSyncOpals },
-            { "Portal", Settings.DoSyncPortals },
-            { "RC", Settings.DoSyncCliffs },
-            { "RainbowScale", Settings.DoSyncScale },
-            { "Frame", Settings.DoSyncFrame },
-            { "InvisiCrate", Settings.DoSyncFrame }
+            { "TE", ServerSettings.DoSyncTEs },
+            { "Cog", ServerSettings.DoSyncCogs },
+            { "Bilby", ServerSettings.DoSyncBilbies },
+            { "Attribute", ServerSettings.DoSyncRangs },
+            { "Opal", ServerSettings.DoSyncOpals },
+            { "Crate", ServerSettings.DoSyncOpals },
+            { "Portal", ServerSettings.DoSyncPortals },
+            { "RC", ServerSettings.DoSyncCliffs },
+            { "RainbowScale", ServerSettings.DoSyncScale },
+            { "Frame", ServerSettings.DoSyncFrame },
+            { "InvisiCrate", ServerSettings.DoSyncFrame }
         };
 
         Save();

@@ -29,7 +29,7 @@ internal static class PlayerReplication
     
     private const int RENDER_CALLS_PER_CLIENT_TICK = 8;
     private const int KRENDER_SLEEP_TIME = (int)((float)Client.MS_PER_TICK / RENDER_CALLS_PER_CLIENT_TICK) - 1;
-    public static KoalaInterpolationMode InterpolationMode = (KoalaInterpolationMode)Enum.Parse(typeof(KoalaInterpolationMode), SettingsHandler.Settings.InterpolationMode);
+    public static KoalaInterpolationMode InterpolationMode = (KoalaInterpolationMode)Enum.Parse(typeof(KoalaInterpolationMode), SettingsHandler.ClientSettings.InterpolationMode);
     public static readonly Dictionary<KoalaID, Transform> PlayerTransforms;
     private static readonly Dictionary<KoalaID, TransformSnapshots> receivedSnapshotData;
 
@@ -147,7 +147,7 @@ internal static class PlayerReplication
         ProcessHandler.WriteData(ktp.Yaw, BitConverter.GetBytes(transform.Rotation.Yaw));
         ProcessHandler.WriteData(ktp.Roll, BitConverter.GetBytes(transform.Rotation.Roll));
 
-        if ((SettingsHandler.GameMode == GameMode.HideSeek || !SettingsHandler.Settings.ShowKoalaBeacons) && !Client.HHideSeek.LinesVisible)
+        if ((SettingsHandler.GameMode == GameMode.HideSeek || !SettingsHandler.ClientSettings.ShowKoalaBeacons) && !Client.HHideSeek.LinesVisible)
             return;
         
         ProcessHandler.WriteData(gtp.X, BitConverter.GetBytes(transform.Position.X));

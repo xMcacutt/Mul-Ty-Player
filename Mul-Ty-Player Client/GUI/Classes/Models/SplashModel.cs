@@ -42,7 +42,7 @@ public class SplashModel
         TyProcess.OnTyProcessLaunchFailed += TyFailedToLaunch;
 
         var canAutoLaunchGame =
-            SettingsHandler.Settings.AutoLaunchTyOnStartup
+            SettingsHandler.ClientSettings.AutoLaunchTyOnStartup
             && SettingsHandler.HasValidExePath()
             && TyProcess.CanLaunchGame;
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MulTyPlayerClient.Classes.Utility;
@@ -23,8 +24,12 @@ public class LoginViewModel : IViewModel
         var github = new GitHubClient(new ProductHeaderValue("Mul-Ty-Player"));
         var latestRelease = github.Repository.Release.GetLatest("xMcacutt", "Mul-Ty-Player").Result;
         var latestVersion = latestRelease.TagName.Replace("v", "");
-        var result = VersionHandler.Compare(SettingsHandler.Settings.Version, latestVersion);
+        var result = VersionHandler.Compare(SettingsHandler.ClientSettings.Version, latestVersion);
         UpdateMessageVisible = result == VersionResult.SecondNewer;
+        if (result == VersionResult.SecondNewer 
+            && SettingsHandler.ClientSettings.DoAutoUpdate
+            && File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Mul-Ty-Player Mini Updater.exe")))
+            Process.Start(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Mul-Ty-Player Mini Updater.exe"));
     }
 
     public ObservableCollection<ServerListing> Servers { get; set; }

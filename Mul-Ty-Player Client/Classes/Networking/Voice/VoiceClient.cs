@@ -24,13 +24,13 @@ public class VoiceClient
                 if (!IPAddress.TryParse(fullIp.Split(':')[0], out _ip))
                     throw new Exception();
                 if (!ushort.TryParse(fullIp.Split(':')[1], out _port))
-                    _port = SettingsHandler.Settings.Port;
+                    _port = SettingsHandler.ClientSettings.Port;
             }
             else
             {
                 if (!IPAddress.TryParse(fullIp, out _ip))
                     throw new Exception();
-                _port = SettingsHandler.Settings.Port;
+                _port = SettingsHandler.ClientSettings.Port;
             }
             _port += 1;
             _voiceClient = new UdpClient();

@@ -25,7 +25,7 @@ public partial class Lobby : UserControl
     public Lobby()
     {
         InitializeComponent();
-        if (!SettingsHandler.Settings.AutoJoinVoice) return;
+        if (!SettingsHandler.ClientSettings.AutoJoinVoice) return;
         MTPAudioToggle.IsChecked = true;
         //VoiceHandler.JoinVoice();
     }

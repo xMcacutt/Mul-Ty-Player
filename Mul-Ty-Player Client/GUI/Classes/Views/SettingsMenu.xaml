@@ -90,6 +90,10 @@
                           Style="{StaticResource SettingsCheckBoxStyle}"
                           Content="Log Chaos Mode Seed"/>
                 
+                <CheckBox IsChecked="{Binding DoAutoUpdate}"
+                          Style="{StaticResource SettingsCheckBoxStyle}"
+                          Content="Auto Update Client"/>
+                
                 <CheckBox IsChecked="{Binding DoGetSteamName}"
                           Style="{StaticResource SettingsCheckBoxStyle}"
                           Content="Use Steam Name"

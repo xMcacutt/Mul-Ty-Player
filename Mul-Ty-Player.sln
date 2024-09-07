@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mul-Ty-Player Updater", "Mul-Ty-Player Updater\Mul-Ty-Player Updater.csproj", "{FF8F343C-91B1-4892-A357-C6DAE7B3EECC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mul-Ty-Player Mini Updater", "Mul-Ty-Player Mini Updater\Mul-Ty-Player Mini Updater.csproj", "{A3535BE6-51CA-4679-A429-7BA753FEB0EA}"
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -38,5 +40,9 @@ Global
 		{FF8F343C-91B1-4892-A357-C6DAE7B3EECC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF8F343C-91B1-4892-A357-C6DAE7B3EECC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF8F343C-91B1-4892-A357-C6DAE7B3EECC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3535BE6-51CA-4679-A429-7BA753FEB0EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3535BE6-51CA-4679-A429-7BA753FEB0EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3535BE6-51CA-4679-A429-7BA753FEB0EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3535BE6-51CA-4679-A429-7BA753FEB0EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

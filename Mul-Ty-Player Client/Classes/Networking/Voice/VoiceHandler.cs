@@ -47,9 +47,9 @@ public static class VoiceHandler
             if (PlayerHandler.TryGetPlayer(fromClientId, out var player))
             {
                 if (player.Level != "M/L" || !Client.HGameState.IsAtMainMenu())
-                    voice.SampleChannel.Volume = distance >= SettingsHandler.Settings.ProximityRange ? 0.0f :
+                    voice.SampleChannel.Volume = distance >= SettingsHandler.ClientSettings.ProximityRange ? 0.0f :
                         distance <= RANGE_LOWER_BOUND ? 1.0f :
-                        1.0f - (distance - RANGE_LOWER_BOUND) / (SettingsHandler.Settings.ProximityRange - RANGE_LOWER_BOUND);
+                        1.0f - (distance - RANGE_LOWER_BOUND) / (SettingsHandler.ClientSettings.ProximityRange - RANGE_LOWER_BOUND);
             }
         }
         voice.WaveProvider.AddSamples(decodedBytes, 0, decodedBytes.Length);

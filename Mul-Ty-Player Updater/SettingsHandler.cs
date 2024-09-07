@@ -29,6 +29,8 @@ public class Settings
 {
     public bool UpdateClient { get; set; }
     public bool UpdateServer { get; set; }
+    public bool InstallMiniUpdaterClient { get; set; }
+    public bool InstallMiniUpdaterServer { get; set; }
     public bool UpdateRKV { get; set; }
     public string ClientDir { get; set; }
     public string ServerDir { get; set; }

@@ -32,7 +32,7 @@ internal class TESyncer : Syncer
         switch (iSave)
         {
             // IF TE IS BILBY TE, SEND MESSAGE TO CLIENTS TO ALSO DESPAWN LAST BILBY
-            case 1 when SettingsHandler.Settings.DoSyncBilbies:
+            case 1 when SettingsHandler.ServerSettings.DoSyncBilbies:
             {
                 ((BilbySyncer)Program.HSync.Syncers["Bilby"]).GlobalObjectData[level] = new byte[5];
                 var bilbyMessage = Message.Create(MessageSendMode.Reliable, MessageID.DespawnAllBilbies);

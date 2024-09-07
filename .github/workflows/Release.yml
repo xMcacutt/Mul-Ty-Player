@@ -19,7 +19,7 @@ jobs:
 
       - name: Build and Publish Projects
         run: |
-          $projects = @("Mul-Ty-Player Client", "Mul-Ty-Player Server", "Mul-Ty-Player Updater")
+          $projects = @("Mul-Ty-Player Client", "Mul-Ty-Player Server", "Mul-Ty-Player Updater", "Mul-Ty-Player Mini Updater")
           
           foreach ($project in $projects) {
           dotnet restore "$project/$project.csproj"
@@ -29,7 +29,7 @@ jobs:
 
       - name: Zip Published Projects
         run: |
-          $projects = @("Mul-Ty-Player Client", "Mul-Ty-Player Server", "Mul-Ty-Player Updater")
+          $projects = @("Mul-Ty-Player Client", "Mul-Ty-Player Server", "Mul-Ty-Player Updater", "Mul-Ty-Player Mini Updater")
           foreach ($project in $projects) {
             Compress-Archive -Path "publish/$project/*" -DestinationPath "publish/$project.zip"
           }
@@ -42,4 +42,4 @@ jobs:
           echo "Listing available releases:"
           echo ${{ github.event.release.tag_name }}
           gh release list
-          gh release upload ${{ github.event.release.tag_name }} "Publish/Mul-Ty-Player Client.zip" "Publish/Mul-Ty-Player Server.zip" "Publish/Mul-Ty-Player Updater.zip" "Patch_PC.rkv"
+          gh release upload ${{ github.event.release.tag_name }} "Publish/Mul-Ty-Player Client.zip" "Publish/Mul-Ty-Player Server.zip" "Publish/Mul-Ty-Player Updater.zip" "Mul-Ty-Player Mini Updater" "Patch_PC.rkv"

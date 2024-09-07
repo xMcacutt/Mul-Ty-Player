@@ -1056,7 +1056,7 @@ public class ChaosHandler
             _chaosSeed = value;
             Logger.Write($"The Chaos Mode seed is now {Client.HChaos.ChaosSeed}");
             ShuffleIndices(value);
-            if (SettingsHandler.Settings.DoLogChaosSeed)
+            if (SettingsHandler.ClientSettings.DoLogChaosSeed)
                 LogSeed(value);
             if (SettingsHandler.GameMode == GameMode.Chaos)
                 MoveCollectibles(Client.HLevel.CurrentLevelId);

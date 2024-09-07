@@ -26,7 +26,7 @@ public static class Logger
 
     public static void CreateLogFile()
     {
-        if (!SettingsHandler.Settings.CreateLogFile)
+        if (!SettingsHandler.ClientSettings.CreateLogFile)
             return;
 
         _fileName = "MTP-Log " + _initTime;

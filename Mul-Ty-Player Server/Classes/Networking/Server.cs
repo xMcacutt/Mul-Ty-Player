@@ -29,7 +29,7 @@ internal class Server
     private static void Loop()
     {
         _Server = new Riptide.Server();
-        _Server.Start(SettingsHandler.Settings.Port,12);
+        _Server.Start(SettingsHandler.ServerSettings.Port,12);
 
         _Server.HandleConnection += HandleConnection;
         _Server.ClientConnected += ClientConnected;
@@ -90,9 +90,9 @@ internal class Server
                 Console.WriteLine("Received connection attempt...");
                 var pass = authenticationMessage.GetString();
                 var spectator = authenticationMessage.GetBool();
-                if (!string.Equals(pass, SettingsHandler.Settings.Password, StringComparison.CurrentCultureIgnoreCase)
-                    && !string.Equals(SettingsHandler.Settings.Password, "XXXXX", StringComparison.CurrentCultureIgnoreCase)
-                    && !string.IsNullOrWhiteSpace(SettingsHandler.Settings.Password)
+                if (!string.Equals(pass, SettingsHandler.ServerSettings.Password, StringComparison.CurrentCultureIgnoreCase)
+                    && !string.Equals(SettingsHandler.ServerSettings.Password, "XXXXX", StringComparison.CurrentCultureIgnoreCase)
+                    && !string.IsNullOrWhiteSpace(SettingsHandler.ServerSettings.Password)
                     && _Server.ClientCount > 0)
                 {
                     var response = Message.Create();
@@ -143,8 +143,8 @@ internal class Server
             PlayerHandler.AnnounceDisconnect(e.Client.Id);
             Program.HDrafts.TryRemovePlayer(e.Client.Id);
         }
-        if (_Server.ClientCount == 0 && SettingsHandler.Settings.ResetPasswordOnEmpty)
-            SettingsHandler.Settings.Password = "XXXXX";
+        if (_Server.ClientCount == 0 && SettingsHandler.ServerSettings.ResetPasswordOnEmpty)
+            SettingsHandler.ServerSettings.Password = "XXXXX";
     }
 
     public static void SendCoordinatesToAll(ushort clientId, string koalaName, int level, float[] coordinates, bool onMenu)

@@ -76,7 +76,7 @@ internal class Client
             VIPHandler.VIPs.TryGetValue(steamId, out VIP);
             
             if (!_ip.Contains(':'))
-                _ip += ":" + SettingsHandler.Settings.Port;
+                _ip += ":" + SettingsHandler.ClientSettings.Port;
             var attempt = _client.Connect(_ip, 5, 0, authentication);
             if (!attempt) ConnectionAttemptFailed();
             ModelController.KoalaSelect.OnProceedToLobby += () => { KoalaSelected = true; };
@@ -106,7 +106,7 @@ internal class Client
         var authentication = Message.Create();
         authentication.AddByte((byte)ConnectionType.ClientCountRequest);
         if (!parsedIP.Contains(':'))
-            parsedIP += ":" + SettingsHandler.Settings.Port;
+            parsedIP += ":" + SettingsHandler.ClientSettings.Port;
         var attempt = miniClient.Connect(parsedIP, 1, 0, authentication);
         if (!attempt)
             ModelController.Login.CurrentServerClientCount = "?";
@@ -205,7 +205,7 @@ internal class Client
         Application.Current.Dispatcher.Invoke(() => { LobbyViewModel.DraftWindow?.Close(); });
         Application.Current.Dispatcher.Invoke(() => { PerkHandler.PerkDialog?.Close(); });
         SFXPlayer.PlaySound(SFX.PlayerDisconnect);
-        if (e.Reason == DisconnectReason.TimedOut && SettingsHandler.Settings.AttemptReconnect)
+        if (e.Reason == DisconnectReason.TimedOut && SettingsHandler.ClientSettings.AttemptReconnect)
         {
             IsReconnect = true;
             Logger.Write("Initiating reconnection attempt.");

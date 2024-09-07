@@ -1,6 +1,6 @@
 ﻿namespace MulTyPlayerClient;
 
-internal class Settings
+internal class ClientSettings
 {
     public bool DoGetSteamName { get; set; }
     public string DefaultName { get; set; }
@@ -10,6 +10,7 @@ internal class Settings
     public bool AttemptReconnect { get; set; }
     public bool AutoLaunchTyOnStartup { get; set; }
     public bool AutoRestartTyOnCrash { get; set; }
+    public bool DoAutoUpdate { get; set; }
     public string MulTyPlayerFolderPath { get; set; }
     public string Theme { get; set; }
     public float KoalaScale { get; set; }

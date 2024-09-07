@@ -24,6 +24,8 @@ public class InstallViewModel
     public bool InstallServer { get; set; }
     public string ServerPath { get; set; }
     public bool InstallGameFiles { get; set; }
+    public bool InstallMiniUpdaterClient { get; set; }
+    public bool InstallMiniUpdaterServer { get; set; }
     public string TyPath { get; set; }
     public string MTPPath { get; set; }
     public string Version { get; set; }
@@ -45,6 +47,8 @@ public class InstallViewModel
     {
         InstallClient = true;
         InstallGameFiles = true;
+        InstallMiniUpdaterClient = true;
+        InstallMiniUpdaterServer = true;
         RemoveMagnetRandom = true;
         RevertOutbackMovement = true;
         RevertRangSwitching = true;
@@ -172,6 +176,9 @@ public class InstallViewModel
         archive.ExtractToDirectory(clientDirPath);
         archive.Dispose();
         File.Delete(zipPath);
+        
+        if (InstallMiniUpdaterClient)
+            InstallMiniUpdater(latest, clientDirPath);
     }
 
     private void CopyServerFiles(Release latest)
@@ -198,7 +205,42 @@ public class InstallViewModel
             bytesWritten += bytesRead;
             if (!totalBytes.HasValue) continue;
             var progressPercentage = bytesWritten * 100d / totalBytes.Value;
-            worker.ReportProgress((int)progressPercentage, $"Downloading server Files: {(int)progressPercentage}%");
+            worker.ReportProgress((int)progressPercentage, $"Downloading Server Files: {(int)progressPercentage}%");
+        } while (bytesRead > 0);
+        fileStream.Close();
+        using var archive = ZipFile.OpenRead(zipPath);
+        archive.ExtractToDirectory(serverDirPath);
+        archive.Dispose();
+        File.Delete(zipPath);
+
+        if (InstallMiniUpdaterServer)
+            InstallMiniUpdater(latest, serverDirPath);
+    }
+
+    private void InstallMiniUpdater(Release latest, string serverDirPath)
+    {
+        var zipPath = Path.Combine(serverDirPath, "MiniUpdater.Zip");
+        var asset = latest.Assets.FirstOrDefault(asset => asset.Name == "Mul-Ty-Player.Mini.Updater.zip");
+        if (asset == null) 
+            throw new Exception();
+        HttpClient client = new();
+        var uri = new Uri(asset.BrowserDownloadUrl);
+        var response = client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead).Result;
+        response.EnsureSuccessStatusCode();
+        using var contentStream = response.Content.ReadAsStreamAsync().Result;
+        var totalBytes = response.Content.Headers.ContentLength;
+        using FileStream fileStream = new(zipPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
+        var buffer = new byte[4096];
+        int bytesRead;
+        var bytesWritten = 0L;
+        do
+        {
+            bytesRead = contentStream.ReadAsync(buffer, 0, buffer.Length).Result;
+            fileStream.WriteAsync(buffer, 0, bytesRead).Wait();
+            bytesWritten += bytesRead;
+            if (!totalBytes.HasValue) continue;
+            var progressPercentage = bytesWritten * 100d / totalBytes.Value;
+            worker.ReportProgress((int)progressPercentage, $"Downloading Mini Updater Files: {(int)progressPercentage}%");
         } while (bytesRead > 0);
         fileStream.Close();
         using var archive = ZipFile.OpenRead(zipPath);
@@ -323,6 +365,8 @@ public class InstallViewModel
         SettingsHandler.Settings.UpdateClient = InstallClient;
         SettingsHandler.Settings.UpdateServer = InstallServer;
         SettingsHandler.Settings.UpdateRKV = InstallGameFiles;
+        SettingsHandler.Settings.InstallMiniUpdaterClient = InstallMiniUpdaterClient;
+        SettingsHandler.Settings.InstallMiniUpdaterServer = InstallMiniUpdaterServer;
         SettingsHandler.Settings.ClientDir = Path.Combine(ClientPath, "Client");
         SettingsHandler.Settings.ServerDir = Path.Combine(ServerPath, "Server");
         SettingsHandler.Settings.GameDir = Path.Combine(MTPPath, "Game");

@@ -102,15 +102,15 @@ public class LoginModel
     public void SetName()
     {
         //If steam name retrieval is successful, set that as the name and set the default name in settings
-        if (SettingsHandler.Settings.DoGetSteamName)
+        if (SettingsHandler.ClientSettings.DoGetSteamName)
         {
             name = SteamHelper.GetSteamName();
-            SettingsHandler.Settings.DefaultName = name;
+            SettingsHandler.ClientSettings.DefaultName = name;
         }
         //If the steam name setting is disabled, use the previously stored default name
         else
         {
-            name = SettingsHandler.Settings.DefaultName;
+            name = SettingsHandler.ClientSettings.DefaultName;
         }
 
         //If the name is still null, generate a random one

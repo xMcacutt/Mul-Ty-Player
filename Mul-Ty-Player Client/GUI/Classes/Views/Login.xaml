@@ -16,8 +16,8 @@
                        FontSize="20"
                        Visibility="{Binding UpdateMessageVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"
                        Foreground="White"
-                       Canvas.Left="120"
-                       Canvas.Top="65"
+                       Canvas.Left="90"
+                       Canvas.Top="40"
                        RenderTransformOrigin="0.5,0.5">
                 <TextBlock.Resources>
                     <Style TargetType="TextBlock" BasedOn="{StaticResource ComicText}">

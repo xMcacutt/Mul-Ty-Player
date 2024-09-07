@@ -27,6 +27,7 @@ public class SettingsViewModel
     public bool AttemptReconnect { get; set; }
     public bool AutoLaunchTyOnStartup { get; set; }
     public bool DoChaosSeedLogging { get; set; }
+    public bool DoAutoUpdate { get; set; }
     
     // GAMEPLAY SETTINGS
     public bool DoKoalaCollision { get; set; }
@@ -81,26 +82,27 @@ public class SettingsViewModel
         
         SaveSlots = new ObservableCollection<string>() { "Save Slot 1", "Save Slot 2", "Save Slot 3" };
         
-        AutoRestartTy = SettingsHandler.Settings.AutoRestartTyOnCrash;
-        Theme = SettingsHandler.Settings.Theme;
-        DoGetSteamName = SettingsHandler.Settings.DoGetSteamName;
-        DefaultName = SettingsHandler.Settings.DefaultName;
-        AttemptReconnect = SettingsHandler.Settings.AttemptReconnect;
-        AutoLaunchTyOnStartup = SettingsHandler.Settings.AutoLaunchTyOnStartup;
-        DoChaosSeedLogging = SettingsHandler.Settings.DoLogChaosSeed;
+        AutoRestartTy = SettingsHandler.ClientSettings.AutoRestartTyOnCrash;
+        Theme = SettingsHandler.ClientSettings.Theme;
+        DoGetSteamName = SettingsHandler.ClientSettings.DoGetSteamName;
+        DefaultName = SettingsHandler.ClientSettings.DefaultName;
+        AttemptReconnect = SettingsHandler.ClientSettings.AttemptReconnect;
+        AutoLaunchTyOnStartup = SettingsHandler.ClientSettings.AutoLaunchTyOnStartup;
+        DoChaosSeedLogging = SettingsHandler.ClientSettings.DoLogChaosSeed;
+        DoAutoUpdate = SettingsHandler.ClientSettings.DoAutoUpdate;
         
-        DoKoalaCollision = SettingsHandler.Settings.DoKoalaCollision;
-        DoUseTyKoalaTextures = SettingsHandler.Settings.UseTyKoalaTextures;
-        KoalaScale = SettingsHandler.Settings.KoalaScale;
-        InterpolationMode = SettingsHandler.Settings.InterpolationMode;
-        ShowKoalaBeacons = SettingsHandler.Settings.ShowKoalaBeacons;
-        SelectedSlotIndex = SettingsHandler.Settings.DefaultSaveSlot;
+        DoKoalaCollision = SettingsHandler.ClientSettings.DoKoalaCollision;
+        DoUseTyKoalaTextures = SettingsHandler.ClientSettings.UseTyKoalaTextures;
+        KoalaScale = SettingsHandler.ClientSettings.KoalaScale;
+        InterpolationMode = SettingsHandler.ClientSettings.InterpolationMode;
+        ShowKoalaBeacons = SettingsHandler.ClientSettings.ShowKoalaBeacons;
+        SelectedSlotIndex = SettingsHandler.ClientSettings.DefaultSaveSlot;
 
-        AutoJoinVoice = SettingsHandler.Settings.AutoJoinVoice;
-        ProximityRange = SettingsHandler.Settings.ProximityRange;
+        AutoJoinVoice = SettingsHandler.ClientSettings.AutoJoinVoice;
+        ProximityRange = SettingsHandler.ClientSettings.ProximityRange;
 
-        DoOutputLogs = SettingsHandler.Settings.CreateLogFile;
-        DefaultPort = SettingsHandler.Settings.Port;
+        DoOutputLogs = SettingsHandler.ClientSettings.CreateLogFile;
+        DefaultPort = SettingsHandler.ClientSettings.Port;
 
         DoSyncBilbies = SettingsHandler.DoBilbySyncing;
         DoSyncCogs = SettingsHandler.DoCogSyncing;
@@ -115,26 +117,27 @@ public class SettingsViewModel
 
     public void SavePropertiesBackToSettings()
     {
-        SettingsHandler.Settings.AutoRestartTyOnCrash = AutoRestartTy;
-        SettingsHandler.Settings.Theme = Theme;
-        SettingsHandler.Settings.DoGetSteamName = DoGetSteamName;
-        SettingsHandler.Settings.DefaultName = DefaultName;
-        SettingsHandler.Settings.AttemptReconnect = AttemptReconnect;
-        SettingsHandler.Settings.AutoLaunchTyOnStartup = AutoLaunchTyOnStartup;
-        SettingsHandler.Settings.DoLogChaosSeed = DoChaosSeedLogging;
+        SettingsHandler.ClientSettings.AutoRestartTyOnCrash = AutoRestartTy;
+        SettingsHandler.ClientSettings.Theme = Theme;
+        SettingsHandler.ClientSettings.DoGetSteamName = DoGetSteamName;
+        SettingsHandler.ClientSettings.DefaultName = DefaultName;
+        SettingsHandler.ClientSettings.AttemptReconnect = AttemptReconnect;
+        SettingsHandler.ClientSettings.AutoLaunchTyOnStartup = AutoLaunchTyOnStartup;
+        SettingsHandler.ClientSettings.DoLogChaosSeed = DoChaosSeedLogging;
+        SettingsHandler.ClientSettings.DoAutoUpdate = DoAutoUpdate;
         
-        SettingsHandler.Settings.DoKoalaCollision = DoKoalaCollision;
-        SettingsHandler.Settings.UseTyKoalaTextures = DoUseTyKoalaTextures;
-        SettingsHandler.Settings.KoalaScale = KoalaScale;
-        SettingsHandler.Settings.InterpolationMode = InterpolationMode;
-        SettingsHandler.Settings.ShowKoalaBeacons = ShowKoalaBeacons;
-        SettingsHandler.Settings.DefaultSaveSlot = SelectedSlotIndex;
+        SettingsHandler.ClientSettings.DoKoalaCollision = DoKoalaCollision;
+        SettingsHandler.ClientSettings.UseTyKoalaTextures = DoUseTyKoalaTextures;
+        SettingsHandler.ClientSettings.KoalaScale = KoalaScale;
+        SettingsHandler.ClientSettings.InterpolationMode = InterpolationMode;
+        SettingsHandler.ClientSettings.ShowKoalaBeacons = ShowKoalaBeacons;
+        SettingsHandler.ClientSettings.DefaultSaveSlot = SelectedSlotIndex;
 
-        SettingsHandler.Settings.AutoJoinVoice = AutoJoinVoice;
-        SettingsHandler.Settings.ProximityRange = ProximityRange;
+        SettingsHandler.ClientSettings.AutoJoinVoice = AutoJoinVoice;
+        SettingsHandler.ClientSettings.ProximityRange = ProximityRange;
 
-        SettingsHandler.Settings.CreateLogFile = DoOutputLogs;
-        SettingsHandler.Settings.Port = DefaultPort;
+        SettingsHandler.ClientSettings.CreateLogFile = DoOutputLogs;
+        SettingsHandler.ClientSettings.Port = DefaultPort;
         
         if (IsHost)
         {
@@ -152,7 +155,7 @@ public class SettingsViewModel
         
         SettingsHandler.Save();
 
-        App.AppColors.SetColors(SettingsHandler.Settings.Theme);
+        App.AppColors.SetColors(SettingsHandler.ClientSettings.Theme);
         Client.HKoala.ScaleKoalas();
         Client.HKoala.SetCollision();
         Client.HGlow.ReturnGlows();

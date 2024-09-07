@@ -116,16 +116,16 @@ internal static class SettingsHandler
 
     #endregion
     
-    public static Settings Settings { get; private set; }
+    public static ClientSettings ClientSettings { get; private set; }
 
 
     public static void Setup()
     {
         //MAIN SETTINGS
         var json = File.ReadAllText("./ClientSettings.json");
-        Settings = JsonConvert.DeserializeObject<Settings>(json);
+        ClientSettings = JsonConvert.DeserializeObject<ClientSettings>(json);
         
-        App.AppColors.SetColors(Settings.Theme);
+        App.AppColors.SetColors(ClientSettings.Theme);
         
         //SYNC SETTINGS
         _syncSettings = new Dictionary<string, bool>
@@ -146,7 +146,7 @@ internal static class SettingsHandler
 
     public static void Save()
     {
-        var json = JsonConvert.SerializeObject(Settings);
+        var json = JsonConvert.SerializeObject(ClientSettings);
         File.WriteAllText("./ClientSettings.json", json);
     }
     
@@ -174,7 +174,7 @@ internal static class SettingsHandler
         Client.HChaos.ShuffleOnStart = message.GetBool();
 
         var serverVersion = message.GetString();
-        var clientVersion = Settings.Version;
+        var clientVersion = ClientSettings.Version;
         switch (VersionHandler.Compare(clientVersion, serverVersion))
         {
             case null:
@@ -190,7 +190,7 @@ internal static class SettingsHandler
 
     public static bool HasValidExePath()
     {
-        return Settings.MulTyPlayerFolderPath != "" && Settings.MulTyPlayerFolderPath != null;
+        return ClientSettings.MulTyPlayerFolderPath != "" && ClientSettings.MulTyPlayerFolderPath != null;
     }
 
     [MessageHandler((ushort)MessageID.HS_RangeChanged)]

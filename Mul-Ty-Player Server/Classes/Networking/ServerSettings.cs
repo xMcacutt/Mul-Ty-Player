@@ -1,6 +1,6 @@
 ﻿namespace MulTyPlayerServer;
 
-internal class Settings
+public class ServerSettings
 {
     public string Password { get; set; }
     public ushort Port { get; set; }
@@ -14,6 +14,7 @@ internal class Settings
     public bool DoSyncCliffs { get; set; }
     public bool DoSyncScale { get; set; }
     public bool DoSyncFrame { get; set; }
+    public bool DoAutoUpdate { get; set; }
     
     public string Version { get; set; }
 }
