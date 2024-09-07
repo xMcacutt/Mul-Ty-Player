@@ -72,10 +72,10 @@
                                        HorizontalAlignment="Center"/>
                         </Button>
                         
-                        <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
-                                  Content="Install Mini Updater"
-                                  IsChecked="{Binding InstallMiniUpdaterClient}"/>
                     </StackPanel>
+                    <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Install Mini Updater"
+                              IsChecked="{Binding InstallMiniUpdaterClient}"/>
                 </StackPanel>
                 
                 <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
@@ -106,10 +106,10 @@
                                        HorizontalAlignment="Center"/>
                         </Button>
                         
-                        <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
-                                  Content="Install Mini Updater"
-                                  IsChecked="{Binding InstallMiniUpdaterServer}"/>
                     </StackPanel>
+                    <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Install Mini Updater"
+                              IsChecked="{Binding InstallMiniUpdaterServer}"/>
                 </StackPanel>
                 
                 <CheckBox Style="{StaticResource SettingsCheckBoxStyle}"
