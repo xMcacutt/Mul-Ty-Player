@@ -10,6 +10,7 @@ using MulTyPlayerClient.Classes.GamePlay;
 using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI;
+using MulTyPlayerClient.GUI.Classes.Views;
 using MulTyPlayerClient.GUI.Models;
 using MulTyPlayerClient.GUI.ViewModels;
 using MulTyPlayerClient.GUI.Views;

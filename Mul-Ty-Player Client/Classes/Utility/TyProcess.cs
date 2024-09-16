@@ -45,7 +45,7 @@ internal class TyProcess
         try
         {
             process = new Process();
-            process.StartInfo = new ProcessStartInfo(SettingsHandler.ClientSettings.MulTyPlayerFolderPath, "-noidle")
+            process.StartInfo = new ProcessStartInfo(SettingsHandler.ClientSettings.MulTyPlayerFolderPath, "-noidle -novsync")
                 { UseShellExecute = false, RedirectStandardError = true, RedirectStandardOutput = true };
             process.StartInfo.WorkingDirectory = Path.GetDirectoryName(SettingsHandler.ClientSettings.MulTyPlayerFolderPath);
             process.Start();

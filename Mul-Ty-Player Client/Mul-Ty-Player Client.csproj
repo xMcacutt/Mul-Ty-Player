@@ -395,9 +395,13 @@
         <None Remove="Collectible Tracking\Resources\TE.png" />
         <None Remove="Collectible Tracking\Collectibles.html" />
         <None Remove="GUI\MinimapAssets\fe_000_map_d1_00.png" />
-        <Content Include="GUI\MinimapAssets\fe_000_map_d1_00.png" />
+        <Content Include="GUI\MinimapAssets\fe_000_map_d1_00.png">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <None Remove="GUI\MinimapAssets\fe_999_icon_arrow.png" />
-        <Content Include="GUI\MinimapAssets\fe_999_icon_arrow.png" />
+        <Content Include="GUI\MinimapAssets\fe_999_icon_arrow.png">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <None Remove="GUI\HS_DraftAssets\0.png" />
         <Content Include="GUI\HS_DraftAssets\0.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI;
+using MulTyPlayerClient.GUI.Classes.Views;
 using MulTyPlayerClient.GUI.Models;
 using MulTyPlayerClient.GUI.Views;
 using NHotkey;
@@ -17,6 +18,7 @@ public partial class App : Application
     private MainWindow mw;
     public static Colors AppColors;
     public static Window SettingsWindow;
+    public static Minimap Minimap;
 
     public App()
     {
@@ -31,6 +33,8 @@ public partial class App : Application
         SettingsHandler.Setup();
         ModelController.InstantiateModels();
         SFXPlayer.Init();
+        //Minimap = new Minimap();
+        //Minimap.Show();
         mw = new MainWindow();
         mw.Show();
         mw.Activate();

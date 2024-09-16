@@ -12,7 +12,6 @@ public static class ModelController
     public static SettingsViewModel Settings { get; private set; }
     public static HSD_ChooseTeamModel HSD_ChooseTeam { get; private set; }
     public static HSD_DraftModel HSD_Draft { get; private set; }
-    public static Minimap Minimap = new Minimap();
 
     public static void InstantiateModels()
     {

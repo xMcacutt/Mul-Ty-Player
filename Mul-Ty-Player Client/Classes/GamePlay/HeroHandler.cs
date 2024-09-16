@@ -67,6 +67,7 @@ public class HeroHandler
             ProcessHandler.TryRead(rotationAddress + sizeof(float) * i, out currentPositionRotation[i + 3], true,
                 "HeroHandler::GetTyPosRot() {rotation}");
         }
+        //App.Minimap.MovePlayer1();
         CheckDeathPlane();
     }
 

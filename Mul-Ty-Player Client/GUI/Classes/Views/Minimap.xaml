@@ -8,9 +8,9 @@
         PreviewMouseDown="Minimap_OnPreviewMouseDown"
         Title="Minimap" Height="Auto" Width="Auto" Background="Transparent" AllowsTransparency="True" WindowStyle="None">
     <Grid>
-        <Image Source="/GUI/MinimapAssets/fe_000_map_d1_00.png" Width="512" Height="512"/>
-        <Canvas x:Name="MinimapCanvas" Height="512" Width="512">
-            <Image x:Name="Player1" Source="/GUI/MinimapAssets/fe_999_icon_arrow.png" Width="35" Canvas.Left="0" Canvas.Top="0"/>
+        <Image x:Name="Map" Source="/GUI/MinimapAssets/fe_000_map_d1_00.png" Stretch="Fill" Width="512" Height="512"/>
+        <Canvas x:Name="MinimapCanvas" Width="512" Height="512">
+            <Image x:Name="Player1" Source="/GUI/MinimapAssets/fe_999_icon_arrow.png" Width="35" Height="35" Canvas.Left="0" Canvas.Top="0"/>
         </Canvas>
     </Grid>
 </Window>
