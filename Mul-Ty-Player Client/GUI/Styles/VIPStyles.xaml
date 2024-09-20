@@ -47,7 +47,7 @@
     <Style x:Key="DefaultStyle" TargetType="TextBlock">
         <Setter Property="TextElement.FontFamily" Value="../Fonts/#SF Slapstick Comic" />
         <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="Foreground" Value="{Binding MainTextColor, Source={x:Static client:App.AppColors}}"/>
+        <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}"/>
     </Style>
     
     <Color x:Key="MattColor" A="255" R="255" G="0" B="0"/>
