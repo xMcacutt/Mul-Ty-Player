@@ -152,19 +152,10 @@ public class UpdateViewModel
     private void UpdateClient(Release latest)
     {
         var asset = latest.Assets.FirstOrDefault(asset => asset.Name == "Mul-Ty-Player.Client.zip");
-        if (asset == null) throw new Exception();
+        if (asset == null) 
+            throw new Exception();
         
         var clientDirPath = SettingsHandler.Settings.ClientDir;
-        
-        var oldSettings = File.ReadAllText(Path.Combine(clientDirPath, "ClientSettings.json"));
-        
-        var tempDirPath = Path.Combine(Path.GetTempPath(), "MTPClientGUI");
-        Directory.CreateDirectory(tempDirPath);
-        var guiDirPath = Path.Combine(clientDirPath, "GUI");
-        if (Directory.Exists(guiDirPath))
-            CopyDirectory(guiDirPath, tempDirPath, true);
-        Directory.Delete(clientDirPath, true);
-        Directory.CreateDirectory(clientDirPath);
         var zipPath = Path.Combine(clientDirPath, "Client.zip");
         HttpClient client = new();
         var uri = new Uri(asset.BrowserDownloadUrl);
@@ -188,19 +179,32 @@ public class UpdateViewModel
         } while (bytesRead > 0);
         fileStream.Close();
         using var archive = ZipFile.OpenRead(zipPath);
-        archive.ExtractToDirectory(clientDirPath);
+        foreach (var entry in archive.Entries)
+        {
+            if (entry.FullName.StartsWith("GUI/", StringComparison.OrdinalIgnoreCase))
+            {
+                var targetPath = Path.Combine(clientDirPath, entry.FullName);
+                if (!File.Exists(targetPath))
+                {
+                    var targetDir = Path.GetDirectoryName(targetPath);
+                    if (!Directory.Exists(targetDir) && targetDir != null)
+                        Directory.CreateDirectory(targetDir);
+                    entry.ExtractToFile(targetPath, overwrite: false);
+                }
+                continue;
+            }
+
+            entry.ExtractToFile(
+                !entry.FullName.Equals("ClientSettings.json", StringComparison.OrdinalIgnoreCase)
+                    ? Path.Combine(clientDirPath, entry.FullName)
+                    : Path.Combine(clientDirPath, "NewSettings.json"), overwrite: true);
+        }
         archive.Dispose();
         File.Delete(zipPath);
-        
-        if (Directory.Exists(tempDirPath))
-        {
-            CopyDirectory(tempDirPath, Path.Combine(clientDirPath, "GUI"), true);
-            Directory.Delete(tempDirPath, true);
-        }
-        
-        var newSettings = File.ReadAllText(Path.Combine(clientDirPath, "ClientSettings.json"));
-        
+        var oldSettings = File.ReadAllText(Path.Combine(clientDirPath, "ClientSettings.json"));
+        var newSettings = File.ReadAllText(Path.Combine(clientDirPath, "NewSettings.json"));
         File.WriteAllText(Path.Combine(clientDirPath, "ClientSettings.json"), UpdateSettings(oldSettings, newSettings));
+        File.Delete(Path.Combine(clientDirPath, "NewSettings.json"));
     }
     
     private void UpdateServer(Release latest)
@@ -210,9 +214,6 @@ public class UpdateViewModel
         
         var serverDirPath = SettingsHandler.Settings.ServerDir;
         
-        var oldSettings = File.ReadAllText(Path.Combine(serverDirPath, "ServerSettings.json"));
-        
-        Directory.Delete(serverDirPath, true);
         Directory.CreateDirectory(serverDirPath);
         var zipPath = Path.Combine(serverDirPath, "Server.zip");
         
@@ -238,13 +239,18 @@ public class UpdateViewModel
         } while (bytesRead > 0);
         fileStream.Close();
         using var archive = ZipFile.OpenRead(zipPath);
-        archive.ExtractToDirectory(serverDirPath);
+        foreach (var entry in archive.Entries)
+            entry.ExtractToFile(
+                !entry.FullName.Equals("ServerSettings.json", StringComparison.OrdinalIgnoreCase)
+                    ? Path.Combine(serverDirPath, entry.FullName)
+                    : Path.Combine(serverDirPath, "NewSettings.json"), overwrite: true);
         archive.Dispose();
         File.Delete(zipPath);
         
-        var newSettings = File.ReadAllText(Path.Combine(serverDirPath, "ServerSettings.json"));
-        
+        var oldSettings = File.ReadAllText(Path.Combine(serverDirPath, "ServerSettings.json"));
+        var newSettings = File.ReadAllText(Path.Combine(serverDirPath, "NewSettings.json"));
         File.WriteAllText(Path.Combine(serverDirPath, "ServerSettings.json"), UpdateSettings(oldSettings, newSettings));
+        File.Delete(Path.Combine(serverDirPath, "NewSettings.json"));
     }
 
     private string UpdateSettings(string oldSettings, string newSettings)

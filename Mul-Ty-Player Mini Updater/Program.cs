@@ -235,15 +235,23 @@ public class Program
         using var archive = ZipFile.OpenRead(zipPath);
         foreach (var entry in archive.Entries)
         {
-            // Check if the entry is not the excluded directory and not the excluded file
-            if (entry.FullName.StartsWith("GUI/", StringComparison.OrdinalIgnoreCase)) 
+            if (entry.FullName.StartsWith("GUI/", StringComparison.OrdinalIgnoreCase))
+            {
+                var targetPath = Path.Combine(clientDirPath, entry.FullName);
+                if (!File.Exists(targetPath))
+                {
+                    var targetDir = Path.GetDirectoryName(targetPath);
+                    if (!Directory.Exists(targetDir) && targetDir != null)
+                        Directory.CreateDirectory(targetDir);
+                    entry.ExtractToFile(targetPath, overwrite: false);
+                }
                 continue;
-            
+            }
+
             entry.ExtractToFile(
                 !entry.FullName.Equals("ClientSettings.json", StringComparison.OrdinalIgnoreCase)
                     ? Path.Combine(clientDirPath, entry.FullName)
                     : Path.Combine(clientDirPath, "NewSettings.json"), overwrite: true);
-            var destinationPath = Path.Combine(clientDirPath, entry.FullName);
         }
         archive.Dispose();
         File.Delete(zipPath);
