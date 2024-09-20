@@ -37,7 +37,7 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="RenderOptions.EdgeMode" Value="Aliased" />
-        <Setter Property="Foreground" Value="{Binding AltText, Source={x:Static client:App.AppColors}}" />
+        <Setter Property="Foreground" Value="{Binding AltText, Source={StaticResource AppColors}}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -59,7 +59,7 @@
                         </Trigger>
                         <Trigger Property="IsPressed" Value="true">
                             <Setter TargetName="Border"
-                                    Property="Background" Value="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" />
+                                    Property="Background" Value="{Binding SpecialBack, Source={StaticResource AppColors}}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter TargetName="Border"
@@ -71,7 +71,7 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{Binding InvertedText, Source={x:Static client:App.AppColors}}" />
+                <Setter Property="Foreground" Value="{Binding InvertedText, Source={StaticResource AppColors}}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -80,7 +80,7 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="RenderOptions.EdgeMode" Value="Aliased" />
-        <Setter Property="Foreground" Value="{Binding AltText, Source={x:Static client:App.AppColors}}" />
+        <Setter Property="Foreground" Value="{Binding AltText, Source={StaticResource AppColors}}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -98,11 +98,11 @@
                         <Trigger Property="IsDefaulted" Value="true" />
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter TargetName="Border"
-                                    Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
+                                    Property="Background" Value="{Binding AltBack, Source={StaticResource AppColors}}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="true">
                             <Setter TargetName="Border"
-                                    Property="Background" Value="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" />
+                                    Property="Background" Value="{Binding SpecialBack, Source={StaticResource AppColors}}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter TargetName="Border"
@@ -114,7 +114,7 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{Binding InvertedText, Source={x:Static client:App.AppColors}}" />
+                <Setter Property="Foreground" Value="{Binding InvertedText, Source={StaticResource AppColors}}" />
             </Trigger>
         </Style.Triggers>
     </Style>

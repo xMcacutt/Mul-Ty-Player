@@ -8,7 +8,7 @@
              xmlns:controls="clr-namespace:MulTyPlayerClient.GUI.Controls"
              d:DataContext="{d:DesignInstance Type=viewModels:HSD_ChooseTeamViewModel}"
              mc:Ignorable="d"
-             Background="{Binding MainBack, Source={x:Static client:App.AppColors}}"
+             Background="{Binding MainBack, Source={StaticResource AppColors}}"
              d:DesignHeight="750" d:DesignWidth="1200">
     <Grid>
         <StackPanel Margin="15 5 15 15">
@@ -30,8 +30,8 @@
                         Grid.Column="0" 
                         Grid.RowSpan="2" 
                         Grid.ColumnSpan="1" 
-                        Background="{Binding AltBack, Source={x:Static client:App.AppColors}}"
-                        BorderBrush="{Binding AltText, Source={x:Static client:App.AppColors}}"
+                        Background="{Binding AltBack, Source={StaticResource AppColors}}"
+                        BorderBrush="{Binding AltText, Source={StaticResource AppColors}}"
                         BorderThickness="0"
                         Margin="2"/>
                 
@@ -39,8 +39,8 @@
                         Grid.Column="2" 
                         Grid.RowSpan="2" 
                         Grid.ColumnSpan="1" 
-                        Background="{Binding AltBack, Source={x:Static client:App.AppColors}}"
-                        BorderBrush="{Binding AltText, Source={x:Static client:App.AppColors}}"
+                        Background="{Binding AltBack, Source={StaticResource AppColors}}"
+                        BorderBrush="{Binding AltText, Source={StaticResource AppColors}}"
                         BorderThickness="0"
                         Margin="2"/>
                 
@@ -56,7 +56,7 @@
                             Size="50"/>
                         <TextBlock 
                             Style="{StaticResource ComicTextMain}"
-                            Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
+                            Foreground="{Binding MainAccent, Source={StaticResource AppColors}}"
                             FontSize="40"
                             TextAlignment="Center"
                             Text="TEAM 1"/>
@@ -75,7 +75,7 @@
                             Size="50"/>
                         <TextBlock 
                             Style="{StaticResource ComicTextMain}"
-                            Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
+                            Foreground="{Binding MainAccent, Source={StaticResource AppColors}}"
                             FontSize="40"
                             TextAlignment="Center"
                             Text="TEAM 2"/>

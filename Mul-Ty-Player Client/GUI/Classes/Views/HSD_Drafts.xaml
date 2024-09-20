@@ -11,7 +11,7 @@
              Width="1050"
              Height="775"
              d:DataContext="{d:DesignInstance Type=viewModels:HSD_DraftViewModel}"
-             Background="{Binding MainBack, Source={x:Static client:App.AppColors}}">
+             Background="{Binding MainBack, Source={StaticResource AppColors}}">
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -38,7 +38,7 @@
                 <TextBlock Style="{StaticResource ComicText}"
                            Text="Start"
                            FontSize="24"
-                           Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"/>
+                           Foreground="{Binding MainText, Source={StaticResource AppColors}}"/>
             </Button>
         </StackPanel>
 
@@ -54,7 +54,7 @@
             <TextBlock Style="{StaticResource ComicText}"
                        Text="Swap Team"
                        FontSize="20"
-                       Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"/>
+                       Foreground="{Binding MainAccent, Source={StaticResource AppColors}}"/>
         </Button>
         
         <Button Style="{StaticResource LobbyButton}"
@@ -68,7 +68,7 @@
             <TextBlock Style="{StaticResource ComicText}"
                        Text="Swap Team"
                        FontSize="20"
-                       Foreground="{Binding AltAccent, Source={x:Static client:App.AppColors}}"/>
+                       Foreground="{Binding AltAccent, Source={StaticResource AppColors}}"/>
         </Button>
         
         <ItemsControl Margin="5" Grid.Row="1" Grid.Column="0" ItemsSource="{x:Static client:HSD_DraftsHandler.Team1Backgrounds}"/>

@@ -1,11 +1,11 @@
 ﻿{
-  "MainBackColor": "#ff170606",
-  "AltBackColor": "#ff351212",
-  "SpecialBackColor": "#ff753636",
-  "MainTextColor": "#ffFFE8E8",
-  "AltTextColor": "#ff995757",
-  "InvertedTextColor": "#ff340000",
-  "MainAccentColor": "#ffE92424",
-  "AltAccentColor": "#ff298800",
+  "MainBackColor": "#FF3B0B0B",
+  "AltBackColor": "#FF5E1414",
+  "SpecialBackColor": "#FF753232",
+  "MainTextColor": "#FFFFFFFF",
+  "AltTextColor": "#FF995757",
+  "InvertedTextColor": "#FF3B0505",
+  "MainAccentColor": "#FFD61616",
+  "AltAccentColor": "#FF0D681D",
   "UseSplash": false
 }

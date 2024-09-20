@@ -5,7 +5,7 @@ using System.Windows.Input;
 using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI.ViewModels;
 
-namespace MulTyPlayerClient.GUI;
+namespace MulTyPlayerClient.GUI.Views;
 
 public partial class MainWindow : Window
 {
@@ -13,9 +13,9 @@ public partial class MainWindow : Window
 
     public MainWindow()
     {
+        InitializeComponent();
         mainViewModel = new MainViewModel();
         DataContext = mainViewModel;
-        InitializeComponent();
     }
 
     private void Window_Closed(object sender, EventArgs e)

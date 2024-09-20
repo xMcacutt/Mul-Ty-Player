@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         WindowStyle="None"
         ResizeMode="NoResize"
-        Background="{Binding MainBack, Source={x:Static client:App.AppColors}}"
+        Background="{Binding MainBack, Source={StaticResource AppColors}}"
         Title="Choose Your Perks"
         MouseDown="UIElement_OnMouseDown"
         SizeToContent="WidthAndHeight">
@@ -20,7 +20,7 @@
         <StackPanel Margin="10"
                     Visibility="{Binding ChoosePerkActive, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}">
             <TextBlock Text="Choose Your Perk"
-                       Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"
+                       Foreground="{Binding MainText, Source={StaticResource AppColors}}"
                        Style="{StaticResource ComicText}"
                        FontSize="44" />
             <Button Style="{StaticResource LobbyButton}"
@@ -50,7 +50,7 @@
         </StackPanel>
         <StackPanel Visibility="{Binding ChoosePerkActive, Converter={StaticResource BooleanToVisibilityConverter}}">
             <TextBlock Text="Choose Your Debuff"
-                       Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"
+                       Foreground="{Binding MainText, Source={StaticResource AppColors}}"
                        Style="{StaticResource ComicText}"
                        FontSize="44" />
             <Button Style="{StaticResource LobbyButton}"

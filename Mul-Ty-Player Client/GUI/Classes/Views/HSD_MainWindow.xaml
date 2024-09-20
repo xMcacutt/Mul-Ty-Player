@@ -11,7 +11,7 @@
         ResizeMode="NoResize"
         WindowStyle="None"
         Title="Mul-Ty-Player Client - Hide &amp; Seek Drafts"
-        BorderBrush="{Binding SpecialBack, Source={x:Static client:App.AppColors}}"
+        BorderBrush="{Binding SpecialBack, Source={StaticResource AppColors}}"
         BorderThickness="1"
         Closing="HSD_MainWindow_OnClosing"
         SizeToContent="WidthAndHeight">
@@ -20,7 +20,7 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid MouseDown="UIElement_OnMouseDown" Background="{Binding MainBack, Source={x:Static client:App.AppColors}}">
+        <Grid MouseDown="UIElement_OnMouseDown" Background="{Binding MainBack, Source={StaticResource AppColors}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -30,14 +30,14 @@
             <Image VerticalAlignment="Center" Margin="10,0"
                    Source="pack://application:,,,/Resources/fe_999_icon_koalakid.ico" Width="20" />
 
-            <TextBlock Grid.Column="1" Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}" FontSize="14" VerticalAlignment="Center"
+            <TextBlock Grid.Column="1" Foreground="{Binding MainText, Source={StaticResource AppColors}}" FontSize="14" VerticalAlignment="Center"
                        Text="Mul-Ty-Player Client" />
 
             <StackPanel VerticalAlignment="Stretch" Grid.Column="2" Orientation="Horizontal">
                 <Button Click="MinimizeButton_OnClick"
                         Width="40" 
                         Style="{StaticResource MenuStripMinButton}">
-                    <controls:Icon Foreground="{Binding AltText, Source={x:Static client:App.AppColors}}" Code="{DynamicResource IcoMin}" />
+                    <controls:Icon Foreground="{Binding AltText, Source={StaticResource AppColors}}" Code="{DynamicResource IcoMin}" />
                 </Button>
                 <Button Click="CloseButton_OnClick"
                         Width="40" 

@@ -1,5 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
 using MulTyPlayerClient.GUI.Themes;
@@ -28,9 +31,29 @@ public class Colors
     public Color InvertedTextColor {get; set;}
     public Color MainAccentColor {get; set;}
     public Color AltAccentColor {get; set;}
-        
+    
+    private Dictionary<string, Action<Color>> colorSetters;
     public Colors()
     {
+        MainBack = new SolidColorBrush();
+        AltBack = new SolidColorBrush();
+        SpecialBack = new SolidColorBrush();
+        MainText = new SolidColorBrush();
+        AltText = new SolidColorBrush();
+        InvertedText = new SolidColorBrush();
+        MainAccent = new SolidColorBrush();
+        AltAccent = new SolidColorBrush();
+        colorSetters = new Dictionary<string, Action<Color>>
+        {
+            { "MainBack", color => { MainBackColor = color; MainBack.Color = color; } },
+            { "AltBack", color => { AltBackColor = color; AltBack.Color = color; } },
+            { "SpecialBack", color => { SpecialBackColor = color; SpecialBack.Color = color; } },
+            { "MainText", color => { MainTextColor = color; MainText.Color = color; } },
+            { "AltText", color => { AltTextColor = color; AltText.Color = color; } },
+            { "InvertedText", color => { InvertedTextColor = color; InvertedText.Color = color; } },
+            { "MainAccent", color => { MainAccentColor = color; MainAccent.Color = color; } },
+            { "AltAccent", color => { AltAccentColor = color; AltAccent.Color = color; } }
+        };
         SetColors("Dark");
     }
 
@@ -48,13 +71,31 @@ public class Colors
         AltAccentColor = (Color)ColorConverter.ConvertFromString(scheme.AltAccentColor)!;
         UseSplash = scheme.UseSplash;
         
-        MainBack = new SolidColorBrush(MainBackColor);
-        AltBack = new SolidColorBrush(AltBackColor);
-        SpecialBack = new SolidColorBrush(SpecialBackColor);
-        MainText = new SolidColorBrush(MainTextColor);
-        AltText = new SolidColorBrush(AltTextColor);
-        InvertedText = new SolidColorBrush(InvertedTextColor);
-        MainAccent = new SolidColorBrush(MainAccentColor);
-        AltAccent = new SolidColorBrush(AltAccentColor);
+        MainBack.Color = MainBackColor;
+        AltBack.Color = AltBackColor;
+        SpecialBack.Color = SpecialBackColor;
+        MainText.Color = MainTextColor;
+        AltText.Color = AltTextColor;
+        InvertedText.Color = InvertedTextColor;
+        MainAccent.Color = MainAccentColor;
+        AltAccent.Color = AltAccentColor;
+    }
+
+    public void UpdateColors()
+    {
+        MainBack.Color = MainBackColor;
+        AltBack.Color = AltBackColor;
+        SpecialBack.Color = SpecialBackColor;
+        MainText.Color = MainTextColor;
+        AltText.Color = AltTextColor;
+        InvertedText.Color = InvertedTextColor;
+        MainAccent.Color = MainAccentColor;
+        AltAccent.Color = AltAccentColor;
+    }
+
+    public void SetColor(string name, Color color)
+    {
+        if (colorSetters.TryGetValue(name, out var action))
+            action(color);
     }
 }

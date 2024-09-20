@@ -1,0 +1,122 @@
+﻿<Window x:Class="MulTyPlayerClient.GUI.Classes.Views.ThemeEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:MulTyPlayerClient.GUI.Classes.Views"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        SizeToContent="WidthAndHeight"
+        Background="{Binding MainBack, Source={StaticResource AppColors}}"
+        Title="ThemeEditor">
+    <Grid>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="10">
+                <xctk:ColorPicker ColorMode="ColorCanvas"
+                                  SelectedColor="{Binding MainBackColor, Source={StaticResource AppColors}}"
+                                  Width="50"
+                                  x:Name="MainBack"
+                                  SelectedColorChanged="ColorChanged"/>
+                <TextBlock Text="Main Back"
+                           Margin="20 0 0 0"
+                           FontFamily="../../Fonts/#SF Slapstick Comic" 
+                           FontSize="30"
+                           Background="{Binding AltBack, Source={StaticResource AppColors}}"
+                           Foreground="{Binding MainBack, Source={StaticResource AppColors}}"/>
+            </StackPanel>
+            
+            <StackPanel Orientation="Horizontal" Margin="10">
+                <xctk:ColorPicker ColorMode="ColorCanvas"
+                                  SelectedColor="{Binding AltBackColor, Source={StaticResource AppColors}}"
+                                  Width="50"
+                                  x:Name="AltBack"
+                                  SelectedColorChanged="ColorChanged"/>
+                <TextBlock Text="Alt Back"
+                           Margin="20 0 0 0"
+                           FontFamily="../../Fonts/#SF Slapstick Comic" 
+                           FontSize="30"
+                           Foreground="{Binding AltBack, Source={StaticResource AppColors}}"/>
+            </StackPanel>
+            
+            <StackPanel Orientation="Horizontal" Margin="10">
+                <xctk:ColorPicker ColorMode="ColorCanvas"
+                                  SelectedColor="{Binding SpecialBackColor, Source={StaticResource AppColors}}"
+                                  Width="50"
+                                  x:Name="SpecialBack"
+                                  SelectedColorChanged="ColorChanged"/>
+                <TextBlock Text="Special Back"
+                           Margin="20 0 0 0"
+                           FontFamily="../../Fonts/#SF Slapstick Comic" 
+                           FontSize="30"
+                           Foreground="{Binding SpecialBack, Source={StaticResource AppColors}}"/>
+            </StackPanel>
+            
+            <StackPanel Orientation="Horizontal" Margin="10">
+                <xctk:ColorPicker ColorMode="ColorCanvas"
+                                  SelectedColor="{Binding MainAccentColor, Source={StaticResource AppColors}}"
+                                  Width="50"
+                                  x:Name="MainAccent"
+                                  SelectedColorChanged="ColorChanged"/>
+                <TextBlock Text="Main Accent"
+                           Margin="20 0 0 0"
+                           FontFamily="../../Fonts/#SF Slapstick Comic" 
+                           FontSize="30"
+                           Foreground="{Binding MainAccent, Source={StaticResource AppColors}}"/>
+            </StackPanel>
+            
+            <StackPanel Orientation="Horizontal" Margin="10">
+                <xctk:ColorPicker ColorMode="ColorCanvas"
+                                  SelectedColor="{Binding AltAccentColor, Source={StaticResource AppColors}}"
+                                  Width="50"
+                                  x:Name="AltAccent"
+                                  SelectedColorChanged="ColorChanged"/>
+                <TextBlock Text="Alt Accent"
+                           Margin="20 0 0 0"
+                           FontFamily="../../Fonts/#SF Slapstick Comic" 
+                           FontSize="30"
+                           Foreground="{Binding AltAccent, Source={StaticResource AppColors}}"/>
+            </StackPanel>
+            
+            <StackPanel Orientation="Horizontal" Margin="10">
+                <xctk:ColorPicker ColorMode="ColorCanvas"
+                                  SelectedColor="{Binding MainTextColor, Source={StaticResource AppColors}}"
+                                  Width="50"
+                                  x:Name="MainText"
+                                  SelectedColorChanged="ColorChanged"/>
+                <TextBlock Text="Main Text"
+                           Margin="20 0 0 0"
+                           FontFamily="../../Fonts/#SF Slapstick Comic" 
+                           FontSize="30"
+                           Foreground="{Binding MainText, Source={StaticResource AppColors}}"/>
+            </StackPanel>
+            
+            <StackPanel Orientation="Horizontal" Margin="10">
+                <xctk:ColorPicker ColorMode="ColorCanvas"
+                                  SelectedColor="{Binding InvertedTextColor, Source={StaticResource AppColors}}"
+                                  Width="50"
+                                  x:Name="InvertedText"
+                                  SelectedColorChanged="ColorChanged"/>
+                <TextBlock Text="Inverted Text"
+                           Margin="20 0 0 0"
+                           FontFamily="../../Fonts/#SF Slapstick Comic" 
+                           FontSize="30"
+                           Foreground="{Binding InvertedText, Source={StaticResource AppColors}}"/>
+            </StackPanel>
+            
+            <StackPanel Orientation="Horizontal" Margin="10">
+                <xctk:ColorPicker ColorMode="ColorCanvas"
+                                  SelectedColor="{Binding AltTextColor, Source={StaticResource AppColors}}"
+                                  Width="50"
+                                  x:Name="AltText"
+                                  SelectedColorChanged="ColorChanged"/>
+                <TextBlock Text="Alt Text"
+                           Margin="20 0 0 0"
+                           FontFamily="../../Fonts/#SF Slapstick Comic" 
+                           FontSize="30"
+                           Background="{Binding AltBack, Source={StaticResource AppColors}}"
+                           Foreground="{Binding AltText, Source={StaticResource AppColors}}"/>
+            </StackPanel>
+            
+        </StackPanel>
+    </Grid>
+</Window>

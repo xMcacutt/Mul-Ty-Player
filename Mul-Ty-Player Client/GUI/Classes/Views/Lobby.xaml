@@ -10,14 +10,15 @@
              mc:Ignorable="d"
              Height="450" Width="800" FontSize="10" BorderBrush="Black"
              x:Name="LobbyView"
-             Background="{Binding MainBack, Source={x:Static client:App.AppColors}}"
+             Background="{Binding MainBack, Source={StaticResource AppColors}}"
              d:DataContext="{d:DesignInstance Type=viewmodels:LobbyViewModel}">
     <Grid>
         <Image Visibility="{Binding UseSplash, 
-                    Source={x:Static client:App.AppColors}, 
+                    Source={StaticResource AppColors}, 
                     Converter={StaticResource BooleanToVisibilityConverter}, 
                     ConverterParameter=true}" 
-               Source="pack://siteoforigin:,,,/GUI/Themes/SplashImage.png"/>
+               Source="pack://siteoforigin:,,,/GUI/Themes/SplashImage.png">
+        </Image>
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.8*" />
@@ -92,7 +93,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <controls:Icon Size="10"
-                                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
+                                                   Foreground="{Binding MainAccent, Source={StaticResource AppColors}}"
                                                    Margin="0"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
@@ -116,7 +117,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <controls:Icon Size="10"
-                                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
+                                                   Foreground="{Binding MainAccent, Source={StaticResource AppColors}}"
                                                    Margin="0"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
@@ -128,7 +129,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <controls:Icon Size="10"
-                                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
+                                                   Foreground="{Binding MainAccent, Source={StaticResource AppColors}}"
                                                    Margin="0"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
@@ -157,7 +158,7 @@
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
                                 <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                    <Setter Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
+                                    <Setter Property="Background" Value="{Binding AltBack, Source={StaticResource AppColors}}" />
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -167,9 +168,9 @@
                             <Setter Property="BorderBrush" Value="Transparent" />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
+                                    <Setter Property="Background" Value="{Binding AltAccent, Source={StaticResource AppColors}}" />
                                     <Setter Property="BorderThickness" Value="0" />
-                                    <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
+                                    <Setter Property="Foreground" Value="{Binding MainText, Source={StaticResource AppColors}}" />
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -227,7 +228,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <controls:Icon Size="10"
-                                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
+                                                   Foreground="{Binding MainAccent, Source={StaticResource AppColors}}"
                                                    Margin="0"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
@@ -245,7 +246,7 @@
                                     <Setter Property="Visibility" Value="Visible"/>
                                 </DataTrigger>
                                 <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                    <Setter Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
+                                    <Setter Property="Background" Value="{Binding AltBack, Source={StaticResource AppColors}}" />
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -255,9 +256,9 @@
                             <Setter Property="BorderBrush" Value="Transparent" />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
+                                    <Setter Property="Background" Value="{Binding AltAccent, Source={StaticResource AppColors}}" />
                                     <Setter Property="BorderThickness" Value="0" />
-                                    <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
+                                    <Setter Property="Foreground" Value="{Binding MainText, Source={StaticResource AppColors}}" />
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -273,7 +274,7 @@
                            Margin="2 2 2 0"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
-                           Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"/>
+                           Foreground="{Binding MainText, Source={StaticResource AppColors}}"/>
 
                 <TextBlock Grid.Row="3" 
                            x:Name="AbilityCooldown"
@@ -283,7 +284,7 @@
                            Visibility="{Binding IsAbilityCooldownVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
-                           Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"/>
+                           Foreground="{Binding MainText, Source={StaticResource AppColors}}"/>
             </StackPanel>
 
             <Grid Grid.Column="2">
@@ -559,7 +560,7 @@
                             </Button.Resources>
                         </Button>
                     </Grid>
-                    <Separator Width="500" Foreground="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" />
+                    <Separator Width="500" Foreground="{Binding SpecialBack, Source={StaticResource AppColors}}" />
                 </StackPanel>
 
 
@@ -580,9 +581,9 @@
                                     <TextBox Text="{Binding Mode=OneWay}"
                                              IsReadOnly="True"
                                              TextWrapping="Wrap"
-                                             Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"
+                                             Foreground="{Binding MainText, Source={StaticResource AppColors}}"
                                              Background="Transparent"
-                                             SelectionBrush="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
+                                             SelectionBrush="{Binding MainAccent, Source={StaticResource AppColors}}"
                                              BorderBrush="Transparent"
                                              BorderThickness="0"
                                              FontFamily="Cascadia Code"
@@ -628,7 +629,7 @@
                            Placement="Top"
                            VerticalOffset="-3"
                            Width="350">
-                        <Border BorderBrush="{Binding SpecialBack, Source={x:Static client:App.AppColors}}"
+                        <Border BorderBrush="{Binding SpecialBack, Source={StaticResource AppColors}}"
                                 BorderThickness="2">
                             <ListBox Grid.Column="0"
                                      Style="{StaticResource CommandSuggestionsListBox}"

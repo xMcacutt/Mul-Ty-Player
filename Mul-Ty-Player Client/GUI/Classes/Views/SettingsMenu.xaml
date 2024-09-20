@@ -8,8 +8,8 @@
         xmlns:controls="clr-namespace:MulTyPlayerClient.GUI.Controls"
         xmlns:client="clr-namespace:MulTyPlayerClient"
         mc:Ignorable="d"
-        Background="{Binding MainBack, Source={x:Static client:App.AppColors}}"
-        BorderBrush="{Binding SpecialBack, Source={x:Static client:App.AppColors}}"
+        Background="{Binding MainBack, Source={StaticResource AppColors}}"
+        BorderBrush="{Binding SpecialBack, Source={StaticResource AppColors}}"
         BorderThickness="1"
         SizeToContent="Height"
         Title="SettingsMenu" 
@@ -30,7 +30,7 @@
                     Background="Transparent"
                     IsHitTestVisible="True">
             <TextBlock Style="{StaticResource ComicText}"
-                       Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"
+                       Foreground="{Binding MainText, Source={StaticResource AppColors}}"
                        Text="Settings"
                        FontSize="45" 
                        Margin="0 0 0 10"/>
@@ -49,7 +49,7 @@
                     </Grid.ColumnDefinitions>
                     <controls:Icon Grid.Column="0"
                                    Size="25"
-                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" 
+                                   Foreground="{Binding MainAccent, Source={StaticResource AppColors}}" 
                                    Code="{DynamicResource IcoHome}"/>
                     <TextBlock Grid.Column="1" 
                                Text="Client"
@@ -57,7 +57,7 @@
                                FontSize="24"
                                Margin="15 0"/>
                     <controls:Icon Grid.Column="2" 
-                                   Foreground="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" 
+                                   Foreground="{Binding SpecialBack, Source={StaticResource AppColors}}" 
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Size="20"
@@ -124,7 +124,7 @@
                     </Grid.ColumnDefinitions>
                     <controls:Icon Grid.Column="0"
                                    Size="25"
-                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" 
+                                   Foreground="{Binding MainAccent, Source={StaticResource AppColors}}" 
                                    Code="{DynamicResource IcoGame}"/>
                     <TextBlock Grid.Column="1" 
                                Text="Gameplay"
@@ -132,7 +132,7 @@
                                FontSize="24"
                                Margin="15 0"/>
                     <controls:Icon Grid.Column="2" 
-                                   Foreground="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" 
+                                   Foreground="{Binding SpecialBack, Source={StaticResource AppColors}}" 
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Size="20"
@@ -189,14 +189,14 @@
                     </Grid.ColumnDefinitions>
                     <controls:Icon Grid.Column="0"
                                    Size="25"
-                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" 
+                                   Foreground="{Binding MainAccent, Source={StaticResource AppColors}}" 
                                    Code="{DynamicResource IcoMic}"/>
                     <TextBlock Grid.Column="1" Text="Voice"
                                Style="{StaticResource SettingsTextStyle}"
                                FontSize="24"
                                Margin="15 0"/>
                     <controls:Icon Grid.Column="2" 
-                                   Foreground="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" 
+                                   Foreground="{Binding SpecialBack, Source={StaticResource AppColors}}" 
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Size="20"
@@ -244,7 +244,7 @@
                     </Grid.ColumnDefinitions>
                     <controls:Icon Grid.Column="0"
                                    Size="25"
-                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" 
+                                   Foreground="{Binding MainAccent, Source={StaticResource AppColors}}" 
                                    Code="{DynamicResource IcoHost}"/>
                     <TextBlock Grid.Column="1" 
                                Text="Server"
@@ -252,7 +252,7 @@
                                FontSize="24"
                                Margin="15 0"/>
                     <controls:Icon Grid.Column="2" 
-                                   Foreground="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" 
+                                   Foreground="{Binding SpecialBack, Source={StaticResource AppColors}}" 
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Size="20"
@@ -308,14 +308,14 @@
                     </Grid.ColumnDefinitions>
                     <controls:Icon Grid.Column="0"
                                    Size="25"
-                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" 
+                                   Foreground="{Binding MainAccent, Source={StaticResource AppColors}}" 
                                    Code="{DynamicResource IcoTools}"/>
                     <TextBlock Grid.Column="1" Text="Developer"
                                Style="{StaticResource SettingsTextStyle}"
                                FontSize="24"
                                Margin="15 0"/>
                     <controls:Icon Grid.Column="2" 
-                                   Foreground="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" 
+                                   Foreground="{Binding SpecialBack, Source={StaticResource AppColors}}" 
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Size="20"
@@ -349,7 +349,7 @@
                         Click="CancelButton_OnClick">
                     <controls:Icon Code="{DynamicResource IcoCancel}"
                                    Size="20"
-                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" />
+                                   Foreground="{Binding MainAccent, Source={StaticResource AppColors}}" />
                 </Button>
                 <Rectangle Fill="Transparent" Width="50"/>
                 <Button Style="{StaticResource LobbyButton}" 
@@ -357,7 +357,7 @@
                         Click="SaveButton_OnClick">
                     <controls:Icon Code="{DynamicResource IcoSave}"
                                    Size="20"
-                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}" />
+                                   Foreground="{Binding MainAccent, Source={StaticResource AppColors}}" />
                 </Button>
             </StackPanel>
         </StackPanel>

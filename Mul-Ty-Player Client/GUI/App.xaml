@@ -9,9 +9,11 @@
 
     <Application.Resources>
         <ResourceDictionary>
-            <gui:Colors x:Key="AppColors"/>
             <ResourceDictionary Source="Classes/Controls/KoalaIcons.xaml" x:Key="KoalaIcons" />
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <gui:Colors x:Key="AppColors"/>
+                </ResourceDictionary>
                 <gui:Icons/>
                 <ResourceDictionary Source="Styles/ValueConverters.xaml" />
                 <ResourceDictionary Source="Styles/GlobalStyles.xaml" />

@@ -47,7 +47,7 @@
     <Style x:Key="DefaultStyle" TargetType="TextBlock">
         <Setter Property="TextElement.FontFamily" Value="../Fonts/#SF Slapstick Comic" />
         <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}"/>
+        <Setter Property="Foreground" Value="{Binding MainText, Source={StaticResource AppColors}}"/>
     </Style>
     
     <Color x:Key="MattColor" A="255" R="255" G="0" B="0"/>
@@ -55,9 +55,9 @@
         <Setter Property="Foreground">
             <Setter.Value>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
+                    <GradientStop Color="{Binding MainTextColor, Source={StaticResource AppColors}}" Offset="0.0"/>
                     <GradientStop Color="{StaticResource MattColor}" Offset="0.5"/>
-                    <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="1.0"/>
+                    <GradientStop Color="{Binding MainTextColor, Source={StaticResource AppColors}}" Offset="1.0"/>
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
@@ -68,9 +68,9 @@
         <Setter Property="Foreground">
             <Setter.Value>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
+                    <GradientStop Color="{Binding MainTextColor, Source={StaticResource AppColors}}" Offset="0.0"/>
                     <GradientStop Color="{StaticResource SirbeyyColor}" Offset="1.0"/>
-                    <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
+                    <GradientStop Color="{Binding MainTextColor, Source={StaticResource AppColors}}" Offset="0.0"/>
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
@@ -81,9 +81,9 @@
         <Setter Property="Foreground">
             <Setter.Value>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
+                    <GradientStop Color="{Binding MainTextColor, Source={StaticResource AppColors}}" Offset="0.0"/>
                     <GradientStop Color="{StaticResource BuzchyColor}" Offset="1.0"/>
-                    <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
+                    <GradientStop Color="{Binding MainTextColor, Source={StaticResource AppColors}}" Offset="0.0"/>
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
@@ -94,9 +94,9 @@
         <Setter Property="Foreground">
             <Setter.Value>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
+                    <GradientStop Color="{Binding MainTextColor, Source={StaticResource AppColors}}" Offset="0.0"/>
                     <GradientStop Color="{StaticResource KytholColor}" Offset="1.0"/>
-                    <GradientStop Color="{Binding MainTextColor, Source={x:Static client:App.AppColors}}" Offset="0.0"/>
+                    <GradientStop Color="{Binding MainTextColor, Source={StaticResource AppColors}}" Offset="0.0"/>
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>

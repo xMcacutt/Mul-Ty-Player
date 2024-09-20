@@ -1,7 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Navigation;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Classes.Views;
@@ -15,15 +18,14 @@ namespace MulTyPlayerClient;
 
 public partial class App : Application
 {
-    private MainWindow mw;
+    private MainWindow _mainWindow;
     public static Colors AppColors;
     public static Window SettingsWindow;
-    public static Minimap Minimap;
 
     public App()
     {
-        AppColors = new Colors();
         InitializeComponent();
+        AppColors = Resources["AppColors"] as Colors;
     }
 
     protected override void OnStartup(StartupEventArgs e)
@@ -33,12 +35,14 @@ public partial class App : Application
         SettingsHandler.Setup();
         ModelController.InstantiateModels();
         SFXPlayer.Init();
-        //Minimap = new Minimap();
-        //Minimap.Show();
-        mw = new MainWindow();
-        mw.Show();
-        mw.Activate();
+        _mainWindow = new MainWindow();
+        _mainWindow.Show();
+        _mainWindow.Activate();
+        #if DEBUG
+            var editor = new ThemeEditor();
+            editor.Show();
+        #endif
     }
-
-
+    
+    
 }

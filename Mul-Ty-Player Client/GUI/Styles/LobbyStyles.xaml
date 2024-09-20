@@ -5,15 +5,15 @@
                     xmlns:controls="clr-namespace:MulTyPlayerClient.GUI.Controls"
                     xmlns:system="clr-namespace:System;assembly=System.Runtime">
     <LinearGradientBrush x:Key="BackGradient" EndPoint="0.5,1" StartPoint="0.5,0">
-        <GradientStop Color="{Binding AltBackColor, Source={x:Static client:App.AppColors}}" />
-        <GradientStop Color="{Binding MainBackColor, Source={x:Static client:App.AppColors}}" Offset="1" />
+        <GradientStop Color="{Binding AltBackColor, Source={StaticResource AppColors}}" />
+        <GradientStop Color="{Binding MainBackColor, Source={StaticResource AppColors}}" Offset="1" />
     </LinearGradientBrush>
     
     <Style x:Key="LobbyListBox"
            TargetType="{x:Type ListBox}"
            BasedOn="{StaticResource {x:Type ListBox}}">
-        <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
-        <Setter Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}"></Setter>
+        <Setter Property="Foreground" Value="{Binding MainText, Source={StaticResource AppColors}}" />
+        <Setter Property="Background" Value="{Binding AltBack, Source={StaticResource AppColors}}"></Setter>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="HorizontalContentAlignment" Value="Right"/>
         <Setter Property="TextElement.FontSize" Value="12"/>
@@ -55,10 +55,10 @@
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
+                                        <Setter Property="Background" Value="{Binding AltAccent, Source={StaticResource AppColors}}" />
                                     </Trigger>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
+                                        <Setter Property="Background" Value="{Binding AltAccent, Source={StaticResource AppColors}}" />
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
@@ -72,8 +72,8 @@
         <Style x:Key="CommandSuggestionsListBox"
            TargetType="{x:Type ListBox}"
            BasedOn="{StaticResource {x:Type ListBox}}">
-        <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
-        <Setter Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}"></Setter>
+        <Setter Property="Foreground" Value="{Binding MainText, Source={StaticResource AppColors}}" />
+        <Setter Property="Background" Value="{Binding AltBack, Source={StaticResource AppColors}}"></Setter>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="HorizontalContentAlignment" Value="Right"/>
         <Setter Property="TextElement.FontSize" Value="12"/>
@@ -118,7 +118,7 @@
                                         <Setter Property="Background" Value="{x:Null}" />
                                     </Trigger>  
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
+                                        <Setter Property="Background" Value="{Binding AltAccent, Source={StaticResource AppColors}}" />
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
@@ -130,7 +130,7 @@
     </Style>
 
     <Style x:Key="ScrollBarThumb" TargetType="Thumb">
-        <Setter Property="Background" Value="{Binding MainBack, Source={x:Static client:App.AppColors}}" />
+        <Setter Property="Background" Value="{Binding MainBack, Source={StaticResource AppColors}}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Margin" Value="2" />
         <Setter Property="Template">
@@ -145,8 +145,8 @@
         </Setter>
     </Style>
     <Style TargetType="ScrollBar">
-        <Setter Property="Background" Value="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" />
-        <Setter Property="Foreground" Value="{Binding MainBack, Source={x:Static client:App.AppColors}}" />
+        <Setter Property="Background" Value="{Binding SpecialBack, Source={StaticResource AppColors}}" />
+        <Setter Property="Foreground" Value="{Binding MainBack, Source={StaticResource AppColors}}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Margin" Value="0 10" />
         <Setter Property="Template">
@@ -159,7 +159,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Border Width="10" Grid.Row="1" CornerRadius="5" BorderThickness="0"
-                                Background="{Binding SpecialBack, Source={x:Static client:App.AppColors}}">
+                                Background="{Binding SpecialBack, Source={StaticResource AppColors}}">
                             <Track x:Name="PART_Track" IsDirectionReversed="True">
                                 <Track.Thumb>
                                     <Thumb Style="{StaticResource ScrollBarThumb}" />
@@ -179,7 +179,7 @@
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
+        <Setter Property="Foreground" Value="{Binding MainText, Source={StaticResource AppColors}}" />
         <Setter Property="AlternatingRowBackground" Value="Transparent" />
         <Setter Property="CanUserResizeColumns" Value="False" />
         <Setter Property="CanUserResizeRows" Value="False" />
@@ -192,7 +192,7 @@
         <Setter Property="Height" Value="35" />
         <Style.Triggers>
             <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                <Setter Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
+                <Setter Property="Background" Value="{Binding AltBack, Source={StaticResource AppColors}}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -200,17 +200,17 @@
         <Setter Property="BorderBrush" Value="Transparent" />
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
+                <Setter Property="Background" Value="{Binding AltAccent, Source={StaticResource AppColors}}" />
                 <Setter Property="BorderThickness" Value="0" />
-                <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
+                <Setter Property="Foreground" Value="{Binding MainText, Source={StaticResource AppColors}}" />
             </Trigger>
         </Style.Triggers>
     </Style>
 
     <!--LobbyButton-->
     <Style TargetType="Button" x:Key="LobbyButton">
-        <Setter Property="Background" Value="{Binding MainBack, Source={x:Static client:App.AppColors}}" />
-        <Setter Property="Foreground" Value="{Binding MainAccent, Source={x:Static client:App.AppColors}}" />
+        <Setter Property="Background" Value="{Binding MainBack, Source={StaticResource AppColors}}" />
+        <Setter Property="Foreground" Value="{Binding MainAccent, Source={StaticResource AppColors}}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Padding" Value="5,5" />
         <Setter Property="Cursor" Value="Hand" />
@@ -222,7 +222,7 @@
                     <Border Name="Border"
                             CornerRadius="0"
                             BorderThickness="0"
-                            Background="{Binding MainBack, Source={x:Static client:App.AppColors}}">
+                            Background="{Binding MainBack, Source={StaticResource AppColors}}">
                         <ContentPresenter Margin="2"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
@@ -233,11 +233,11 @@
                         <Trigger Property="IsDefaulted" Value="true" />
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter TargetName="Border"
-                                    Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
+                                    Property="Background" Value="{Binding AltBack, Source={StaticResource AppColors}}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="true">
                             <Setter TargetName="Border"
-                                    Property="Background" Value="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" />
+                                    Property="Background" Value="{Binding SpecialBack, Source={StaticResource AppColors}}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter TargetName="Border"
@@ -249,20 +249,20 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" />
+                <Setter Property="Foreground" Value="{Binding SpecialBack, Source={StaticResource AppColors}}" />
                 <Setter Property="Background" Value="Transparent" />
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderBrush" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
-                <Setter Property="Background" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
+                <Setter Property="BorderBrush" Value="{Binding AltAccent, Source={StaticResource AppColors}}" />
+                <Setter Property="Background" Value="{Binding AltAccent, Source={StaticResource AppColors}}" />
             </Trigger>
         </Style.Triggers>
     </Style>
     
     <Style TargetType="{x:Type ContextMenu}">
-        <Setter Property="Background" Value="{Binding MainBack, Source={x:Static client:App.AppColors}}"/>
-        <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}"/>
-        <Setter Property="BorderBrush" Value="{Binding SpecialBack, Source={x:Static client:App.AppColors}}"/>
+        <Setter Property="Background" Value="{Binding MainBack, Source={StaticResource AppColors}}"/>
+        <Setter Property="Foreground" Value="{Binding MainText, Source={StaticResource AppColors}}"/>
+        <Setter Property="BorderBrush" Value="{Binding SpecialBack, Source={StaticResource AppColors}}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -279,8 +279,8 @@
             <Setter.Value>
                 <ControlTemplate TargetType="controls:CustomMenuItem">
                     <ControlTemplate.Resources>
-                        <SolidColorBrush x:Key="MenuItem.Highlight.Background" Color="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" />
-                        <SolidColorBrush x:Key="Menu.Disabled.Foreground" Color="{Binding AltText, Source={x:Static client:App.AppColors}}" />
+                        <SolidColorBrush x:Key="MenuItem.Highlight.Background" Color="{Binding SpecialBack, Source={StaticResource AppColors}}" />
+                        <SolidColorBrush x:Key="Menu.Disabled.Foreground" Color="{Binding AltText, Source={StaticResource AppColors}}" />
                     </ControlTemplate.Resources>
                     <Border x:Name="templateRoot" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid VerticalAlignment="Center" Height="25">
@@ -292,7 +292,7 @@
                             <Rectangle Grid.Column="0"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center"
-                                       Fill="{Binding SpecialBack, Source={x:Static client:App.AppColors}}"
+                                       Fill="{Binding SpecialBack, Source={StaticResource AppColors}}"
                                        Visibility="Hidden"/>
                             <controls:Icon x:Name="Icon"
                                        Grid.Column="0"
@@ -301,7 +301,7 @@
                                        Visibility="{TemplateBinding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
                                        HorizontalAlignment="Center"
                                        Size="15"
-                                       Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"/>
+                                       Foreground="{Binding MainAccent, Source={StaticResource AppColors}}"/>
                             <TextBlock x:Name="CheckIcon"
                                        Grid.Column="0"
                                        Text="{DynamicResource IcoCheck}"
@@ -310,7 +310,7 @@
                                        FontSize="15"
                                        Visibility="{TemplateBinding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"
                                        VerticalAlignment="Center"
-                                       Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"/>
+                                       Foreground="{Binding MainAccent, Source={StaticResource AppColors}}"/>
                             <TextBlock x:Name="Header"
                                        Grid.Column="1"
                                        Text="{TemplateBinding Header}"
@@ -318,7 +318,7 @@
                                        VerticalAlignment="Center"
                                        Margin="5 0 0 0"
                                        FontSize="16"
-                                       Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"/>
+                                       Foreground="{Binding MainText, Source={StaticResource AppColors}}"/>
                             <TextBlock x:Name="SubMenuIcon"
                                        Grid.Column="2"
                                        Visibility="{TemplateBinding HasItems, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"
@@ -327,9 +327,9 @@
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        FontSize="10"
-                                       Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"/>
+                                       Foreground="{Binding MainAccent, Source={StaticResource AppColors}}"/>
                             <Popup x:Name="PART_Popup" Placement="Right" IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="False" Focusable="False" PopupAnimation="Fade">
-                                <Border Background="{Binding MainBack, Source={x:Static client:App.AppColors}}" BorderBrush="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" BorderThickness="1">
+                                <Border Background="{Binding MainBack, Source={StaticResource AppColors}}" BorderBrush="{Binding SpecialBack, Source={StaticResource AppColors}}" BorderThickness="1">
                                     <ItemsPresenter />
                                 </Border>
                             </Popup>
@@ -337,19 +337,19 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" TargetName="templateRoot" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}"/>
+                            <Setter Property="Background" TargetName="templateRoot" Value="{Binding AltBack, Source={StaticResource AppColors}}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" TargetName="templateRoot" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}"/>
+                            <Setter Property="Background" TargetName="templateRoot" Value="{Binding AltAccent, Source={StaticResource AppColors}}"/>
                         </Trigger>
                         <Trigger Property="IconCode" Value="{x:Null}">
                             <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" TargetName="Icon" Value="{Binding AltText, Source={x:Static client:App.AppColors}}"/>
-                            <Setter Property="Foreground" TargetName="CheckIcon" Value="{Binding AltText, Source={x:Static client:App.AppColors}}"/>
-                            <Setter Property="Foreground" TargetName="Header" Value="{Binding AltText, Source={x:Static client:App.AppColors}}"/>
-                            <Setter Property="Foreground" TargetName="SubMenuIcon" Value="{Binding AltText, Source={x:Static client:App.AppColors}}"/>
+                            <Setter Property="Foreground" TargetName="Icon" Value="{Binding AltText, Source={StaticResource AppColors}}"/>
+                            <Setter Property="Foreground" TargetName="CheckIcon" Value="{Binding AltText, Source={StaticResource AppColors}}"/>
+                            <Setter Property="Foreground" TargetName="Header" Value="{Binding AltText, Source={StaticResource AppColors}}"/>
+                            <Setter Property="Foreground" TargetName="SubMenuIcon" Value="{Binding AltText, Source={StaticResource AppColors}}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -363,10 +363,10 @@
     <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA" />
     <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5" />
     <Style TargetType="{x:Type TextBox}" x:Key="PlaceholderTextStyle">
-        <Setter Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
-        <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
+        <Setter Property="Background" Value="{Binding AltBack, Source={StaticResource AppColors}}" />
+        <Setter Property="Foreground" Value="{Binding MainText, Source={StaticResource AppColors}}" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="SelectionBrush" Value="{Binding MainAccent, Source={x:Static client:App.AppColors}}" />
+        <Setter Property="SelectionBrush" Value="{Binding MainAccent, Source={StaticResource AppColors}}" />
         <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -393,7 +393,7 @@
                                    Margin="{TemplateBinding Margin}"
                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                   Foreground="{Binding AltText, Source={x:Static client:App.AppColors}}"
+                                   Foreground="{Binding AltText, Source={StaticResource AppColors}}"
                                    FontSize="{TemplateBinding FontSize}">
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
@@ -414,10 +414,10 @@
                             <Setter Property="Opacity" TargetName="border" Value="0.56" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="BorderBrush" TargetName="border" Value="{Binding MainAccent, Source={x:Static client:App.AppColors}}" />
+                            <Setter Property="BorderBrush" TargetName="border" Value="{Binding MainAccent, Source={StaticResource AppColors}}" />
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="true">
-                            <Setter Property="BorderBrush" TargetName="border" Value="{Binding MainAccent, Source={x:Static client:App.AppColors}}" />
+                            <Setter Property="BorderBrush" TargetName="border" Value="{Binding MainAccent, Source={StaticResource AppColors}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -428,12 +428,12 @@
     <Style x:Key="ComicTextMain" TargetType="TextBlock">
         <Setter Property="TextElement.FontFamily" Value="../Fonts/#SF Slapstick Comic" />
         <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
+        <Setter Property="Foreground" Value="{Binding MainText, Source={StaticResource AppColors}}" />
     </Style>
     <Style x:Key="ComicTextInverted" TargetType="TextBlock">
         <Setter Property="TextElement.FontFamily" Value="../Fonts/#SF Slapstick Comic" />
         <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="Foreground" Value="{Binding InvertedText, Source={x:Static client:App.AppColors}}" />
+        <Setter Property="Foreground" Value="{Binding InvertedText, Source={StaticResource AppColors}}" />
     </Style>
 
     <Style TargetType="{x:Type Button}" x:Key="InstallButton">
