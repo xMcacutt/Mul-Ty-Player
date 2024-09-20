@@ -120,9 +120,6 @@
         <None Update="GUI\Themes\Cherry.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Update="GUI\Themes\Kiki.json">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
         <None Update="GUI\Sounds\Taunt.wav">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
@@ -175,6 +172,12 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="GUI\Themes\Buzchy.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="GUI\Themes\Kythol.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="GUI\Themes\SplashImage.png">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>

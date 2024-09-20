@@ -12,637 +12,642 @@
              x:Name="LobbyView"
              Background="{Binding MainBack, Source={x:Static client:App.AppColors}}"
              d:DataContext="{d:DesignInstance Type=viewmodels:LobbyViewModel}">
+    <Grid>
+        <Image Visibility="{Binding UseSplash, 
+                    Source={x:Static client:App.AppColors}, 
+                    Converter={StaticResource BooleanToVisibilityConverter}, 
+                    ConverterParameter=true}" 
+               Source="pack://siteoforigin:,,,/GUI/Themes/SplashImage.png"/>
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.8*" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
 
-    <Grid Margin="10">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.8*" />
-            <ColumnDefinition Width="10" />
-            <ColumnDefinition Width="3*" />
-        </Grid.ColumnDefinitions>
-
-        <!--Left side panel-->
-        <StackPanel Margin="0, 0, 0, 0">
-            <TextBlock Grid.Row="0"
-                       Style="{StaticResource ComicTextMain}"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       FontSize="28"
-                       Text="Connected Koalas" />
-            <DataGrid Name="PlayerInfo"
-                      PreviewMouseRightButtonDown="PlayerListItem_OnMouseRightButtonDown"
-                      ContextMenuOpening="DataGrid_OnContextMenuOpening"
-                      Style="{StaticResource DataGridStyle}"
-                      Grid.Row="1"
-                      Height="225"
-                      HorizontalContentAlignment="Stretch"
-                      ItemsSource="{x:Static client:PlayerHandler.Players}">
-                <DataGrid.Resources>
-                    <controls:BindingProxy x:Key="Proxy" Data="{Binding}" />
-                </DataGrid.Resources>
-                <DataGrid.ContextMenu>
-                    <ContextMenu x:Name="HostDataGridContextMenu">
-                        <controls:CustomMenuItem IconCode="{DynamicResource IcoGift}" Header="Gift Host" Click="GiveHost_OnClick"/>
-                        <controls:CustomMenuItem IconCode="{DynamicResource IcoHider}" Header="Change Role" Click="ChangeRole_OnClick"/>
-                        <controls:CustomMenuItem IconCode="{DynamicResource IcoKick}" Header="Kick" Click="KickPlayer_OnClick"/>
-                        <controls:CustomMenuItem IconCode="{DynamicResource IcoHome}" Header="Force Menu" Click="ForceMenu_OnClick"></controls:CustomMenuItem>
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Client ID" Width="0.3*" CanUserResize="False">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Style="{StaticResource ComicText}"
-                                           VerticalAlignment="Center"
-                                           FontSize="14"
-                                           IsHitTestVisible="False"
-                                           Padding="3"
-                                           Text="{Binding Id}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Koala Icon" Width="0.5*" CanUserResize="False">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ContentControl
-                                    Content="{Binding Koala, Converter={StaticResource KoalaToIconConverter}}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Player Name" Width="1.25*" CanUserResize="False">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Style="{Binding VIP, Converter={StaticResource VIPToStyleConverter}}"
-                                           VerticalAlignment="Center"
-                                           HorizontalAlignment="Left"
-                                           FontSize="12"
-                                           Padding="0"
-                                           Margin="2 0 0 0"
-                                           ToolTip="{Binding Name}"
-                                           Text="{Binding Name}"
-                                           TextTrimming="CharacterEllipsis" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Host Status" Width="0.35*" CanUserResize="False">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <controls:Icon Size="10"
-                                               Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
-                                               Margin="0"
-                                               HorizontalAlignment="Center"
+            <!--Left side panel-->
+            <StackPanel Margin="0, 0, 0, 0">
+                <TextBlock Grid.Row="0"
+                           Style="{StaticResource ComicTextMain}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontSize="28"
+                           Text="Connected Koalas" />
+                <DataGrid Name="PlayerInfo"
+                          PreviewMouseRightButtonDown="PlayerListItem_OnMouseRightButtonDown"
+                          ContextMenuOpening="DataGrid_OnContextMenuOpening"
+                          Style="{StaticResource DataGridStyle}"
+                          Grid.Row="1"
+                          Height="225"
+                          HorizontalContentAlignment="Stretch"
+                          ItemsSource="{x:Static client:PlayerHandler.Players}">
+                    <DataGrid.Resources>
+                        <controls:BindingProxy x:Key="Proxy" Data="{Binding}" />
+                    </DataGrid.Resources>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu x:Name="HostDataGridContextMenu">
+                            <controls:CustomMenuItem IconCode="{DynamicResource IcoGift}" Header="Gift Host" Click="GiveHost_OnClick"/>
+                            <controls:CustomMenuItem IconCode="{DynamicResource IcoHider}" Header="Change Role" Click="ChangeRole_OnClick"/>
+                            <controls:CustomMenuItem IconCode="{DynamicResource IcoKick}" Header="Kick" Click="KickPlayer_OnClick"/>
+                            <controls:CustomMenuItem IconCode="{DynamicResource IcoHome}" Header="Force Menu" Click="ForceMenu_OnClick"></controls:CustomMenuItem>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Client ID" Width="0.3*" CanUserResize="False">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Style="{StaticResource ComicText}"
                                                VerticalAlignment="Center"
-                                               Code="{Binding IsHost, Converter={StaticResource BooleanToHostIconConverter}}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Level" Width="0.6*" CanUserResize="False">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Style="{StaticResource ComicText}"
-                                           VerticalAlignment="Center"
-                                           FontSize="14"
-                                           Padding="3"
-                                           ToolTip="{Binding Level, Converter={StaticResource LevelNameConverter}}"
-                                           Text="{Binding Level}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Ready Status" Width="0.4*" CanUserResize="False">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <controls:Icon Size="10"
-                                               Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
-                                               Margin="0"
-                                               HorizontalAlignment="Center"
+                                               FontSize="14"
+                                               IsHitTestVisible="False"
+                                               Padding="3"
+                                               Text="{Binding Id}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Koala Icon" Width="0.5*" CanUserResize="False">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ContentControl
+                                        Content="{Binding Koala, Converter={StaticResource KoalaToIconConverter}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Player Name" Width="1.25*" CanUserResize="False">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Style="{Binding VIP, Converter={StaticResource VIPToStyleConverter}}"
                                                VerticalAlignment="Center"
-                                               Code="{Binding IsReady, Converter={StaticResource BooleanToReadyIconConverter}}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Role" Width="0.4*" CanUserResize="False" Visibility="{Binding Data.IsHideSeekButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Proxy}, ConverterParameter=True}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <controls:Icon Size="10"
-                                               Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
-                                               Margin="0"
-                                               HorizontalAlignment="Center"
+                                               HorizontalAlignment="Left"
+                                               FontSize="12"
+                                               Padding="0"
+                                               Margin="2 0 0 0"
+                                               ToolTip="{Binding Name}"
+                                               Text="{Binding Name}"
+                                               TextTrimming="CharacterEllipsis" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Host Status" Width="0.35*" CanUserResize="False">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <controls:Icon Size="10"
+                                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
+                                                   Margin="0"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Code="{Binding IsHost, Converter={StaticResource BooleanToHostIconConverter}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Level" Width="0.6*" CanUserResize="False">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Style="{StaticResource ComicText}"
                                                VerticalAlignment="Center"
-                                               Code="{Binding Role, Converter={StaticResource RoleToIconConverter}}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Score" Width="0.50*" CanUserResize="False" Visibility="{Binding Data.IsCollectionButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Proxy}, ConverterParameter=True}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock FontSize="{Binding Score, Converter={StaticResource ScoreLeaderConverter},Mode=TwoWay}"
-                                           Margin="0"
-                                           Style="{StaticResource ComicTextMain}"
-                                           Text="{Binding Score}"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-                <DataGrid.RowStyle>
-                    <Style TargetType="DataGridRow">
-                        <Setter Property="Height" Value="35" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Koala}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                <Setter Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.RowStyle>
-                <DataGrid.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="BorderBrush" Value="Transparent" />
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
-                                <Setter Property="BorderThickness" Value="0" />
-                                <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.CellStyle>
-            </DataGrid>
-            
-            <Line/>
-            
-            <TextBlock Grid.Row="0"
-                       Style="{StaticResource ComicTextMain}"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       FontSize="25"
-                       Text="Spectators"/>
-            <DataGrid Name="SpectatorInfo"
-                      PreviewMouseRightButtonDown="PlayerListItem_OnMouseRightButtonDown"
-                      ContextMenuOpening="DataGrid_OnContextMenuOpening"
-                      Style="{StaticResource DataGridStyle}"
-                      Grid.Row="1"
-                      Height="75"
-                      HorizontalContentAlignment="Stretch"
-                      ItemsSource="{x:Static client:PlayerHandler.Players}">
-                <DataGrid.Resources>
-                    <controls:BindingProxy x:Key="Proxy" Data="{Binding}" />
-                </DataGrid.Resources>
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Client ID" Width="0.3*" CanUserResize="False">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Style="{StaticResource ComicText}"
-                                           VerticalAlignment="Center"
-                                           FontSize="14"
-                                           IsHitTestVisible="False"
-                                           Padding="3"
-                                           Text="{Binding Id}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Player Name" Width="1.5*" CanUserResize="False">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Style="{StaticResource ComicText}"
-                                           VerticalAlignment="Center"
-                                           HorizontalAlignment="Left"
-                                           FontSize="14"
-                                           Padding="0"
-                                           Margin="2 0 0 0"
-                                           ToolTip="{Binding Name}"
-                                           Text="{Binding Name}"
-                                           TextTrimming="CharacterEllipsis" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Host Status" Width="0.35*" CanUserResize="False">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <controls:Icon Size="10"
-                                               Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
+                                               FontSize="14"
+                                               Padding="3"
+                                               ToolTip="{Binding Level, Converter={StaticResource LevelNameConverter}}"
+                                               Text="{Binding Level}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Ready Status" Width="0.4*" CanUserResize="False">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <controls:Icon Size="10"
+                                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
+                                                   Margin="0"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Code="{Binding IsReady, Converter={StaticResource BooleanToReadyIconConverter}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Role" Width="0.4*" CanUserResize="False" Visibility="{Binding Data.IsHideSeekButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Proxy}, ConverterParameter=True}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <controls:Icon Size="10"
+                                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
+                                                   Margin="0"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Code="{Binding Role, Converter={StaticResource RoleToIconConverter}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Score" Width="0.50*" CanUserResize="False" Visibility="{Binding Data.IsCollectionButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Proxy}, ConverterParameter=True}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock FontSize="{Binding Score, Converter={StaticResource ScoreLeaderConverter},Mode=TwoWay}"
                                                Margin="0"
+                                               Style="{StaticResource ComicTextMain}"
+                                               Text="{Binding Score}"
                                                HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Height" Value="35" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Koala}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                    <Setter Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderBrush" Value="Transparent" />
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.CellStyle>
+                </DataGrid>
+                
+                <Line/>
+                
+                <TextBlock Grid.Row="0"
+                           Style="{StaticResource ComicTextMain}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontSize="25"
+                           Text="Spectators"/>
+                <DataGrid Name="SpectatorInfo"
+                          PreviewMouseRightButtonDown="PlayerListItem_OnMouseRightButtonDown"
+                          ContextMenuOpening="DataGrid_OnContextMenuOpening"
+                          Style="{StaticResource DataGridStyle}"
+                          Grid.Row="1"
+                          Height="75"
+                          HorizontalContentAlignment="Stretch"
+                          ItemsSource="{x:Static client:PlayerHandler.Players}">
+                    <DataGrid.Resources>
+                        <controls:BindingProxy x:Key="Proxy" Data="{Binding}" />
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Client ID" Width="0.3*" CanUserResize="False">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Style="{StaticResource ComicText}"
                                                VerticalAlignment="Center"
-                                               Code="{Binding IsHost, Converter={StaticResource BooleanToHostIconConverter}}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-                <DataGrid.RowStyle>
-                    <Style TargetType="DataGridRow">
-                        <Setter Property="Visibility" Value="Collapsed"></Setter>
-                        <Setter Property="Height" Value="35" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Koala}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                <Setter Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.RowStyle>
-                <DataGrid.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="BorderBrush" Value="Transparent" />
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
-                                <Setter Property="BorderThickness" Value="0" />
-                                <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.CellStyle>
-            </DataGrid>
-            
-            <TextBlock Grid.Row="2"
-                       x:Name="Timer"
-                       Text="{Binding Time}"
-                       Visibility="{Binding IsTimerVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"
-                       FontFamily="Cascadia Code"
-                       FontSize="35"
-                       Margin="2 2 2 0"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"/>
+                                               FontSize="14"
+                                               IsHitTestVisible="False"
+                                               Padding="3"
+                                               Text="{Binding Id}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Player Name" Width="1.5*" CanUserResize="False">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Style="{StaticResource ComicText}"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Left"
+                                               FontSize="14"
+                                               Padding="0"
+                                               Margin="2 0 0 0"
+                                               ToolTip="{Binding Name}"
+                                               Text="{Binding Name}"
+                                               TextTrimming="CharacterEllipsis" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Host Status" Width="0.35*" CanUserResize="False">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <controls:Icon Size="10"
+                                                   Foreground="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
+                                                   Margin="0"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Code="{Binding IsHost, Converter={StaticResource BooleanToHostIconConverter}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                            <Setter Property="Height" Value="35" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Koala}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                    <Setter Property="Background" Value="{Binding AltBack, Source={x:Static client:App.AppColors}}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderBrush" Value="Transparent" />
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="{Binding AltAccent, Source={x:Static client:App.AppColors}}" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="Foreground" Value="{Binding MainText, Source={x:Static client:App.AppColors}}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.CellStyle>
+                </DataGrid>
+                
+                <TextBlock Grid.Row="2"
+                           x:Name="Timer"
+                           Text="{Binding Time}"
+                           Visibility="{Binding IsTimerVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"
+                           FontFamily="Cascadia Code"
+                           FontSize="35"
+                           Margin="2 2 2 0"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"/>
 
-            <TextBlock Grid.Row="3" 
-                       x:Name="AbilityCooldown"
-                       FontFamily="Cascadia Code"
-                       FontSize="15"
-                       Text="{Binding Path=AbilityCooldown, StringFormat='Ability Cooldown: {0}'}"
-                       Visibility="{Binding IsAbilityCooldownVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"/>
-        </StackPanel>
-
-        <Grid Grid.Column="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="60" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0">
-
-                <Grid VerticalAlignment="Top" Height="55">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Orientation="Horizontal">
-                        <Button x:Name="SettingsButton"
-                                Margin="0 0 2 0"
-                                Click="SettingsButton_Click"
-                                Width="55"
-                                ToolTip="Settings"
-                                Style="{StaticResource LobbyButton}">
-                            <controls:Icon Margin="5,0" Code="{DynamicResource IcoSettings}" Size="24" />
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="5" />
-                                </Style>
-                            </Button.Resources>
-                        </Button>
-                        
-                        <Button x:Name="ReadyButton"
-                                Margin="2 0"
-                                Click="ReadyButton_Click"
-                                ToolTip="Ready"
-                                Width="55"
-                                IsEnabled="{Binding IsReadyButtonEnabled}"
-                                Style="{StaticResource LobbyButton}">
-                            <controls:Icon Margin="5,0" Code="{DynamicResource IcoReady}" Size="24" />
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="5" />
-                                </Style>
-                            </Button.Resources>
-                        </Button>
-
-                        <Button x:Name="RequestSyncButton"
-                                Margin="2 0"
-                                Click="RequestSyncButton_Click"
-                                ToolTip="Request Sync"
-                                Width="55"
-                                IsEnabled="{Binding IsSyncButtonEnabled}"
-                                Style="{StaticResource LobbyButton}">
-                            <controls:Icon Margin="5,0" Code="{DynamicResource IcoRefresh}" Size="24" />
-                            <Button.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="5" />
-                                </Style>
-                            </Button.Resources>
-                        </Button>
-                        
-                        <Button x:Name="HostMenuButton"
-                                Margin="2 0"
-                                Click="MenuButton_Click"
-                                ContextMenuOpening="HostMenuButton_OnContextMenuOpening"
-                                ToolTip="Host Menu"
-                                Tag="{Binding DataContext, ElementName=LobbyView}"
-                                IsEnabled="{Binding IsHostMenuButtonEnabled}"
-                                Width="55"
-                                Style="{StaticResource LobbyButton}">
-                            <controls:Icon Margin="5,0" Code="{DynamicResource IcoHost}" Size="24" />
-                            <Button.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="5" />
-                                </Style>
-                            </Button.Resources>
-                            <Button.ContextMenu>
-                                <ContextMenu>
-                                    <controls:CustomMenuItem Header="Level Lock"
-                                                             x:Name="LevelLockToggle"
-                                                             Click="LevelLockToggle_Click"
-                                                             IconCode="{DynamicResource IcoLock}"
-                                                             IsChecked="{Binding PlacementTarget.Tag.IsLevelLockEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                                    <controls:CustomMenuItem Header="Game Mode"
-                                                             IconCode="{DynamicResource IcoGame}">
-                                        <controls:CustomMenuItem Header="No Mode"
-                                                                 Click="NoMode_Click"
-                                                                 IconCode="{DynamicResource IcoCancel}"
-                                                                 IsChecked="{Binding PlacementTarget.Tag.IsNoModeButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                                        <controls:CustomMenuItem Header="Hide &amp; Seek Mode"
-                                                                 x:Name="HideSeekToggle"
-                                                                 Click="HideSeekMode_Click"
-                                                                 IconCode="{DynamicResource IcoHider}"
-                                                                 IsChecked="{Binding PlacementTarget.Tag.IsHideSeekButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                                        <controls:CustomMenuItem Header="Chaos Mode"
-                                                                 Click="ChaosMode_Click"
-                                                                 IconCode="{DynamicResource IcoRandom}"
-                                                                 IsChecked="{Binding PlacementTarget.Tag.IsChaosButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                                        <controls:CustomMenuItem Header="Collection Mode"
-                                                                 Click="CollectionMode_Click"
-                                                                 IconCode="{DynamicResource IcoCollect}"
-                                                                 IsChecked="{Binding PlacementTarget.Tag.IsCollectionButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                                    </controls:CustomMenuItem>
-                                    <controls:CustomMenuItem Header="Reset Sync"
-                                                             Click="ResetSync_Click"
-                                                             IconCode="{DynamicResource IcoUndo}"/>
-                                    <controls:CustomMenuItem Header="Password"
-                                                             IconCode="{DynamicResource IcoPassword}">
-                                        <controls:CustomMenuItem Header="Clear Password"
-                                                                 Click="ClearPassword_Click"
-                                                                 IconCode="{DynamicResource IcoErase}"/>
-                                    </controls:CustomMenuItem>
-                                </ContextMenu>
-                            </Button.ContextMenu>
-                        </Button>
-                        
-                         <Button x:Name="VoiceMenuButton"
-                                Margin="2 0"
-                                Click="MenuButton_Click"
-                                ToolTip="Voice Menu"
-                                Width="55"
-                                Visibility="Collapsed"
-                                Style="{StaticResource LobbyButton}">
-                            <controls:Icon Margin="5,0" Code="{DynamicResource IcoSound}" Size="24" />
-                            <Button.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="5" />
-                                </Style>
-                            </Button.Resources>
-                            <Button.ContextMenu>
-                                <ContextMenu>
-                                    <controls:CustomMenuItem Header="MTP Audio"
-                                                             x:Name="MTPAudioToggle"
-                                                             Click="MTPAudioToggle_Click"
-                                                             IconCode="{DynamicResource IcoMic}"
-                                                             IsChecked="False"/>
-                                    <controls:CustomMenuItem Header="Use Proximity"
-                                                             x:Name="ProximityToggle"
-                                                             IsCheckable="True"
-                                                             Click="Proximity_Click"
-                                                             IconCode="{DynamicResource IcoProximity}"/>
-                                </ContextMenu>
-                            </Button.ContextMenu>
-                        </Button>
-                        
-                        <Button x:Name="HideSeekMenuButton"
-                                Margin="2 0"
-                                Click="MenuButton_Click"
-                                Visibility="{Binding IsHideSeekButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"
-                                ToolTip="Hide &amp; Seek Menu"
-                                Width="55"
-                                Tag="{Binding DataContext, ElementName=LobbyView}"
-                                Style="{StaticResource LobbyButton}">
-                            <controls:Icon Margin="5,0" Code="{Binding Role, Converter={StaticResource RoleToIconConverter}}" Size="24" />
-                            <Button.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="5" />
-                                </Style>
-                            </Button.Resources>
-                            <Button.ContextMenu>
-                                <ContextMenu>
-                                    <controls:CustomMenuItem Header="Change Role"
-                                                             IsEnabled="{Binding IsSpectator, Converter={StaticResource InvertBooleanConverter}}"
-                                                             Click="ChangeRoleToggle_Click"
-                                                             IconCode="{Binding PlacementTarget.Tag.Role, RelativeSource={RelativeSource AncestorType=ContextMenu}, Converter={StaticResource RoleToIconConverter}, ConverterParameter=True}"/>
-                                    <controls:CustomMenuItem Header="Show / Hide Timer"
-                                                             x:Name="TimerToggle"
-                                                             IsEnabled="{Binding IsSpectator, Converter={StaticResource InvertBooleanConverter}}"                                                             IsCheckable="True"
-                                                             IsChecked="{Binding PlacementTarget.Tag.IsTimerVisible, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                             Click="TimerToggle_Click"
-                                                             IconCode="{DynamicResource IcoStopwatch}"/>
-                                    <controls:CustomMenuItem Header="Reset Time"
-                                                             x:Name="ResetTimer"
-                                                             IsEnabled="{Binding IsSpectator, Converter={StaticResource InvertBooleanConverter}}"                                                             Click="ResetTimer_OnClick"
-                                                             IconCode="{DynamicResource IcoResetTimer}"/>
-                                    <controls:CustomMenuItem Header="Abort Session"
-                                                             x:Name="AbortSession"
-                                                             Click="AbortSession_OnClick"
-                                                             IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                             IconCode="{DynamicResource IcoCancel}"/>
-                                    <controls:CustomMenuItem Header="Abort Drafts"
-                                                             x:Name="AbortDrafts"
-                                                             Click="AbortDrafts_OnClick"
-                                                             IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                             IconCode="{DynamicResource IcoCancel}"/>
-                                    <controls:CustomMenuItem Header="Open Drafts"
-                                                             x:Name="StartDraft"
-                                                             IsEnabled="True"
-                                                             Click="OpenDrafts_OnClick"
-                                                             IconCode="{DynamicResource IcoDrafts}"/>
-                                </ContextMenu>
-                            </Button.ContextMenu>
-                        </Button>
-                        
-                         <Button x:Name="ChaosMenuButton"
-                                Margin="2 0"
-                                Click="MenuButton_Click"
-                                Visibility="{Binding IsChaosButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"
-                                ToolTip="Chaos Mode Menu"
-                                Width="55"
-                                Tag="{Binding DataContext, ElementName=LobbyView}"
-                                Style="{StaticResource LobbyButton}">
-                             <controls:Icon Margin="5,0" Code="{DynamicResource IcoRandom}" Size="24" />
-                            <Button.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="5" />
-                                </Style>
-                            </Button.Resources>
-                            <Button.ContextMenu>
-                                <ContextMenu>
-                                    <controls:CustomMenuItem Header="Shuffle Seed"
-                                                             Click="ShuffleSeed_Click"
-                                                             IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                             IconCode="{DynamicResource IcoRandom}"/>
-                                    <controls:CustomMenuItem Header="Shuffle On Start"
-                                 
-                                                             x:Name="ShuffleOnStart"
-                                                             IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                             IsChecked="{Binding PlacementTarget.Tag.ShuffleOnStart, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                             Click="ShuffleOnStartToggle_OnClick"
-                                                             IconCode="{DynamicResource IcoResetTimer}"/>
-                                    <controls:CustomMenuItem Header="Force Move Collectibles"
-                                                             Click="ForceMoveCollectibles_Click"
-                                                             IconCode="{DynamicResource IcoRefresh}"/>
-                                </ContextMenu>
-                            </Button.ContextMenu>
-                        </Button>
-                        
-                        <Button x:Name="CollectionMenuButton"
-                                Margin="2 0"
-                                Click="MenuButton_Click"
-                                Visibility="{Binding IsCollectionButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"
-                                ToolTip="Collection Mode Menu"
-                                Width="55"
-                                Tag="{Binding DataContext, ElementName=LobbyView}"
-                                Style="{StaticResource LobbyButton}">
-                             <controls:Icon Margin="5,0" Code="{DynamicResource IcoCollect}" Size="24" />
-                            <Button.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="CornerRadius" Value="5" />
-                                </Style>
-                            </Button.Resources>
-                            <Button.ContextMenu>
-                                <ContextMenu>
-                                    <controls:CustomMenuItem Header="Abort Session"
-                                                             Click="AbortCollection_Click"
-                                                             IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                             IconCode="{DynamicResource IcoCancel}"/>
-                                    <controls:CustomMenuItem Header="Reset Scores"
-                                                             Click="ResetScores_Click"
-                                                             IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                             IconCode="{DynamicResource IcoRefresh}"/>
-                                    <controls:CustomMenuItem Header="Clear Score Log"
-                                                             Click="ClearCLMLog_Click"
-                                                             IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                             IconCode="{DynamicResource IcoDelete}"/>
-                                </ContextMenu>
-                            </Button.ContextMenu>
-                        </Button>
-                    </StackPanel>
-
-                    <Button Grid.Column="1" x:Name="DisconnectButton"
-                            Margin="0"
-                            HorizontalAlignment="Center"
-                            ToolTip="Disconnect"
-                            Width="55"
-                            Style="{StaticResource LobbyButton}"
-                            Command="{Binding LogoutCommand}">
-                        <controls:Icon Margin="5,0" Code="{DynamicResource IcoExit}" Size="24" />
-                        <Button.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="5" />
-                            </Style>
-                        </Button.Resources>
-                    </Button>
-                </Grid>
-                <Separator Width="500" Foreground="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" />
+                <TextBlock Grid.Row="3" 
+                           x:Name="AbilityCooldown"
+                           FontFamily="Cascadia Code"
+                           FontSize="15"
+                           Text="{Binding Path=AbilityCooldown, StringFormat='Ability Cooldown: {0}'}"
+                           Visibility="{Binding IsAbilityCooldownVisible, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=True}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"/>
             </StackPanel>
 
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0">
 
-            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled"
-                          RenderTransformOrigin="0.5,0.5"
-                          Margin="0 5 0 0"
-                          Background="{StaticResource BackGradient}"
-                          PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
-                <ScrollViewer.RenderTransform>
-                    <ScaleTransform ScaleY="-1" />
-                </ScrollViewer.RenderTransform>
-                <ItemsControl ItemsSource="{Binding ChatMessages}"
-                              Margin="5"
-                              RenderTransformOrigin="0.5,0.5">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0  2 5 2">
-                                <TextBox Text="{Binding Mode=OneWay}"
-                                         IsReadOnly="True"
-                                         TextWrapping="Wrap"
-                                         Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"
-                                         Background="Transparent"
-                                         SelectionBrush="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
-                                         BorderBrush="Transparent"
-                                         BorderThickness="0"
-                                         FontFamily="Cascadia Code"
-                                         FontSize="12"
-                                         HorizontalAlignment="Stretch"
-                                         TextAlignment="Left" />
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                    <ItemsControl.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform ScaleY="-1" />
-                            <SkewTransform />
-                            <TranslateTransform />
-                        </TransformGroup>
-                    </ItemsControl.RenderTransform>
-                </ItemsControl>
-            </ScrollViewer>
+                    <Grid VerticalAlignment="Top" Height="55">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                            <Button x:Name="SettingsButton"
+                                    Margin="0 0 2 0"
+                                    Click="SettingsButton_Click"
+                                    Width="55"
+                                    ToolTip="Settings"
+                                    Style="{StaticResource LobbyButton}">
+                                <controls:Icon Margin="5,0" Code="{DynamicResource IcoSettings}" Size="24" />
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="5" />
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            
+                            <Button x:Name="ReadyButton"
+                                    Margin="2 0"
+                                    Click="ReadyButton_Click"
+                                    ToolTip="Ready"
+                                    Width="55"
+                                    IsEnabled="{Binding IsReadyButtonEnabled}"
+                                    Style="{StaticResource LobbyButton}">
+                                <controls:Icon Margin="5,0" Code="{DynamicResource IcoReady}" Size="24" />
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="5" />
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
 
-            <Grid Grid.Row="2" Margin="0,5,0,0" Height="30">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.9*" />
-                    <ColumnDefinition Width="0.1*" />
-                </Grid.ColumnDefinitions>
-                <!--Tag only works as a placeholder text because of a custom style-->
-                <TextBox Grid.Column="0"
-                         x:Name="TextBoxInput"
-                         Padding="4, 0"
-                         FontFamily="Cascadia Code"
-                         FontSize="14"
-                         AcceptsTab="True"
-                         Cursor="IBeam"
-                         IsKeyboardFocusedChanged="TextBoxInput_OnIsKeyboardFocusedChanged"
-                         TextChanged="TextBoxInput_TextChanged"
-                         PreviewKeyDown="TextboxInput_KeyDown"
-                         Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Tag=" Type /help or /help &lt;command> for commands"
-                         Style="{StaticResource PlaceholderTextStyle}" />
-                <Popup x:Name="CommandCompletePopup"
-                       Visibility="Collapsed"
-                       Grid.Column="0"
-                       PlacementTarget="{Binding ElementName=TextBoxInput}"
-                       Placement="Top"
-                       VerticalOffset="-3"
-                       Width="350">
-                    <Border BorderBrush="{Binding SpecialBack, Source={x:Static client:App.AppColors}}"
-                            BorderThickness="2">
-                        <ListBox Grid.Column="0"
-                                 Style="{StaticResource CommandSuggestionsListBox}"
-                                 x:Name="SuggestionsList">
-                        </ListBox>
-                    </Border>
-                </Popup>
+                            <Button x:Name="RequestSyncButton"
+                                    Margin="2 0"
+                                    Click="RequestSyncButton_Click"
+                                    ToolTip="Request Sync"
+                                    Width="55"
+                                    IsEnabled="{Binding IsSyncButtonEnabled}"
+                                    Style="{StaticResource LobbyButton}">
+                                <controls:Icon Margin="5,0" Code="{DynamicResource IcoRefresh}" Size="24" />
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="5" />
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            
+                            <Button x:Name="HostMenuButton"
+                                    Margin="2 0"
+                                    Click="MenuButton_Click"
+                                    ContextMenuOpening="HostMenuButton_OnContextMenuOpening"
+                                    ToolTip="Host Menu"
+                                    Tag="{Binding DataContext, ElementName=LobbyView}"
+                                    IsEnabled="{Binding IsHostMenuButtonEnabled}"
+                                    Width="55"
+                                    Style="{StaticResource LobbyButton}">
+                                <controls:Icon Margin="5,0" Code="{DynamicResource IcoHost}" Size="24" />
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="5" />
+                                    </Style>
+                                </Button.Resources>
+                                <Button.ContextMenu>
+                                    <ContextMenu>
+                                        <controls:CustomMenuItem Header="Level Lock"
+                                                                 x:Name="LevelLockToggle"
+                                                                 Click="LevelLockToggle_Click"
+                                                                 IconCode="{DynamicResource IcoLock}"
+                                                                 IsChecked="{Binding PlacementTarget.Tag.IsLevelLockEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                        <controls:CustomMenuItem Header="Game Mode"
+                                                                 IconCode="{DynamicResource IcoGame}">
+                                            <controls:CustomMenuItem Header="No Mode"
+                                                                     Click="NoMode_Click"
+                                                                     IconCode="{DynamicResource IcoCancel}"
+                                                                     IsChecked="{Binding PlacementTarget.Tag.IsNoModeButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                            <controls:CustomMenuItem Header="Hide &amp; Seek Mode"
+                                                                     x:Name="HideSeekToggle"
+                                                                     Click="HideSeekMode_Click"
+                                                                     IconCode="{DynamicResource IcoHider}"
+                                                                     IsChecked="{Binding PlacementTarget.Tag.IsHideSeekButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                            <controls:CustomMenuItem Header="Chaos Mode"
+                                                                     Click="ChaosMode_Click"
+                                                                     IconCode="{DynamicResource IcoRandom}"
+                                                                     IsChecked="{Binding PlacementTarget.Tag.IsChaosButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                            <controls:CustomMenuItem Header="Collection Mode"
+                                                                     Click="CollectionMode_Click"
+                                                                     IconCode="{DynamicResource IcoCollect}"
+                                                                     IsChecked="{Binding PlacementTarget.Tag.IsCollectionButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                        </controls:CustomMenuItem>
+                                        <controls:CustomMenuItem Header="Reset Sync"
+                                                                 Click="ResetSync_Click"
+                                                                 IconCode="{DynamicResource IcoUndo}"/>
+                                        <controls:CustomMenuItem Header="Password"
+                                                                 IconCode="{DynamicResource IcoPassword}">
+                                            <controls:CustomMenuItem Header="Clear Password"
+                                                                     Click="ClearPassword_Click"
+                                                                     IconCode="{DynamicResource IcoErase}"/>
+                                        </controls:CustomMenuItem>
+                                    </ContextMenu>
+                                </Button.ContextMenu>
+                            </Button>
+                            
+                             <Button x:Name="VoiceMenuButton"
+                                    Margin="2 0"
+                                    Click="MenuButton_Click"
+                                    ToolTip="Voice Menu"
+                                    Width="55"
+                                    Visibility="Collapsed"
+                                    Style="{StaticResource LobbyButton}">
+                                <controls:Icon Margin="5,0" Code="{DynamicResource IcoSound}" Size="24" />
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="5" />
+                                    </Style>
+                                </Button.Resources>
+                                <Button.ContextMenu>
+                                    <ContextMenu>
+                                        <controls:CustomMenuItem Header="MTP Audio"
+                                                                 x:Name="MTPAudioToggle"
+                                                                 Click="MTPAudioToggle_Click"
+                                                                 IconCode="{DynamicResource IcoMic}"
+                                                                 IsChecked="False"/>
+                                        <controls:CustomMenuItem Header="Use Proximity"
+                                                                 x:Name="ProximityToggle"
+                                                                 IsCheckable="True"
+                                                                 Click="Proximity_Click"
+                                                                 IconCode="{DynamicResource IcoProximity}"/>
+                                    </ContextMenu>
+                                </Button.ContextMenu>
+                            </Button>
+                            
+                            <Button x:Name="HideSeekMenuButton"
+                                    Margin="2 0"
+                                    Click="MenuButton_Click"
+                                    Visibility="{Binding IsHideSeekButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"
+                                    ToolTip="Hide &amp; Seek Menu"
+                                    Width="55"
+                                    Tag="{Binding DataContext, ElementName=LobbyView}"
+                                    Style="{StaticResource LobbyButton}">
+                                <controls:Icon Margin="5,0" Code="{Binding Role, Converter={StaticResource RoleToIconConverter}}" Size="24" />
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="5" />
+                                    </Style>
+                                </Button.Resources>
+                                <Button.ContextMenu>
+                                    <ContextMenu>
+                                        <controls:CustomMenuItem Header="Change Role"
+                                                                 IsEnabled="{Binding IsSpectator, Converter={StaticResource InvertBooleanConverter}}"
+                                                                 Click="ChangeRoleToggle_Click"
+                                                                 IconCode="{Binding PlacementTarget.Tag.Role, RelativeSource={RelativeSource AncestorType=ContextMenu}, Converter={StaticResource RoleToIconConverter}, ConverterParameter=True}"/>
+                                        <controls:CustomMenuItem Header="Show / Hide Timer"
+                                                                 x:Name="TimerToggle"
+                                                                 IsEnabled="{Binding IsSpectator, Converter={StaticResource InvertBooleanConverter}}"                                                             IsCheckable="True"
+                                                                 IsChecked="{Binding PlacementTarget.Tag.IsTimerVisible, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                                 Click="TimerToggle_Click"
+                                                                 IconCode="{DynamicResource IcoStopwatch}"/>
+                                        <controls:CustomMenuItem Header="Reset Time"
+                                                                 x:Name="ResetTimer"
+                                                                 IsEnabled="{Binding IsSpectator, Converter={StaticResource InvertBooleanConverter}}"                                                             Click="ResetTimer_OnClick"
+                                                                 IconCode="{DynamicResource IcoResetTimer}"/>
+                                        <controls:CustomMenuItem Header="Abort Session"
+                                                                 x:Name="AbortSession"
+                                                                 Click="AbortSession_OnClick"
+                                                                 IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                                 IconCode="{DynamicResource IcoCancel}"/>
+                                        <controls:CustomMenuItem Header="Abort Drafts"
+                                                                 x:Name="AbortDrafts"
+                                                                 Click="AbortDrafts_OnClick"
+                                                                 IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                                 IconCode="{DynamicResource IcoCancel}"/>
+                                        <controls:CustomMenuItem Header="Open Drafts"
+                                                                 x:Name="StartDraft"
+                                                                 IsEnabled="True"
+                                                                 Click="OpenDrafts_OnClick"
+                                                                 IconCode="{DynamicResource IcoDrafts}"/>
+                                    </ContextMenu>
+                                </Button.ContextMenu>
+                            </Button>
+                            
+                             <Button x:Name="ChaosMenuButton"
+                                    Margin="2 0"
+                                    Click="MenuButton_Click"
+                                    Visibility="{Binding IsChaosButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"
+                                    ToolTip="Chaos Mode Menu"
+                                    Width="55"
+                                    Tag="{Binding DataContext, ElementName=LobbyView}"
+                                    Style="{StaticResource LobbyButton}">
+                                 <controls:Icon Margin="5,0" Code="{DynamicResource IcoRandom}" Size="24" />
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="5" />
+                                    </Style>
+                                </Button.Resources>
+                                <Button.ContextMenu>
+                                    <ContextMenu>
+                                        <controls:CustomMenuItem Header="Shuffle Seed"
+                                                                 Click="ShuffleSeed_Click"
+                                                                 IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                                 IconCode="{DynamicResource IcoRandom}"/>
+                                        <controls:CustomMenuItem Header="Shuffle On Start"
+                                     
+                                                                 x:Name="ShuffleOnStart"
+                                                                 IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                                 IsChecked="{Binding PlacementTarget.Tag.ShuffleOnStart, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                                 Click="ShuffleOnStartToggle_OnClick"
+                                                                 IconCode="{DynamicResource IcoResetTimer}"/>
+                                        <controls:CustomMenuItem Header="Force Move Collectibles"
+                                                                 Click="ForceMoveCollectibles_Click"
+                                                                 IconCode="{DynamicResource IcoRefresh}"/>
+                                    </ContextMenu>
+                                </Button.ContextMenu>
+                            </Button>
+                            
+                            <Button x:Name="CollectionMenuButton"
+                                    Margin="2 0"
+                                    Click="MenuButton_Click"
+                                    Visibility="{Binding IsCollectionButtonEnabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"
+                                    ToolTip="Collection Mode Menu"
+                                    Width="55"
+                                    Tag="{Binding DataContext, ElementName=LobbyView}"
+                                    Style="{StaticResource LobbyButton}">
+                                 <controls:Icon Margin="5,0" Code="{DynamicResource IcoCollect}" Size="24" />
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="5" />
+                                    </Style>
+                                </Button.Resources>
+                                <Button.ContextMenu>
+                                    <ContextMenu>
+                                        <controls:CustomMenuItem Header="Abort Session"
+                                                                 Click="AbortCollection_Click"
+                                                                 IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                                 IconCode="{DynamicResource IcoCancel}"/>
+                                        <controls:CustomMenuItem Header="Reset Scores"
+                                                                 Click="ResetScores_Click"
+                                                                 IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                                 IconCode="{DynamicResource IcoRefresh}"/>
+                                        <controls:CustomMenuItem Header="Clear Score Log"
+                                                                 Click="ClearCLMLog_Click"
+                                                                 IsEnabled="{Binding PlacementTarget.Tag.IsHostMenuButtonEnabled, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                                 IconCode="{DynamicResource IcoDelete}"/>
+                                    </ContextMenu>
+                                </Button.ContextMenu>
+                            </Button>
+                        </StackPanel>
 
-                <Button Grid.Column="1"
-                        VerticalAlignment="Stretch"
-                        HorizontalAlignment="Stretch"
-                        Margin="0"
-                        Command="{Binding ManageInputCommand}"
-                        Style="{StaticResource LobbyButton}"
-                        Width="50">
-                    <controls:Icon Margin="5,0" Code="{DynamicResource IcoSend}" Size="14" />
-                </Button>
+                        <Button Grid.Column="1" x:Name="DisconnectButton"
+                                Margin="0"
+                                HorizontalAlignment="Center"
+                                ToolTip="Disconnect"
+                                Width="55"
+                                Style="{StaticResource LobbyButton}"
+                                Command="{Binding LogoutCommand}">
+                            <controls:Icon Margin="5,0" Code="{DynamicResource IcoExit}" Size="24" />
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5" />
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </Grid>
+                    <Separator Width="500" Foreground="{Binding SpecialBack, Source={x:Static client:App.AppColors}}" />
+                </StackPanel>
+
+
+                <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled"
+                              RenderTransformOrigin="0.5,0.5"
+                              Margin="0 5 0 0"
+                              Background="{StaticResource BackGradient}"
+                              PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                    <ScrollViewer.RenderTransform>
+                        <ScaleTransform ScaleY="-1" />
+                    </ScrollViewer.RenderTransform>
+                    <ItemsControl ItemsSource="{Binding ChatMessages}"
+                                  Margin="5"
+                                  RenderTransformOrigin="0.5,0.5">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0  2 5 2">
+                                    <TextBox Text="{Binding Mode=OneWay}"
+                                             IsReadOnly="True"
+                                             TextWrapping="Wrap"
+                                             Foreground="{Binding MainText, Source={x:Static client:App.AppColors}}"
+                                             Background="Transparent"
+                                             SelectionBrush="{Binding MainAccent, Source={x:Static client:App.AppColors}}"
+                                             BorderBrush="Transparent"
+                                             BorderThickness="0"
+                                             FontFamily="Cascadia Code"
+                                             FontSize="12"
+                                             HorizontalAlignment="Stretch"
+                                             TextAlignment="Left" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleY="-1" />
+                                <SkewTransform />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </ItemsControl.RenderTransform>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <Grid Grid.Row="2" Margin="0,5,0,0" Height="30">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.9*" />
+                        <ColumnDefinition Width="0.1*" />
+                    </Grid.ColumnDefinitions>
+                    <!--Tag only works as a placeholder text because of a custom style-->
+                    <TextBox Grid.Column="0"
+                             x:Name="TextBoxInput"
+                             Padding="4, 0"
+                             FontFamily="Cascadia Code"
+                             FontSize="14"
+                             AcceptsTab="True"
+                             Cursor="IBeam"
+                             IsKeyboardFocusedChanged="TextBoxInput_OnIsKeyboardFocusedChanged"
+                             TextChanged="TextBoxInput_TextChanged"
+                             PreviewKeyDown="TextboxInput_KeyDown"
+                             Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Tag=" Type /help or /help &lt;command> for commands"
+                             Style="{StaticResource PlaceholderTextStyle}" />
+                    <Popup x:Name="CommandCompletePopup"
+                           Visibility="Collapsed"
+                           Grid.Column="0"
+                           PlacementTarget="{Binding ElementName=TextBoxInput}"
+                           Placement="Top"
+                           VerticalOffset="-3"
+                           Width="350">
+                        <Border BorderBrush="{Binding SpecialBack, Source={x:Static client:App.AppColors}}"
+                                BorderThickness="2">
+                            <ListBox Grid.Column="0"
+                                     Style="{StaticResource CommandSuggestionsListBox}"
+                                     x:Name="SuggestionsList">
+                            </ListBox>
+                        </Border>
+                    </Popup>
+
+                    <Button Grid.Column="1"
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Stretch"
+                            Margin="0"
+                            Command="{Binding ManageInputCommand}"
+                            Style="{StaticResource LobbyButton}"
+                            Width="50">
+                        <controls:Icon Margin="5,0" Code="{DynamicResource IcoSend}" Size="14" />
+                    </Button>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>
-
 </UserControl>

@@ -6,7 +6,8 @@
   "AltTextColor": "#ff444444",
   "InvertedTextColor": "#ffffffff",
   "MainAccentColor": "#ff1866be",
-  "AltAccentColor": "#fff7a971"
+  "AltAccentColor": "#fff7a971",
+  "UseSplash": false
 }
 
 

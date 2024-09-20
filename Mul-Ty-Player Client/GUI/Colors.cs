@@ -19,6 +19,7 @@ public class Colors
     public SolidColorBrush InvertedText {get; set;}
     public SolidColorBrush MainAccent {get; set;}
     public SolidColorBrush AltAccent {get; set;}
+    public bool UseSplash { get; set; }
     public Color MainBackColor {get; set;}
     public Color AltBackColor {get; set;}
     public Color SpecialBackColor {get; set;}
@@ -45,6 +46,7 @@ public class Colors
         InvertedTextColor = (Color)ColorConverter.ConvertFromString(scheme.InvertedTextColor)!;
         MainAccentColor = (Color)ColorConverter.ConvertFromString(scheme.MainAccentColor)!;
         AltAccentColor = (Color)ColorConverter.ConvertFromString(scheme.AltAccentColor)!;
+        UseSplash = scheme.UseSplash;
         
         MainBack = new SolidColorBrush(MainBackColor);
         AltBack = new SolidColorBrush(AltBackColor);

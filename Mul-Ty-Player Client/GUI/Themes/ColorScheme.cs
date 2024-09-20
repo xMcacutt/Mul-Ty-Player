@@ -10,4 +10,5 @@ public class ColorScheme
     public string InvertedTextColor {get; set;}
     public string MainAccentColor {get; set;}
     public string AltAccentColor {get; set;}
+    public bool UseSplash { get; set; }
 }

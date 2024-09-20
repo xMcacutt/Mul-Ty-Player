@@ -1,11 +1,11 @@
 ﻿{
-  "MainBackColor": "#ff212426",
+  "MainBackColor": "#ff000000",
   "AltBackColor": "#ff343638",
   "SpecialBackColor": "#ff4c4e50",
   "MainTextColor": "#ffffffff",
   "AltTextColor": "#ff999999",
   "InvertedTextColor": "#ff000000",
-  "MainAccentColor": "#ffe79941",
-  "AltAccentColor": "#ff29609f",
-  "UseSplash": false
+  "MainAccentColor": "#ffffffff",
+  "AltAccentColor": "#fff511b4",
+  "UseSplash": true
 }
