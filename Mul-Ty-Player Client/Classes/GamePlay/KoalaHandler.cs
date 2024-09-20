@@ -101,18 +101,27 @@ internal class KoalaHandler
                 "Removing collision");
     }
 
+    private bool wasInTimeAttack;
     public void CheckTA()
     {
         ProcessHandler.TryRead(_bTimeAttackAddress, 
             out int inTimeAttack, 
             true, 
             "KoalaHandler::CheckTA()");
-        if (inTimeAttack == 1)
+        
+        if (wasInTimeAttack && inTimeAttack == 0)
         {
-            MakeVisible();
-            if (SettingsHandler.ClientSettings.ShowCollectiblesInTA)
-                SyncHandler.MakeCollectiblesVisibleInTimeAttack();
+            SetCollision();
+            wasInTimeAttack = false;
         }
+
+        if (inTimeAttack != 1) 
+            return;
+        
+        MakeVisible();
+        if (SettingsHandler.ClientSettings.ShowCollectiblesInTA)
+            SyncHandler.MakeCollectiblesVisibleInTimeAttack();
+        wasInTimeAttack = true;
     }
 
     public void MakeVisible()
