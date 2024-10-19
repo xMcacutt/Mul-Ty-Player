@@ -25,9 +25,10 @@ public partial class Lobby : UserControl
     public Lobby()
     {
         InitializeComponent();
-        if (!SettingsHandler.ClientSettings.AutoJoinVoice) return;
+        if (!SettingsHandler.ClientSettings.AutoJoinVoice) 
+            return;
         MTPAudioToggle.IsChecked = true;
-        //VoiceHandler.JoinVoice();
+        VoiceHandler.JoinVoice();
     }
 
     private void TextboxInput_KeyDown(object sender, KeyEventArgs e)
@@ -203,15 +204,15 @@ public partial class Lobby : UserControl
         MTPAudioToggle.IsChecked = !MTPAudioToggle.IsChecked;
         if (MTPAudioToggle.IsChecked)
         {
-            // VoiceHandler.JoinVoice();
+            VoiceHandler.JoinVoice();
             return;
         } 
-        //  VoiceHandler.LeaveVoice();
+        VoiceHandler.LeaveVoice();
     }
 
     private void Proximity_Click(object sender, RoutedEventArgs e)
     {
-        // VoiceHandler.DoProximityCheck = ProximityToggle.IsChecked;
+        VoiceHandler.DoProximityCheck = ProximityToggle.IsChecked;
     }
     #endregion
     

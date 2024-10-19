@@ -17,6 +17,7 @@ public class VoiceClient
     
     public static void OpenVoiceSocket(string fullIp)
     {
+        CloseVoiceSocket(); 
         try
         {
             if (fullIp.Contains(':'))
@@ -72,13 +73,16 @@ public class VoiceClient
 
     public static void CloseVoiceSocket()
     {
-        _voiceClient.Close();
+        _voiceClient?.Close();
         _isListening = false;
     }
 
-    public static void SendAudio(IEnumerable<byte> data, long originalDataLength)
+    public static void SendAudio(IEnumerable<byte> data, long originalDataLength, int sequenceNumber)
     {
-        var bytes = BitConverter.GetBytes(Client._client.Id).Concat(BitConverter.GetBytes(originalDataLength)).Concat(data).ToArray();
+        var bytes = BitConverter.GetBytes(Client._client.Id)
+            .Concat(BitConverter.GetBytes(originalDataLength))
+            .Concat(BitConverter.GetBytes(sequenceNumber)) // Include sequence number
+            .Concat(data).ToArray();
         try
         {
             _voiceClient.Send(bytes, bytes.Length);
@@ -98,6 +102,6 @@ public class VoiceClient
         var distance = BitConverter.ToSingle(data.Skip(10).Take(4).ToArray());
         var level = BitConverter.ToInt32(data.Skip(14).Take(4).ToArray());
         var audioData = data.Skip(18).ToArray();
-        //VoiceHandler.HandleVoiceData(fromClientId, originalLength, distance, level, audioData);
+        VoiceHandler.HandleVoiceData(fromClientId, originalLength, distance, level, audioData);
     }
 }

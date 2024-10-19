@@ -29,27 +29,26 @@ public static class VoiceHandler
     private const int BUFFER_DURATION = 20;
     private static WaveFormat _format = new WaveFormat(SAMPLE_RATE, BIT_DEPTH, 1);
     private static Dictionary<ushort, Voice> _voices;
-    
+    private static int _sequenceNumber; // Track the sequence number for each client
+
     public static void HandleVoiceData(ushort fromClientId, ulong originalLength, float distance, int level, byte[] data)
     {
-        var decodedBytes = data; //new byte[originalLength];
-        Console.WriteLine(data.Length);
+        var decodedBytes = data; // This should already be decoded from the server
         
         _voices ??= new Dictionary<ushort, Voice>();
         if (!_voices.TryGetValue(fromClientId, out var voice))
             AddVoice(fromClientId);
         voice = _voices[fromClientId];
-        
+
         if (DoProximityCheck)
         {
             if (level != Client.HLevel.CurrentLevelId)
                 return;
             if (PlayerHandler.TryGetPlayer(fromClientId, out var player))
             {
-                if (player.Level != "M/L" || !Client.HGameState.IsAtMainMenu())
-                    voice.SampleChannel.Volume = distance >= SettingsHandler.ClientSettings.ProximityRange ? 0.0f :
-                        distance <= RANGE_LOWER_BOUND ? 1.0f :
-                        1.0f - (distance - RANGE_LOWER_BOUND) / (SettingsHandler.ClientSettings.ProximityRange - RANGE_LOWER_BOUND);
+                voice.SampleChannel.Volume = distance >= SettingsHandler.ClientSettings.ProximityRange ? 0.0f :
+                    distance <= RANGE_LOWER_BOUND ? 1.0f :
+                    1.0f - (distance - RANGE_LOWER_BOUND) / (SettingsHandler.ClientSettings.ProximityRange - RANGE_LOWER_BOUND);
             }
         }
         voice.WaveProvider.AddSamples(decodedBytes, 0, decodedBytes.Length);
@@ -70,14 +69,13 @@ public static class VoiceHandler
             return;
         voice.WaveProvider.ClearBuffer();
         _voices.Remove(clientId);
-        //_mixer.RemoveMixerInput(_voices[clientId].SampleChannel);
     }
 
     private static void ClearVoices()
     {
         _voices ??= new Dictionary<ushort, Voice>();
-        foreach (var voice in _voices)
-            TryRemoveVoice(voice.Key);
+        foreach (var voice in _voices.Keys.ToList())
+            TryRemoveVoice(voice);
         _voices.Clear();
     }
 
@@ -97,7 +95,7 @@ public static class VoiceHandler
         _waveOut.Init(_mixer);
         _waveOut.Play();
     }
-    
+
     public static void LeaveVoice()
     {
         if (_waveIn == null) return;
@@ -112,8 +110,8 @@ public static class VoiceHandler
     {
         try
         {
-            //var encodedBytes = new byte[e.Buffer.Length];
-            VoiceClient.SendAudio(e.Buffer, e.Buffer.Length);
+            // Send audio data along with the current sequence number
+            VoiceClient.SendAudio(e.Buffer, e.Buffer.Length, GetNextSequenceNumber());
         }
         catch (Exception ex)
         {
@@ -127,22 +125,35 @@ public static class VoiceHandler
         if (_waveIn != null)
             _waveIn.DeviceNumber = index;
     }
+
+    private static int _nextSequenceNumber = 0;
+    private const int MaxSequenceNumber = 65535; // Max value for ushort
+    private static int GetNextSequenceNumber()
+    {
+        // Increment and wrap around if necessary
+        _nextSequenceNumber++;
+        if (_nextSequenceNumber > MaxSequenceNumber)
+        {
+            _nextSequenceNumber = 0; // Reset if exceeding the maximum
+        }
+        return _nextSequenceNumber;
+    }
     
     private static byte[] ProcessVoiceData(byte[] inputData, float gain, ushort threshold)
     {
         var ushortCount = inputData.Length / 2;
         var ushortArray = new ushort[ushortCount];
-        // Copy the bytes to the ushort array using unsafe code
+
         unsafe
         {
             fixed (byte* inputBytesPtr = inputData)
                 fixed (ushort* ushortArrayPtr = ushortArray)
                     Buffer.MemoryCopy(inputBytesPtr, ushortArrayPtr, inputData.Length, inputData.Length);
         }
-        // Process the ushort array
+
         for (var i = 0; i < ushortCount; i++)
             ushortArray[i] = (ushort)Math.Max(ushortArray[i] * gain, threshold);
-        // Convert back to byte array using unsafe code
+
         var outputBytes = new byte[inputData.Length];
         unsafe
         {

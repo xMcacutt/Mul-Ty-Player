@@ -160,7 +160,7 @@ public partial class SettingsMenu : Window
 
     private void InputDeviceComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        //VoiceHandler.UpdateInputDevice(InputDeviceComboBox.SelectedIndex);
+        VoiceHandler.UpdateInputDevice(InputDeviceComboBox.SelectedIndex);
     }
 
     private void InputDeviceComboBox_OnDropDownOpened(object sender, EventArgs e)
