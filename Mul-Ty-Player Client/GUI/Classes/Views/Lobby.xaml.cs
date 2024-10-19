@@ -28,7 +28,7 @@ public partial class Lobby : UserControl
         if (!SettingsHandler.ClientSettings.AutoJoinVoice) 
             return;
         MTPAudioToggle.IsChecked = true;
-        VoiceHandler.JoinVoice();
+        //VoiceHandler.JoinVoice();
     }
 
     private void TextboxInput_KeyDown(object sender, KeyEventArgs e)
