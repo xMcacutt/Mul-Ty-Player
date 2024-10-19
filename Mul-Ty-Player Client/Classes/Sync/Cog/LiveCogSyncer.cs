@@ -18,8 +18,8 @@ internal class LiveCogSyncer : LiveDataSyncer
             return;
         ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + ObjectLength * index,
             new[] { HSyncObject.WriteState }, "Setting collectible to collected");
-        ProcessHandler.WriteData(0x265270, BitConverter.GetBytes(0xA0));
-        ProcessHandler.WriteData(0x26526C, BitConverter.GetBytes(0x1));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x265270, BitConverter.GetBytes(0xA0));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x26526C, BitConverter.GetBytes(0x1));
         if (!SeparateCollisionByte) 
             return;
         ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + CollisionOffset + ObjectLength * index,

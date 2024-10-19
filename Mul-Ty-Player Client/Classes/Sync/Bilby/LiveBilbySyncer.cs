@@ -22,8 +22,9 @@ internal class LiveBilbySyncer : LiveDataSyncer
         if (Client.HGameState.IsOnMainMenuOrLoading) return;
         ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + StateOffset + ObjectLength * index,
             new[] { HSyncObject.WriteState }, "Collecting bilby");
-        ProcessHandler.WriteData(0x2651BC, BitConverter.GetBytes(0xA0));
-        ProcessHandler.WriteData(0x2651B8, BitConverter.GetBytes(0x1));
+        Logger.Write("Here");
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x2651BC, BitConverter.GetBytes(0xA0));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x2651B8, BitConverter.GetBytes(0x1));
         if (!SeparateCollisionByte) return;
         ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + CollisionOffset + ObjectLength * index,
             BitConverter.GetBytes(0), "Setting bilby cage collision to off pt 1");
