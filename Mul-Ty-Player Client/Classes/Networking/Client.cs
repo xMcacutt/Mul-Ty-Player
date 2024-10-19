@@ -192,6 +192,7 @@ internal class Client
         if (SettingsHandler.DoLevelLock)
             HSync.HLevelLock.RequestData();
         PerkHandler.DeactivateAllPerks();
+        HCommand.CommandServer.StartCommandPipe();
     }
 
     private static void Disconnected(object sender, DisconnectedEventArgs e)
@@ -234,6 +235,7 @@ internal class Client
                     App.SettingsWindow.Hide(); 
                 ModelController.Lobby.Logout();
             });
+        HCommand.CommandServer.StopCommandPipe();
     }
 
     private static void ConnectionFailed(object sender, ConnectionFailedEventArgs eventArgs)

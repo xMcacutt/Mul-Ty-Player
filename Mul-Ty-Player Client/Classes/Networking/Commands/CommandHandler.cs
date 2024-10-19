@@ -12,9 +12,11 @@ public class CommandHandler
     public Dictionary<string, Command> Commands = new(StringComparer.OrdinalIgnoreCase);
     public Stack<string> Calls = new Stack<string>();
     public Stack<string> UndoCalls = new Stack<string>();
+    public LocalCommandServer CommandServer;
 
     public CommandHandler()
     {
+        CommandServer = new LocalCommandServer();
         RegisterCommand(new MtpCommandCommandList());
         RegisterCommand(new MtpCommandCountdown());
         RegisterCommand(new MtpCommandHelp());
