@@ -83,7 +83,6 @@ internal class TyProcess
             return true;
         if (LaunchingGame)
             return false;
-
         var processes = Process.GetProcessesByName("Mul-Ty-Player");
 
         if (processes.Length == 0)

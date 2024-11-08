@@ -1,17 +1,5 @@
-﻿using System;
-using System.ComponentModel;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Windows;
-using System.Windows.Forms;
-using Mul_Ty_Player_Updater.Views;
-using Octokit;
-using PropertyChanged;
-using Application = System.Windows.Application;
-using FileMode = System.IO.FileMode;
+﻿using PropertyChanged;
+
 
 namespace Mul_Ty_Player_Updater.ViewModels;
 

@@ -15,6 +15,8 @@ public class LocalCommandServer
 
     public void StartCommandPipe()
     {
+        if (_server is { IsConnected: true })
+            return;
         var pipeThread = new Thread(async () => await StartListening());
         pipeThread.IsBackground = true;
         pipeThread.Start();

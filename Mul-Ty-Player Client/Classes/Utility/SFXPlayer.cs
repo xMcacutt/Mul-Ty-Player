@@ -110,7 +110,8 @@ public static class SFXPlayer
 
     public static void StopAll()
     {
-        foreach (var player in mediaPlayers.Values) player.Dispatcher.Invoke(player.Stop);
+        foreach (var player in mediaPlayers.Values) 
+            player.Dispatcher.Invoke(player.Stop);
     }
 
     public static void StopSound(SFX sfxName)
@@ -141,13 +142,11 @@ public static class SFXPlayer
     //False if not
     private static bool RemoveSound(SFX sfxName)
     {
-        if (mediaPlayers.TryGetValue(sfxName, out var player))
-        {
-            player.Stop();
-            player.Close();
-            return mediaPlayers.Remove(sfxName);
-        }
+        if (!mediaPlayers.TryGetValue(sfxName, out var player)) 
+            return false;
+        player.Stop();
+        player.Close();
+        return mediaPlayers.Remove(sfxName);
 
-        return false;
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using MulTyPlayer;
-using Octokit;
 using Riptide;
 
 namespace MulTyPlayerClient.GUI.Views;

@@ -17,6 +17,7 @@ internal static class EventMessageLogger
     {
         SFXPlayer.PlaySound(SFX.MenuCancel);
         var msg = "Ty the Tasmanian Tiger has exited, ";
+        Client.HCommand.CommandServer.StopCommandPipe();
 
         if (SettingsHandler.ClientSettings.AutoRestartTyOnCrash)
         {
@@ -34,6 +35,8 @@ internal static class EventMessageLogger
         ModelController.Lobby.CanLaunchGame = false;
         SFXPlayer.PlaySound(SFX.MenuAccept);
         Logger.Write("Found game process, you're in!");
+        if (Client.IsConnected)
+            Client.HCommand.CommandServer.StartCommandPipe();
     }
 
     private static void OnTyProcessLaunched()
@@ -41,6 +44,8 @@ internal static class EventMessageLogger
         ModelController.Lobby.CanLaunchGame = false;
         SFXPlayer.PlaySound(SFX.MenuAccept);
         Logger.Write("Launched game successfully, you're in!");
+        if (Client.IsConnected)
+            Client.HCommand.CommandServer.StartCommandPipe();
     }
 
     private static void OnTyProcessLaunchFailed()
