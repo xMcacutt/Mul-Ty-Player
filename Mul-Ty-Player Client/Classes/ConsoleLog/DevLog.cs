@@ -34,7 +34,7 @@ internal static class DevLog
 
     public static void Close()
     {
-        _writer.Flush();
+        _writer?.Flush();
         _writer?.Close();
     }
 }

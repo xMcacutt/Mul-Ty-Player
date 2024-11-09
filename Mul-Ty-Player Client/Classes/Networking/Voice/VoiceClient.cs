@@ -90,7 +90,7 @@ public class VoiceClient
             .Concat(data).ToArray();
         try
         {
-            _voiceClient.Send(bytes, bytes.Length);
+            _voiceClient?.Send(bytes, bytes.Length);
         }
         catch (Exception ex)
         {
