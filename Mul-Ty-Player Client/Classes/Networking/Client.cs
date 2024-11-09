@@ -200,6 +200,7 @@ internal class Client
         cts.Cancel();
         KoalaSelected = false;
         IsConnected = false;
+        VoiceHandler.LeaveVoice();
         foreach (var koalaID in PlayerReplication.PlayerTransforms.Keys) 
             PlayerReplication.ReturnKoala(koalaID);
         PlayerReplication.ClearPlayers();

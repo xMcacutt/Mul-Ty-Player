@@ -17,6 +17,7 @@ internal class ClientSettings
     public string InterpolationMode { get; set; }
     public bool AutoJoinVoice { get; set; }
     public int ProximityRange { get; set; }
+    public string VoiceInputDevice { get; set; }
     public string Version { get; set; }
     public bool UseTyKoalaTextures { get; set; }
     public bool ShowKoalaBeacons { get; set; }

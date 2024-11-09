@@ -47,6 +47,7 @@ public class SettingsViewModel
     // VOICE SETTINGS
     public bool AutoJoinVoice { get; set; }
     public int ProximityRange { get; set; }
+    public string SelectedInputDevice { get; set; }
 
     // SERVER SETTINGS
     public bool DoSyncTEs { get; set; }
@@ -100,6 +101,7 @@ public class SettingsViewModel
 
         AutoJoinVoice = SettingsHandler.ClientSettings.AutoJoinVoice;
         ProximityRange = SettingsHandler.ClientSettings.ProximityRange;
+        SelectedInputDevice = SettingsHandler.ClientSettings.VoiceInputDevice;
 
         DoOutputLogs = SettingsHandler.ClientSettings.CreateLogFile;
         DefaultPort = SettingsHandler.ClientSettings.Port;
@@ -135,6 +137,7 @@ public class SettingsViewModel
 
         SettingsHandler.ClientSettings.AutoJoinVoice = AutoJoinVoice;
         SettingsHandler.ClientSettings.ProximityRange = ProximityRange;
+        SettingsHandler.ClientSettings.VoiceInputDevice = SelectedInputDevice;
 
         SettingsHandler.ClientSettings.CreateLogFile = DoOutputLogs;
         SettingsHandler.ClientSettings.Port = DefaultPort;

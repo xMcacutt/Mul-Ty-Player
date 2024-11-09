@@ -39,21 +39,28 @@ public class VoiceServer
 
     private static void ReceiveAudio(byte[] data)
     {
-        if (data.Length < 14) // Adjusted for sequence number
+        if (data.Length == 3 && data[0] == 0xFF)
+        {
+            var client = BitConverter.ToUInt16(data.Skip(1).Take(2).ToArray());
+            _connectedClients.Remove(client);
+            _clientSequenceNumbers.Remove(client);
+        }
+        
+        if (data.Length < 14) 
             return;
 
         var fromClientId = BitConverter.ToUInt16(data.Take(2).ToArray());
         var originalAudioDataLength = BitConverter.ToUInt64(data.Skip(2).Take(8).ToArray());
-        var sequenceNumber = BitConverter.ToInt32(data.Skip(10).Take(4).ToArray()); // Extract sequence number
+        var sequenceNumber = BitConverter.ToInt32(data.Skip(10).Take(4).ToArray()); 
         var audioData = data.Skip(14).ToArray();
 
-        // Add the client if it's not already connected
+
         if (!_connectedClients.ContainsKey(fromClientId))
         {
             _connectedClients[fromClientId] = _endPoint;
-            _clientSequenceNumbers[fromClientId] = new Queue<int>(); // Initialize sequence queue
+            _clientSequenceNumbers[fromClientId] = new Queue<int>();
         }
-
+        
         // Handle packet sequence
         if (IsValidPacket(fromClientId, sequenceNumber))
         {

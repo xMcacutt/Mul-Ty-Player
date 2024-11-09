@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -34,7 +35,6 @@ public static class VoiceHandler
     public static void HandleVoiceData(ushort fromClientId, ulong originalLength, float distance, int level, byte[] data)
     {
         var decodedBytes = data; // This should already be decoded from the server
-        
         _voices ??= new Dictionary<ushort, Voice>();
         if (!_voices.TryGetValue(fromClientId, out var voice))
             AddVoice(fromClientId);
@@ -51,6 +51,7 @@ public static class VoiceHandler
                     1.0f - (distance - RANGE_LOWER_BOUND) / (SettingsHandler.ClientSettings.ProximityRange - RANGE_LOWER_BOUND);
             }
         }
+        
         voice.WaveProvider.AddSamples(decodedBytes, 0, decodedBytes.Length);
     }
 
@@ -98,11 +99,15 @@ public static class VoiceHandler
 
     public static void LeaveVoice()
     {
-        if (_waveIn == null) return;
+        if (_waveIn == null) 
+            return;
+
         VoiceClient.CloseVoiceSocket();
+    
         _waveIn.StopRecording();
         _waveIn.Dispose();
         _waveIn = null;
+    
         ClearVoices();
     }
 
@@ -122,8 +127,6 @@ public static class VoiceHandler
     public static void UpdateInputDevice(int index)
     {
         _inputDeviceIndex = index;
-        if (_waveIn != null)
-            _waveIn.DeviceNumber = index;
     }
 
     private static int _nextSequenceNumber = 0;

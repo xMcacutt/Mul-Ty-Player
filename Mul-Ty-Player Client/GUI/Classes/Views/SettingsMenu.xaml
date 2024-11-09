@@ -177,10 +177,10 @@
                           SelectedIndex="{Binding SelectedSlotIndex}"
                           Style="{StaticResource SettingsComboBoxStyle}"/>
             </StackPanel>
-            <Separator Visibility="Collapsed" Style="{StaticResource SettingsSepStyle}"/>
+            <Separator Visibility="Visible" Style="{StaticResource SettingsSepStyle}"/>
             
                         <!--Voice Settings Item Stack Panel-->
-            <Button Visibility="Collapsed" Click="VoiceDropDownButton_OnClick" Style="{StaticResource SettingsButtonStyle}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+            <Button Visibility="Visible" Click="VoiceDropDownButton_OnClick" Style="{StaticResource SettingsButtonStyle}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="35"/>
@@ -216,6 +216,7 @@
                        Style="{StaticResource SettingsLabelStyle}"/>
                 <ComboBox ItemsSource="{Binding InputDevices}"
                           Name="InputDeviceComboBox"
+                          SelectedItem="{Binding SelectedInputDevice}"
                           DropDownOpened="InputDeviceComboBox_OnDropDownOpened"
                           SelectionChanged="InputDeviceComboBox_OnSelectionChanged"
                           Style="{StaticResource SettingsComboBoxStyle}"/>

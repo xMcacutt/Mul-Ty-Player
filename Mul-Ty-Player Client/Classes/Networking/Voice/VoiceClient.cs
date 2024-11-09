@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -14,6 +15,7 @@ public class VoiceClient
     private static IPAddress _ip;
     private static ushort _port;
     private static bool _isListening;
+    private static CancellationTokenSource _cts;
     
     public static void OpenVoiceSocket(string fullIp)
     {
@@ -37,9 +39,10 @@ public class VoiceClient
             _voiceClient = new UdpClient();
             _endPoint = new IPEndPoint(IPAddress.Any, 0);
             _voiceClient.Client.Bind(_endPoint);
-            
             _voiceClient.Connect(_ip, _port);
             Logger.Write("Connected to MTP Voice");
+            _isListening = true;
+            _cts = new CancellationTokenSource();
             
             var loop = new Thread(Loop);
             loop.Start();
@@ -52,29 +55,31 @@ public class VoiceClient
 
     private static void Loop()
     {
-        try
+        CancellationToken cancellationToken = _cts.Token;
+        while (_isListening && !cancellationToken.IsCancellationRequested)
         {
-            while (true)
+            if (_voiceClient == null) 
+                return;
+            try
             {
                 var data = _voiceClient.Receive(ref _endPoint);
                 if (data.Length > 0)
                     ReceiveAudio(data);
             }
-        }
-        catch (ObjectDisposedException)
-        {
-
-        }
-        catch (SocketException)
-        {
-            
+            catch (SocketException ex)
+            {
+                break;
+            }
         }
     }
 
     public static void CloseVoiceSocket()
     {
-        _voiceClient?.Close();
         _isListening = false;
+        _voiceClient?.Send(new byte[] { 0xFF }.Concat(BitConverter.GetBytes(Client._client.Id)).ToArray(), 3);
+        _cts?.Cancel();
+        _voiceClient?.Close();
+        _voiceClient = null;
     }
 
     public static void SendAudio(IEnumerable<byte> data, long originalDataLength, int sequenceNumber)

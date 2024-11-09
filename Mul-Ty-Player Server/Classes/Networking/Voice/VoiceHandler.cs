@@ -13,7 +13,6 @@ public class VoiceHandler
         // Ensure the player exists in the PlayerHandler
         if (!PlayerHandler.Players.TryGetValue(fromClientId, out var incomingPlayer))
             return;
-
         // Loop through all players to send audio data
         foreach (var outgoingPlayer in PlayerHandler.Players.Values)
         {
@@ -28,6 +27,7 @@ public class VoiceHandler
 
             // Calculate distance and send voice data
             var distance = Vector3.Distance(incomingClientPos, outgoingClientPos);
+
             VoiceServer.SendVoiceData(fromClientId, originalAudioDataLength, distance, incomingPlayer.CurrentLevel, audioData, outgoingPlayer.ClientID);
         }
     }

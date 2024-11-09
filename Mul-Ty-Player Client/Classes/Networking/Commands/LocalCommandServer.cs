@@ -31,13 +31,25 @@ public class LocalCommandServer
 
     private async Task StartListening()
     {
-        _server = new NamedPipeServerStream(Name, PipeDirection.In, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
-        Logger.WriteDebug("Opened Command Pipe");
-        await _server.WaitForConnectionAsync();
-        Logger.WriteDebug("Connected to Command Pipe Client");
-        _reader = new StreamReader(_server, Encoding.UTF8);
+        try
+        {
+            _server = new NamedPipeServerStream(Name, PipeDirection.In, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
+            Logger.WriteDebug("Opened Command Pipe");
+            await _server.WaitForConnectionAsync();
+            Logger.WriteDebug("Connected to Command Pipe Client");
+            _reader = new StreamReader(_server, Encoding.UTF8);
 
-        await Listen();
+            await Listen();
+        }
+        catch (IOException ex)
+        {
+        }
+        finally
+        {
+            // Ensure proper cleanup
+            _server?.Dispose();
+            _reader?.Dispose();
+        }
     }
 
     private async Task Listen()
