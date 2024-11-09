@@ -11,7 +11,7 @@
   "OpenAllGameInfo": true,
   "FixMenuBug": true,
   "FixedMagnets": true,
-  "Version": "4.8.4",
+  "Version": "4.8.5",
   "InstallMiniUpdaterClient": true,
   "InstallMiniUpdaterServer": true
 }

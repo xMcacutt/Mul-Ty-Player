@@ -2,6 +2,22 @@
 
 ## Most Recent
 
+#### 4.8.5
+- Fixed pipe restoration (command plugin now fully functional)
+- Added MTP voice back for testing
+
+#### 4.8.4
+- Added collectible counts showing when another player collects in the same level
+- Added IPC pipe for console plugin coming in 4.8.5
+- Started adding MTP voice back
+
+#### 4.8.3
+- Fixed koalas having collision after Time Attack
+- Fixed mini updater and updater
+- Added new themes
+- Added special theme background
+- Fixed default player name color
+
 #### 4.8.2
 Introducing the Mini Updater! A new application which sits in your client or server folder and
 can automatically update the application for you without needing to open the updater application.
