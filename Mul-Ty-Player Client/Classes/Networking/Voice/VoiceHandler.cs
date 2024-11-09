@@ -51,7 +51,6 @@ public static class VoiceHandler
                     1.0f - (distance - RANGE_LOWER_BOUND) / (SettingsHandler.ClientSettings.ProximityRange - RANGE_LOWER_BOUND);
             }
         }
-        
         voice.WaveProvider.AddSamples(decodedBytes, 0, decodedBytes.Length);
     }
 
@@ -93,6 +92,7 @@ public static class VoiceHandler
         _waveIn.StartRecording();
         _mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(SAMPLE_RATE, 1));
         _waveOut = new WaveOut();
+        
         _waveOut.Init(_mixer);
         _waveOut.Play();
     }
