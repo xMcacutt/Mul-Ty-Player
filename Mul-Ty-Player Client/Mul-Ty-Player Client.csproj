@@ -59,34 +59,34 @@
         <Optimize>False</Optimize>
     </PropertyGroup>
     <ItemGroup>
-        <None Remove="GUI\block_black_24dp.svg"/>
-        <None Remove="GUI\Fonts\SF Slapstick Comic.ttf"/>
-        <None Remove="GUI\KoalaSelectionAssets\Dark\Boonie.jpg"/>
-        <None Remove="GUI\KoalaSelectionAssets\Dark\Dubbo.jpg"/>
-        <None Remove="GUI\KoalaSelectionAssets\Dark\Elizabeth.jpg"/>
-        <None Remove="GUI\KoalaSelectionAssets\Dark\Gummy.jpg"/>
-        <None Remove="GUI\KoalaSelectionAssets\Dark\Katie.jpg"/>
-        <None Remove="GUI\KoalaSelectionAssets\Dark\Kiki.jpg"/>
-        <None Remove="GUI\KoalaSelectionAssets\Dark\Mim.jpg"/>
-        <None Remove="GUI\KoalaSelectionAssets\Dark\Snugs.jpg"/>
-        <None Remove="GUI\KoalaSelectionAssets\Light\Boonie.png"/>
-        <None Remove="GUI\KoalaSelectionAssets\Light\Dubbo.png"/>
-        <None Remove="GUI\KoalaSelectionAssets\Light\Elizabeth.png"/>
-        <None Remove="GUI\KoalaSelectionAssets\Light\Gummy.png"/>
-        <None Remove="GUI\KoalaSelectionAssets\Light\Katie.png"/>
-        <None Remove="GUI\KoalaSelectionAssets\Light\Kiki.png"/>
-        <None Remove="GUI\KoalaSelectionAssets\Light\Mim.png"/>
-        <None Remove="GUI\KoalaSelectionAssets\Light\Snugs.png"/>
-        <None Remove="GUI\KoalaSelectionAssets\mp4\Boonie.mp4"/>
-        <None Remove="GUI\KoalaSelectionAssets\mp4\Dubbo.mp4"/>
-        <None Remove="GUI\KoalaSelectionAssets\mp4\Elizabeth.mp4"/>
-        <None Remove="GUI\KoalaSelectionAssets\mp4\Gummy.mp4"/>
-        <None Remove="GUI\KoalaSelectionAssets\mp4\Katie.mp4"/>
-        <None Remove="GUI\KoalaSelectionAssets\mp4\Kiki.mp4"/>
-        <None Remove="GUI\KoalaSelectionAssets\mp4\Mim.mp4"/>
-        <None Remove="GUI\KoalaSelectionAssets\mp4\Snugs.mp4"/>
-        <None Remove="Resources\Facepunch.Steamworks.Win32.dll"/>
-        <None Remove="Resources\steam_api.dll"/>
+        <None Remove="GUI\block_black_24dp.svg" />
+        <None Remove="GUI\Fonts\SF Slapstick Comic.ttf" />
+        <None Remove="GUI\KoalaSelectionAssets\Dark\Boonie.jpg" />
+        <None Remove="GUI\KoalaSelectionAssets\Dark\Dubbo.jpg" />
+        <None Remove="GUI\KoalaSelectionAssets\Dark\Elizabeth.jpg" />
+        <None Remove="GUI\KoalaSelectionAssets\Dark\Gummy.jpg" />
+        <None Remove="GUI\KoalaSelectionAssets\Dark\Katie.jpg" />
+        <None Remove="GUI\KoalaSelectionAssets\Dark\Kiki.jpg" />
+        <None Remove="GUI\KoalaSelectionAssets\Dark\Mim.jpg" />
+        <None Remove="GUI\KoalaSelectionAssets\Dark\Snugs.jpg" />
+        <None Remove="GUI\KoalaSelectionAssets\Light\Boonie.png" />
+        <None Remove="GUI\KoalaSelectionAssets\Light\Dubbo.png" />
+        <None Remove="GUI\KoalaSelectionAssets\Light\Elizabeth.png" />
+        <None Remove="GUI\KoalaSelectionAssets\Light\Gummy.png" />
+        <None Remove="GUI\KoalaSelectionAssets\Light\Katie.png" />
+        <None Remove="GUI\KoalaSelectionAssets\Light\Kiki.png" />
+        <None Remove="GUI\KoalaSelectionAssets\Light\Mim.png" />
+        <None Remove="GUI\KoalaSelectionAssets\Light\Snugs.png" />
+        <None Remove="GUI\KoalaSelectionAssets\mp4\Boonie.mp4" />
+        <None Remove="GUI\KoalaSelectionAssets\mp4\Dubbo.mp4" />
+        <None Remove="GUI\KoalaSelectionAssets\mp4\Elizabeth.mp4" />
+        <None Remove="GUI\KoalaSelectionAssets\mp4\Gummy.mp4" />
+        <None Remove="GUI\KoalaSelectionAssets\mp4\Katie.mp4" />
+        <None Remove="GUI\KoalaSelectionAssets\mp4\Kiki.mp4" />
+        <None Remove="GUI\KoalaSelectionAssets\mp4\Mim.mp4" />
+        <None Remove="GUI\KoalaSelectionAssets\mp4\Snugs.mp4" />
+        <None Remove="Resources\Facepunch.Steamworks.Win32.dll" />
+        <None Remove="Resources\steam_api.dll" />
         <None Update="GUI\Themes\Light.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
@@ -314,6 +314,10 @@
         </None>
         <None Update="list.servers">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Properties\Settings.settings">
+          <Generator>SettingsSingleFileGenerator</Generator>
+          <LastGenOutput>Settings.Designer.cs</LastGenOutput>
         </None>
         <None Update="Resources\Steamworks.NET.dll">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -558,6 +562,11 @@
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
             <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Settings.Designer.cs">
+          <DesignTimeSharedInput>True</DesignTimeSharedInput>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Settings.settings</DependentUpon>
         </Compile>
     </ItemGroup>
     <ItemGroup>

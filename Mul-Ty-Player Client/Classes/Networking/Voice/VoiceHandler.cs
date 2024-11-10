@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -29,13 +30,13 @@ public static class VoiceHandler
     private const int BIT_DEPTH = 16;
     private const int BUFFER_DURATION = 20;
     private static WaveFormat _format = new WaveFormat(SAMPLE_RATE, BIT_DEPTH, 1);
-    private static Dictionary<ushort, Voice> _voices;
+    private static ConcurrentDictionary<ushort, Voice> _voices;
     private static int _sequenceNumber; // Track the sequence number for each client
 
     public static void HandleVoiceData(ushort fromClientId, ulong originalLength, float distance, int level, byte[] data)
     {
         var decodedBytes = data; // This should already be decoded from the server
-        _voices ??= new Dictionary<ushort, Voice>();
+        _voices ??= new ConcurrentDictionary<ushort, Voice>();
         if (!_voices.TryGetValue(fromClientId, out var voice))
             AddVoice(fromClientId);
         voice = _voices[fromClientId];
@@ -56,24 +57,24 @@ public static class VoiceHandler
 
     public static void AddVoice(ushort clientId)
     {
-        _voices ??= new Dictionary<ushort, Voice>();
+        _voices ??= new ConcurrentDictionary<ushort, Voice>();
         TryRemoveVoice(clientId);
-        _voices.Add(clientId, new Voice(_format));
+        _voices.TryAdd(clientId, new Voice(_format));
         _mixer.AddMixerInput(_voices[clientId].SampleChannel);
     }
 
     public static void TryRemoveVoice(ushort clientId)
     {
-        _voices ??= new Dictionary<ushort, Voice>();
+        _voices ??= new ConcurrentDictionary<ushort, Voice>();
         if (!_voices.TryGetValue(clientId, out var voice))
             return;
         voice.WaveProvider.ClearBuffer();
-        _voices.Remove(clientId);
+        _voices.Remove(clientId, out _);
     }
 
     private static void ClearVoices()
     {
-        _voices ??= new Dictionary<ushort, Voice>();
+        _voices ??= new ConcurrentDictionary<ushort, Voice>();
         foreach (var voice in _voices.Keys.ToList())
             TryRemoveVoice(voice);
         _voices.Clear();

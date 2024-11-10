@@ -47,7 +47,11 @@ public static class Logger
 
     public static void Write(string message)
     {
-        Application.Current.Dispatcher.Invoke(() => { OnLogWrite?.Invoke(message); });
+        try
+        {
+           Application.Current.Dispatcher.Invoke(() => { OnLogWrite?.Invoke(message); });
+        }
+        catch { }
 
         // I KNOW THIS IS HORRIBLE BUT THIS MESSAGE IS DOING MY HEAD IN
         if (_writer is null || message.Contains("The gap between received sequence IDs was very large"))
