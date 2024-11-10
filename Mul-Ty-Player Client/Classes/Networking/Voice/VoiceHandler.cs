@@ -82,6 +82,7 @@ public static class VoiceHandler
 
     public static void JoinVoice()
     {
+        VoiceClient.OpenVoiceSocket(Client._ip);
         _waveIn = new WaveInEvent
         {
             DeviceNumber = _inputDeviceIndex,
@@ -89,11 +90,9 @@ public static class VoiceHandler
             BufferMilliseconds = BUFFER_DURATION
         };
         _waveIn.DataAvailable += WaveIn_DataAvailable;
-        VoiceClient.OpenVoiceSocket(Client._ip);
         _waveIn.StartRecording();
         _mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(SAMPLE_RATE, 1));
         _waveOut = new WaveOut();
-        
         _waveOut.Init(_mixer);
         _waveOut.Play();
     }
@@ -108,7 +107,10 @@ public static class VoiceHandler
         _waveIn.StopRecording();
         _waveIn.Dispose();
         _waveIn = null;
-    
+        _waveOut.Stop();
+        _waveOut.Dispose();
+        _waveOut = null;
+
         ClearVoices();
     }
 
