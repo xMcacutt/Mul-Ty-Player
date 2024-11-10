@@ -24,7 +24,7 @@ public class LocalCommandServer
     
     public void StopCommandPipe()
     {
-        if (_server.IsConnected)
+        if (_server != null && _server.IsConnected)
         {
             _server?.Disconnect();
             _server?.Dispose();

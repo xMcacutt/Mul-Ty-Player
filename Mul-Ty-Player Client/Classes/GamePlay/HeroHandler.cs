@@ -71,6 +71,12 @@ public class HeroHandler
         CheckDeathPlane();
     }
 
+    public bool IsBull()
+    {
+        ProcessHandler.TryRead(0x27E544, out bool result, true, "IsBull()");
+        return result;
+    }
+
     private void CheckDeathPlane()
     {
         if (_deathPlaneHeight.ContainsKey(HLevel.CurrentLevelId))

@@ -14,7 +14,7 @@ public class VoiceClient
     private static IPEndPoint _endPoint;
     private static IPAddress _ip;
     private static ushort _port;
-    private static bool _isListening;
+    public static bool _isListening;
     private static CancellationTokenSource _cts;
     
     public static void OpenVoiceSocket(string fullIp)

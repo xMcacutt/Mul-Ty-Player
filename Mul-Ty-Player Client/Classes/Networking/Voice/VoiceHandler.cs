@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Numerics;
+using System.Threading;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking.Voice;
 using MulTyPlayerClient.GUI;
@@ -52,6 +53,12 @@ public static class VoiceHandler
                     1.0f - (distance - RANGE_LOWER_BOUND) / (SettingsHandler.ClientSettings.ProximityRange - RANGE_LOWER_BOUND);
             }
         }
+        // for (int i = 0; i < decodedBytes.Length; i += 2)
+        // {
+        //     short value = BitConverter.ToInt16(decodedBytes, i);
+        //     Console.Write(value + " ");
+        // }
+        // Console.WriteLine();
         voice.WaveProvider.AddSamples(decodedBytes, 0, decodedBytes.Length);
     }
 
@@ -94,6 +101,7 @@ public static class VoiceHandler
         _mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(SAMPLE_RATE, 1));
         _waveOut = new WaveOut();
         _waveOut.Init(_mixer);
+        Thread.Sleep(500);
         _waveOut.Play();
     }
 
@@ -130,6 +138,21 @@ public static class VoiceHandler
     public static void UpdateInputDevice(int index)
     {
         _inputDeviceIndex = index;
+
+        if (_waveIn == null || !VoiceClient._isListening)
+            return;
+
+        _waveIn?.StopRecording();
+        _waveIn?.Dispose();
+        _waveIn = new WaveInEvent
+        {
+            DeviceNumber = _inputDeviceIndex,
+            WaveFormat = _format,
+            BufferMilliseconds = BUFFER_DURATION
+        };
+
+        _waveIn.DataAvailable += WaveIn_DataAvailable;
+        _waveIn.StartRecording();
     }
 
     private static int _nextSequenceNumber = 0;
