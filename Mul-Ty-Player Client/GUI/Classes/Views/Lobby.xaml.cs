@@ -169,6 +169,11 @@ public partial class Lobby : UserControl
     {
         Client.HCommand.Commands["gamemode"].InitExecute(new [] { "Collection" });
     }
+    
+    private void HardcoreMode_Click(object sender, RoutedEventArgs e)
+    {
+        Client.HCommand.Commands["gamemode"].InitExecute(new [] { "Hardcore" });
+    }
 
     private void ClearPassword_Click(object sender, RoutedEventArgs e)
     {
@@ -337,5 +342,10 @@ public partial class Lobby : UserControl
     {
         if (!(sender as TextBox).IsKeyboardFocused)
             CommandCompletePopup.IsOpen = false;
+    }
+
+    private void ResetHardcore_Click(object sender, RoutedEventArgs e)
+    {
+        Client.HCommand.Commands["resetsync"].InitExecute(Array.Empty<string>());
     }
 }

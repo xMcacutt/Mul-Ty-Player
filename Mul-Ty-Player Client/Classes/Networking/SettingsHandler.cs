@@ -38,6 +38,9 @@ internal static class SettingsHandler
                 case GameMode.HideSeek:
                     HSHandler.Deactivate();
                     break;
+                case GameMode.Hardcore:
+                    Client.HHardcore.Deinitialize();
+                    break;
             };
             if (value != GameMode.Chaos && _gameMode == GameMode.Chaos)
                 Client.HGameState.SetNewGameChaosModeText(false, true);
@@ -48,7 +51,9 @@ internal static class SettingsHandler
                 case GameMode.HideSeek:
                     HSHandler.Activate();
                     break;
-                
+                case GameMode.Hardcore:
+                    Client.HHardcore.Initialize();
+                    break;
             };
         } 
     }
@@ -186,6 +191,8 @@ internal static class SettingsHandler
                 Logger.Write($"[WARN] Client and server versions do not match. c{clientVersion} | s{serverVersion}");
                 break;
         }
+
+        Client.HHardcore.HardcoreRunDead = message.GetBool();
     }
 
     public static bool HasValidExePath()

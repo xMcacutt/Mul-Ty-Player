@@ -52,5 +52,6 @@ public class Icons : ResourceDictionary
         this["IcoTeam"] = "\uf0c0";
         this["IcoPerk"] = "\uf0c3";
         this["IcoDrafts"] = "\ue068";
+        this["IcoHardcore"] = "\uf714";
     }
 }

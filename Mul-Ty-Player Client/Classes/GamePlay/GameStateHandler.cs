@@ -110,6 +110,10 @@ public class GameStateHandler
         ProcessHandler.WriteData(address, 
             new byte[] { 1 }, 
             "Protecting leaderboard");
+        address = 0x1C8D6D;
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress+address, 
+            new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90  }, 
+            "Protecting leaderboard");
     }
 
     public void ToggleCollectibleLines()

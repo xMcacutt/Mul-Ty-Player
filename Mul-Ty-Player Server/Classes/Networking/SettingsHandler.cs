@@ -111,6 +111,8 @@ internal class SettingsHandler
         message.AddBool(Program.HChaos.ShuffleOnStart);
         
         message.AddString(ServerSettings.Version);
+
+        message.AddBool(HardcoreHandler.HardcoreRunDead);
         
         if (sendToAll)
             Server._Server.SendToAll(message, clientId);

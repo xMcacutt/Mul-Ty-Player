@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace MulTyPlayerClient;
@@ -15,6 +16,15 @@ public class TriggerHandler
     public void SetMemAddrs()
     {
         _triggerAddress = PointerCalculations.GetPointerAddress(0x26DBD8, new int[] { 0x0 });
+    }
+
+    public int GetTriggerSphereCount()
+    {
+        ProcessHandler.TryRead(0x26DBD4, 
+            out int result, 
+            true, 
+            "TriggerHandler: GetTriggerSphereCount()");
+        return result;
     }
 
     public void SetTriggerActivity(int index, bool value)
@@ -44,4 +54,36 @@ public class TriggerHandler
         if (GetTriggerActivity(index) == b)
             SetTriggerActivity(index, value);
     }
+
+    public int GetTriggerEnterTargetAddress(int index)
+    {
+        var addr = _triggerAddress + index * 0xB8 + 0x94;
+        ProcessHandler.TryRead(addr, 
+            out int result, 
+            false, 
+            "TriggerHandler: GetTriggerEnterAddr()");
+        return result;
+    }
+
+    public int GetTriggerActionTargetAddress(int index)
+    {
+        var addr = _triggerAddress + index * 0xB8 + 0x9C;
+        ProcessHandler.TryRead(addr, 
+            out int result, 
+            false, 
+            "TriggerHandler: GetTriggerActionAddr()");
+        return result;
+    }
+    
+    public int GetTriggerExitTargetAddress(int index)
+    {
+        var addr = _triggerAddress + index * 0xB8 + 0xA4;
+        ProcessHandler.TryRead(addr, 
+            out int result, 
+            false, 
+            "TriggerHandler: GetTriggerExitAddr()");
+        return result;
+    }
+    
+    
 }

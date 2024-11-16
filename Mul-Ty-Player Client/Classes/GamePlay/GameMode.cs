@@ -6,6 +6,7 @@
         HideSeek,
         Chaos,
         Collection,
+        Hardcore,
     }
 }
 

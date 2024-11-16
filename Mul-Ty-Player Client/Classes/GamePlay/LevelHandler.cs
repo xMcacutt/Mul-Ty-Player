@@ -67,6 +67,8 @@ internal class LevelHandler
             Client.HChaos.FixBilbyDraw(CurrentLevelId);
             Client.HChaos.MoveCollectibles(CurrentLevelId);
         }
+        if (SettingsHandler.GameMode == GameMode.Hardcore)
+            Client.HHardcore.InitializeLevel(CurrentLevelId);
         OnLevelChange?.Invoke(currentLevelId);
     }
 

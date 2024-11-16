@@ -52,4 +52,7 @@ public class ObjectiveHandler
         var state = message.GetByte();
         Objectives[type].SetObjectiveState((ObjectiveState)state, fromClientId);
     }
+    
+    
+    
 }

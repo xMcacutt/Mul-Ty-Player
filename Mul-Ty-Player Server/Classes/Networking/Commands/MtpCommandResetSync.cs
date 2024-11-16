@@ -28,6 +28,7 @@ public class MtpCommandResetSync : Command
     {
         Program.HSync = new SyncHandler();
         Program.HObjective = new ObjectiveHandler();
+        HardcoreHandler.HardcoreRunDead = false; 
         SyncHandler.SendResetSyncMessage();
     }
 

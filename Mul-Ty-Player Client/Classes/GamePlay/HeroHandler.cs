@@ -77,6 +77,18 @@ public class HeroHandler
         return result;
     }
 
+    public int GetLives()
+    {
+        ProcessHandler.TryRead(0x2654FC, out int result, true, "GetLives()");
+        return result;
+    }
+    
+    public void SetLives(int lives)
+    {
+        var addr = PointerCalculations.GetPointerAddress(0x2888d8, new[] { 0xAD0 });
+        ProcessHandler.WriteData(addr, BitConverter.GetBytes(lives));
+    }
+
     private void CheckDeathPlane()
     {
         if (_deathPlaneHeight.ContainsKey(HLevel.CurrentLevelId))
@@ -97,12 +109,14 @@ public class HeroHandler
     
     public void SetHealth(int value)
     {
-        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x2737CC, BitConverter.GetBytes(value));
+        var addr = IsBull() ? 0x273814 : 0x2737CC;
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + addr, BitConverter.GetBytes(value));
     }
     
     public int GetHealth()
     {
-        ProcessHandler.TryRead(0x2737CC, out int health, true, "GetHealth()");
+        var addr = IsBull() ? 0x273814 : 0x2737CC;
+        ProcessHandler.TryRead(addr, out int health, true, "GetHealth()");
         return health;
     }
     
@@ -220,6 +234,11 @@ public class HeroHandler
         ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288968), BitConverter.GetBytes(tolerance));
     }
 
+    public void SetFallDelta(float delta = 1000f)
+    {
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288968), BitConverter.GetBytes(delta));
+    }
+
     public void SetDefaults()
     {
         Client.HHero.SetSwimSpeed();
@@ -230,6 +249,15 @@ public class HeroHandler
         Client.HHero.SetJumpHeight();
         Client.HHero.SetLedgeGrabTolerance();
         Client.HHero.SetDoubleJumpHeight();
+        Client.HHero.SetFallDelta();
+        Client.HHero.SetOpalMagnetisation();
+        Client.HHardcore.SetEnemySpeedMultiplier();
+    }
+
+    public void SetOpalMagnetisation(bool value = true)
+    {
+        var opcode = value ? (byte)0x74 : (byte)0xEB;
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x12DC01), new byte[] {opcode});
     }
     
     public void SetGlideSpeed(float speed = 7f)

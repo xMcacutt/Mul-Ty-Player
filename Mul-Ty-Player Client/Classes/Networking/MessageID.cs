@@ -68,7 +68,9 @@ public enum MessageID : ushort
     CL_Start,
     CL_Stop,
     HS_SeekerSpeed,
-    CL_Nopals
+    CL_Nopals,
+    HC_Reset,
+    HC_RunStatusChanged
 }
 
 

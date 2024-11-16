@@ -49,6 +49,7 @@ internal class Client
     public static GlowHandler HGlow;
     public static ChaosHandler HChaos;
     public static HSD_DraftsHandler HDrafts;
+    public static HardcoreModeHandler HHardcore;
 
     public static CancellationTokenSource cts;
     public static bool Relaunching => TyProcess.LaunchingGame;
@@ -146,6 +147,7 @@ internal class Client
         HGlow = new GlowHandler();
         HChaos = new ChaosHandler();
         HDrafts = new HSD_DraftsHandler();
+        HHardcore = new HardcoreModeHandler();
     }
 
     private static void InitRiptide()
@@ -293,6 +295,8 @@ internal class Client
                                 HSync.CheckEnabledObservers();
                                 if (SettingsHandler.DoTESyncing)
                                     HObjective.RunChecks();
+                                if (SettingsHandler.GameMode == GameMode.Hardcore)
+                                    HHardcore.Run();
                             }
                             HHero.GetTyPosRot();
                             HKoala.CheckTA();

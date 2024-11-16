@@ -48,7 +48,6 @@ public class LobbyViewModel : IViewModel
     public ICommand LogoutCommand { get; set; }
 
     public bool IsOnMenu { get; set; }
-
     public string Input { get; set; } = "";
     public bool IsReady { get; set; } = true;
     public bool IsReadyButtonEnabled { get; set; } = true;
@@ -60,6 +59,7 @@ public class LobbyViewModel : IViewModel
     public object IsHideSeekButtonEnabled { get; set; }
     public object IsChaosButtonEnabled { get; set; }
     public object IsCollectionButtonEnabled { get; set; }
+    public object IsHardcoreButtonEnabled { get; set; }
     public object IsNoModeButtonEnabled { get; set; }
     public object IsLevelLockEnabled { get; set; }
     public bool IsSpectator { get; set; }
@@ -164,6 +164,9 @@ public class LobbyViewModel : IViewModel
             case GameMode.Collection:
                 Model_CollectionSelected();
                 break;
+            case GameMode.Hardcore:
+                Model_HardcoreSelected();
+                break;
         }
     }
 
@@ -173,6 +176,7 @@ public class LobbyViewModel : IViewModel
         IsCollectionButtonEnabled = false;
         IsNoModeButtonEnabled = false;
         IsHideSeekButtonEnabled = true;
+        IsHardcoreButtonEnabled = false;
     }
     
     private void Model_ChaosSelected()
@@ -181,6 +185,7 @@ public class LobbyViewModel : IViewModel
         IsCollectionButtonEnabled = false;
         IsNoModeButtonEnabled = false;
         IsChaosButtonEnabled = true;
+        IsHardcoreButtonEnabled = false;
     }
     
     private void Model_CollectionSelected()
@@ -189,6 +194,16 @@ public class LobbyViewModel : IViewModel
         IsChaosButtonEnabled = false;
         IsNoModeButtonEnabled = false;
         IsCollectionButtonEnabled = true;
+        IsHardcoreButtonEnabled = false;
+    }
+    
+    private void Model_HardcoreSelected()
+    {
+        IsHideSeekButtonEnabled = false;
+        IsChaosButtonEnabled = false;
+        IsNoModeButtonEnabled = false;
+        IsCollectionButtonEnabled = false;
+        IsHardcoreButtonEnabled = true;
     }
     
     private void Model_NoModeSelected()
@@ -197,6 +212,7 @@ public class LobbyViewModel : IViewModel
         IsChaosButtonEnabled = false;
         IsCollectionButtonEnabled = false;
         IsNoModeButtonEnabled = true;
+        IsHardcoreButtonEnabled = false;
     }
     
     private void Model_IsLevelLockEnabledChanged(bool value)

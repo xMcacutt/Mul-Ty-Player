@@ -86,4 +86,23 @@ public class ObjectiveHandler
                      objective.Level == Client.HLevel.CurrentLevelId))
             objective.RunCheck();
     }
+
+    public void SetPerimeterCheckHealth(int health)
+    {
+        if (health > 6)
+            return;
+        var count = 6 - health;
+        var addr = PointerCalculations.GetPointerAddress(0x265608, new[] { 0x390 });
+        ProcessHandler.WriteData(addr, BitConverter.GetBytes(count));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x265074, BitConverter.GetBytes(health));
+    }
+    
+    public int GetPerimeterCheckHealth()
+    {
+        var addr = PointerCalculations.GetPointerAddress(0x265608, new[] { 0x390 });
+        ProcessHandler.TryRead(addr, out int count, false, "getPerimCheckHealth");
+        ProcessHandler.TryRead(0x265074, out int health2, true, "getPerimCheckHealth");
+        var health1 = 6 - count;
+        return int.Max(health1, health2);
+    }
 }
