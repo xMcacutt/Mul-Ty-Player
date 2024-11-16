@@ -2,6 +2,10 @@
 
 ## Most Recent
 
+#### 4.9.0
+- Added hardcore mode (HDC)
+- Fixed issue with voice not initializing waveout device
+
 #### 4.8.5
 - Fixed pipe restoration (command plugin now fully functional)
 - Added MTP voice back for testing
