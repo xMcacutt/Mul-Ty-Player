@@ -236,7 +236,7 @@ public class HeroHandler
 
     public void SetFallDelta(float delta = 1000f)
     {
-        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288968), BitConverter.GetBytes(delta));
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x28896C), BitConverter.GetBytes(delta));
     }
 
     public void SetDefaults()
@@ -252,6 +252,7 @@ public class HeroHandler
         Client.HHero.SetFallDelta();
         Client.HHero.SetOpalMagnetisation();
         Client.HHardcore.SetEnemySpeedMultiplier();
+        AttributeHandler.SetBoomerangRange();
     }
 
     public void SetOpalMagnetisation(bool value = true)

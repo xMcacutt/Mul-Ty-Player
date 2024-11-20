@@ -41,7 +41,7 @@ public static class VoiceHandler
         if (!_voices.TryGetValue(fromClientId, out var voice))
             AddVoice(fromClientId);
         voice = _voices[fromClientId];
-
+        
         if (DoProximityCheck)
         {
             if (level != Client.HLevel.CurrentLevelId)
@@ -53,12 +53,8 @@ public static class VoiceHandler
                     1.0f - (distance - RANGE_LOWER_BOUND) / (SettingsHandler.ClientSettings.ProximityRange - RANGE_LOWER_BOUND);
             }
         }
-        // for (int i = 0; i < decodedBytes.Length; i += 2)
-        // {
-        //     short value = BitConverter.ToInt16(decodedBytes, i);
-        //     Console.Write(value + " ");
-        // }
-        // Console.WriteLine();
+        else
+            voice.SampleChannel.Volume = 1.0f;
         voice.WaveProvider.AddSamples(decodedBytes, 0, decodedBytes.Length);
     }
 
