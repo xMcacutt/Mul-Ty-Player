@@ -99,8 +99,8 @@ public class HardcoreModeHandler
             ProcessHandler.TryRead(0x253AC8, out int boulderAddr, true, "diveRingAddress");
             for (var boulderIndex = 0; boulderIndex < rollingBoulderCount; boulderIndex++)
             {
-                ProcessHandler.WriteData(boulderAddr + 0x14C + boulderIndex * 0xA4, BitConverter.GetBytes(2f));
-                ProcessHandler.WriteData(boulderAddr + 0x150 + boulderIndex * 0xA4, BitConverter.GetBytes(2f));
+                ProcessHandler.WriteData(boulderAddr + 0x14C + boulderIndex * 0xA4, BitConverter.GetBytes(3f));
+                ProcessHandler.WriteData(boulderAddr + 0x150 + boulderIndex * 0xA4, BitConverter.GetBytes(3f));
             }
         }
 

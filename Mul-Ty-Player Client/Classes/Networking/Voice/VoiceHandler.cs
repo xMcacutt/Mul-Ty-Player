@@ -7,6 +7,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Numerics;
 using System.Threading;
+using System.Threading.Tasks;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.Networking.Voice;
 using MulTyPlayerClient.GUI;
@@ -36,7 +37,7 @@ public static class VoiceHandler
 
     public static void HandleVoiceData(ushort fromClientId, ulong originalLength, float distance, int level, byte[] data)
     {
-        var decodedBytes = data; // This should already be decoded from the server
+        var decodedBytes = ProcessVoiceData(data, 1.2f, (short)2000, 1f);
         _voices ??= new ConcurrentDictionary<ushort, Voice>();
         if (!_voices.TryGetValue(fromClientId, out var voice))
             AddVoice(fromClientId);
@@ -55,6 +56,7 @@ public static class VoiceHandler
         }
         else
             voice.SampleChannel.Volume = 1.0f;
+        
         voice.WaveProvider.AddSamples(decodedBytes, 0, decodedBytes.Length);
     }
 
@@ -164,28 +166,53 @@ public static class VoiceHandler
         return _nextSequenceNumber;
     }
     
-    private static byte[] ProcessVoiceData(byte[] inputData, float gain, ushort threshold)
+    private static byte[] ProcessVoiceData(byte[] inputData, float gain, short threshold, float ratio)
     {
-        var ushortCount = inputData.Length / 2;
-        var ushortArray = new ushort[ushortCount];
-
-        unsafe
-        {
-            fixed (byte* inputBytesPtr = inputData)
-                fixed (ushort* ushortArrayPtr = ushortArray)
-                    Buffer.MemoryCopy(inputBytesPtr, ushortArrayPtr, inputData.Length, inputData.Length);
-        }
-
-        for (var i = 0; i < ushortCount; i++)
-            ushortArray[i] = (ushort)Math.Max(ushortArray[i] * gain, threshold);
-
+        var shortCount = inputData.Length / 2;
         var outputBytes = new byte[inputData.Length];
-        unsafe
+
+        // Use Memory<byte> to handle inputData and outputBytes efficiently
+        Memory<byte> inputMemory = new Memory<byte>(inputData);
+        Memory<byte> outputMemory = new Memory<byte>(outputBytes);
+
+        // Parallel.For to process each pair of bytes concurrently
+        Parallel.For(0, shortCount, i =>
         {
-            fixed (ushort* ushortArrayPtr = ushortArray)
-                fixed (byte* outputBytesPtr = outputBytes)
-                    Buffer.MemoryCopy(ushortArrayPtr, outputBytesPtr, outputBytes.Length, outputBytes.Length);
-        }
+            // Access slices from Memory<byte>
+            var inputSlice = inputMemory.Slice(i * 2, 2);
+            var outputSlice = outputMemory.Slice(i * 2, 2);
+
+            // Read the sample (two bytes) as a short
+            short sample = BitConverter.ToInt16(inputSlice.Span);
+
+            // Apply gain
+            float processedValue = sample * gain;
+
+            // Apply compression if above threshold (compress symmetrically for negative and positive values)
+            if (Math.Abs(processedValue) > threshold)
+            {
+                float excess = Math.Abs(processedValue) - threshold;
+                if (processedValue > 0)
+                {
+                    processedValue = threshold + (excess / ratio);
+                }
+                else
+                {
+                    processedValue = - (threshold + (excess / ratio));
+                }
+            }
+
+            // Clamp to short range
+            processedValue = Math.Clamp(processedValue, short.MinValue, short.MaxValue);
+
+            // Convert the processed value back to short
+            short processedSample = (short)processedValue;
+
+            // Write processed sample back to outputBytes using the slice
+            byte[] processedBytes = BitConverter.GetBytes(processedSample);
+            processedBytes.CopyTo(outputSlice.Span);
+        });
+
         return outputBytes;
     }
 }
