@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Media;
+using Microsoft.Diagnostics.Tracing.Parsers.FrameworkEventSource;
 using Microsoft.Diagnostics.Tracing.Parsers.MicrosoftWindowsWPF;
 using MulTyPlayerClient.Classes.Networking;
 
@@ -80,26 +82,31 @@ public static class SFXPlayer
 
     private static Dictionary<SFX, MediaPlayer> mediaPlayers;
 
+    private static bool _isInit = false;
     public static void Init()
     {
         mediaPlayers = new Dictionary<SFX, MediaPlayer>();
 
-        foreach (var kvPair in sfxResources) AddSound(kvPair.Key, kvPair.Value);
+        foreach (var kvPair in sfxResources)
+            AddSound(kvPair.Key, kvPair.Value);
+        
+        _isInit = true;
     }
 
     public static void PlaySound(SFX sfxName)
     {
-        if (mediaPlayers.TryGetValue(sfxName, out var player))
+        if (mediaPlayers.TryGetValue(sfxName, out var player) && _isInit)
             player.Dispatcher.Invoke(() =>
             {
                 player.Stop();
+                player.Volume = 0.15f;
                 player.Play();
             });
     }
     
     public static void PlaySound(SFX sfxName, float volume)
     {
-        if (mediaPlayers.TryGetValue(sfxName, out var player))
+        if (mediaPlayers.TryGetValue(sfxName, out var player) && _isInit)
             player.Dispatcher.Invoke(() =>
             {
                 player.Stop();
@@ -132,9 +139,9 @@ public static class SFXPlayer
         }
 
         MediaPlayer mp = new();
-        mp.Open(uri);
-        mp.Volume = 0.15f;
+        mp.Volume = 0f;
         mp.MediaEnded += delegate { mp.Volume = 0.15f; };
+        mp.Open(uri);
         mediaPlayers.Add(sfxName, mp);
     }
 

@@ -71,7 +71,6 @@ public class HardcoreModeHandler
         if (Client.HHero.GetLives() < 0)
             Client.HHero.SetLives(0);
         
-        Console.WriteLine(HardcoreRunDead);
         // Check Dead Run
         if (HardcoreRunDead && Client.HHero.GetLives() >= 1)
         {

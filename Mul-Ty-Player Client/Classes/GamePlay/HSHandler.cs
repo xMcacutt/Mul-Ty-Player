@@ -158,8 +158,8 @@ public class HSHandler
         var pos = MtpCommandTeleport.LevelStarts[Client.HLevel.CurrentLevelId];
         Client.HHero.WritePosition(pos[0], pos[1], pos[2], false);
         Client.HHero.SetRunSpeed(0);
-        Client.HLevel.LevelBloomSettings.State = true;
-        Client.HLevel.LevelBloomSettings.Value = 0;
+        LevelHandler.LevelBloomSettings.State = true;
+        LevelHandler.LevelBloomSettings.Value = 0;
     }
 
     [MessageHandler((ushort)MessageID.HS_Catch)]
@@ -195,7 +195,7 @@ public class HSHandler
     private static void SetHideSeek(Message message)
     {
         Client.HHero.SetDefaults();
-        Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        LevelHandler.LevelBloomSettings.RevertToOriginal();
     }
 
     [MessageHandler((ushort)MessageID.HS_RoleChanged)]
@@ -267,7 +267,7 @@ public class HSHandler
 
         Client.HKoala.ScaleKoalas();
         Client.HGlow.ReturnGlows();
-        Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        LevelHandler.LevelBloomSettings.RevertToOriginal();
         
         SFXPlayer.PlaySound(SFX.HS_SeekStart);
         
@@ -288,7 +288,7 @@ public class HSHandler
         Client.HHideSeek.Mode = HSMode.Neutral; 
         Client.HHideSeek._timerRunning = false;
         Client.HHero.SetDefaults();
-        Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        LevelHandler.LevelBloomSettings.RevertToOriginal();
         Client.HHideSeek.CurrentPerk.Deactivate();
         Client.HHideSeek.CurrentPerk = new NoPerk();
         Client.HHideSeek.CurrentDebuff.Deactivate();
@@ -324,7 +324,7 @@ public class HSHandler
         Client.HHideSeek.Mode = HSMode.Neutral;
         Client.HHideSeek._timerRunning = false;
         Client.HHero.SetDefaults();
-        Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        LevelHandler.LevelBloomSettings.RevertToOriginal();
         Client.HHideSeek.CurrentPerk.Deactivate();
         Client.HHideSeek.CurrentPerk = new NoPerk();
         Client.HHideSeek.CurrentDebuff.Deactivate();

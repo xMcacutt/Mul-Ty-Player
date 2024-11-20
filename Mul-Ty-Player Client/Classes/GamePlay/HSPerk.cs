@@ -515,13 +515,13 @@ public class HidersHaveGrayscalePerk : HSPerk
 
     public override void ApplyHider()
     {
-        Client.HLevel.LevelBloomSettings.State = true;
-        Client.HLevel.LevelBloomSettings.Saturation = 0;
+        LevelHandler.LevelBloomSettings.State = true;
+        LevelHandler.LevelBloomSettings.Saturation = 0;
     }
 
     public override void Deactivate()
     {
-        Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        LevelHandler.LevelBloomSettings.RevertToOriginal();
     }
 }
 
@@ -535,13 +535,13 @@ public class SeekersHaveGrayscalePerk : HSPerk
 
     public override void ApplySeeker()
     {
-        Client.HLevel.LevelBloomSettings.State = true;
-        Client.HLevel.LevelBloomSettings.Saturation = 0;
+        LevelHandler.LevelBloomSettings.State = true;
+        LevelHandler.LevelBloomSettings.Saturation = 0;
     }
 
     public override void Deactivate()
     {
-        Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        LevelHandler.LevelBloomSettings.RevertToOriginal();
     }
 }
 
@@ -576,8 +576,8 @@ public class SeekerAcidTrip : HSPerk
     private float _hue = 0;
     public override void ApplySeeker()
     {
-        Client.HLevel.LevelBloomSettings.State = true;
-        Client.HLevel.LevelBloomSettings.Hue = _hue;
+        LevelHandler.LevelBloomSettings.State = true;
+        LevelHandler.LevelBloomSettings.Hue = _hue;
         if (_isGoingDown)
             _hue -= 0.006f;
         else 
@@ -596,7 +596,7 @@ public class SeekerAcidTrip : HSPerk
 
     public override void Deactivate()
     {
-        Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        LevelHandler.LevelBloomSettings.RevertToOriginal();
     }
 }
 
@@ -612,8 +612,8 @@ public class HiderAcidTrip : HSPerk
     private float _hue = 0;
     public override void ApplyHider()
     {
-        Client.HLevel.LevelBloomSettings.State = true;
-        Client.HLevel.LevelBloomSettings.Hue = _hue;
+        LevelHandler.LevelBloomSettings.State = true;
+        LevelHandler.LevelBloomSettings.Hue = _hue;
         if (_isGoingDown)
             _hue -= 0.006f;
         else 
@@ -632,7 +632,7 @@ public class HiderAcidTrip : HSPerk
 
     public override void Deactivate()
     {
-        Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        LevelHandler.LevelBloomSettings.RevertToOriginal();
     }
 }
 
@@ -657,18 +657,18 @@ public class HiderFlashbangAbilityPerk : HSPerk
     private static async void Flashbang()
     {
         SFXPlayer.PlaySound(SFX.Flashbang);
-        Client.HLevel.LevelBloomSettings.State = true;
-        var originalBrightness = Client.HLevel.LevelBloomSettings.Value;
+        LevelHandler.LevelBloomSettings.State = true;
+        var originalBrightness = LevelHandler.LevelBloomSettings.Value;
         var flashBrightness = 15f;
-        Client.HLevel.LevelBloomSettings.Value = flashBrightness;
-        var originalSaturation = Client.HLevel.LevelBloomSettings.Saturation;
-        Client.HLevel.LevelBloomSettings.Saturation = 0;
+        LevelHandler.LevelBloomSettings.Value = flashBrightness;
+        var originalSaturation = LevelHandler.LevelBloomSettings.Saturation;
+        LevelHandler.LevelBloomSettings.Saturation = 0;
         await Task.Delay(1500);
         var steps = 750;
         for (var i = 0; i < steps; i++)
         {
-            Client.HLevel.LevelBloomSettings.Value -= (flashBrightness - originalBrightness) / steps;
-            Client.HLevel.LevelBloomSettings.Saturation += originalSaturation / steps;
+            LevelHandler.LevelBloomSettings.Value -= (flashBrightness - originalBrightness) / steps;
+            LevelHandler.LevelBloomSettings.Saturation += originalSaturation / steps;
             await Task.Delay(3);
         }
     }
@@ -683,7 +683,7 @@ public class HiderFlashbangAbilityPerk : HSPerk
 
     public override void Deactivate()
     {
-        Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        LevelHandler.LevelBloomSettings.RevertToOriginal();
     }
 }
 
@@ -705,7 +705,7 @@ public class SeekerFlashbangAbilityPerk : HSPerk
 
     public override void Deactivate()
     {
-        Client.HLevel.LevelBloomSettings.RevertToOriginal();
+        LevelHandler.LevelBloomSettings.RevertToOriginal();
     }
 }
 

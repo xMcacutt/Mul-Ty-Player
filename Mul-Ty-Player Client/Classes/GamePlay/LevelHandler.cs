@@ -12,7 +12,7 @@ internal class LevelHandler
     public LevelData CurrentLevelData;
     private int currentLevelId;
     
-    public BloomSettings LevelBloomSettings;
+    public static BloomSettings LevelBloomSettings;
 
     public Action<int> OnLevelChange = delegate { };
     private static KoalaHandler HKoala => Client.HKoala;
