@@ -24,6 +24,7 @@ public static class VoiceHandler
     private static WaveInEvent _waveIn;
     private static IWavePlayer _waveOut;
     private static MixingSampleProvider _mixer;
+    private static bool _muted;
     public static bool DoProximityCheck;
     private static int _inputDeviceIndex;
     private const ushort THRESHOLD = 0x0050;
@@ -90,8 +91,8 @@ public static class VoiceHandler
     public static void JoinVoice()
     {
         VoiceClient.OpenVoiceSocket(Client._ip);
-        Compressor = new Compressor(0.8f, 1.1f, 1.05f, 4.0f);
-        NoiseGate = new NoiseGate(0.2f, 0.95f);
+        Compressor = new Compressor();
+        NoiseGate = new NoiseGate();
         _waveIn = new WaveInEvent
         {
             DeviceNumber = _inputDeviceIndex,
@@ -128,6 +129,8 @@ public static class VoiceHandler
     {
         try
         {
+            if (_muted)
+                return;
             VoiceClient.SendAudio(ProcessVoiceData(e.Buffer), e.Buffer.Length, GetNextSequenceNumber());
         }
         catch (Exception ex)
@@ -201,6 +204,21 @@ public static class VoiceHandler
         });
 
         return outputBytes;
+    }
+
+    public static void UpdateEffectsSettings()
+    {
+        Compressor.InputGain = SettingsHandler.ClientSettings.CmpInputGain;
+        Compressor.Threshold = SettingsHandler.ClientSettings.CmpThreshold;
+        Compressor.Ratio = SettingsHandler.ClientSettings.CmpRatio;
+        Compressor.OutputGain = SettingsHandler.ClientSettings.CmpOutputGain;
+        NoiseGate.NoiseFloor = SettingsHandler.ClientSettings.NsGtFloor;
+        NoiseGate.NoiseCeiling = SettingsHandler.ClientSettings.NsGtCeiling;
+    }
+
+    public static void ToggleMute(bool value)
+    {
+        _muted = value;
     }
 }
 

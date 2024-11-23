@@ -11,7 +11,13 @@
   "KoalaScale": 1.5,
   "InterpolationMode" : "None",
   "AutoJoinVoice": false,
-  "ProximityRange": 2250,
+  "ProximityRange": 2600,
+  "CmpInputGain": 1.0,
+  "CmpThreshold": 1.0,
+  "CmpRatio": 1.0,
+  "CmpOutputGain": 1.0,
+  "NsGtFloor": 0.0,
+  "NsGtCeiling": 1.0,
   "VoiceInputDevice": "",
   "Theme": "Dark",
   "Version": "4.9.0",
@@ -25,5 +31,6 @@
   "DoOldRangSwap": true,
   "DoControllerCameraAiming": true,
   "DoFixMenuPositions": true,
-  "DoForceMagnets": true
+  "DoForceMagnets": true,
+  "DoUnlockGameInfo": true
 }

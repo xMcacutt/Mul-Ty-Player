@@ -65,53 +65,59 @@
                 </Grid>
             </Button>
             <!--Client Settings Panel Stack Panel-->
-            <StackPanel x:Name="ClientStackPanel" 
-                        Height="Auto" 
-                        Visibility="Collapsed">
-                <Label Content="Theme"
-                       Style="{StaticResource SettingsLabelStyle}"/>
-                <ComboBox ItemsSource="{Binding Themes}" 
-                          SelectedItem="{Binding Theme}" 
-                          Style="{StaticResource SettingsComboBoxStyle}"/>
-                
-                <CheckBox IsChecked="{Binding AutoLaunchTyOnStartup}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Auto Launch Ty"/>
-                
-                <CheckBox IsChecked="{Binding AutoRestartTy}" 
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Auto Restart Ty"/>
-                
-                <CheckBox IsChecked="{Binding AttemptReconnect}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Attempt Reconnect"/>
-                
-                <CheckBox IsChecked="{Binding DoChaosSeedLogging}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Log Chaos Mode Seed"/>
-                
-                <CheckBox IsChecked="{Binding DoAutoUpdate}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Auto Update Client"/>
-                
-                <CheckBox IsChecked="{Binding DoGetSteamName}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Use Steam Name"
-                          Name="GetSteamNameCheckBox"/>
-                
-                <Grid Visibility="{Binding ElementName=GetSteamNameCheckBox, 
-                      Path=IsChecked, 
-                      Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Content="Default Name"
+            <ScrollViewer x:Name="ClientScrollViewer"
+                VerticalScrollBarVisibility="Auto"
+                HorizontalScrollBarVisibility="Disabled"
+                MaxHeight="300"
+                Visibility="{Binding ElementName=ClientStackPanel, Path=Visibility}">
+                <StackPanel x:Name="ClientStackPanel" 
+                            Height="Auto" 
+                            Visibility="Collapsed">
+                    <Label Content="Theme"
                            Style="{StaticResource SettingsLabelStyle}"/>
-                    <TextBox Grid.Row="1" Text="{Binding DefaultName}"
-                             Style="{StaticResource SettingsTextBoxStyle}"/>
-                </Grid>
-            </StackPanel>
+                    <ComboBox ItemsSource="{Binding Themes}" 
+                              SelectedItem="{Binding Theme}" 
+                              Style="{StaticResource SettingsComboBoxStyle}"/>
+                    
+                    <CheckBox IsChecked="{Binding AutoLaunchTyOnStartup}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Auto Launch Ty"/>
+                    
+                    <CheckBox IsChecked="{Binding AutoRestartTy}" 
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Auto Restart Ty"/>
+                    
+                    <CheckBox IsChecked="{Binding AttemptReconnect}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Attempt Reconnect"/>
+                    
+                    <CheckBox IsChecked="{Binding DoChaosSeedLogging}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Log Chaos Mode Seed"/>
+                    
+                    <CheckBox IsChecked="{Binding DoAutoUpdate}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Auto Update Client"/>
+                    
+                    <CheckBox IsChecked="{Binding DoGetSteamName}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Use Steam Name"
+                              Name="GetSteamNameCheckBox"/>
+                    
+                    <Grid Visibility="{Binding ElementName=GetSteamNameCheckBox, 
+                          Path=IsChecked, 
+                          Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="Default Name"
+                               Style="{StaticResource SettingsLabelStyle}"/>
+                        <TextBox Grid.Row="1" Text="{Binding DefaultName}"
+                                 Style="{StaticResource SettingsTextBoxStyle}"/>
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
             <Separator Style="{StaticResource SettingsSepStyle}"/>
             
             <!--Game Settings Item Stack Panel-->
@@ -139,44 +145,71 @@
                                    Code="{Binding ElementName=GameStackPanel, Path=Visibility, Converter={StaticResource PopupVisibilityToArrowDirectionConverter}}"/>
                 </Grid>
             </Button>
-            <!--Game Settings Panel Stack Panel-->
-            <StackPanel x:Name="GameStackPanel"
-                        Height="Auto"
-                        Visibility="Collapsed">
-                <Label Content="Koala Scale" 
-                       Style="{StaticResource SettingsLabelStyle}"/>
-                <Slider Minimum="0.5" 
-                        Maximum="3" 
-                        TickFrequency="0.25" 
-                        TickPlacement="BottomRight" 
-                        Orientation="Horizontal"
-                        Value="{Binding KoalaScale}"
-                        Style="{StaticResource SettingsSliderStyle}"/>
-                
-                <Label Content="Interpolation Mode" 
-                       Style="{StaticResource SettingsLabelStyle}"/>
-                <ComboBox ItemsSource="{Binding InterpolationModes}"
-                          SelectedItem="{Binding InterpolationMode}"
-                          Style="{StaticResource SettingsComboBoxStyle}"/>
-                
-                <CheckBox IsChecked="{Binding DoKoalaCollision}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Collide Koalas"/>
-                
-                <CheckBox IsChecked="{Binding DoUseTyKoalaTextures}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Use Koala Textures"/>
-                
-                <CheckBox IsChecked="{Binding ShowKoalaBeacons}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Show Koala Beacons"/>
-                
-                <Label Content="Default Save Slot" 
-                       Style="{StaticResource SettingsLabelStyle}"/>
-                <ComboBox ItemsSource="{Binding SaveSlots}"
-                          SelectedIndex="{Binding SelectedSlotIndex}"
-                          Style="{StaticResource SettingsComboBoxStyle}"/>
-            </StackPanel>
+            
+            <ScrollViewer x:Name="GameScrollViewer"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          MaxHeight="300"
+                          Visibility="{Binding ElementName=GameStackPanel, Path=Visibility}">
+                <!--Game Settings Panel Stack Panel-->
+                <StackPanel x:Name="GameStackPanel"
+                            Height="Auto"
+                            Visibility="Collapsed">
+                    <Label Content="Koala Scale" 
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <Slider Minimum="0.5" 
+                            Maximum="3" 
+                            TickFrequency="0.25" 
+                            TickPlacement="BottomRight" 
+                            Orientation="Horizontal"
+                            Value="{Binding KoalaScale}"
+                            Style="{StaticResource SettingsSliderStyle}"/>
+                    
+                    <Label Content="Interpolation Mode" 
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <ComboBox ItemsSource="{Binding InterpolationModes}"
+                              SelectedItem="{Binding InterpolationMode}"
+                              Style="{StaticResource SettingsComboBoxStyle}"/>
+                    
+                    <CheckBox IsChecked="{Binding DoKoalaCollision}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Collide Koalas"/>
+                    
+                    <CheckBox IsChecked="{Binding DoUseTyKoalaTextures}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Use Koala Textures"/>
+                    
+                    <CheckBox IsChecked="{Binding ShowKoalaBeacons}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Show Koala Beacons"/>
+                    
+                    <Label Content="Default Save Slot" 
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <ComboBox ItemsSource="{Binding SaveSlots}"
+                              SelectedIndex="{Binding SelectedSlotIndex}"
+                              Style="{StaticResource SettingsComboBoxStyle}"/>
+                    
+                    <CheckBox IsChecked="{Binding DoForceMagnets}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Force Magnets"/>
+                    
+                    <CheckBox IsChecked="{Binding DoOldOutbackMovement}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Old Bushpig Movement"/>
+                    
+                    <CheckBox IsChecked="{Binding DoOldRangSwap}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Fast Rang Swap"/>
+                    
+                    <CheckBox IsChecked="{Binding DoControllerCameraAiming}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Controller Aiming"/>
+                    
+                    <CheckBox IsChecked="{Binding DoFixMenuPositions}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Fix Menu Positions"/>
+                </StackPanel>
+            </ScrollViewer>
             <Separator Visibility="Visible" Style="{StaticResource SettingsSepStyle}"/>
             
                         <!--Voice Settings Item Stack Panel-->
@@ -204,30 +237,115 @@
                 </Grid>
             </Button>
             
-            <!--Voice Settings Panel Stack Panel-->
-            <StackPanel x:Name="VoiceStackPanel"
-                        Height="Auto"
-                        Visibility="Collapsed">
-                <CheckBox IsChecked="{Binding AutoJoinVoice}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Auto Join Voice"/>
-                
-                <Label Content="Input Device" 
-                       Style="{StaticResource SettingsLabelStyle}"/>
-                <ComboBox ItemsSource="{Binding InputDevices}"
-                          Name="InputDeviceComboBox"
-                          SelectedItem="{Binding SelectedInputDevice}"
-                          DropDownOpened="InputDeviceComboBox_OnDropDownOpened"
-                          SelectionChanged="InputDeviceComboBox_OnSelectionChanged"
-                          Style="{StaticResource SettingsComboBoxStyle}"/>
-                
-                <Label Content="Proximity Range" 
-                       Style="{StaticResource SettingsLabelStyle}"/>
-                <TextBox Text="{Binding ProximityRange}"
-                         Name="ProximityRangeTextBox"
-                         PreviewTextInput="RangeTextBox_OnPreviewTextInput"
-                         Style="{StaticResource SettingsTextBoxStyle}"/>
-            </StackPanel>
+            <ScrollViewer x:Name="VoiceScrollViewer"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          MaxHeight="300"
+                          Visibility="{Binding ElementName=VoiceStackPanel, Path=Visibility}">
+                <!--Voice Settings Panel Stack Panel-->
+                <StackPanel x:Name="VoiceStackPanel"
+                            Height="Auto"
+                            Visibility="Collapsed">
+                    <CheckBox IsChecked="{Binding AutoJoinVoice}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Auto Join Voice"/>
+                    
+                    <Label Content="Input Device" 
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <ComboBox ItemsSource="{Binding InputDevices}"
+                              Name="InputDeviceComboBox"
+                              SelectedItem="{Binding SelectedInputDevice}"
+                              DropDownOpened="InputDeviceComboBox_OnDropDownOpened"
+                              SelectionChanged="InputDeviceComboBox_OnSelectionChanged"
+                              Style="{StaticResource SettingsComboBoxStyle}"/>
+                    
+                    <Label Content="Proximity Range" 
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <Slider Minimum="1000" 
+                            Maximum="5000" 
+                            TickFrequency="200" 
+                            TickPlacement="BottomRight" 
+                            Orientation="Horizontal"
+                            Value="{Binding ProximityRange}"
+                            ValueChanged="RangeBase_OnValueChanged"
+                            Style="{StaticResource SettingsSliderStyle}"/>
+                    
+                    <Label Content="Compressor"
+                           Style="{StaticResource SettingsLabelStyle}"
+                           FontSize="30"/>
+                    
+                    <Label Content="Input Gain"
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <Slider Minimum="0" 
+                            Maximum="2" 
+                            TickFrequency="0.05" 
+                            TickPlacement="BottomRight" 
+                            Orientation="Horizontal"
+                            Value="{Binding CmpInputGain}"
+                            ValueChanged="RangeBase_OnValueChanged"
+                            Style="{StaticResource SettingsSliderStyle}"/>
+
+                    <Label Content="Threshold"
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <Slider Minimum="0" 
+                            Maximum="1" 
+                            TickFrequency="0.05" 
+                            TickPlacement="BottomRight" 
+                            Orientation="Horizontal"
+                            Value="{Binding CmpThreshold}"
+                            ValueChanged="RangeBase_OnValueChanged"
+                            Style="{StaticResource SettingsSliderStyle}"/>
+                    
+                    <Label Content="Ratio"
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <Slider Minimum="1" 
+                            Maximum="10" 
+                            TickFrequency="1" 
+                            TickPlacement="BottomRight" 
+                            Orientation="Horizontal"
+                            Value="{Binding CmpRatio}"
+                            ValueChanged="RangeBase_OnValueChanged"
+                            Style="{StaticResource SettingsSliderStyle}"/>
+                    
+                    <Label Content="Output Gain"
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <Slider Minimum="0" 
+                            Maximum="2" 
+                            TickFrequency="0.05" 
+                            TickPlacement="BottomRight" 
+                            Orientation="Horizontal"
+                            Value="{Binding CmpOutputGain}"
+                            ValueChanged="RangeBase_OnValueChanged"
+                            Style="{StaticResource SettingsSliderStyle}"/>
+                    
+                    <Label Content="Noise Gate"
+                           Style="{StaticResource SettingsLabelStyle}"
+                           FontSize="30"/>
+                    
+                    <Label Content="Floor"
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <Slider Minimum="0" 
+                            Maximum="1" 
+                            TickFrequency="0.05" 
+                            TickPlacement="BottomRight" 
+                            Orientation="Horizontal"
+                            Value="{Binding NsGtFloor}"
+                            ValueChanged="RangeBase_OnValueChanged"
+                            Style="{StaticResource SettingsSliderStyle}"/>
+                    
+                    <Label Content="Ceiling"
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <Slider Minimum="0" 
+                            Maximum="1" 
+                            TickFrequency="0.05" 
+                            TickPlacement="BottomRight" 
+                            Orientation="Horizontal"
+                            Value="{Binding NsGtCeiling}"
+                            ValueChanged="RangeBase_OnValueChanged"
+                            Style="{StaticResource SettingsSliderStyle}"/>
+
+                </StackPanel>
+            </ScrollViewer>
             <Separator Style="{StaticResource SettingsSepStyle}"/>
             
             
@@ -261,44 +379,50 @@
                 </Grid>
             </Button>
             
-            <!--Server Settings Panel Stack Panel-->
-            <StackPanel x:Name="ServerStackPanel"
-                        Height="Auto"
-                        Visibility="Collapsed">
-                <Label Style="{StaticResource SettingsLabelStyle}"
-                       Content="Sync Settings"/>
-                <CheckBox IsChecked="{Binding DoSyncTEs}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Thunder Eggs"/>
-                <CheckBox IsChecked="{Binding DoSyncCogs}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Golden Cogs"/>
-                <CheckBox IsChecked="{Binding DoSyncBilbies}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Bilbies"/>
-                <CheckBox IsChecked="{Binding DoSyncOpals}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Opals"/>
-                <CheckBox IsChecked="{Binding DoSyncRangs}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Rangs &amp; Attributes"/>
-                <CheckBox IsChecked="{Binding DoSyncRainbowCliffs}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Rainbow Cliffs Data"/>
-                <CheckBox IsChecked="{Binding DoSyncPortals}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Portals"/>
-                <CheckBox IsChecked="{Binding DoSyncScales}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Rainbow Scales"/>
-                <CheckBox IsChecked="{Binding DoSyncFrames}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Picture Frames"/>
-            </StackPanel>
-            
+            <ScrollViewer x:Name="ServerScrollViewer"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          MaxHeight="300"
+                          Visibility="{Binding ElementName=ServerStackPanel, Path=Visibility}">
+                <!--Server Settings Panel Stack Panel-->
+                <StackPanel x:Name="ServerStackPanel"
+                            Height="Auto"
+                            Visibility="Collapsed">
+                    <Label Style="{StaticResource SettingsLabelStyle}"
+                           Content="Sync Settings"/>
+                    <CheckBox IsChecked="{Binding DoSyncTEs}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Thunder Eggs"/>
+                    <CheckBox IsChecked="{Binding DoSyncCogs}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Golden Cogs"/>
+                    <CheckBox IsChecked="{Binding DoSyncBilbies}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Bilbies"/>
+                    <CheckBox IsChecked="{Binding DoSyncOpals}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Opals"/>
+                    <CheckBox IsChecked="{Binding DoSyncRangs}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Rangs &amp; Attributes"/>
+                    <CheckBox IsChecked="{Binding DoSyncRainbowCliffs}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Rainbow Cliffs Data"/>
+                    <CheckBox IsChecked="{Binding DoSyncPortals}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Portals"/>
+                    <CheckBox IsChecked="{Binding DoSyncScales}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Rainbow Scales"/>
+                    <CheckBox IsChecked="{Binding DoSyncFrames}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Picture Frames"/>
+                </StackPanel>
+            </ScrollViewer>
             <Separator Style="{StaticResource SettingsSepStyle}"
                        Visibility="{Binding IsHost, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"/>
             
+
             <!--Dev Settings Item Stack Panel-->
             <Button Click="DevDropDownButton_OnClick" Style="{StaticResource SettingsButtonStyle}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                 <Grid>
@@ -324,21 +448,27 @@
                 </Grid>
             </Button>
             
-            <!--Dev Settings Panel Stack Panel-->
-            <StackPanel x:Name="DevStackPanel"
-                        Height="Auto"
-                        Visibility="Collapsed">
-                <CheckBox IsChecked="{Binding DoOutputLogs}"
-                          Style="{StaticResource SettingsCheckBoxStyle}"
-                          Content="Output Logs"/>
-                
-                <Label Content="Default Port" 
-                       Style="{StaticResource SettingsLabelStyle}"/>
-                <TextBox Text="{Binding DefaultPort}"
-                         Name="PortTextBox"
-                         PreviewTextInput="PortTextBox_OnPreviewTextInput"
-                         Style="{StaticResource SettingsTextBoxStyle}"/>
-            </StackPanel>
+            <ScrollViewer x:Name="DevScrollViewer"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          MaxHeight="300"
+                          Visibility="{Binding ElementName=DevStackPanel, Path=Visibility}">
+                <!--Dev Settings Panel Stack Panel-->
+                <StackPanel x:Name="DevStackPanel"
+                            Height="Auto"
+                            Visibility="Collapsed">
+                    <CheckBox IsChecked="{Binding DoOutputLogs}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Output Logs"/>
+                    
+                    <Label Content="Default Port" 
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <TextBox Text="{Binding DefaultPort}"
+                             Name="PortTextBox"
+                             PreviewTextInput="PortTextBox_OnPreviewTextInput"
+                             Style="{StaticResource SettingsTextBoxStyle}"/>
+                </StackPanel>
+            </ScrollViewer>
             <Separator Style="{StaticResource SettingsSepStyle}"/>
             
             <StackPanel Orientation="Horizontal" 

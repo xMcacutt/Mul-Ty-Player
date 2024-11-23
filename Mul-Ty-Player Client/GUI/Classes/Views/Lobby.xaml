@@ -7,6 +7,7 @@
              xmlns:controls="clr-namespace:MulTyPlayerClient.GUI.Controls"
              xmlns:client="clr-namespace:MulTyPlayerClient"
              xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             xmlns:voice="clr-namespace:MulTyPlayerClient.Classes.Networking.Voice"
              mc:Ignorable="d"
              Height="450" Width="800" FontSize="10" BorderBrush="Black"
              x:Name="LobbyView"
@@ -329,21 +330,6 @@
                                     </Style>
                                 </Button.Resources>
                             </Button>
-
-                            <Button x:Name="RequestSyncButton"
-                                    Margin="2 0"
-                                    Click="RequestSyncButton_Click"
-                                    ToolTip="Request Sync"
-                                    Width="55"
-                                    IsEnabled="{Binding IsSyncButtonEnabled}"
-                                    Style="{StaticResource LobbyButton}">
-                                <controls:Icon Margin="5,0" Code="{DynamicResource IcoRefresh}" Size="24" />
-                                <Button.Resources>
-                                    <Style TargetType="{x:Type Border}">
-                                        <Setter Property="CornerRadius" Value="5" />
-                                    </Style>
-                                </Button.Resources>
-                            </Button>
                             
                             <Button x:Name="HostMenuButton"
                                     Margin="2 0"
@@ -431,6 +417,21 @@
                                                                  IconCode="{DynamicResource IcoProximity}"/>
                                     </ContextMenu>
                                 </Button.ContextMenu>
+                            </Button>
+                            
+                            <Button x:Name="VoiceMuteButton"
+                                    Margin="2 0"
+                                    Click="VoiceMuteButton_Click"
+                                    ToolTip="Mute Mic"
+                                    Width="55"
+                                    Visibility="{Binding IsVoiceConnected, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true}"
+                                    Style="{StaticResource LobbyButton}">
+                                <controls:Icon Margin="5,0" Code="{Binding IsVoiceMuted, Converter={StaticResource BooleanToMicIconConverter}}" Size="24" />
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="5" />
+                                    </Style>
+                                </Button.Resources>
                             </Button>
                             
                             <Button x:Name="HideSeekMenuButton"

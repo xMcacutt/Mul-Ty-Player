@@ -2,6 +2,11 @@
 
 ## Most Recent
 
+#### 4.9.1
+- Many new additions to hardcore (HDC)
+- Voice effects added
+- Settings extracted from updater to client (not yet removed from updater)
+
 #### 4.9.0
 - Added hardcore mode (HDC)
 - Fixed issue with voice not initializing waveout device

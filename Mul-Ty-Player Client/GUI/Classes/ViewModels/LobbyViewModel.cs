@@ -21,6 +21,7 @@ public class LobbyViewModel : IViewModel
         ManageInputCommand = new RelayCommand(ManageInput);
         LogoutCommand = new RelayCommand(Logout);
         DraftWindow = new HSD_MainWindow();
+        Lobby.IsVoiceConnectedChanged += Model_VoiceConnectedChanged;
         Lobby.IsOnMenuChanged += Model_IsOnMenuChanged;
         Lobby.IsReadyChanged += Model_IsReadyChanged;
         Lobby.IsHostChanged += Model_IsHostChanged;
@@ -52,7 +53,8 @@ public class LobbyViewModel : IViewModel
     public bool IsReady { get; set; } = true;
     public bool IsReadyButtonEnabled { get; set; } = true;
     public bool IsLaunchGameButtonEnabled { get; set; }
-    public bool IsSyncButtonEnabled { get; set; } = true;
+    public bool IsVoiceMuted { get; set; }
+    public bool IsVoiceConnected { get; set; }
     public bool IsHostMenuButtonEnabled { get; set; } = false;
     public bool IsTimerVisible { get; set; } = false;
     public bool IsAbilityCooldownVisible { get; set; } = false;
@@ -98,6 +100,11 @@ public class LobbyViewModel : IViewModel
         Lobby.Logout();
     }
 
+    private void Model_VoiceConnectedChanged(bool value)
+    {
+        IsVoiceConnected = value;
+    }
+    
     private void Model_IsOnMenuChanged(bool value)
     {
         IsOnMenu = value;

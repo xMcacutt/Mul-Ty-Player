@@ -136,6 +136,7 @@ internal class TyProcess
         BaseAddress = process.MainModule.BaseAddress;
         SettingsHandler.ClientSettings.MulTyPlayerFolderPath = process.MainModule.FileName;
         SettingsHandler.Save();
+        GameStateHandler.UpdateExeSettings();
         GameStateHandler.ForceNoIdle();
         IsRunning = true;
     }

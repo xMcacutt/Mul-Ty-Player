@@ -37,12 +37,12 @@ public struct Compressor
     public float OutputGain;
     public float Ratio;
 
-    public Compressor(float threshold, float inputGain, float outputGain, float ratio)
+    public Compressor()
     {
-        Threshold = threshold;
-        InputGain = inputGain;
-        OutputGain = outputGain;
-        Ratio = ratio;
+        Threshold = SettingsHandler.ClientSettings.CmpThreshold;
+        InputGain = SettingsHandler.ClientSettings.CmpInputGain;
+        OutputGain = SettingsHandler.ClientSettings.CmpOutputGain;
+        Ratio = SettingsHandler.ClientSettings.CmpRatio;
     }
 
     public float ApplyCompression(float sample)
@@ -93,10 +93,10 @@ public struct NoiseGate
         }
     }
 
-    public NoiseGate(float noiseFloor, float noiseCeiling)
+    public NoiseGate()
     {
-        NoiseFloor = noiseFloor;
-        NoiseCeiling = noiseCeiling;
+        NoiseFloor = SettingsHandler.ClientSettings.NsGtFloor;
+        NoiseCeiling = SettingsHandler.ClientSettings.NsGtCeiling;
     }
 
     public float ApplyNoiseGate(float sample)

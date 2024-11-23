@@ -18,6 +18,12 @@ internal class ClientSettings
     public bool AutoJoinVoice { get; set; }
     public int ProximityRange { get; set; }
     public string VoiceInputDevice { get; set; }
+    public float CmpInputGain { get; set; }
+    public float CmpThreshold { get; set; }
+    public float CmpRatio { get; set; }
+    public float CmpOutputGain { get; set; }
+    public float NsGtFloor { get; set; }
+    public float NsGtCeiling { get; set; }
     public string Version { get; set; }
     public bool UseTyKoalaTextures { get; set; }
     public bool ShowKoalaBeacons { get; set; }
@@ -29,4 +35,5 @@ internal class ClientSettings
     public bool DoControllerCameraAiming { get; set; }
     public bool DoFixMenuPositions { get; set; }
     public bool DoForceMagnets { get; set; }
+    public bool DoUnlockGameInfo { get; set; }
 }

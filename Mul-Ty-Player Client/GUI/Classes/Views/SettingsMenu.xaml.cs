@@ -40,18 +40,6 @@ public partial class SettingsMenu : Window
             e.Handled = true;
         
     }
-    
-    private void RangeTextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
-    {
-        var regex = new Regex("^[0-9]+$");
-        if (!regex.IsMatch(e.Text))
-        {
-            e.Handled = true;
-            return;
-        }
-        if (string.IsNullOrEmpty(ProximityRangeTextBox.Text)) return;
-        e.Handled = !int.TryParse(ProximityRangeTextBox.Text + e.Text, out _);
-    }
 
     private void ClientDropDownButton_OnClick(object sender, RoutedEventArgs e)
     {
@@ -170,4 +158,9 @@ public partial class SettingsMenu : Window
     }
 
 
+    private void RangeBase_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+    {
+        if (sender is Slider slider)
+            slider.Value = Math.Round(slider.Value, 2); 
+    }
 }

@@ -14,4 +14,6 @@
     <gui:ClientIdToNameConverter x:Key="ClientIdToNameConverter"/>
     <gui:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
     <gui:VIPToStyleConverter x:Key="VIPToStyleConverter"/>
+    <gui:FloatRounderConverter x:Key="FloatRounderConverter"/>
+    <gui:BooleanToMicIconConverter x:Key="BooleanToMicIconConverter"/>
 </ResourceDictionary>

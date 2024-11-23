@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -101,8 +102,6 @@ public class GameStateHandler
         });
     }
     
-    
-    // CALLED ON CONNECTING TO MTP
     public void ProtectLeaderboard()
     {
         var address = SyncHandler.SaveDataBaseAddress + 0xB07;
@@ -231,9 +230,48 @@ public class GameStateHandler
         ProcessHandler.WriteData(baseAddr - 0x25, Encoding.ASCII.GetBytes(hardcoreMessage).Concat(new byte[1]).ToArray());
     }
 
-    public void UpdateExeSettings()
+    public static void UpdateExeSettings()
     {
-        throw new NotImplementedException();
+        var magnetData = SettingsHandler.ClientSettings.DoForceMagnets ? _magnetBytesFixed : _magnetBytesOrigin;
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x139077, magnetData[0]);
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x139090, magnetData[1]);
+        
+        var outbackMovementData = SettingsHandler.ClientSettings.DoOldOutbackMovement ? 
+            new byte[] {0x90, 0x90} 
+            : new byte[] {0x75, 0x06};
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x17311B, outbackMovementData);
+        
+        var rangSwapData = SettingsHandler.ClientSettings.DoOldRangSwap ?             
+            new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }
+            : new byte[] { 0x0F, 0x85, 0xC0, 0x00, 0x00, 0x00 };
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x162B8A, rangSwapData);
+        
+        var menuPositionData = SettingsHandler.ClientSettings.DoFixMenuPositions ? 
+            BitConverter.GetBytes(-5f)
+            : BitConverter.GetBytes(48f);
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x2025B0, menuPositionData);
+        
+        var cameraAimingData = SettingsHandler.ClientSettings.DoControllerCameraAiming ?             
+            new byte[] {0x90, 0x90} : new byte[] {0x75, 0x0C};
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x16A6BC, cameraAimingData);
+        
+        var gameInfoUnlockData = SettingsHandler.ClientSettings.DoUnlockGameInfo ? 
+            new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90 }
+            : new byte[] { 0x80, 0x7C, 0x31, 0x10, 0x00 };
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0xE55CD, gameInfoUnlockData);
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0xE614D, gameInfoUnlockData);
     }
+
+    private static byte[][] _magnetBytesOrigin = new byte[][]
+    {
+        new byte[] { 0x75, 0x27 },
+        new byte[] { 0xe8, 0x6b, 0x51, 0xff, 0xff, 0x3b, 0xf0, 0x7d, 0x07 }
+    };
+    
+    private static byte[][] _magnetBytesFixed = new byte[][]
+    {
+        new byte[] { 0x90, 0x90 },
+        new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }
+    };
 }
 

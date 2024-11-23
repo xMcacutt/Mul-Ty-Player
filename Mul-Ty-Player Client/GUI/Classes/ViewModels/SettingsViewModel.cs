@@ -41,6 +41,7 @@ public class SettingsViewModel
     public bool DoControllerCameraAiming { get; set; }
     public bool DoFixMenuPositions { get; set; }
     public bool DoForceMagnets { get; set; }
+    public bool DoUnlockGameInfo { get; set; }
     public ObservableCollection<string> SaveSlots { get; set; }
     public ObservableCollection<string> InterpolationModes { get; set; }
     
@@ -53,6 +54,12 @@ public class SettingsViewModel
     public bool AutoJoinVoice { get; set; }
     public int ProximityRange { get; set; }
     public string SelectedInputDevice { get; set; }
+    public float CmpInputGain { get; set; }
+    public float CmpThreshold { get; set; }
+    public float CmpRatio { get; set; }
+    public float CmpOutputGain { get; set; }
+    public float NsGtFloor { get; set; }
+    public float NsGtCeiling { get; set; }
 
     // SERVER SETTINGS
     public bool DoSyncTEs { get; set; }
@@ -108,10 +115,17 @@ public class SettingsViewModel
         DoControllerCameraAiming = SettingsHandler.ClientSettings.DoControllerCameraAiming;
         DoFixMenuPositions = SettingsHandler.ClientSettings.DoFixMenuPositions;
         DoForceMagnets = SettingsHandler.ClientSettings.DoForceMagnets;
+        DoUnlockGameInfo = SettingsHandler.ClientSettings.DoUnlockGameInfo;
 
         AutoJoinVoice = SettingsHandler.ClientSettings.AutoJoinVoice;
         ProximityRange = SettingsHandler.ClientSettings.ProximityRange;
         SelectedInputDevice = SettingsHandler.ClientSettings.VoiceInputDevice;
+        CmpInputGain = SettingsHandler.ClientSettings.CmpInputGain;
+        CmpThreshold = SettingsHandler.ClientSettings.CmpThreshold;
+        CmpRatio = SettingsHandler.ClientSettings.CmpRatio;
+        CmpOutputGain = SettingsHandler.ClientSettings.CmpOutputGain;
+        NsGtFloor = SettingsHandler.ClientSettings.NsGtFloor;
+        NsGtCeiling = SettingsHandler.ClientSettings.NsGtCeiling;
 
         DoOutputLogs = SettingsHandler.ClientSettings.CreateLogFile;
         DefaultPort = SettingsHandler.ClientSettings.Port;
@@ -150,12 +164,20 @@ public class SettingsViewModel
         SettingsHandler.ClientSettings.DoControllerCameraAiming = DoControllerCameraAiming;
         SettingsHandler.ClientSettings.DoFixMenuPositions = DoFixMenuPositions;
         SettingsHandler.ClientSettings.DoForceMagnets = DoForceMagnets;
-        Client.HGameState.UpdateExeSettings();
+        SettingsHandler.ClientSettings.DoUnlockGameInfo = DoUnlockGameInfo;
+        GameStateHandler.UpdateExeSettings();
 
         SettingsHandler.ClientSettings.AutoJoinVoice = AutoJoinVoice;
         SettingsHandler.ClientSettings.ProximityRange = ProximityRange;
         SettingsHandler.ClientSettings.VoiceInputDevice = SelectedInputDevice;
-
+        SettingsHandler.ClientSettings.CmpInputGain = CmpInputGain;
+        SettingsHandler.ClientSettings.CmpThreshold = CmpThreshold;
+        SettingsHandler.ClientSettings.CmpRatio = CmpRatio;
+        SettingsHandler.ClientSettings.CmpOutputGain = CmpOutputGain;
+        SettingsHandler.ClientSettings.NsGtFloor = NsGtFloor;
+        SettingsHandler.ClientSettings.NsGtCeiling = NsGtCeiling;
+        VoiceHandler.UpdateEffectsSettings();
+        
         SettingsHandler.ClientSettings.CreateLogFile = DoOutputLogs;
         SettingsHandler.ClientSettings.Port = DefaultPort;
         

@@ -99,10 +99,10 @@ public partial class Lobby : UserControl
         Client.HPlayer.SetReady();
     }
 
-    private void RequestSyncButton_Click(object sender, RoutedEventArgs e)
+    private void VoiceMuteButton_Click(object sender, RoutedEventArgs e)
     {
-        Client.HSync.RequestSync();
-        Logger.Write("Sync request sent to server.");
+        VoiceHandler.ToggleMute(!(DataContext as LobbyViewModel).IsVoiceMuted);
+        (DataContext as LobbyViewModel).IsVoiceMuted = !(DataContext as LobbyViewModel).IsVoiceMuted;
     }
 
     private void PlayerListItem_OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)

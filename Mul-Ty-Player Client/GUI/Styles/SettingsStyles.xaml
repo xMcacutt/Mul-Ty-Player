@@ -129,7 +129,7 @@
                                 BorderThickness="0"
                                 Background="{Binding AltBack, Source={StaticResource AppColors}}">
                         </Border>
-                        <Track Grid.Row="1" x:Name="PART_Track">
+                        <Track Grid.Row="1" x:Name="PART_Track" Margin="0">
                             <Track.Thumb>
                                 <Thumb Style="{StaticResource SliderThumbStyle}" />
                             </Track.Thumb>

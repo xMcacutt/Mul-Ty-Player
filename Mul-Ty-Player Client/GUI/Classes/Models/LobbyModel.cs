@@ -198,6 +198,25 @@ public class LobbyModel
     private bool isTimerVisible;
 
     #endregion
+    
+    #region IsVoiceConnected
+
+    public event Action<bool> IsVoiceConnectedChanged;
+
+    public bool IsVoiceConnected
+    {
+        get => isVoiceConnected;
+        set
+        {
+            isVoiceConnected = value;
+            IsVoiceConnectedChanged(isVoiceConnected);
+        }
+    }
+
+    private bool isVoiceConnected;
+
+    #endregion
+
 
     #region IsAbilityCooldown
 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using MulTyPlayerClient.GUI.Models;
 
 namespace MulTyPlayerClient.Classes.Networking.Voice;
 
@@ -40,6 +41,7 @@ public class VoiceClient
             _endPoint = new IPEndPoint(IPAddress.Any, 0);
             _voiceClient.Client.Bind(_endPoint);
             _voiceClient.Connect(_ip, _port);
+            ModelController.Lobby.IsVoiceConnected = true;
             Logger.Write("Connected to MTP Voice");
             _isListening = true;
             _cts = new CancellationTokenSource();
@@ -80,6 +82,7 @@ public class VoiceClient
         _cts?.Cancel();
         _voiceClient?.Close();
         _voiceClient = null;
+        ModelController.Lobby.IsVoiceConnected = false;
     }
 
     public static void SendAudio(IEnumerable<byte> data, long originalDataLength, int sequenceNumber)

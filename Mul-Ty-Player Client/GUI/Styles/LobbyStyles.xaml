@@ -148,7 +148,7 @@
         <Setter Property="Background" Value="{Binding SpecialBack, Source={StaticResource AppColors}}" />
         <Setter Property="Foreground" Value="{Binding MainBack, Source={StaticResource AppColors}}" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Margin" Value="0 10" />
+        <Setter Property="Margin" Value="10 10 0 10" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ScrollBar">
