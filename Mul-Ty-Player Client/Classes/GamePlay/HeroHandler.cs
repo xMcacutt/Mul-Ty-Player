@@ -212,8 +212,8 @@ public class HeroHandler
     public void SetWaterSlideSpeeds(float slowSpeed = 6.0f, float normalSpeed = 15.0f, float fastSpeed = 20.0f)
     {
         ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288A14 + 0x4), BitConverter.GetBytes(fastSpeed));
-        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288A14 + 0x8), BitConverter.GetBytes(slowSpeed));
-        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288A14 + 0xC), BitConverter.GetBytes(normalSpeed));
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288A14 - 0x4), BitConverter.GetBytes(slowSpeed));
+        ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x288A14 + 0x8), BitConverter.GetBytes(normalSpeed));
     }
 
     public void SetGravity(float gravity = 0.75f)

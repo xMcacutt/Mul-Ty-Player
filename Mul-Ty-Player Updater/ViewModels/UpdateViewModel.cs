@@ -317,14 +317,14 @@ public class UpdateViewModel
         fileStream.Seek(0x169ABC, SeekOrigin.Begin);
         binaryWriter.Write(cameraData);
         
-        //GAME INFO FIX
-        var gameInfoData = SettingsHandler.Settings.OpenAllGameInfo
-            ? new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90 }
-            : new byte[] { 0x80, 0x7C, 0x31, 0x10, 0x00 };
-        fileStream.Seek(0xE49CD, SeekOrigin.Begin);
-        binaryWriter.Write(gameInfoData);
-        fileStream.Seek(0xE5E4D, SeekOrigin.Begin);
-        binaryWriter.Write(gameInfoData);
+        // //GAME INFO FIX
+        // var gameInfoData = SettingsHandler.Settings.OpenAllGameInfo
+        //     ? new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90 }
+        //     : new byte[] { 0x80, 0x7C, 0x31, 0x10, 0x00 };
+        // fileStream.Seek(0xE49CD, SeekOrigin.Begin);
+        // binaryWriter.Write(gameInfoData);
+        // fileStream.Seek(0xE5E4D, SeekOrigin.Begin);
+        // binaryWriter.Write(gameInfoData);
 
         //MENU FIX
         var menuButtonPositionData = SettingsHandler.Settings.FixMenuBug

@@ -107,7 +107,7 @@ public class HardcoreModeHandler
         }
         
         ProcessHandler.TryRead(0x25C1F4, out int neddyCount, true, "diveRingCount");
-        if (rollingBoulderCount != 0)
+        if (neddyCount != 0)
         {
             ProcessHandler.TryRead(0x25C1F8, out int neddyAddr, true, "diveRingAddress");
             ProcessHandler.WriteData(neddyAddr + 0x60, BitConverter.GetBytes(2.0f));
