@@ -230,5 +230,10 @@ public class GameStateHandler
         ProcessHandler.WriteData(baseAddr - 0x5B, Encoding.ASCII.GetBytes(subMessage).Concat(new byte[1]).ToArray());
         ProcessHandler.WriteData(baseAddr - 0x25, Encoding.ASCII.GetBytes(hardcoreMessage).Concat(new byte[1]).ToArray());
     }
+
+    public void UpdateExeSettings()
+    {
+        throw new NotImplementedException();
+    }
 }
 

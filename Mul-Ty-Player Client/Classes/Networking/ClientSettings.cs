@@ -24,4 +24,9 @@ internal class ClientSettings
     public int DefaultSaveSlot { get; set; }
     public bool ShowCollectiblesInTA { get; set; }
     public bool DoLogChaosSeed { get; set; }
+    public bool DoOldOutbackMovement { get; set; }
+    public bool DoOldRangSwap { get; set; }
+    public bool DoControllerCameraAiming { get; set; }
+    public bool DoFixMenuPositions { get; set; }
+    public bool DoForceMagnets { get; set; }
 }

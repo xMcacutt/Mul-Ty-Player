@@ -20,5 +20,10 @@
   "DefaultSaveSlot": 1,
   "ShowCollectiblesInTA": true,
   "DoLogChaosSeed": true,
-  "DoAutoUpdate": true
+  "DoAutoUpdate": true,
+  "DoOldOutbackMovement": true,
+  "DoOldRangSwap": true,
+  "DoControllerCameraAiming": true,
+  "DoFixMenuPositions": true,
+  "DoForceMagnets": true
 }

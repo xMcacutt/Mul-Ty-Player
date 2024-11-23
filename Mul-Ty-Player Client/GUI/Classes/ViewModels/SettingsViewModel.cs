@@ -36,9 +36,14 @@ public class SettingsViewModel
     public string InterpolationMode { get; set; }
     public bool ShowKoalaBeacons { get; set; }
     public int SelectedSlotIndex { get; set; }
+    public bool DoOldOutbackMovement { get; set; }
+    public bool DoOldRangSwap { get; set; }
+    public bool DoControllerCameraAiming { get; set; }
+    public bool DoFixMenuPositions { get; set; }
+    public bool DoForceMagnets { get; set; }
     public ObservableCollection<string> SaveSlots { get; set; }
-    
     public ObservableCollection<string> InterpolationModes { get; set; }
+    
     
     // DEVELOPER SETTINGS
     public bool DoOutputLogs { get; set; }
@@ -98,6 +103,11 @@ public class SettingsViewModel
         InterpolationMode = SettingsHandler.ClientSettings.InterpolationMode;
         ShowKoalaBeacons = SettingsHandler.ClientSettings.ShowKoalaBeacons;
         SelectedSlotIndex = SettingsHandler.ClientSettings.DefaultSaveSlot;
+        DoOldOutbackMovement = SettingsHandler.ClientSettings.DoOldOutbackMovement;
+        DoOldRangSwap = SettingsHandler.ClientSettings.DoOldRangSwap;
+        DoControllerCameraAiming = SettingsHandler.ClientSettings.DoControllerCameraAiming;
+        DoFixMenuPositions = SettingsHandler.ClientSettings.DoFixMenuPositions;
+        DoForceMagnets = SettingsHandler.ClientSettings.DoForceMagnets;
 
         AutoJoinVoice = SettingsHandler.ClientSettings.AutoJoinVoice;
         ProximityRange = SettingsHandler.ClientSettings.ProximityRange;
@@ -134,6 +144,13 @@ public class SettingsViewModel
         SettingsHandler.ClientSettings.InterpolationMode = InterpolationMode;
         SettingsHandler.ClientSettings.ShowKoalaBeacons = ShowKoalaBeacons;
         SettingsHandler.ClientSettings.DefaultSaveSlot = SelectedSlotIndex;
+        
+        SettingsHandler.ClientSettings.DoOldOutbackMovement = DoOldOutbackMovement;
+        SettingsHandler.ClientSettings.DoOldRangSwap = DoOldRangSwap;
+        SettingsHandler.ClientSettings.DoControllerCameraAiming = DoControllerCameraAiming;
+        SettingsHandler.ClientSettings.DoFixMenuPositions = DoFixMenuPositions;
+        SettingsHandler.ClientSettings.DoForceMagnets = DoForceMagnets;
+        Client.HGameState.UpdateExeSettings();
 
         SettingsHandler.ClientSettings.AutoJoinVoice = AutoJoinVoice;
         SettingsHandler.ClientSettings.ProximityRange = ProximityRange;

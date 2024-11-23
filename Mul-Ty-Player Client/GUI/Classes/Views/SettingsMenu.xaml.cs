@@ -117,11 +117,12 @@ public partial class SettingsMenu : Window
     private void AnimateDropdown(StackPanel dropDown)
     {
         DoubleAnimation anim = new DoubleAnimation();
-        anim.FillBehavior = FillBehavior.Stop;
+        anim.FillBehavior = FillBehavior.HoldEnd;
         anim.Duration = TimeSpan.FromSeconds(0.3);
 
         if (dropDown.Visibility == Visibility.Collapsed)
         {
+            dropDown.Height = 0;
             dropDown.Visibility = Visibility.Visible;
 
             // Use Dispatcher to defer setting the From and To properties until the layout is updated
