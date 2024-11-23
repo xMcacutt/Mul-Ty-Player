@@ -60,6 +60,5 @@ internal class AttributeHandler : SyncObjectHandler
     public static void SetBoomerangRange(float range = 1500f)
     {
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27D78C, BitConverter.GetBytes(range));
-
     }
 }

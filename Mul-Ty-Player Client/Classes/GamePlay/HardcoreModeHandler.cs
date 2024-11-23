@@ -23,7 +23,9 @@ public class HardcoreModeHandler
         Client.HHero.SetFallDelta(650f);
         Client.HHero.SetOpalMagnetisation(false);
         Client.HHardcore.SetEnemySpeedMultiplier(2.0f);
-        AttributeHandler.SetBoomerangRange(1200f);
+        Client.HHero.SetWaterSlideSpeeds(15f, 15f, 30f);
+        if (Client.HLevel.CurrentLevelId != Levels.OutbackSafari.Id)
+            AttributeHandler.SetBoomerangRange(1200f);
     }
     
     public void InitializeLevel(int level)
@@ -103,10 +105,50 @@ public class HardcoreModeHandler
                 ProcessHandler.WriteData(boulderAddr + 0x150 + boulderIndex * 0xA4, BitConverter.GetBytes(3f));
             }
         }
+        
+        ProcessHandler.TryRead(0x25C1F4, out int neddyCount, true, "diveRingCount");
+        if (rollingBoulderCount != 0)
+        {
+            ProcessHandler.TryRead(0x25C1F8, out int neddyAddr, true, "diveRingAddress");
+            ProcessHandler.WriteData(neddyAddr + 0x60, BitConverter.GetBytes(2.0f));
+        }
 
         var spawnerCount = SpawnerHandler.GetSpawnerCount();
         for (var spawnerIndex = 0; spawnerIndex < spawnerCount; spawnerIndex++)
             SpawnerHandler.MultiplySpawnerDelay(spawnerIndex, 0.5f);
+        
+        // Set EZoneGate Height
+        if (level == Levels.RainbowCliffs.Id)
+        {
+            var gateYScaleAddr = PointerCalculations.GetPointerAddress(0x269C0C, new[] { 0x12C, 0x0, 0x48, 0x8, 0x58});
+            ProcessHandler.WriteData(gateYScaleAddr, BitConverter.GetBytes(1.25f));
+        }
+
+        if (level == Levels.CassPass.Id)
+        {
+            var palmTreeAddr = PointerCalculations.GetPointerAddress(0x274B4C, new[] { 0xC4, 0x70 });
+            ProcessHandler.TryRead(palmTreeAddr, out int palmCount, false, "palmCount");
+            ProcessHandler.TryRead(palmTreeAddr + 0x4, out palmTreeAddr, false, "palmAddr");
+            for (var palmIndex = 0; palmIndex < palmCount; palmIndex++)
+            {
+                ProcessHandler.WriteData(palmTreeAddr + 0x48 + palmIndex * 0x60, BitConverter.GetBytes(0));
+            }
+            var staghornAddr = PointerCalculations.GetPointerAddress(0x289954, new[] { 0xEC0, 0x4, 0x2C + 0x44 });
+            ProcessHandler.TryRead(staghornAddr, out int staghornCount, false, "staghornCount");
+            ProcessHandler.TryRead(staghornAddr + 0x4, out staghornAddr, false, "staghornAddr");
+            for (var staghornIndex = 0; staghornIndex < staghornCount; staghornIndex++)
+            {
+                ProcessHandler.WriteData(staghornAddr + 0x48 + staghornIndex * 0x60, BitConverter.GetBytes(0));
+            }
+        }
+        
+        // Reduce TA Time
+        ProcessHandler.TryRead(SyncHandler.SaveDataBaseAddress + 0x40 + 0x70 * level, out int currTime, false, "TA Time HC");
+        if (currTime == 0)
+        {
+            ProcessHandler.TryRead(0x28CB58, out int taTime, true, "TA Time");
+            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x28CB58, BitConverter.GetBytes((int)(taTime * 0.7)));
+        }
         
         Client.HHero.SetRunSpeed(12.5f);
         Client.HHero.SetAirSpeed(12.5f);
@@ -117,7 +159,9 @@ public class HardcoreModeHandler
         Client.HHero.SetFallDelta(650f);
         Client.HHero.SetOpalMagnetisation(false);
         Client.HHardcore.SetEnemySpeedMultiplier(2.0f);
-        AttributeHandler.SetBoomerangRange(1200f);
+        Client.HHero.SetWaterSlideSpeeds(15f, 15f, 30f);
+        if (Client.HLevel.CurrentLevelId != Levels.OutbackSafari.Id)
+            AttributeHandler.SetBoomerangRange(1200f);
     }
 
     public void Deinitialize()
@@ -142,7 +186,12 @@ public class HardcoreModeHandler
             Client.HHero.KillPlayer();
             return;
         }
-        
+
+        var heroState = Client.HHero.GetHeroState();
+        var isBull = Client.HHero.IsBull();
+        // Check Flinch
+        if (!isBull && heroState == (int)HeroState.KnockedOver)
+            Client.HHero.KillPlayer();
         // Read Breath
         var breath = Client.HHero.GetWaterHealth();
         // Set Breath
@@ -154,8 +203,10 @@ public class HardcoreModeHandler
         if (health > 1)
             Client.HHero.SetHealth(1);
         // Check Dead
-        if (health < 1)
+        if (health < 1 || breath < 1)
         {
+            if (HardcoreRunDead)
+                return;
             Client._client.Send(Message.Create(MessageSendMode.Reliable, MessageID.HC_RunStatusChanged).AddBool(true));
             HardcoreRunDead = true;
             return;
@@ -168,8 +219,6 @@ public class HardcoreModeHandler
             ProcessHandler.WriteData(address + (int)RCData.ActivatedBoss1, new byte[] { 1 });
             ProcessHandler.WriteData(address + (int)RCData.JuliusMove1, new byte[] { 1 });
             address += 0x20;
-            SyncHandler.HAttribute.GlobalObjectData[(int)Attributes.GotFlame] = 1;
-            SyncHandler.HAttribute.GlobalObjectData[(int)Attributes.GotTali1] = 1;
             ProcessHandler.WriteData(address + (int)Attributes.GotFlame, new byte[] { 1 });
             ProcessHandler.WriteData(address + (int)Attributes.GotTali1, new byte[] { 1 });
             SFXPlayer.PlaySound(SFX.RangGet);
@@ -182,8 +231,6 @@ public class HardcoreModeHandler
             ProcessHandler.WriteData(address + (int)RCData.ActivatedBoss2, new byte[] { 1 });
             ProcessHandler.WriteData(address + (int)RCData.JuliusMove2, new byte[] { 1 });
             address += 0x20;
-            SyncHandler.HAttribute.GlobalObjectData[(int)Attributes.GotFrosty] = 1;
-            SyncHandler.HAttribute.GlobalObjectData[(int)Attributes.GotTali2] = 1;
             ProcessHandler.WriteData(address + (int)Attributes.GotFrosty, new byte[] { 1 });
             ProcessHandler.WriteData(address + (int)Attributes.GotTali2, new byte[] { 1 });
             SFXPlayer.PlaySound(SFX.RangGet);
@@ -196,17 +243,36 @@ public class HardcoreModeHandler
             ProcessHandler.WriteData(address + (int)RCData.ActivatedBoss3, new byte[] { 1 });
             ProcessHandler.WriteData(address + (int)RCData.JuliusMove3, new byte[] { 1 });
             address += 0x20;
-            SyncHandler.HAttribute.GlobalObjectData[(int)Attributes.GotZappy] = 1;
-            SyncHandler.HAttribute.GlobalObjectData[(int)Attributes.GotTali3] = 1;
             ProcessHandler.WriteData(address + (int)Attributes.GotZappy, new byte[] { 1 });
             ProcessHandler.WriteData(address + (int)Attributes.GotTali3, new byte[] { 1 });
             SFXPlayer.PlaySound(SFX.RangGet);
         }
         
-        ProcessHandler.TryRead(0x25D428, out int turkeyAddr, true, "getTurkey");
-        var rotationSpeed = _random.Next(0, 2) == 0 ? -0.3f : 0.3f;
-        if (turkeyAddr != 0)
-            ProcessHandler.WriteData(turkeyAddr + 0x2E8, BitConverter.GetBytes(rotationSpeed));
+        ProcessHandler.TryRead(0x25D424, out int turkeyCount, true, "getTurkey");
+        if (turkeyCount != 0)
+        {
+            ProcessHandler.TryRead(0x25D428, out int turkeyAddr, true, "getTurkey");
+            for (var turkeyIndex = 0; turkeyIndex < turkeyCount; turkeyIndex++)
+            {
+                var rotationSpeed = _random.Next(0, 2) == 0 ? -0.3f : 0.3f;
+                ProcessHandler.WriteData(turkeyAddr + 0x2E8 + turkeyIndex * 0x4A0, BitConverter.GetBytes(rotationSpeed));
+            }
+        }
+
+        const float arsonFrillSpawnDelay = 2.5f;
+        ProcessHandler.TryRead(0x289D2C, out int arsonFrillSpawnTimer, true, "spawnTimerArson");
+        if (arsonFrillSpawnTimer > (int)(arsonFrillSpawnDelay * 60))
+            ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x289D2C, BitConverter.GetBytes((int)(arsonFrillSpawnDelay * 60)));
+        
+        // Increase Rex Speed
+        var rexAddr = PointerCalculations.GetPointerAddress(0x25FF6C, new[] { 0x9C, 0x114 });
+        ProcessHandler.TryRead(rexAddr, out float rexSpeed, false, "rexSpeed");
+        if (Math.Abs(rexSpeed - 21.125f) < 0.1)
+            ProcessHandler.WriteData(rexAddr, BitConverter.GetBytes(22f));
+        if (Math.Abs(rexSpeed - 9.75) < 0.1)
+            ProcessHandler.WriteData(rexAddr, BitConverter.GetBytes(22f));
+        if (Math.Abs(rexSpeed - 6.5f) < 0.1)
+            ProcessHandler.WriteData(rexAddr, BitConverter.GetBytes(12.5f));
         
         // PERIMETER CHECK 
         var addr = PointerCalculations.GetPointerAddress(0x2656F0, new[] { 0x6C });
@@ -214,7 +280,7 @@ public class HardcoreModeHandler
         if (active && Client.HObjective.GetPerimeterCheckHealth() > 2)
             Client.HObjective.SetPerimeterCheckHealth(2);
     }
-
+    
     public void SetEnemySpeedMultiplier(float multiplier = 1)
     {
         //FRILL
@@ -237,7 +303,7 @@ public class HardcoreModeHandler
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25A89C, BitConverter.GetBytes(0.0192f * (float)Math.Pow(multiplier, 1)));
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25A8A0, BitConverter.GetBytes(0.0997475f * (float)Math.Pow(multiplier, 1)));
         //TURKEY
-        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25D470, BitConverter.GetBytes(11.50f * multiplier));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25D470, BitConverter.GetBytes(11.50f * (float)Math.Pow(multiplier, 0.5f)));
         //BOONIE
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x257DA8, BitConverter.GetBytes(11.50f * multiplier));
         //WOMBAT
@@ -254,6 +320,10 @@ public class HardcoreModeHandler
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x258010, BitConverter.GetBytes(8.00f * multiplier));
         //NEDDY
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25C23C, BitConverter.GetBytes(1.60f * multiplier));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25C240, BitConverter.GetBytes(20f * (float)Math.Pow(multiplier, 2)));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25C244, BitConverter.GetBytes(0.02166f * (float)Math.Pow(multiplier, 2)));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25C2A0, BitConverter.GetBytes(50f * (float)Math.Pow(multiplier, 2)));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25C2A4, BitConverter.GetBytes(180f * (float)Math.Pow(multiplier, 2)));
         //DENNIS
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x259A98, BitConverter.GetBytes(6.0f * multiplier));
         //CHEMICALFRILL

@@ -129,6 +129,14 @@ public class GameStateHandler
         var toggledByte = BitConverter.GetBytes(!result)[0];
         ProcessHandler.WriteData(addr, new byte[3] {toggledByte, 0, toggledByte});
     }
+    
+    public void ToggleGameInfo()
+    {
+        var addr = PointerCalculations.GetPointerAddress(0x286CB0, new[] { 0xCA4 });
+        ProcessHandler.TryRead(addr + 2, out bool result, false, "ToggleLevelSelect()");
+        var toggledByte = BitConverter.GetBytes(!result)[0];
+        ProcessHandler.WriteData(addr, new byte[3] {toggledByte, 0, toggledByte});
+    }
 
     public void ForceEnterNewGameScreen()
     {

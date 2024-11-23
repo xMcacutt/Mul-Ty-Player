@@ -35,9 +35,11 @@ public static class VoiceHandler
     private static ConcurrentDictionary<ushort, Voice> _voices;
     private static int _sequenceNumber; // Track the sequence number for each client
 
+    public static Compressor Compressor;
+    public static NoiseGate NoiseGate;
+
     public static void HandleVoiceData(ushort fromClientId, ulong originalLength, float distance, int level, byte[] data)
     {
-        var decodedBytes = ProcessVoiceData(data, 1.2f, (short)2000, 1f);
         _voices ??= new ConcurrentDictionary<ushort, Voice>();
         if (!_voices.TryGetValue(fromClientId, out var voice))
             AddVoice(fromClientId);
@@ -57,7 +59,7 @@ public static class VoiceHandler
         else
             voice.SampleChannel.Volume = 1.0f;
         
-        voice.WaveProvider.AddSamples(decodedBytes, 0, decodedBytes.Length);
+        voice.WaveProvider.AddSamples(data, 0, data.Length);
     }
 
     public static void AddVoice(ushort clientId)
@@ -88,6 +90,8 @@ public static class VoiceHandler
     public static void JoinVoice()
     {
         VoiceClient.OpenVoiceSocket(Client._ip);
+        Compressor = new Compressor(0.8f, 1.1f, 1.05f, 4.0f);
+        NoiseGate = new NoiseGate(0.2f, 0.95f);
         _waveIn = new WaveInEvent
         {
             DeviceNumber = _inputDeviceIndex,
@@ -124,8 +128,7 @@ public static class VoiceHandler
     {
         try
         {
-            // Send audio data along with the current sequence number
-            VoiceClient.SendAudio(e.Buffer, e.Buffer.Length, GetNextSequenceNumber());
+            VoiceClient.SendAudio(ProcessVoiceData(e.Buffer), e.Buffer.Length, GetNextSequenceNumber());
         }
         catch (Exception ex)
         {
@@ -166,50 +169,34 @@ public static class VoiceHandler
         return _nextSequenceNumber;
     }
     
-    private static byte[] ProcessVoiceData(byte[] inputData, float gain, short threshold, float ratio)
+    private static byte[] ProcessVoiceData(byte[] inputData)
     {
         var shortCount = inputData.Length / 2;
         var outputBytes = new byte[inputData.Length];
 
-        // Use Memory<byte> to handle inputData and outputBytes efficiently
-        Memory<byte> inputMemory = new Memory<byte>(inputData);
-        Memory<byte> outputMemory = new Memory<byte>(outputBytes);
-
-        // Parallel.For to process each pair of bytes concurrently
+        var inputMemory = new Memory<byte>(inputData);
+        var outputMemory = new Memory<byte>(outputBytes);
+        
         Parallel.For(0, shortCount, i =>
         {
-            // Access slices from Memory<byte>
             var inputSlice = inputMemory.Slice(i * 2, 2);
             var outputSlice = outputMemory.Slice(i * 2, 2);
-
-            // Read the sample (two bytes) as a short
-            short sample = BitConverter.ToInt16(inputSlice.Span);
-
-            // Apply gain
-            float processedValue = sample * gain;
-
-            // Apply compression if above threshold (compress symmetrically for negative and positive values)
-            if (Math.Abs(processedValue) > threshold)
-            {
-                float excess = Math.Abs(processedValue) - threshold;
-                if (processedValue > 0)
-                {
-                    processedValue = threshold + (excess / ratio);
-                }
-                else
-                {
-                    processedValue = - (threshold + (excess / ratio));
-                }
-            }
-
-            // Clamp to short range
-            processedValue = Math.Clamp(processedValue, short.MinValue, short.MaxValue);
-
-            // Convert the processed value back to short
-            short processedSample = (short)processedValue;
-
-            // Write processed sample back to outputBytes using the slice
-            byte[] processedBytes = BitConverter.GetBytes(processedSample);
+            
+            var sample = (float)BitConverter.ToInt16(inputSlice.Span);
+            var normalizedSample = Math.Abs((float)sample);
+            if (normalizedSample > short.MaxValue)
+                normalizedSample = short.MaxValue;
+            normalizedSample /= short.MaxValue;
+            
+            // EFFECTS
+            sample = NoiseGate.ApplyNoiseGate(sample);
+            sample = Compressor.ApplyCompression(sample);
+            
+            sample = Math.Clamp(sample, short.MinValue, short.MaxValue);
+            
+            var processedSample = (short)sample;
+            
+            var processedBytes = BitConverter.GetBytes(processedSample);
             processedBytes.CopyTo(outputSlice.Span);
         });
 
