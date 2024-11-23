@@ -12,6 +12,6 @@
   "DoSyncCrate": true,
   "DoSyncScale": true,
   "DoSyncFrame": true,
-  "Version": "4.9.0",
+  "Version": "4.9.2",
   "DoAutoUpdate": true
 }
