@@ -10,6 +10,7 @@ public class HardcoreModeHandler
 {
     public bool HardcoreRunDead;
     private Random _random = new Random();
+    private HDC_IcicleBehaviour currentIcicleBehaviour;
     
     public void Initialize()
     {
@@ -31,6 +32,7 @@ public class HardcoreModeHandler
     public void InitializeLevel(int level)
     {
         HDC_IcicleHandler.ResetIcicles();
+        currentIcicleBehaviour = (HDC_IcicleBehaviour)_random.Next(0, Enum.GetValues(typeof(HDC_IcicleBehaviour)).Length);
         SyncHandler.HThEg.ShowStopwatch();
         var triggerSphereCount = Client.HSync.HTrigger.GetTriggerSphereCount();
         for (var triggerIndex = 0; triggerIndex < triggerSphereCount; triggerIndex++)
@@ -283,7 +285,7 @@ public class HardcoreModeHandler
         if (icicleCount != 0)
         {
             ProcessHandler.TryRead(0x26B968, out int icicleAddr, true, "icicleAddress");
-            HDC_IcicleHandler.HandleIcicles(icicleCount, icicleAddr, (HDC_IcicleBehaviour)_random.Next(0, Enum.GetValues(typeof(HDC_IcicleBehaviour)).Length));
+            HDC_IcicleHandler.HandleIcicles(icicleCount, icicleAddr, currentIcicleBehaviour);
         }
     }
     
