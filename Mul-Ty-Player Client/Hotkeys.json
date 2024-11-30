@@ -74,5 +74,9 @@
   "SpectatorFreecamDisengage": {
     "Key": "D8",
     "Modifiers": "Control, Shift"
+  },
+  "VoiceMute": {
+    "Key": "M",
+    "Modifiers": "Control, Shift"
   }
 }

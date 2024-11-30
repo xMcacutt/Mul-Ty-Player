@@ -31,12 +31,6 @@ public class SetupViewModel
         ServerPath = s.ServerDir;
         MTPPath = s.GameDir;
         Version = s.Version;
-        RevertOutbackMovement = s.RevertOutbackMovement;
-        RevertRangSwitching = s.RevertRangSwitching;
-        FixControllerCameraAiming = s.FixControllerCameraAiming;
-        RemoveMagnetRandom = s.FixedMagnets;
-        OpenAllGameInfo = s.OpenAllGameInfo;
-        FixMenuBug = s.FixMenuBug;
     }
 
     public void SaveSettings()
@@ -48,12 +42,6 @@ public class SetupViewModel
         SettingsHandler.Settings.ClientDir = ClientPath;
         SettingsHandler.Settings.ServerDir = ServerPath;
         SettingsHandler.Settings.GameDir = MTPPath;
-        SettingsHandler.Settings.RevertOutbackMovement = RevertOutbackMovement;
-        SettingsHandler.Settings.RevertRangSwitching = RevertRangSwitching;
-        SettingsHandler.Settings.FixControllerCameraAiming = FixControllerCameraAiming;
-        SettingsHandler.Settings.FixedMagnets = RemoveMagnetRandom;
-        SettingsHandler.Settings.OpenAllGameInfo = OpenAllGameInfo;
-        SettingsHandler.Settings.FixMenuBug = FixMenuBug;
         SettingsHandler.Settings.Version = Version;
         SettingsHandler.SaveSettings();
     }

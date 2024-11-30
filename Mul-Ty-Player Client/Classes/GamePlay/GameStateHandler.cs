@@ -129,12 +129,10 @@ public class GameStateHandler
         ProcessHandler.WriteData(addr, new byte[3] {toggledByte, 0, toggledByte});
     }
     
-    public void ToggleGameInfo()
+    public void SetMenuItemFlag(TyMenuItem item, TyMenuItemFlag flag, bool value)
     {
-        var addr = PointerCalculations.GetPointerAddress(0x286CB0, new[] { 0xCA4 });
-        ProcessHandler.TryRead(addr + 2, out bool result, false, "ToggleLevelSelect()");
-        var toggledByte = BitConverter.GetBytes(!result)[0];
-        ProcessHandler.WriteData(addr, new byte[3] {toggledByte, 0, toggledByte});
+        var addr = PointerCalculations.GetPointerAddress(0x286CB0, new[] { 0x164 + 0x168 * (int)item + (int)flag });
+        ProcessHandler.WriteData(addr, BitConverter.GetBytes(value));
     }
 
     public void ForceEnterNewGameScreen()
@@ -259,7 +257,7 @@ public class GameStateHandler
             new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90 }
             : new byte[] { 0x80, 0x7C, 0x31, 0x10, 0x00 };
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0xE55CD, gameInfoUnlockData);
-        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0xE614D, gameInfoUnlockData);
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0xE6A4D, gameInfoUnlockData);
     }
 
     private static byte[][] _magnetBytesOrigin = new byte[][]
@@ -273,5 +271,29 @@ public class GameStateHandler
         new byte[] { 0x90, 0x90 },
         new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }
     };
+
+    public bool IsInTimeAttack()
+    {
+        ProcessHandler.TryRead(0x264BB8, out bool result, true, "IsInTimeAttack");
+        return !result;
+    }
 }
 
+public enum TyMenuItem
+{
+    Continue,
+    GameInfo,
+    Skins,
+    SaveGame,
+    Options,
+    Leaderboards,
+    ExitLevel,
+    MainMenu
+}
+
+public enum TyMenuItemFlag
+{
+    Enabled,
+    Selected,
+    Visible
+}

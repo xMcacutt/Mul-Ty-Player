@@ -178,8 +178,8 @@ public class SpectatorHandler
         SpectateeKoalaId = null;
     }
 
-    private static float _freeCamSpeed = 0.6f;
-    public static void SetFreecamSpeed(float speed = 0.6f, bool log = false)
+    private static float _freeCamSpeed = 10f;
+    public static void SetFreecamSpeed(float speed = 10f, bool log = false)
     {
         _freeCamSpeed = speed;
         ProcessHandler.WriteData((int)(TyProcess.BaseAddress + 0x254B08), BitConverter.GetBytes(speed));

@@ -62,6 +62,7 @@
                                                VerticalAlignment="Center"
                                                FontSize="14"
                                                IsHitTestVisible="False"
+                                               Foreground="{Binding IsTalking, Converter={StaticResource BooleanToActivityIndicatorColorConverter}}"
                                                Padding="3"
                                                Text="{Binding Id}" />
                                 </DataTemplate>

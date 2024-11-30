@@ -15,6 +15,7 @@ public class Player
     public string Level { get; set; }
     public int Score { get; set; }
     public VIP VIP { get; set; }
+    public bool IsTalking { get; set; }
 
     public Player(Koala? koala, string name, ushort id, bool isHost, bool isReady, HSRole role, int score, VIP vip)
     {

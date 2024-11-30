@@ -24,7 +24,6 @@ public static class VoiceHandler
     private static WaveInEvent _waveIn;
     private static IWavePlayer _waveOut;
     private static MixingSampleProvider _mixer;
-    private static bool _muted;
     public static bool DoProximityCheck;
     private static int _inputDeviceIndex;
     private const ushort THRESHOLD = 0x0050;
@@ -38,7 +37,19 @@ public static class VoiceHandler
 
     public static Compressor Compressor;
     public static NoiseGate NoiseGate;
-
+    
+    private static bool muted;
+    public static event Action<bool> OnMutedChanged;
+    public static bool Muted
+    {
+        get => muted;
+        set
+        {
+            muted = value;
+            OnMutedChanged(Muted);
+        }
+    }
+    
     public static void HandleVoiceData(ushort fromClientId, ulong originalLength, float distance, int level, byte[] data)
     {
         _voices ??= new ConcurrentDictionary<ushort, Voice>();
@@ -50,16 +61,16 @@ public static class VoiceHandler
         {
             if (level != Client.HLevel.CurrentLevelId)
                 return;
-            if (PlayerHandler.TryGetPlayer(fromClientId, out var player))
-            {
-                voice.SampleChannel.Volume = distance >= SettingsHandler.ClientSettings.ProximityRange ? 0.0f :
-                    distance <= RANGE_LOWER_BOUND ? 1.0f :
-                    1.0f - (distance - RANGE_LOWER_BOUND) / (SettingsHandler.ClientSettings.ProximityRange - RANGE_LOWER_BOUND);
-            }
+            voice.SampleChannel.Volume = distance >= SettingsHandler.ClientSettings.ProximityRange ? 0.0f :
+                distance <= RANGE_LOWER_BOUND ? 1.0f :
+                1.0f - (distance - RANGE_LOWER_BOUND) / (SettingsHandler.ClientSettings.ProximityRange - RANGE_LOWER_BOUND);
         }
         else
             voice.SampleChannel.Volume = 1.0f;
-        
+
+        if (PlayerHandler.TryGetPlayer(fromClientId, out var player))
+            player.IsTalking = data[0] > 2 && voice.SampleChannel.Volume > 0;
+
         voice.WaveProvider.AddSamples(data, 0, data.Length);
     }
 
@@ -69,6 +80,8 @@ public static class VoiceHandler
         TryRemoveVoice(clientId);
         _voices.TryAdd(clientId, new Voice(_format));
         _mixer.AddMixerInput(_voices[clientId].SampleChannel);
+        if (PlayerHandler.TryGetPlayer(clientId, out var player))
+            player.IsTalking = false;
     }
 
     public static void TryRemoveVoice(ushort clientId)
@@ -123,13 +136,16 @@ public static class VoiceHandler
         _waveOut = null;
 
         ClearVoices();
+
+        foreach (var player in PlayerHandler.Players)
+            player.IsTalking = false;
     }
 
     static void WaveIn_DataAvailable(object sender, WaveInEventArgs e)
     {
         try
         {
-            if (_muted)
+            if (Muted)
                 return;
             VoiceClient.SendAudio(ProcessVoiceData(e.Buffer), e.Buffer.Length, GetNextSequenceNumber());
         }
@@ -216,9 +232,5 @@ public static class VoiceHandler
         NoiseGate.NoiseCeiling = SettingsHandler.ClientSettings.NsGtCeiling;
     }
 
-    public static void ToggleMute(bool value)
-    {
-        _muted = value;
-    }
 }
 

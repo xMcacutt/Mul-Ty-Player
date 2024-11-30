@@ -2,6 +2,24 @@
 
 ## Most Recent
 
+#### 4.9.3
+- Many additions to hardcore (HDC)
+- Hardcore mode finalised (HDC)
+- Mute hotkey added (ctrl + shift + m)
+- Freecam default speed set to 10
+- Settings fully moved from updater to client
+- Fixed issue with game info unlock setting causing crashing on opening game info
+- Voice activity indicator added to client ID number
+- Added a request sync command
+- Fixed a potentially critical bug with time attacks not being recognised as active
+
+#### 4.9.2
+- Fixed an issue with bloom settings not being correctly applied during hide and seek after main menu
+- Many fixes to hardcore (HDC)
+- Fixed issue with voice not resetting volume of voices when proximity is disabled
+- Mute button added to voice
+- Many new voice settings added (mostly broken and still in development)
+
 #### 4.9.1
 - Many new additions to hardcore (HDC)
 - Voice effects added

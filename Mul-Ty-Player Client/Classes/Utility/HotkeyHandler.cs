@@ -33,6 +33,7 @@ public class Hotkeys
     public HotkeyConfig SpectatorFreecamPrevious { get; set; }
     public HotkeyConfig SpectatorFreecamNext { get; set; }
     public HotkeyConfig SpectatorFreecamDisengage { get; set; }
+    public HotkeyConfig VoiceMute { get; set; }
 }
 
 public class HotkeyConfig
@@ -66,7 +67,8 @@ public class HotkeyHandler
             HS_Ability = new HotkeyConfig { Key = Key.A, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
             SpectatorFreecamPrevious = new HotkeyConfig { Key = Key.D9, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
             SpectatorFreecamNext = new HotkeyConfig { Key = Key.D0, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
-            SpectatorFreecamDisengage = new HotkeyConfig { Key = Key.D8, Modifiers = ModifierKeys.Control | ModifierKeys.Shift }
+            SpectatorFreecamDisengage = new HotkeyConfig { Key = Key.D8, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
+            VoiceMute = new HotkeyConfig { Key = Key.M, Modifiers = ModifierKeys.Control | ModifierKeys.Shift }
         };
     }
     
@@ -94,6 +96,7 @@ public class HotkeyHandler
             HotkeyManager.Current.AddOrReplace("spectator_freecam_previous", keys.SpectatorFreecamPrevious.Key, keys.SpectatorFreecamPrevious.Modifiers, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("spectator_freecam_next", keys.SpectatorFreecamNext.Key, keys.SpectatorFreecamNext.Modifiers, OnKeyPress);
             HotkeyManager.Current.AddOrReplace("spectator_freecam_disengage", keys.SpectatorFreecamDisengage.Key, keys.SpectatorFreecamDisengage.Modifiers, OnKeyPress);
+            HotkeyManager.Current.AddOrReplace("voice_mute", keys.VoiceMute.Key, keys.VoiceMute.Modifiers, OnKeyPress);
         }
         catch (Exception ex)
         {
@@ -151,6 +154,9 @@ public class HotkeyHandler
                     Client.HChaos.MoveCollectibles(Client.HLevel.CurrentLevelId);
                 }
                 Client.HSync?.RequestSync();
+                return;
+            case "voice_mute":
+                VoiceHandler.Muted = !VoiceHandler.Muted;
                 return;
         }
 

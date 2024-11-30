@@ -285,47 +285,6 @@ public class InstallViewModel
             var versionString = "MTP " + latestRelease.TagName + " ";
             var replacement = Encoding.ASCII.GetBytes(versionString);
             binaryWriter.Write(replacement);
-            
-            //MAGNET PATCH
-            var magnetData = RemoveMagnetRandom ? TyData.MagnetBytesFixed : TyData.MagnetBytesOrigin;
-            foreach (var entry in magnetData)
-            {
-                fileStream.Seek(entry.Key, SeekOrigin.Begin);
-                binaryWriter.Write(entry.Value);
-            }
-            
-            //OUTBACK MOVEMENT
-            var outbackData = RevertOutbackMovement ? new byte[] {0x90, 0x90} : new byte[] {0x75, 0x06}; 
-            fileStream.Seek(0x17251B, SeekOrigin.Begin);
-            binaryWriter.Write(outbackData);
-            
-            //RANG SWITCHING
-            var rangData = RevertRangSwitching
-                ? new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }
-                : new byte[] { 0x0F, 0x85, 0xC0, 0x00, 0x00, 0x00 };
-            fileStream.Seek(0x161F8A, SeekOrigin.Begin);
-            binaryWriter.Write(rangData);
-            
-            //CAMERA AIMING
-            var cameraData = FixControllerCameraAiming ? new byte[] {0x90, 0x90} : new byte[] {0x75, 0x0C}; 
-            fileStream.Seek(0x169ABC, SeekOrigin.Begin);
-            binaryWriter.Write(cameraData);
-            
-            //GAME INFO FIX
-            var gameInfoData = OpenAllGameInfo
-                ? new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90 }
-                : new byte[] { 0x80, 0x7C, 0x31, 0x10, 0x00 };
-            fileStream.Seek(0xE49CD, SeekOrigin.Begin);
-            binaryWriter.Write(gameInfoData);
-            fileStream.Seek(0xE5E4D, SeekOrigin.Begin);
-            binaryWriter.Write(gameInfoData);
-
-            //MENU FIX
-            var menuButtonPositionData = FixMenuBug
-                ? BitConverter.GetBytes(-5f)
-                : BitConverter.GetBytes(48f);
-            fileStream.Seek(0x2019B0, SeekOrigin.Begin);
-            binaryWriter.Write(menuButtonPositionData);
         }
         
         CopyPatch(latestRelease);
@@ -370,12 +329,6 @@ public class InstallViewModel
         SettingsHandler.Settings.ClientDir = Path.Combine(ClientPath, "Client");
         SettingsHandler.Settings.ServerDir = Path.Combine(ServerPath, "Server");
         SettingsHandler.Settings.GameDir = Path.Combine(MTPPath, "Game");
-        SettingsHandler.Settings.RevertOutbackMovement = RevertOutbackMovement;
-        SettingsHandler.Settings.RevertRangSwitching = RevertRangSwitching;
-        SettingsHandler.Settings.FixControllerCameraAiming = FixControllerCameraAiming;
-        SettingsHandler.Settings.FixedMagnets = RemoveMagnetRandom;
-        SettingsHandler.Settings.OpenAllGameInfo = OpenAllGameInfo;
-        SettingsHandler.Settings.FixMenuBug = FixMenuBug;
         SettingsHandler.Settings.Version = Version;
         SettingsHandler.SaveSettings();
     }

@@ -13,7 +13,7 @@ internal class KoalaHandler
 {
     private static bool readyToWriteTransformData;
 
-    private static readonly int _bTimeAttackAddress = 0x28AB84;
+    private static readonly int _bTimeAttackAddress = 0x264BB8;
     private static int _baseKoalaAddress;
 
     public KoalaHandler()
@@ -59,7 +59,7 @@ internal class KoalaHandler
     public void SetCoordinateAddresses()
     {
         readyToWriteTransformData = false;
-        //KOALAS ARE STRUCTURED DIFFERENTLY IN STUMP AND SNOW SO MODIFIER AND OFFSET ARE NECESSARY1
+        //KOALAS ARE STRUCTURED DIFFERENTLY IN STUMP AND SNOW SO MODIFIER AND OFFSET ARE NECESSARY
         var levelHasKoalas = Levels.GetLevelData(Client.HLevel.CurrentLevelId).HasKoalas;
         var modifier = levelHasKoalas ? 2 : 1;
         var offset = levelHasKoalas ? 0x518 : 0x0;
@@ -70,16 +70,18 @@ internal class KoalaHandler
         for (var koalaId = 0; koalaId < 8; koalaId++)
         {
             var koalaOffset = 0x518 * modifier * koalaId + offset;
-            TransformAddresses[koalaId] = new KoalaTransformAddresses();
-            TransformAddresses[koalaId].X = _baseKoalaAddress + 0x2A4 + koalaOffset;
-            TransformAddresses[koalaId].Y = _baseKoalaAddress + 0x2A8 + koalaOffset;
-            TransformAddresses[koalaId].Z = _baseKoalaAddress + 0x2AC + koalaOffset;
-            TransformAddresses[koalaId].Pitch = _baseKoalaAddress + 0x2B4 + koalaOffset;
-            TransformAddresses[koalaId].Yaw = _baseKoalaAddress + 0x2B8 + koalaOffset;
-            TransformAddresses[koalaId].Roll = _baseKoalaAddress + 0x2BC + koalaOffset;
-            TransformAddresses[koalaId].Collision = _baseKoalaAddress + 0x298 + koalaOffset;
-            TransformAddresses[koalaId].Visibility = _baseKoalaAddress + 0x44 + koalaOffset;
-            TransformAddresses[koalaId].Scale = _baseKoalaAddress + 0x60 + koalaOffset;
+            TransformAddresses[koalaId] = new KoalaTransformAddresses
+            {
+                X = _baseKoalaAddress + 0x2A4 + koalaOffset,
+                Y = _baseKoalaAddress + 0x2A8 + koalaOffset,
+                Z = _baseKoalaAddress + 0x2AC + koalaOffset,
+                Pitch = _baseKoalaAddress + 0x2B4 + koalaOffset,
+                Yaw = _baseKoalaAddress + 0x2B8 + koalaOffset,
+                Roll = _baseKoalaAddress + 0x2BC + koalaOffset,
+                Collision = _baseKoalaAddress + 0x298 + koalaOffset,
+                Visibility = _baseKoalaAddress + 0x44 + koalaOffset,
+                Scale = _baseKoalaAddress + 0x60 + koalaOffset
+            };
         }
         
         ScaleKoalas();
@@ -104,20 +106,15 @@ internal class KoalaHandler
     private bool wasInTimeAttack;
     public void CheckTA()
     {
-        ProcessHandler.TryRead(_bTimeAttackAddress, 
-            out int inTimeAttack, 
-            true, 
-            "KoalaHandler::CheckTA()");
-        
-        if (wasInTimeAttack && inTimeAttack == 0)
+        ProcessHandler.TryRead(_bTimeAttackAddress, out bool inTimeAttack, true, "KoalaHandler::CheckTA()");
+        inTimeAttack = !inTimeAttack;
+        if (wasInTimeAttack && inTimeAttack)
         {
             SetCollision();
             wasInTimeAttack = false;
         }
-
-        if (inTimeAttack != 1) 
+        if (!inTimeAttack) 
             return;
-        
         MakeVisible();
         if (SettingsHandler.ClientSettings.ShowCollectiblesInTA)
             SyncHandler.MakeCollectiblesVisibleInTimeAttack();

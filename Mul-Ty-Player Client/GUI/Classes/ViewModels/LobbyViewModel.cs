@@ -31,6 +31,7 @@ public class LobbyViewModel : IViewModel
         Lobby.GameModeChanged += Model_GameModeChanged;
         Lobby.IsLevelLockEnabledChanged += Model_IsLevelLockEnabledChanged;
         Lobby.CanLaunchGameChanged += Model_CanLaunchGameChanged;
+        VoiceHandler.OnMutedChanged += Model_MutedChanged;
         ModelController.Login.JoinAsSpectatorChanged += Model_IsSpectatorChanged;
         HSHandler.OnRoleChanged += Model_RoleChanged;
         HSHandler.OnTimeChanged += Model_TimeChanged;
@@ -118,6 +119,11 @@ public class LobbyViewModel : IViewModel
     private void Model_RoleChanged(HSRole newRole)
     {
         Role = newRole;
+    }
+    
+    private void Model_MutedChanged(bool value)
+    {
+        IsVoiceMuted = value;
     }
     
     private void Model_IsSpectatorChanged(bool value)

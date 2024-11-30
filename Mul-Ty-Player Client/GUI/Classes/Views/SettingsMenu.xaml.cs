@@ -161,6 +161,6 @@ public partial class SettingsMenu : Window
     private void RangeBase_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
     {
         if (sender is Slider slider)
-            slider.Value = Math.Round(slider.Value, 2); 
+            slider.Value = Math.Round(slider.Value, 3); 
     }
 }

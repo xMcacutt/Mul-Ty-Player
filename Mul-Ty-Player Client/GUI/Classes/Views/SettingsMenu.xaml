@@ -208,6 +208,10 @@
                     <CheckBox IsChecked="{Binding DoFixMenuPositions}"
                               Style="{StaticResource SettingsCheckBoxStyle}"
                               Content="Fix Menu Positions"/>
+                    
+                    <CheckBox IsChecked="{Binding DoUnlockGameInfo}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Unlock All Game Info"/>
                 </StackPanel>
             </ScrollViewer>
             <Separator Visibility="Visible" Style="{StaticResource SettingsSepStyle}"/>
@@ -325,8 +329,8 @@
                     <Label Content="Floor"
                            Style="{StaticResource SettingsLabelStyle}"/>
                     <Slider Minimum="0" 
-                            Maximum="1" 
-                            TickFrequency="0.05" 
+                            Maximum="0.5" 
+                            TickFrequency="0.02" 
                             TickPlacement="BottomRight" 
                             Orientation="Horizontal"
                             Value="{Binding NsGtFloor}"
@@ -335,9 +339,9 @@
                     
                     <Label Content="Ceiling"
                            Style="{StaticResource SettingsLabelStyle}"/>
-                    <Slider Minimum="0" 
+                    <Slider Minimum="0.5" 
                             Maximum="1" 
-                            TickFrequency="0.05" 
+                            TickFrequency="0.02" 
                             TickPlacement="BottomRight" 
                             Orientation="Horizontal"
                             Value="{Binding NsGtCeiling}"

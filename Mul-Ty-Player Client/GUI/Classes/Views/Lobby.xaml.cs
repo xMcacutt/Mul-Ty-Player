@@ -101,8 +101,7 @@ public partial class Lobby : UserControl
 
     private void VoiceMuteButton_Click(object sender, RoutedEventArgs e)
     {
-        VoiceHandler.ToggleMute(!(DataContext as LobbyViewModel).IsVoiceMuted);
-        (DataContext as LobbyViewModel).IsVoiceMuted = !(DataContext as LobbyViewModel).IsVoiceMuted;
+        VoiceHandler.Muted = !VoiceHandler.Muted;
     }
 
     private void PlayerListItem_OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)

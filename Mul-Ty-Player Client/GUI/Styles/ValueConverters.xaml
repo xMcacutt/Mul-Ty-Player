@@ -16,4 +16,5 @@
     <gui:VIPToStyleConverter x:Key="VIPToStyleConverter"/>
     <gui:FloatRounderConverter x:Key="FloatRounderConverter"/>
     <gui:BooleanToMicIconConverter x:Key="BooleanToMicIconConverter"/>
+    <gui:BooleanToActivityIndicatorColorConverter x:Key="BooleanToActivityIndicatorColorConverter"/>
 </ResourceDictionary>

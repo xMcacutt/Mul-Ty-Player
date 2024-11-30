@@ -291,47 +291,6 @@ public class UpdateViewModel
         var versionString = "MTP " + version + " ";
         var replacement = Encoding.ASCII.GetBytes(versionString);
         binaryWriter.Write(replacement);
-        
-        //MAGNET PATCH
-        var magnetData = SettingsHandler.Settings.FixedMagnets ? TyData.MagnetBytesFixed : TyData.MagnetBytesOrigin;
-        foreach (var entry in magnetData)
-        {
-            fileStream.Seek(entry.Key, SeekOrigin.Begin);
-            binaryWriter.Write(entry.Value);
-        }
-        
-        //OUTBACK MOVEMENT
-        var outbackData = SettingsHandler.Settings.RevertOutbackMovement ? new byte[] {0x90, 0x90} : new byte[] {0x75, 0x06}; 
-        fileStream.Seek(0x17251B, SeekOrigin.Begin);
-        binaryWriter.Write(outbackData);
-        
-        //RANG SWITCHING
-        var rangData = SettingsHandler.Settings.RevertRangSwitching
-            ? new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }
-            : new byte[] { 0x0F, 0x85, 0xC0, 0x00, 0x00, 0x00 };
-        fileStream.Seek(0x161F8A, SeekOrigin.Begin);
-        binaryWriter.Write(rangData);
-            
-        //CAMERA AIMING
-        var cameraData = SettingsHandler.Settings.FixControllerCameraAiming ? new byte[] {0x90, 0x90} : new byte[] {0x75, 0x0C}; 
-        fileStream.Seek(0x169ABC, SeekOrigin.Begin);
-        binaryWriter.Write(cameraData);
-        
-        // //GAME INFO FIX
-        // var gameInfoData = SettingsHandler.Settings.OpenAllGameInfo
-        //     ? new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90 }
-        //     : new byte[] { 0x80, 0x7C, 0x31, 0x10, 0x00 };
-        // fileStream.Seek(0xE49CD, SeekOrigin.Begin);
-        // binaryWriter.Write(gameInfoData);
-        // fileStream.Seek(0xE5E4D, SeekOrigin.Begin);
-        // binaryWriter.Write(gameInfoData);
-
-        //MENU FIX
-        var menuButtonPositionData = SettingsHandler.Settings.FixMenuBug
-            ? BitConverter.GetBytes(-5f)
-            : BitConverter.GetBytes(48f);
-        fileStream.Seek(0x2019B0, SeekOrigin.Begin);
-        binaryWriter.Write(menuButtonPositionData);
     }
 
     private void UpdateRKV(Release latestRelease)

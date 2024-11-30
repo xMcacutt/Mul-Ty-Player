@@ -261,6 +261,7 @@ public class HeroHandler
         Client.HHardcore.SetEnemySpeedMultiplier();
         AttributeHandler.SetBoomerangRange();
         Client.HHero.SetWaterSlideSpeeds();
+        Client.HHero.SetBushpigSpeeds();
     }
 
     public void SetOpalMagnetisation(bool value = true)
@@ -351,5 +352,14 @@ public class HeroHandler
             ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x254560, BitConverter.GetBytes(state));
         else
             ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27158C, BitConverter.GetBytes(state));
+    }
+
+    public void SetBushpigSpeeds(float speed = 35f, float brakeSpeed = 0.50f, float turnSpeed = 0.60f)
+    {
+        var opcode = speed == 35f ? (byte)0x75 : (byte)0xEB;
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x4392D, new[] { opcode });
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25462C, BitConverter.GetBytes(speed));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x254630, BitConverter.GetBytes(brakeSpeed));
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x254634, BitConverter.GetBytes(turnSpeed));
     }
 }

@@ -103,6 +103,7 @@ public struct NoiseGate
     {
         if (Math.Abs(sample) > NoiseCeiling || Math.Abs(sample) < NoiseFloor)
             return 0;
+        //Console.WriteLine("Sample: " + sample + " Ceiling: " + NoiseCeiling + " Floor: " + NoiseFloor);
         return sample;
     }
 }

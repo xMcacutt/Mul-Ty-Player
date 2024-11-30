@@ -8,13 +8,14 @@ namespace MulTyPlayerClient.Classes.GamePlay
 {
     public enum HeroState
     {
-        None = 0,
-        Biting = 1, // include super bite charge and release
-        Sneaking = 2,
-        Walking = 3,
-        Running = 5,
-        SkidStop = 6,
-        Jumping = 7,
+        Default = 0x0,
+        Bite = 0x1,
+        Sneak = 0x2,
+        Walk = 0x3,
+        Jog = 0x4,
+        Run = 0x5,
+        BreakTurn = 0x6,
+        Jump = 7,
         GlideInit = 8, // literally hard coded extended glide
         Gliding = 9,
         LedgeHang = 10,
@@ -92,7 +93,7 @@ namespace MulTyPlayerClient.Classes.GamePlay
                 case HeroState.AirDiving:
                 case HeroState.Falling:
                 case HeroState.FarFalling:
-                case HeroState.Jumping:
+                case HeroState.Jump:
                     return true;
                 default:
                     return false;
