@@ -2,6 +2,18 @@
 
 ## Most Recent
 
+#### 4.9.5 CHRISTMAS UPDATE
+- Biblies finally appear during Time Attacks
+- Fixed players becoming invisible during Time Attacks
+- (HDC) Added [documentation of the changes](./User/HardcoreMode.md)
+- (HDC) Fixed double death from water deaths issue
+- (HDC) Forced Hardcore Mode to auto reset on countdown start
+- (CHRISTMAS) It's been snowing in Two Up
+- (CHRISTMAS) Added conditional snow theme to special themes
+- (VC) Fixed issues with noise gate (still needs work)
+- (VC) Fixed voice indicator
+- (VC) Added InputGain and OutputGain effects to help balance voices
+
 #### 4.9.3
 - Many additions to hardcore (HDC)
 - Hardcore mode finalised (HDC)
@@ -14,11 +26,11 @@
 - Fixed a potentially critical bug with time attacks not being recognised as active
 
 #### 4.9.2
-- Fixed an issue with bloom settings not being correctly applied during hide and seek after main menu
+- (HSD) Fixed an issue with bloom settings not being correctly applied during hide and seek after main menu
 - Many fixes to hardcore (HDC)
-- Fixed issue with voice not resetting volume of voices when proximity is disabled
-- Mute button added to voice
-- Many new voice settings added (mostly broken and still in development)
+- (VC) Fixed issue with voice not resetting volume of voices when proximity is disabled
+- (VC) Mute button added to voice
+- (VC) Many new voice settings added (mostly broken and still in development)
 
 #### 4.9.1
 - Many new additions to hardcore (HDC)

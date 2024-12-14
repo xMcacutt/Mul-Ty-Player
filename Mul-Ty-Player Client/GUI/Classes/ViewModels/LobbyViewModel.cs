@@ -43,6 +43,17 @@ public class LobbyViewModel : IViewModel
 
         Logger.OnLogWrite += ChatMessages.Add;
     }
+    
+    public string BackgroundSplashSource
+    {
+        get
+        {
+            var currentDate = DateTime.Now;
+            if (currentDate.Month is 12) 
+                return "pack://siteoforigin:,,,/GUI/Themes/SplashImage_Christmas.png";
+            return "pack://siteoforigin:,,,/GUI/Themes/SplashImage.png";
+        }
+    }
 
     public ObservableCollection<string> ChatMessages { get; set; }
 

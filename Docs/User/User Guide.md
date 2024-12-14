@@ -82,6 +82,8 @@ There's tonnes of features in the most recent version of MTP. The following is a
 
 - [Hide & Seek Mode](./HideSeek.md)
 
+- [Hardcore Mode](./HardcoreMode.md)
+
 - [Customization](./Customization.md)
 
 - [Spectator Mode](Spectator.md)
@@ -90,4 +92,4 @@ There's tonnes of features in the most recent version of MTP. The following is a
 
 ## Contact
 
-If you want to contact me to help support the project, give feedback, provide details of a bug, help with testing, or anything else please reach out to me via discord @mcacutt (Mcacutt#5671).
+If you want to contact me to help support the project, give feedback, provide details of a bug, help with testing, or anything else please reach out to me via discord @mattducky.

@@ -18,7 +18,7 @@
                     Source={StaticResource AppColors}, 
                     Converter={StaticResource BooleanToVisibilityConverter}, 
                     ConverterParameter=true}" 
-               Source="pack://siteoforigin:,,,/GUI/Themes/SplashImage.png">
+               Source="{Binding BackgroundSplashSource}">
         </Image>
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
