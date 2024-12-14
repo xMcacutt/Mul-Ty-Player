@@ -1306,7 +1306,7 @@ public class ChaosHandler
     public static void ReceiveSeed(Message message)
     {
         Client.HChaos.ChaosSeed = message.GetInt();
-        Client.HGameState.SetNewGameChaosModeText(message.GetBool());
+        Client.HChaos.InitNewGameText(message.GetBool(), false);
     }
 
     public static void RequestShuffle()
@@ -1337,5 +1337,31 @@ public class ChaosHandler
     public void FixBilbyDraw(int currentLevelId)
     {
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x1F9B0C, BitConverter.GetBytes(30000f));
+    }
+
+    public void InitNewGameText(bool fixedSeed, bool reset)
+    {
+        var message1 = "";
+        var message2 = "";
+        var message3 = "";
+        if (reset)
+        {
+            message1 = "Normal Mode";
+            message2 = "Hardcore Mode";
+            message3 = "Press   to change game mode";
+        }
+        else if (fixedSeed)
+        {
+            message1 = "Fixed Seed";
+            message2 = "Fixed Seed";
+            message3 = $"Seed: {Client.HChaos.ChaosSeed}";
+        }
+        else
+        {
+            message1 = "Random Seed";
+            message2 = "Random Seed";
+            message3 = $"Seed: {Client.HChaos.ChaosSeed}";
+        }
+        Client.HGameState.SetNewGameText(message1, message2, message3);
     }
 }

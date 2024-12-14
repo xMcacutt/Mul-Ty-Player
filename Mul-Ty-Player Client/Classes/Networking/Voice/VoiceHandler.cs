@@ -70,8 +70,15 @@ public static class VoiceHandler
         else
             voice.SampleChannel.Volume = 1.0f;
 
+
         if (PlayerHandler.TryGetPlayer(fromClientId, out var player))
-            player.IsTalking = data[0] > 2 && voice.SampleChannel.Volume > 0;
+        {
+            var sampleLevel = Math.Abs(BitConverter.ToInt16(data.AsSpan()[..2]));
+            if (sampleLevel > 1000 && !player.IsTalking)
+                player.IsTalking = true;
+            if (sampleLevel < 250 && player.IsTalking || voice.SampleChannel.Volume == 0)
+                player.IsTalking = false;
+        }
 
         voice.WaveProvider.AddSamples(data, 0, data.Length);
     }

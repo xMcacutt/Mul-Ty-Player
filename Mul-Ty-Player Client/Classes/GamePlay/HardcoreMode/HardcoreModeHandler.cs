@@ -363,6 +363,8 @@ public class HardcoreModeHandler
     public static void HandleRunStatusChanged(Message message)
     {
         Client.HHardcore.HardcoreRunDead = message.GetBool();
+        if (PlayerHandler.TryGetPlayer(message.GetUShort(), out var player))
+            Client.HGameState.DisplayInGameMessage(player.Name + " died... oops!");   
     }
 
     public void EndRun()
