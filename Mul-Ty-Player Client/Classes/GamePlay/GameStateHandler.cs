@@ -274,8 +274,8 @@ public class GameStateHandler
 
     public bool IsInTimeAttack()
     {
-        ProcessHandler.TryRead(0x264BB8, out bool result, true, "IsInTimeAttack");
-        return !result;
+        ProcessHandler.TryRead(0x28CA3C, out bool result, true, "IsInTimeAttack");
+        return result;
     }
 }
 

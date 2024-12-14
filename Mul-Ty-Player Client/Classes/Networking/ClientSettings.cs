@@ -18,6 +18,8 @@ internal class ClientSettings
     public bool AutoJoinVoice { get; set; }
     public int ProximityRange { get; set; }
     public string VoiceInputDevice { get; set; }
+    public float IgGain { get; set; }
+    public float OgGain { get; set; }
     public float CmpInputGain { get; set; }
     public float CmpThreshold { get; set; }
     public float CmpRatio { get; set; }

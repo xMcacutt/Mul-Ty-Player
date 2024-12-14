@@ -12,6 +12,8 @@
   "InterpolationMode" : "None",
   "AutoJoinVoice": false,
   "ProximityRange": 2600,
+  "IgGain": 1.0,
+  "OgGain": 1.0,
   "CmpInputGain": 1.0,
   "CmpThreshold": 1.0,
   "CmpRatio": 1.0,

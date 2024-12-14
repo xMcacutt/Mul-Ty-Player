@@ -299,7 +299,7 @@ internal class Client
                                     HHardcore.Run();
                             }
                             HHero.GetTyPosRot();
-                            HKoala.CheckTA();
+                            HKoala.HandleTA();
                         }
                         HHero.SendCoordinates();
                         // Writes all received player coordinates into koala positions in memory
@@ -324,7 +324,7 @@ internal class Client
                                 if (SettingsHandler.DoTESyncing)
                                     HObjective.RunChecks();
                             }
-                            HKoala.CheckTA();
+                            HKoala.HandleTA();
                         }
                         PlayerReplication.RenderKoalas(MS_PER_TICK);
                     }

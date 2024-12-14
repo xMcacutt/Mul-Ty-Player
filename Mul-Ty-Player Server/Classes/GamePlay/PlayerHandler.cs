@@ -96,8 +96,7 @@ internal class PlayerHandler
     {
         if (Program.HChaos.ShuffleOnStart && SettingsHandler.GameMode == GameMode.Chaos)
             ChaosHandler.ForceShuffle();
-        Program.HSync = new SyncHandler();
-        Program.HObjective = new ObjectiveHandler();
+        Program.HCommand.Commands["resetsync"].InitExecute(Array.Empty<string>());
         var countdownStart = Message.Create(MessageSendMode.Reliable, MessageID.Countdown);
         countdownStart.AddString("start");
         Server._Server.SendToAll(countdownStart);

@@ -274,15 +274,41 @@
                             ValueChanged="RangeBase_OnValueChanged"
                             Style="{StaticResource SettingsSliderStyle}"/>
                     
-                    <Label Content="Compressor"
+                    <Label Content="Gain"
                            Style="{StaticResource SettingsLabelStyle}"
                            FontSize="30"/>
                     
                     <Label Content="Input Gain"
                            Style="{StaticResource SettingsLabelStyle}"/>
                     <Slider Minimum="0" 
-                            Maximum="2" 
-                            TickFrequency="0.05" 
+                            Maximum="5" 
+                            TickFrequency="0.25" 
+                            TickPlacement="BottomRight" 
+                            Orientation="Horizontal"
+                            Value="{Binding IgInputGain}"
+                            ValueChanged="RangeBase_OnValueChanged"
+                            Style="{StaticResource SettingsSliderStyle}"/>
+                    
+                    <Label Content="Output Gain"
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <Slider Minimum="0" 
+                            Maximum="5" 
+                            TickFrequency="0.25" 
+                            TickPlacement="BottomRight" 
+                            Orientation="Horizontal"
+                            Value="{Binding OgOutputGain}"
+                            ValueChanged="RangeBase_OnValueChanged"
+                            Style="{StaticResource SettingsSliderStyle}"/>
+                    
+                    <Label Content="Compressor"
+                           Style="{StaticResource SettingsLabelStyle}"
+                           FontSize="30"/>
+                    
+                    <Label Content="Compressor Input Gain"
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <Slider Minimum="0" 
+                            Maximum="5" 
+                            TickFrequency="0.25" 
                             TickPlacement="BottomRight" 
                             Orientation="Horizontal"
                             Value="{Binding CmpInputGain}"
@@ -311,11 +337,11 @@
                             ValueChanged="RangeBase_OnValueChanged"
                             Style="{StaticResource SettingsSliderStyle}"/>
                     
-                    <Label Content="Output Gain"
+                    <Label Content="Compressor Output Gain"
                            Style="{StaticResource SettingsLabelStyle}"/>
                     <Slider Minimum="0" 
-                            Maximum="2" 
-                            TickFrequency="0.05" 
+                            Maximum="5" 
+                            TickFrequency="0.25" 
                             TickPlacement="BottomRight" 
                             Orientation="Horizontal"
                             Value="{Binding CmpOutputGain}"

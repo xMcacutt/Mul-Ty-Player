@@ -13,7 +13,7 @@ internal class KoalaHandler
 {
     private static bool readyToWriteTransformData;
 
-    private static readonly int _bTimeAttackAddress = 0x264BB8;
+    private static readonly int _bTimeAttackAddress = 0x28CA3C;
     private static int _baseKoalaAddress;
 
     public KoalaHandler()
@@ -104,10 +104,9 @@ internal class KoalaHandler
     }
 
     private bool wasInTimeAttack;
-    public void CheckTA()
+    public void HandleTA()
     {
-        ProcessHandler.TryRead(_bTimeAttackAddress, out bool inTimeAttack, true, "KoalaHandler::CheckTA()");
-        inTimeAttack = !inTimeAttack;
+        var inTimeAttack = Client.HGameState.IsInTimeAttack();
         if (wasInTimeAttack && inTimeAttack)
         {
             SetCollision();

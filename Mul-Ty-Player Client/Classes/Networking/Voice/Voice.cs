@@ -27,9 +27,9 @@ public struct Compressor
         {
             _threshold = value switch
             {
-                > 1.0f => short.MaxValue,
-                < 0.0f => 0,
-                _ => value * short.MaxValue
+                > 1.0f => 1.0f,
+                < 0.0f => 0.0f,
+                _ => value
             };
         }
     }
@@ -48,9 +48,9 @@ public struct Compressor
     public float ApplyCompression(float sample)
     {
         sample *= InputGain;
-        if (Math.Abs(sample) > Threshold)
+        if (sample > Threshold)
         {
-            var excess = Math.Abs(sample) - Threshold;
+            var excess = sample - Threshold;
             if (sample > 0)
                 sample = Threshold + excess / Ratio;
             else
@@ -71,9 +71,9 @@ public struct NoiseGate
         {
             _noiseFloor = value switch
             {
-                > 1.0f => short.MaxValue,
-                < 0.0f => 0,
-                _ => value * short.MaxValue
+                > 1.0f => 1.0f,
+                < 0.0f => 0.0f,
+                _ => value
             };
         }
     }
@@ -86,12 +86,17 @@ public struct NoiseGate
         {
             _noiseCeiling = value switch
             {
-                > 1.0f => short.MaxValue,
-                < 0.0f => 0,
-                _ => value * short.MaxValue
+                > 1.0f => 1.0f,
+                < 0.0f => 0.0f,
+                _ => value
             };
         }
     }
+
+    public float AttackTime = 0.05f;
+    public float ReleaseTime = 1.5f;
+    private float currentGain = 1.0f;
+    private float targetGain = 1.0f;
 
     public NoiseGate()
     {
@@ -99,11 +104,68 @@ public struct NoiseGate
         NoiseCeiling = SettingsHandler.ClientSettings.NsGtCeiling;
     }
 
-    public float ApplyNoiseGate(float sample)
+    public float ApplyNoiseGate(float sample, int sampleRate)
     {
-        if (Math.Abs(sample) > NoiseCeiling || Math.Abs(sample) < NoiseFloor)
-            return 0;
-        //Console.WriteLine("Sample: " + sample + " Ceiling: " + NoiseCeiling + " Floor: " + NoiseFloor);
-        return sample;
+        targetGain = sample > NoiseCeiling || sample < NoiseFloor ? 0.0f : 1.0f; 
+        var smoothingFactor = (targetGain < currentGain)
+            ? 1 - (float)Math.Exp(-1 / (AttackTime * sampleRate))
+            : 1 - (float)Math.Exp(-1 / (ReleaseTime * sampleRate));
+        currentGain += smoothingFactor * (targetGain - currentGain);
+        return sample * currentGain;
+    }
+    
+}
+
+public struct InputGain
+{
+    private float _gain;
+    public float Gain
+    {
+        get => _gain;
+        set
+        {
+            _gain = value switch
+            {
+                > 5.0f => 5.0f,
+                _ => value
+            };
+        }
+    }
+
+    public InputGain()
+    {
+        Gain = SettingsHandler.ClientSettings.IgGain;
+    }
+
+    public float ApplyInputGain(float sample)
+    {
+        return sample * Gain;
+    }
+}
+
+public struct OutputGain
+{
+    private float _gain;
+    public float Gain
+    {
+        get => _gain;
+        set
+        {
+            _gain = value switch
+            {
+                > 5.0f => 5.0f,
+                _ => value
+            };
+        }
+    }
+
+    public OutputGain()
+    {
+        Gain = SettingsHandler.ClientSettings.OgGain;
+    }
+
+    public float ApplyOutputGain(float sample)
+    {
+        return sample * Gain;
     }
 }

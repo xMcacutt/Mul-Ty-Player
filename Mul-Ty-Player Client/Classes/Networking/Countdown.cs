@@ -44,7 +44,6 @@ public class Countdown
         {
             abortToken.ThrowIfCancellationRequested();
             OnCountdownBegan?.Invoke();
-            Client.HSync = new SyncHandler();
             SFXPlayer.StopAll();
             Client.HHero.SetDefaults();
             SFXPlayer.PlaySound(SFX.Race10);
@@ -61,7 +60,6 @@ public class Countdown
                 if (i == 3)
                 {
                     Client.HGameState.ForcePrepareNewGame(SettingsHandler.ClientSettings.DefaultSaveSlot);
-                    Client.HSync = new SyncHandler();
                     if (Client._client.Id == PlayerHandler.Players[0].Id)
                     {
                         var message = Message.Create(MessageSendMode.Reliable, MessageID.CountdownFinishing);

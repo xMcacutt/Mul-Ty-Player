@@ -54,6 +54,8 @@ public class SettingsViewModel
     public bool AutoJoinVoice { get; set; }
     public int ProximityRange { get; set; }
     public string SelectedInputDevice { get; set; }
+    public float IgInputGain { get; set; }
+    public float OgOutputGain { get; set; }
     public float CmpInputGain { get; set; }
     public float CmpThreshold { get; set; }
     public float CmpRatio { get; set; }
@@ -120,6 +122,8 @@ public class SettingsViewModel
         AutoJoinVoice = SettingsHandler.ClientSettings.AutoJoinVoice;
         ProximityRange = SettingsHandler.ClientSettings.ProximityRange;
         SelectedInputDevice = SettingsHandler.ClientSettings.VoiceInputDevice;
+        IgInputGain = SettingsHandler.ClientSettings.IgGain;
+        OgOutputGain = SettingsHandler.ClientSettings.OgGain;
         CmpInputGain = SettingsHandler.ClientSettings.CmpInputGain;
         CmpThreshold = SettingsHandler.ClientSettings.CmpThreshold;
         CmpRatio = SettingsHandler.ClientSettings.CmpRatio;
@@ -170,6 +174,8 @@ public class SettingsViewModel
         SettingsHandler.ClientSettings.AutoJoinVoice = AutoJoinVoice;
         SettingsHandler.ClientSettings.ProximityRange = ProximityRange;
         SettingsHandler.ClientSettings.VoiceInputDevice = SelectedInputDevice;
+        SettingsHandler.ClientSettings.IgGain = IgInputGain;
+        SettingsHandler.ClientSettings.OgGain = OgOutputGain;
         SettingsHandler.ClientSettings.CmpInputGain = CmpInputGain;
         SettingsHandler.ClientSettings.CmpThreshold = CmpThreshold;
         SettingsHandler.ClientSettings.CmpRatio = CmpRatio;

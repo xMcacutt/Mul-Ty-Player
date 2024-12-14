@@ -27,6 +27,9 @@ public class HardcoreModeHandler
         Client.HHero.SetWaterSlideSpeeds(15f, 15f, 30f);
         if (Client.HLevel.CurrentLevelId != Levels.OutbackSafari.Id)
             AttributeHandler.SetBoomerangRange(1200f);
+        HardcoreRunDead = false;
+        Client.HHero.SetHealth(1);
+        Client.HHero.SetWaterHealth(1);
     }
     
     public void InitializeLevel(int level)
@@ -189,8 +192,6 @@ public class HardcoreModeHandler
         if (HardcoreRunDead && Client.HHero.GetLives() > 0)
         {
             Client.HHero.KillPlayer();
-            Client.HHero.SetHealth(1);
-            Client.HHero.SetWaterHealth(1);
             return;
         }
 

@@ -37,6 +37,8 @@ public static class VoiceHandler
 
     public static Compressor Compressor;
     public static NoiseGate NoiseGate;
+    public static InputGain InputGain;
+    public static OutputGain OutputGain;
     
     private static bool muted;
     public static event Action<bool> OnMutedChanged;
@@ -106,6 +108,8 @@ public static class VoiceHandler
         VoiceClient.OpenVoiceSocket(Client._ip);
         Compressor = new Compressor();
         NoiseGate = new NoiseGate();
+        InputGain = new InputGain();
+        OutputGain = new OutputGain();
         _waveIn = new WaveInEvent
         {
             DeviceNumber = _inputDeviceIndex,
@@ -201,22 +205,17 @@ public static class VoiceHandler
             var inputSlice = inputMemory.Slice(i * 2, 2);
             var outputSlice = outputMemory.Slice(i * 2, 2);
             
-            var sample = (float)BitConverter.ToInt16(inputSlice.Span);
-            var normalizedSample = Math.Abs((float)sample);
-            if (normalizedSample > short.MaxValue)
-                normalizedSample = short.MaxValue;
-            normalizedSample /= short.MaxValue;
+            var sample = (float)BitConverter.ToInt16(inputSlice.Span) / short.MaxValue;
+            var polarity = float.Sign(sample);
             
-            // EFFECTS
-            sample = NoiseGate.ApplyNoiseGate(sample);
-            sample = Compressor.ApplyCompression(sample);
+            //EFFECTS
+            var newSample = InputGain.ApplyInputGain(Math.Abs(sample));
+            newSample = NoiseGate.ApplyNoiseGate(newSample, SAMPLE_RATE); 
+            newSample = Compressor.ApplyCompression(newSample);
+            newSample = OutputGain.ApplyOutputGain(newSample);
             
-            sample = Math.Clamp(sample, short.MinValue, short.MaxValue);
-            
-            var processedSample = (short)sample;
-            
-            var processedBytes = BitConverter.GetBytes(processedSample);
-            processedBytes.CopyTo(outputSlice.Span);
+            sample = Math.Clamp(newSample * polarity * short.MaxValue, short.MinValue, short.MaxValue);
+            BitConverter.GetBytes((short)sample).CopyTo(outputSlice.Span);
         });
 
         return outputBytes;
@@ -224,6 +223,8 @@ public static class VoiceHandler
 
     public static void UpdateEffectsSettings()
     {
+        InputGain.Gain = SettingsHandler.ClientSettings.IgGain;
+        OutputGain.Gain = SettingsHandler.ClientSettings.OgGain;
         Compressor.InputGain = SettingsHandler.ClientSettings.CmpInputGain;
         Compressor.Threshold = SettingsHandler.ClientSettings.CmpThreshold;
         Compressor.Ratio = SettingsHandler.ClientSettings.CmpRatio;

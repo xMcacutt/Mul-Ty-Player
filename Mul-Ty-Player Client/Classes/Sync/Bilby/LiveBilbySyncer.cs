@@ -53,4 +53,16 @@ internal class LiveBilbySyncer : LiveDataSyncer
             HSyncObject.SaveSync.Save(i, Client.HLevel.CurrentLevelId);
         }
     }
+
+    public void MakeBilbiesVisible()
+    {
+        ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25357C, BitConverter.GetBytes(1));
+        for (var i = 0; i < 5; i++)
+        {
+            if (HSyncObject.GlobalObjectData[Client.HLevel.CurrentLevelId][i] == HSyncObject.CheckState)
+                continue;
+            ProcessHandler.WriteData(HSyncObject.LiveObjectAddress + CollisionOffset + ObjectLength * i,
+                BitConverter.GetBytes(1), "Setting bilby cage collision to on");
+        }
+    }
 }

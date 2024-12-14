@@ -123,6 +123,8 @@ internal class SyncHandler
     {
         Logger.Write("Synchronisations have been reset to new game state.");
         Client.HSync = new SyncHandler();
+        if (SettingsHandler.GameMode == GameMode.Hardcore)
+            Client.HHardcore.Initialize();
     }
 
     [MessageHandler((ushort)MessageID.ClientCollectibleDataUpdate)]
@@ -206,5 +208,6 @@ internal class SyncHandler
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x28CAD4, new byte[] { 0x0 });
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x26DB54, new byte[] { 0x1 });
         ((LiveCrateSyncer)HCrate.LiveSync).MakeCratesVisible();
+        ((LiveBilbySyncer)HBilby.LiveSync).MakeBilbiesVisible();
     }
 }

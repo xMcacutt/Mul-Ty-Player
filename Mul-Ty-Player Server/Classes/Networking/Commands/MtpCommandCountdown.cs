@@ -44,8 +44,7 @@ public class MtpCommandCountdown : Command
     {
         if (Program.HChaos.ShuffleOnStart && SettingsHandler.GameMode == GameMode.Chaos)
             ChaosHandler.ForceShuffle();
-        Program.HSync = new SyncHandler();
-        Program.HObjective = new ObjectiveHandler();
+        Program.HCommand.Commands["resetsync"].InitExecute(Array.Empty<string>());
         var param = message.GetString();
         Console.WriteLine(RunCountdown(param));
     }
@@ -53,7 +52,6 @@ public class MtpCommandCountdown : Command
     [MessageHandler((ushort)MessageID.CountdownFinishing)]
     private static void HandleCountdownFinishing(ushort fromClientId, Message message)
     {
-        Program.HSync = new SyncHandler();
-        Program.HObjective = new ObjectiveHandler();
+        Program.HCommand.Commands["resetsync"].InitExecute(Array.Empty<string>());
     }
 }
