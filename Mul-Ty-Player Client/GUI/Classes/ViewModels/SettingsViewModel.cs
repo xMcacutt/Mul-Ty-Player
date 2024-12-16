@@ -121,7 +121,7 @@ public class SettingsViewModel
 
         AutoJoinVoice = SettingsHandler.ClientSettings.AutoJoinVoice;
         ProximityRange = SettingsHandler.ClientSettings.ProximityRange;
-        SelectedInputDevice = SettingsHandler.ClientSettings.VoiceInputDevice;
+        SelectedInputDevice = InputDevices.FirstOrDefault(device => device == SettingsHandler.ClientSettings.VoiceInputDevice);
         IgInputGain = SettingsHandler.ClientSettings.IgGain;
         OgOutputGain = SettingsHandler.ClientSettings.OgGain;
         CmpInputGain = SettingsHandler.ClientSettings.CmpInputGain;

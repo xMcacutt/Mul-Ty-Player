@@ -186,6 +186,9 @@
         <None Update="GUI\Themes\SplashImage_Christmas.png">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Update="GUI\Themes\Christmas.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
         <Page Remove="GUI\App.xaml" />

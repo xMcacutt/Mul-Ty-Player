@@ -7,6 +7,7 @@ using MulTyPlayer;
 using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI;
 using MulTyPlayerClient.GUI.Models;
+using NAudio.Wave;
 using Newtonsoft.Json;
 using Riptide;
 
@@ -129,6 +130,10 @@ internal static class SettingsHandler
         //MAIN SETTINGS
         var json = File.ReadAllText("./ClientSettings.json");
         ClientSettings = JsonConvert.DeserializeObject<ClientSettings>(json);
+        
+        for (var i = 0; i < WaveIn.DeviceCount; i++) 
+            if (string.Equals(WaveIn.GetCapabilities(i).ProductName, ClientSettings.VoiceInputDevice))
+                VoiceHandler.UpdateInputDevice(i);
         
         App.AppColors.SetColors(ClientSettings.Theme);
         

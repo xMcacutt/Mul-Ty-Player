@@ -1,0 +1,11 @@
+﻿{
+  "MainBackColor": "#FF132912",
+  "AltBackColor": "#FF6E6B4C",
+  "SpecialBackColor": "#FF8C8972",
+  "MainTextColor": "#FFFFFFFF",
+  "AltTextColor": "#FFAFAC9D",
+  "InvertedTextColor": "#FF0D190A",
+  "MainAccentColor": "#FFC7342D",
+  "AltAccentColor": "#FFD6B032",
+  "UseSplash": true
+}

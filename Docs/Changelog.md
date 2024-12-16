@@ -2,8 +2,14 @@
 
 ## Most Recent
 
+#### 4.9.6 CHRISTMAS CONTINUES
+- (VC) Voice input device correctly saves now
+- (CHRISTMAS) New Christmas Theme
+- (CHRISTMAS) MORE SNOW!!!
+- Reduced intensity of "Cherry" theme
+
 #### 4.9.5 CHRISTMAS UPDATE
-- Biblies finally appear during Time Attacks
+- Bilbies finally appear during Time Attacks
 - Fixed players becoming invisible during Time Attacks
 - (HDC) Added [documentation of the changes](./User/HardcoreMode.md)
 - (HDC) Fixed double death from water deaths issue

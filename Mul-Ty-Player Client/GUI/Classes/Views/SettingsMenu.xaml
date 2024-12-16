@@ -258,7 +258,7 @@
                            Style="{StaticResource SettingsLabelStyle}"/>
                     <ComboBox ItemsSource="{Binding InputDevices}"
                               Name="InputDeviceComboBox"
-                              SelectedItem="{Binding SelectedInputDevice}"
+                              SelectedItem="{Binding SelectedInputDevice, Mode=TwoWay}"
                               DropDownOpened="InputDeviceComboBox_OnDropDownOpened"
                               SelectionChanged="InputDeviceComboBox_OnSelectionChanged"
                               Style="{StaticResource SettingsComboBoxStyle}"/>
