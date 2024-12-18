@@ -62,7 +62,6 @@ public class HDC_IcicleHandler
         _setup = true;
     }
 
-    private static bool _colorSet;
     private static void RunMemoryGame(int count, int baseAddr)
     {
         var hitCountAddr = PointerCalculations.GetPointerAddress(0x26BA50, new[] { 0xA0 });
@@ -76,17 +75,20 @@ public class HDC_IcicleHandler
             LevelHandler.LevelBloomSettings.RevertToOriginal();
     }
 
-    private static bool _isActive;
     private static void RunDeathByIcicle()
     {
-        var hitCountAddr = PointerCalculations.GetPointerAddress(0x26BA50, new[] { 0xA0 });
-        ProcessHandler.TryRead(hitCountAddr, out int hitCount, false, "memoryGame");
-        if (hitCount > 0)
-            _isActive = true;
-        if (!_isActive || hitCount != 0) 
-            return;
-        Client.HHardcore.EndRun();
-        _isActive = false;
+        ProcessHandler.TryRead(0x26B964, out int icicleCount, true, "memoryGame");
+        ProcessHandler.TryRead(0x26B968, out int icicleAddr, true, "memoryGame");
+        for (var icicleIndex = 0; icicleIndex < icicleCount; icicleIndex++)
+        {
+            ProcessHandler.TryRead(icicleAddr + 0xB4 * icicleIndex + 0x6C, out int icicleState, false, "memoryGame");
+            if (icicleState == 3)
+            {
+                HardcoreModeHandler.CauseOfDeath = CauseOfDeath.Icicle;
+                Client.HHardcore.EndRun();
+                return;
+            }
+        }
     }
 
     private static void RunColorSwap(int count, int baseAddr)

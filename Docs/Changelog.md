@@ -2,6 +2,14 @@
 
 ## Most Recent
 
+#### 4.9.7 CHRISTMAS BUT MORE
+- (HDC) Controller Bug Fixed
+- (HDC) Can no longer exit during TA
+- (HDC) Andy has been fined for speeding
+- (HDC) Cable cars are fast
+- (HDC) Death messages added
+- (HDC) Icicle insta-death bug fixed
+
 #### 4.9.6 CHRISTMAS CONTINUES
 - (VC) Voice input device correctly saves now
 - (CHRISTMAS) New Christmas Theme

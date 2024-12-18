@@ -11,7 +11,8 @@ public class HardcoreModeHandler
     public bool HardcoreRunDead;
     private Random _random = new Random();
     private HDC_IcicleBehaviour currentIcicleBehaviour;
-    
+    public static CauseOfDeath CauseOfDeath = CauseOfDeath.None;
+
     public void Initialize()
     {
         _random = new Random();
@@ -197,6 +198,10 @@ public class HardcoreModeHandler
 
         var heroState = Client.HHero.GetHeroState();
         var isBull = Client.HHero.IsBull();
+        var lastHeroState = -1;
+        if (isBull && heroState != (int)BullState.Dying || !isBull && heroState != (int)HeroState.Dying)
+            lastHeroState = heroState;
+        
         // Read Breath
         var breath = Client.HHero.GetWaterHealth();
         // Set Breath
@@ -208,12 +213,19 @@ public class HardcoreModeHandler
         if (health > 1)
             Client.HHero.SetHealth(1);
         // Check Dead
-        if (health < 1 || breath < 1 || (!isBull && heroState == (int)HeroState.KnockedOver))
+        if (health < 1 || breath < 1 || !isBull && heroState == (int)HeroState.KnockedOver)
         {
+            if (!isBull && heroState == (int)HeroState.KnockedOver)
+                CauseOfDeath = CauseOfDeath.KnockedDown;
+            else if (breath < 1)
+                CauseOfDeath = CauseOfDeath.Breath;
+            else
+                GetCauseOfDeathFromLastState(isBull, lastHeroState);
             EndRun();
             return;
         }
 
+        // THEGG RANGS
         CheckThEggCounts();
         
         // EMU TIMER
@@ -267,9 +279,14 @@ public class HardcoreModeHandler
             Client.HGameState.SetMenuItemFlag(TyMenuItem.MainMenu, TyMenuItemFlag.Enabled, !inTimeAttack);
             ProcessHandler.TryRead(0x270500, out int taAddr, true, "taAddr");
             ProcessHandler.TryRead(taAddr + 0xB4, out int loseDialogAddr, false, "loseDialogAddr");
+            ProcessHandler.TryRead(taAddr + 0xB4 + 0x18, out int noBeatTimeDialogAddr, false, "loseDialogAddr");
+            ProcessHandler.TryRead(taAddr + 0xB4 + 0x20, out int timeOutDialogAddr, false, "loseDialogAddr");
             ProcessHandler.TryRead(0x28C318, out int lastLoadedDialogAddr, true, "lastDialogAddr");
-            if (lastLoadedDialogAddr == loseDialogAddr)
+            if (lastLoadedDialogAddr == loseDialogAddr || 
+                lastLoadedDialogAddr == noBeatTimeDialogAddr || 
+                lastLoadedDialogAddr == timeOutDialogAddr )
             {
+                CauseOfDeath = CauseOfDeath.FailTA;
                 EndRun();
                 return;
             }
@@ -289,7 +306,32 @@ public class HardcoreModeHandler
             HDC_IcicleHandler.HandleIcicles(icicleCount, icicleAddr, currentIcicleBehaviour);
         }
     }
-    
+
+    private void GetCauseOfDeathFromLastState(bool isBull, int lastState)
+    {
+        if (lastState == -1)
+            CauseOfDeath = CauseOfDeath.None;
+        if (isBull)
+        {
+            var bullState = (BullState)lastState;
+            CauseOfDeath = bullState switch
+            {
+                BullState.Airborne => CauseOfDeath.Tornado,
+                BullState.Splat => CauseOfDeath.Fell,
+                _ => CauseOfDeath.None
+            };
+        }
+        else
+        {
+            var tyState = (HeroState)lastState;
+            CauseOfDeath = tyState switch
+            {
+                HeroState.Faceplant or HeroState.FarFalling => CauseOfDeath.Fell,
+                _ => CauseOfDeath.None
+            };
+        }
+    }
+
     public void SetEnemySpeedMultiplier(float multiplier = 1)
     {
         //FRILL
@@ -319,16 +361,31 @@ public class HardcoreModeHandler
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25F6E8, BitConverter.GetBytes(10.50f * multiplier));
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25F6EC, BitConverter.GetBytes(0.02166f * (float)Math.Pow(multiplier, 2)));
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25F6F0, BitConverter.GetBytes(0.045f * (float)Math.Pow(multiplier, 2)));
-        //ANDY
+        //SNOWANDY
         switch (multiplier)
         {
             case 1:
-                ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25FA28, BitConverter.GetBytes(5f * multiplier));
-                ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25FA30, BitConverter.GetBytes(0.045f * multiplier));
+                ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25FA28, BitConverter.GetBytes(5f));
+                ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25FA30, BitConverter.GetBytes(0.045f));
                 break;
             case 2:
-                ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25FA28, BitConverter.GetBytes(8.15f * multiplier));
-                ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25FA30, BitConverter.GetBytes(0.2f * multiplier));
+                ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25FA28, BitConverter.GetBytes(4.1f * multiplier));
+                ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x25FA30, BitConverter.GetBytes(0.1f * multiplier));
+                break;
+        }
+        
+        // CABLE CAR
+        ProcessHandler.UnprotectMemory<float>((int)TyProcess.BaseAddress + 0x1FA248);
+        ProcessHandler.UnprotectMemory<float>((int)TyProcess.BaseAddress + 0x205924);
+        switch (multiplier)
+        {
+            case 1:
+                ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x205924, BitConverter.GetBytes(0.07f));
+                ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x1FA248, BitConverter.GetBytes(180f));
+                break;
+            case 2:
+                ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x205924, BitConverter.GetBytes(0.25f * multiplier));
+                ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x1FA248, BitConverter.GetBytes(300f * multiplier));
                 break;
         }
 
@@ -363,15 +420,34 @@ public class HardcoreModeHandler
     public static void HandleRunStatusChanged(Message message)
     {
         Client.HHardcore.HardcoreRunDead = message.GetBool();
-        if (PlayerHandler.TryGetPlayer(message.GetUShort(), out var player))
-            Client.HGameState.DisplayInGameMessage(player.Name + " died... oops!");   
+        if (Client.HHardcore.HardcoreRunDead && PlayerHandler.TryGetPlayer(message.GetUShort(), out var player))
+        {
+            Client.HGameState.DisplayInGameMessage(player.Name + " " + GetDeathMessage((CauseOfDeath)message.GetInt()), 5);
+            SFXPlayer.PlaySound(SFX.Punch);
+        }   
+    }
+
+    private static string GetDeathMessage(CauseOfDeath cause)
+    {
+        return cause switch
+        {
+            CauseOfDeath.None => "died... oops.",
+            CauseOfDeath.FailTA => "was too slow.",
+            CauseOfDeath.Icicle => "was crushed by an icicle.",
+            CauseOfDeath.Fell => "hit the ground too hard.",
+            CauseOfDeath.KnockedDown => "was knocked down.",
+            CauseOfDeath.Breath => "drowned.",
+            CauseOfDeath.Voided => "found the edge of the world.",
+            CauseOfDeath.Tornado => "spun too fast.",
+            _ => "died... oops."
+        };
     }
 
     public void EndRun()
     {
         if (HardcoreRunDead)
             return;
-        Client._client.Send(Message.Create(MessageSendMode.Reliable, MessageID.HC_RunStatusChanged).AddBool(true));
+        Client._client.Send(Message.Create(MessageSendMode.Reliable, MessageID.HC_RunStatusChanged).AddBool(true).AddInt((int)CauseOfDeath));
         HardcoreRunDead = true;
     }
 

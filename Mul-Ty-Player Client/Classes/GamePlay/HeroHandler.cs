@@ -91,9 +91,17 @@ public class HeroHandler
 
     private void CheckDeathPlane()
     {
-        if (_deathPlaneHeight.ContainsKey(HLevel.CurrentLevelId))
-            if (currentPositionRotation[1] < _deathPlaneHeight[HLevel.CurrentLevelId])
-                KillPlayer();
+        if (!_deathPlaneHeight.ContainsKey(HLevel.CurrentLevelId)) 
+            return;
+        if (!(currentPositionRotation[1] < _deathPlaneHeight[HLevel.CurrentLevelId])) 
+            return;
+        if (SettingsHandler.GameMode == GameMode.Hardcore)
+        {
+            HardcoreModeHandler.CauseOfDeath = CauseOfDeath.Voided;
+            Client.HHardcore.EndRun();
+            return;
+        }
+        KillPlayer();
     }
 
     public float[] GetCurrentPosRot()
