@@ -68,7 +68,7 @@ public class HotkeyHandler
             SpectatorFreecamPrevious = new HotkeyConfig { Key = Key.D9, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
             SpectatorFreecamNext = new HotkeyConfig { Key = Key.D0, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
             SpectatorFreecamDisengage = new HotkeyConfig { Key = Key.D8, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
-            VoiceMute = new HotkeyConfig { Key = Key.M, Modifiers = ModifierKeys.Control | ModifierKeys.Shift }
+            VoiceMute = new HotkeyConfig { Key = Key.M, Modifiers = ModifierKeys.Control | ModifierKeys.Shift },
         };
     }
     

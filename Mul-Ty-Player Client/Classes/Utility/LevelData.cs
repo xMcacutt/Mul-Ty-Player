@@ -232,11 +232,43 @@ public class Levels
         IsMainStage = false,
         HasKoalas = false
     };
+    
+    public static readonly LevelData Z2 = new()
+    {
+        Id = 1,
+        Code = "Z2",
+        Name = "Null Level",
+        FrameCount = 0,
+        IsMainStage = false,
+        HasKoalas = false
+    };
+    
+    public static readonly LevelData Z3 = new()
+    {
+        Id = 2,
+        Code = "Z3",
+        Name = "Null Level",
+        FrameCount = 0,
+        IsMainStage = false,
+        HasKoalas = false
+    };
+    
+    public static readonly LevelData NullLevel = new()
+    {
+        Id = -1,
+        Code = "XX",
+        Name = "Null Level",
+        FrameCount = 0,
+        IsMainStage = false,
+        HasKoalas = false
+    };
 
     public static readonly Dictionary<int, LevelData> levels = new()
     {
         { 0, RainbowCliffs },
-
+        { 1, Z2 },
+        { 2, Z3 },
+        
         { 4, TwoUp },
         { 5, WalkInThePark },
         { 6, ShipRex },
@@ -272,19 +304,6 @@ public class Levels
 
     public static LevelData GetLevelData(int levelID)
     {
-        return levels[levelID];
+        return !levels.TryGetValue(levelID, out LevelData value) ? NullLevel : value;
     }
-
-    #region leveldata
-
-    public static readonly LevelData RainbowCliffsDev = new()
-    {
-        Id = 1,
-        Code = "Z2",
-        FrameCount = 0,
-        IsMainStage = false,
-        HasKoalas = false
-    };
-
-    #endregion
 }

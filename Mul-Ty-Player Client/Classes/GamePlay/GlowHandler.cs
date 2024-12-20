@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using MulTyPlayer;
 using MulTyPlayerClient;
 using MulTyPlayerClient.Classes.Networking;
+using MulTyPlayerClient.Properties;
 using Riptide;
 using Client = Riptide.Client;
 
@@ -94,7 +95,7 @@ public class GlowHandler
 
     public void ReturnGlow(int koalaId)
     {
-        if (Client.Relaunching || Client.HGameState.IsOnMainMenuOrLoading)
+        if (Client.Relaunching || Client.HGameState.IsOnMainMenuOrLoading || !SettingsHandler.ClientSettings.ShowKoalaBeacons)
             return;
         ProcessHandler.WriteData(TransformAddresses[koalaId].sX, BitConverter.GetBytes(2500f), "Scaling glows (ReturnGlow)");
         ProcessHandler.WriteData(TransformAddresses[koalaId].sY, BitConverter.GetBytes(2500f), "Scaling glows (ReturnGlow)");
