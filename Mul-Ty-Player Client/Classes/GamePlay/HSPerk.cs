@@ -116,13 +116,13 @@ public class OpalSlowPerk : HSPerk
     
     public override void ApplyHider()
     {
-        Client.HHero.SetRunSpeedFromOpals(-5f);
+        Client.HHero.SetSpeedFromOpals(-5f);
 
     }
 
     public override void ApplySeeker()
     {
-        Client.HHero.SetRunSpeedFromOpals(-4.5f, Client.HHideSeek.SeekerSpeed);
+        Client.HHero.SetSpeedFromOpals(-4.5f, Client.HHideSeek.SeekerSpeed);
 
     }
 
@@ -158,13 +158,13 @@ public class OpalSpeedPerk : HSPerk
     
     public override void ApplyHider()
     {
-        Client.HHero.SetRunSpeedFromOpals(3.5f);
+        Client.HHero.SetSpeedFromOpals(3.5f);
 
     }
 
     public override void ApplySeeker()
     {
-        Client.HHero.SetRunSpeedFromOpals(4f, Client.HHideSeek.SeekerSpeed);
+        Client.HHero.SetSpeedFromOpals(4f, Client.HHideSeek.SeekerSpeed);
     }
 
     public override void Deactivate()
@@ -228,7 +228,7 @@ public class SeekerSwimSpeedPerk : HSPerk
     }
     public override void ApplySeeker()
     {
-        Client.HHero.SetSwimSpeed(23f);
+        Client.HHero.SetSwimSpeed(24f);
     }
     
     public override void Deactivate()
@@ -246,7 +246,7 @@ public class HiderSwimSpeedPerk : HSPerk
     }
     public override void ApplyHider()
     {
-        Client.HHero.SetSwimSpeed(23f);
+        Client.HHero.SetSwimSpeed(23.5f);
     }
 
     public override void Deactivate()
@@ -264,7 +264,7 @@ public class HiderGlideSpeedPerk : HSPerk
     }
     public override void ApplyHider()
     {
-        Client.HHero.SetGlideSpeed(11.5f);
+        Client.HHero.SetGlideSpeed(12.5f);
     }
 
     public override void Deactivate()
@@ -282,7 +282,7 @@ public class SeekerGlideSpeedPerk : HSPerk
     }
     public override void ApplySeeker()
     {
-        Client.HHero.SetGlideSpeed(11.5f);
+        Client.HHero.SetGlideSpeed(13f);
     }
 
     public override void Deactivate()
@@ -415,7 +415,7 @@ public class SeekersSeeLightsPerk : HSPerk
         DisplayName = "Player Lights";
         ToolTip = "Press ctrl+shift+a to show opposing players' lights for 3 seconds. This can be done once every 30 seconds.";
         IsAbility = true;
-        AbilityCooldown = TimeSpan.FromSeconds(45);
+        AbilityCooldown = TimeSpan.FromSeconds(90);
     }
     public override void ApplyAbility()
     {
@@ -428,7 +428,7 @@ public class SeekersSeeLightsPerk : HSPerk
     private async void ShowLines()
     {
         Client.HHideSeek.LinesVisible = true;
-        await Task.Delay(3000);
+        await Task.Delay(6000);
         Client.HHideSeek.LinesVisible = false;
     }
 
@@ -459,7 +459,7 @@ public class SeekersFreezeHidersPerk : HSPerk
         ProcessHandler.WriteData(
             (int)TyProcess.BaseAddress + 0x264248, 
             BitConverter.GetBytes(1f));
-        await Task.Delay(3000);
+        await Task.Delay(2500);
         ProcessHandler.WriteData(
             (int)TyProcess.BaseAddress + 0x264248, 
             BitConverter.GetBytes(0.01f));
@@ -643,7 +643,7 @@ public class HiderFlashbangAbilityPerk : HSPerk
         DisplayName = "Flashbang Ability";
         ToolTip = "Cause the opposing team's screen to flash white and slow for a few seconds.";
         IsAbility = true;
-        AbilityCooldown = TimeSpan.FromSeconds(20);
+        AbilityCooldown = TimeSpan.FromSeconds(60);
     }
     
     public override void ApplyAbility()
@@ -663,7 +663,7 @@ public class HiderFlashbangAbilityPerk : HSPerk
         LevelHandler.LevelBloomSettings.Value = flashBrightness;
         var originalSaturation = LevelHandler.LevelBloomSettings.Saturation;
         LevelHandler.LevelBloomSettings.Saturation = 0;
-        await Task.Delay(1500);
+        await Task.Delay(3000);
         var steps = 750;
         for (var i = 0; i < steps; i++)
         {
@@ -694,7 +694,7 @@ public class SeekerFlashbangAbilityPerk : HSPerk
         DisplayName = "Flashbang Ability";
         ToolTip = "Cause the opposing team's screen to flash white and slow for a few seconds.";
         IsAbility = true;
-        AbilityCooldown = TimeSpan.FromSeconds(20);
+        AbilityCooldown = TimeSpan.FromSeconds(60);
     }
     
     public override void ApplyAbility()
@@ -730,7 +730,7 @@ public class JumpBoostAbility : HSPerk
         SFXPlayer.PlaySound(SFX.JumpBoost);
         Client.HHero.SetAirSpeed(22);
         Client.HHero.SetJumpHeight(25);
-        await Task.Delay(2000);
+        await Task.Delay(2500);
         Client.HHero.SetAirSpeed();
         Client.HHero.SetJumpHeight();
     }

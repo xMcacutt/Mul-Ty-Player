@@ -98,6 +98,7 @@ public class MtpCommandTaunt : Command
                 message.AddUShort(player.Id);
                 message.AddFloat(distance);
                 Client._client.Send(message);
+                ((MtpCommandAbility)Client.HCommand.Commands["Ability"]).ResetAbilityCooldown();
                 overallTimeBonus += timeBonus;
                 seekerCount++;
             }

@@ -112,6 +112,17 @@ public class MtpCommandAbility : Command
             LogError($"You must wait {GetAbilityCooldownRemaining()} seconds before using your ability.");
         }
     }
+    
+    public void ResetAbilityCooldown()
+    {
+        // Stop the timer and reset the stopwatch
+        StopAbilityCooldownTimer();
+        AbilityStopwatch.Reset();
+
+        // Hide the cooldown display and notify listeners
+        ModelController.Lobby.IsAbilityCooldownVisible = false;
+        OnAbilityCooldownTimerChanged?.Invoke(0);
+    }
 
     public void StopAbilityCooldownTimer()
     {

@@ -2,6 +2,13 @@
 
 ## Most Recent
 
+#### 4.9.9 CHRISTMAS AGAIN
+- (HSD) Balancing tweaks
+- (HSD) Taunt resets ability cooldown
+- (CHM) Fixed seed not displaying correctly on New Game screen
+- Fixed issue with collectibles being made visible in levels without collectible type
+- 
+
 #### 4.9.7 CHRISTMAS BUT MORE
 - (HDC) Controller Bug Fixed
 - (HDC) Can no longer exit during TA

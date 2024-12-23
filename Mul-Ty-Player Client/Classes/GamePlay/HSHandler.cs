@@ -70,7 +70,7 @@ public class HSHandler
         }
     }
 
-    public float SeekerSpeed = 10.15f;
+    public float SeekerSpeed = 10.25f;
 
     public HSPerk CurrentDebuff = new NoPerk();
 
@@ -82,7 +82,7 @@ public class HSHandler
     public HSHandler()
     {
         OnRoleChanged += AnnounceRoleChanged;
-        SeekerSpeed = 10.15f;
+        SeekerSpeed = 10.25f;
         Role = ModelController.Login.JoinAsSpectator ? HSRole.Spectator : HSRole.Hider;
         Mode = HSMode.Neutral;
     }
@@ -124,6 +124,7 @@ public class HSHandler
                 _timerRunning = true;
             CurrentPerk.ApplyHider();
             CurrentDebuff.ApplyHider();
+            CheckDeath();
         }
 
         // SEEK TIME SEEKER
@@ -131,7 +132,7 @@ public class HSHandler
         {
             if (!LockoutSpeed)
             {
-                Client.HHero.SetSwimSpeed(21f);
+                Client.HHero.SetSwimSpeed(22f);
                 Client.HHero.SetRunSpeed(SeekerSpeed);
             }
             CurrentPerk.ApplySeeker();
@@ -181,7 +182,7 @@ public class HSHandler
     {
         Logger.Write("[HS] Seeker speed increased.");
         SFXPlayer.PlaySound(SFX.SpeedUp);
-        Client.HHideSeek.SeekerSpeed += 0.175f;
+        Client.HHideSeek.SeekerSpeed += 0.275f;
     }
 
     private void AnnounceRoleChanged(HSRole newRole)
@@ -224,7 +225,7 @@ public class HSHandler
         
         ModelController.Lobby.IsTimerVisible = true;
 
-        Client.HHideSeek.SeekerSpeed = 10.15f;
+        Client.HHideSeek.SeekerSpeed = 10.25f;
         
         Client.HCommand.Commands["tp"].InitExecute(new string[] {"@s"});
         

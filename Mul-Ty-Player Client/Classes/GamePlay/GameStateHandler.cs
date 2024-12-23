@@ -199,7 +199,7 @@ public class GameStateHandler
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x27EBC8, BitConverter.GetBytes((int)state));
     }
 
-    public void SetNewGameText(string normalModeText, string hardcoreModeText, string subText)
+    public void SetNewGameText(string normalModeText, string subText, string hardcoreModeText)
     {
         var baseAddr = PointerCalculations.GetPointerAddress(0x528740, new[] { 0x0 });
         ProcessHandler.WriteData(baseAddr, Encoding.ASCII.GetBytes(normalModeText).Concat(new byte[1]).ToArray());

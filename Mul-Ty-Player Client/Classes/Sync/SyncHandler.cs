@@ -206,7 +206,9 @@ internal class SyncHandler
             ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x28AB84, new byte[] { 0x0 });
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x28CAD4, new byte[] { 0x0 });
         ProcessHandler.WriteData((int)TyProcess.BaseAddress + 0x26DB54, new byte[] { 0x1 });
-        ((LiveCrateSyncer)HCrate.LiveSync).MakeCratesVisible();
-        ((LiveBilbySyncer)HBilby.LiveSync).MakeBilbiesVisible();
+        if (Levels.GetLevelData(Client.HLevel.CurrentLevelId).CrateCount > 0)
+            ((LiveCrateSyncer)HCrate.LiveSync).MakeCratesVisible();
+        if (Levels.GetLevelData(Client.HLevel.CurrentLevelId).IsMainStage)
+            ((LiveBilbySyncer)HBilby.LiveSync).MakeBilbiesVisible();
     }
 }
