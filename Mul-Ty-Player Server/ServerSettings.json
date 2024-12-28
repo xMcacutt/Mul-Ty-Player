@@ -12,6 +12,7 @@
   "DoSyncCrate": true,
   "DoSyncScale": true,
   "DoSyncFrame": true,
-  "Version": "4.9.9",
+  "DoSyncMushrooms": true,
+  "Version": "4.9.10",
   "DoAutoUpdate": true
 }

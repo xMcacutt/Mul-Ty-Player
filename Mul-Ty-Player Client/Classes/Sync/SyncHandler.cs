@@ -21,6 +21,7 @@ internal class SyncHandler
     public static RSHandler HRainbowScale;
     public static FrameHandler HFrame;
     public static InvisiCrateHandler HInvisiCrate;
+    public static MushroomHandler HMushroom;
     public LevelLockHandler HLevelLock;
     public TriggerHandler HTrigger;
     
@@ -43,7 +44,8 @@ internal class SyncHandler
             { "RC", HCliffs = new RCHandler() },
             { "RainbowScale", HRainbowScale = new RSHandler() },
             { "Frame", HFrame = new FrameHandler() },
-            { "InvisiCrate", HInvisiCrate = new InvisiCrateHandler() }
+            { "InvisiCrate", HInvisiCrate = new InvisiCrateHandler() },
+            { "Mushroom", HMushroom = new MushroomHandler() }
         };
         HLevelLock = new LevelLockHandler();
         HTrigger = new TriggerHandler();
@@ -83,7 +85,10 @@ internal class SyncHandler
     public void SetCurrentData(bool inMainStage, bool hasFrames)
     {
         if (hasFrames)
+        {
+            HInvisiCrate.SetCurrentData();
             HFrame.SetCurrentData();
+        }
         if (!inMainStage)
             return;
         HCrate.SetCurrentData();
@@ -138,10 +143,6 @@ internal class SyncHandler
 
     public void SendDataToServer(int iLive, int iSave, int level, string type)
     {
-        // if (SettingsHandler.GameMode == GameMode.Collection)
-        // ADD POINTS
-        // SEND TO OTHER CLIENTS
-        // WRITE TO UI
         var syncMessage = CollectibleSyncMessage.Create(iLive, iSave, level, type);
         Client._client.Send(CollectibleSyncMessage.Encode(syncMessage));
     }
@@ -175,6 +176,9 @@ internal class SyncHandler
             
             if (SettingsHandler.DoBilbySyncing) 
                 HBilby.CheckObserverChanged();
+
+            if (SettingsHandler.DoMushroomSyncing)
+                HMushroom.CheckObserverChanged();
         }
         
         if (SettingsHandler.DoRangSyncing) 

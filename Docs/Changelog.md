@@ -7,7 +7,6 @@
 - (HSD) Taunt resets ability cooldown
 - (CHM) Fixed seed not displaying correctly on New Game screen
 - Fixed issue with collectibles being made visible in levels without collectible type
-- 
 
 #### 4.9.7 CHRISTMAS BUT MORE
 - (HDC) Controller Bug Fixed
@@ -22,7 +21,7 @@
 - (CHRISTMAS) New Christmas Theme
 - (CHRISTMAS) MORE SNOW!!!
 - Reduced intensity of "Cherry" theme
-
+ 
 #### 4.9.5 CHRISTMAS UPDATE
 - Bilbies finally appear during Time Attacks
 - Fixed players becoming invisible during Time Attacks

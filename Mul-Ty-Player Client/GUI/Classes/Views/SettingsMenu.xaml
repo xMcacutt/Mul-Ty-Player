@@ -447,6 +447,9 @@
                     <CheckBox IsChecked="{Binding DoSyncFrames}"
                               Style="{StaticResource SettingsCheckBoxStyle}"
                               Content="Picture Frames"/>
+                    <CheckBox IsChecked="{Binding DoSyncMushrooms}"
+                              Style="{StaticResource SettingsCheckBoxStyle}"
+                              Content="Mushrooms"/>
                 </StackPanel>
             </ScrollViewer>
             <Separator Style="{StaticResource SettingsSepStyle}"

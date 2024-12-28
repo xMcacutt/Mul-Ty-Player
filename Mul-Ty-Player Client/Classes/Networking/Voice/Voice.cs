@@ -106,10 +106,8 @@ public struct NoiseGate
 
     public float ApplyNoiseGate(float sample, int sampleRate)
     {
-        targetGain = sample > NoiseCeiling || sample < NoiseFloor ? 0.0f : 1.0f; 
-        var smoothingFactor = (targetGain < currentGain)
-            ? 1 - (float)Math.Exp(-1 / (AttackTime * sampleRate))
-            : 1 - (float)Math.Exp(-1 / (ReleaseTime * sampleRate));
+        targetGain = Math.Clamp((sample - NoiseFloor) / (NoiseCeiling - NoiseFloor), 0.0f, 1.0f);
+        var smoothingFactor = 1 - (float)Math.Exp(-1 / ((targetGain < currentGain ? AttackTime : ReleaseTime) * sampleRate));
         currentGain += smoothingFactor * (targetGain - currentGain);
         return sample * currentGain;
     }

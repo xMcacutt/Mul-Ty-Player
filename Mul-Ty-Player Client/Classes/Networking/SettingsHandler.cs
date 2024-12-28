@@ -118,6 +118,11 @@ internal static class SettingsHandler
             _syncSettings["InvisiCrate"] = value;
         }
     }
+    public static bool DoMushroomSyncing
+    {
+        get => _syncSettings["Mushroom"];
+        set => _syncSettings["Mushroom"] = value;
+    }
     
 
     #endregion
@@ -150,7 +155,8 @@ internal static class SettingsHandler
             { "Attribute", false },
             { "RainbowScale", false },
             { "Frame", false },
-            { "InvisiCrate", false }
+            { "InvisiCrate", false },
+            { "Mushroom", false }
         };
     }
 
@@ -173,7 +179,8 @@ internal static class SettingsHandler
         DoCliffsSyncing = b[6];
         DoRainbowScaleSyncing = b[7];
         DoFrameSyncing = b[8];
-        DoLevelLock = b[9];
+        DoMushroomSyncing = b[9];
+        DoLevelLock = b[10];
 
         GameMode = (GameMode)message.GetInt();
         
@@ -202,7 +209,7 @@ internal static class SettingsHandler
 
     public static bool HasValidExePath()
     {
-        return ClientSettings.MulTyPlayerFolderPath != "" && ClientSettings.MulTyPlayerFolderPath != null;
+        return !string.IsNullOrEmpty(ClientSettings.MulTyPlayerFolderPath);
     }
 
     [MessageHandler((ushort)MessageID.HS_RangeChanged)]
@@ -225,7 +232,8 @@ internal static class SettingsHandler
             DoPortalSyncing,
             DoCliffsSyncing,
             DoRainbowScaleSyncing,
-            DoFrameSyncing
+            DoFrameSyncing,
+            DoMushroomSyncing
         };
         message.AddBools(b);
         Client._client.Send(message);

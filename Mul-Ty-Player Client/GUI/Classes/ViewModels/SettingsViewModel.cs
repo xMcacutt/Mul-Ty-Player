@@ -73,6 +73,7 @@ public class SettingsViewModel
     public bool DoSyncRainbowCliffs { get; set; }
     public bool DoSyncRangs { get; set; }
     public bool DoSyncPortals { get; set; }
+    public bool DoSyncMushrooms { get; set; }
     
     public void UpdateInputDevices()
     {
@@ -143,6 +144,7 @@ public class SettingsViewModel
         DoSyncScales = SettingsHandler.DoRainbowScaleSyncing;
         DoSyncTEs = SettingsHandler.DoTESyncing;
         DoSyncRainbowCliffs = SettingsHandler.DoCliffsSyncing;
+        DoSyncMushrooms = SettingsHandler.DoMushroomSyncing;
     }
 
     public void SavePropertiesBackToSettings()
@@ -198,6 +200,7 @@ public class SettingsViewModel
             SettingsHandler.DoRainbowScaleSyncing = DoSyncScales;
             SettingsHandler.DoTESyncing = DoSyncTEs;
             SettingsHandler.DoCliffsSyncing = DoSyncRainbowCliffs;
+            SettingsHandler.DoMushroomSyncing = DoSyncMushrooms;
             SettingsHandler.UpdateSyncSettings();
         }
         

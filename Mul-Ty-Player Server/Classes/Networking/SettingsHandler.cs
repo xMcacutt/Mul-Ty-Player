@@ -73,7 +73,8 @@ internal class SettingsHandler
             { "RC", ServerSettings.DoSyncCliffs },
             { "RainbowScale", ServerSettings.DoSyncScale },
             { "Frame", ServerSettings.DoSyncFrame },
-            { "InvisiCrate", ServerSettings.DoSyncFrame }
+            { "InvisiCrate", ServerSettings.DoSyncFrame },
+            { "Mushroom", ServerSettings.DoSyncMushrooms }
         };
     }
 
@@ -98,6 +99,7 @@ internal class SettingsHandler
             ServerSettings.DoSyncCliffs,
             ServerSettings.DoSyncScale,
             ServerSettings.DoSyncFrame,
+            ServerSettings.DoSyncMushrooms,
             DoLevelLock,
         };
         message.AddBools(b);
@@ -133,8 +135,9 @@ internal class SettingsHandler
         ServerSettings.DoSyncCliffs = b[6];
         ServerSettings.DoSyncScale = b[7];
         ServerSettings.DoSyncFrame = b[8];
-        if (b.Length > 9) 
-            DoLevelLock = b[9];
+        ServerSettings.DoSyncMushrooms = b[9];
+        if (b.Length > 10) 
+            DoLevelLock = b[10];
         
         SyncSettings = new Dictionary<string, bool>
         {
@@ -148,7 +151,8 @@ internal class SettingsHandler
             { "RC", ServerSettings.DoSyncCliffs },
             { "RainbowScale", ServerSettings.DoSyncScale },
             { "Frame", ServerSettings.DoSyncFrame },
-            { "InvisiCrate", ServerSettings.DoSyncFrame }
+            { "InvisiCrate", ServerSettings.DoSyncFrame },
+            { "Mushroom", ServerSettings.DoSyncMushrooms }
         };
 
         Save();

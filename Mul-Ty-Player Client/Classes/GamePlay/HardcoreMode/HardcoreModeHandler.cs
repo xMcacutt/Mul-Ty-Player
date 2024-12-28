@@ -38,19 +38,7 @@ public class HardcoreModeHandler
         HDC_IcicleHandler.ResetIcicles();
         currentIcicleBehaviour = (HDC_IcicleBehaviour)_random.Next(0, Enum.GetValues(typeof(HDC_IcicleBehaviour)).Length);
         SyncHandler.HThEg.ShowStopwatch();
-        var triggerSphereCount = Client.HSync.HTrigger.GetTriggerSphereCount();
-        for (var triggerIndex = 0; triggerIndex < triggerSphereCount; triggerIndex++)
-        {
-            var triggerEntryAddr = Client.HSync.HTrigger.GetTriggerEnterTargetAddress(triggerIndex);
-            var triggerExitAddr = Client.HSync.HTrigger.GetTriggerExitTargetAddress(triggerIndex);
-            if (triggerEntryAddr != triggerExitAddr)
-                continue;
-            ProcessHandler.TryRead(triggerEntryAddr + 4, out int indicatorAddr, false, "Find Teleporter Trigger");
-            if (indicatorAddr != TyProcess.BaseAddress + 0x26D68C)
-                continue;
-            Client.HSync.HTrigger.SetTriggerActivity(triggerIndex, true);
-            ProcessHandler.WriteData(triggerEntryAddr + 0xC8, new byte[] { 0x0, 0x1, 0x1 });
-        }
+        LiveMushroomSyncer.SetMushroomState(true);
 
         ProcessHandler.TryRead(0x2665AC, out int diveRingCount, true, "diveRingCount");
         if (diveRingCount != 0)

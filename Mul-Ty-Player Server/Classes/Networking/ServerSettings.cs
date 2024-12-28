@@ -14,6 +14,7 @@ public class ServerSettings
     public bool DoSyncCliffs { get; set; }
     public bool DoSyncScale { get; set; }
     public bool DoSyncFrame { get; set; }
+    public bool DoSyncMushrooms { get; set; }
     public bool DoAutoUpdate { get; set; }
     
     public string Version { get; set; }
