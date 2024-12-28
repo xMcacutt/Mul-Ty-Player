@@ -15,8 +15,6 @@ using MulTyPlayerClient.GUI.Models;
 using NAudio.Codecs;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using Riptide;
-using RNNoiseSharp;
 
 namespace MulTyPlayerClient;
 
@@ -119,7 +117,6 @@ public static class VoiceHandler
         NoiseGate = new NoiseGate();
         InputGain = new InputGain();
         OutputGain = new OutputGain();
-        //Denoiser = new Denoiser();
         _waveIn = new WaveInEvent
         {
             DeviceNumber = _inputDeviceIndex,
@@ -213,9 +210,6 @@ public static class VoiceHandler
             floatBuffer[i] = BitConverter.ToInt16(inputData, i * 2) / (float)short.MaxValue;
         });
 
-        // Apply RNNoise denoising in place
-        //Denoiser.Denoise(floatBuffer);
-
         // Process the float data and convert back to bytes in parallel
         Parallel.For(0, shortCount, i =>
         {
@@ -223,7 +217,8 @@ public static class VoiceHandler
 
             // Apply effects
             sample = Compressor.ApplyCompression(sample);
-
+            //sample = NoiseGate.ApplyNoiseGate(sample);
+            
             // Clamp and convert to 16-bit integer
             int clampedSample = (int)(sample * short.MaxValue);
             clampedSample = Math.Clamp(clampedSample, short.MinValue, short.MaxValue);

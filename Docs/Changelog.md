@@ -2,6 +2,10 @@
 
 ## Most Recent
 
+#### 4.9.10 LAST CHRISTMAS UPDATE
+- Added  Mushroom syncing
+- Temporarily removed faulty noise gate
+
 #### 4.9.9 CHRISTMAS AGAIN
 - (HSD) Balancing tweaks
 - (HSD) Taunt resets ability cooldown
