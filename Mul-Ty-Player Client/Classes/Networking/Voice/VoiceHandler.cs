@@ -16,6 +16,7 @@ using NAudio.Codecs;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using Riptide;
+using RNNoiseSharp;
 
 namespace MulTyPlayerClient;
 
@@ -39,6 +40,7 @@ public static class VoiceHandler
     public static NoiseGate NoiseGate;
     public static InputGain InputGain;
     public static OutputGain OutputGain;
+    //public static Denoiser Denoiser;
     
     private static bool muted;
     public static event Action<bool> OnMutedChanged;
@@ -117,6 +119,7 @@ public static class VoiceHandler
         NoiseGate = new NoiseGate();
         InputGain = new InputGain();
         OutputGain = new OutputGain();
+        //Denoiser = new Denoiser();
         _waveIn = new WaveInEvent
         {
             DeviceNumber = _inputDeviceIndex,
@@ -202,27 +205,32 @@ public static class VoiceHandler
     private static byte[] ProcessVoiceData(byte[] inputData)
     {
         var shortCount = inputData.Length / 2;
-        var outputBytes = new byte[inputData.Length];
-
-        var inputMemory = new Memory<byte>(inputData);
-        var outputMemory = new Memory<byte>(outputBytes);
+        float[] floatBuffer = new float[shortCount];
+        byte[] outputBytes = new byte[inputData.Length];
         
         Parallel.For(0, shortCount, i =>
         {
-            var inputSlice = inputMemory.Slice(i * 2, 2);
-            var outputSlice = outputMemory.Slice(i * 2, 2);
-            
-            var sample = (float)BitConverter.ToInt16(inputSlice.Span) / short.MaxValue;
-            var polarity = float.Sign(sample);
-            
-            //EFFECTS
-            var newSample = InputGain.ApplyInputGain(Math.Abs(sample));
-            newSample = NoiseGate.ApplyNoiseGate(newSample, SAMPLE_RATE); 
-            newSample = Compressor.ApplyCompression(newSample);
-            newSample = OutputGain.ApplyOutputGain(newSample);
-            
-            sample = Math.Clamp(newSample * polarity * short.MaxValue, short.MinValue, short.MaxValue);
-            BitConverter.GetBytes((short)sample).CopyTo(outputSlice.Span);
+            floatBuffer[i] = BitConverter.ToInt16(inputData, i * 2) / (float)short.MaxValue;
+        });
+
+        // Apply RNNoise denoising in place
+        //Denoiser.Denoise(floatBuffer);
+
+        // Process the float data and convert back to bytes in parallel
+        Parallel.For(0, shortCount, i =>
+        {
+            float sample = floatBuffer[i];
+
+            // Apply effects
+            sample = Compressor.ApplyCompression(sample);
+
+            // Clamp and convert to 16-bit integer
+            int clampedSample = (int)(sample * short.MaxValue);
+            clampedSample = Math.Clamp(clampedSample, short.MinValue, short.MaxValue);
+
+            // Write the 16-bit integer to the output byte array
+            outputBytes[i * 2] = (byte)clampedSample;
+            outputBytes[i * 2 + 1] = (byte)(clampedSample >> 8);
         });
 
         return outputBytes;
