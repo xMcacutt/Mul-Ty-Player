@@ -25,7 +25,7 @@ public class MtpCommandCList : Command
         string listRes = null;
         listRes += "\n--------------- Connected Clients ---------------\n";
         if (PlayerHandler.Players.Count == 0) listRes += "There are no clients currently connected.\n";
-        foreach (var client in Server._Server.Clients.Where(x => x.IsConnected))
+        foreach (var client in Server._server.Clients.Where(x => x.IsConnected))
             listRes += "Client " + client.Id + " Name: " + PlayerHandler.Players[client.Id].Name + "\n";
         return listRes;
     }

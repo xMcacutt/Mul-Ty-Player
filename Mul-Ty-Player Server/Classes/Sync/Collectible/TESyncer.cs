@@ -37,7 +37,7 @@ internal class TESyncer : Syncer
                 ((BilbySyncer)Program.HSync.Syncers["Bilby"]).GlobalObjectData[level] = new byte[5];
                 var bilbyMessage = Message.Create(MessageSendMode.Reliable, MessageID.DespawnAllBilbies);
                 bilbyMessage.AddInt(level);
-                Server._Server.SendToAll(bilbyMessage);
+                Server._server.SendToAll(bilbyMessage);
                 break;
             }
             // IF TE IS MAIN OBJECTIVE TE, SEND MESSAGE TO CLIENTS TO SPAWN STOPWATCH FOR TA
@@ -45,7 +45,7 @@ internal class TESyncer : Syncer
             {
                 var stopWatchMessage = Message.Create(MessageSendMode.Reliable, MessageID.StopWatch);
                 stopWatchMessage.AddInt(level);
-                Server._Server.SendToAll(stopWatchMessage);
+                Server._server.SendToAll(stopWatchMessage);
                 break;
             }
         }

@@ -137,6 +137,7 @@ internal class TyProcess
         SettingsHandler.ClientSettings.MulTyPlayerFolderPath = process.MainModule.FileName;
         SettingsHandler.Save();
         GameStateHandler.UpdateExeSettings();
+        SpectatorHandler.UpdateCameraSettings();
         GameStateHandler.ForceNoIdle();
         IsRunning = true;
     }

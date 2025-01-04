@@ -222,4 +222,15 @@ public class SpectatorHandler
             SpectatorHandler.SetCameraRotation(0, Client.HHero.GetCurrentPosRot()[4]);
         _inFreeCam = !_inFreeCam;
     }
+
+    public static void UpdateCameraSettings()
+    {
+        var addr = (int)TyProcess.BaseAddress + 0x27E7E8;
+        ProcessHandler.WriteData(addr + 0x0, BitConverter.GetBytes(SettingsHandler.ClientSettings.NearCamDistance));
+        ProcessHandler.WriteData(addr + 0x4, BitConverter.GetBytes(SettingsHandler.ClientSettings.NearCamElevation));
+        ProcessHandler.WriteData(addr + 0x8, BitConverter.GetBytes(SettingsHandler.ClientSettings.MidCamDistance));
+        ProcessHandler.WriteData(addr + 0xC, BitConverter.GetBytes(SettingsHandler.ClientSettings.MidCamElevation));
+        ProcessHandler.WriteData(addr + 0x10, BitConverter.GetBytes(SettingsHandler.ClientSettings.FarCamDistance));
+        ProcessHandler.WriteData(addr + 0x14, BitConverter.GetBytes(SettingsHandler.ClientSettings.FarCamElevation));
+    }
 }

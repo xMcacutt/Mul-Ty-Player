@@ -42,6 +42,9 @@ internal static class SettingsHandler
                 case GameMode.Hardcore:
                     Client.HHardcore.Deinitialize();
                     break;
+                case GameMode.Blitz:
+                    Client.HBlitz.Deinitialize();
+                    break;
             };
             if (value != GameMode.Chaos && _gameMode == GameMode.Chaos)
                 Client.HChaos.InitNewGameText(false, true);
@@ -54,6 +57,9 @@ internal static class SettingsHandler
                     break;
                 case GameMode.Hardcore:
                     Client.HHardcore.Initialize();
+                    break;
+                case GameMode.Blitz:
+                    Client.HBlitz.Initialize();
                     break;
             };
         } 

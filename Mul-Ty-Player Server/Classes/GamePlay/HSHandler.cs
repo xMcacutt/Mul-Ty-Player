@@ -34,7 +34,7 @@ public class HSHandler
         var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_RoleChanged);
         message.AddUShort(clientId);
         message.AddInt((int)role);
-        Server._Server.SendToAll(message, clientId);
+        Server._server.SendToAll(message, clientId);
     }
 
     [MessageHandler((ushort)MessageID.HS_Abort)]
@@ -63,7 +63,7 @@ public class HSHandler
         var distance = message.GetFloat();
         var forward = Message.Create(MessageSendMode.Reliable, MessageID.HS_Taunt);
         forward.AddFloat(distance);
-        Server._Server.Send(forward, clientId);
+        Server._server.Send(forward, clientId);
     }
     
     private static void RunRadiusCheck()
@@ -81,9 +81,9 @@ public class HSHandler
                     continue;
                 hider.Role = HSRole.Seeker;
                 var catchMessage = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
-                Server._Server.Send(catchMessage, seeker.ClientID);
+                Server._server.Send(catchMessage, seeker.ClientID);
                 catchMessage = Message.Create(MessageSendMode.Reliable, MessageID.HS_Catch);
-                Server._Server.Send(catchMessage, hider.ClientID);
+                Server._server.Send(catchMessage, hider.ClientID);
             }
         }
     }
@@ -116,7 +116,7 @@ public class HSHandler
                 {
                     var warning = Message.Create(MessageSendMode.Reliable, MessageID.HS_Warning);
                     warning.AddInt(i);
-                    Server._Server.SendToAll(warning);
+                    Server._server.SendToAll(warning);
                 }
                 Task.Delay(1000, abortToken).Wait(abortToken);
             }
@@ -125,13 +125,13 @@ public class HSHandler
         {
             await hideTime;
             var startMessage = Message.Create(MessageSendMode.Reliable, MessageID.HS_StartSeek);
-            Server._Server.SendToAll(startMessage);
+            Server._server.SendToAll(startMessage);
         }
         catch (OperationCanceledException cancel)
         {
             Console.WriteLine("Hide & Seek session aborted.");
             var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Abort);
-            Server._Server.SendToAll(message);
+            Server._server.SendToAll(message);
         }
         
         Mode = HSMode.SeekTime;
@@ -152,13 +152,13 @@ public class HSHandler
             await seekTime;
             DisposeOfTimers();
             var endMessage = Message.Create(MessageSendMode.Reliable, MessageID.HS_EndSeek);
-            Server._Server.SendToAll(endMessage);
+            Server._server.SendToAll(endMessage);
         }
         catch (OperationCanceledException cancel)
         {
             Console.WriteLine("Hide & Seek session aborted.");
             var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_Abort);
-            Server._Server.SendToAll(message);
+            Server._server.SendToAll(message);
         }
         Mode = HSMode.Neutral;
     }
@@ -175,7 +175,7 @@ public class HSHandler
     private static void OnIntervalTimerElapsed(object? sender, ElapsedEventArgs e)
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_SeekerSpeed);
-        Server._Server.SendToAll(message);
+        Server._server.SendToAll(message);
     }
     
     public static void DisposeOfTimers()
@@ -207,7 +207,7 @@ public class HSHandler
         var response = Message.Create(MessageSendMode.Reliable, MessageID.HS_RoleChanged);
         response.AddUShort(clientId);
         response.AddInt((int)player.Role);
-        Server._Server.Send(response, clientId);
+        Server._server.Send(response, clientId);
     }
     
 }
@@ -233,7 +233,7 @@ public class PerkHandler
     {
         var response = Message.Create(MessageSendMode.Reliable, MessageID.HS_Freeze);
         foreach (var player in PlayerHandler.Players.Values.Where(x => x.Role != PlayerHandler.Players[fromClientId].Role && x.Role != HSRole.Spectator))
-            Server._Server.Send(response, player.ClientID);
+            Server._server.Send(response, player.ClientID);
     }
     
     [MessageHandler((ushort)MessageID.HS_Flashbang)]
@@ -241,6 +241,6 @@ public class PerkHandler
     {
         var response = Message.Create(MessageSendMode.Reliable, MessageID.HS_Flashbang);
         foreach (var player in PlayerHandler.Players.Values.Where(x => x.Role != PlayerHandler.Players[fromClientId].Role && x.Role != HSRole.Spectator))
-            Server._Server.Send(response, player.ClientID);
+            Server._server.Send(response, player.ClientID);
     }
 }

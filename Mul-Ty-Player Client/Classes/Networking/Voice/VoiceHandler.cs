@@ -35,9 +35,6 @@ public static class VoiceHandler
     private static int _sequenceNumber; // Track the sequence number for each client
 
     public static Compressor Compressor;
-    public static NoiseGate NoiseGate;
-    public static InputGain InputGain;
-    public static OutputGain OutputGain;
     //public static Denoiser Denoiser;
     
     private static bool muted;
@@ -114,9 +111,6 @@ public static class VoiceHandler
     {
         VoiceClient.OpenVoiceSocket(Client._ip);
         Compressor = new Compressor();
-        NoiseGate = new NoiseGate();
-        InputGain = new InputGain();
-        OutputGain = new OutputGain();
         _waveIn = new WaveInEvent
         {
             DeviceNumber = _inputDeviceIndex,
@@ -233,14 +227,10 @@ public static class VoiceHandler
 
     public static void UpdateEffectsSettings()
     {
-        InputGain.Gain = SettingsHandler.ClientSettings.IgGain;
-        OutputGain.Gain = SettingsHandler.ClientSettings.OgGain;
         Compressor.InputGain = SettingsHandler.ClientSettings.CmpInputGain;
         Compressor.Threshold = SettingsHandler.ClientSettings.CmpThreshold;
         Compressor.Ratio = SettingsHandler.ClientSettings.CmpRatio;
         Compressor.OutputGain = SettingsHandler.ClientSettings.CmpOutputGain;
-        NoiseGate.NoiseFloor = SettingsHandler.ClientSettings.NsGtFloor;
-        NoiseGate.NoiseCeiling = SettingsHandler.ClientSettings.NsGtCeiling;
     }
 
 }

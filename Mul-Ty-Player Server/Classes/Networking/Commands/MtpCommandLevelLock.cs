@@ -36,7 +36,7 @@ public class MtpCommandLevelLock : Command
         SettingsHandler.DoLevelLock = value;
         var message = Message.Create(MessageSendMode.Reliable, MessageID.SetLevelLock);
         message.AddBool(value);
-        Server._Server.SendToAll(message);
+        Server._server.SendToAll(message);
         return $"Level Lock mode set to {value}";
     }
 

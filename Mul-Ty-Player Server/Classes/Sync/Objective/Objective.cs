@@ -32,7 +32,7 @@ public class Objective
         var message = Message.Create(MessageSendMode.Reliable, MessageID.ObjectiveObjectActivated);
         message.AddString(Name);
         message.AddInt(index);
-        Server._Server.SendToAll(message, from);
+        Server._server.SendToAll(message, from);
     }
     
     public void SetObjectiveState(ObjectiveState state, ushort from)
@@ -41,6 +41,6 @@ public class Objective
         var message = Message.Create(MessageSendMode.Reliable, MessageID.ObjectiveStateChanged);
         message.AddString(Name);
         message.AddByte((byte)State);
-        Server._Server.SendToAll(message, from);
+        Server._server.SendToAll(message, from);
     }
 }

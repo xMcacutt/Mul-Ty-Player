@@ -16,6 +16,6 @@ public class ServerSettings
     public bool DoSyncFrame { get; set; }
     public bool DoSyncMushrooms { get; set; }
     public bool DoAutoUpdate { get; set; }
-    
     public string Version { get; set; }
+    public string DevPass { get; set; }
 }

@@ -75,7 +75,7 @@ public class CollectionModeRuleHandler
         var message = Message.Create(MessageSendMode.Reliable, MessageID.CL_RuleChange);
         message.AddString(rule.Name);
         message.AddString(rule.Description);
-        Server._Server.SendToAll(message);
+        Server._server.SendToAll(message);
     }
 
     public CollectionModeRuleHandler()
@@ -375,14 +375,14 @@ public class ClmRule_Nopals : CollectionModeRule
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.CL_Nopals);
         message.AddBool(true);
-        Server._Server.SendToAll(message);
+        Server._server.SendToAll(message);
     }
 
     public override void RunSpecialEndAction()
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.CL_Nopals);
         message.AddBool(false);
-        Server._Server.SendToAll(message);
+        Server._server.SendToAll(message);
     }
 }
 

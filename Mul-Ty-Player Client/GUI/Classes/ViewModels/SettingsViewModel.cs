@@ -42,6 +42,12 @@ public class SettingsViewModel
     public bool DoFixMenuPositions { get; set; }
     public bool DoForceMagnets { get; set; }
     public bool DoUnlockGameInfo { get; set; }
+    public float NearCamDistance { get; set; }
+    public float MidCamDistance { get; set; }
+    public float FarCamDistance { get; set; }
+    public float NearCamElevation { get; set; }
+    public float MidCamElevation { get; set; }
+    public float FarCamElevation { get; set; }
     public ObservableCollection<string> SaveSlots { get; set; }
     public ObservableCollection<string> InterpolationModes { get; set; }
     
@@ -49,6 +55,7 @@ public class SettingsViewModel
     // DEVELOPER SETTINGS
     public bool DoOutputLogs { get; set; }
     public ushort DefaultPort { get; set; }
+    public string DevPass { get; set; }
     
     // VOICE SETTINGS
     public bool AutoJoinVoice { get; set; }
@@ -119,21 +126,24 @@ public class SettingsViewModel
         DoFixMenuPositions = SettingsHandler.ClientSettings.DoFixMenuPositions;
         DoForceMagnets = SettingsHandler.ClientSettings.DoForceMagnets;
         DoUnlockGameInfo = SettingsHandler.ClientSettings.DoUnlockGameInfo;
-
+        NearCamDistance = SettingsHandler.ClientSettings.NearCamDistance;
+        MidCamDistance = SettingsHandler.ClientSettings.MidCamDistance;
+        FarCamDistance = SettingsHandler.ClientSettings.FarCamDistance;
+        NearCamElevation = SettingsHandler.ClientSettings.NearCamElevation;
+        MidCamElevation = SettingsHandler.ClientSettings.MidCamElevation;
+        FarCamElevation = SettingsHandler.ClientSettings.FarCamElevation;
+        
         AutoJoinVoice = SettingsHandler.ClientSettings.AutoJoinVoice;
         ProximityRange = SettingsHandler.ClientSettings.ProximityRange;
         SelectedInputDevice = InputDevices.FirstOrDefault(device => device == SettingsHandler.ClientSettings.VoiceInputDevice);
-        IgInputGain = SettingsHandler.ClientSettings.IgGain;
-        OgOutputGain = SettingsHandler.ClientSettings.OgGain;
         CmpInputGain = SettingsHandler.ClientSettings.CmpInputGain;
         CmpThreshold = SettingsHandler.ClientSettings.CmpThreshold;
         CmpRatio = SettingsHandler.ClientSettings.CmpRatio;
         CmpOutputGain = SettingsHandler.ClientSettings.CmpOutputGain;
-        NsGtFloor = SettingsHandler.ClientSettings.NsGtFloor;
-        NsGtCeiling = SettingsHandler.ClientSettings.NsGtCeiling;
 
         DoOutputLogs = SettingsHandler.ClientSettings.CreateLogFile;
         DefaultPort = SettingsHandler.ClientSettings.Port;
+        DevPass = SettingsHandler.ClientSettings.DevPass;
 
         DoSyncBilbies = SettingsHandler.DoBilbySyncing;
         DoSyncCogs = SettingsHandler.DoCogSyncing;
@@ -172,22 +182,26 @@ public class SettingsViewModel
         SettingsHandler.ClientSettings.DoForceMagnets = DoForceMagnets;
         SettingsHandler.ClientSettings.DoUnlockGameInfo = DoUnlockGameInfo;
         GameStateHandler.UpdateExeSettings();
+        SettingsHandler.ClientSettings.NearCamDistance = NearCamDistance;
+        SettingsHandler.ClientSettings.MidCamDistance = MidCamDistance;
+        SettingsHandler.ClientSettings.FarCamDistance = FarCamDistance;
+        SettingsHandler.ClientSettings.NearCamElevation = NearCamElevation;
+        SettingsHandler.ClientSettings.MidCamElevation = MidCamElevation;
+        SettingsHandler.ClientSettings.FarCamElevation = FarCamElevation;
+        SpectatorHandler.UpdateCameraSettings();
 
         SettingsHandler.ClientSettings.AutoJoinVoice = AutoJoinVoice;
         SettingsHandler.ClientSettings.ProximityRange = ProximityRange;
         SettingsHandler.ClientSettings.VoiceInputDevice = SelectedInputDevice;
-        SettingsHandler.ClientSettings.IgGain = IgInputGain;
-        SettingsHandler.ClientSettings.OgGain = OgOutputGain;
         SettingsHandler.ClientSettings.CmpInputGain = CmpInputGain;
         SettingsHandler.ClientSettings.CmpThreshold = CmpThreshold;
         SettingsHandler.ClientSettings.CmpRatio = CmpRatio;
         SettingsHandler.ClientSettings.CmpOutputGain = CmpOutputGain;
-        SettingsHandler.ClientSettings.NsGtFloor = NsGtFloor;
-        SettingsHandler.ClientSettings.NsGtCeiling = NsGtCeiling;
         VoiceHandler.UpdateEffectsSettings();
         
         SettingsHandler.ClientSettings.CreateLogFile = DoOutputLogs;
         SettingsHandler.ClientSettings.Port = DefaultPort;
+        SettingsHandler.ClientSettings.DevPass = DevPass;
         
         if (IsHost)
         {

@@ -45,7 +45,7 @@ internal class InvisiCrateSyncer : Syncer
             message.AddInt(level);
             message.AddBytes(GlobalObjectData[level]);
             message.AddBytes(GlobalObjectData[level]);
-            Server._Server.Send(message, player);
+            Server._server.Send(message, player);
         }
     }
 }

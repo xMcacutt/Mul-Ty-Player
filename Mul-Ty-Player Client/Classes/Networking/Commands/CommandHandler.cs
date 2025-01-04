@@ -9,6 +9,7 @@ namespace MulTyPlayerClient;
 
 public class CommandHandler
 {
+    public bool DevPassed;
     public Dictionary<string, Command> Commands = new(StringComparer.OrdinalIgnoreCase);
     public Stack<string> Calls = new Stack<string>();
     public Stack<string> UndoCalls = new Stack<string>();
@@ -42,6 +43,7 @@ public class CommandHandler
         RegisterCommand(new MtpCommandAlert());
         RegisterCommand(new MtpCommandRang());
         RegisterCommand(new MtpCommandRequestSync());
+        RegisterCommand(new MtpCommandDevPass());
     }
     
     public void ParseCommand(string input)
@@ -73,6 +75,11 @@ public class CommandHandler
                 Logger.Write("[ERROR] You do not have the privileges to run this command without host status.");
                 return;
             }
+            if (command.RequiresDevPass && !DevPassed)
+            {
+                Logger.Write("[ERROR] You are not a developer.");
+                return;
+            }
             command.InitExecute(args);
             return;
         }
@@ -87,4 +94,5 @@ public class CommandHandler
             Commands[alias] = command;
         }
     }
+
 }

@@ -2,6 +2,16 @@
 
 ## Most Recent
 
+#### 4.9.12 
+- New Blitz game mode (BETA - dev only)
+- Fixed issue with HSRange not updating
+- Added settings for adjusting default camera distance
+- Checked for issues with HidersSeePlayerLightsPerk (none found)
+- Removed settings for noise reduction until fixed
+- Developer locked feature system
+- It stopped snowing... 
+- Less hats on frogs
+
 #### 4.9.10 LAST CHRISTMAS UPDATE
 - Added  Mushroom syncing
 - Temporarily removed faulty noise gate

@@ -11,6 +11,6 @@ public class MtpCommandLevel
         var level = message.GetInt();
         var response = Message.Create(MessageSendMode.Reliable, MessageID.ForceLevelChange);
         response.AddInt(level);
-        Server._Server.SendToAll(response, fromClientId);
+        Server._server.SendToAll(response, fromClientId);
     }
 }

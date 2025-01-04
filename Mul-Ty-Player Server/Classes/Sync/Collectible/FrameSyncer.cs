@@ -49,7 +49,7 @@ internal class FrameSyncer : Syncer
             message.AddInt(level);
             message.AddBytes(GlobalObjectData[level]);
             message.AddBytes(Array.Empty<byte>());
-            Server._Server.Send(message, player);
+            Server._server.Send(message, player);
         }
 
         var saveDataMessage = Message.Create(MessageSendMode.Reliable, MessageID.ReqCollectibleSync);
@@ -57,6 +57,6 @@ internal class FrameSyncer : Syncer
         saveDataMessage.AddInt(373);
         saveDataMessage.AddBytes(Array.Empty<byte>());
         saveDataMessage.AddBytes(FrameSaveData);
-        Server._Server.Send(saveDataMessage, player);
+        Server._server.Send(saveDataMessage, player);
     }
 }

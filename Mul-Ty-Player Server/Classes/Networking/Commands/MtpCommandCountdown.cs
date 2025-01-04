@@ -35,7 +35,7 @@ public class MtpCommandCountdown : Command
             entry.Value.IsReady = false;
         var message = Message.Create(MessageSendMode.Reliable, MessageID.Countdown);
         message.AddString(param);
-        Server._Server.SendToAll(message);
+        Server._server.SendToAll(message);
         return $"Countdown {param} message send to clients.";
     }
     

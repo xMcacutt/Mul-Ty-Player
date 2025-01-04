@@ -74,6 +74,8 @@ internal class LevelHandler
         }
         if (SettingsHandler.GameMode == GameMode.Hardcore)
             Client.HHardcore.InitializeLevel(CurrentLevelId);
+        if (SettingsHandler.GameMode == GameMode.Blitz)
+            Client.HBlitz.InitializeLevel(CurrentLevelId);
         OnLevelChange?.Invoke(currentLevelId);
     }
 

@@ -32,14 +32,14 @@ public static class LevelLockHandler
         var response = Message.Create(MessageSendMode.Reliable, MessageID.LL_Sync);
         response.AddInts(CompletedLevels.ToArray());
         response.AddInt(ActiveLevel);
-        Server._Server.Send(response, fromClientId);
+        Server._server.Send(response, fromClientId);
     }
 
     private static void InformEntry(int level)
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.LL_LevelEntered);
         message.AddInt(level);
-        Server._Server.SendToAll(message);
+        Server._server.SendToAll(message);
     }
 
     public static void UpdateCheck()
@@ -48,7 +48,7 @@ public static class LevelLockHandler
         if (!CheckLevelComplete()) return;
         CompletedLevels.Add(ActiveLevel);
         var message = Message.Create(MessageSendMode.Reliable, MessageID.LL_LevelCompleted);
-        Server._Server.SendToAll(message);
+        Server._server.SendToAll(message);
     }
 
     private static bool CheckLevelComplete()

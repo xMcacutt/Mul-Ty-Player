@@ -31,7 +31,7 @@ public class MtpCommandKick : Command
     private static void RunKick(ushort clientId)
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.Disconnect);
-        Server._Server.Send(message, clientId);
+        Server._server.Send(message, clientId);
     }
 
     [MessageHandler((ushort)MessageID.Kick)]

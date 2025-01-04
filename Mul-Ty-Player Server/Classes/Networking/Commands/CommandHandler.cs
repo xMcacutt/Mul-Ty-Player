@@ -55,6 +55,18 @@ public class CommandHandler
     private static void CrashClients(ushort fromClientId, Message message)
     {
         var response = Message.Create(MessageSendMode.Reliable, MessageID.Crash);
-        Server._Server.SendToAll(response, fromClientId);
+        Server._server.SendToAll(response, fromClientId);
+    }
+
+    [MessageHandler((ushort)MessageID.DevPass)]
+    private static void CheckDevPass(ushort fromClientId, Message message)
+    {
+        var receivedStr = message.GetString();
+        var response = SettingsHandler.ServerSettings.DevPass != ""
+                       && string.Equals(receivedStr, SettingsHandler.ServerSettings.DevPass);
+        Console.WriteLine(SettingsHandler.ServerSettings.DevPass);
+        Console.WriteLine(receivedStr);
+        Console.WriteLine(response);
+        Server._server.Send(Message.Create(MessageSendMode.Reliable, MessageID.DevPass).AddBool(response), fromClientId);
     }
 }

@@ -95,7 +95,7 @@ public class MtpCommandTeleport
                     continue;
                 var allMessage = Message.Create(MessageSendMode.Reliable, MessageID.AdvancedTeleport);
                 allMessage.AddUShort(toPlayer.ClientID);
-                Server._Server.Send(allMessage, player.ClientID);
+                Server._server.Send(allMessage, player.ClientID);
             }
             return;
         }
@@ -117,7 +117,7 @@ public class MtpCommandTeleport
         var message = Message.Create(MessageSendMode.Reliable, MessageID.AdvancedTeleport);
         message.AddUShort(toPlayer.ClientID);
         message.AddInt(toPlayer.CurrentLevel);
-        Server._Server.Send(message, fromPlayer.ClientID);
+        Server._server.Send(message, fromPlayer.ClientID);
     }
 
     public static void TeleportToLevelPosition(bool fromIsClientId, ushort from, ushort to, ushort sender)
@@ -131,7 +131,7 @@ public class MtpCommandTeleport
                     : _levelEnds[player.CurrentLevel];
                 var message = Message.Create(MessageSendMode.Reliable, MessageID.AdvancedTeleport);
                 message.AddFloats(coordinates);
-                Server._Server.Send(message, player.ClientID);
+                Server._server.Send(message, player.ClientID);
             }
             return;
         }
@@ -148,28 +148,28 @@ public class MtpCommandTeleport
             : _levelEnds[sendPlayer.CurrentLevel];
         var toLevelPositionIdentifierMessage = Message.Create(MessageSendMode.Reliable, MessageID.AdvancedTeleport);
         toLevelPositionIdentifierMessage.AddFloats(sendCoordinates);
-        Server._Server.Send(toLevelPositionIdentifierMessage, sendPlayer.ClientID);
+        Server._server.Send(toLevelPositionIdentifierMessage, sendPlayer.ClientID);
     }
     
     public static void SendTeleportMessage(Player fromPlayer, Player toPlayer, ushort sender)
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.AdvancedTeleport);
         message.AddUShort(toPlayer.ClientID);
-        Server._Server.Send(message, fromPlayer.ClientID);
+        Server._server.Send(message, fromPlayer.ClientID);
     }
 
     public static void SendTeleportMessage(Player player, float[] coordinates, ushort sender)
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.AdvancedTeleport);
         message.AddFloats(coordinates);
-        Server._Server.Send(message, player.ClientID);
+        Server._server.Send(message, player.ClientID);
     }
 
     private static void SendTeleportMessage(Player fromPlayer, ushort toClientId, ushort sender)
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.AdvancedTeleport);
         message.AddUShort(toClientId);
-        Server._Server.Send(message, fromPlayer.ClientID);
+        Server._server.Send(message, fromPlayer.ClientID);
     }
 
     public static void Teleport(bool fromIsClientId, ushort from, string[] coords, ushort sender)
@@ -187,7 +187,7 @@ public class MtpCommandTeleport
                 if (!TryParseCoords(player.ClientID, coords, out var outCoordsPerPlayer, sender)) continue;
                 var allMessage = Message.Create(MessageSendMode.Reliable, MessageID.AdvancedTeleport);
                 allMessage.AddFloats(outCoordsPerPlayer);
-                Server._Server.Send(allMessage, player.ClientID);
+                Server._server.Send(allMessage, player.ClientID);
             }
             return;
         }
@@ -195,7 +195,7 @@ public class MtpCommandTeleport
             return;
         var message = Message.Create(MessageSendMode.Reliable, MessageID.AdvancedTeleport);
         message.AddFloats(outCoords);
-        Server._Server.Send(message, fromPlayer.ClientID);
+        Server._server.Send(message, fromPlayer.ClientID);
     }
 
     private static bool TryParseCoords(ushort clientId, string[] inCoords, out float[] outCoords, ushort sender)

@@ -27,7 +27,7 @@ internal abstract class Syncer
     public virtual void SendUpdatedData(int iLive, int iSave, int level, ushort originalSender)
     {
         var syncMessage = SyncMessage.Create(iLive, iSave, level, Name);
-        Server._Server.SendToAll(SyncMessage.Encode(syncMessage), originalSender);
+        Server._server.SendToAll(SyncMessage.Encode(syncMessage), originalSender);
     }
 
     public virtual void Sync(ushort player)
@@ -39,7 +39,7 @@ internal abstract class Syncer
             message.AddInt(level);
             message.AddBytes(GlobalObjectData[level]);
             message.AddBytes(GlobalObjectSaveData[level]);
-            Server._Server.Send(message, player);
+            Server._server.Send(message, player);
         }
     }
 }

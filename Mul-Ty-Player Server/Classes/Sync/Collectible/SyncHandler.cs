@@ -47,7 +47,7 @@ internal class SyncHandler
     public static void SendResetSyncMessage()
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.ResetSync);
-        Server._Server.SendToAll(message);
+        Server._server.SendToAll(message);
     }
 
     [MessageHandler((ushort)MessageID.ReqCollectibleSync)]

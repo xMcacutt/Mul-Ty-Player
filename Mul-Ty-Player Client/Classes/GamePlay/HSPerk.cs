@@ -413,7 +413,7 @@ public class SeekersSeeLightsPerk : HSPerk
     public SeekersSeeLightsPerk()
     {
         DisplayName = "Player Lights";
-        ToolTip = "Press ctrl+shift+a to show opposing players' lights for 3 seconds. This can be done once every 30 seconds.";
+        ToolTip = "Press ctrl+shift+a to show opposing players' lights for 6 seconds. This can be done once every 90 seconds.";
         IsAbility = true;
         AbilityCooldown = TimeSpan.FromSeconds(90);
     }
@@ -443,7 +443,7 @@ public class SeekersFreezeHidersPerk : HSPerk
     public SeekersFreezeHidersPerk()
     {
         DisplayName = "Freeze Players";
-        ToolTip = "Press ctrl+shift+a to freeze opposing players in place for 3 seconds. This can be done once every 30 seconds.";
+        ToolTip = "Press ctrl+shift+a to freeze opposing players in place for 2.5 seconds. This can be done once every 60 seconds.";
         IsAbility = true;
         AbilityCooldown = TimeSpan.FromSeconds(60);
     }
@@ -487,7 +487,7 @@ public class HidersFreezeSeekersPerk : HSPerk
     public HidersFreezeSeekersPerk()
     {
         DisplayName = "Freeze Players";
-        ToolTip = "Press ctrl+shift+a to freeze opposing players in place for 3 seconds. This can be done once every 60 seconds.";
+        ToolTip = "Press ctrl+shift+a to freeze opposing players in place for 2.5 seconds. This can be done once every 60 seconds.";
         IsAbility = true;
         AbilityCooldown = TimeSpan.FromSeconds(60);
     }
@@ -615,18 +615,18 @@ public class HiderAcidTrip : HSPerk
         LevelHandler.LevelBloomSettings.State = true;
         LevelHandler.LevelBloomSettings.Hue = _hue;
         if (_isGoingDown)
-            _hue -= 0.006f;
+            _hue -= 0.007f;
         else 
-            _hue += 0.006f;
-        if (_isGoingDown && _hue < 0)
+            _hue += 0.007f;
+        if (_isGoingDown && _hue < 2)
         {
             _isGoingDown = false;
-            _hue = 0;
+            _hue = 2;
         }
-        if (!_isGoingDown && _hue > 10)
+        if (!_isGoingDown && _hue > 8)
         {
             _isGoingDown = true;
-            _hue = 10;
+            _hue = 8;
         }
     }
 

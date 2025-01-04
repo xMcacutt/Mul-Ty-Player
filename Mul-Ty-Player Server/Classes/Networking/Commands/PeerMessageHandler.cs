@@ -16,8 +16,8 @@ public class PeerMessageHandler
             ? $"[{DateTime.Now:HH:mm:ss}] {PlayerHandler.Players[fromClientId].Name}: {messageText}"
             : $"[{DateTime.Now:HH:mm:ss}] {PlayerHandler.Players[fromClientId].Name} [WHISPERED]: {messageText}";
         response.AddString(responseText);
-        if (bToAll) Server._Server.SendToAll(response);
-        else Server._Server.Send(response, message.GetUShort());
+        if (bToAll) Server._server.SendToAll(response);
+        else Server._server.Send(response, message.GetUShort());
     }
 
     [MessageHandler((ushort)MessageID.Alert)]
@@ -27,7 +27,7 @@ public class PeerMessageHandler
         var messageText = message.GetString();
         var responseText = $"[{DateTime.Now:HH:mm:ss}] {PlayerHandler.Players[fromClientId].Name}: {messageText}";
         response.AddString(responseText);
-        Server._Server.SendToAll(response);
+        Server._server.SendToAll(response);
     }
 
     public static void SendMessageToClient(string str, bool printToServer, ushort to)
@@ -40,7 +40,7 @@ public class PeerMessageHandler
             return;
         }
         message.AddString(messageText);
-        Server._Server.Send(message, to);
+        Server._server.Send(message, to);
         if (printToServer) Console.WriteLine(str);
     }
 
@@ -48,7 +48,7 @@ public class PeerMessageHandler
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.ConsoleSend);
         message.AddString($"[{DateTime.Now:HH:mm:ss}] (SERVER) {str}");
-        Server._Server.SendToAll(message, except);
+        Server._server.SendToAll(message, except);
         if (printToServer) Console.WriteLine(str);
     }
 
@@ -56,7 +56,7 @@ public class PeerMessageHandler
     {
         var message = Message.Create(MessageSendMode.Reliable, MessageID.ConsoleSend);
         message.AddString($"[{DateTime.Now:HH:mm:ss}] (SERVER) {str}");
-        Server._Server.SendToAll(message);
+        Server._server.SendToAll(message);
         if (printToServer) Console.WriteLine(str);
     }
 }

@@ -35,6 +35,6 @@ internal class MushroomSyncer : Syncer
         message.AddInt(0);
         message.AddBytes(new byte[1]);
         message.AddBytes(GlobalObjectSaveData.Values.ToArray());
-        Server._Server.Send(message, player);
+        Server._server.Send(message, player);
     }
 }

@@ -52,7 +52,7 @@ public class MtpCommandPassword : Command
         RunPassword(pass);
         var announcement = Message.Create(MessageSendMode.Reliable, MessageID.SetPassword);
         announcement.AddString(pass);
-        Server._Server.SendToAll(announcement);
+        Server._server.SendToAll(announcement);
     }
     
     [MessageHandler((ushort)MessageID.GetPassword)]

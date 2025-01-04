@@ -59,7 +59,7 @@ public class HSD_DraftsHandler
         var message = Message.Create(MessageSendMode.Reliable, MessageID.HSD_PlayerJoined);
         message.AddUShort(clientId);
         message.AddInt((int)team);
-        Server._Server.SendToAll(message);
+        Server._server.SendToAll(message);
     }
 
     public void AnnouncePlayerLeft(ushort clientId, HSD_Team team)
@@ -67,7 +67,7 @@ public class HSD_DraftsHandler
         var message = Message.Create(MessageSendMode.Reliable, MessageID.HSD_PlayerLeft);
         message.AddUShort(clientId);
         message.AddInt((int)team);
-        Server._Server.SendToAll(message, clientId);
+        Server._server.SendToAll(message, clientId);
     }
     
     public void SendTeamData(ushort toClientId)
@@ -85,7 +85,7 @@ public class HSD_DraftsHandler
         message.AddInt((int)currentTeam);
         message.AddUShort(Program.HDrafts.Team1.Count > 0 ? Program.HDrafts.Team1[currentTeam1PlayerIndex] : (ushort)0);
         message.AddUShort(Program.HDrafts.Team2.Count > 0 ? Program.HDrafts.Team2[currentTeam2PlayerIndex] : (ushort)0);
-        Server._Server.Send(message, toClientId);
+        Server._server.Send(message, toClientId);
     }
 
     public bool TryRemovePlayer(ushort clientId)
@@ -136,7 +136,7 @@ public class HSD_DraftsHandler
         response.AddInt((int)currentTeam);
         response.AddUShort(Program.HDrafts.Team1.Count > 0 ? Program.HDrafts.Team1[currentTeam1PlayerIndex] : (ushort)0);
         response.AddUShort(Program.HDrafts.Team2.Count > 0 ? Program.HDrafts.Team2[currentTeam2PlayerIndex] : (ushort)0);
-        Server._Server.SendToAll(response);
+        Server._server.SendToAll(response);
 
         if (Program.HDrafts.Picks.Count == 8)
         {
@@ -152,7 +152,7 @@ public class HSD_DraftsHandler
         Program.HDrafts.Team1 = new List<ushort>();
         Program.HDrafts.Team2 = new List<ushort>();
         var message = Message.Create(MessageSendMode.Reliable, MessageID.HSD_Reset);
-        Server._Server.SendToAll(message);
+        Server._server.SendToAll(message);
     }
 
     private static void GetNextPlayer()
@@ -197,7 +197,7 @@ public class HSD_DraftsHandler
         startMessage.AddInt((int)currentTeam);
         startMessage.AddUShort(Program.HDrafts.Team1.Count > 0 ? Program.HDrafts.Team1[currentTeam1PlayerIndex] : (ushort)0);
         startMessage.AddUShort(Program.HDrafts.Team2.Count > 0 ? Program.HDrafts.Team2[currentTeam2PlayerIndex] : (ushort)0);
-        Server._Server.SendToAll(startMessage);
+        Server._server.SendToAll(startMessage);
     }
 }
 

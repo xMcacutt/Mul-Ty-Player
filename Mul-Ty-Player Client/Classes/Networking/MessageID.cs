@@ -70,7 +70,8 @@ public enum MessageID : ushort
     HS_SeekerSpeed,
     CL_Nopals,
     HC_Reset,
-    HC_RunStatusChanged
+    HC_RunStatusChanged,
+    DevPass
 }
 
 

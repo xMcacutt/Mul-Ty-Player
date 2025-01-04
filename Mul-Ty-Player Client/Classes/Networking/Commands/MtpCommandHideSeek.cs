@@ -77,7 +77,7 @@ public class MtpCommandHideSeek : Command
     
     private void RunHideSeek(float range)
     {
-        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_ProxyRunHideSeek);
+        var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_RangeChanged);
         message.AddFloat(range);
         Client._client.Send(message);
     }

@@ -85,7 +85,7 @@ public class CollectionModeHandler
         var message = Message.Create(MessageSendMode.Reliable, MessageID.CL_UpdateScore);
         message.AddInt(score);
         message.AddUShort(clientId);
-        Server._Server.SendToAll(message);
+        Server._server.SendToAll(message);
     }
 
     [MessageHandler((ushort)MessageID.CL_ResetScore)]
@@ -125,7 +125,7 @@ public class CollectionModeHandler
         _isClmRunning = true;
         Program.HCollection._clmRuleHandler.CurrentRule = new ClmRule_NoRule();
         var startClmMessage = Message.Create(MessageSendMode.Reliable, MessageID.CL_Start);
-        Server._Server.SendToAll(startClmMessage);
+        Server._server.SendToAll(startClmMessage);
     }
 
     public void DisposeOfTimers()
@@ -150,7 +150,7 @@ public class CollectionModeHandler
         DisposeOfTimers();
         _isClmRunning = false;
         var stopClmMessage = Message.Create(MessageSendMode.Reliable, MessageID.CL_Stop);
-        Server._Server.SendToAll(stopClmMessage);
+        Server._server.SendToAll(stopClmMessage);
     }
     
     private static void OnMainTimerElapsed(object sender, ElapsedEventArgs e)

@@ -21,7 +21,7 @@ public class ChaosHandler
         var response = Message.Create(MessageSendMode.Reliable, MessageID.CH_Shuffle);
         response.AddInt(Program.HChaos.ChaosSeed);
         response.AddBool(false);
-        Server._Server.SendToAll(response);
+        Server._server.SendToAll(response);
     }
     
     [MessageHandler((ushort)MessageID.CH_Shuffle)]
@@ -37,7 +37,7 @@ public class ChaosHandler
         var response = Message.Create(MessageSendMode.Reliable, MessageID.CH_Shuffle);
         response.AddInt(Program.HChaos.ChaosSeed);
         response.AddBool(true);
-        Server._Server.SendToAll(response);
+        Server._server.SendToAll(response);
     }
     
     [MessageHandler((ushort)MessageID.CH_ShuffleOnStartToggle)]
@@ -46,6 +46,6 @@ public class ChaosHandler
         Program.HChaos.ShuffleOnStart = !Program.HChaos.ShuffleOnStart;
         var response = Message.Create(MessageSendMode.Reliable, MessageID.CH_ShuffleOnStartToggle);
         response.AddBool(Program.HChaos.ShuffleOnStart);
-        Server._Server.SendToAll(response);
+        Server._server.SendToAll(response);
     }
 }

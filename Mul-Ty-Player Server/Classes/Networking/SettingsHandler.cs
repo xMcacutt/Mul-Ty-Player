@@ -50,7 +50,7 @@ internal class SettingsHandler
             _hsRange = value;
             var message = Message.Create(MessageSendMode.Reliable, MessageID.HS_RangeChanged);
             message.AddFloat(value);
-            Server._Server.SendToAll(message);
+            Server._server.SendToAll(message);
         }
     }
 
@@ -117,9 +117,9 @@ internal class SettingsHandler
         message.AddBool(HardcoreHandler.HardcoreRunDead);
         
         if (sendToAll)
-            Server._Server.SendToAll(message, clientId);
+            Server._server.SendToAll(message, clientId);
         else
-            Server._Server.Send(message, clientId);
+            Server._server.Send(message, clientId);
     }
 
     [MessageHandler((ushort)MessageID.SyncSettings)]
@@ -167,6 +167,6 @@ internal class SettingsHandler
         Console.WriteLine($"Game mode changed to {Enum.GetName(typeof(GameMode), mode)}");
         var response = Message.Create(MessageSendMode.Reliable, MessageID.GameMode);
         response.AddInt((int)GameMode);
-        Server._Server.SendToAll(response);
+        Server._server.SendToAll(response);
     }
 }

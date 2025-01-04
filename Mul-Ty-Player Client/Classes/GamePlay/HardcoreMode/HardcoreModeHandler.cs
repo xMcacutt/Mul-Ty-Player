@@ -25,7 +25,7 @@ public class HardcoreModeHandler
         Client.HHero.SetFallDelta(650f);
         Client.HHero.SetOpalMagnetisation(false);
         Client.HHardcore.SetEnemySpeedMultiplier(2.0f);
-        Client.HHero.SetWaterSlideSpeeds(15f, 15f, 30f);
+        Client.HHero.SetWaterSlideSpeeds(20f, 20f, 30f);
         if (Client.HLevel.CurrentLevelId != Levels.OutbackSafari.Id)
             AttributeHandler.SetBoomerangRange(1200f);
         HardcoreRunDead = false;
@@ -439,7 +439,7 @@ public class HardcoreModeHandler
         HardcoreRunDead = true;
     }
 
-    private void CheckThEggCounts()
+    public void CheckThEggCounts()
     {
          var count = SyncHandler.HThEg.GlobalObjectData.Values.Take(3).Sum(array => array.Count(x => x == (byte)5));
         if (count >= 17 && SyncHandler.HAttribute.GlobalObjectData[(int)Attributes.GotFlame] == 0)

@@ -54,12 +54,12 @@ internal class KoalaHandler
         announcement.AddInt((int)vip);
         if (bSendToAll)
         {
-            Server._Server.SendToAll(announcement, fromToClientId);
+            Server._server.SendToAll(announcement, fromToClientId);
             PeerMessageHandler.SendMessageToClients($"{playerName} (Client {fromToClientId}) selected {koalaName}", true);
         }
         else
         {
-            Server._Server.Send(announcement, fromToClientId);
+            Server._server.Send(announcement, fromToClientId);
         }
     }
     

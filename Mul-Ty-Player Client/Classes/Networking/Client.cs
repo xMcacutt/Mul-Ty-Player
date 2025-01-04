@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Threading;
 using MulTyPlayer;
 using MulTyPlayerClient.Classes.GamePlay;
+using MulTyPlayerClient.Classes.GamePlay.BlitzMode;
 using MulTyPlayerClient.Classes.Networking;
 using MulTyPlayerClient.Classes.Utility;
 using MulTyPlayerClient.GUI;
@@ -50,6 +51,7 @@ internal class Client
     public static ChaosHandler HChaos;
     public static HSD_DraftsHandler HDrafts;
     public static HardcoreModeHandler HHardcore;
+    public static BlitzModeHandler HBlitz;
 
     public static CancellationTokenSource cts;
     public static bool Relaunching => TyProcess.LaunchingGame;
@@ -148,6 +150,7 @@ internal class Client
         HChaos = new ChaosHandler();
         HDrafts = new HSD_DraftsHandler();
         HHardcore = new HardcoreModeHandler();
+        HBlitz = new BlitzModeHandler();
     }
 
     private static void InitRiptide()
@@ -297,6 +300,8 @@ internal class Client
                                     HObjective.RunChecks();
                                 if (SettingsHandler.GameMode == GameMode.Hardcore)
                                     HHardcore.Run();
+                                else if (SettingsHandler.GameMode == GameMode.Blitz)
+                                    HBlitz.Run();
                             }
                             HHero.GetTyPosRot();
                             HKoala.HandleTA();

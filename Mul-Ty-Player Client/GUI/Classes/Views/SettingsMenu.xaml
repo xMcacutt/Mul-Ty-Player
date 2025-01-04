@@ -212,6 +212,70 @@
                     <CheckBox IsChecked="{Binding DoUnlockGameInfo}"
                               Style="{StaticResource SettingsCheckBoxStyle}"
                               Content="Unlock All Game Info"/>
+                    
+                    <Label Content="Camera Range Defaults"
+                           Style="{StaticResource SettingsLabelStyle}"
+                           FontSize="30"/>
+                    <Label Content="Near Distance"
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <Slider Minimum="0" 
+                            Maximum="1000" 
+                            TickFrequency="100" 
+                            TickPlacement="BottomRight" 
+                            Orientation="Horizontal"
+                            Value="{Binding NearCamDistance}"
+                            ValueChanged="RangeBase_OnValueChanged"
+                            Style="{StaticResource SettingsSliderStyle}"/>
+                    <Label Content="Near Elevation"
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <Slider Minimum="0" 
+                            Maximum="1000" 
+                            TickFrequency="100" 
+                            TickPlacement="BottomRight" 
+                            Orientation="Horizontal"
+                            Value="{Binding NearCamElevation}"
+                            ValueChanged="RangeBase_OnValueChanged"
+                            Style="{StaticResource SettingsSliderStyle}"/>
+                    <Label Content="Mid Distance"
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <Slider Minimum="0" 
+                            Maximum="1000" 
+                            TickFrequency="100" 
+                            TickPlacement="BottomRight" 
+                            Orientation="Horizontal"
+                            Value="{Binding MidCamDistance}"
+                            ValueChanged="RangeBase_OnValueChanged"
+                            Style="{StaticResource SettingsSliderStyle}"/>
+                    <Label Content="Mid Elevation"
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <Slider Minimum="0" 
+                            Maximum="1000" 
+                            TickFrequency="100" 
+                            TickPlacement="BottomRight" 
+                            Orientation="Horizontal"
+                            Value="{Binding MidCamElevation}"
+                            ValueChanged="RangeBase_OnValueChanged"
+                            Style="{StaticResource SettingsSliderStyle}"/>
+                    <Label Content="Far Distance"
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <Slider Minimum="0" 
+                            Maximum="1000" 
+                            TickFrequency="100" 
+                            TickPlacement="BottomRight" 
+                            Orientation="Horizontal"
+                            Value="{Binding FarCamDistance}"
+                            ValueChanged="RangeBase_OnValueChanged"
+                            Style="{StaticResource SettingsSliderStyle}"/>
+                    <Label Content="Far Elevation"
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <Slider Minimum="0" 
+                            Maximum="1000" 
+                            TickFrequency="100" 
+                            TickPlacement="BottomRight" 
+                            Orientation="Horizontal"
+                            Value="{Binding FarCamElevation}"
+                            ValueChanged="RangeBase_OnValueChanged"
+                            Style="{StaticResource SettingsSliderStyle}"/>
                 </StackPanel>
             </ScrollViewer>
             <Separator Visibility="Visible" Style="{StaticResource SettingsSepStyle}"/>
@@ -274,32 +338,6 @@
                             ValueChanged="RangeBase_OnValueChanged"
                             Style="{StaticResource SettingsSliderStyle}"/>
                     
-                    <Label Content="Gain"
-                           Style="{StaticResource SettingsLabelStyle}"
-                           FontSize="30"/>
-                    
-                    <Label Content="Input Gain"
-                           Style="{StaticResource SettingsLabelStyle}"/>
-                    <Slider Minimum="0" 
-                            Maximum="5" 
-                            TickFrequency="0.25" 
-                            TickPlacement="BottomRight" 
-                            Orientation="Horizontal"
-                            Value="{Binding IgInputGain}"
-                            ValueChanged="RangeBase_OnValueChanged"
-                            Style="{StaticResource SettingsSliderStyle}"/>
-                    
-                    <Label Content="Output Gain"
-                           Style="{StaticResource SettingsLabelStyle}"/>
-                    <Slider Minimum="0" 
-                            Maximum="5" 
-                            TickFrequency="0.25" 
-                            TickPlacement="BottomRight" 
-                            Orientation="Horizontal"
-                            Value="{Binding OgOutputGain}"
-                            ValueChanged="RangeBase_OnValueChanged"
-                            Style="{StaticResource SettingsSliderStyle}"/>
-                    
                     <Label Content="Compressor"
                            Style="{StaticResource SettingsLabelStyle}"
                            FontSize="30"/>
@@ -347,33 +385,6 @@
                             Value="{Binding CmpOutputGain}"
                             ValueChanged="RangeBase_OnValueChanged"
                             Style="{StaticResource SettingsSliderStyle}"/>
-                    
-                    <Label Content="Noise Gate"
-                           Style="{StaticResource SettingsLabelStyle}"
-                           FontSize="30"/>
-                    
-                    <Label Content="Floor"
-                           Style="{StaticResource SettingsLabelStyle}"/>
-                    <Slider Minimum="0" 
-                            Maximum="0.5" 
-                            TickFrequency="0.02" 
-                            TickPlacement="BottomRight" 
-                            Orientation="Horizontal"
-                            Value="{Binding NsGtFloor}"
-                            ValueChanged="RangeBase_OnValueChanged"
-                            Style="{StaticResource SettingsSliderStyle}"/>
-                    
-                    <Label Content="Ceiling"
-                           Style="{StaticResource SettingsLabelStyle}"/>
-                    <Slider Minimum="0.5" 
-                            Maximum="1" 
-                            TickFrequency="0.02" 
-                            TickPlacement="BottomRight" 
-                            Orientation="Horizontal"
-                            Value="{Binding NsGtCeiling}"
-                            ValueChanged="RangeBase_OnValueChanged"
-                            Style="{StaticResource SettingsSliderStyle}"/>
-
                 </StackPanel>
             </ScrollViewer>
             <Separator Style="{StaticResource SettingsSepStyle}"/>
@@ -499,6 +510,10 @@
                     <TextBox Text="{Binding DefaultPort}"
                              Name="PortTextBox"
                              PreviewTextInput="PortTextBox_OnPreviewTextInput"
+                             Style="{StaticResource SettingsTextBoxStyle}"/>
+                    <Label Content="Developer Password"
+                           Style="{StaticResource SettingsLabelStyle}"/>
+                    <TextBox Text="{Binding DevPass}"
                              Style="{StaticResource SettingsTextBoxStyle}"/>
                 </StackPanel>
             </ScrollViewer>

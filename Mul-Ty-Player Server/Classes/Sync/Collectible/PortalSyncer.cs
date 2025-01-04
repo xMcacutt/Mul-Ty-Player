@@ -32,6 +32,6 @@ internal class PortalSyncer : Syncer
         message.AddInt(0);
         message.AddBytes(ActivePortals.Values.ToArray());
         message.AddBytes(new byte[] { 0 });
-        Server._Server.Send(message, player);
+        Server._server.Send(message, player);
     }
 }

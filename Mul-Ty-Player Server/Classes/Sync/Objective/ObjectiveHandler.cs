@@ -33,7 +33,7 @@ public class ObjectiveHandler
             sync.AddString(objective.Key);
             sync.AddBytes(objective.Value.ObjectStates);
             sync.AddByte((byte)objective.Value.State);
-            Server._Server.Send(sync, fromClientId);
+            Server._server.Send(sync, fromClientId);
         }
     }
 

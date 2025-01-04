@@ -7,6 +7,7 @@
         Chaos,
         Collection,
         Hardcore,
+        Blitz
     }
 }
 

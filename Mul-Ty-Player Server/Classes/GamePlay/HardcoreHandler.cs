@@ -18,7 +18,7 @@ public class HardcoreHandler
             message.AddBool(value);
             message.AddUShort(_lastClientToDie);
             message.AddInt(_lastCauseOfDeath);
-            Server._Server.SendToAll(message);
+            Server._server.SendToAll(message);
             _hardcoreRunDead = value;
         }
     }

@@ -23,7 +23,7 @@ public class HostHandler
 
         var hRequest = Message.Create(MessageSendMode.Reliable, MessageID.ReqHost);
         hRequest.AddBool(acceptRequest);
-        Server._Server.Send(hRequest, fromClientId);
+        Server._server.Send(hRequest, fromClientId);
     }
 
     [MessageHandler((ushort)MessageID.GiftHost)]
@@ -38,7 +38,7 @@ public class HostHandler
         PlayerHandler.Players[newHost].IsHost = true;
         var notifyHostChange = Message.Create(MessageSendMode.Reliable, MessageID.HostChange);
         notifyHostChange.AddUShort(newHost);
-        Server._Server.SendToAll(notifyHostChange);
+        Server._server.SendToAll(notifyHostChange);
         PeerMessageHandler.SendMessageToClients($"{PlayerHandler.Players[newHost].Name} has been made host", true);
     }
 }

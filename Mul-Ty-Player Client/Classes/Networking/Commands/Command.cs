@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MulTyPlayer;
+using Riptide;
 
 namespace MulTyPlayerClient;
 
@@ -12,6 +14,7 @@ public abstract class Command
     public string Description;
     public bool HostOnly;
     public bool SpectatorAllowed;
+    public bool RequiresDevPass;
 
     public abstract void InitExecute(string[] args);
 
@@ -23,7 +26,8 @@ public abstract class Command
                      $"Usages:\n {string.Join(",\n ", Usages)}\n" +
                      $"Arguments:\n {string.Join(",\n ", ArgDescriptions.Select(arg => $"{arg.Key}: {arg.Value}"))}\n" +
                      $"HostOnly?: {HostOnly}\n" +
-                     $"SpectatorAllowed?: {SpectatorAllowed}\n");
+                     $"SpectatorAllowed?: {SpectatorAllowed}\n" +
+                     $"RequiresDevPass?: {RequiresDevPass}\n");
     }
 
     protected virtual void SuggestHelp()
@@ -35,4 +39,6 @@ public abstract class Command
     {
         Logger.Write($"[ERROR] {message}");
     }
+
+
 }

@@ -14,7 +14,7 @@ internal class Server
     public const int TICK_RATE_HZ = 50;
     public const int MS_PER_TICK = 1000 / TICK_RATE_HZ;
 
-    public static Riptide.Server _Server;
+    public static Riptide.Server _server;
     public static bool _isRunning;
 
     private static KoalaHandler HKoala => Program.HKoala;
@@ -28,18 +28,18 @@ internal class Server
 
     private static void Loop()
     {
-        _Server = new Riptide.Server();
-        _Server.Start(SettingsHandler.ServerSettings.Port,12);
+        _server = new Riptide.Server();
+        _server.Start(SettingsHandler.ServerSettings.Port,12);
 
-        _Server.HandleConnection += HandleConnection;
-        _Server.ClientConnected += ClientConnected;
-        _Server.ClientDisconnected += ClientDisconnected;
+        _server.HandleConnection += HandleConnection;
+        _server.ClientConnected += ClientConnected;
+        _server.ClientDisconnected += ClientDisconnected;
 
         VoiceServer.OpenVoiceServer();
         
         while (_isRunning)
         {
-            _Server.Update();
+            _server.Update();
             if (PlayerHandler.Players.Count != 0)
             {
                 if (SettingsHandler.DoLevelLock)
@@ -59,14 +59,14 @@ internal class Server
         }
 
         if (Program._inputStr == "y") return;
-        _Server.Stop();
+        _server.Stop();
         Console.WriteLine("Would you like to restart Mul-Ty-Player? [y/n]");
     }
 
     public static void RestartServer()
     {
         Program._inputStr = "y";
-        _Server.Stop();
+        _server.Stop();
         _isRunning = false;
     }
 
@@ -81,8 +81,8 @@ internal class Server
                 var clientCountResponse = Message.Create();
                 clientCountResponse.AddByte((byte)ConnectionFailedType.WasClientCountRequest);
                 clientCountResponse.AddString("Connection type did not request a login.");
-                clientCountResponse.AddInt(_Server.ClientCount);
-                _Server.Reject(pendingConnection, clientCountResponse);
+                clientCountResponse.AddInt(_server.ClientCount);
+                _server.Reject(pendingConnection, clientCountResponse);
                 break;
             }
             case ConnectionType.Login:
@@ -93,12 +93,12 @@ internal class Server
                 if (!string.Equals(pass, SettingsHandler.ServerSettings.Password, StringComparison.CurrentCultureIgnoreCase)
                     && !string.Equals(SettingsHandler.ServerSettings.Password, "XXXXX", StringComparison.CurrentCultureIgnoreCase)
                     && !string.IsNullOrWhiteSpace(SettingsHandler.ServerSettings.Password)
-                    && _Server.ClientCount > 0)
+                    && _server.ClientCount > 0)
                 {
                     var response = Message.Create();
                     response.AddByte((byte)ConnectionFailedType.IncorrectPassword);
                     response.AddString("The password you entered was incorrect.");
-                    _Server.Reject(pendingConnection, response);
+                    _server.Reject(pendingConnection, response);
                     Console.WriteLine("Rejecting.");
                 }
                 else if (PlayerHandler.Players.Count(x => x.Value.Koala.KoalaName != "SPECTATOR") == 8 && !spectator)
@@ -106,12 +106,12 @@ internal class Server
                     var response = Message.Create();
                     response.AddByte((byte)ConnectionFailedType.ServerFull);
                     response.AddString("The server is full.");
-                    _Server.Reject(pendingConnection, response);
+                    _server.Reject(pendingConnection, response);
                     Console.WriteLine("Rejecting.");
                 }
                 else
                 {
-                    _Server.Accept(pendingConnection);
+                    _server.Accept(pendingConnection);
                     Console.WriteLine("Accepting.");
                 }
 
@@ -143,7 +143,7 @@ internal class Server
             PlayerHandler.AnnounceDisconnect(e.Client.Id);
             Program.HDrafts.TryRemovePlayer(e.Client.Id);
         }
-        if (_Server.ClientCount == 0 && SettingsHandler.ServerSettings.ResetPasswordOnEmpty)
+        if (_server.ClientCount == 0 && SettingsHandler.ServerSettings.ResetPasswordOnEmpty)
             SettingsHandler.ServerSettings.Password = "XXXXX";
     }
 
@@ -155,7 +155,7 @@ internal class Server
         message.AddString(koalaName);
         message.AddInt(level);
         message.AddFloats(coordinates);
-        _Server.SendToAll(message, clientId);
+        _server.SendToAll(message, clientId);
     }
 }
 

@@ -32,14 +32,14 @@ internal class PlayerHandler
     public static void KillPlayer(ushort id)
     {
         var message = Message.Create(MessageSendMode.Reliable, (ushort)MessageID.Kill);
-        Server._Server.Send(message, id);
+        Server._server.Send(message, id);
     }
 
     public static void AnnounceDisconnect(ushort id)
     {
         var message = Message.Create(MessageSendMode.Reliable, (ushort)MessageID.AnnounceDisconnect);
         message.AddUShort(id);
-        Server._Server.SendToAll(message);
+        Server._server.SendToAll(message);
     }
 
     [MessageHandler((ushort)MessageID.PlayerInfo)]
@@ -62,7 +62,7 @@ internal class PlayerHandler
         var status = Message.Create(MessageSendMode.Reliable, MessageID.Ready);
         status.AddUShort(fromClientId);
         status.AddBool(ready);
-        Server._Server.SendToAll(status, fromClientId);
+        Server._server.SendToAll(status, fromClientId);
 
         if (Players.Values.Where(x => x.Role != HSRole.Spectator).All(x => x.IsReady))
         {
@@ -88,7 +88,7 @@ internal class PlayerHandler
             return;
         var hideTimerMessage = Message.Create(MessageSendMode.Reliable, MessageID.HS_HideTimerStart);
         hideTimerMessage.AddInt(hideTimeLength);
-        Server._Server.SendToAll(hideTimerMessage);
+        Server._server.SendToAll(hideTimerMessage);
         HSHandler.StartHideTimer(hideTimeLength);
     }
 
@@ -99,7 +99,7 @@ internal class PlayerHandler
         Program.HCommand.Commands["resetsync"].InitExecute(Array.Empty<string>());
         var countdownStart = Message.Create(MessageSendMode.Reliable, MessageID.Countdown);
         countdownStart.AddString("start");
-        Server._Server.SendToAll(countdownStart);
+        Server._server.SendToAll(countdownStart);
     }
 
     [MessageHandler((ushort)MessageID.ForceMainMenu)]
@@ -107,6 +107,6 @@ internal class PlayerHandler
     {
         var playerToForce = message.GetUShort();
         var response = Message.Create(MessageSendMode.Reliable, MessageID.ForceMainMenu);
-        Server._Server.Send(response, playerToForce);
+        Server._server.Send(response, playerToForce);
     }
 }

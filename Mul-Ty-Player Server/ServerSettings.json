@@ -13,6 +13,7 @@
   "DoSyncScale": true,
   "DoSyncFrame": true,
   "DoSyncMushrooms": true,
-  "Version": "4.9.10",
-  "DoAutoUpdate": true
+  "Version": "4.9.12",
+  "DoAutoUpdate": true,
+  "DevPass": ""
 }
